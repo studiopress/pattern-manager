@@ -1,0 +1,200 @@
+/**
+ * Genesis Studio App, non visual logic.
+ */
+
+const { __ } = wp.i18n;
+
+import { useState, useEffect } from '@wordpress/element';
+import { getPrefix } from './prefix.js';
+
+export const FseThemeManagerContext = React.createContext( [
+	{},
+	function () {},
+] );
+
+export function useThemeData( themeId, themes ) {
+	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+	const [ themeData, setThemeData ] = useState();
+
+	useEffect( () => {
+		// If the themeId passed in changes, get the new theme data related to it.
+		getThemeData( themeId );
+	}, [ themeId ] );
+
+	function getThemeData( themeId ) {
+		return new Promise( ( resolve, reject ) => {
+			if ( ! themeId || fetchInProgress ) {
+				resolve();
+				return;
+			}
+			setFetchInProgress( true );
+			fetch(
+				fsethememanager.apiEndpoints.getThemeEndpoint +
+					'?themeId=' +
+					themeId,
+				{
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					setFetchInProgress( false );
+					if (
+						response.error &&
+						response.error === 'theme_not_found'
+					) {
+						// If the theme does not yet exist on the server, grab the theme data from the theme list.
+						console.log( themes.themes );
+
+						setThemeData( themes.themes[ themeId ] );
+					} else {
+						setThemeData( response );
+						resolve( response );
+					}
+				} );
+		} );
+	}
+
+	function saveThemeData() {
+		return new Promise( ( resolve, reject ) => {
+			fetch( fsethememanager.apiEndpoints.saveThemeEndpoint, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify( themeData ),
+			} )
+				.then( ( response ) => response.json() )
+				.then( ( data ) => {
+					const response = JSON.parse( data );
+					resolve( data );
+				} );
+		} );
+	}
+
+	return {
+		data: themeData,
+		set: setThemeData,
+		save: saveThemeData,
+	};
+}
+
+export function usePatternData( patternId ) {
+	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+	const [ patternData, setPatternData ] = useState();
+
+	useEffect( () => {
+		// If the patternId passed in changes, get the new pattern data related to it.
+		getPatternData( patternId );
+	}, [ patternId ] );
+
+	useEffect( () => {
+		// When the patternData is updated, save it to the server.
+		savePatternData();
+	}, [ patternData ] );
+
+	function getPatternData( patternId ) {
+		return new Promise( ( resolve, reject ) => {
+			if ( ! patternId || fetchInProgress ) {
+				resolve();
+				return;
+			}
+			setFetchInProgress( true );
+			fetch(
+				fsethememanager.apiEndpoints.getPatternEndpoint +
+					'?patternId=' +
+					patternId,
+				{
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					setFetchInProgress( false );
+					setPatternData( response );
+					resolve( response );
+				} );
+		} );
+	}
+
+	function savePatternData() {
+		return new Promise( ( resolve, reject ) => {
+			fetch( fsethememanager.apiEndpoints.savePatternEndpoint, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify( patternData ),
+			} )
+				.then( ( response ) => response.json() )
+				.then( ( data ) => {
+					const response = JSON.parse( data );
+					resolve( data );
+				} );
+		} );
+	}
+
+	return {
+		data: patternData,
+		set: setPatternData,
+	};
+}
+
+export function useThemes( initial ) {
+	const [ themes, setThemes ] = useState( initial.themes );
+
+	return {
+		themes,
+		setThemes,
+	};
+}
+
+export function usePatterns( initialPatterns ) {
+	const [ patterns, setPatterns ] = useState( initialPatterns );
+
+	return {
+		patterns,
+		setPatterns,
+	};
+}
+
+export function useCurrentView( initial ) {
+	const [ currentView, set ] = useState( initial.currentView );
+
+	return {
+		currentView,
+		set,
+	};
+}
+
+function string_to_slug( str ) {
+	str = str.replace( /^\s+|\s+$/g, '' ); // trim
+	str = str.toLowerCase();
+
+	// remove accents, swap ñ for n, etc
+	const from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;';
+	const to = 'aaaaeeeeiiiioooouuuunc------';
+	for ( let i = 0, l = from.length; i < l; i++ ) {
+		str = str.replace(
+			new RegExp( from.charAt( i ), 'g' ),
+			to.charAt( i )
+		);
+	}
+
+	str = str
+		.replace( /[^a-z0-9 -]/g, '' ) // remove invalid chars
+		.replace( /\s+/g, '-' ) // collapse whitespace and replace by -
+		.replace( /-+/g, '-' ); // collapse dashes
+
+	return str;
+}
