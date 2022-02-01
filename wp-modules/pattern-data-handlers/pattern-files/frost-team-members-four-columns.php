@@ -2,7 +2,7 @@
 /**
  * Frost: Team with image, text, link.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

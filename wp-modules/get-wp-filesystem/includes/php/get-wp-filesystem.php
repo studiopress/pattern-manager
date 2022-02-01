@@ -2,12 +2,12 @@
 /**
  * A function which allows you to get the WP Filesystem.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\GetWpFilesystem;
+namespace FseStudio\GetWpFilesystem;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

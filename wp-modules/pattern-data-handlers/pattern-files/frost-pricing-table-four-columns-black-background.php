@@ -2,7 +2,7 @@
 /**
  * Frost: Pricing table with list, buttons.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

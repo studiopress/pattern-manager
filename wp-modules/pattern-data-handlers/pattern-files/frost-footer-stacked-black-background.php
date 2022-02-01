@@ -2,7 +2,7 @@
 /**
  * Frost: Footer with heading, text, button.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

@@ -42,7 +42,7 @@ import {
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
 import { useContext, useState, useEffect, useRef } from '@wordpress/element';
 import {
-	FseThemeManagerContext,
+	FseStudioContext,
 	usePatternData,
 } from './../non-visual/non-visual-logic.js';
 import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
@@ -53,7 +53,7 @@ const input_delay = [];
 // import '@wordpress/block-editor/build-style/style.css';
 
 export function PatternEditorApp( props ) {
-	const { patterns } = useContext( FseThemeManagerContext );
+	const { patterns } = useContext( FseStudioContext );
 	const [ currentPatternId, setCurrentPatternId ] = useState();
 	const pattern = usePatternData( currentPatternId );
 	const [ errors, setErrors ] = useState( false );
@@ -64,7 +64,7 @@ export function PatternEditorApp( props ) {
 
 		renderedPatterns.push(
 			<option key={ 1 }>
-				{ __( 'Choose a pattern', 'fsethememanager' ) }
+				{ __( 'Choose a pattern', 'fsestudio' ) }
 			</option>
 		);
 
@@ -146,7 +146,7 @@ export function PatternEditorApp( props ) {
 								<Modal
 									title={ __(
 										'Errors in pattern',
-										'fsethememanager'
+										'fsestudio'
 									) }
 									onRequestClose={ () =>
 										setErrorModalOpen( false )
@@ -164,8 +164,8 @@ export function PatternEditorApp( props ) {
 	}
 
 	return (
-		<div className="fsethememanager-pattern-work-area">
-			<div className="fsethememanager-subheader">
+		<div className="fsestudio-pattern-work-area">
+			<div className="fsestudio-subheader">
 				<div>Pattern Editor</div>
 				{ renderPatternSelector() }
 				{ maybeRenderErrors() }
@@ -241,7 +241,7 @@ export function PatternEditor( props ) {
 
 	function getViewToggleClassName( toggleInQuestion ) {
 		if ( currentView === toggleInQuestion ) {
-			return ' fsethememanager-active-tab';
+			return ' fsestudio-active-tab';
 		}
 
 		return '';
@@ -256,7 +256,7 @@ export function PatternEditor( props ) {
 		const url = new URL( frontendPreviewUrl );
 
 		if ( screenshotMode ) {
-			url.searchParams.set( 'fsethememanager_blocks_only_page', true );
+			url.searchParams.set( 'fsestudio_blocks_only_page', true );
 			url.searchParams.set(
 				'title',
 				prefix +
@@ -280,7 +280,7 @@ export function PatternEditor( props ) {
 			return '';
 		}
 		if ( currentView === 'frontend' ) {
-			url.searchParams.set( 'fsethememanager_blocks_only_page', true );
+			url.searchParams.set( 'fsestudio_blocks_only_page', true );
 			url.searchParams.set( 'title', pattern.data.key );
 			return url.toString();
 		}
@@ -299,19 +299,19 @@ export function PatternEditor( props ) {
 	}
 
 	return (
-		<div className="fsethememanager-pattern-editor">
+		<div className="fsestudio-pattern-editor">
 			<div
 				style={ { display: 'none' } }
-				className="fsethememanager-editor-header"
+				className="fsestudio-editor-header"
 			>
-				<div className="fsethememanager-pattern-image"></div>
-				<div className="fsethememanager-pattern-name">
+				<div className="fsestudio-pattern-image"></div>
+				<div className="fsestudio-pattern-name">
 					<h2>{ pattern.data.name }</h2>
 				</div>
-				<div className="fsethememanager-pattern-tabs">
+				<div className="fsestudio-pattern-tabs">
 					<div
 						className={
-							'fsethememanager-tab' +
+							'fsestudio-tab' +
 							getViewToggleClassName( 'blockEditor' )
 						}
 						onClick={ () => {
@@ -322,7 +322,7 @@ export function PatternEditor( props ) {
 					</div>
 					<div
 						className={
-							'fsethememanager-tab' +
+							'fsestudio-tab' +
 							getViewToggleClassName( 'codeEditor' )
 						}
 						onClick={ () => {
@@ -333,7 +333,7 @@ export function PatternEditor( props ) {
 					</div>
 					<div
 						className={
-							'fsethememanager-tab' +
+							'fsestudio-tab' +
 							getViewToggleClassName( 'frontend' )
 						}
 						onClick={ () => {
@@ -355,9 +355,9 @@ export function PatternEditor( props ) {
 					</select>
 				</div>
 			</div>
-			<div className="fsethememanager-pattern-editor-body">
+			<div className="fsestudio-pattern-editor-body">
 				<div
-					className="fsethememanager-pattern-editor-view"
+					className="fsestudio-pattern-editor-view"
 					style={ {
 						display:
 							currentView === 'codeEditor' ? 'block' : 'none',
@@ -378,7 +378,7 @@ export function PatternEditor( props ) {
 							updateBlocks( parse( serializedBlocks ) );
 						} }
 					>
-						{ __( 'Done Editing', 'fsethememanager' ) }
+						{ __( 'Done Editing', 'fsestudio' ) }
 					</button>
 					<textarea
 						style={ {
@@ -392,7 +392,7 @@ export function PatternEditor( props ) {
 					/>
 				</div>
 				<div
-					className="fsethememanager-pattern-frontend-view"
+					className="fsestudio-pattern-frontend-view"
 					style={ {
 						display: currentView === 'frontend' ? 'block' : 'none',
 						width: editorWidth,
@@ -401,7 +401,7 @@ export function PatternEditor( props ) {
 					{ renderFrontendIframe() }
 				</div>
 				<div
-					className="fsethememanager-pattern-editor-view"
+					className="fsestudio-pattern-editor-view"
 					style={ {
 						display:
 							currentView === 'blockEditor' ? 'block' : 'none',
@@ -418,7 +418,7 @@ export function PatternEditor( props ) {
 								<BlockTools>
 									<WritingFlow>
 										<ObserveTyping>
-											<div className="fsethememanager-pattern-editor-columns">
+											<div className="fsestudio-pattern-editor-columns">
 												<div className={ 'column' }>
 													<div className="edit-post-visual-editor editor-styles-wrapper">
 														<BlockList />
@@ -489,7 +489,7 @@ function openScreenshot( url, type = 'section' ) {
 }
 
 function SectionPreview( props ) {
-	const { siteUrl } = useContext( FseThemeManagerContext );
+	const { siteUrl } = useContext( FseStudioContext );
 	const iframeRef = useRef( null );
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
 		0

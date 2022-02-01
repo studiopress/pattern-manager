@@ -4,12 +4,12 @@
  * Description: This module contains a theme boilerplate, which is used to generate other themes.
  * Namespace: ThemeBoiler
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\ThemeBoiler;
+namespace FseStudio\ThemeBoiler;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

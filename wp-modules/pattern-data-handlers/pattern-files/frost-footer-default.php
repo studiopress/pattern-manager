@@ -2,7 +2,7 @@
 /**
  * Frost: Footer with text, links.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

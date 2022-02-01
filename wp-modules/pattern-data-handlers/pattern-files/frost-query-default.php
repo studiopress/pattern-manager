@@ -2,7 +2,7 @@
 /**
  * Frost: List of posts in one column.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

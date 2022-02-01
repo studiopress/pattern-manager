@@ -10,31 +10,31 @@ import { PatternEditorApp } from './PatternEditor.js';
 import { ThemeEditorApp } from './ThemeEditor.js';
 import { ThemeJsonEditor } from './ThemeJsonEditor.js';
 import {
-	FseThemeManagerContext,
+	FseStudioContext,
 	useThemes,
 	usePatterns,
 	useCurrentView,
 } from './../non-visual/non-visual-logic.js';
-import { FseThemeManagerHeader } from './Header.js';
+import { FseStudioHeader } from './Header.js';
 
-export function FseThemeManagerApp() {
+export function FseStudioApp() {
 	return (
-		<FseThemeManagerContext.Provider
+		<FseStudioContext.Provider
 			value={ {
 				currentView: useCurrentView( { currentView: '' } ),
-				patterns: usePatterns( fsethememanager.patterns ),
-				themes: useThemes( { themes: fsethememanager.themes } ),
-				siteUrl: fsethememanager.siteUrl,
-				apiEndpiints: fsethememanager.api_endpoints,
+				patterns: usePatterns( fsestudio.patterns ),
+				themes: useThemes( { themes: fsestudio.themes } ),
+				siteUrl: fsestudio.siteUrl,
+				apiEndpiints: fsestudio.api_endpoints,
 			} }
 		>
-			<FseThemeManager />
-		</FseThemeManagerContext.Provider>
+			<FseStudio />
+		</FseStudioContext.Provider>
 	);
 }
 
-function FseThemeManager() {
-	const { currentView } = useContext( FseThemeManagerContext );
+function FseStudio() {
+	const { currentView } = useContext( FseStudioContext );
 
 	function renderEditor() {
 		if ( 'themejson' === currentView.currentView ) {
@@ -59,8 +59,8 @@ function FseThemeManager() {
 	}
 
 	return (
-		<div className="fsethememanager">
-			<div className="fsethememanager-header">
+		<div className="fsestudio">
+			<div className="fsestudio-header">
 				<div style={ { textAlign: 'center' } }>
 					<span
 						style={ { display: 'inline-block', fontWeight: '700' } }
@@ -68,7 +68,7 @@ function FseThemeManager() {
 						FSE Theme Manager
 					</span>
 				</div>
-				<div className="fsethememanager-controls">
+				<div className="fsestudio-controls">
 					<button
 						className="button"
 						onClick={ () => {

@@ -2,7 +2,7 @@
 /**
  * Frost: 404 error content.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

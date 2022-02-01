@@ -2,7 +2,7 @@
 /**
  * Frost: Call-to-action with text, button.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

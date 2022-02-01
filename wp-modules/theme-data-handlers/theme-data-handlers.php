@@ -4,12 +4,12 @@
  * Description: This module contains functions for getting and saving theme data.
  * Namespace: ThemeDataHandlers
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\ThemeDataHandlers;
+namespace FseStudio\ThemeDataHandlers;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -37,7 +37,7 @@ function get_the_themes() {
 	$wpthemes = wp_get_themes();
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseThemeManager\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$formatted_theme_data = [];
 
@@ -61,7 +61,7 @@ function get_the_themes() {
 	];
 
 	foreach ( $wpthemes as $theme_slug => $theme ) {
-		$theme_data_file = $theme->get_template_directory() . '/fse-theme-manager-data.json';
+		$theme_data_file = $theme->get_template_directory() . '/fse-studio-data.json';
 
 		if ( $wp_filesystem->exists( $theme_data_file ) ) {
 			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
@@ -105,10 +105,10 @@ function get_the_themes() {
 function update_theme( $theme, $patterns ) {
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseThemeManager\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/fse-theme-manager/wp-modules/theme-boiler/theme-boiler/';
+	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
 	$themes_dir       = $wp_filesystem->wp_themes_dir();
 	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
 
@@ -119,14 +119,14 @@ function update_theme( $theme, $patterns ) {
 	copy_dir( $theme_boiler_dir, $new_theme_dir );
 
 	// Fix strings in the stylesheet.
-	$strings_fixed = \FseThemeManager\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
+	$strings_fixed = \FseStudio\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
 
 	// Fix strings in the functions.php file.
-	$strings_fixed = \FseThemeManager\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
+	$strings_fixed = \FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
 
-	// Create the theme's fse-theme-manager-data.json file.
+	// Create the theme's fse-studio-data.json file.
 	$success = $wp_filesystem->put_contents(
-		$new_theme_dir . 'fse-theme-manager-data.json',
+		$new_theme_dir . 'fse-studio-data.json',
 		wp_json_encode(
 			$theme,
 			JSON_PRETTY_PRINT
@@ -154,7 +154,7 @@ function update_theme( $theme, $patterns ) {
 
 	foreach ( $theme['includedPatterns'] as $included_pattern ) {
 		$wp_filesystem->copy(
-			$wp_filesystem->wp_plugins_dir() . 'fse-theme-manager/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php',
+			$wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php',
 			$new_theme_dir . 'patterns/' . $included_pattern . '.php',
 			true,
 			FS_CHMOD_FILE

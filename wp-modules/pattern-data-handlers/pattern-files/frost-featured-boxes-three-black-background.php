@@ -2,7 +2,7 @@
 /**
  * Frost: Featured boxes with text, button.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

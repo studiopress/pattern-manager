@@ -2,13 +2,13 @@
 /**
  * This file adds functions to the Boiler theme for WordPress.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  * @author  WP Engine
  * @license GNU General Public License v2 or later
  * @link    https://boilerwp.com/
  */
 
-namespace FseThemeManager\ThemeBoiler;
+namespace FseStudio\ThemeBoiler;
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.

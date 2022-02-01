@@ -4,12 +4,12 @@
  * Description: This module contains functions for getting and saving pattern data.
  * Namespace: PatternDataHandlers
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\PatternDataHandlers;
+namespace FseStudio\PatternDataHandlers;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -62,12 +62,12 @@ function get_patterns() {
 function update_pattern( $pattern ) {
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseThemeManager\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
 	$wp_content_dir = $wp_filesystem->wp_content_dir();
-	$theme_dir      = $wp_content_dir . 'plugins/fse-theme-manager/';
-	$patterns_dir   = $theme_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
+	$plugin_dir     = $wp_content_dir . 'plugins/fse-studio/';
+	$patterns_dir   = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
 
 	$file_contents = contruct_pattern_php_file_contents( $pattern, 'frost' );
 
@@ -94,7 +94,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 /**
  * Frost: " . $pattern['title'] . "
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

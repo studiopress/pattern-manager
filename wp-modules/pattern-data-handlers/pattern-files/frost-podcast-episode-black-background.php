@@ -2,7 +2,7 @@
 /**
  * Frost: Podcast episode with media, text.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

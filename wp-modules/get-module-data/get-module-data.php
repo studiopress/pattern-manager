@@ -3,7 +3,7 @@
  * Module Name: Get Module Data
  * Description: This module contains functions to help you get data about another module.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);

@@ -2,7 +2,7 @@
 /**
  * Frost: Portfolio with images, text.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

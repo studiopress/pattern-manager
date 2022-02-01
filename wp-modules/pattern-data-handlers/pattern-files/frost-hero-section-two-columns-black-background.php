@@ -2,7 +2,7 @@
 /**
  * Frost: Section with media, text, buttons.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(

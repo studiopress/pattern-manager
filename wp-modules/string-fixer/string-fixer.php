@@ -4,12 +4,12 @@
  * Description: This module contains functions for scanning directories, and ensuring strings as are they should be for themes.
  * Namespace: StringFixer
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\StringFixer;
+namespace FseStudio\StringFixer;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -27,7 +27,7 @@ function fix_theme_functions_strings( string $functions_file_path, array $string
 		return false;
 	}
 
-	$wp_filesystem = \FseThemeManager\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Open the file.
 	$file_contents = $wp_filesystem->get_contents( $functions_file_path );
@@ -48,7 +48,7 @@ function fix_theme_functions_strings( string $functions_file_path, array $string
  * @param array  $strings The relevant strings used to create the theme file header.
  */
 function fix_theme_stylesheet_strings( string $stylesheet_path, array $strings ) {
-	$wp_filesystem = \FseThemeManager\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Open the file.
 	$file_contents = $wp_filesystem->get_contents( $stylesheet_path );

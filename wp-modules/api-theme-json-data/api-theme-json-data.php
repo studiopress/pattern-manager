@@ -4,12 +4,12 @@
  * Description: This module adds a REST API endpoint for getting/setting theme json data.
  * Namespace: ApiThemeJsonData
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\ApiThemeJsonData;
+namespace FseStudio\ApiThemeJsonData;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function register_routes() {
 	$version   = '1';
-	$namespace = 'fsethememanager/v' . $version;
+	$namespace = 'fsestudio/v' . $version;
 	register_rest_route(
 		$namespace,
 		'/get-themejson-file',
@@ -61,7 +61,7 @@ function get_themejson_file( $request ) {
 
 	$id = $params['filename'];
 
-	$data = \FseThemeManager\ThemeJsonDataHandlers\get_themejson_file( $id );
+	$data = \FseStudio\ThemeJsonDataHandlers\get_themejson_file( $id );
 
 	if ( ! $data ) {
 		return new \WP_REST_Response(
@@ -84,7 +84,7 @@ function get_themejson_file( $request ) {
 function save_themejson_file( $request ) {
 	$themejson_data = $request->get_params();
 
-	$result = \FseThemeManager\ThemeJsonDataHandlers\update_themejson_file( $themejson_data, array() );
+	$result = \FseStudio\ThemeJsonDataHandlers\update_themejson_file( $themejson_data, array() );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
@@ -123,7 +123,7 @@ function get_request_args() {
 		'filename' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The filename of the theme.json file', 'fsethememanager' ),
+			'description'       => __( 'The filename of the theme.json file', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -142,14 +142,14 @@ function save_request_args() {
 		'filename'              => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The filename of the theme.json file', 'fsethememanager' ),
+			'description'       => __( 'The filename of the theme.json file', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'contents'              => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The contents of the themejson file', 'fsethememanager' ),
+			'description'       => __( 'The contents of the themejson file', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -174,11 +174,11 @@ function validate_arg_is_string( $value, $request, $param ) {
 
 		if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
 			// Translators: 1: The name of the paramater in question. 2: The required variable type.
-			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsethememanager' ), $param, 'string' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsestudio' ), $param, 'string' ), array( 'status' => 400 ) );
 		}
 	} else {
 		// Translators: The name of the paramater which was passed, but not registered.
-		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsethememanager' ), $param ), array( 'status' => 400 ) );
+		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsestudio' ), $param ), array( 'status' => 400 ) );
 	}
 
 	// If we got this far then the data is valid.
@@ -228,7 +228,7 @@ function response_item_schema() {
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
 			'themejsonData' => array(
-				'description' => esc_html__( 'The themejson data in question', 'fsethememanager' ),
+				'description' => esc_html__( 'The themejson data in question', 'fsestudio' ),
 				'type'        => 'string',
 				'readonly'    => true,
 			),

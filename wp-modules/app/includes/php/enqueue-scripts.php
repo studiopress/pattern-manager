@@ -2,10 +2,10 @@
 /**
  * FSE Theme Manager App.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
-namespace FseThemeManager\App;
+namespace FseStudio\App;
 
 /**
  * Exit if accessed directly
@@ -17,10 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Render and enqueue the output required for the the app.
  */
-function fse_theme_manager_app() {
+function fse_studio_app() {
 	global $post;
 
-	$default_post_id = get_option( 'fse_theme_manager_default_post_id' );
+	$default_post_id = get_option( 'fse_studio_default_post_id' );
 
 	if ( ! $_GET['post'] ) { //phpcs:ignore.
 		return;
@@ -45,7 +45,7 @@ function fse_theme_manager_app() {
 	// Include the app.
 	$js_url = $module_dir_url . 'includes/js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'includes/js/build/index.js' );
-	wp_enqueue_script( 'fsethememanager', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'fsestudio', $js_url, $dependencies, $js_ver, true );
 
 	// Enqueue sass styles.
 	$css_url = $module_dir_url . 'includes/js/build/index.css';
@@ -58,43 +58,43 @@ function fse_theme_manager_app() {
 	wp_enqueue_style( 'fsethememanger_tailwind_style', $css_url, array( 'fsethememanger_style' ), $css_ver );
 
 	wp_localize_script(
-		'fsethememanager',
-		'fsethememanager',
+		'fsestudio',
+		'fsestudio',
 		array(
-			'patterns'           => \FseThemeManager\PatternDataHandlers\get_patterns(),
-			'themes'             => \FseThemeManager\ThemeDataHandlers\get_the_themes(),
+			'patterns'           => \FseStudio\PatternDataHandlers\get_patterns(),
+			'themes'             => \FseStudio\ThemeDataHandlers\get_the_themes(),
 			'frontendPreviewUrl' => get_permalink( $default_post_id ),
 			'apiEndpoints'       => array(
-				'getPatternEndpoint'  => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/get-pattern/',
-				'savePatternEndpoint' => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/save-pattern/',
-				'getThemeEndpoint'    => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/get-theme/',
-				'saveThemeEndpoint'   => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/save-theme/',
-				'getThemeJsonFileEndpoint'    => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/get-themejson-file/',
-				'saveThemeJsonFileEndpoint'   => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/save-themejson-file/',
+				'getPatternEndpoint'  => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/get-pattern/',
+				'savePatternEndpoint' => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/save-pattern/',
+				'getThemeEndpoint'    => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/get-theme/',
+				'saveThemeEndpoint'   => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/save-theme/',
+				'getThemeJsonFileEndpoint'    => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/get-themejson-file/',
+				'saveThemeJsonFileEndpoint'   => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/save-themejson-file/',
 			),
 			'siteUrl'            => get_bloginfo( 'url' ),
 			'defaultPostId'      => $default_post_id,
 		),
 	);
 
-	echo '<div id="fsethememanagerapp"></div>';
+	echo '<div id="fsestudioapp"></div>';
 }
-add_action( 'admin_footer', __NAMESPACE__ . '\fse_theme_manager_app' );
+add_action( 'admin_footer', __NAMESPACE__ . '\fse_studio_app' );
 
 /**
  * Add a menu item to the WP Dashboard to access to app easily.
  */
-function fsethememanager_linked_url() {
-	add_menu_page( 'fsethememanager', 'FSE Theme Manager', 'read', 'fse_theme_manager', '', 'dashicons-text', 1 );
+function fsestudio_linked_url() {
+	add_menu_page( 'fsestudio', 'FSE Studio', 'read', 'fse_studio', '', 'dashicons-text', 1 );
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\fsethememanager_linked_url' );
+add_action( 'admin_menu', __NAMESPACE__ . '\fsestudio_linked_url' );
 
 /**
  * Set the URL for the link in the menu.
  */
-function fsethememanager_linkedurl_function() {
+function fsestudio_linkedurl_function() {
 	global $menu;
-	$default_post_id = get_option( 'fse_theme_manager_default_post_id' );
+	$default_post_id = get_option( 'fse_studio_default_post_id' );
 	$menu[1][2]      = admin_url( 'post.php?post=' . $default_post_id . '&action=edit' ); // phpcs:ignore
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\fsethememanager_linkedurl_function' );
+add_action( 'admin_menu', __NAMESPACE__ . '\fsestudio_linkedurl_function' );

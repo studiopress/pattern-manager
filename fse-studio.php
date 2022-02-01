@@ -2,18 +2,18 @@
 /**
  * Plugin Name: FSE Studio
  * Plugin URI: wpengine.com
- * Description: This plugin helps you create and maintain Full Site Editing themes for WordPress.
- * Version: 1.0.0
- * Author:
- * Text Domain: fse-theme-manager
+ * Description: 
+ * Version: 
+ * Author: 
+ * Text Domain: fse-studio
  * Domain Path: languages
- * License: GPLv2 or later
- * Namespace: FseThemeManager
+ * License: 
+ * Namespace: FseStudio
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
-namespace FseThemeManager;
+namespace FseStudio;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

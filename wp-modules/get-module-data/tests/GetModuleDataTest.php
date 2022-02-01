@@ -2,7 +2,7 @@
 /**
  * Class GetModuleDataTest
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 /**

@@ -2,7 +2,7 @@
 /**
  * Frost: Call-to-action with text, button.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(
@@ -18,7 +18,7 @@ return array(
 <!-- wp:columns {"verticalAlignment":"center","align":"wide"} -->
 <div class="wp-block-columns alignwide are-vertically-aligned-center"><!-- wp:column {"verticalAlignment":"center","width":"60%"} -->
 <div class="wp-block-column is-vertically-aligned-center" style="flex-basis:60%"><!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.5"}},"className":"is-style-no-margin","fontSize":"large"} -->
-<p class="is-style-no-margin has-large-font-size" style="line-height:1.5">Phil</p>
+<p class="is-style-no-margin has-large-font-size" style="line-height:1.5">Philip Johnston</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 

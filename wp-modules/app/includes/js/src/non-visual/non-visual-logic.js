@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 import { useState, useEffect } from '@wordpress/element';
 import { getPrefix } from './prefix.js';
 
-export const FseThemeManagerContext = React.createContext( [
+export const FseStudioContext = React.createContext( [
 	{},
 	function () {},
 ] );
@@ -29,7 +29,7 @@ export function useThemeJsonFile( id ) {
 			}
 			setFetchInProgress( true );
 			fetch(
-				fsethememanager.apiEndpoints.getThemeJsonFileEndpoint +
+				fsestudio.apiEndpoints.getThemeJsonFileEndpoint +
 					'?themeJsonFileId=' +
 					themeId,
 				{
@@ -52,7 +52,7 @@ export function useThemeJsonFile( id ) {
 
 	function saveThemeJsonData() {
 		return new Promise( ( resolve, reject ) => {
-			fetch( fsethememanager.apiEndpoints.saveThemeJsonEndpoint, {
+			fetch( fsestudio.apiEndpoints.saveThemeJsonEndpoint, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
@@ -92,7 +92,7 @@ export function useThemeData( themeId, themes ) {
 			}
 			setFetchInProgress( true );
 			fetch(
-				fsethememanager.apiEndpoints.getThemeEndpoint +
+				fsestudio.apiEndpoints.getThemeEndpoint +
 					'?themeId=' +
 					themeId,
 				{
@@ -124,7 +124,7 @@ export function useThemeData( themeId, themes ) {
 
 	function saveThemeData() {
 		return new Promise( ( resolve, reject ) => {
-			fetch( fsethememanager.apiEndpoints.saveThemeEndpoint, {
+			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
@@ -169,7 +169,7 @@ export function usePatternData( patternId ) {
 			}
 			setFetchInProgress( true );
 			fetch(
-				fsethememanager.apiEndpoints.getPatternEndpoint +
+				fsestudio.apiEndpoints.getPatternEndpoint +
 					'?patternId=' +
 					patternId,
 				{
@@ -191,7 +191,7 @@ export function usePatternData( patternId ) {
 
 	function savePatternData() {
 		return new Promise( ( resolve, reject ) => {
-			fetch( fsethememanager.apiEndpoints.savePatternEndpoint, {
+			fetch( fsestudio.apiEndpoints.savePatternEndpoint, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',

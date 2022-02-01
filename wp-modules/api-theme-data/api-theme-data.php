@@ -4,12 +4,12 @@
  * Description: This module adds a REST API endpoint for getting/setting theme data.
  * Namespace: ApiThemeData
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\ApiThemeData;
+namespace FseStudio\ApiThemeData;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function register_routes() {
 	$version   = '1';
-	$namespace = 'fsethememanager/v' . $version;
+	$namespace = 'fsestudio/v' . $version;
 	register_rest_route(
 		$namespace,
 		'/get-theme',
@@ -61,7 +61,7 @@ function get_theme( $request ) {
 
 	$theme_id = $params['themeId'];
 
-	$theme_data = \FseThemeManager\ThemeDataHandlers\get_theme( $theme_id );
+	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 
 	if ( ! $theme_data ) {
 		return new \WP_REST_Response(
@@ -84,7 +84,7 @@ function get_theme( $request ) {
 function save_theme( $request ) {
 	$theme_data = $request->get_params();
 
-	\FseThemeManager\ThemeDataHandlers\update_theme( $theme_data, array() );
+	\FseStudio\ThemeDataHandlers\update_theme( $theme_data, array() );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
@@ -123,7 +123,7 @@ function get_request_args() {
 		'themeId' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme in question', 'fsethememanager' ),
+			'description'       => __( 'The directory name of the theme in question', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -142,76 +142,76 @@ function save_request_args() {
 		'name'              => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'dirname'           => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The directory name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'namespace'         => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The namespace of the theme', 'fsethememanager' ),
+			'description'       => __( 'The namespace of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'uri'               => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The URI of the theme', 'fsethememanager' ),
+			'description'       => __( 'The URI of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'author'            => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The author of the theme', 'fsethememanager' ),
+			'description'       => __( 'The author of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'author_uri'        => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The author URI of the theme', 'fsethememanager' ),
+			'description'       => __( 'The author URI of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'description'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The description of the theme', 'fsethememanager' ),
+			'description'       => __( 'The description of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'tags'              => array(
 			'required'          => true,
 			'type'              => 'array',
-			'description'       => __( 'The tags for the theme', 'fsethememanager' ),
+			'description'       => __( 'The tags for the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'tested_up_to'      => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The WP version this theme has been tested up to', 'fsethememanager' ),
+			'description'       => __( 'The WP version this theme has been tested up to', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'requires_wp'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'fsethememanager' ),
+			'description'       => __( 'The tags for the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'requires_php'      => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'fsethememanager' ),
+			'description'       => __( 'The tags for the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -219,33 +219,33 @@ function save_request_args() {
 		'version'           => array(
 			'required'          => false,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'text_domain'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'included_patterns' => array(
 			'required'          => true,
 			'type'              => 'array',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'index.html'        => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The block pattern to use for index.html', 'fsethememanager' ),
+			'description'       => __( 'The block pattern to use for index.html', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'404.html'          => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The block pattern to use for 404.html', 'fsethememanager' ),
+			'description'       => __( 'The block pattern to use for 404.html', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 	);
@@ -269,11 +269,11 @@ function validate_arg_is_string( $value, $request, $param ) {
 
 		if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
 			// Translators: 1: The name of the paramater in question. 2: The required variable type.
-			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsethememanager' ), $param, 'string' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsestudio' ), $param, 'string' ), array( 'status' => 400 ) );
 		}
 	} else {
 		// Translators: The name of the paramater which was passed, but not registered.
-		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsethememanager' ), $param ), array( 'status' => 400 ) );
+		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsestudio' ), $param ), array( 'status' => 400 ) );
 	}
 
 	// If we got this far then the data is valid.
@@ -323,7 +323,7 @@ function response_item_schema() {
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
 			'themeData' => array(
-				'description' => esc_html__( 'The theme data in question', 'fsethememanager' ),
+				'description' => esc_html__( 'The theme data in question', 'fsestudio' ),
 				'type'        => 'string',
 				'readonly'    => true,
 			),

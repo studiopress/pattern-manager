@@ -4,12 +4,12 @@
  * Description: This module adds a REST API endpoint for getting/setting pattern data.
  * Namespace: ApiPatternData
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseThemeManager\ApiPatternData;
+namespace FseStudio\ApiPatternData;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function register_routes() {
 	$version   = '1';
-	$namespace = 'fsethememanager/v' . $version;
+	$namespace = 'fsestudio/v' . $version;
 	register_rest_route(
 		$namespace,
 		'/get-pattern',
@@ -61,7 +61,7 @@ function get_pattern( $request ) {
 
 	$pattern_id = $params['patternId'];
 
-	$pattern_data = \FseThemeManager\PatternDataHandlers\get_pattern( $pattern_id );
+	$pattern_data = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
 
 	if ( ! $pattern_data ) {
 		return new \WP_REST_Response( $pattern_data, 400 );
@@ -79,7 +79,7 @@ function get_pattern( $request ) {
 function save_pattern( $request ) {
 	$pattern_data = $request->get_params();
 
-	$result = \FseThemeManager\PatternDataHandlers\update_pattern( $pattern_data );
+	$result = \FseStudio\PatternDataHandlers\update_pattern( $pattern_data );
 
 	if ( ! $result ) {
 		return new \WP_REST_Response( $result, 400 );
@@ -118,7 +118,7 @@ function get_request_args() {
 		'patternId' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme in question', 'fsethememanager' ),
+			'description'       => __( 'The directory name of the theme in question', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -137,34 +137,34 @@ function save_request_args() {
 		'name'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'title'      => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'content'    => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 
 		),
 		'categories' => array(
 			'required'          => false,
 			'type'              => 'array',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => '__return_true',
 		),
 		'blockTypes' => array(
 			'required'          => false,
 			'type'              => 'array',
-			'description'       => __( 'The name of the theme', 'fsethememanager' ),
+			'description'       => __( 'The name of the theme', 'fsestudio' ),
 			'validate_callback' => '__return_true',
 		),
 	);
@@ -188,11 +188,11 @@ function validate_arg_is_string( $value, $request, $param ) {
 
 		if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
 			// Translators: 1: The name of the paramater in question. 2: The required variable type.
-			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsethememanager' ), $param, 'string' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsestudio' ), $param, 'string' ), array( 'status' => 400 ) );
 		}
 	} else {
 		// Translators: The name of the paramater which was passed, but not registered.
-		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsethememanager' ), $param ), array( 'status' => 400 ) );
+		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsestudio' ), $param ), array( 'status' => 400 ) );
 	}
 
 	// If we got this far then the data is valid.
@@ -229,7 +229,7 @@ function response_item_schema() {
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
 			'themeData' => array(
-				'description' => esc_html__( 'The theme data in question', 'fsethememanager' ),
+				'description' => esc_html__( 'The theme data in question', 'fsestudio' ),
 				'type'        => 'string',
 				'readonly'    => true,
 			),

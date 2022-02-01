@@ -2,7 +2,7 @@
 /**
  * Frost: Sample link page.
  *
- * @package fse-theme-manager
+ * @package fse-studio
  */
 
 return array(
