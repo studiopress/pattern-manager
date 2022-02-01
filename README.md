@@ -1,4 +1,4 @@
-# Plugin Boiler
+# Fse Studio
 
 ## Development set up process
 
