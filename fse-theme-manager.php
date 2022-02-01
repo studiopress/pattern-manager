@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: FSE Theme Manager
+ * Plugin Name: FSE Studio
  * Plugin URI: wpengine.com
  * Description: This plugin helps you create and maintain Full Site Editing themes for WordPress.
  * Version: 1.0.0
