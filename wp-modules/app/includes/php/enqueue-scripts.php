@@ -69,6 +69,8 @@ function fse_theme_manager_app() {
 				'savePatternEndpoint' => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/save-pattern/',
 				'getThemeEndpoint'    => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/get-theme/',
 				'saveThemeEndpoint'   => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/save-theme/',
+				'getThemeJsonFileEndpoint'    => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/get-themejson-file/',
+				'saveThemeJsonFileEndpoint'   => get_bloginfo( 'url' ) . '/wp-json/fsethememanager/v1/save-themejson-file/',
 			),
 			'siteUrl'            => get_bloginfo( 'url' ),
 			'defaultPostId'      => $default_post_id,

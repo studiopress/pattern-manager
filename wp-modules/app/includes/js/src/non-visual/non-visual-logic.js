@@ -12,6 +12,69 @@ export const FseThemeManagerContext = React.createContext( [
 	function () {},
 ] );
 
+export function useThemeJsonFile( id ) {
+	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+	const [ themeJsonData, setThemeJsonData ] = useState();
+
+	useEffect( () => {
+		// If the id passed in changes, get the new themeJson data related to it.
+		getThemeJsonData( id );
+	}, [ id ] );
+
+	function getThemeJsonData( id ) {
+		return new Promise( ( resolve, reject ) => {
+			if ( ! themeId || fetchInProgress ) {
+				resolve();
+				return;
+			}
+			setFetchInProgress( true );
+			fetch(
+				fsethememanager.apiEndpoints.getThemeJsonFileEndpoint +
+					'?themeJsonFileId=' +
+					themeId,
+				{
+					method: 'GET',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+				}
+			)
+			.then( ( response ) => response.json() )
+			.then( ( response ) => {
+				setFetchInProgress( false );
+				setThemeJsonData( response );
+				resolve( response );
+				
+			} );
+		} );
+	}
+
+	function saveThemeJsonData() {
+		return new Promise( ( resolve, reject ) => {
+			fetch( fsethememanager.apiEndpoints.saveThemeJsonEndpoint, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify( themeJsonData ),
+			} )
+			.then( ( response ) => response.json() )
+			.then( ( data ) => {
+				const response = JSON.parse( data );
+				resolve( data );
+			} );
+		} );
+	}
+
+	return {
+		data: themeJsonData,
+		set: setThemeJsonData,
+		save: saveThemeJsonData,
+	};
+}
+
 export function useThemeData( themeId, themes ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ themeData, setThemeData ] = useState();
