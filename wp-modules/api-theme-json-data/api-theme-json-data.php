@@ -139,14 +139,14 @@ function get_request_args() {
  */
 function save_request_args() {
 	$return_args = array(
-		'filename'              => array(
+		'filename' => array(
 			'required'          => true,
 			'type'              => 'string',
 			'description'       => __( 'The filename of the theme.json file', 'fsestudio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
-		'contents'              => array(
+		'contents' => array(
 			'required'          => true,
 			'type'              => 'string',
 			'description'       => __( 'The contents of the themejson file', 'fsestudio' ),

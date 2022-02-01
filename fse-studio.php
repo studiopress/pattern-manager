@@ -2,12 +2,12 @@
 /**
  * Plugin Name: FSE Studio
  * Plugin URI: wpengine.com
- * Description: 
- * Version: 
- * Author: 
+ * Description:
+ * Version:
+ * Author:
  * Text Domain: fse-studio
  * Domain Path: languages
- * License: 
+ * License:
  * Namespace: FseStudio
  *
  * @package fse-studio
