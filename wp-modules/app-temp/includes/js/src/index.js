@@ -16,8 +16,8 @@ ReactDOM.render(
 
 function FseStudioApp() {
 	return (
-		<>
-			Replace me with the new markup
-		</>
+		<div className="p-7 mt-3 flex-1 text-xl">
+			Replace me with the new markup eh!!
+		</div>
 	)
 }

@@ -15,7 +15,7 @@
     "lint:md:js": "wp-scripts lint-md-js",
     "lint:pkg-json": "wp-scripts lint-pkg-json",
     "packages-update": "wp-scripts packages-update",
-    "dev": "sh npm_run_dev.sh",
+    "dev": "wp-scripts start includes/js/src/index.js --output-path=includes/js/build/",
     "test:e2e": "wp-scripts test-e2e",
     "test:unit": "wp-scripts test-unit-js"
   },
@@ -26,7 +26,7 @@
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
-    "tailwindcss": "^2.2.4"
+    "tailwindcss": "^3.0.18"
   },
   "dependencies": {
     "@wordpress/element": "^4.0.4",
