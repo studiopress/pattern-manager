@@ -59,7 +59,7 @@ function FseStudio() {
 	}
 
 	return (
-		<div className="fsestudio">
+		<div className="fsestudio bg-[#1E1E1E]">
 			<div className="fsestudio-header">
 				<div style={ { textAlign: 'center' } }>
 					<span

@@ -16,4 +16,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-//require 'includes/php/enqueue-scripts.php';
+require 'includes/php/enqueue-scripts.php';

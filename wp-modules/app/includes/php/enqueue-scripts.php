@@ -47,15 +47,10 @@ function fse_studio_app() {
 	$js_ver = filemtime( $module_dir_path . 'includes/js/build/index.js' );
 	wp_enqueue_script( 'fsestudio', $js_url, $dependencies, $js_ver, true );
 
-	// Enqueue sass styles.
+	// Enqueue sass and Tailwind styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'includes/js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'includes/js/build/index.css' );
 	wp_enqueue_style( 'fsethememanger_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
-
-	// Enqueue tailwind styles.
-	$css_url = $module_dir_url . 'includes/css/build/tailwind-style.css';
-	$css_ver = filemtime( $module_dir_path . 'includes/css/build/tailwind-style.css' );
-	wp_enqueue_style( 'fsethememanger_tailwind_style', $css_url, array( 'fsethememanger_style' ), $css_ver );
 
 	wp_localize_script(
 		'fsestudio',
