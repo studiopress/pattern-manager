@@ -1,19 +1,19 @@
 <?php
 /**
- * Module Name: App
+ * Module Name: App Temp
  * Description: The browser app where the work gets done.
- * Namespace: App
+ * Namespace: AppTemp
  *
  * @package fse-studio
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\App;
+namespace FseStudio\AppTemp;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-//require 'includes/php/enqueue-scripts.php';
+require 'includes/php/enqueue-scripts.php';
