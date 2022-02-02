@@ -23,15 +23,15 @@ export function useThemeJsonFile( id ) {
 
 	function getThemeJsonData( id ) {
 		return new Promise( ( resolve, reject ) => {
-			if ( ! themeId || fetchInProgress ) {
+			if ( ! id || fetchInProgress ) {
 				resolve();
 				return;
 			}
 			setFetchInProgress( true );
 			fetch(
 				fsestudio.apiEndpoints.getThemeJsonFileEndpoint +
-					'?themeJsonFileId=' +
-					themeId,
+					'?filename=' +
+					id,
 				{
 					method: 'GET',
 					headers: {
@@ -228,6 +228,15 @@ export function usePatterns( initialPatterns ) {
 	return {
 		patterns,
 		setPatterns,
+	};
+}
+
+export function useThemeJsonFiles( initialPatterns ) {
+	const [ themeJsonFiles, setThemeJsonFiles ] = useState( initialPatterns );
+
+	return {
+		themeJsonFiles,
+		setThemeJsonFiles,
 	};
 }
 

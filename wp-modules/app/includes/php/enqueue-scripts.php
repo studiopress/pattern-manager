@@ -58,6 +58,7 @@ function fse_studio_app() {
 		array(
 			'patterns'           => \FseStudio\PatternDataHandlers\get_patterns(),
 			'themes'             => \FseStudio\ThemeDataHandlers\get_the_themes(),
+			'themeJsonFiles'     => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
 			'frontendPreviewUrl' => get_permalink( $default_post_id ),
 			'apiEndpoints'       => array(
 				'getPatternEndpoint'        => get_bloginfo( 'url' ) . '/wp-json/fsestudio/v1/get-pattern/',
