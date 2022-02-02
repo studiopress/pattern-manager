@@ -22,7 +22,7 @@
   "author": "",
   "license": "GPL v2 or greater",
   "devDependencies": {
-    "@wordpress/scripts": "^19.1.0",
+    "@wordpress/scripts": "^20.0.2",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
