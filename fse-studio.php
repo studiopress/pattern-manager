@@ -2,12 +2,18 @@
 /**
  * Plugin Name: FSE Studio
  * Plugin URI: wpengine.com
- * Description:
- * Version:
- * Author:
+ * Description: An app for creating an maintaining FSE Themes.
+ * Version: 0.0.0
+ * Author: WP Engine
+ * Author URI: wpengine.com
  * Text Domain: fse-studio
  * Domain Path: languages
- * License:
+ * License: GPLv2
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Requires at least: 5.0
+ * Requires PHP: 7.4
+ * Network:
+ * Update URI:
  * Namespace: FseStudio
  *
  * @package fse-studio
