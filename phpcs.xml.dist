@@ -10,7 +10,7 @@
 
 	<rule ref="WordPress"/>
 	<rule ref="WordPress-Extra"/>
-	<config name="text_domain" value="fse-studio"/>
+	<config name="text_domain" value="fsestudio"/>
 
 	<rule ref="PHPCompatibility"/>
 	<config name="testVersion" value="7.1-"/>

@@ -12,9 +12,9 @@
     "sirbrillig/phpcs-variable-analysis": "^2.7"
   },
   "scripts": {
-    "lint": "phpcs --standard=phpcs.xml.dist ./fse-studio.php ",
+    "lint": "phpcs --standard=phpcs.xml.dist ./fse-studio.php ./wp-modules/",
     "test": "vendor/bin/phpunit --testdox",
-    "fix:format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source ./fse-studio.php",
+    "fix:format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source ./fse-studio.php ./wp-modules/",
     "fix:autoload": "composer dump-autoload && composer install -o"
   },
   "autoload": {
