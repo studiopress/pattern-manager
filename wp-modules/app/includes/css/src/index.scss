@@ -31,344 +31,41 @@ html body.post-type-fsestudio {
 	* {
 		box-sizing: border-box !important;
 	}
-
-	> * {
-		height: 100%;
-	}
-
-	.edit-post-visual-editor {
-		background-color: #fff;
-	}
-
-	.fsestudio-controls {
-		display: flex;
-		margin: 0 auto;
-
-		button {
-			background: none;
-			border: none;
-			color: #fff;
-			font-size: 18px;
-			border-radius: 0;
-			border-bottom: solid transparent;
-			padding: 0;
-			margin-left: 20px;
-
-			&:hover {
-				border-bottom: solid;
-			}
-		}
-	}
-
-	.fsestudio-header {
-		display: flex;
-		column-gap: 20px;
-		height: 80px;
-		background: #23282d;
-		color: #fff;
-		align-items: center;
-		padding: 0 3%;
-	}
-
-	.fsestudio-subheader {
-		display: flex;
-		column-gap: 20px;
-		height: 80px;
-		background: #343b42;
-		color: #fff;
-		align-items: center;
-		padding: 0 3%;
-	}
-
-	.fsestudio-theme-editor {
-		height: calc(100% - 80px - 80px);
-		overflow-y: scroll;
-	}
-
-	.fsestudio-patterns {
-		min-width: 200px;
-	}
-
-	.fsestudio-pattern-work-area {
-
-		/* Height of screen - height of header - height of breadcrumbs */
-		height: calc(100% - 80px - 32px);
-		overflow: hidden;
-
-
-		.fsestudio-pattern-editor {
-			height: 100%;
-			overflow: hidden;
-
-			.fsestudio-editor-header {
-				height: 80px;
-				display: grid;
-				grid-template-columns: min-content min-content 1fr;
-				background: #80858a;
-				color: #fff;
-				padding: 0 3%;
-				align-items: center;
-
-				* {
-					white-space: nowrap;
-				}
-
-				.fsestudio-pattern-image {
-					margin-right: 10px;
-
-					img {
-						max-height: 65px;
-
-						&:hover {
-							cursor: pointer;
-						}
-					}
-				}
-
-				.fsestudio-pattern-name h2 {
-					color: #fff;
-				}
-
-				.fsestudio-pattern-tabs {
-					display: grid;
-					grid-template-columns: min-content min-content min-content min-content;
-					margin-left: auto;
-					font-size: 18px;
-
-					.fsestudio-active-tab,
-					div:hover {
-						border-bottom: solid;
-						cursor: pointer;
-					}
-
-					div {
-						margin-right: 20px;
-						line-height: 2;
-					}
-				}
-			}
-
-			.fsestudio-pattern-editor-body {
-
-				/* Height of parent - height of subheader */
-				height: calc(100% - 80px);
-				overflow: hidden;
-
-				.fsestudio-pattern-editor-view {
-					width: 100%;
-					height: 100%;
-					overflow: hidden;
-
-					> div {
-						height: 100%;
-						overflow: hidden;
-					}
-
-					> div > div {
-						height: 100%;
-						overflow: hidden;
-					}
-
-					.block-editor-writing-flow {
-						height: 100%;
-						overflow: hidden;
-
-						> div:nth-child(1) {
-							height: 100%;
-						}
-
-						> div:nth-child(2) {
-							overflow: hidden;
-							height: 100%;
-
-							> div {
-								height: 100%;
-								overflow: hidden;
-							}
-						}
-					}
-
-					.fsestudio-pattern-editor-columns {
-						width: 100%;
-						height: 100%;
-						display: grid;
-						grid-template-columns: minmax(1300px, 1fr) 280px;
-						column-gap: 0;
-
-						.editor-styles-wrapper {
-							height: 100%;
-							padding: 0;
-						}
-
-						.column {
-							position: relative;
-							overflow-y: scroll;
-							background-color: #fff;
-						}
-
-						.column:first-child {
-							padding-top: 0;
-						}
-
-						.column > :last-child {
-							background: #fff;
-							height: 32px;
-							border-top: 1px solid #e0e0e0;
-						}
-
-						.column:last-child {
-							background: #fff;
-						}
-					}
-				}
-
-				.fsestudio-pattern-frontend-view {
-					width: 100%;
-					height: 100%;
-					margin: 0 auto;
-					border: 1px solid #e0e0e0;
-
-					iframe {
-						width: 100%;
-						height: 100%;
-						overflow-y: scroll;
-					}
-				}
-
-			}
-		}
-
-		.fsestudio-layout-editor {
-			height: 100%;
-
-			.fsestudio-layout-editor-columns {
-				display: grid;
-				column-gap: 10px;
-				grid-template-columns: 300px 1fr;
-				padding: 30px;
-				height: 100%;
-				max-width: 810px;
-				margin: 20px auto;
-				background-color: #fff;
-			}
-
-			.column {
-				height: 100%;
-				overflow-x: scroll;
-				overflow-y: hidden;
-			}
-
-			.fsestudio-layout-preview-column {
-				padding: 25px;
-				background-color: #f1f1f1;
-				border-radius: 5px;
-				overflow-y: scroll;
-			}
-
-			.fsestudio-sections-in-collection {
-				display: grid;
-				row-gap: 12px;
-			}
-
-			.fsestudio-layout-editor-add-pattern-button {
-				background-color: #f1f1f1;
-				width: 100%;
-				border: 0;
-				border-radius: 5px;
-				padding: 10px;
-				text-align: left;
-				font-size: 15px;
-			}
-		}
-	}
-
-	.fsestudio-info-modal {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: #00000052;
+	
+	.fsestudio-pattern-editor-columns {
+		width: 100%;
+		height: calc( 100vh - 133px - 32px );
 		display: grid;
-		align-content: center;
-		text-align: center;
-		z-index: 999999;
+		grid-template-columns: minmax(200px, 1fr) 280px;
+		-moz-column-gap: 0;
+		column-gap: 0;
+		
+		.editor-styles-wrapper {
+			height: 100%;
+			padding: 0;
+		}
 
-		.fsestudio-info-modal-content {
-			background-color: #fff;
-			padding: 20px;
-			width: 100%;
-			max-width: 600px;
-			margin: 0 auto;
+		.column {
 			position: relative;
-
-			.fsestudio-info-modal-close-button {
-				position: absolute;
-				top: 0;
-				right: 0;
-			}
-		}
-	}
-}
-
-.fsestudio-info-editor-option {
-	display: grid;
-	grid-template-columns: minmax(215px, 1fr) 650px;
-	margin-bottom: 20px;
-	padding-bottom: 20px;
-	border-bottom: solid 1px #ddd;
-
-	&:last-child {
-		margin-bottom: 0;
-		padding-bottom: 0;
-		border-bottom: none;
-	}
-
-	.fsestudio-info-editor-option-name {
-		font-weight: bold;
-	}
-
-	.fsestudio-info-editor-option-value {
-		display: inline-flex;
-		flex-wrap: wrap;
-		gap: 10px;
-
-		.button {
-			background: #ecf4ff;
-			color: #006cff;
-			border-color: #b0d1ff;
-
-			&:hover,
-			&:focus,
-			&:active {
-				border-color: #026dff;
-			}
+			overflow-y: scroll;
+			background-color: #fff;
 		}
 
-		input:not([type="checkbox"]),
-		select,
-		.components-form-token-field__input-container {
-			border-color: #a9b2c6;
-			border-radius: 4px;
-			min-width: 200px;
+		.column:first-child {
+			padding-top: 0;
 		}
 
-		select:hover {
-			color: #006cff;
+		.column > :last-child {
+			background: #fff;
+			height: 32px;
+			border-top: 1px solid #e0e0e0;
 		}
 
-		.components-form-token-field {
-			width: 100%;
-		}
-
-		.components-form-token-field__input-container {
-			padding: 10px;
+		.column:last-child {
+			background: #fff;
 		}
 	}
 
-	.fsestudio-info-editor-category-list {
-		margin-top: -20px;
-	}
 }
 
 // Temp hacks for Gutenberg style issues
