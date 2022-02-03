@@ -1,0 +1,25 @@
+{
+  "name": "wpe/fse-studio",
+  "description": "An app for creating an maintaining FSE Themes.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {},
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+    "squizlabs/php_codesniffer": "^3.6.2",
+    "phpcompatibility/php-compatibility": "^9.2.0",
+    "wp-coding-standards/wpcs": "^2.1.1",
+    "sirbrillig/phpcs-variable-analysis": "^2.7"
+  },
+  "scripts": {
+    "lint": "phpcs --standard=phpcs.xml.dist ./wp-modules ./fse-studio.php ",
+    "test": "vendor/bin/phpunit --testdox",
+    "fix:format": "phpcbf --standard=phpcs.xml.dist --report-summary --report-source ./wp-modules ./fse-studio.php",
+    "fix:autoload": "composer dump-autoload && composer install -o"
+  },
+  "autoload": {
+    "psr-4": {
+      "FseStudio\\": "wp-modules/"
+    }
+  }
+}
