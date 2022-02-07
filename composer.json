@@ -13,7 +13,6 @@
   },
   "scripts": {
     "lint": "phpcs",
-    "test": "phpunit --testdox",
     "lint-fix": "phpcbf --report-summary --report-source"
   },
   "config": {
