@@ -31,6 +31,11 @@ html body.post-type-fsestudio {
 	* {
 		box-sizing: border-box !important;
 	}
+	
+	.fsestudio-theme-manager {
+		overflow-y:scroll;
+		height: calc( 100vh - 64px );
+	}
 
 	.fsestudio-pattern-editor-columns {
 		width: 100%;

@@ -18,7 +18,8 @@ import {
 	globe,
 	menu,
 	close,
-	chevronLeft
+	chevronLeft,
+	check
 } from '@wordpress/icons';
 
 import {
@@ -212,10 +213,37 @@ function ThemeManager({visible}) {
 	
 	return (
 		<>
-		<div hidden={!visible} className="p-12">
+		<div hidden={!visible} className="fsestudio-theme-manager p-12">
 			<div className="max-w-7xl mx-auto bg-white">
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">{ __( 'Dashboard', 'fse-studio' ) }</h1>
-				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8">{ __( 'Choose a theme', 'fse-studio' ) }</div>
+				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
+					<div>
+						<label htmlFor="location" className="block text-sm font-medium text-gray-700">
+							{ __( 'Choose a theme', 'fse-studio' ) }
+						</label>
+						<select
+							id="location"
+							name="location"
+							className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
+							defaultValue="Canada"
+						>
+							<option>{ __( 'FSE Studio Starter', 'fse-studio' ) }</option>
+							<option>{ __( 'Twenty Twenty Two', 'fse-studio' ) }</option>
+							<option>{ __( 'Your Custom Theme', 'fse-studio' ) }</option>
+						</select>
+					</div>
+					<div className="flex flex-col mx-6 my-2.5">
+						{ __( 'or', 'fse-studio' ) }
+					</div>
+					<div className="flex flex-col">
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						>
+							{ __( 'Create a new theme', 'fse-studio' ) }
+						</button>
+					</div>
+				</div>
 				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
 					<ul className="w-72">
 						<li className="p-5 bg-gray-100 font-medium">{ __( 'Theme Setup', 'fse-studio' ) }</li>
@@ -426,13 +454,16 @@ function ThemeManager({visible}) {
 						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac purus nec diam laoreet sollicitudin. Fusce ullamcorper imperdiet turpis, non accumsan enim egestas in.</p>
 					</div>
 				</div>
-				<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8">
-					<button
-						type="button"
-						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-					>
-						{ __( 'Save Theme Settings', 'fse-studio' ) }
-					</button>
+				<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-end items-center">
+					<div className="flex items-center">
+						<span className="text-sm text-green-600 flex flex-row items-center mr-6"><Icon className='fill-current' icon={ check } size={ 26 }/> { __( 'Theme saved to your /themes/ folder', 'fse-studio' ) }</span>
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						>
+							{ __( 'Save Theme Settings', 'fse-studio' ) }
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
