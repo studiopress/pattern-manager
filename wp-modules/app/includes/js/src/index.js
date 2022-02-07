@@ -76,15 +76,13 @@ function FseStudio() {
 	]
 	
 	function renderCurrentView() {
-		if ( 'theme_manager' === currentView.currentView ) {
-			return <ThemeManager />;
-		}
-		if ( 'pattern_manager' === currentView.currentView ) {
-			return <PatternManager />;
-		}
-		if ( 'themejson_manager' === currentView.currentView ) {
-			return <ThemeJsonEditorApp />;
-		}
+		return <>
+			<ThemeManager visible={'theme_manager' === currentView.currentView} />
+		
+			<PatternEditorApp visible={'pattern_manager' === currentView.currentView} />
+		
+			<ThemeJsonEditorApp visible={'themejson_manager' === currentView.currentView} />
+		</>
 	}
 
 	return (
@@ -210,14 +208,11 @@ function FseStudio() {
 	)
 }
 
-function PatternManager() {
-	return <PatternEditorApp />
-}
-function ThemeManager() {
+function ThemeManager({visible}) {
 	
 	return (
 		<>
-		<div className="p-12">
+		<div hidden={!visible} className="p-12">
 			<div className="max-w-7xl mx-auto bg-white">
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">{ __( 'Dashboard', 'fse-studio' ) }</h1>
 				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8">{ __( 'Choose a theme', 'fse-studio' ) }</div>

@@ -1,7 +1,3 @@
-/**
- * Genesis Studio App
- */
-
 const { __ } = wp.i18n;
 
 import {
@@ -10,7 +6,6 @@ import {
 	BlockTools,
 	WritingFlow,
 	ObserveTyping,
-	storeConfig as blockEditorStoreConfig,
 	BlockInspector,
 	BlockBreadcrumb,
 	MediaUpload,
@@ -19,21 +14,12 @@ import {
 	MediaReplaceFlow,
 } from '@wordpress/block-editor';
 
-import { useDispatch, useCallback } from '@wordpress/data';
-
 import { serialize, parse } from '@wordpress/blocks';
-
-//import { parse } from '@wordpress/block-serialization-default-parser';
 
 import { getPrefix } from './../non-visual/prefix.js';
 
-import { registerCoreBlocks } from '@wordpress/block-library';
-//registerCoreBlocks();
-
 import {
-	DropZoneProvider,
 	SlotFillProvider,
-	Slot,
 	Popover,
 	Modal,
 	FormTokenField,
@@ -49,10 +35,7 @@ import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js
 
 const input_delay = [];
 
-// import '@wordpress/components/build-style/style.css';
-// import '@wordpress/block-editor/build-style/style.css';
-
-export function PatternEditorApp( props ) {
+export function PatternEditorApp( {visible} ) {
 	const { patterns } = useContext( FseStudioContext );
 	const [ currentPatternId, setCurrentPatternId ] = useState();
 	const pattern = usePatternData( currentPatternId );
@@ -164,7 +147,7 @@ export function PatternEditorApp( props ) {
 	}
 
 	return (
-		<div className="fsestudio-pattern-work-area">
+		<div hidden={!visible} className="fsestudio-pattern-work-area">
 			<div className="fsestudio-subheader">
 				<div>Pattern Editor</div>
 				{ renderPatternSelector() }

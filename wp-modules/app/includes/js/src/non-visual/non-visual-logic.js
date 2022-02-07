@@ -5,7 +5,6 @@
 const { __ } = wp.i18n;
 
 import { useState, useEffect } from '@wordpress/element';
-import { getPrefix } from './prefix.js';
 
 export const FseStudioContext = React.createContext( [
 	{},

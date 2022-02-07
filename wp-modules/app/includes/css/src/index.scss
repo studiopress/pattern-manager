@@ -31,15 +31,15 @@ html body.post-type-fsestudio {
 	* {
 		box-sizing: border-box !important;
 	}
-	
+
 	.fsestudio-pattern-editor-columns {
 		width: 100%;
-		height: calc( 100vh - 133px - 32px );
+		height: calc(100vh - 133px - 32px);
 		display: grid;
 		grid-template-columns: minmax(200px, 1fr) 280px;
 		-moz-column-gap: 0;
 		column-gap: 0;
-		
+
 		.editor-styles-wrapper {
 			height: 100%;
 			padding: 0;

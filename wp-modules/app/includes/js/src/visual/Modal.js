@@ -1,22 +1,18 @@
-/**
- * Genesis Studio App
- */
-
 const { __ } = wp.i18n;
 
-export function Modal( props ) {
-	if ( props.open ) {
+export function Modal( {open, children, close} ) {
+	if ( open ) {
 		return (
 			<div className="genesisstudio-info-modal">
 				<div className="genesisstudio-info-modal-content">
-					{ props.children }
+					{ children }
 					<button
 						className="genesisstudio-info-modal-close-button"
 						onClick={ () => {
-							props.close();
+							close();
 						} }
 					>
-						Close
+						{ __( 'Close', 'fse-studio' ) }
 					</button>
 				</div>
 			</div>

@@ -13,7 +13,7 @@
 	 useThemeJsonFile,
  } from './../non-visual/non-visual-logic.js';
 
-export function ThemeJsonEditorApp( props ) {
+export function ThemeJsonEditorApp( {visible} ) {
 	const { themeJsonFiles } = useContext( FseStudioContext );
 	const [ currentId, setCurrentId ] = useState();
 	const themeJsonFile = useThemeJsonFile( currentId );
@@ -64,7 +64,7 @@ export function ThemeJsonEditorApp( props ) {
 
 	return (
 		<>
-			<div className="fsestudio-subheader">
+			<div hidden={!visible} className="fsestudio-subheader">
 				<div>Theme Json Editor</div>
 				{ renderSelector() }
 				or{ ' ' }
@@ -107,8 +107,7 @@ export function ThemeJsonEditorApp( props ) {
 	);
 }
 
-function ThemeJsonEditor(props) {
-	const themeJsonFile = props.themeJsonFile;
+function ThemeJsonEditor({themeJsonFile}) {
 	const content = themeJsonFile.data.content;
 	
 	function renderSettings() {
