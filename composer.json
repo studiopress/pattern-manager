@@ -14,7 +14,7 @@
   "scripts": {
     "lint": "phpcs",
     "test": "phpunit --testdox",
-    "fix:format": "phpcbf --report-summary --report-source"
+    "lint-fix": "phpcbf --report-summary --report-source"
   },
   "config": {
     "allow-plugins": {
