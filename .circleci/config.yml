@@ -6,13 +6,14 @@ jobs:
       - image: cimg/php:7.3
     steps:
       - checkout:
-          path: fse-studio
+          path: plugins/fse-studio
       - run:
           name: Linting PHP
           command: |
+            cd plugins
             git clone https://github.com/johnstonphilip/wp-plugin-sidekick
             cd wp-plugin-sidekick/wp-modules/linter
-            sh phpcs.sh -f 1 -p ~/project/fse-studio -n FseStudio -t fse-studio
+            sh phpcs.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
 
 workflows:
   build:
