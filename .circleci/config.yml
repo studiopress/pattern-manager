@@ -1,21 +1,24 @@
 version: 2.1
 
 jobs:
-  php-lint:
+  lint:
     docker:
-      - image: cimg/php:7.3
+      - image: cimg/php:7.3-node
     steps:
       - checkout:
           path: plugins/fse-studio
       - run:
-          name: Linting PHP
+          name: Linting PHP, CSS and JS
           command: |
             cd plugins
             git clone https://github.com/johnstonphilip/wp-plugin-sidekick
             cd wp-plugin-sidekick/wp-modules/linter
             sh phpcs.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
+            cd ~/project
+            npm run lint:css plugins/fse-studio/**/*.*css\
+            npm run lint:js plugins/fse-studio
 
 workflows:
   build:
     jobs:
-      - php-lint
+      - lint
