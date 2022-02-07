@@ -51,8 +51,8 @@ function fse_studio_post_type() {
 		'fsestudio',
 		array(
 			'labels'       => array(
-				'name'          => __( 'FSE Studio', 'textdomain' ),
-				'singular_name' => __( 'Fse Studio', 'textdomain' ),
+				'name'          => __( 'FSE Studio', 'fse-studio' ),
+				'singular_name' => __( 'Fse Studio', 'fse-studio' ),
 			),
 			'public'       => true,
 			'has_archive'  => false,

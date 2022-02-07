@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Sample home page.', 'frost' ),
+	'title'         => __( 'Sample home page.', 'fse-studio' ),
 	'name'          => 'frost-page-home',
 	'categories'    => array( 'frost-page' ),
 	'viewportWidth' => 1280,

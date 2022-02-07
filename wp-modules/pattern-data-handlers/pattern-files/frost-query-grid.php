@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Grid of posts in three columns.', 'frost' ),
+	'title'         => __( 'Grid of posts in three columns.', 'fse-studio' ),
 	'name'          => 'frost-query-grid',
 	'categories'    => array( 'frost-query' ),
 	'viewportWidth' => 1280,

@@ -23,7 +23,7 @@ export function ThemeEditorApp( props ) {
 
 		renderedThemes.push(
 			<option key={ 1 }>
-				{ __( 'Choose a theme', 'fsestudio' ) }
+				{ __( 'Choose a theme', 'fse-studio' ) }
 			</option>
 		);
 
@@ -205,7 +205,7 @@ export function ThemeEditor( props ) {
 				>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'FSE Theme Name: ', 'fsestudio' ) }
+							{ __( 'FSE Theme Name: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -224,7 +224,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Directory name: ', 'fsestudio' ) }
+							{ __( 'Directory name: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -245,7 +245,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Namespace: ', 'fsestudio' ) }
+							{ __( 'Namespace: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -266,7 +266,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'URI: ', 'fsestudio' ) }
+							{ __( 'URI: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -283,7 +283,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Author: ', 'fsestudio' ) }
+							{ __( 'Author: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -302,7 +302,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Author URI: ', 'fsestudio' ) }
+							{ __( 'Author URI: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -323,7 +323,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Description: ', 'fsestudio' ) }
+							{ __( 'Description: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -344,7 +344,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Tags: ', 'fsestudio' ) }
+							{ __( 'Tags: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -365,7 +365,7 @@ export function ThemeEditor( props ) {
 						<div className="fsestudio-info-editor-option-name">
 							{ __(
 								'Tested up to (WordPress Version): ',
-								'fsestudio'
+								'fse-studio'
 							) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
@@ -389,7 +389,7 @@ export function ThemeEditor( props ) {
 						<div className="fsestudio-info-editor-option-name">
 							{ __(
 								'Minimum WordPress Version: ',
-								'fsestudio'
+								'fse-studio'
 							) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
@@ -411,7 +411,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Minimum PHP Version: ', 'fsestudio' ) }
+							{ __( 'Minimum PHP Version: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -432,7 +432,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Version: ', 'fsestudio' ) }
+							{ __( 'Version: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -453,7 +453,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Text Domain: ', 'fsestudio' ) }
+							{ __( 'Text Domain: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -475,7 +475,7 @@ export function ThemeEditor( props ) {
 
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Included Patterns: ', 'fsestudio' ) }
+							{ __( 'Included Patterns: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							{ renderPatternPicker() }
@@ -483,7 +483,7 @@ export function ThemeEditor( props ) {
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'index.html contents: ', 'fsestudio' ) }
+							{ __( 'index.html contents: ', 'fse-studio' ) }
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<div>
@@ -493,14 +493,14 @@ export function ThemeEditor( props ) {
 							</div>
 							<button
 								onClick={ () => {
-								
-									
+
+
 								} }
 								className="button"
 							>
 								{ __(
 									'Set index.html contents',
-									'fsestudio'
+									'fse-studio'
 								) }
 							</button>
 						</div>
@@ -550,7 +550,7 @@ function ThemeFileEditor( props ) {
 				key={ 1 }
 				className={ 'fsestudio-collection-preview' }
 			>
-				{ __( 'Choose a collection', 'fsestudio' ) }
+				{ __( 'Choose a collection', 'fse-studio' ) }
 			</option>
 		);
 
@@ -641,7 +641,7 @@ function ThemeFileEditor( props ) {
 					<div className="fsestudio-info-editor-option-name">
 						{ __(
 							'Choose from a Collection: ',
-							'fsestudio'
+							'fse-studio'
 						) }
 					</div>
 					<div className="fsestudio-info-editor-option-value">
