@@ -123,7 +123,7 @@ function get_request_args() {
 		'filename' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The filename of the theme.json file', 'fsestudio' ),
+			'description'       => __( 'The filename of the theme.json file', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -142,14 +142,14 @@ function save_request_args() {
 		'filename' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The filename of the theme.json file', 'fsestudio' ),
+			'description'       => __( 'The filename of the theme.json file', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'contents' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The contents of the themejson file', 'fsestudio' ),
+			'description'       => __( 'The contents of the themejson file', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -174,11 +174,11 @@ function validate_arg_is_string( $value, $request, $param ) {
 
 		if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
 			// Translators: 1: The name of the paramater in question. 2: The required variable type.
-			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsestudio' ), $param, 'string' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fse-studio' ), $param, 'string' ), array( 'status' => 400 ) );
 		}
 	} else {
 		// Translators: The name of the paramater which was passed, but not registered.
-		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsestudio' ), $param ), array( 'status' => 400 ) );
+		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fse-studio' ), $param ), array( 'status' => 400 ) );
 	}
 
 	// If we got this far then the data is valid.
@@ -228,7 +228,7 @@ function response_item_schema() {
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
 			'themejsonData' => array(
-				'description' => esc_html__( 'The themejson data in question', 'fsestudio' ),
+				'description' => esc_html__( 'The themejson data in question', 'fse-studio' ),
 				'type'        => 'string',
 				'readonly'    => true,
 			),

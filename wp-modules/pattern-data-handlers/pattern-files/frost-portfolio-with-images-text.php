@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Portfolio with images, text.', 'frost' ),
+	'title'         => __( 'Portfolio with images, text.', 'fse-studio' ),
 	'name'          => 'frost-portfolio-with-images-text',
 	'categories'    => array( 'frost-call-to-action' ),
 	'viewportWidth' => 1280,

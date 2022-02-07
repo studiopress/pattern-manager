@@ -70,7 +70,7 @@ function fse_studio_app() {
 			),
 			'siteUrl'            => get_bloginfo( 'url' ),
 			'defaultPostId'      => $default_post_id,
-		),
+		)
 	);
 
 	echo '<div id="fsestudioapp"></div>';

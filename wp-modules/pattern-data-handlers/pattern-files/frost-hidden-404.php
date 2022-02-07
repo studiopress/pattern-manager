@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( '404 error content.', 'frost' ),
+	'title'         => __( '404 error content.', 'fse-studio' ),
 	'name'          => 'frost-hidden-404',
 	'categories'    => array( '' ),
 	'viewportWidth' => 1280,

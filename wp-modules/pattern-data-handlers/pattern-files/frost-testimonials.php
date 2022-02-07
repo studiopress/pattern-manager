@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Testimonials with text.', 'frost' ),
+	'title'         => __( 'Testimonials with text.', 'fse-studio' ),
 	'name'          => 'frost-testimonials',
 	'categories'    => array( 'frost-testimonials' ),
 	'viewportWidth' => 1280,

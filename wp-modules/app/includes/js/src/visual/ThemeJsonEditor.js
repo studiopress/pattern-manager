@@ -23,7 +23,7 @@ export function ThemeJsonEditorApp( {visible} ) {
 
 		renderedOptions.push(
 			<option key={ 1 }>
-				{ __( 'Choose a Theme JSON File', 'fsestudio' ) }
+				{ __( 'Choose a Theme JSON File', 'fse-studio' ) }
 			</option>
 		);
 
@@ -31,7 +31,7 @@ export function ThemeJsonEditorApp( {visible} ) {
 
 		for ( const fileId in themeJsonFiles.themeJsonFiles ) {
 			const optionInQuestion = themeJsonFiles.themeJsonFiles[ fileId ];
-			
+
 			renderedOptions.push(
 				<option key={ counter } value={ optionInQuestion.name }>
 					{ optionInQuestion.name }
