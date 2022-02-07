@@ -17,8 +17,8 @@ jobs:
       - run:
           name: Linting CSS and JS
           command: |
-            npm run lint:css \"plugins/fse-studio/**/*.*css\
-            npm run lint:js \"plugins/fse-studio\
+            npm run lint:css plugins/fse-studio/**/*.*css\
+            npm run lint:js plugins/fse-studio\
 
 workflows:
   build:
