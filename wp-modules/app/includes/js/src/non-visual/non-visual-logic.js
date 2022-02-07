@@ -76,7 +76,12 @@ export function useThemeJsonFile( id ) {
 
 export function useThemeData( themeId, themes ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+	const [hasSaved, setHasSaved] = useState( false );
 	const [ themeData, setThemeData ] = useState();
+
+	useEffect( () => {
+		setHasSaved( false );
+	}, [themeData] );
 
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
@@ -134,6 +139,7 @@ export function useThemeData( themeId, themes ) {
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
 					const response = JSON.parse( data );
+					setHasSaved(true);
 					resolve( data );
 				} );
 		} );
@@ -143,6 +149,7 @@ export function useThemeData( themeId, themes ) {
 		data: themeData,
 		set: setThemeData,
 		save: saveThemeData,
+		hasSaved
 	};
 }
 

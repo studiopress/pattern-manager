@@ -161,5 +161,5 @@ function update_theme( $theme, $patterns ) {
 		);
 	}
 
-	return false;
+	return true;
 }

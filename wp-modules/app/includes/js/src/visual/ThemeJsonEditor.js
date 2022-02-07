@@ -64,7 +64,7 @@ export function ThemeJsonEditorApp( {visible} ) {
 
 	return (
 		<>
-			<div hidden={!visible} className="fsestudio-subheader">
+			<div hidden={!visible} className="fsestudio-theme-json-app">
 				<div>Theme Json Editor</div>
 				{ renderSelector() }
 				or{ ' ' }
@@ -101,8 +101,8 @@ export function ThemeJsonEditorApp( {visible} ) {
 						)
 					}
 				})()}
+				{ renderThemeEditorWhenReady() }
 			</div>
-			{ renderThemeEditorWhenReady() }
 		</>
 	);
 }
@@ -130,7 +130,7 @@ function ThemeJsonEditor({themeJsonFile}) {
 	}
 
 	return (
-		<div className="fsestudio-theme-editor">
+		<div className="fsestudio-theme-json-editor">
 			<div className="grid grid-cols-4">
 				<div className="border-2 border-black">
 					Settings

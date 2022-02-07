@@ -220,7 +220,6 @@ function ThemeManager({visible}) {
 	const [ currentThemeId, setCurrentThemeId ] = useState();
 	const theme = useThemeData( currentThemeId, themes );
 	
-	
 	function renderThemeSelector() {
 		const renderedThemes = [];
 
@@ -256,6 +255,14 @@ function ThemeManager({visible}) {
 			</>
 		);
 	}
+	
+	function renderThemeEditorWhenReady() {
+		if ( ! theme.data ) {
+			return '';
+		}
+
+		return <ThemeDataEditor theme={ theme } />;
+	}
 
 	return (
 		<>
@@ -276,232 +283,418 @@ function ThemeManager({visible}) {
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								const newThemeData = {
+									name: 'My New Theme',
+									dirname: 'my-new-theme',
+									namespace: 'MyNewTheme',
+									uri: 'mysite.com',
+									author: 'Me',
+									author_uri: 'mysite.com',
+									description: 'My new FSE Theme',
+									tags: [],
+									tested_up_to: '5.9',
+									requires_wp: '5.9',
+									requires_php: '7.4',
+									version: '1.0.0',
+									text_domain: 'my-new-theme',
+									included_patterns: [],
+									'index.html': '',
+									'404.html': '',
+								};
+		
+								themes.setThemes( {
+									...themes.themes,
+									'my-new-theme': newThemeData,
+								} );
+		
+								// Switch to the newly created theme.
+								setCurrentThemeId( 'my-new-theme' );
+							} }
 						>
 							{ __( 'Create a new theme', 'fse-studio' ) }
 						</button>
 					</div>
 				</div>
-				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-					<ul className="w-72">
-						<li className="p-5 bg-gray-100 font-medium">{ __( 'Theme Setup', 'fse-studio' ) }</li>
-						<li className="p-5 font-medium hover:bg-gray-100">{ __( 'Add Patterns', 'fse-studio' ) }</li>
-						<li className="p-5 font-medium hover:bg-gray-100">{ __( 'Customize Styles', 'fse-studio' ) }</li>
-					</ul>
-					<div className="flex-1">
-						<form className="divide-y divide-gray-200">
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
-								<label htmlFor="theme-name" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Theme Name', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="theme-name"
-										id="theme-name"
-										placeholder="FSE Studio"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
-							
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="directory-name" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Directory Name', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="directory-name"
-										id="directory-name"
-										placeholder="fse-studio"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+				{ renderThemeEditorWhenReady () }
+			</div>
+		</div>
+		</>
+	)
+}
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="namespace" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Namespace', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="namespace"
-										id="namespace"
-										placeholder="fsestudio"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+function ThemeDataEditor({theme}) {
+	const { patterns } = useContext( FseStudioContext );
+	
+	function formatPatternValuesForSelect() {
+		const options = [];
+		for ( const patternNum in theme.data.includedPatterns ) {
+			const patternId = theme.data.includedPatterns[ patternNum ];
+			options.push( {
+				value: patterns.patterns[ patternId ].name,
+				label: patterns.patterns[ patternId ].title,
+			} );
+		}
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="uri" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'URI', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="uri"
-										id="uri"
-										placeholder="yourthemename.com"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+		return options;
+	}
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="author" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Author', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="author"
-										id="author"
-										placeholder="Your Name"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+	function formatPatternOptionsForSelect() {
+		const options = [];
+		for ( const pattern in patterns.patterns ) {
+			options.push( {
+				value: patterns.patterns[ pattern ].name,
+				label: patterns.patterns[ pattern ].title,
+			} );
+		}
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="author-uri" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Author URI', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="author-uri"
-										id="author-uri"
-										placeholder="yourthemesite.com"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+		return options;
+	}
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="description" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Description', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="description"
-										id="description"
-										placeholder="Describe this theme"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+	function formatPatternOptionsFromSelect( valuesFromSelect ) {
+		//console.log( theme.data );
+		//console.log( valuesFromSelect );
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="tags" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Tags (comma separated', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="tags"
-										id="tags"
-										placeholder="fse, studio, wordpress"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+		const reAssembledThemePatterns = [];
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="tested" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Tested up to (WP Version)', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="tested"
-										id="tested"
-										placeholder="5.9"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+		for ( const value in valuesFromSelect ) {
+			//console.log( valuesFromSelect[value].value );
+			//console.log( patterns.patterns[valuesFromSelect[value].value]);
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="minimum-wp" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Minimum WP Version', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="minimum-wp"
-										id="minimum-wp"
-										placeholder="5.9"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+			if ( patterns.patterns[ valuesFromSelect[ value ].value ] ) {
+				const pattern =
+					patterns.patterns[ valuesFromSelect[ value ].value ];
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="minimum-php" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Minimum PHP Version', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="minimum-php"
-										id="minimum-php"
-										placeholder="7.4"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+				reAssembledThemePatterns.push( pattern.name );
+			}
+		}
+		console.log( reAssembledThemePatterns );
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="version" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Version', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="version"
-										id="version"
-										placeholder="1.0"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
+		return reAssembledThemePatterns;
+	}
 
-							<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-								<label htmlFor="text-domain" className="block text-sm font-medium text-gray-700 sm:col-span-1">
-									{ __( 'Text Domain', 'fse-studio' ) }
-								</label>
-								<div className="mt-1 sm:mt-0 sm:col-span-2">
-									<input
-										type="text"
-										name="text-domain"
-										id="text-domain"
-										placeholder="fse-studio"
-										className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-									/>
-								</div>
-							</div>
-
-						</form>
+	return (
+		<>
+		<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
+			<ul className="w-72">
+				<li className="p-5 bg-gray-100 font-medium">{ __( 'Theme Setup', 'fse-studio' ) }</li>
+				<li className="p-5 font-medium hover:bg-gray-100">{ __( 'Add Patterns', 'fse-studio' ) }</li>
+				<li className="p-5 font-medium hover:bg-gray-100">{ __( 'Customize Styles', 'fse-studio' ) }</li>
+			</ul>
+			<div className="flex-1">
+				<form className="divide-y divide-gray-200">
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
+						<label htmlFor="theme-name" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Theme Name', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.name ? theme.data.name : ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										name: event.target.value,
+									} );
+								} }
+							/>
+						</div>
 					</div>
-					<div className="w-72 bg-gray-100 p-5 self-start">
-						<h3>Sidebar</h3>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac purus nec diam laoreet sollicitudin. Fusce ullamcorper imperdiet turpis, non accumsan enim egestas in.</p>
+					
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="directory-name" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Directory Name', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.dirname
+										? theme.data.dirname
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										dirname: event.target.value,
+									} );
+								} }
+							/>
+						</div>
 					</div>
-				</div>
-				<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-end items-center">
-					<div className="flex items-center">
-						<span className="text-sm text-green-600 flex flex-row items-center mr-6"><Icon className='fill-current' icon={ check } size={ 26 }/> { __( 'Theme saved to your /themes/ folder', 'fse-studio' ) }</span>
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-						>
-							{ __( 'Save Theme Settings', 'fse-studio' ) }
-						</button>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="namespace" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Namespace', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.namespace
+										? theme.data.namespace
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										namespace: event.target.value,
+									} );
+								} }
+							/>
+						</div>
 					</div>
-				</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="uri" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'URI', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={ theme?.data?.uri ? theme.data.uri : '' }
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										uri: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="author" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Author', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.author ? theme.data.author : ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										author: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="author-uri" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Author URI', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.author_uri
+										? theme.data.author_uri
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										author_uri: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="description" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Description', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.description
+										? theme.data.description
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										description: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="tags" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Tags (comma separated', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.tags ? theme.data.tags : ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										tags: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="tested" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Tested up to (WP Version)', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.tested_up_to
+										? theme.data.tested_up_to
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										tested_up_to: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="minimum-wp" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Minimum WP Version', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.requires_wp
+										? theme.data.requires_wp
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										requires_wp: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="minimum-php" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Minimum PHP Version', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.requires_php
+										? theme.data.requires_php
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										requires_php: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="version" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Version', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.version
+										? theme.data.version
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										version: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+						<label htmlFor="text-domain" className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Text Domain', 'fse-studio' ) }
+						</label>
+						<div className="mt-1 sm:mt-0 sm:col-span-2">
+							<input
+								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+								type="text"
+								value={
+									theme?.data?.text_domain
+										? theme.data.text_domain
+										: ''
+								}
+								onChange={ ( event ) => {
+									theme.set( {
+										...theme.data,
+										text_domain: event.target.value,
+									} );
+								} }
+							/>
+						</div>
+					</div>
+	
+				</form>
+			</div>
+			<div className="w-72 bg-gray-100 p-5 self-start">
+				<h3>Sidebar</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac purus nec diam laoreet sollicitudin. Fusce ullamcorper imperdiet turpis, non accumsan enim egestas in.</p>
+			</div>
+		</div>
+		<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-end items-center">
+			<div className="flex items-center">
+				{(() => {
+					if ( theme.hasSaved ) {
+						return <span className="text-sm text-green-600 flex flex-row items-center mr-6"><Icon className='fill-current' icon={ check } size={ 26 }/> { __( 'Theme saved to your /themes/ folder', 'fse-studio' ) }</span>
+					}
+				})()}
+				<button
+					type="button"
+					className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+					onClick={ () => {
+						theme.save();
+					} }
+				>
+					{ __( 'Save Theme Settings', 'fse-studio' ) }
+				</button>
 			</div>
 		</div>
 		</>

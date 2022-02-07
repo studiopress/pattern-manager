@@ -84,7 +84,7 @@ function get_theme( $request ) {
 function save_theme( $request ) {
 	$theme_data = $request->get_params();
 
-	\FseStudio\ThemeDataHandlers\update_theme( $theme_data, array() );
+	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data, array() );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
