@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
-import { useContext,  Fragment, useState } from '@wordpress/element';
+import { useContext, useEffect, Fragment, useState } from '@wordpress/element';
 import ReactDOM from 'react-dom';
 import { Menu, Transition } from '@headlessui/react'
 import { 
@@ -25,10 +25,12 @@ import {
 import {
 	FseStudioContext,
 	useThemes,
+	useThemeData,
 	usePatterns,
 	useThemeJsonFiles,
 	useCurrentView,
 } from './non-visual/non-visual-logic.js';
+
 
 import { PatternEditorApp } from './visual/PatternEditor.js';
 import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor.js';
@@ -68,7 +70,7 @@ export function FseStudioApp() {
 
 function FseStudio() {
 	const { currentView } = useContext( FseStudioContext );
-	const [sidebarOpen, setSidebarOpen] = useState(false)
+	const [sidebarOpen, setSidebarOpen] = useState(!JSON.parse(localStorage.getItem('fseStudioSidebarClosed')));
 
 	const navigation = [
 		{ name: 'Theme Manager', slug: 'theme_manager', icon: file, current: true },
@@ -76,6 +78,10 @@ function FseStudio() {
 		{ name: 'Theme.json Manager', slug: 'themejson_manager', icon: globe, current: false },
 	]
 	
+	useEffect( () => {
+		localStorage.setItem('fseStudioSidebarClosed', !sidebarOpen );
+	}, [sidebarOpen] );
+
 	function renderCurrentView() {
 		return <>
 			<ThemeManager visible={'theme_manager' === currentView.currentView} />
@@ -210,7 +216,47 @@ function FseStudio() {
 }
 
 function ThemeManager({visible}) {
+	const { themes } = useContext( FseStudioContext );
+	const [ currentThemeId, setCurrentThemeId ] = useState();
+	const theme = useThemeData( currentThemeId, themes );
 	
+	
+	function renderThemeSelector() {
+		const renderedThemes = [];
+
+		renderedThemes.push(
+			<option key={ 1 }>
+				{ __( 'Choose a theme', 'fse-studio' ) }
+			</option>
+		);
+
+		let counter = 3;
+
+		for ( const theme in themes.themes ) {
+			const themeInQuestion = themes.themes[ theme ];
+			renderedThemes.push(
+				<option key={ counter } value={ themeInQuestion.dirname }>
+					{ themeInQuestion.name }
+				</option>
+			);
+			counter++;
+		}
+
+		return (
+			<>
+				<select
+					className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
+					value={ currentThemeId }
+					onChange={ ( event ) => {
+						setCurrentThemeId( event.target.value );
+					} }
+				>
+					{ renderedThemes }
+				</select>
+			</>
+		);
+	}
+
 	return (
 		<>
 		<div hidden={!visible} className="fsestudio-theme-manager p-12">
@@ -221,16 +267,7 @@ function ThemeManager({visible}) {
 						<label htmlFor="location" className="block text-sm font-medium text-gray-700">
 							{ __( 'Choose a theme', 'fse-studio' ) }
 						</label>
-						<select
-							id="location"
-							name="location"
-							className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
-							defaultValue="Canada"
-						>
-							<option>{ __( 'FSE Studio Starter', 'fse-studio' ) }</option>
-							<option>{ __( 'Twenty Twenty Two', 'fse-studio' ) }</option>
-							<option>{ __( 'Your Custom Theme', 'fse-studio' ) }</option>
-						</select>
+						{ renderThemeSelector() }
 					</div>
 					<div className="flex flex-col mx-6 my-2.5">
 						{ __( 'or', 'fse-studio' ) }
