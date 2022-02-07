@@ -61,7 +61,7 @@ function get_themejson_file( $request ) {
 
 	$id = $params['filename'];
 
-	$data = \FseStudio\ThemeJsonDataHandlers\get_themejson_file( $id );
+	$data = \FseStudio\ThemeJsonDataHandlers\get_theme_json_file( $id );
 
 	if ( ! $data ) {
 		return new \WP_REST_Response(

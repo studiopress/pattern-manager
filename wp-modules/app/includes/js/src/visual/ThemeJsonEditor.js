@@ -6,7 +6,7 @@
 
  import Select from 'react-select';
  
- import { Modal } from '@wordpress/components';
+ import { ColorPicker, Popover } from '@wordpress/components';
  import { useContext, useState, useEffect, useRef } from '@wordpress/element';
  import {
 	 FseStudioContext,
@@ -109,9 +109,126 @@ export function ThemeJsonEditorApp( props ) {
 
 function ThemeJsonEditor(props) {
 	const themeJsonFile = props.themeJsonFile;
+	const content = themeJsonFile.data.content;
+	
+	function renderSettings() {
+		const rendered = [];
+		console.log( 'Settings?', content );
+		for ( const setting in content.settings ) {
+			if ( setting === 'color' ) {
+				console.log(  content.settings[setting] );
+				
+				for ( const colorSetting in content.settings[setting] ) {
+					
+					if (  colorSetting === 'palette' ) {
+						rendered.push( <FseStudioColorPalette key={colorSetting} themeJsonFile={themeJsonFile} colors={content.settings[setting][colorSetting] } /> )
+					}
+				}
+			}
+		}
+		
+		return rendered;
+	}
+
 	return (
 		<div className="fsestudio-theme-editor">
-			{ themeJsonFile.data.name }
+			<div className="grid grid-cols-4">
+				<div className="border-2 border-black">
+					Settings
+					{ renderSettings() }
+				</div>
+				<div className="border-2 border-black">
+					Styles
+					
+				</div>
+				<div className="border-2 border-black">
+					Custom Templates
+					
+				</div>
+				<div className="border-2 border-black">
+					Template Parts
+				</div>
+			</div>
+			
 		</div>
 	)
+}
+
+function FseStudioColorPalette( {themeJsonFile, colors} ) {
+	
+	function renderColorOptions() {
+		return colors.map((color, index) => (
+			<FseStudioColorPalettePicker key={color.slug} themeJsonFile={themeJsonFile} color={color} index={index} />
+		))
+	}
+	
+	return (
+		<div className="grid gap-5">
+			{ renderColorOptions() }
+		</div>
+	)
+}
+
+function FseStudioColorPalettePicker( {themeJsonFile, color, index} ) {
+	
+	const [ popoverIsVisible, setPopoverIsVisible ] = useState( false );
+	
+	function maybeRenderPickerPopover() {
+		if ( popoverIsVisible ) {
+			return (
+				<Popover
+					onClose={() => {
+						setPopoverIsVisible( false )
+					}}
+				>
+					<div className="p-2">
+						<ColorPicker
+							color={color.color}
+							onChange={(colorValue) => {
+								const modifiedData = { ...themeJsonFile.data };
+								console.log( modifiedData.content.settings.color.palette[index] );
+								modifiedData.content.settings.color.palette[index] = {
+									...modifiedData.content.settings.color.palette[index],
+									color: colorValue
+								}
+
+								themeJsonFile.set(modifiedData);
+							}}
+							enableAlpha
+							defaultValue="#000"
+						/>
+					</div>
+				</Popover>
+			)
+		}
+	}
+
+	return (
+		<>
+			<div>
+				<label 
+					className="flex gap-1"
+					onClick={() => {
+						setPopoverIsVisible( true )
+					}}
+				>
+					<div
+						style={{
+							width: '20px',
+							height: '20px',
+							backgroundColor: color.color
+						}}
+						onClick={() => {
+							setPopoverIsVisible( true )
+						}}
+					>
+						{ maybeRenderPickerPopover() }
+					</div>
+					<div>
+						{ color.name }
+					</div>
+				</label>
+			</div>
+		</>
+	);
 }

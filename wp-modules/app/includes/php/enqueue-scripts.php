@@ -22,7 +22,7 @@ function fse_studio_app() {
 
 	$default_post_id = get_option( 'fse_studio_default_post_id' );
 
-	if ( ! $_GET['post'] ) { //phpcs:ignore.
+	if ( ! isset( $_GET['post'] ) ) { //phpcs:ignore.
 		return;
 	}
 

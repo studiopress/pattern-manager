@@ -24,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function get_theme_json_file( $id ) {
 	$theme_json_files = get_all_theme_json_files();
-
 	return $theme_json_files[ $id ];
 }
 
@@ -50,7 +49,7 @@ function get_all_theme_json_files() {
 	foreach ( $theme_json_file_paths as $path ) {
 		$theme_json_file_data = array(
 			'name'    => basename( $path, '.json' ),
-			'content' => $wp_filesystem->get_contents( $path ),
+			'content' => json_decode( $wp_filesystem->get_contents( $path ) ),
 		);
 
 		$theme_json_files[ $theme_json_file_data['name'] ] = $theme_json_file_data;

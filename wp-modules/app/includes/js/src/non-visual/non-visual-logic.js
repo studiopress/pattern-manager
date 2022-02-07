@@ -52,7 +52,7 @@ export function useThemeJsonFile( id ) {
 
 	function saveThemeJsonData() {
 		return new Promise( ( resolve, reject ) => {
-			fetch( fsestudio.apiEndpoints.saveThemeJsonEndpoint, {
+			fetch( fsestudio.apiEndpoints.saveThemeJsonFileEndpoint, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',

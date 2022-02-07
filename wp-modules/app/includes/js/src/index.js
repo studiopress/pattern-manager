@@ -91,11 +91,24 @@ function FseStudio() {
 		<>
 			<div>
 				{/* Static sidebar for desktop */}
-				<div className="hidden md:flex md:w-80 md:flex-col md:fixed md:inset-y-0">
+				<div
+					className={`hidden md:flex md:w-80 md:flex-col md:fixed md:inset-y-0 ${sidebarOpen ? "sidebar-open" : "!hidden"}`}
+				>
 					<div className="flex-1 flex flex-col min-h-0 bg-wp-black">
 						<div className="flex items-center h-16 flex-shrink-0 px-3">
-							<Icon className='text-white fill-current' icon={ wordpress } size={ 36 }/>
-							<span className='text-white font-semibold ml-4'>{ __( 'FSE Studio', 'fse-studio' ) }</span>
+							<button 
+								className='text-white font-semibold'
+								onClick={() => setSidebarOpen(true)}
+							>
+								<Icon className='text-white fill-current' icon={ wordpress } size={ 36 }/>
+							</button>
+							<span className='text-white font-semibold ml-4 grow'>{ __( 'FSE Studio', 'fse-studio' ) }</span>
+							<button 
+								className='text-white font-semibold ml-4'
+								onClick={() => setSidebarOpen(false)}
+							>
+								<Icon className='text-white fill-current' icon={ close } size={ 30 }/>
+							</button>
 						</div>
 						<div className="flex items-center text-white opacity-70 group hover:opacity-100 my-8 px-6">
 							<Icon className='fill-current' icon={ chevronLeft } size={ 24 }/>
@@ -130,7 +143,7 @@ function FseStudio() {
 						</div>
 					</div>
 				</div>
-				<div className="md:pl-80 flex flex-col">
+				<div className={`md:pl-80 flex flex-col ${sidebarOpen ? "md:pl-80" : "md:pl-0"}`}>
 					<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
 						<button
 							type="button"
@@ -140,13 +153,20 @@ function FseStudio() {
 							<span className="sr-only">Open sidebar</span>
 							<Icon className='fill-current' icon={ menu } size={ 30 }/>
 						</button>
-						<div className="flex-1 px-4 flex justify-center">
-							<div className="ml-4 flex items-center md:ml-6">
+						<div className="flex-1 flex">
+							<div className="flex items-stretch w-full">
+								<button 
+									className={`bg-wp-black px-3 ${sidebarOpen ? "hidden" : ""}`}
+									onClick={() => setSidebarOpen(true)}
+								>
+									<Icon className='text-white fill-current' icon={ wordpress } size={ 36 }/>
+									
+								</button>
 								{/* Additional dropdown */}
-								<Menu as="div" className="ml-3 relative">
+								<Menu as="div" className="ml-3 relative self-center">
 									<div>
 										<Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-											Another Menu
+											Export Theme
 										</Menu.Button>
 									</div>
 									<Transition
