@@ -1,6 +1,6 @@
 {
   "name": "studiopress/fse-studio",
-  "description": "An app for creating an maintaining FSE Themes.",
+  "description": "An app for creating and maintaining FSE Themes.",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "require": {},
