@@ -5,12 +5,14 @@ jobs:
     docker:
       - image: cimg/php:7.3
     steps:
-      - checkout
+      - checkout:
+          path: fse-studio
       - run:
           name: Linting PHP
           command: |
-            composer i
-            composer lint
+            git clone https://github.com/johnstonphilip/wp-plugin-sidekick
+            cd wp-plugin-sidekick/wp-modules/linter
+            sh phpcs.sh -f 1 -p ~/project/fse-studio -n FseStudio -t fse-studio
 
 workflows:
   build:
