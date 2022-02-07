@@ -15,7 +15,11 @@ namespace FseStudio\GetWpFilesystem;
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
+/**
+ * Gets the module data.
+ *
+ * @return array
+ */
 function module_data() {
 	return [
 		'dir' => plugin_dir_path( __FILE__ ),

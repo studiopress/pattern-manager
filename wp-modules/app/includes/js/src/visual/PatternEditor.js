@@ -64,7 +64,7 @@ export function PatternEditorApp( props ) {
 
 		renderedPatterns.push(
 			<option key={ 1 }>
-				{ __( 'Choose a pattern', 'fsestudio' ) }
+				{ __( 'Choose a pattern', 'fse-studio' ) }
 			</option>
 		);
 
@@ -146,7 +146,7 @@ export function PatternEditorApp( props ) {
 								<Modal
 									title={ __(
 										'Errors in pattern',
-										'fsestudio'
+										'fse-studio'
 									) }
 									onRequestClose={ () =>
 										setErrorModalOpen( false )
@@ -378,7 +378,7 @@ export function PatternEditor( props ) {
 							updateBlocks( parse( serializedBlocks ) );
 						} }
 					>
-						{ __( 'Done Editing', 'fsestudio' ) }
+						{ __( 'Done Editing', 'fse-studio' ) }
 					</button>
 					<textarea
 						style={ {

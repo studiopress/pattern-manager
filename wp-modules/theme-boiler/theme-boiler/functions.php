@@ -92,7 +92,7 @@ function register_block_patterns() {
 	foreach ( $pattern_file_paths as $path ) {
 		register_block_pattern(
 			sanitize_title( __NAMESPACE__ ) . '/' . basename( $path, '.php' ),
-			require $path,
+			require $path
 		);
 	}
 }

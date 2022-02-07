@@ -123,7 +123,7 @@ function get_request_args() {
 		'themeId' => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme in question', 'fsestudio' ),
+			'description'       => __( 'The directory name of the theme in question', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -142,76 +142,76 @@ function save_request_args() {
 		'name'              => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsestudio' ),
+			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'dirname'           => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme', 'fsestudio' ),
+			'description'       => __( 'The directory name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'namespace'         => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The namespace of the theme', 'fsestudio' ),
+			'description'       => __( 'The namespace of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'uri'               => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The URI of the theme', 'fsestudio' ),
+			'description'       => __( 'The URI of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'author'            => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The author of the theme', 'fsestudio' ),
+			'description'       => __( 'The author of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'author_uri'        => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The author URI of the theme', 'fsestudio' ),
+			'description'       => __( 'The author URI of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'description'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The description of the theme', 'fsestudio' ),
+			'description'       => __( 'The description of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'tags'              => array(
 			'required'          => true,
 			'type'              => 'array',
-			'description'       => __( 'The tags for the theme', 'fsestudio' ),
+			'description'       => __( 'The tags for the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'tested_up_to'      => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The WP version this theme has been tested up to', 'fsestudio' ),
+			'description'       => __( 'The WP version this theme has been tested up to', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'requires_wp'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'fsestudio' ),
+			'description'       => __( 'The tags for the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'requires_php'      => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'fsestudio' ),
+			'description'       => __( 'The tags for the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
@@ -219,33 +219,33 @@ function save_request_args() {
 		'version'           => array(
 			'required'          => false,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsestudio' ),
+			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'text_domain'       => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fsestudio' ),
+			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'included_patterns' => array(
 			'required'          => true,
 			'type'              => 'array',
-			'description'       => __( 'The name of the theme', 'fsestudio' ),
+			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'index.html'        => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The block pattern to use for index.html', 'fsestudio' ),
+			'description'       => __( 'The block pattern to use for index.html', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'404.html'          => array(
 			'required'          => true,
 			'type'              => 'string',
-			'description'       => __( 'The block pattern to use for 404.html', 'fsestudio' ),
+			'description'       => __( 'The block pattern to use for 404.html', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 	);
@@ -269,11 +269,11 @@ function validate_arg_is_string( $value, $request, $param ) {
 
 		if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
 			// Translators: 1: The name of the paramater in question. 2: The required variable type.
-			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fsestudio' ), $param, 'string' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'fse-studio' ), $param, 'string' ), array( 'status' => 400 ) );
 		}
 	} else {
 		// Translators: The name of the paramater which was passed, but not registered.
-		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fsestudio' ), $param ), array( 'status' => 400 ) );
+		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'fse-studio' ), $param ), array( 'status' => 400 ) );
 	}
 
 	// If we got this far then the data is valid.
@@ -323,7 +323,7 @@ function response_item_schema() {
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
 			'themeData' => array(
-				'description' => esc_html__( 'The theme data in question', 'fsestudio' ),
+				'description' => esc_html__( 'The theme data in question', 'fse-studio' ),
 				'type'        => 'string',
 				'readonly'    => true,
 			),
