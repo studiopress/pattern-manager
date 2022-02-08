@@ -20,7 +20,8 @@ import {
 	menu,
 	close,
 	chevronLeft,
-	check
+	check,
+	download
 } from '@wordpress/icons';
 
 import {
@@ -720,7 +721,15 @@ function ThemeDataEditor({theme}) {
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac purus nec diam laoreet sollicitudin. Fusce ullamcorper imperdiet turpis, non accumsan enim egestas in.</p>
 			</div>
 		</div>
-		<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-end items-center">
+		<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
+			<button
+				type="button"
+				className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+			>
+				<Icon className='fill-current mr-2' icon={ download } size={ 24 }/>
+				{ __( 'Export theme to zip', 'fse-studio' ) }
+			</button>
+
 			<div className="flex items-center">
 				{(() => {
 					if ( theme.hasSaved ) {
