@@ -8,6 +8,7 @@ import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useContext, useEffect, Fragment, useState } from '@wordpress/element';
+import { Modal } from '@wordpress/components';
 import ReactDOM from 'react-dom';
 import { Menu, Transition } from '@headlessui/react'
 import { 
@@ -381,7 +382,13 @@ function ThemeDataEditor({theme}) {
 	}
 	
 	function maybeRenderAddPatternsView() {
-		return <div hidden={currentView !== 'add_patterns'}><PatternPicker /></div>
+		if ( currentView === 'add_patterns' ) {
+			return (
+				<Modal title="Pick the patterns to include in this theme" onRequestClose={ () => { setCurrentView( 'theme_setup' ) } }>
+					<PatternPicker />
+				</Modal>
+			)
+		}
 	}
 	
 	function maybeRenderCustomizeStylesView() {
