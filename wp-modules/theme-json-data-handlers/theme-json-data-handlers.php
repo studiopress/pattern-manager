@@ -47,9 +47,11 @@ function get_all_theme_json_files() {
 	$theme_json_files = array();
 
 	foreach ( $theme_json_file_paths as $path ) {
+		$theme_json_content   = json_decode( $wp_filesystem->get_contents( $path ), true );
 		$theme_json_file_data = array(
-			'name'    => basename( $path, '.json' ),
-			'content' => json_decode( $wp_filesystem->get_contents( $path ) ),
+			'name'                 => basename( $path, '.json' ),
+			'content'              => $theme_json_content,
+			'renderedGlobalStyles' => ( new \WP_Theme_JSON( $theme_json_content, 'custom' ) )->get_stylesheet(),
 		);
 
 		$theme_json_files[ $theme_json_file_data['name'] ] = $theme_json_file_data;
@@ -73,8 +75,8 @@ function update_theme_json_file( $theme_json_file_data ) {
 
 	// Create the index.html block template file.
 	$success = $wp_filesystem->put_contents(
-		$module_dir_path . '/theme-json-files/' . $theme_json_file_data['name'],
-		$theme_json_file_data['content'],
+		$module_dir_path . '/theme-json-files/' . $theme_json_file_data['name'] . '.json',
+		wp_json_encode( $theme_json_file_data['content'], JSON_PRETTY_PRINT ),
 		FS_CHMOD_FILE
 	);
 

@@ -62,6 +62,7 @@ export function useThemeJsonFile( id ) {
 			.then( ( response ) => response.json() )
 			.then( ( data ) => {
 				const response = JSON.parse( data );
+				getThemeJsonData(id);
 				resolve( data );
 			} );
 		} );

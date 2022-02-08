@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Footer with text, links.', 'fse-studio' ),
+	'title'         => __( 'Footer with text, links.', 'frost' ),
 	'name'          => 'frost-footer-default',
 	'categories'    => array( 'frost-footer' ),
 	'viewportWidth' => 1280,

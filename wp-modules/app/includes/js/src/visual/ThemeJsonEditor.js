@@ -2,16 +2,16 @@
  * Genesis Studio App
  */
 
- const { __ } = wp.i18n;
+const { __ } = wp.i18n;
 
- import Select from 'react-select';
- 
- import { ColorPicker, Popover } from '@wordpress/components';
- import { useContext, useState, useEffect, useRef } from '@wordpress/element';
- import {
-	 FseStudioContext,
-	 useThemeJsonFile,
- } from './../non-visual/non-visual-logic.js';
+import { BlockPreview } from '@wordpress/block-editor';
+import { ColorPicker, Popover } from '@wordpress/components';
+import { serialize, parse } from '@wordpress/blocks';
+import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+import {
+	FseStudioContext,
+	useThemeJsonFile,
+} from './../non-visual/non-visual-logic.js';
 
 export function ThemeJsonEditorApp( {visible} ) {
 	const { themeJsonFiles } = useContext( FseStudioContext );
@@ -108,6 +108,7 @@ export function ThemeJsonEditorApp( {visible} ) {
 }
 
 function ThemeJsonEditor({themeJsonFile}) {
+	const { patterns } = useContext( FseStudioContext );
 	const content = themeJsonFile.data.content;
 	
 	function renderSettings() {
@@ -128,8 +129,32 @@ function ThemeJsonEditor({themeJsonFile}) {
 		
 		return rendered;
 	}
+	
+	function renderPatternPreviews( patterns ) {
+		const rendered = [];
+		
+		for( const blockPattern in patterns.patterns ) {
+			console.log( patterns.patterns[blockPattern] );
+			
+			rendered.push(
+				<BlockPreview
+						blocks={ parse( patterns.patterns[blockPattern].content ) }
+						viewportWidth={ 1300 }
+				/>	
+			);
+		}
+		
+		return rendered;
+		
+	}
 
 	return (
+	<>
+		<style>
+		{
+			themeJsonFile.data.renderedGlobalStyles
+		}
+		</style>
 		<div className="fsestudio-theme-json-editor">
 			<div className="grid grid-cols-4">
 				<div className="border-2 border-black">
@@ -148,8 +173,12 @@ function ThemeJsonEditor({themeJsonFile}) {
 					Template Parts
 				</div>
 			</div>
-			
+			<div className="grid grid-cols-5 gap-1">
+				{ //renderPatternPreviews( patterns ) }
+}
+			</div>
 		</div>
+	</>
 	)
 }
 

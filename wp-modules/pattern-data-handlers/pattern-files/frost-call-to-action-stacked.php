@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Call-to-action with text, button.', 'fse-studio' ),
+	'title'         => __( 'Call-to-action with text, button.', 'frost' ),
 	'name'          => 'frost-call-to-action-stacked',
 	'categories'    => array( 'frost-call-to-action' ),
 	'viewportWidth' => 1280,

@@ -33,6 +33,9 @@ import {
 } from './../non-visual/non-visual-logic.js';
 import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
 
+import { registerCoreBlocks } from '@wordpress/block-library';
+//registerCoreBlocks();
+
 const input_delay = [];
 
 export function PatternEditorApp( {visible} ) {
@@ -159,6 +162,7 @@ export function PatternEditorApp( {visible} ) {
 }
 
 export function PatternEditor( props ) {
+	const {blockEditorSettings} = useContext( FseStudioContext );
 	const pattern = props.pattern;
 
 	const [ blocks, updateBlocks ] = useState( [
@@ -205,7 +209,7 @@ export function PatternEditor( props ) {
 	function getEditorSettings() {
 		const editorSettings = JSON.parse(
 			JSON.stringify(
-				wp.data.select( 'core/block-editor' ).getSettings()
+				blockEditorSettings
 			)
 		);
 
@@ -216,6 +220,19 @@ export function PatternEditor( props ) {
 		editorSettings.mediaReplaceFlow = MediaReplaceFlow;
 
 		return editorSettings;
+	}
+	
+	function renderInlineStyles() {
+		const renderedStyles = [];
+		for( const style in blockEditorSettings.styles ) {
+			renderedStyles.push(
+				<style>
+					{ blockEditorSettings.styles[style].css }
+				</style>
+			);
+		}
+		
+		return renderedStyles;
 	}
 
 	if ( ! pattern.data ) {
@@ -283,6 +300,7 @@ export function PatternEditor( props ) {
 
 	return (
 		<div className="fsestudio-pattern-editor">
+			{ renderInlineStyles() }
 			<div
 				style={ { display: 'none' } }
 				className="fsestudio-editor-header"

@@ -34,6 +34,7 @@ import {
 
 import { PatternEditorApp } from './visual/PatternEditor.js';
 import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor.js';
+import { PatternPicker } from './visual/PatternPicker.js';
 
 const userNavigation = [
 	{ name: 'Your Profile', href: '#' },
@@ -61,6 +62,7 @@ export function FseStudioApp() {
 				themeJsonFiles: useThemeJsonFiles( fsestudio.themeJsonFiles ),
 				siteUrl: fsestudio.siteUrl,
 				apiEndpiints: fsestudio.api_endpoints,
+				blockEditorSettings:  fsestudio.blockEditorSettings
 			} }
 		>
 			<FseStudio />
@@ -84,10 +86,9 @@ function FseStudio() {
 
 	function renderCurrentView() {
 		return <>
+			
 			<ThemeManager visible={'theme_manager' === currentView.currentView} />
-		
 			<PatternEditorApp visible={'pattern_manager' === currentView.currentView} />
-		
 			<ThemeJsonEditorApp visible={'themejson_manager' === currentView.currentView} />
 		</>
 	}
@@ -325,7 +326,13 @@ function ThemeManager({visible}) {
 
 function ThemeDataEditor({theme}) {
 	const { patterns } = useContext( FseStudioContext );
-	
+	const [currentView, setCurrentView] = useState('theme_setup');
+	const views = [
+		{ name:  __( 'Theme Setup', 'fse-studio' ), slug: 'theme_setup', icon: file, current: true },
+		{ name:  __( 'Add Patterns', 'fse-studio' ), slug: 'add_patterns', icon: layout, current: false },
+		{ name:  __( 'Customize Styles', 'fse-studio' ), slug: 'customize_styles', icon: globe, current: false },
+	]
+
 	function formatPatternValuesForSelect() {
 		const options = [];
 		for ( const patternNum in theme.data.includedPatterns ) {
@@ -372,16 +379,18 @@ function ThemeDataEditor({theme}) {
 
 		return reAssembledThemePatterns;
 	}
+	
+	function maybeRenderAddPatternsView() {
+		return <div hidden={currentView !== 'add_patterns'}><PatternPicker /></div>
+	}
+	
+	function maybeRenderCustomizeStylesView() {
+	
+	}
 
-	return (
-		<>
-		<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-			<ul className="w-72">
-				<li className="p-5 bg-gray-100 font-medium">{ __( 'Theme Setup', 'fse-studio' ) }</li>
-				<li className="p-5 font-medium hover:bg-gray-100">{ __( 'Add Patterns', 'fse-studio' ) }</li>
-				<li className="p-5 font-medium hover:bg-gray-100">{ __( 'Customize Styles', 'fse-studio' ) }</li>
-			</ul>
-			<div className="flex-1">
+	function maybeRenderThemeSetupView() {
+		return (
+			<div hidden={currentView !== 'theme_setup'} className="flex-1">
 				<form className="divide-y divide-gray-200">
 					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 						<label htmlFor="theme-name" className="block text-sm font-medium text-gray-700 sm:col-span-1">
@@ -674,6 +683,31 @@ function ThemeDataEditor({theme}) {
 	
 				</form>
 			</div>
+		)
+		
+	}
+
+	return (
+		<>
+		<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
+			<ul className="w-72">
+				{views.map((item) => (
+					<li key={item.name}>
+						<button
+							className={'w-full text-left p-5 font-medium' + ( currentView === item.slug ? ' bg-gray-100' : ' hover:bg-gray-100' )}
+							key={item.name}
+							onClick={() => {
+								setCurrentView( item.slug );
+							}}
+						>
+							{ item.name }
+						</button>
+					</li>
+				))}
+			</ul>
+			{ maybeRenderThemeSetupView() }
+			{ maybeRenderAddPatternsView() }
+			{ maybeRenderCustomizeStylesView() }
 			<div className="w-72 bg-gray-100 p-5 self-start">
 				<h3>Sidebar</h3>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ac purus nec diam laoreet sollicitudin. Fusce ullamcorper imperdiet turpis, non accumsan enim egestas in.</p>

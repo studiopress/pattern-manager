@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Sample home page.', 'fse-studio' ),
+	'title'         => __( 'Sample home page.', 'frost' ),
 	'name'          => 'frost-page-home',
 	'categories'    => array( 'frost-page' ),
 	'viewportWidth' => 1280,
@@ -24,7 +24,7 @@ return array(
 <!-- /wp:spacer -->
 
 <!-- wp:heading {"textAlign":"center","fontSize":"x-large"} -->
-<h2 class="has-text-align-center has-x-large-font-size" id="image-heading-text-buttons">Image, heading, text, buttons.</h2>
+<h2 class="has-text-align-center has-x-large-font-size" id="image">Image</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center"} -->

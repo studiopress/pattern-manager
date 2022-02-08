@@ -1,8 +1,11 @@
-html {
-	overflow: hidden;
+html.wp-toolbar {
+	padding-top: 0!important;
+}
+#wpadminbar{
+	display:none;
 }
 
-html body.post-type-fsestudio {
+html body.toplevel_page_fse-studio {
 	margin-top: 0 !important;
 	height: 100% !important;
 }
@@ -14,10 +17,15 @@ html body.post-type-fsestudio {
 #wpwrap {
 	height: 100%;
 }
-
-#wpcontent,
+#wpcontent, #wpbody-content{
+	margin:0px!important;
+	padding:0px!important;
+}
 #adminmenumain {
 	display: none !important;
+}
+#wpfooter {
+	display:none;
 }
 
 #fsestudioapp {

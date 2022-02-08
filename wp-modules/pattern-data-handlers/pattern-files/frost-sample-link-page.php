@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Sample link page.', 'fse-studio' ),
+	'title'         => __( 'Sample link page.', 'frost' ),
 	'name'          => 'frost-sample-link-page',
 	'categories'    => array( 'frost-call-to-action' ),
 	'viewportWidth' => 1280,
@@ -61,7 +61,7 @@ return array(
 <div class="wp-block-button has-custom-width wp-block-button__width-100"><a class="wp-block-button__link no-border-radius">Follow My Newsletter</a></div>
 <!-- /wp:button -->
 
-<!-- wp:button {"width":100,"style":{"border":{"radius":0}},"className":"is-style-fill"} -->
+<!-- wp:button {"width":100,"className":"is-style-fill","style":{"border":{"radius":0}}} -->
 <div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-fill"><a class="wp-block-button__link no-border-radius">Listen to My Podcast</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
