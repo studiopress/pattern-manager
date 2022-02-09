@@ -28,9 +28,7 @@ export function useThemeJsonFile( id ) {
 			}
 			setFetchInProgress( true );
 			fetch(
-				fsestudio.apiEndpoints.getThemeJsonFileEndpoint +
-					'?filename=' +
-					id,
+				assembleUrlWithQueryParams(fsestudio.apiEndpoints.getThemeJsonFileEndpoint, {filename: id }),
 				{
 					method: 'GET',
 					headers: {
@@ -97,9 +95,7 @@ export function useThemeData( themeId, themes ) {
 			}
 			setFetchInProgress( true );
 			fetch(
-				fsestudio.apiEndpoints.getThemeEndpoint +
-					'?themeId=' +
-					themeId,
+				assembleUrlWithQueryParams(fsestudio.apiEndpoints.getThemeEndpoint, {themeId: themeId }),
 				{
 					method: 'GET',
 					headers: {
@@ -170,10 +166,9 @@ export function usePatternData( patternId ) {
 				return;
 			}
 			setFetchInProgress( true );
+
 			fetch(
-				fsestudio.apiEndpoints.getPatternEndpoint +
-					'?patternId=' +
-					patternId,
+				assembleUrlWithQueryParams(fsestudio.apiEndpoints.getPatternEndpoint, {patternId: patternId }),
 				{
 					method: 'GET',
 					headers: {
@@ -272,4 +267,10 @@ function string_to_slug( str ) {
 		.replace( /-+/g, '-' ); // collapse dashes
 
 	return str;
+}
+
+function assembleUrlWithQueryParams( theUrl, params ) {
+	const url = new URL(theUrl);
+	Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+	return url;
 }
