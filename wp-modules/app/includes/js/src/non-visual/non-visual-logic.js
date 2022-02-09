@@ -163,11 +163,6 @@ export function usePatternData( patternId ) {
 		getPatternData( patternId );
 	}, [ patternId ] );
 
-	useEffect( () => {
-		// When the patternData is updated, save it to the server.
-		savePatternData();
-	}, [ patternData ] );
-
 	function getPatternData( patternId ) {
 		return new Promise( ( resolve, reject ) => {
 			if ( ! patternId || fetchInProgress ) {
@@ -217,6 +212,7 @@ export function usePatternData( patternId ) {
 	return {
 		data: patternData,
 		set: setPatternData,
+		save: savePatternData,
 	};
 }
 

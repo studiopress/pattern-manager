@@ -152,7 +152,7 @@ function ThemeJsonEditor({themeJsonFile}) {
 	<>
 		<style>
 		{
-			themeJsonFile.data.renderedGlobalStyles
+			//themeJsonFile.data.renderedGlobalStyles
 		}
 		</style>
 		<div className="fsestudio-theme-json-editor">

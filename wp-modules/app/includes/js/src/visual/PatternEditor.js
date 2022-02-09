@@ -12,6 +12,7 @@ import {
 	MediaUploadCheck,
 	MediaPlaceholder,
 	MediaReplaceFlow,
+	__unstableEditorStyles as EditorStyles,
 } from '@wordpress/block-editor';
 
 import { serialize, parse } from '@wordpress/blocks';
@@ -32,9 +33,10 @@ import {
 	usePatternData,
 } from './../non-visual/non-visual-logic.js';
 import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
+import { Portal } from './Portal.js';
 
 import { registerCoreBlocks } from '@wordpress/block-library';
-//registerCoreBlocks();
+registerCoreBlocks();
 
 const input_delay = [];
 
@@ -226,7 +228,7 @@ export function PatternEditor( props ) {
 		const renderedStyles = [];
 		for( const style in blockEditorSettings.styles ) {
 			renderedStyles.push(
-				<style>
+				<style key={style}>
 					{ blockEditorSettings.styles[style].css }
 				</style>
 			);
@@ -300,7 +302,6 @@ export function PatternEditor( props ) {
 
 	return (
 		<div className="fsestudio-pattern-editor">
-			{ renderInlineStyles() }
 			<div
 				style={ { display: 'none' } }
 				className="fsestudio-editor-header"
@@ -408,47 +409,57 @@ export function PatternEditor( props ) {
 							currentView === 'blockEditor' ? 'block' : 'none',
 					} }
 				>
-					<ShortcutProvider>
-						<BlockEditorProvider
-							value={ blocks }
-							onChange={ updateBlocks }
-							onInput={ updateBlocks }
-							settings={ getEditorSettings() }
-						>
-							<SlotFillProvider>
-								<BlockTools>
-									<WritingFlow>
-										<ObserveTyping>
-											<div className="fsestudio-pattern-editor-columns">
-												<div className={ 'column' }>
-													<div className="edit-post-visual-editor editor-styles-wrapper">
-														<BlockList />
+					
+						<ShortcutProvider>
+							<BlockEditorProvider
+								value={ blocks }
+								onChange={ updateBlocks }
+								onInput={ updateBlocks }
+								settings={ getEditorSettings() }
+							>
+								<SlotFillProvider>
+									<BlockTools>
+										<WritingFlow>
+											<ObserveTyping>
+												<div className="fsestudio-pattern-editor-columns">
+													<div className={ 'column' }>
+														<div className="edit-post-visual-editor editor-styles-wrapper">
+															<Portal>
+																<div>
+																	<link rel="stylesheet" id="wp-block-library-css" href="https://frost.local/wp-includes/css/dist/block-library/style.css?ver=5.9" media="all" />
+																	<link rel="stylesheet" id="wp-block-editor-css" href="https://frost.local/wp-includes/css/dist/block-editor/style.css?ver=5.9" media="all" />
+																	<link rel="stylesheet" id="wp-components-css" href="https://frost.local/wp-includes/css/dist/components/style.css?ver=5.9" media="all" />
+																	{ renderInlineStyles() 
+																	}
+																</div>
+																<BlockList />
+															</Portal>
+														</div>
+														<div
+															style={ {
+																position: 'fixed',
+																bottom: '0px',
+																width: '100%',
+																backgroundColor:
+																	'#fff',
+																padding: '4px',
+																zIndex: '999',
+															} }
+														>
+															<BlockBreadcrumb />
+														</div>
 													</div>
-													<div
-														style={ {
-															position: 'fixed',
-															bottom: '0px',
-															width: '100%',
-															backgroundColor:
-																'#fff',
-															padding: '4px',
-															zIndex: '999',
-														} }
-													>
-														<BlockBreadcrumb />
+													<div className={ 'column' }>
+														<BlockInspector />
 													</div>
 												</div>
-												<div className={ 'column' }>
-													<BlockInspector />
-												</div>
-											</div>
-										</ObserveTyping>
-									</WritingFlow>
-								</BlockTools>
-							</SlotFillProvider>
-						</BlockEditorProvider>
-						<Popover.Slot />
-					</ShortcutProvider>
+											</ObserveTyping>
+										</WritingFlow>
+									</BlockTools>
+								</SlotFillProvider>
+							</BlockEditorProvider>
+							<Popover.Slot />
+						</ShortcutProvider>
 				</div>
 			</div>
 		</div>

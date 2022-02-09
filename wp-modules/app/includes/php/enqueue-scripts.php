@@ -54,7 +54,10 @@ function fse_studio_app() {
 	$css_ver = filemtime( $module_dir_path . 'includes/js/build/index.css' );
 	wp_enqueue_style( 'fsethememanger_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 	
-	$block_editor_context = new \WP_Block_Editor_Context();
+	$block_editor_context = new \WP_Block_Editor_Context(array());
+	//print_r( $block_editor_context );
+	//die();
+	
 	$custom_settings      = array(
 		'siteUrl'                              => site_url(),
 		'postsPerPage'                         => get_option( 'posts_per_page' ),
@@ -204,46 +207,34 @@ function block_editor_pre_flight() {
 		'/wp/v2/global-styles/' . $active_global_styles_id,
 		'/wp/v2/global-styles/themes/' . $active_theme,
 	);
-	
+
 	block_editor_rest_api_preload( $preload_paths, $block_editor_context );
-	
-	
-	wp_add_inline_script(
-		'wp-edit-site',
-		sprintf(
-			'wp.domReady( function() {
-				wp.editSite.initializeEditor( "site-editor", %s );
-			} );',
-			wp_json_encode( $editor_settings )
-		)
-	);
-	
-	
+
 	// Preload server-registered block schemas.
 	wp_add_inline_script(
 		'wp-blocks',
 		'wp.blocks.unstable__bootstrapServerSideBlockDefinitions(' . wp_json_encode( get_block_editor_server_block_settings() ) . ');'
 	);
-	
+
 	wp_add_inline_script(
 		'wp-blocks',
 		sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $post ) ) ),
 		'after'
 	);
-	
+
 	wp_enqueue_script( 'wp-edit-site' );
 	wp_enqueue_script( 'wp-format-library' );
 	wp_enqueue_style( 'wp-edit-site' );
 	wp_enqueue_style( 'wp-format-library' );
 	wp_enqueue_media();
-	
+
 	if (
 		current_theme_supports( 'wp-block-styles' ) ||
 		( ! is_array( $editor_styles ) || count( $editor_styles ) === 0 )
 	) {
-		//wp_enqueue_style( 'wp-block-library-theme' );
+		wp_enqueue_style( 'wp-block-library-theme' );
 	}
-	
+
 	/** This action is documented in wp-admin/edit-form-blocks.php */
-	//do_action( 'enqueue_block_editor_assets' );
+	do_action( 'enqueue_block_editor_assets' );
 }
