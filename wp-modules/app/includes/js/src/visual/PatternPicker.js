@@ -1,6 +1,9 @@
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 export function PatternPicker({ patterns }) {
+	const [checkedPatterns, setCheckedPatterns] = useState({});
+
 	return (
 		<div className="mx-auto mt-12 max-w-7xl bg-white">
 			<h2 className="border-b border-gray-200 p-5 px-4 text-xl sm:px-6 md:px-8">
@@ -37,18 +40,33 @@ export function PatternPicker({ patterns }) {
 						</li>
 					</ul>
 				</div>
-				<div className="grid w-full grid-cols-3 gap-5 p-8">
+				<ul tabIndex="-1" className="grid w-full grid-cols-3 gap-5 p-8">
 					{Object.values(patterns).map((pattern, index) => {
+						const isChecked = !!checkedPatterns[pattern?.name];
+
 						return (
-							<div
+							<li
 								key={index}
-								className="min-h-[300px] bg-gray-200"
+								tabIndex="0"
+								role="checkbox"
+								aria-checked={isChecked}
+								className={
+									isChecked
+										? 'min-h-[300px] border-2 border-solid border-sky-500 bg-gray-200'
+										: 'min-h-[300px] bg-gray-200'
+								}
+								onClick={() =>
+									setCheckedPatterns({
+										...checkedPatterns,
+										[pattern.name]: !isChecked,
+									})
+								}
 							>
 								<h3>{pattern.title}</h3>
-							</div>
+							</li>
 						);
 					})}
-				</div>
+				</ul>
 			</div>
 		</div>
 	);
