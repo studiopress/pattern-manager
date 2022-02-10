@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Pricing table with list, buttons.', 'fse-studio' ),
+	'title'         => __( 'Pricing table with list, buttons.', 'frost' ),
 	'name'          => 'frost-pricing-table-two-columns',
 	'categories'    => array( 'frost-pricing-table' ),
 	'viewportWidth' => 1280,

@@ -30,6 +30,7 @@ import {
 	useThemeData,
 	usePatterns,
 	useThemeJsonFiles,
+	useCurrentThemeJsonFileData,
 	useCurrentView,
 } from './non-visual/non-visual-logic.js';
 
@@ -55,6 +56,7 @@ ReactDOM.render(
 
 
 export function FseStudioApp() {
+	
 	return (
 		<FseStudioContext.Provider
 			value={ {
@@ -62,6 +64,7 @@ export function FseStudioApp() {
 				patterns: usePatterns( fsestudio.patterns ),
 				themes: useThemes( { themes: fsestudio.themes } ),
 				themeJsonFiles: useThemeJsonFiles( fsestudio.themeJsonFiles ),
+				currentThemeJsonFileData: useCurrentThemeJsonFileData(null),
 				siteUrl: fsestudio.siteUrl,
 				apiEndpiints: fsestudio.api_endpoints,
 				blockEditorSettings:  fsestudio.blockEditorSettings

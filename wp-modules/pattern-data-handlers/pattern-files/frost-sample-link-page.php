@@ -61,7 +61,7 @@ return array(
 <div class="wp-block-button has-custom-width wp-block-button__width-100"><a class="wp-block-button__link no-border-radius">Follow My Newsletter</a></div>
 <!-- /wp:button -->
 
-<!-- wp:button {"width":100,"className":"is-style-fill","style":{"border":{"radius":0}}} -->
+<!-- wp:button {"width":100,"style":{"border":{"radius":0}},"className":"is-style-fill"} -->
 <div class="wp-block-button has-custom-width wp-block-button__width-100 is-style-fill"><a class="wp-block-button__link no-border-radius">Listen to My Podcast</a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->

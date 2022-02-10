@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'List of posts in one column.', 'fse-studio' ),
+	'title'         => __( 'List of posts in one column.', 'frost' ),
 	'name'          => 'frost-query-default',
 	'categories'    => array( 'frost-query' ),
 	'viewportWidth' => 1280,

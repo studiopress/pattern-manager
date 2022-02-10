@@ -24,7 +24,7 @@ return array(
 <!-- /wp:spacer -->
 
 <!-- wp:heading {"textAlign":"center","fontSize":"x-large"} -->
-<h2 class="has-text-align-center has-x-large-font-size" id="image">Image</h2>
+<h2 class="has-text-align-center has-x-large-font-size" id="image-heading-text-buttons">Image, heading, text, buttons.</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center"} -->

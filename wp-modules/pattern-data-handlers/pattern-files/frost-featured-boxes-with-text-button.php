@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Featured boxes with text, button.', 'fse-studio' ),
+	'title'         => __( 'Featured boxes with text, button.', 'frost' ),
 	'name'          => 'frost-featured-boxes-with-text-button',
 	'categories'    => array( 'frost-call-to-action' ),
 	'viewportWidth' => 1280,

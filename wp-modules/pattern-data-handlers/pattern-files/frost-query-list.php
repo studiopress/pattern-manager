@@ -27,7 +27,7 @@ return array(
 <!-- /wp:column -->
 
 <!-- wp:column {"width":"50%","className":"is-style-no-margin"} -->
-<div class="wp-block-column is-style-no-margin" style="flex-basis:50%"><!-- wp:post-title {"isLink":true,"fontSize":"medium","style":{"spacing":{"margin":{"bottom":"10px"}}}} /-->
+<div class="wp-block-column is-style-no-margin" style="flex-basis:50%"><!-- wp:post-title {"isLink":true,"style":{"spacing":{"margin":{"bottom":"10px"}}},"fontSize":"medium"} /-->
 
 <!-- wp:post-excerpt {"moreText":"","showMoreOnNewLine":false,"style":{"typography":{"fontSize":"18px"}}} /--></div>
 <!-- /wp:column -->

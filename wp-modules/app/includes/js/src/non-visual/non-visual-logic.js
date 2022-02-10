@@ -11,6 +11,15 @@ export const FseStudioContext = React.createContext( [
 	function () {},
 ] );
 
+export function useCurrentThemeJsonFileData(initial) {
+	const [value, setValue] = useState(initial);
+	
+	return {
+		value,
+		setValue,
+	}
+}
+
 export function useThemeJsonFile( id ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ themeJsonData, setThemeJsonData ] = useState();
