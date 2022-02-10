@@ -1,8 +1,61 @@
+// @ts-check
+
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-export function PatternPicker({ patterns }) {
+/**
+ * @typedef {Object} Pattern
+ * @property {Array}  categories
+ * @property {string} content
+ * @property {string} name
+ * @property {string} title
+ * @property {number} viewportWidth
+ */
+
+/**
+ * The pattern picker component.
+ *
+ * @param {{
+ *  patterns: Pattern[]
+ *  selectMultiple?: boolean
+ * }} props
+ * @return {React.ReactElement} The rendered component.
+ */
+export function PatternPicker({ patterns, selectMultiple }) {
+	const [singleCheckedPattern, setSingleCheckedPattern] = useState('');
 	const [checkedPatterns, setCheckedPatterns] = useState({});
+
+	/**
+	 * Sets the pattern to selected.
+	 *
+	 * @param {Pattern["name"]} patternName The name of the pattern.
+	 */
+	function togglePatternSelected(patternName) {
+		if (selectMultiple) {
+			setCheckedPatterns({
+				...checkedPatterns,
+				[patternName]: !isPatternSelected(patternName),
+			});
+
+			return;
+		}
+
+		setSingleCheckedPattern(patternName);
+	}
+
+	/**
+	 * Gets whether the pattern is selected.
+	 *
+	 * @param {Pattern["name"]} patternName The name of the pattern.
+	 * @return {boolean} Whether the pattern is checked.
+	 */
+	function isPatternSelected(patternName) {
+		if (selectMultiple) {
+			return !!checkedPatterns[patternName];
+		}
+
+		return patternName === singleCheckedPattern;
+	}
 
 	return (
 		<div className="mx-auto mt-12 max-w-7xl bg-white">
@@ -40,14 +93,14 @@ export function PatternPicker({ patterns }) {
 						</li>
 					</ul>
 				</div>
-				<ul tabIndex="-1" className="grid w-full grid-cols-3 gap-5 p-8">
+				<ul tabIndex={-1} className="grid w-full grid-cols-3 gap-5 p-8">
 					{Object.values(patterns).map((pattern, index) => {
-						const isChecked = !!checkedPatterns[pattern?.name];
+						const isChecked = isPatternSelected(pattern?.name);
 
 						return (
 							<li
 								key={index}
-								tabIndex="0"
+								tabIndex={0}
 								role="checkbox"
 								aria-checked={isChecked}
 								className={
@@ -56,10 +109,7 @@ export function PatternPicker({ patterns }) {
 										: 'min-h-[300px] bg-gray-200'
 								}
 								onClick={() =>
-									setCheckedPatterns({
-										...checkedPatterns,
-										[pattern.name]: !isChecked,
-									})
+									togglePatternSelected(pattern.name)
 								}
 							>
 								<h3>{pattern.title}</h3>
