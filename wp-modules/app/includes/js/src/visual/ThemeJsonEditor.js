@@ -14,9 +14,13 @@ import {
 } from './../non-visual/non-visual-logic.js';
 
 export function ThemeJsonEditorApp( {visible} ) {
-	const { themeJsonFiles } = useContext( FseStudioContext );
+	const { themeJsonFiles, currentThemeJsonFileData } = useContext( FseStudioContext );
 	const [ currentId, setCurrentId ] = useState();
 	const themeJsonFile = useThemeJsonFile( currentId );
+	
+	useEffect( () => {
+		currentThemeJsonFileData.setValue( themeJsonFile.data );
+	}, [themeJsonFile] );
 
 	function renderSelector() {
 		const renderedOptions = [];
@@ -150,11 +154,6 @@ function ThemeJsonEditor({themeJsonFile}) {
 
 	return (
 	<>
-		<style>
-		{
-			//themeJsonFile.data.renderedGlobalStyles
-		}
-		</style>
 		<div className="fsestudio-theme-json-editor">
 			<div className="grid grid-cols-4">
 				<div className="border-2 border-black">

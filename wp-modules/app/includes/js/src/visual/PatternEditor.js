@@ -164,7 +164,7 @@ export function PatternEditorApp( {visible} ) {
 }
 
 export function PatternEditor( props ) {
-	const {blockEditorSettings} = useContext( FseStudioContext );
+	const {blockEditorSettings, currentThemeJsonFileData} = useContext( FseStudioContext );
 	const pattern = props.pattern;
 
 	const [ blocks, updateBlocks ] = useState( [
@@ -224,8 +224,11 @@ export function PatternEditor( props ) {
 		return editorSettings;
 	}
 	
-	function renderInlineStyles() {
-		const renderedStyles = [];
+	function renderPortalCssStyles() {
+		const renderedStyles = [
+			<div dangerouslySetInnerHTML={ { __html: blockEditorSettings.__unstableResolvedAssets.styles } } />
+		];
+
 		for( const style in blockEditorSettings.styles ) {
 			renderedStyles.push(
 				<style key={style}>
@@ -234,6 +237,14 @@ export function PatternEditor( props ) {
 			);
 		}
 		
+		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
+			renderedStyles.push(
+				<style key={'renderedGlobalStyles'}>
+					{ currentThemeJsonFileData.value.renderedGlobalStyles }
+				</style>
+			);
+		}
+
 		return renderedStyles;
 	}
 
@@ -426,11 +437,7 @@ export function PatternEditor( props ) {
 														<div className="edit-post-visual-editor editor-styles-wrapper">
 															<Portal>
 																<div>
-																	<link rel="stylesheet" id="wp-block-library-css" href="https://frost.local/wp-includes/css/dist/block-library/style.css?ver=5.9" media="all" />
-																	<link rel="stylesheet" id="wp-block-editor-css" href="https://frost.local/wp-includes/css/dist/block-editor/style.css?ver=5.9" media="all" />
-																	<link rel="stylesheet" id="wp-components-css" href="https://frost.local/wp-includes/css/dist/components/style.css?ver=5.9" media="all" />
-																	{ renderInlineStyles() 
-																	}
+																	{ renderPortalCssStyles() }
 																</div>
 																<BlockList />
 															</Portal>

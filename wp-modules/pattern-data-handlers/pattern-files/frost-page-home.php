@@ -11,7 +11,7 @@ return array(
 	'categories'    => array( 'frost-page' ),
 	'viewportWidth' => 1280,
 	'content'       => '<!-- wp:group {"align":"full","layout":{"wideSize":"800px"}} -->
-<div class="wp-block-group alignfull"><!-- wp:spacer {"height":70} -->
+<div class="wp-block-group alignfull"><!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -19,7 +19,7 @@ return array(
 <figure class="wp-block-image size-full"><img src="https://frostwp.com/wp-content/uploads/2021/12/sample-black_1920x1200.jpg" alt="Sample Image" class="wp-image-3480"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
