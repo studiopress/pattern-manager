@@ -65,7 +65,7 @@
                 {
                     "name": "Black",
                     "slug": "black",
-                    "color": "#f0056d"
+                    "color": "#000000"
                 },
                 {
                     "name": "Primary",
@@ -90,7 +90,7 @@
                 {
                     "name": "White",
                     "slug": "white",
-                    "color": "#9f9f06"
+                    "color": "#ffffff"
                 }
             ]
         },

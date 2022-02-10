@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Team with image, text, link.', 'fse-studio' ),
+	'title'         => __( 'Team with image, text, link.', 'frost' ),
 	'name'          => 'frost-team-members-four-columns',
 	'categories'    => array( 'frost-team-members' ),
 	'viewportWidth' => 1280,
