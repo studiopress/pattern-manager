@@ -34,7 +34,6 @@
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/forms": "^0.4.0",
-    "@wordpress/block-editor": "^8.1.1",
     "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.2.4",
     "@wordpress/icons": "^6.2.0",
