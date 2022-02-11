@@ -83,7 +83,7 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 				</div>
 				<ul tabIndex={-1} className="grid w-full grid-cols-3 gap-5 p-8">
 					{filteredPatterns.map((pattern, index) => {
-						const isChecked = isPatternSelected(pattern?.name);
+						const isChecked = isPatternSelected(pattern.name);
 
 						return (
 							<li
