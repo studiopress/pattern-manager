@@ -100,7 +100,9 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 									togglePatternSelected(pattern.name)
 								}
 							>
-								<h3>{pattern.title}</h3>
+								<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
+									{pattern.title}
+								</h3>
 								<LayoutPreview bodyHTML={pattern.content} />
 							</li>
 						);
