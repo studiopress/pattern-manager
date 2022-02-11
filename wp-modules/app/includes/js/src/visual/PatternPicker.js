@@ -80,27 +80,6 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 						placeholder={__('Search', 'fse-studio')}
 						className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-10 w-full !rounded-none !border-gray-300 !bg-gray-100 sm:text-sm"
 					/>
-
-					<ul>
-						<li className="mb-0 bg-wp-black p-4 font-medium text-white">
-							{__('Featured', 'fse-studio')}
-						</li>
-						<li className="mb-0 p-4 font-medium hover:bg-gray-100">
-							{__('Footers', 'fse-studio')}
-						</li>
-						<li className="mb-0 p-4 font-medium hover:bg-gray-100">
-							{__('Headers', 'fse-studio')}
-						</li>
-						<li className="mb-0 p-4 font-medium hover:bg-gray-100">
-							{__('Query', 'fse-studio')}
-						</li>
-						<li className="mb-0 p-4 font-medium hover:bg-gray-100">
-							{__('Pages', 'fse-studio')}
-						</li>
-						<li className="mb-0 p-4 font-medium hover:bg-gray-100">
-							{__('Buttons', 'fse-studio')}
-						</li>
-					</ul>
 				</div>
 				<ul tabIndex={-1} className="grid w-full grid-cols-3 gap-5 p-8">
 					{filteredPatterns.map((pattern, index) => {
