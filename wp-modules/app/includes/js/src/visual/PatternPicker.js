@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { LayoutPreview } from './ThemeEditor';
 import { searchItems } from '../non-visual/search-items';
 
 /**
@@ -121,6 +122,7 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 								}
 							>
 								<h3>{pattern.title}</h3>
+								<LayoutPreview bodyHTML={pattern.content} />
 							</li>
 						);
 					})}
