@@ -332,6 +332,7 @@ function ThemeManager({visible}) {
 function ThemeDataEditor({theme}) {
 	const { patterns } = useContext( FseStudioContext );
 	const [currentView, setCurrentView] = useState('theme_setup');
+	const [selectedPatterns, setSelectedPatterns] = useState({});
 	const views = [
 		{ name:  __( 'Theme Setup', 'fse-studio' ), slug: 'theme_setup', icon: file, current: true },
 		{ name:  __( 'Add Patterns', 'fse-studio' ), slug: 'add_patterns', icon: layout, current: false },
@@ -391,6 +392,8 @@ function ThemeDataEditor({theme}) {
 				<Modal title="Pick the patterns to include in this theme" onRequestClose={ () => { setCurrentView( 'theme_setup' ) } }>
 					<PatternPicker 
 						patterns={patterns.patterns}
+						selectedPatterns={selectedPatterns}
+						setSelectedPatterns={setSelectedPatterns}
 						selectMultiple={true}
 					/>
 				</Modal>

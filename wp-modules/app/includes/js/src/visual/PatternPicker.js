@@ -18,14 +18,19 @@ import { searchItems } from '../non-visual/search-items';
  * The pattern picker component.
  *
  * @param {{
- *  patterns: Pattern[]
+ *  patterns: Pattern[],
+ *  selectedPatterns: {[key: string]: boolean},
+ *  setSelectedPatterns: function({[key: string]: boolean}): void
  *  selectMultiple?: boolean
  * }} props
  * @return {React.ReactElement} The rendered component.
  */
-export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
-	const [singleCheckedPattern, setSingleCheckedPattern] = useState('');
-	const [checkedPatterns, setCheckedPatterns] = useState({});
+export function PatternPicker({
+	patterns: allPatterns,
+	selectedPatterns,
+	setSelectedPatterns,
+	selectMultiple
+}) {
 	const [searchValue, setSearchValue] = useState('');
 
 	const filteredPatterns = useMemo(() => {
@@ -39,15 +44,17 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 	 */
 	function togglePatternSelected(patternName) {
 		if (selectMultiple) {
-			setCheckedPatterns({
-				...checkedPatterns,
+			setSelectedPatterns({
+				...selectedPatterns,
 				[patternName]: !isPatternSelected(patternName),
 			});
 
 			return;
 		}
 
-		setSingleCheckedPattern(patternName);
+		setSelectedPatterns({
+			[patternName]: !isPatternSelected(patternName),
+		});
 	}
 
 	/**
@@ -57,11 +64,7 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 	 * @return {boolean} Whether the pattern is checked.
 	 */
 	function isPatternSelected(patternName) {
-		if (selectMultiple) {
-			return !!checkedPatterns[patternName];
-		}
-
-		return patternName === singleCheckedPattern;
+		return !!selectedPatterns[patternName];
 	}
 
 	return (
