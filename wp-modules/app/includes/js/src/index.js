@@ -35,9 +35,9 @@ import {
 } from './non-visual/non-visual-logic.js';
 
 
-import { PatternEditorApp } from './visual/PatternEditor';
-import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor';
-import { PatternPicker } from './visual/PatternPicker';
+import { PatternEditorApp } from './visual/PatternEditor.js';
+import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor.js';
+import { PatternPicker } from './visual/PatternPicker.js';
 
 const userNavigation = [
 	{ name: 'Your Profile', href: '#' },

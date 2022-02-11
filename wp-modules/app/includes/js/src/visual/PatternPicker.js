@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { LayoutPreview } from './ThemeEditor';
-import { searchItems } from '../non-visual/search-items';
+import { LayoutPreview } from './ThemeEditor.js';
+import { searchItems } from '../non-visual/search-items.js';
 
 /**
  * @typedef {Object} Pattern
