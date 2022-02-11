@@ -29,7 +29,7 @@ export function PatternPicker({
 	patterns: allPatterns,
 	selectedPatterns,
 	setSelectedPatterns,
-	selectMultiple
+	selectMultiple,
 }) {
 	const [searchValue, setSearchValue] = useState('');
 
