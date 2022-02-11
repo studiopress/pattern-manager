@@ -2,7 +2,7 @@
   "name": "blockmodule",
   "version": "1.0.0",
   "description": "A module for creating a block in WordPress.",
-  "main": "index.js",
+  "main": "includes/js/build/index.js",
   "scripts": {
     "build": "wp-scripts build includes/js/src/index.js --output-path=includes/js/build/",
     "check-engines": "wp-scripts check-engines",
@@ -31,6 +31,7 @@
     "tailwindcss": "^3.0.18"
   },
   "dependencies": {
+    "@fse-studio/components": "file:../components",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/forms": "^0.4.0",

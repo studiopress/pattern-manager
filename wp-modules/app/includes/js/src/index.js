@@ -23,6 +23,7 @@ import {
 	check,
 	download
 } from '@wordpress/icons';
+import { PatternPicker } from '@fse-studio/components';
 
 import {
 	FseStudioContext,
@@ -37,7 +38,7 @@ import {
 
 import { PatternEditorApp } from './visual/PatternEditor.js';
 import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor.js';
-import { PatternPicker } from './visual/PatternPicker.js';
+import { LayoutPreview } from './visual/ThemeEditor.js';
 
 const userNavigation = [
 	{ name: 'Your Profile', href: '#' },
@@ -394,6 +395,7 @@ function ThemeDataEditor({theme}) {
 						patterns={patterns.patterns}
 						selectedPatterns={selectedPatterns}
 						setSelectedPatterns={setSelectedPatterns}
+						layoutPreview={LayoutPreview}
 						selectMultiple={true}
 					/>
 				</Modal>
