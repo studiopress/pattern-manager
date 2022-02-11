@@ -93,7 +93,7 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 								aria-checked={isChecked}
 								className={
 									isChecked
-										? 'min-h-[300px] bg-gray-200 border-2 border-solid border-sky-500'
+										? 'min-h-[300px] border-2 border-solid border-sky-500 bg-gray-200'
 										: 'min-h-[300px] bg-gray-200'
 								}
 								onClick={() =>
