@@ -18,7 +18,7 @@ import { searchItems } from '../non-visual/search-items';
  * The pattern picker component.
  *
  * @param {{
- *  patterns: Pattern[],
+ *  patterns: {[key: string]: Pattern},
  *  selectedPatterns: {[key: string]: boolean},
  *  setSelectedPatterns: function({[key: string]: boolean}): void
  *  selectMultiple?: boolean
