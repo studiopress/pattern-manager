@@ -434,14 +434,16 @@ export function PatternEditor( props ) {
 											<ObserveTyping>
 												<div className="fsestudio-pattern-editor-columns">
 													<div className={ 'column' }>
-														<div className="edit-post-visual-editor editor-styles-wrapper">
+														
 															<Portal>
 																<div>
 																	{ renderPortalCssStyles() }
 																</div>
-																<BlockList />
+																<div className="edit-post-visual-editor editor-styles-wrapper">
+																	<BlockList />
+																</div>
 															</Portal>
-														</div>
+														
 														<div
 															style={ {
 																position: 'fixed',

@@ -32,6 +32,7 @@ import {
 	useThemeJsonFiles,
 	useCurrentThemeJsonFileData,
 	useCurrentView,
+	usePatternPreviewParts,
 } from './non-visual/non-visual-logic.js';
 
 
@@ -66,8 +67,9 @@ export function FseStudioApp() {
 				themeJsonFiles: useThemeJsonFiles( fsestudio.themeJsonFiles ),
 				currentThemeJsonFileData: useCurrentThemeJsonFileData(null),
 				siteUrl: fsestudio.siteUrl,
-				apiEndpiints: fsestudio.api_endpoints,
-				blockEditorSettings:  fsestudio.blockEditorSettings
+				apiEndpoints: fsestudio.api_endpoints,
+				blockEditorSettings:  fsestudio.blockEditorSettings,
+				patternPreviewParts: usePatternPreviewParts(),
 			} }
 		>
 			<FseStudio />

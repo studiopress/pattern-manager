@@ -54,9 +54,10 @@ function fse_studio_app() {
 				'savePatternEndpoint'        => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),
 				'getThemeEndpoint'           => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
 				'saveThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
-				'getThemeJsonFileEndpoint'   => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
-				'saveThemeJsonFileEndpoint'  => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
-				'getGlobalStylesCssEndpoint' => get_rest_url( false, 'fsestudio/v1/get-global-styles-css/' ),
+				'getThemeJsonFileEndpoint'       => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
+				'saveThemeJsonFileEndpoint'      => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
+				'getGlobalStylesCssEndpoint'     => get_rest_url( false, 'fsestudio/v1/get-global-styles-css/' ),
+				'getFrontendPreviewPartsEndpoint' => get_rest_url( false, 'fsestudio/v1/get-frontend-preview-parts/' ),
 			),
 			'siteUrl'            => get_bloginfo( 'url' ),
 			'defaultPostId'      => null,
@@ -125,13 +126,6 @@ function fse_studio_block_editor_init() {
 	);
 	$editor_settings      = get_block_editor_settings( $custom_settings, $block_editor_context );
 
-	if ( isset( $_GET['postType'] ) && ! isset( $_GET['postId'] ) ) {
-		$post_type = get_post_type_object( $_GET['postType'] );
-		if ( ! $post_type ) {
-			wp_die( __( 'Invalid post type.' ) );
-		}
-	}
-
 	$active_global_styles_id = \WP_Theme_JSON_Resolver::get_user_global_styles_post_id();
 	$active_theme            = wp_get_theme()->get_stylesheet();
 	$preload_paths           = array(
@@ -161,12 +155,6 @@ function fse_studio_block_editor_init() {
 		'wp-blocks',
 		'wp.blocks.unstable__bootstrapServerSideBlockDefinitions(' . wp_json_encode( get_block_editor_server_block_settings() ) . ');'
 	);
-
-	//wp_add_inline_script(
-		//'wp-blocks',
-		//sprintf( 'wp.blocks.setCategories( %s );', wp_json_encode( get_block_categories( $post ) ) ),
-		//'after'
-	//);
 
 	wp_enqueue_script( 'wp-edit-site' );
 	wp_enqueue_script( 'wp-format-library' );
