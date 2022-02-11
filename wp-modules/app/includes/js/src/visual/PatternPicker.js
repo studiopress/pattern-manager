@@ -1,7 +1,8 @@
 // @ts-check
 
-import { useState } from '@wordpress/element';
+import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { searchItems } from '@wordpress/block-editor/build-module/components/inserter/search-items';
 
 /**
  * @typedef {Object} Pattern
@@ -21,9 +22,14 @@ import { __ } from '@wordpress/i18n';
  * }} props
  * @return {React.ReactElement} The rendered component.
  */
-export function PatternPicker({ patterns, selectMultiple }) {
+export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 	const [singleCheckedPattern, setSingleCheckedPattern] = useState('');
 	const [checkedPatterns, setCheckedPatterns] = useState({});
+	const [searchValue, setSearchValue] = useState('');
+
+	const filteredPatterns = useMemo(() => {
+		return searchItems(allPatterns, searchValue);
+	}, [searchValue, allPatterns]);
 
 	/**
 	 * Sets the pattern to selected.
@@ -65,6 +71,8 @@ export function PatternPicker({ patterns, selectMultiple }) {
 			<div className="flex">
 				<div className="w-72 p-8">
 					<input
+						value={searchValue}
+						onChange={(event) => setSearchValue(event.target.value)}
 						type="text"
 						name="search"
 						id="search"
@@ -94,7 +102,7 @@ export function PatternPicker({ patterns, selectMultiple }) {
 					</ul>
 				</div>
 				<ul tabIndex={-1} className="grid w-full grid-cols-3 gap-5 p-8">
-					{Object.values(patterns).map((pattern, index) => {
+					{Object.values(filteredPatterns).map((pattern, index) => {
 						const isChecked = isPatternSelected(pattern?.name);
 
 						return (
