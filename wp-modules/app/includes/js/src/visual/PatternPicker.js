@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { searchItems } from '@wordpress/block-editor/build-module/components/inserter/search-items';
+import { searchItems } from '../non-visual/search-items';
 
 /**
  * @typedef {Object} Pattern
@@ -28,7 +28,7 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 	const [searchValue, setSearchValue] = useState('');
 
 	const filteredPatterns = useMemo(() => {
-		return searchItems(allPatterns, searchValue);
+		return searchItems(Object.values(allPatterns), searchValue);
 	}, [searchValue, allPatterns]);
 
 	/**
@@ -102,7 +102,7 @@ export function PatternPicker({ patterns: allPatterns, selectMultiple }) {
 					</ul>
 				</div>
 				<ul tabIndex={-1} className="grid w-full grid-cols-3 gap-5 p-8">
-					{Object.values(filteredPatterns).map((pattern, index) => {
+					{filteredPatterns.map((pattern, index) => {
 						const isChecked = isPatternSelected(pattern?.name);
 
 						return (
