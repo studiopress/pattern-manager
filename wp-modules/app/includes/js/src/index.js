@@ -176,7 +176,7 @@ function FseStudio() {
 												currentView.currentView
 												? 'bg-wp-blue text-white hover:text-white'
 												: 'text-white opacity-70 hover:text-white hover:opacity-100',
-											'group flex items-center px-4 py-2 text-sm font-medium rounded-sm'
+											'group flex items-center px-4 py-2 text-sm font-medium rounded-sm w-full'
 										) }
 									>
 										<Icon
