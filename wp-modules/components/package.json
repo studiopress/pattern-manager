@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Components for FSE Studio.",
   "main": "build/index.js",
-  "module": "build-module/index.js",
   "scripts": {
     "build": "wp-scripts build",
     "format": "wp-scripts format",
