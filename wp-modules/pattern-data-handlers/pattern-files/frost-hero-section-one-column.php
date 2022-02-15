@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Section with image, text, buttons.', 'frost' ),
+	'title'         => __( 'Section with image, text, buttons.', 'fse-studio' ),
 	'name'          => 'frost-hero-section-one-column',
 	'categories'    => array( 'frost-hero-section' ),
 	'viewportWidth' => 1280,

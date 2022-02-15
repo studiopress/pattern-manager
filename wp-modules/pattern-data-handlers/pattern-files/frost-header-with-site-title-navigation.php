@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Header with site title, navigation.', 'frost' ),
+	'title'         => __( 'Header with site title, navigation.', 'fse-studio' ),
 	'name'          => 'frost-header-with-site-title-navigation',
 	'categories'    => array( 'frost-call-to-action' ),
 	'viewportWidth' => 1280,

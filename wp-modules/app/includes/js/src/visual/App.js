@@ -2,9 +2,8 @@
  * FseStudio App
  */
 
-const { __ } = wp.i18n;
+/* global fsestudio */
 
-import '@wordpress/core-data';
 import { useContext } from '@wordpress/element';
 import { PatternEditorApp } from './PatternEditor.js';
 import { ThemeEditorApp } from './ThemeEditor.js';
@@ -16,7 +15,6 @@ import {
 	useThemeJsonFiles,
 	useCurrentView,
 } from './../non-visual/non-visual-logic.js';
-import { FseStudioHeader } from './Header.js';
 
 export function FseStudioApp() {
 	return (

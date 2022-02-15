@@ -69,7 +69,7 @@ function get_frontend_preview_parts( $request ) {
  */
 function get_wp_head() {
 	ob_start();
-	do_action( 'wp_head' );
+	do_action( 'wp_head' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	return ob_get_clean();
 }
 
@@ -80,7 +80,7 @@ function get_wp_head() {
  */
 function get_wp_footer() {
 	ob_start();
-	do_action( 'wp_footer' );
+	do_action( 'wp_footer' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	return ob_get_clean();
 }
 

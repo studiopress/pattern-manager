@@ -5,9 +5,11 @@
 const { __ } = wp.i18n;
 
 export function classNameRequired( block ) {
+	/* eslint-disable */
 	console.log(
 		__( 'Testing Class Name Required for ', 'genesisstudio' ) + block.name
 	);
+	/* eslint-enable */
 
 	// Only the genesis-blocks/gb-columns block requires a class name
 	if ( block.name !== 'genesis-blocks/gb-columns' ) {

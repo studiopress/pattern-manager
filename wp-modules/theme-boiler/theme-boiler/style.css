@@ -17,6 +17,7 @@ Frost WordPress Theme, (C) 2022 WP Engine.
 Frost is distributed under the terms of the GNU GPL.
 */
 
+/* stylelint-disable */
 
 /* Defaults
 ---------------------------------------------------------------------------- */
@@ -692,3 +693,5 @@ textarea {
 	box-shadow: 0 0 50px rgb(0 0 0 / 10%);
 	margin-bottom: 30px !important;
 }
+
+/* stylelint-enable */

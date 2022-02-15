@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Sample link page.', 'frost' ),
+	'title'         => __( 'Sample link page.', 'fse-studio' ),
 	'name'          => 'frost-sample-link-page',
 	'categories'    => array( 'frost-call-to-action' ),
 	'viewportWidth' => 1280,
