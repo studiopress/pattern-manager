@@ -23,7 +23,7 @@ import {
 	check,
 	download
 } from '@wordpress/icons';
-import { PatternPicker } from '@fse-studio/components';
+import PatternPicker from '@fse-studio/pattern-picker';
 
 import {
 	FseStudioContext,
