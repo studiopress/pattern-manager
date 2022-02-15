@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Podcast episode with media, text.', 'frost' ),
+	'title'         => __( 'Podcast episode with media, text.', 'fse-studio' ),
 	'name'          => 'frost-podcast-episode-black-background',
 	'categories'    => array( 'frost-podcast-episode' ),
 	'viewportWidth' => 1280,

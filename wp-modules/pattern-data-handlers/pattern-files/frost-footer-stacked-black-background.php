@@ -6,7 +6,7 @@
  */
 
 return array(
-	'title'         => __( 'Footer with heading, text, button.', 'frost' ),
+	'title'         => __( 'Footer with heading, text, button.', 'fse-studio' ),
 	'name'          => 'frost-footer-stacked-black-background',
 	'categories'    => array( 'frost-footer' ),
 	'viewportWidth' => 1280,

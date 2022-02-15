@@ -44,9 +44,8 @@ function get_patterns() {
 	$patterns = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data         = require $path;
-		$pattern_data['name'] = basename( $path, '.php' );
-		// $pattern_data['content'] = serialize_blocks( $pattern_data['content'] );
+		$pattern_data                          = require $path;
+		$pattern_data['name']                  = basename( $path, '.php' );
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 
@@ -69,7 +68,7 @@ function update_pattern( $pattern ) {
 	$plugin_dir     = $wp_content_dir . 'plugins/fse-studio/';
 	$patterns_dir   = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
 
-	$file_contents = contruct_pattern_php_file_contents( $pattern, 'frost' );
+	$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
 
 	// Convert the collection array into a file, and place it.
 	$pattern_file_created = $wp_filesystem->put_contents(
@@ -116,29 +115,5 @@ return array(
  * @return bool
  */
 function prepare_content( $pattern_html, $text_domain ) {
-	// $blocks_array = parse_blocks( $pattern_html );
-
-	// First, escape any single apostophes. We do this first because localization will break out of the string and we don't want to escape those.
-	// $pattern_html = addcslashes( $pattern_html, "'" );
-
-	// Select any text inside an anchor tag that needs to be localized.
-	// preg_match_all( '/<a(.*?)>\K(.*?)(?:(?!<\/a>).)*/', $pattern_html, $output_array );
-
-	// Loop through each anchor tag and localize it's contents.
-	// foreach ( $output_array[0] as $string_to_localize ) {
-		// $pattern_html = str_replace( $string_to_localize, "' . esc_html__( '" . $string_to_localize . "', '" . $text_domain  . "' ) . '", $pattern_html );
-	// }
-
-	// Select any text inside an paragraph tag that needs to be localized.
-	// Commented out because a tags often site inside p tags and create adouble escape. Need to fix regex.
-
-	// preg_match_all( '/<p(.*?)>\K(.*?)(?:(?!<\/p>).)*/', $pattern_html, $output_array );
-
-	// Loop through each anchor tag and localize it's contents.
-	// foreach ( $output_array[0] as $string_to_localize ) {
-	// $pattern_html = str_replace( $string_to_localize, "' . esc_html__( '" . $string_to_localize . "', '" . $text_domain  . "' ) . '", $pattern_html );
-	// }
-
-	// return var_export( $blocks_array, true );
 	return $pattern_html;
 }
