@@ -16,6 +16,7 @@ jobs:
             sh phpcs.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
       - run:
           name: Linting JS and CSS
+          working_directory: plugins/fse-studio
           command: |
             npm run installation
             cd wp-plugin-sidekick/wp-modules/linter
