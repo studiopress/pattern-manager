@@ -45,27 +45,29 @@ import { Portal } from './Portal.js';
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 
-export function PatternEditorApp({ visible }) {
-	const { patterns } = useContext(FseStudioContext);
-	const [currentPatternId, setCurrentPatternId] = useState();
-	const pattern = usePatternData(currentPatternId);
-	const [errors, setErrors] = useState(false);
-	const [errorModalOpen, setErrorModalOpen] = useState(false);
+export function PatternEditorApp( { visible } ) {
+	const { patterns } = useContext( FseStudioContext );
+	const [ currentPatternId, setCurrentPatternId ] = useState();
+	const pattern = usePatternData( currentPatternId );
+	const [ errors, setErrors ] = useState( false );
+	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 
 	function renderPatternSelector() {
 		const renderedPatterns = [];
 
 		renderedPatterns.push(
-			<option key={1}>{__('Choose a pattern', 'fse-studio')}</option>
+			<option key={ 1 }>
+				{ __( 'Choose a pattern', 'fse-studio' ) }
+			</option>
 		);
 
 		let counter = 3;
 
-		for (const thisPattern in patterns.patterns) {
-			const patternInQuestion = patterns.patterns[thisPattern];
+		for ( const thisPattern in patterns.patterns ) {
+			const patternInQuestion = patterns.patterns[ thisPattern ];
 			renderedPatterns.push(
-				<option key={counter} value={thisPattern}>
-					{patternInQuestion.title}
+				<option key={ counter } value={ thisPattern }>
+					{ patternInQuestion.title }
 				</option>
 			);
 			counter++;
@@ -74,41 +76,43 @@ export function PatternEditorApp({ visible }) {
 		return (
 			<>
 				<select
-					value={currentPatternId}
-					onChange={(event) => {
-						setCurrentPatternId(event.target.value);
-					}}
+					value={ currentPatternId }
+					onChange={ ( event ) => {
+						setCurrentPatternId( event.target.value );
+					} }
 				>
-					{renderedPatterns}
+					{ renderedPatterns }
 				</select>
 			</>
 		);
 	}
 
 	function renderPatternEditorWhenReady() {
-		if (pattern.data) {
-			return <PatternEditor pattern={pattern} setErrors={setErrors} />;
+		if ( pattern.data ) {
+			return (
+				<PatternEditor pattern={ pattern } setErrors={ setErrors } />
+			);
 		}
 		return '';
 	}
 
-	function formatErrorMessage(testResult) {
+	function formatErrorMessage( testResult ) {
 		const output = [];
 		let counter = 0;
-		for (const error in testResult.errors) {
+		for ( const error in testResult.errors ) {
 			counter++;
-			const errorTitle = testResult.errors[error].errorTitle;
-			const errorMessage = testResult.errors[error].errorMessage;
-			const block = testResult.errors[error].block;
+			const errorTitle = testResult.errors[ error ].errorTitle;
+			const errorMessage = testResult.errors[ error ].errorMessage;
+			const block = testResult.errors[ error ].block;
 			const invalidValue =
-				'Invalid Value: ' + testResult.errors[error].invalidValue;
+				'Invalid Value: ' + testResult.errors[ error ].invalidValue;
 			output.push(
-				<div key={counter}>
-					<h2>Error: {errorTitle}</h2>
-					<h2>{errorMessage}</h2>
-					<h4>Pattern: {testResult.pattern}</h4>
-					<p>Block: {block.name}</p>
-					<p>{invalidValue}</p>
+				<div key={ counter }>
+					<h2>Error: { errorTitle }</h2>
+					<h2>{ errorMessage }</h2>
+					<h4>Pattern: { testResult.pattern }</h4>
+					<p>Block: { block.name }</p>
+					<p>{ invalidValue }</p>
 				</div>
 			);
 		}
@@ -117,7 +121,7 @@ export function PatternEditorApp({ visible }) {
 	}
 
 	function maybeRenderErrors() {
-		if (errors && !errors?.success) {
+		if ( errors && ! errors?.success ) {
 			/* eslint-disable */
 			console.log( errors );
 			/* eslint-enable */
@@ -125,29 +129,29 @@ export function PatternEditorApp({ visible }) {
 				<div>
 					<span>Errors </span>
 					<button
-						onClick={() => {
-							setErrorModalOpen(true);
-						}}
+						onClick={ () => {
+							setErrorModalOpen( true );
+						} }
 					>
-						{Object.keys(errors?.errors).length}
+						{ Object.keys( errors?.errors ).length }
 					</button>
-					{(() => {
-						if (errorModalOpen) {
+					{ ( () => {
+						if ( errorModalOpen ) {
 							return (
 								<Modal
-									title={__(
+									title={ __(
 										'Errors in pattern',
 										'fse-studio'
-									)}
-									onRequestClose={() =>
-										setErrorModalOpen(false)
+									) }
+									onRequestClose={ () =>
+										setErrorModalOpen( false )
 									}
 								>
-									{formatErrorMessage(errors)}
+									{ formatErrorMessage( errors ) }
 								</Modal>
 							);
 						}
-					})()}
+					} )() }
 				</div>
 			);
 		}
@@ -157,77 +161,62 @@ export function PatternEditorApp({ visible }) {
 	return (
 		<div hidden={!visible} className="fsestudio-pattern-work-area">
 			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+			
 				<div className="flex-1 flex">
 					<div className="flex w-full p-3 gap-5">
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={layout}
-								size={26}
-							/>{' '}
-							{__('Browse Patterns', 'fse-studio')}
+							<Icon className='text-white fill-current mr-2' icon={ layout } size={ 26 }/> { __( 'Browse Patterns', 'fse-studio' ) }
 						</button>
 
-						{renderPatternSelector()}
-						{maybeRenderErrors()}
+						{ renderPatternSelector() }
+						{ maybeRenderErrors() }
 					</div>
 				</div>
 			</div>
 
 			<div className="max-w-7xl mx-auto bg-white mt-20">
-				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-					{__('Pattern Manager', 'fse-studio')}
-				</h1>
+				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">{ __( 'Pattern Manager', 'fse-studio' ) }</h1>
 				<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
-					<p className="text-base mb-4 max-w-3xl">
-						{__(
-							'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
-							'fse-studio'
-						)}
-					</p>
+					<p className="text-base mb-4 max-w-3xl">{ __( 'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.', 'fse-studio' ) }</p>
 					<div className="bg-[#F8F8F8] p-20 w-full text-center">
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={layout}
-								size={26}
-							/>{' '}
-							{__('Browse Patterns', 'fse-studio')}
+							<Icon className='text-white fill-current mr-2' icon={ layout } size={ 26 }/> { __( 'Browse Patterns', 'fse-studio' ) }
 						</button>
 					</div>
 				</div>
 			</div>
 
-			{renderPatternEditorWhenReady()}
+			{ renderPatternEditorWhenReady() }
 		</div>
 	);
 }
 
-export function PatternEditor(props) {
-	const { blockEditorSettings, currentThemeJsonFileData } =
-		useContext(FseStudioContext);
+export function PatternEditor( props ) {
+	const { blockEditorSettings, currentThemeJsonFileData } = useContext(
+		FseStudioContext
+	);
 	const pattern = props.pattern;
 
-	const [blocks, updateBlocks] = useState([
+	const [ blocks, updateBlocks ] = useState( [
 		parseBlocks(
 			pattern?.data?.content
 				? pattern?.data?.content
 				: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
 		),
-	]);
+	] );
 
-	const [serializedBlocks, updateSerializedBlocks] = useState();
+	const [ serializedBlocks, updateSerializedBlocks ] = useState();
 
-	const [currentView, setCurrentView] = useState('blockEditor'); //Other option is "frontend"
-	const [editorWidth, setEditorWidth] = useState('100%');
+	const [ currentView, setCurrentView ] = useState( 'blockEditor' ); //Other option is "frontend"
+	const [ editorWidth, setEditorWidth ] = useState( '100%' );
 
-	useEffect(() => {
+	useEffect( () => {
 		// If the pattern prop changes to a new pattern, reset the blocks in the editor to be that pattern's blocks.
 		updateBlocks(
 			parse(
@@ -236,21 +225,23 @@ export function PatternEditor(props) {
 					: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
 			)
 		);
-		props.setErrors(false);
-	}, [pattern?.data?.name]);
+		props.setErrors( false );
+	}, [ pattern?.data?.name ] );
 
 	// When blocks are changed in the block editor, update them in their corresponding files as well.
-	useEffect(() => {
-		props.setErrors(testPatternForErrors(blocks));
+	useEffect( () => {
+		props.setErrors( testPatternForErrors( blocks ) );
 
-		pattern.set({
+		pattern.set( {
 			...pattern.data,
-			content: serialize(blocks[0]),
-		});
-	}, [blocks]);
+			content: serialize( blocks[ 0 ] ),
+		} );
+	}, [ blocks ] );
 
 	function getEditorSettings() {
-		const editorSettings = JSON.parse(JSON.stringify(blockEditorSettings));
+		const editorSettings = JSON.parse(
+			JSON.stringify( blockEditorSettings )
+		);
 
 		// Make media library work.
 		editorSettings.mediaUploadCheck = MediaUploadCheck;
@@ -265,24 +256,24 @@ export function PatternEditor(props) {
 		const renderedStyles = [
 			<div
 				key="inline-style-from-block-editor"
-				dangerouslySetInnerHTML={{
+				dangerouslySetInnerHTML={ {
 					__html: blockEditorSettings.__unstableResolvedAssets.styles,
-				}}
+				} }
 			/>,
 		];
 
-		for (const style in blockEditorSettings.styles) {
+		for ( const style in blockEditorSettings.styles ) {
 			renderedStyles.push(
-				<style key={style}>
-					{blockEditorSettings.styles[style].css}
+				<style key={ style }>
+					{ blockEditorSettings.styles[ style ].css }
 				</style>
 			);
 		}
 
-		if (currentThemeJsonFileData?.value?.renderedGlobalStyles) {
+		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
 			renderedStyles.push(
-				<style key={'renderedGlobalStyles'}>
-					{currentThemeJsonFileData.value.renderedGlobalStyles}
+				<style key={ 'renderedGlobalStyles' }>
+					{ currentThemeJsonFileData.value.renderedGlobalStyles }
 				</style>
 			);
 		}
@@ -290,12 +281,12 @@ export function PatternEditor(props) {
 		return renderedStyles;
 	}
 
-	if (!pattern.data) {
+	if ( ! pattern.data ) {
 		return 'Select a pattern to edit it here';
 	}
 
-	function getViewToggleClassName(toggleInQuestion) {
-		if (currentView === toggleInQuestion) {
+	function getViewToggleClassName( toggleInQuestion ) {
+		if ( currentView === toggleInQuestion ) {
 			return ' fsestudio-active-tab';
 		}
 
@@ -305,74 +296,75 @@ export function PatternEditor(props) {
 	return (
 		<div className="fsestudio-pattern-editor">
 			<div
-				style={{ display: 'none' }}
+				style={ { display: 'none' } }
 				className="fsestudio-editor-header"
 			>
 				<div className="fsestudio-pattern-image"></div>
 				<div className="fsestudio-pattern-name">
-					<h2>{pattern.data.name}</h2>
+					<h2>{ pattern.data.name }</h2>
 				</div>
 				<div className="fsestudio-pattern-tabs">
 					<button
 						className={
 							'fsestudio-tab' +
-							getViewToggleClassName('blockEditor')
+							getViewToggleClassName( 'blockEditor' )
 						}
-						onClick={() => {
-							setCurrentView('blockEditor');
-						}}
+						onClick={ () => {
+							setCurrentView( 'blockEditor' );
+						} }
 					>
 						Block Editor
 					</button>
 					<button
 						className={
 							'fsestudio-tab' +
-							getViewToggleClassName('codeEditor')
+							getViewToggleClassName( 'codeEditor' )
 						}
-						onClick={() => {
-							setCurrentView('codeEditor');
-						}}
+						onClick={ () => {
+							setCurrentView( 'codeEditor' );
+						} }
 					>
 						Code Editor
 					</button>
 					<button
 						className={
-							'fsestudio-tab' + getViewToggleClassName('frontend')
+							'fsestudio-tab' +
+							getViewToggleClassName( 'frontend' )
 						}
-						onClick={() => {
-							setCurrentView('frontend');
-						}}
+						onClick={ () => {
+							setCurrentView( 'frontend' );
+						} }
 					>
 						Frontend Preview
 					</button>
 					<select
-						onChange={(event) => {
-							setEditorWidth(event.target.value);
-						}}
-						value={editorWidth}
+						onChange={ ( event ) => {
+							setEditorWidth( event.target.value );
+						} }
+						value={ editorWidth }
 					>
-						<option value={'100%'}>Desktop</option>
-						<option value={'320px'}>320px (iPhone 5/SE)</option>
-						<option value={'375px'}>375px (iPhone X)</option>
-						<option value={'768px'}>768px (iPad)</option>
-						<option value={'1024px'}>1024px (iPad Pro)</option>
+						<option value={ '100%' }>Desktop</option>
+						<option value={ '320px' }>320px (iPhone 5/SE)</option>
+						<option value={ '375px' }>375px (iPhone X)</option>
+						<option value={ '768px' }>768px (iPad)</option>
+						<option value={ '1024px' }>1024px (iPad Pro)</option>
 					</select>
 				</div>
 			</div>
 			<div className="fsestudio-pattern-editor-body">
 				<div
 					className="fsestudio-pattern-editor-view"
-					style={{
+					style={ {
 						display:
 							currentView === 'codeEditor' ? 'block' : 'none',
-					}}
+					} }
 				>
 					<button
 						className="button"
-						onClick={() => {
+						onClick={ () => {
 							try {
-								parse(serializedBlocks);
-							} catch (error) {
+								parse( serializedBlocks );
+							} catch ( error ) {
 								/* eslint-disable */
 								alert(
 									'Invalid block content. Please check your code to make sure it is valid.'
@@ -381,46 +373,46 @@ export function PatternEditor(props) {
 								return;
 							}
 
-							updateBlocks(parse(serializedBlocks));
-						}}
+							updateBlocks( parse( serializedBlocks ) );
+						} }
 					>
-						{__('Done Editing', 'fse-studio')}
+						{ __( 'Done Editing', 'fse-studio' ) }
 					</button>
 					<textarea
-						style={{
+						style={ {
 							width: '100%',
 							height: '90%',
-						}}
-						value={serializedBlocks}
-						onChange={(event) => {
-							updateSerializedBlocks(event.target.value);
-						}}
+						} }
+						value={ serializedBlocks }
+						onChange={ ( event ) => {
+							updateSerializedBlocks( event.target.value );
+						} }
 					/>
 				</div>
 
 				<div
 					className="fsestudio-pattern-editor-view"
-					style={{
+					style={ {
 						display:
 							currentView === 'blockEditor' ? 'block' : 'none',
-					}}
+					} }
 				>
 					<ShortcutProvider>
 						<BlockEditorProvider
-							value={blocks}
-							onChange={updateBlocks}
-							onInput={updateBlocks}
-							settings={getEditorSettings()}
+							value={ blocks }
+							onChange={ updateBlocks }
+							onInput={ updateBlocks }
+							settings={ getEditorSettings() }
 						>
 							<SlotFillProvider>
 								<BlockTools>
 									<WritingFlow>
 										<ObserveTyping>
 											<div className="fsestudio-pattern-editor-columns">
-												<div className={'column'}>
+												<div className={ 'column' }>
 													<Portal>
 														<div>
-															{renderPortalCssStyles()}
+															{ renderPortalCssStyles() }
 														</div>
 														<div className="edit-post-visual-editor editor-styles-wrapper">
 															<BlockList />
@@ -428,7 +420,7 @@ export function PatternEditor(props) {
 													</Portal>
 
 													<div
-														style={{
+														style={ {
 															position: 'fixed',
 															bottom: '0px',
 															width: '100%',
@@ -436,12 +428,12 @@ export function PatternEditor(props) {
 																'#fff',
 															padding: '4px',
 															zIndex: '999',
-														}}
+														} }
 													>
 														<BlockBreadcrumb />
 													</div>
 												</div>
-												<div className={'column'}>
+												<div className={ 'column' }>
 													<BlockInspector />
 												</div>
 											</div>
@@ -458,9 +450,9 @@ export function PatternEditor(props) {
 	);
 }
 
-function parseBlocks(blocksToParse) {
-	if (parse(blocksToParse)) {
-		return parse(blocksToParse);
+function parseBlocks( blocksToParse ) {
+	if ( parse( blocksToParse ) ) {
+		return parse( blocksToParse );
 	}
 	/* eslint-disable */
 	console.log(
@@ -469,5 +461,5 @@ function parseBlocks(blocksToParse) {
 		parse( blocksToParse )
 	);
 	/* eslint-enable */
-	return parse(blocksToParse);
+	return parse( blocksToParse );
 }

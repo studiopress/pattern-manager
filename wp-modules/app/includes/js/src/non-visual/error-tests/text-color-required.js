@@ -4,7 +4,7 @@
 
 const { __ } = wp.i18n;
 
-export function textColorRequired(block) {
+export function textColorRequired( block ) {
 	/* eslint-disable */
 	console.log(
 		__( 'Testing Text Color Required for ', 'genesisstudio' ) + block.name
@@ -12,15 +12,15 @@ export function textColorRequired(block) {
 	/* eslint-enable */
 
 	// Only the genesis-blocks/gb-columns block requires a text color.
-	if (block.name !== 'genesis-blocks/gb-columns') {
+	if ( block.name !== 'genesis-blocks/gb-columns' ) {
 		return {
 			success: true,
 		};
 	}
 
-	for (const attribute in block.attributes) {
+	for ( const attribute in block.attributes ) {
 		// If this block has the customBackgroundColor attribute, return success.
-		if (attribute === 'customTextColor') {
+		if ( attribute === 'customTextColor' ) {
 			return {
 				success: true,
 			};
@@ -31,7 +31,7 @@ export function textColorRequired(block) {
 	return {
 		success: false,
 		errorCode: 'text_color_not_found',
-		errorTitle: __('Text Color Required', 'genesisstudio'),
+		errorTitle: __( 'Text Color Required', 'genesisstudio' ),
 		errorMessage: __(
 			'All top-level blocks must have a text color applied.',
 			'genesisstudio'
