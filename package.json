@@ -1,9 +1,10 @@
 {
-	"name": "plugin-boiler",
+	"name": "fse-studio",
 	"version": "1.0.0",
+	"license": "GPLv2",
 	"repository": {
 		"type": "git",
-		"url": ""
+		"url": "https://github.com/studiopress/fse-studio"
 	},
 	"scripts": {
 		"installation": "sh ./.scripts/install.sh",
