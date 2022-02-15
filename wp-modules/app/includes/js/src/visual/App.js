@@ -19,14 +19,14 @@ import {
 export function FseStudioApp() {
 	return (
 		<FseStudioContext.Provider
-			value={ {
-				currentView: useCurrentView( { currentView: '' } ),
-				patterns: usePatterns( fsestudio.patterns ),
-				themes: useThemes( { themes: fsestudio.themes } ),
-				themeJsonFiles: useThemeJsonFiles( fsestudio.themeJsonFiles ),
+			value={{
+				currentView: useCurrentView({ currentView: '' }),
+				patterns: usePatterns(fsestudio.patterns),
+				themes: useThemes({ themes: fsestudio.themes }),
+				themeJsonFiles: useThemeJsonFiles(fsestudio.themeJsonFiles),
 				siteUrl: fsestudio.siteUrl,
 				apiEndpiints: fsestudio.api_endpoints,
-			} }
+			}}
 		>
 			<FseStudio />
 		</FseStudioContext.Provider>
@@ -34,25 +34,25 @@ export function FseStudioApp() {
 }
 
 function FseStudio() {
-	const { currentView } = useContext( FseStudioContext );
+	const { currentView } = useContext(FseStudioContext);
 
 	function renderEditor() {
-		if ( 'themejson' === currentView.currentView ) {
+		if ('themejson' === currentView.currentView) {
 			return <ThemeJsonEditorApp />;
 		}
 
-		if ( 'themes' === currentView.currentView ) {
+		if ('themes' === currentView.currentView) {
 			return <ThemeEditorApp />;
 		}
 
-		if ( 'patterns' === currentView.currentView ) {
+		if ('patterns' === currentView.currentView) {
 			return <PatternEditorApp />;
 		}
 
-		if ( 'customblocks' === currentView.currentView ) {
+		if ('customblocks' === currentView.currentView) {
 			return (
-				<h1 style={ { margin: '50px' } }>
-					{ 'Imagine the Custom Blocks editor here.' }
+				<h1 style={{ margin: '50px' }}>
+					{'Imagine the Custom Blocks editor here.'}
 				</h1>
 			);
 		}
@@ -61,9 +61,9 @@ function FseStudio() {
 	return (
 		<div className="fsestudio">
 			<div className="fsestudio-header">
-				<div style={ { textAlign: 'center' } }>
+				<div style={{ textAlign: 'center' }}>
 					<span
-						style={ { display: 'inline-block', fontWeight: '700' } }
+						style={{ display: 'inline-block', fontWeight: '700' }}
 					>
 						FSE Theme Manager
 					</span>
@@ -71,31 +71,31 @@ function FseStudio() {
 				<div className="fsestudio-controls">
 					<button
 						className="button"
-						onClick={ () => {
-							currentView.set( 'themes' );
-						} }
+						onClick={() => {
+							currentView.set('themes');
+						}}
 					>
 						FSE Themes
 					</button>
 					<button
 						className="button"
-						onClick={ () => {
-							currentView.set( 'patterns' );
-						} }
+						onClick={() => {
+							currentView.set('patterns');
+						}}
 					>
 						Patterns
 					</button>
 					<button
 						className="button"
-						onClick={ () => {
-							currentView.set( 'themejson' );
-						} }
+						onClick={() => {
+							currentView.set('themejson');
+						}}
 					>
 						Theme JSON Files
 					</button>
 				</div>
 			</div>
-			{ renderEditor() }
+			{renderEditor()}
 		</div>
 	);
 }
