@@ -15,15 +15,18 @@ import { searchItems } from './searchItems.js';
  */
 
 /**
+ * @typedef {Object} PatternPickerProps
+ * @property {Object.<string, Pattern>} patterns
+ * @property {Object.<string, boolean>} selectedPatterns
+ * @property {function({[key: string]: boolean}): void} setSelectedPatterns
+ * @property {Function} layoutPreview
+ * @property {boolean} selectMultiple
+ */
+
+/**
  * The pattern picker component.
  *
- * @param {{
- *  patterns: Record<string, Pattern>,
- *  selectedPatterns: Record<string, boolean>,
- *  setSelectedPatterns: Function,
- *  layoutPreview: Function,
- *  selectMultiple?: boolean
- * }} props The component props.
+ * @param {PatternPickerProps} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
 export default function PatternPicker( {
