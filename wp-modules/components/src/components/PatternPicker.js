@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { searchItems } from './searchItems.js';
+import { searchItems } from '../utils/searchItems.js';
 
 /**
  * @typedef {Object} Pattern
@@ -15,18 +15,15 @@ import { searchItems } from './searchItems.js';
  */
 
 /**
- * @typedef {Object} PatternPickerProps
- * @property {Object.<string, Pattern>} patterns
- * @property {Object.<string, boolean>} selectedPatterns
- * @property {function({[key: string]: boolean}): void} setSelectedPatterns
- * @property {Function} layoutPreview
- * @property {boolean} selectMultiple
- */
-
-/**
  * The pattern picker component.
  *
- * @param {PatternPickerProps} props The component props.
+ * @param {{
+ *  patterns: {[key: string]: Pattern},
+ *  selectedPatterns: {[key: string]: boolean},
+ *  setSelectedPatterns: function({[key: string]: boolean}): void,
+ *  layoutPreview: function,
+ *  selectMultiple?: boolean,
+ * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
 export default function PatternPicker( {

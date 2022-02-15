@@ -391,7 +391,7 @@ function ThemeDataEditor({theme}) {
 		if ( currentView === 'add_patterns' ) {
 			return (
 				<Modal title="Pick the patterns to include in this theme" onRequestClose={ () => { setCurrentView( 'theme_setup' ) } }>
-					<PatternPicker
+					<PatternPicker 
 						patterns={patterns.patterns}
 						selectedPatterns={selectedPatterns}
 						setSelectedPatterns={setSelectedPatterns}

@@ -1,1 +1,1 @@
-export { default as PatternPicker } from './PatternPicker';
+export { default as PatternPicker } from './components/PatternPicker';
