@@ -6,14 +6,13 @@ const { __ } = wp.i18n;
 
 import Select from 'react-select';
 
-import { Modal } from '@wordpress/components';
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+import { useContext, useState, useRef } from '@wordpress/element';
 import {
 	FseStudioContext,
 	useThemeData,
 } from './../non-visual/non-visual-logic.js';
 
-export function ThemeEditorApp( props ) {
+export function ThemeEditorApp() {
 	const { themes } = useContext( FseStudioContext );
 	const [ currentThemeId, setCurrentThemeId ] = useState();
 	const theme = useThemeData( currentThemeId, themes );
@@ -22,15 +21,13 @@ export function ThemeEditorApp( props ) {
 		const renderedThemes = [];
 
 		renderedThemes.push(
-			<option key={ 1 }>
-				{ __( 'Choose a theme', 'fse-studio' ) }
-			</option>
+			<option key={ 1 }>{ __( 'Choose a theme', 'fse-studio' ) }</option>
 		);
 
 		let counter = 3;
 
-		for ( const theme in themes.themes ) {
-			const themeInQuestion = themes.themes[ theme ];
+		for ( const thisTheme in themes.themes ) {
+			const themeInQuestion = themes.themes[ thisTheme ];
 			renderedThemes.push(
 				<option key={ counter } value={ themeInQuestion.dirname }>
 					{ themeInQuestion.name }
@@ -100,7 +97,7 @@ export function ThemeEditorApp( props ) {
 				>
 					Create a new theme
 				</button>
-				{(() => {
+				{ ( () => {
 					if ( theme.data ) {
 						return (
 							<button
@@ -111,9 +108,9 @@ export function ThemeEditorApp( props ) {
 							>
 								Save theme data to disk
 							</button>
-						)
+						);
 					}
-				})()}
+				} )() }
 			</div>
 			{ renderThemeEditorWhenReady() }
 		</>
@@ -166,7 +163,6 @@ export function ThemeEditor( props ) {
 				reAssembledThemePatterns.push( pattern.name );
 			}
 		}
-		console.log( reAssembledThemePatterns );
 
 		return reAssembledThemePatterns;
 	}
@@ -491,13 +487,7 @@ export function ThemeEditor( props ) {
 									//currentThemeData[ 'index.html' ].pattern
 								 }
 							</div>
-							<button
-								onClick={ () => {
-
-
-								} }
-								className="button"
-							>
+							<button onClick={ () => {} } className="button">
 								{ __(
 									'Set index.html contents',
 									'fse-studio'
@@ -511,147 +501,6 @@ export function ThemeEditor( props ) {
 	}
 
 	return <>{ renderCurrentTheme() }</>;
-}
-
-function RenderCustomBlocks() {
-	const { themes } = useContext( FseStudioContext );
-	const options = [
-		{ value: 'custom_block_one', label: 'My Custom Block One' },
-		{ value: 'custom_block_two', label: 'My Custom Block Two' },
-	];
-
-	return (
-		<>
-			<Select
-				options={ options }
-				value={
-					themes.themes[ themes.currentTheme ].includedCustomBlocks
-				}
-				onChange={ ( newIncludedCustomBlocks ) => {
-					themes.updateCurrentTheme( {
-						includedCustomBlocks: newIncludedCustomBlocks,
-					} );
-				} }
-				isMulti={ true }
-			/>
-		</>
-	);
-}
-
-function ThemeFileEditor( props ) {
-	const { patterns, themes } = useContext( FseStudioContext );
-	const [ currentCollection, setCurrentCollection ] = useState();
-
-	function renderCollections() {
-		const mapper = [];
-
-		mapper.push(
-			<option
-				key={ 1 }
-				className={ 'fsestudio-collection-preview' }
-			>
-				{ __( 'Choose a collection', 'fse-studio' ) }
-			</option>
-		);
-
-		let counter = 2;
-		for ( const collection in themes.themes[ themes.currentTheme ]
-			.includedCollections ) {
-			const collectionInQuestion =
-				themes.themes[ themes.currentTheme ].includedCollections[
-					collection
-				];
-			mapper.push(
-				<option key={ counter } value={ collectionInQuestion.value }>
-					{ collectionInQuestion.label }
-				</option>
-			);
-			counter++;
-		}
-
-		return (
-			<>
-				<select
-					value={ currentCollection }
-					onChange={ ( event ) => {
-						setCurrentCollection( event.target.value );
-					} }
-				>
-					{ mapper }
-				</select>
-			</>
-		);
-	}
-
-	function maybeRenderPatterns() {
-		if ( ! currentCollection ) {
-			return '';
-		}
-
-		const patterns = [];
-		let counter = 1;
-		for ( const pattern in patterns.patterns[ currentCollection ]
-			.patterns ) {
-			const thisPattern =
-				patterns.patterns[ currentCollection ].patterns[ pattern ];
-			patterns.push(
-				<div key={ counter }>
-					<div
-						onClick={ () => {
-							themes.updateCurrentTheme( {
-								[ props.currentFileName ]: {
-									collection:
-										patterns.patterns[ currentCollection ]
-											.collection_info.dirname,
-									pattern: thisPattern.key,
-								},
-							} );
-							props.setThemeFileContentsEditorOpen( false );
-						} }
-					>
-						{ thisPattern.name }
-						<LayoutPreview bodyHTML={ thisPattern.content } />
-					</div>
-				</div>
-			);
-			counter++;
-		}
-
-		return (
-			<>
-				<div
-					className="fsestudio-info-editor-option"
-					style={ {
-						display: 'grid',
-						gridTemplateColumns: '205px 200px 200px 200px',
-						gridGap: '20px',
-						boxSizing: 'border-box',
-					} }
-				>
-					{ patterns }
-				</div>
-			</>
-		);
-	}
-
-	return (
-		<>
-			<div className="fsestudio-info-editor-options">
-				<div className="fsestudio-info-editor-option">
-					<div className="fsestudio-info-editor-option-name">
-						{ __(
-							'Choose from a Collection: ',
-							'fse-studio'
-						) }
-					</div>
-					<div className="fsestudio-info-editor-option-value">
-						{ renderCollections() }
-					</div>
-				</div>
-				{ maybeRenderPatterns() }
-			</div>
-		</>
-	);
 }
 
 export function LayoutPreview( props ) {
@@ -698,6 +547,7 @@ export function LayoutPreview( props ) {
 			} }
 		>
 			<iframe
+				title="Preview"
 				ref={ iframeRef }
 				onLoad={ onLoad }
 				scrolling="no"

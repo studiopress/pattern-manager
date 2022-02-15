@@ -2,88 +2,83 @@
  * Genesis Studio App, non visual logic.
  */
 
-const { __ } = wp.i18n;
+/* global fetch, fsestudio */
 
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, createContext } from '@wordpress/element';
 
-export const FseStudioContext = React.createContext( [
-	{},
-	function () {},
-] );
+export const FseStudioContext = createContext( [ {}, function () {} ] );
 
-export function useCurrentThemeJsonFileData(initial) {
-	const [value, setValue] = useState(initial);
-	
+export function useCurrentThemeJsonFileData( initial ) {
+	const [ value, setValue ] = useState( initial );
+
 	return {
 		value,
 		setValue,
-	}
+	};
 }
 
 export function usePatternPreviewParts() {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [data, set] = useState();
-	
-	useEffect(() => {
+	const [ data, set ] = useState();
+
+	useEffect( () => {
 		getPatternPreviewParts();
 	}, [] );
-	
+
 	function getPatternPreviewParts() {
-		console.log( 'Why are we ftching again?');
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve ) => {
 			if ( fetchInProgress ) {
 				resolve();
 				return;
 			}
 			setFetchInProgress( true );
-			fetch(
-				fsestudio.apiEndpoints.getFrontendPreviewPartsEndpoint,
-				{
-					method: 'GET',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-					},
-				}
-			)
-			.then( ( response ) => response.json() )
-			.then( ( response ) => {
-				setFetchInProgress( false );
-				set( response );
-				resolve( response );
-				
-			} );
+			fetch( fsestudio.apiEndpoints.getFrontendPreviewPartsEndpoint, {
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+			} )
+				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					setFetchInProgress( false );
+					set( response );
+					resolve( response );
+				} );
 		} );
 	}
-	
+
 	return {
 		data,
-	}
+	};
 }
 
 export function useThemeJsonFile( id ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ themeJsonData, setThemeJsonData ] = useState();
-	const [hasSaved, setHasSaved] = useState( false );
-	
+	const [ hasSaved, setHasSaved ] = useState( false );
+
 	useEffect( () => {
 		setHasSaved( false );
-	}, [themeJsonData] );
+	}, [ themeJsonData ] );
 
 	useEffect( () => {
 		// If the id passed in changes, get the new themeJson data related to it.
 		getThemeJsonData( id );
 	}, [ id ] );
 
-	function getThemeJsonData( id ) {
-		return new Promise( ( resolve, reject ) => {
-			if ( ! id || fetchInProgress ) {
+	function getThemeJsonData( thisId ) {
+		return new Promise( ( resolve ) => {
+			if ( ! thisId || fetchInProgress ) {
 				resolve();
 				return;
 			}
 			setFetchInProgress( true );
 			fetch(
-				assembleUrlWithQueryParams(fsestudio.apiEndpoints.getThemeJsonFileEndpoint, {filename: id }),
+				assembleUrlWithQueryParams(
+					fsestudio.apiEndpoints.getThemeJsonFileEndpoint,
+					{ filename: thisId }
+				),
 				{
 					method: 'GET',
 					headers: {
@@ -92,18 +87,17 @@ export function useThemeJsonFile( id ) {
 					},
 				}
 			)
-			.then( ( response ) => response.json() )
-			.then( ( response ) => {
-				setFetchInProgress( false );
-				setThemeJsonData( response );
-				resolve( response );
-				
-			} );
+				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					setFetchInProgress( false );
+					setThemeJsonData( response );
+					resolve( response );
+				} );
 		} );
 	}
 
 	function saveThemeJsonData() {
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.saveThemeJsonFileEndpoint, {
 				method: 'POST',
 				headers: {
@@ -112,13 +106,12 @@ export function useThemeJsonFile( id ) {
 				},
 				body: JSON.stringify( themeJsonData ),
 			} )
-			.then( ( response ) => response.json() )
-			.then( ( data ) => {
-				const response = JSON.parse( data );
-				getThemeJsonData(id);
-				setHasSaved(true);
-				resolve( data );
-			} );
+				.then( ( response ) => response.json() )
+				.then( ( data ) => {
+					getThemeJsonData( id );
+					setHasSaved( true );
+					resolve( data );
+				} );
 		} );
 	}
 
@@ -126,33 +119,36 @@ export function useThemeJsonFile( id ) {
 		data: themeJsonData,
 		set: setThemeJsonData,
 		save: saveThemeJsonData,
-		hasSaved
+		hasSaved,
 	};
 }
 
 export function useThemeData( themeId, themes ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [hasSaved, setHasSaved] = useState( false );
+	const [ hasSaved, setHasSaved ] = useState( false );
 	const [ themeData, setThemeData ] = useState();
 
 	useEffect( () => {
 		setHasSaved( false );
-	}, [themeData] );
+	}, [ themeData ] );
 
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
 		getThemeData( themeId );
 	}, [ themeId ] );
 
-	function getThemeData( themeId ) {
-		return new Promise( ( resolve, reject ) => {
-			if ( ! themeId || fetchInProgress ) {
+	function getThemeData( thisThemeId ) {
+		return new Promise( ( resolve ) => {
+			if ( ! thisThemeId || fetchInProgress ) {
 				resolve();
 				return;
 			}
 			setFetchInProgress( true );
 			fetch(
-				assembleUrlWithQueryParams(fsestudio.apiEndpoints.getThemeEndpoint, {themeId: themeId }),
+				assembleUrlWithQueryParams(
+					fsestudio.apiEndpoints.getThemeEndpoint,
+					{ themeId: thisThemeId }
+				),
 				{
 					method: 'GET',
 					headers: {
@@ -168,10 +164,7 @@ export function useThemeData( themeId, themes ) {
 						response.error &&
 						response.error === 'theme_not_found'
 					) {
-						// If the theme does not yet exist on the server, grab the theme data from the theme list.
-						console.log( themes.themes );
-
-						setThemeData( themes.themes[ themeId ] );
+						setThemeData( themes.themes[ thisThemeId ] );
 					} else {
 						setThemeData( response );
 						resolve( response );
@@ -181,7 +174,7 @@ export function useThemeData( themeId, themes ) {
 	}
 
 	function saveThemeData() {
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
@@ -192,8 +185,7 @@ export function useThemeData( themeId, themes ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					const response = JSON.parse( data );
-					setHasSaved(true);
+					setHasSaved( true );
 					resolve( data );
 				} );
 		} );
@@ -203,7 +195,7 @@ export function useThemeData( themeId, themes ) {
 		data: themeData,
 		set: setThemeData,
 		save: saveThemeData,
-		hasSaved
+		hasSaved,
 	};
 }
 
@@ -216,16 +208,19 @@ export function usePatternData( patternId ) {
 		getPatternData( patternId );
 	}, [ patternId ] );
 
-	function getPatternData( patternId ) {
-		return new Promise( ( resolve, reject ) => {
-			if ( ! patternId || fetchInProgress ) {
+	function getPatternData( thisPatternId ) {
+		return new Promise( ( resolve ) => {
+			if ( ! thisPatternId || fetchInProgress ) {
 				resolve();
 				return;
 			}
 			setFetchInProgress( true );
 
 			fetch(
-				assembleUrlWithQueryParams(fsestudio.apiEndpoints.getPatternEndpoint, {patternId: patternId }),
+				assembleUrlWithQueryParams(
+					fsestudio.apiEndpoints.getPatternEndpoint,
+					{ patternId: thisPatternId }
+				),
 				{
 					method: 'GET',
 					headers: {
@@ -244,7 +239,7 @@ export function usePatternData( patternId ) {
 	}
 
 	function savePatternData() {
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.savePatternEndpoint, {
 				method: 'POST',
 				headers: {
@@ -255,7 +250,6 @@ export function usePatternData( patternId ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					const response = JSON.parse( data );
 					resolve( data );
 				} );
 		} );
@@ -304,30 +298,10 @@ export function useCurrentView( initial ) {
 	};
 }
 
-function string_to_slug( str ) {
-	str = str.replace( /^\s+|\s+$/g, '' ); // trim
-	str = str.toLowerCase();
-
-	// remove accents, swap ñ for n, etc
-	const from = 'àáäâèéëêìíïîòóöôùúüûñç·/_,:;';
-	const to = 'aaaaeeeeiiiioooouuuunc------';
-	for ( let i = 0, l = from.length; i < l; i++ ) {
-		str = str.replace(
-			new RegExp( from.charAt( i ), 'g' ),
-			to.charAt( i )
-		);
-	}
-
-	str = str
-		.replace( /[^a-z0-9 -]/g, '' ) // remove invalid chars
-		.replace( /\s+/g, '-' ) // collapse whitespace and replace by -
-		.replace( /-+/g, '-' ); // collapse dashes
-
-	return str;
-}
-
 function assembleUrlWithQueryParams( theUrl, params ) {
-	const url = new URL(theUrl);
-	Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+	const url = new URL( theUrl );
+	Object.keys( params ).forEach( ( key ) =>
+		url.searchParams.append( key, params[ key ] )
+	);
 	return url;
 }

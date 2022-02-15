@@ -5,10 +5,12 @@
 const { __ } = wp.i18n;
 
 export function backgroundColorRequired( block ) {
+	/* eslint-disable */
 	console.log(
 		__( 'Testing Background Color Required for ', 'genesisstudio' ) +
 			block.name
 	);
+	/* eslint-enable */
 
 	// Only the genesis-blocks/gb-columns block requires a background color.
 	if ( block.name !== 'genesis-blocks/gb-columns' ) {
