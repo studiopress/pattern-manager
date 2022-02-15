@@ -22,7 +22,7 @@ import { searchItems } from './utils/searchItems.js';
  *  selectedPatterns: Record<string, boolean>,
  *  setSelectedPatterns: Function,
  *  layoutPreview: Function,
- *  selectMultiple?: boolean
+ *  selectMultiple: boolean | undefined
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
@@ -42,7 +42,7 @@ export default function PatternPicker( {
 	/**
 	 * Sets the pattern to selected.
 	 *
-	 * @param {Pattern["name"]} patternName The name of the pattern.
+	 * @param {string} patternName The name of the pattern.
 	 */
 	function togglePatternSelected( patternName ) {
 		if ( selectMultiple ) {
@@ -62,7 +62,7 @@ export default function PatternPicker( {
 	/**
 	 * Gets whether the pattern is selected.
 	 *
-	 * @param {Pattern["name"]} patternName The name of the pattern.
+	 * @param {string} patternName The name of the pattern.
 	 * @return {boolean} Whether the pattern is checked.
 	 */
 	function isPatternSelected( patternName ) {
