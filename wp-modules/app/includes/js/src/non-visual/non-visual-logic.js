@@ -64,6 +64,11 @@ export function usePatternPreviewParts() {
 export function useThemeJsonFile( id ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ themeJsonData, setThemeJsonData ] = useState();
+	const [hasSaved, setHasSaved] = useState( false );
+	
+	useEffect( () => {
+		setHasSaved( false );
+	}, [themeJsonData] );
 
 	useEffect( () => {
 		// If the id passed in changes, get the new themeJson data related to it.
@@ -111,6 +116,7 @@ export function useThemeJsonFile( id ) {
 			.then( ( data ) => {
 				const response = JSON.parse( data );
 				getThemeJsonData(id);
+				setHasSaved(true);
 				resolve( data );
 			} );
 		} );
@@ -120,6 +126,7 @@ export function useThemeJsonFile( id ) {
 		data: themeJsonData,
 		set: setThemeJsonData,
 		save: saveThemeJsonData,
+		hasSaved
 	};
 }
 

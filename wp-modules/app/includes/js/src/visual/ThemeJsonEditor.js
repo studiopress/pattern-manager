@@ -13,11 +13,24 @@ import {
 
 import { PatternPreview } from './PatternPreview';
 
+import { 
+	Icon,
+	wordpress,
+	layout,
+	file,
+	globe,
+	menu,
+	close,
+	chevronLeft,
+	check,
+	download
+} from '@wordpress/icons';
+
 export function ThemeJsonEditorApp( {visible} ) {
 	const { themeJsonFiles, currentThemeJsonFileData } = useContext( FseStudioContext );
 	const [ currentId, setCurrentId ] = useState();
 	const themeJsonFile = useThemeJsonFile( currentId );
-	
+
 	useEffect( () => {
 		currentThemeJsonFileData.setValue( themeJsonFile.data );
 	}, [themeJsonFile] );
@@ -65,56 +78,59 @@ export function ThemeJsonEditorApp( {visible} ) {
 
 		return <ThemeJsonEditor themeJsonFile={ themeJsonFile } />;
 	}
-
+	
 	return (
-		<>
-			<div hidden={!visible} className="fsestudio-theme-json-app">
-				<div>Theme Json Editor</div>
-				{ renderSelector() }
-				or{ ' ' }
-				<button
-					className="button"
-					onClick={ () => {
-						const newData = {
-							name: 'new',
-							content: '',
-						};
-
-						themeJsonFiles.setThemeJsonFiles( {
-							...themeJsonFiles.themeJsonFiles,
-							'my': newData,
-						} );
-
-						// Switch to the newly created theme.
-						setCurrentThemeId( 'new' );
-					} }
-				>
-					Create a new theme Json file.
-				</button>
-				{(() => {
-					if ( themeJsonFile.data ) {
-						return (
-							<button
-								className="button"
-								onClick={ () => {
-									themeJsonFile.save();
-								} }
-							>
-								Save theme JSON data to disk
-							</button>
-						)
-					}
-				})()}
-				{ renderThemeEditorWhenReady() }
+		<div hidden={!visible} className="fsestudio-theme-manager p-12">
+			<div className="max-w-7xl mx-auto bg-white">
+				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">{ __( 'Dashboard', 'fse-studio' ) }</h1>
+				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
+					<div>
+						<label htmlFor="location" className="block text-sm font-medium text-gray-700">
+							{ __( 'Choose a theme', 'fse-studio' ) }
+						</label>
+						{ renderSelector() }
+					</div>
+					<div className="flex flex-col mx-6 my-2.5">
+						{ __( 'or', 'fse-studio' ) }
+					</div>
+					<div className="flex flex-col gap-2">
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								const newData = {
+									name: 'new',
+									content: '',
+								};
+		
+								themeJsonFiles.setThemeJsonFiles( {
+									...themeJsonFiles.themeJsonFiles,
+									'my': newData,
+								} );
+							} }
+						>
+							{ __( 'Create a new theme JSON file', 'fse-studio' ) }
+						</button>
+					</div>
+				</div>
+				{ renderThemeEditorWhenReady () }
 			</div>
-		</>
-	);
+		</div>
+	)
 }
 
 function ThemeJsonEditor({themeJsonFile}) {
 	const { patterns, patternPreviewParts } = useContext( FseStudioContext );
 	const content = themeJsonFile.data.content;
+	const [ currentView, setCurrentView ] = useState( 'settings' );
 	
+	const views = [
+		{ name:  __( 'Settings', 'fse-studio' ), slug: 'settings', icon: file, current: true },
+		{ name:  __( 'Styles', 'fse-studio' ), slug: 'styles', icon: layout, current: false },
+		{ name:  __( 'Custom Templates', 'fse-studio' ), slug: 'custom_templates', icon: globe, current: false },
+		{ name:  __( 'Template Parts', 'fse-studio' ), slug: 'template_parts', icon: globe, current: false },
+	]
+
 	function renderSettings() {
 		const rendered = [];
 		console.log( 'Settings?', content );
@@ -155,7 +171,86 @@ function ThemeJsonEditor({themeJsonFile}) {
 		return rendered;
 		
 	}
+	
+	function maybeRenderSettingsView() {
+		if ( currentView !== 'settings' ) {
+			return ''
+		}
 
+		const rendered = [];
+		console.log( 'Settings?', content );
+		for ( const setting in content.settings ) {
+			if ( setting === 'color' ) {
+				console.log(  content.settings[setting] );
+				
+				for ( const colorSetting in content.settings[setting] ) {
+					
+					if (  colorSetting === 'palette' ) {
+						rendered.push( <FseStudioColorPalette key={colorSetting} themeJsonFile={themeJsonFile} colors={content.settings[setting][colorSetting] } /> )
+					}
+				}
+			}
+		}
+		
+		return rendered;
+	}
+	
+	function maybeRenderStylesView() {
+	
+	}
+	
+	function maybeRenderCustomTemplatesView() {
+	
+	}
+	
+	function maybeRenderTemplatePartsView() {
+	
+	}
+
+	return (
+		<>
+		<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
+			<ul className="w-72">
+				{views.map((item) => (
+					<li key={item.name}>
+						<button
+							className={'w-full text-left p-5 font-medium' + ( currentView === item.slug ? ' bg-gray-100' : ' hover:bg-gray-100' )}
+							key={item.name}
+							onClick={() => {
+								setCurrentView( item.slug );
+							}}
+						>
+							{ item.name }
+						</button>
+					</li>
+				))}
+			</ul>
+			{ maybeRenderSettingsView() }
+			{ maybeRenderStylesView() }
+			{ maybeRenderCustomTemplatesView() }
+			{ maybeRenderTemplatePartsView() }
+		</div>
+		<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
+			<div className="flex items-center">
+				{(() => {
+					if ( themeJsonFile.hasSaved ) {
+						return <span className="text-sm text-green-600 flex flex-row items-center mr-6"><Icon className='fill-current' icon={ check } size={ 26 }/> { __( 'Saved to disk', 'fse-studio' ) }</span>
+					}
+				})()}
+				<button
+					type="button"
+					className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+					onClick={ () => {
+						themeJsonFile.save();
+					} }
+				>
+					{ __( 'Save Theme Configuration File', 'fse-studio' ) }
+				</button>
+			</div>
+		</div>
+		</>
+	)
+	
 	return (
 	<>
 		<div className="fsestudio-theme-json-editor">
