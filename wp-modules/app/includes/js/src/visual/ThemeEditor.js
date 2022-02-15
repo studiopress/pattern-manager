@@ -654,7 +654,7 @@ function ThemeFileEditor( props ) {
 	);
 }
 
-function LayoutPreview( props ) {
+export function LayoutPreview( props ) {
 	const { siteUrl } = useContext( FseStudioContext );
 	const iframeRef = useRef( null );
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(

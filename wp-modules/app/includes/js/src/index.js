@@ -23,6 +23,7 @@ import {
 	check,
 	download
 } from '@wordpress/icons';
+import PatternPicker from '@fse-studio/pattern-picker';
 
 import {
 	FseStudioContext,
@@ -38,7 +39,7 @@ import {
 
 import { PatternEditorApp } from './visual/PatternEditor.js';
 import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor.js';
-import { PatternPicker } from './visual/PatternPicker.js';
+import { LayoutPreview } from './visual/ThemeEditor.js';
 
 const userNavigation = [
 	{ name: 'Your Profile', href: '#' },
@@ -285,6 +286,7 @@ function ThemeManager({visible}) {
 function ThemeDataEditor({theme}) {
 	const { patterns } = useContext( FseStudioContext );
 	const [currentView, setCurrentView] = useState('theme_setup');
+	const [selectedPatterns, setSelectedPatterns] = useState({});
 	const views = [
 		{ name:  __( 'Theme Setup', 'fse-studio' ), slug: 'theme_setup', icon: file, current: true },
 		{ name:  __( 'Add Patterns', 'fse-studio' ), slug: 'add_patterns', icon: layout, current: false },
@@ -342,7 +344,13 @@ function ThemeDataEditor({theme}) {
 		if ( currentView === 'add_patterns' ) {
 			return (
 				<Modal title="Pick the patterns to include in this theme" onRequestClose={ () => { setCurrentView( 'theme_setup' ) } }>
-					<PatternPicker />
+					<PatternPicker 
+						patterns={patterns.patterns}
+						selectedPatterns={selectedPatterns}
+						setSelectedPatterns={setSelectedPatterns}
+						layoutPreview={LayoutPreview}
+						selectMultiple={true}
+					/>
 				</Modal>
 			)
 		}
