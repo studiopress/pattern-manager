@@ -5,9 +5,11 @@
 const { __ } = wp.i18n;
 
 export function textColorRequired( block ) {
+	/* eslint-disable */
 	console.log(
 		__( 'Testing Text Color Required for ', 'genesisstudio' ) + block.name
 	);
+	/* eslint-enable */
 
 	// Only the genesis-blocks/gb-columns block requires a text color.
 	if ( block.name !== 'genesis-blocks/gb-columns' ) {

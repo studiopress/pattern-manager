@@ -1,6 +1,6 @@
 const { __ } = wp.i18n;
 
-export function Modal( {open, children, close} ) {
+export function Modal( { open, children, close } ) {
 	if ( open ) {
 		return (
 			<div className="genesisstudio-info-modal">

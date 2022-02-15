@@ -18,7 +18,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Render and enqueue the output required for the the app.
  */
 function fse_studio_app() {
-
 	$editor_settings = fse_studio_block_editor_init();
 
 	$module_dir_path = module_dir_path( __FILE__ );
@@ -45,22 +44,22 @@ function fse_studio_app() {
 		'fsestudio',
 		'fsestudio',
 		array(
-			'patterns'           => \FseStudio\PatternDataHandlers\get_patterns(),
-			'themes'             => \FseStudio\ThemeDataHandlers\get_the_themes(),
-			'themeJsonFiles'     => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
-			'frontendPreviewUrl' => null,
-			'apiEndpoints'       => array(
-				'getPatternEndpoint'         => get_rest_url( false, 'fsestudio/v1/get-pattern/' ),
-				'savePatternEndpoint'        => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),
-				'getThemeEndpoint'           => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
-				'saveThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
-				'getThemeJsonFileEndpoint'       => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
-				'saveThemeJsonFileEndpoint'      => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
-				'getGlobalStylesCssEndpoint'     => get_rest_url( false, 'fsestudio/v1/get-global-styles-css/' ),
+			'patterns'            => \FseStudio\PatternDataHandlers\get_patterns(),
+			'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
+			'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
+			'frontendPreviewUrl'  => null,
+			'apiEndpoints'        => array(
+				'getPatternEndpoint'              => get_rest_url( false, 'fsestudio/v1/get-pattern/' ),
+				'savePatternEndpoint'             => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),
+				'getThemeEndpoint'                => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
+				'saveThemeEndpoint'               => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
+				'getThemeJsonFileEndpoint'        => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
+				'saveThemeJsonFileEndpoint'       => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
+				'getGlobalStylesCssEndpoint'      => get_rest_url( false, 'fsestudio/v1/get-global-styles-css/' ),
 				'getFrontendPreviewPartsEndpoint' => get_rest_url( false, 'fsestudio/v1/get-frontend-preview-parts/' ),
 			),
-			'siteUrl'            => get_bloginfo( 'url' ),
-			'defaultPostId'      => null,
+			'siteUrl'             => get_bloginfo( 'url' ),
+			'defaultPostId'       => null,
 			'blockEditorSettings' => $editor_settings,
 		)
 	);
@@ -86,10 +85,6 @@ add_action( 'admin_menu', __NAMESPACE__ . '\fsestudio_adminmenu_page' );
 
 /**
  * Initialize the Gutenberg Site Editor. Copied from gutenberg_edit_site_init.
- *
- * @since 7.2.0
- *
- * @param string $hook Page.
  */
 function fse_studio_block_editor_init() {
 	// Flag that we're loading the block editor.
@@ -170,7 +165,7 @@ function fse_studio_block_editor_init() {
 	}
 
 	/** This action is documented in wp-admin/edit-form-blocks.php */
-	do_action( 'enqueue_block_editor_assets' );
+	do_action( 'enqueue_block_editor_assets' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 	return $editor_settings;
 }

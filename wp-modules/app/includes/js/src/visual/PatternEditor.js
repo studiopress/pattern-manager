@@ -1,5 +1,6 @@
 const { __ } = wp.i18n;
 
+/* eslint-disable */
 import {
 	BlockEditorProvider,
 	BlockList,
@@ -26,8 +27,9 @@ import {
 	FormTokenField,
 	Snackbar,
 } from '@wordpress/components';
+/* eslint-enable */
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
+import { useContext, useState, useEffect } from '@wordpress/element';
 import {
 	FseStudioContext,
 	usePatternData,
@@ -38,9 +40,7 @@ import { Portal } from './Portal.js';
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 
-const input_delay = [];
-
-export function PatternEditorApp( {visible} ) {
+export function PatternEditorApp( { visible } ) {
 	const { patterns } = useContext( FseStudioContext );
 	const [ currentPatternId, setCurrentPatternId ] = useState();
 	const pattern = usePatternData( currentPatternId );
@@ -58,10 +58,10 @@ export function PatternEditorApp( {visible} ) {
 
 		let counter = 3;
 
-		for ( const pattern in patterns.patterns ) {
-			const patternInQuestion = patterns.patterns[ pattern ];
+		for ( const thisPattern in patterns.patterns ) {
+			const patternInQuestion = patterns.patterns[ thisPattern ];
 			renderedPatterns.push(
-				<option key={ counter } value={ pattern }>
+				<option key={ counter } value={ thisPattern }>
 					{ patternInQuestion.title }
 				</option>
 			);
@@ -117,7 +117,9 @@ export function PatternEditorApp( {visible} ) {
 
 	function maybeRenderErrors() {
 		if ( errors && ! errors?.success ) {
+			/* eslint-disable */
 			console.log( errors );
+			/* eslint-enable */
 			return (
 				<div>
 					<span>Errors </span>
@@ -152,7 +154,7 @@ export function PatternEditorApp( {visible} ) {
 	}
 
 	return (
-		<div hidden={!visible} className="fsestudio-pattern-work-area">
+		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
 			<div className="fsestudio-subheader">
 				<div>Pattern Editor</div>
 				{ renderPatternSelector() }
@@ -164,7 +166,9 @@ export function PatternEditorApp( {visible} ) {
 }
 
 export function PatternEditor( props ) {
-	const {blockEditorSettings, currentThemeJsonFileData} = useContext( FseStudioContext );
+	const { blockEditorSettings, currentThemeJsonFileData } = useContext(
+		FseStudioContext
+	);
 	const pattern = props.pattern;
 
 	const [ blocks, updateBlocks ] = useState( [
@@ -179,10 +183,6 @@ export function PatternEditor( props ) {
 
 	const [ currentView, setCurrentView ] = useState( 'blockEditor' ); //Other option is "frontend"
 	const [ editorWidth, setEditorWidth ] = useState( '100%' );
-	const [ refreshFrontendIframe, setRefreshFrontendIframe ] = useState(
-		false
-	);
-	const saveListener = null;
 
 	useEffect( () => {
 		// If the pattern prop changes to a new pattern, reset the blocks in the editor to be that pattern's blocks.
@@ -198,8 +198,6 @@ export function PatternEditor( props ) {
 
 	// When blocks are changed in the block editor, update them in their corresponding files as well.
 	useEffect( () => {
-		console.log( 'Blocks', blocks );
-
 		props.setErrors( testPatternForErrors( blocks ) );
 
 		pattern.set( {
@@ -210,9 +208,7 @@ export function PatternEditor( props ) {
 
 	function getEditorSettings() {
 		const editorSettings = JSON.parse(
-			JSON.stringify(
-				blockEditorSettings
-			)
+			JSON.stringify( blockEditorSettings )
 		);
 
 		// Make media library work.
@@ -223,23 +219,28 @@ export function PatternEditor( props ) {
 
 		return editorSettings;
 	}
-	
+
 	function renderPortalCssStyles() {
 		const renderedStyles = [
-			<div dangerouslySetInnerHTML={ { __html: blockEditorSettings.__unstableResolvedAssets.styles } } />
+			<div
+				key="inline-style-from-block-editor"
+				dangerouslySetInnerHTML={ {
+					__html: blockEditorSettings.__unstableResolvedAssets.styles,
+				} }
+			/>,
 		];
 
-		for( const style in blockEditorSettings.styles ) {
+		for ( const style in blockEditorSettings.styles ) {
 			renderedStyles.push(
-				<style key={style}>
-					{ blockEditorSettings.styles[style].css }
+				<style key={ style }>
+					{ blockEditorSettings.styles[ style ].css }
 				</style>
 			);
 		}
-		
+
 		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
 			renderedStyles.push(
-				<style key={'renderedGlobalStyles'}>
+				<style key={ 'renderedGlobalStyles' }>
 					{ currentThemeJsonFileData.value.renderedGlobalStyles }
 				</style>
 			);
@@ -260,57 +261,6 @@ export function PatternEditor( props ) {
 		return '';
 	}
 
-	function getFrontendPreviewUrl( screenshotMode ) {
-		return '';
-		const prefix = getPrefix(
-			collections.currentCollection.collection_info.plugin
-		);
-
-		const url = new URL( frontendPreviewUrl );
-
-		if ( screenshotMode ) {
-			url.searchParams.set( 'fsestudio_blocks_only_page', true );
-			url.searchParams.set(
-				'title',
-				prefix +
-					'_' +
-					collections.currentCollection.collection_info.slug +
-					'_' +
-					pattern.data.type +
-					'_' +
-					pattern.data.key
-						.replaceAll(
-							collections.currentCollection.collection_info.slug +
-								'-',
-							''
-						)
-						.replaceAll( '-', '_' )
-			);
-			url.searchParams.set( 'screenshot_mode', 1 );
-			return url.toString();
-		}
-		if ( currentView === 'blockEditor' ) {
-			return '';
-		}
-		if ( currentView === 'frontend' ) {
-			url.searchParams.set( 'fsestudio_blocks_only_page', true );
-			url.searchParams.set( 'title', pattern.data.key );
-			return url.toString();
-		}
-	}
-
-	function renderFrontendIframe() {
-		if ( refreshFrontendIframe ) {
-			return 'Refreshing...';
-		}
-		return (
-			<iframe
-				src={ getFrontendPreviewUrl( false ) }
-				style={ { width: '100%' } }
-			/>
-		);
-	}
-
 	return (
 		<div className="fsestudio-pattern-editor">
 			<div
@@ -322,7 +272,7 @@ export function PatternEditor( props ) {
 					<h2>{ pattern.data.name }</h2>
 				</div>
 				<div className="fsestudio-pattern-tabs">
-					<div
+					<button
 						className={
 							'fsestudio-tab' +
 							getViewToggleClassName( 'blockEditor' )
@@ -332,8 +282,8 @@ export function PatternEditor( props ) {
 						} }
 					>
 						Block Editor
-					</div>
-					<div
+					</button>
+					<button
 						className={
 							'fsestudio-tab' +
 							getViewToggleClassName( 'codeEditor' )
@@ -343,8 +293,8 @@ export function PatternEditor( props ) {
 						} }
 					>
 						Code Editor
-					</div>
-					<div
+					</button>
+					<button
 						className={
 							'fsestudio-tab' +
 							getViewToggleClassName( 'frontend' )
@@ -354,11 +304,12 @@ export function PatternEditor( props ) {
 						} }
 					>
 						Frontend Preview
-					</div>
+					</button>
 					<select
 						onChange={ ( event ) => {
 							setEditorWidth( event.target.value );
 						} }
+						value={ editorWidth }
 					>
 						<option value={ '100%' }>Desktop</option>
 						<option value={ '320px' }>320px (iPhone 5/SE)</option>
@@ -382,9 +333,11 @@ export function PatternEditor( props ) {
 							try {
 								parse( serializedBlocks );
 							} catch ( error ) {
+								/* eslint-disable */
 								alert(
 									'Invalid block content. Please check your code to make sure it is valid.'
 								);
+								/* eslint-enable */
 								return;
 							}
 
@@ -404,15 +357,7 @@ export function PatternEditor( props ) {
 						} }
 					/>
 				</div>
-				<div
-					className="fsestudio-pattern-frontend-view"
-					style={ {
-						display: currentView === 'frontend' ? 'block' : 'none',
-						width: editorWidth,
-					} }
-				>
-					{ renderFrontendIframe() }
-				</div>
+
 				<div
 					className="fsestudio-pattern-editor-view"
 					style={ {
@@ -420,192 +365,55 @@ export function PatternEditor( props ) {
 							currentView === 'blockEditor' ? 'block' : 'none',
 					} }
 				>
-					
-						<ShortcutProvider>
-							<BlockEditorProvider
-								value={ blocks }
-								onChange={ updateBlocks }
-								onInput={ updateBlocks }
-								settings={ getEditorSettings() }
-							>
-								<SlotFillProvider>
-									<BlockTools>
-										<WritingFlow>
-											<ObserveTyping>
-												<div className="fsestudio-pattern-editor-columns">
-													<div className={ 'column' }>
-														
-															<Portal>
-																<div>
-																	{ renderPortalCssStyles() }
-																</div>
-																<div className="edit-post-visual-editor editor-styles-wrapper">
-																	<BlockList />
-																</div>
-															</Portal>
-														
-														<div
-															style={ {
-																position: 'fixed',
-																bottom: '0px',
-																width: '100%',
-																backgroundColor:
-																	'#fff',
-																padding: '4px',
-																zIndex: '999',
-															} }
-														>
-															<BlockBreadcrumb />
+					<ShortcutProvider>
+						<BlockEditorProvider
+							value={ blocks }
+							onChange={ updateBlocks }
+							onInput={ updateBlocks }
+							settings={ getEditorSettings() }
+						>
+							<SlotFillProvider>
+								<BlockTools>
+									<WritingFlow>
+										<ObserveTyping>
+											<div className="fsestudio-pattern-editor-columns">
+												<div className={ 'column' }>
+													<Portal>
+														<div>
+															{ renderPortalCssStyles() }
 														</div>
-													</div>
-													<div className={ 'column' }>
-														<BlockInspector />
+														<div className="edit-post-visual-editor editor-styles-wrapper">
+															<BlockList />
+														</div>
+													</Portal>
+
+													<div
+														style={ {
+															position: 'fixed',
+															bottom: '0px',
+															width: '100%',
+															backgroundColor:
+																'#fff',
+															padding: '4px',
+															zIndex: '999',
+														} }
+													>
+														<BlockBreadcrumb />
 													</div>
 												</div>
-											</ObserveTyping>
-										</WritingFlow>
-									</BlockTools>
-								</SlotFillProvider>
-							</BlockEditorProvider>
-							<Popover.Slot />
-						</ShortcutProvider>
+												<div className={ 'column' }>
+													<BlockInspector />
+												</div>
+											</div>
+										</ObserveTyping>
+									</WritingFlow>
+								</BlockTools>
+							</SlotFillProvider>
+						</BlockEditorProvider>
+						<Popover.Slot />
+					</ShortcutProvider>
 				</div>
 			</div>
-		</div>
-	);
-}
-
-function openScreenshot( url, type = 'section' ) {
-	if ( type === 'section' ) {
-		// Scaled up version of 600 by 422 - to a factor of 2.25
-		window.open(
-			url,
-			'targetWindow',
-			`toolbar=no,
-		    location=no,
-		    status=no,
-		    menubar=no,
-		    scrollbars=yes,
-		    resizable=no,
-		    width=1350,
-		    height=949.5`
-		);
-	}
-
-	if ( type === 'layout' ) {
-		// Scaled up version of 600 by 679 - to a factor of 2.25
-		window.open(
-			url,
-			'targetWindow',
-			`toolbar=no,
-		    location=no,
-		    status=no,
-		    menubar=no,
-		    scrollbars=yes,
-		    resizable=no,
-		    width=1350,
-		    height=1527.75`
-		);
-	}
-}
-
-function SectionPreview( props ) {
-	const { siteUrl } = useContext( FseStudioContext );
-	const iframeRef = useRef( null );
-	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
-		0
-	);
-
-	function renderLayoutHtmlForIframe( bodyHTML ) {
-		return (
-			`<html>
-			<head>
-				<link rel="stylesheet" id="wp-block-library-css" href="` +
-			siteUrl +
-			`/wp-includes/css/dist/block-library/style.min.css" media="all">
-				<link rel="stylesheet" id="wp-block-library-theme-css" href="` +
-			siteUrl +
-			`/wp-includes/css/dist/block-library/theme.min.css?ver=5.6" media="all">
-				<link rel="stylesheet" id="genesis-blocks-style-css-css" href="https://developer.wpengine.com/slate/wp-content/plugins/genesis-page-builder/lib/genesis-blocks/dist/blocks.style.build.css?ver=1613169060" media="all">
-				<link rel="stylesheet" id="genesis-page-builder-frontend-styles-css" href="https://developer.wpengine.com/slate/wp-content/plugins/genesis-page-builder/build/frontend.styles.build.css?ver=1613169060" media="all">
-				<link rel="stylesheet" id="genesis-block-theme-style-css" href="https://developer.wpengine.com/slate/wp-content/themes/genesis-block-theme/style.css?ver=5.6" type="text/css" media="all">
-				<style type="text/css">
-					.gb-layout-columns-1 > .gb-layout-column-wrap {
-						width:100%;
-					}
-				</style>
-			</head>
-			<body class="wp-embed-responsive">` +
-			bodyHTML +
-			`</body>
-			<script type="text/javascript">
-				if ( document.body.scrollHeight < 1097 ){
-					addcsstohead(\`
-					body > *:first-child {
-						position: absolute!important;
-						height: 100%!important;
-						top: 0px!important;
-						bottom: 0px!important;
-						left: 0px!important;
-						right: 0px!important;
-						display: grid!important;
-						align-items: center!important;
-					}
-					\`);
-				}
-				
-				function addcsstohead(css){
-					console.log('addingcss to head');
-					var head = document.getElementsByTagName('head')[0];
-					var s = document.createElement('style');
-					s.setAttribute('type', 'text/css');
-					if (s.styleSheet) {   // IE
-					    s.styleSheet.cssText = css;
-					} else {                // the world
-					    s.appendChild(document.createTextNode(css));
-					}
-					head.appendChild(s);
-				  }
-			</script>
-		</html>`
-		);
-	}
-
-	function onLoad() {
-		console.log(
-			iframeRef.current.contentWindow.document.body.scrollHeight
-		);
-		setIframeInnerContentHeight(
-			iframeRef.current.contentWindow.document.body.scrollHeight
-		);
-	}
-
-	return (
-		<div
-			style={ {
-				width: '75px', // Scaled down version of 600 by 422 - to a factor of .125
-				height: '52.75px', // Scaled down version of 600 by 422 - to a factor of .125
-			} }
-		>
-			<iframe
-				ref={ iframeRef }
-				onLoad={ onLoad }
-				scrolling="no"
-				style={ {
-					width: '1560px', // Scaled up version of 600 by 422 - to a factor of 2.6
-					height: '1097px', // Scaled up version of 600 by 422 - to a factor of 2.6
-					transform: 'scale(.048)',
-					transformOrigin: '0 0',
-					overflow: 'hidden',
-					top: '0px',
-					borderRadius: '5px',
-				} }
-				srcDoc={ renderLayoutHtmlForIframe( props.bodyHTML ) }
-				src={
-					'data:text/html;charset=utf-8,' +
-					escape( renderLayoutHtmlForIframe( props.bodyHTML ) )
-				}
-			/>
 		</div>
 	);
 }
@@ -614,10 +422,12 @@ function parseBlocks( blocksToParse ) {
 	if ( parse( blocksToParse ) ) {
 		return parse( blocksToParse );
 	}
+	/* eslint-disable */
 	console.log(
 		'Invalid block content. Unable to parse.',
 		blocksToParse,
 		parse( blocksToParse )
 	);
+	/* eslint-enable */
 	return parse( blocksToParse );
 }

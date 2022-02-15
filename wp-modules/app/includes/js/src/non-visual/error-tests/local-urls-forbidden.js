@@ -5,9 +5,11 @@
 const { __ } = wp.i18n;
 
 export function localUrlsForbidden( block ) {
+	/* eslint-disable */
 	console.log(
 		__( 'Testing for local URLs in ', 'genesisstudio' ) + block.name
 	);
+	/* eslint-enable */
 
 	for ( const attribute in block.attributes ) {
 		// If this block has the textColor attribute, which is used when a theme color pallete option has been picked, return an error.

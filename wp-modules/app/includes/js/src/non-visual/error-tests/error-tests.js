@@ -2,11 +2,6 @@
  * Genesis Studio App, non visual logic.
  */
 
-const { __ } = wp.i18n;
-import { serialize, parse } from '@wordpress/blocks';
-
-import { useState, useEffect } from '@wordpress/element';
-
 import { backgroundColorRequired } from './background-color-required.js';
 import { themeColorPalleteBackgroundColorForbidden } from './theme-color-pallete-background-color-forbidden.js';
 import { themeColorPalleteTextColorForbidden } from './theme-color-pallete-text-color-forbidden.js';

@@ -5,10 +5,12 @@
 const { __ } = wp.i18n;
 
 export function headingColorRequired( block ) {
+	/* eslint-disable */
 	console.log(
 		__( 'Testing Heading Color Required for ', 'genesisstudio' ) +
 			block.name
 	);
+	/* eslint-enable */
 
 	const defaultResponse = {
 		success: false,

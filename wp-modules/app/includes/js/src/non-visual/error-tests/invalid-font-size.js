@@ -5,10 +5,12 @@
 const { __ } = wp.i18n;
 
 export function invalidFontSize( block ) {
+	/* eslint-disable */
 	console.log(
 		__( 'Testing Invaid Font Size for ', 'genesisstudio' ) + block.name,
 		block
 	);
+	/* eslint-enable */
 
 	for ( const attribute in block.attributes ) {
 		// If this block has the fontSize attribute, make sure it's not one of the forbidden values.
