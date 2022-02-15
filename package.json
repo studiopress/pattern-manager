@@ -1,7 +1,7 @@
 {
 	"name": "fse-studio",
 	"version": "1.0.0",
-	"license": "GPLv2",
+	"license": "GPL-2.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/studiopress/fse-studio"
