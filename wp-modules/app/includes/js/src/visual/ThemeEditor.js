@@ -13,24 +13,24 @@ import {
 } from './../non-visual/non-visual-logic.js';
 
 export function ThemeEditorApp() {
-	const { themes } = useContext( FseStudioContext );
-	const [ currentThemeId, setCurrentThemeId ] = useState();
-	const theme = useThemeData( currentThemeId, themes );
+	const { themes } = useContext(FseStudioContext);
+	const [currentThemeId, setCurrentThemeId] = useState();
+	const theme = useThemeData(currentThemeId, themes);
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
 
 		renderedThemes.push(
-			<option key={ 1 }>{ __( 'Choose a theme', 'fse-studio' ) }</option>
+			<option key={1}>{__('Choose a theme', 'fse-studio')}</option>
 		);
 
 		let counter = 3;
 
-		for ( const thisTheme in themes.themes ) {
-			const themeInQuestion = themes.themes[ thisTheme ];
+		for (const thisTheme in themes.themes) {
+			const themeInQuestion = themes.themes[thisTheme];
 			renderedThemes.push(
-				<option key={ counter } value={ themeInQuestion.dirname }>
-					{ themeInQuestion.name }
+				<option key={counter} value={themeInQuestion.dirname}>
+					{themeInQuestion.name}
 				</option>
 			);
 			counter++;
@@ -39,34 +39,34 @@ export function ThemeEditorApp() {
 		return (
 			<>
 				<select
-					value={ currentThemeId }
-					onChange={ ( event ) => {
-						setCurrentThemeId( event.target.value );
-					} }
+					value={currentThemeId}
+					onChange={(event) => {
+						setCurrentThemeId(event.target.value);
+					}}
 				>
-					{ renderedThemes }
+					{renderedThemes}
 				</select>
 			</>
 		);
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! theme.data ) {
+		if (!theme.data) {
 			return '';
 		}
 
-		return <ThemeEditor theme={ theme } />;
+		return <ThemeEditor theme={theme} />;
 	}
 
 	return (
 		<>
 			<div className="fsestudio-subheader">
 				<div>Theme Editor</div>
-				{ renderThemeSelector() }
-				or{ ' ' }
+				{renderThemeSelector()}
+				or{' '}
 				<button
 					className="button"
-					onClick={ () => {
+					onClick={() => {
 						const newThemeData = {
 							name: 'My New Theme',
 							dirname: 'my-new-theme',
@@ -86,49 +86,49 @@ export function ThemeEditorApp() {
 							'404.html': '',
 						};
 
-						themes.setThemes( {
+						themes.setThemes({
 							...themes.themes,
 							'my-new-theme': newThemeData,
-						} );
+						});
 
 						// Switch to the newly created theme.
-						setCurrentThemeId( 'my-new-theme' );
-					} }
+						setCurrentThemeId('my-new-theme');
+					}}
 				>
 					Create a new theme
 				</button>
-				{ ( () => {
-					if ( theme.data ) {
+				{(() => {
+					if (theme.data) {
 						return (
 							<button
 								className="button"
-								onClick={ () => {
+								onClick={() => {
 									theme.save();
-								} }
+								}}
 							>
 								Save theme data to disk
 							</button>
 						);
 					}
-				} )() }
+				})()}
 			</div>
-			{ renderThemeEditorWhenReady() }
+			{renderThemeEditorWhenReady()}
 		</>
 	);
 }
 
-export function ThemeEditor( props ) {
-	const { patterns } = useContext( FseStudioContext );
+export function ThemeEditor(props) {
+	const { patterns } = useContext(FseStudioContext);
 	const theme = props.theme;
 
 	function formatPatternValuesForSelect() {
 		const options = [];
-		for ( const patternNum in theme.data.includedPatterns ) {
-			const patternId = theme.data.includedPatterns[ patternNum ];
-			options.push( {
-				value: patterns.patterns[ patternId ].name,
-				label: patterns.patterns[ patternId ].title,
-			} );
+		for (const patternNum in theme.data.includedPatterns) {
+			const patternId = theme.data.includedPatterns[patternNum];
+			options.push({
+				value: patterns.patterns[patternId].name,
+				label: patterns.patterns[patternId].title,
+			});
 		}
 
 		return options;
@@ -136,31 +136,31 @@ export function ThemeEditor( props ) {
 
 	function formatPatternOptionsForSelect() {
 		const options = [];
-		for ( const pattern in patterns.patterns ) {
-			options.push( {
-				value: patterns.patterns[ pattern ].name,
-				label: patterns.patterns[ pattern ].title,
-			} );
+		for (const pattern in patterns.patterns) {
+			options.push({
+				value: patterns.patterns[pattern].name,
+				label: patterns.patterns[pattern].title,
+			});
 		}
 
 		return options;
 	}
 
-	function formatPatternOptionsFromSelect( valuesFromSelect ) {
+	function formatPatternOptionsFromSelect(valuesFromSelect) {
 		//console.log( theme.data );
 		//console.log( valuesFromSelect );
 
 		const reAssembledThemePatterns = [];
 
-		for ( const value in valuesFromSelect ) {
+		for (const value in valuesFromSelect) {
 			//console.log( valuesFromSelect[value].value );
 			//console.log( patterns.patterns[valuesFromSelect[value].value]);
 
-			if ( patterns.patterns[ valuesFromSelect[ value ].value ] ) {
+			if (patterns.patterns[valuesFromSelect[value].value]) {
 				const pattern =
-					patterns.patterns[ valuesFromSelect[ value ].value ];
+					patterns.patterns[valuesFromSelect[value].value];
 
-				reAssembledThemePatterns.push( pattern.name );
+				reAssembledThemePatterns.push(pattern.name);
 			}
 		}
 
@@ -171,56 +171,53 @@ export function ThemeEditor( props ) {
 		return (
 			<>
 				<Select
-					options={ formatPatternOptionsForSelect() }
-					value={ formatPatternValuesForSelect() }
-					onChange={ ( newIncludedPatterns ) => {
-						const reAssembledThemePatterns = formatPatternOptionsFromSelect(
-							newIncludedPatterns
-						);
+					options={formatPatternOptionsForSelect()}
+					value={formatPatternValuesForSelect()}
+					onChange={(newIncludedPatterns) => {
+						const reAssembledThemePatterns =
+							formatPatternOptionsFromSelect(newIncludedPatterns);
 
-						theme.set( {
+						theme.set({
 							...theme.data,
 							includedPatterns: reAssembledThemePatterns,
-						} );
-					} }
-					isMulti={ true }
+						});
+					}}
+					isMulti={true}
 				/>
 			</>
 		);
 	}
 
 	function renderCurrentTheme() {
-		if ( ! theme.data ) {
+		if (!theme.data) {
 			return '';
 		}
 		return (
 			<div className="fsestudio-theme-editor">
 				<div
 					className="fsestudio-info-editor-options"
-					style={ { maxWidth: '600px', margin: '50px auto' } }
+					style={{ maxWidth: '600px', margin: '50px auto' }}
 				>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'FSE Theme Name: ', 'fse-studio' ) }
+							{__('FSE Theme Name: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
 								type="text"
-								value={
-									theme?.data?.name ? theme.data.name : ''
-								}
-								onChange={ ( event ) => {
-									theme.set( {
+								value={theme?.data?.name ? theme.data.name : ''}
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										name: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Directory name: ', 'fse-studio' ) }
+							{__('Directory name: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -230,18 +227,18 @@ export function ThemeEditor( props ) {
 										? theme.data.dirname
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										dirname: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Namespace: ', 'fse-studio' ) }
+							{__('Namespace: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -251,35 +248,35 @@ export function ThemeEditor( props ) {
 										? theme.data.namespace
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										namespace: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'URI: ', 'fse-studio' ) }
+							{__('URI: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
 								type="text"
-								value={ theme?.data?.uri ? theme.data.uri : '' }
-								onChange={ ( event ) => {
-									theme.set( {
+								value={theme?.data?.uri ? theme.data.uri : ''}
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										uri: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Author: ', 'fse-studio' ) }
+							{__('Author: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -287,18 +284,18 @@ export function ThemeEditor( props ) {
 								value={
 									theme?.data?.author ? theme.data.author : ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										author: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Author URI: ', 'fse-studio' ) }
+							{__('Author URI: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -308,18 +305,18 @@ export function ThemeEditor( props ) {
 										? theme.data.author_uri
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										author_uri: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Description: ', 'fse-studio' ) }
+							{__('Description: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -329,40 +326,38 @@ export function ThemeEditor( props ) {
 										? theme.data.description
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										description: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Tags: ', 'fse-studio' ) }
+							{__('Tags: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
 								type="text"
-								value={
-									theme?.data?.tags ? theme.data.tags : ''
-								}
-								onChange={ ( event ) => {
-									theme.set( {
+								value={theme?.data?.tags ? theme.data.tags : ''}
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										tags: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __(
+							{__(
 								'Tested up to (WordPress Version): ',
 								'fse-studio'
-							) }
+							)}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -372,21 +367,18 @@ export function ThemeEditor( props ) {
 										? theme.data.tested_up_to
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										tested_up_to: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __(
-								'Minimum WordPress Version: ',
-								'fse-studio'
-							) }
+							{__('Minimum WordPress Version: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -396,18 +388,18 @@ export function ThemeEditor( props ) {
 										? theme.data.requires_wp
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										requires_wp: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Minimum PHP Version: ', 'fse-studio' ) }
+							{__('Minimum PHP Version: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -417,18 +409,18 @@ export function ThemeEditor( props ) {
 										? theme.data.requires_php
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										requires_php: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Version: ', 'fse-studio' ) }
+							{__('Version: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -438,18 +430,18 @@ export function ThemeEditor( props ) {
 										? theme.data.version
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										version: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Text Domain: ', 'fse-studio' ) }
+							{__('Text Domain: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<input
@@ -459,39 +451,36 @@ export function ThemeEditor( props ) {
 										? theme.data.text_domain
 										: ''
 								}
-								onChange={ ( event ) => {
-									theme.set( {
+								onChange={(event) => {
+									theme.set({
 										...theme.data,
 										text_domain: event.target.value,
-									} );
-								} }
+									});
+								}}
 							/>
 						</div>
 					</div>
 
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'Included Patterns: ', 'fse-studio' ) }
+							{__('Included Patterns: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
-							{ renderPatternPicker() }
+							{renderPatternPicker()}
 						</div>
 					</div>
 					<div className="fsestudio-info-editor-option">
 						<div className="fsestudio-info-editor-option-name">
-							{ __( 'index.html contents: ', 'fse-studio' ) }
+							{__('index.html contents: ', 'fse-studio')}
 						</div>
 						<div className="fsestudio-info-editor-option-value">
 							<div>
 								{
 									//currentThemeData[ 'index.html' ].pattern
-								 }
+								}
 							</div>
-							<button onClick={ () => {} } className="button">
-								{ __(
-									'Set index.html contents',
-									'fse-studio'
-								) }
+							<button onClick={() => {}} className="button">
+								{__('Set index.html contents', 'fse-studio')}
 							</button>
 						</div>
 					</div>
@@ -500,17 +489,15 @@ export function ThemeEditor( props ) {
 		);
 	}
 
-	return <>{ renderCurrentTheme() }</>;
+	return <>{renderCurrentTheme()}</>;
 }
 
-export function LayoutPreview( props ) {
-	const { siteUrl } = useContext( FseStudioContext );
-	const iframeRef = useRef( null );
-	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
-		0
-	);
+export function LayoutPreview(props) {
+	const { siteUrl } = useContext(FseStudioContext);
+	const iframeRef = useRef(null);
+	const [iframeInnerContentHeight, setIframeInnerContentHeight] = useState(0);
 
-	function renderLayoutHtmlForIframe( bodyHTML ) {
+	function renderLayoutHtmlForIframe(bodyHTML) {
 		return (
 			`<html>
 			<head>
@@ -539,19 +526,19 @@ export function LayoutPreview( props ) {
 
 	return (
 		<div
-			style={ {
+			style={{
 				width: '200px',
 				height: iframeInnerContentHeight * 0.1 + 'px',
 				boxShadow: '0 0 0px 2px #000',
 				pointerEvents: 'none',
-			} }
+			}}
 		>
 			<iframe
 				title="Preview"
-				ref={ iframeRef }
-				onLoad={ onLoad }
+				ref={iframeRef}
+				onLoad={onLoad}
 				scrolling="no"
-				style={ {
+				style={{
 					width: '2000px',
 					height: iframeInnerContentHeight + 'px',
 					transform: 'scale(.1)',
@@ -559,11 +546,11 @@ export function LayoutPreview( props ) {
 					overflow: 'hidden',
 					top: '0px',
 					borderRadius: '5px',
-				} }
-				srcDoc={ renderLayoutHtmlForIframe( props.bodyHTML ) }
+				}}
+				srcDoc={renderLayoutHtmlForIframe(props.bodyHTML)}
 				src={
 					'data:text/html;charset=utf-8,' +
-					escape( renderLayoutHtmlForIframe( props.bodyHTML ) )
+					escape(renderLayoutHtmlForIframe(props.bodyHTML))
 				}
 			/>
 		</div>

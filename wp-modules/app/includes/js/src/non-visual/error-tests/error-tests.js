@@ -10,64 +10,64 @@ import { localUrlsForbidden } from './local-urls-forbidden.js';
 import { headingColorRequired } from './heading-color-required.js';
 import { textColorRequired } from './text-color-required.js';
 
-export function testBlockForErrors( block ) {
+export function testBlockForErrors(block) {
 	const errors = {};
 
 	// Run the local url test
-	const testLocalUrlsForbidden = localUrlsForbidden( block );
-	if ( ! testLocalUrlsForbidden.success ) {
+	const testLocalUrlsForbidden = localUrlsForbidden(block);
+	if (!testLocalUrlsForbidden.success) {
 		// If it failed the test, add the error to the list of errors.
 		errors.localUrlForbidden = testLocalUrlsForbidden;
 	}
 
 	// Run the invalid font size test
-	const testInvalidFontSize = invalidFontSize( block );
-	if ( ! testInvalidFontSize.success ) {
+	const testInvalidFontSize = invalidFontSize(block);
+	if (!testInvalidFontSize.success) {
 		// If it failed the test, add the error to the list of errors.
 		errors.invalidFontSize = testInvalidFontSize;
 	}
 
 	// Run the theme color pallete text forbidden test
-	const testThemeColorPalleteTextColorForbidden = themeColorPalleteTextColorForbidden(
-		block
-	);
-	if ( ! testThemeColorPalleteTextColorForbidden.success ) {
+	const testThemeColorPalleteTextColorForbidden =
+		themeColorPalleteTextColorForbidden(block);
+	if (!testThemeColorPalleteTextColorForbidden.success) {
 		// If it failed the test, add the error to the list of errors.
-		errors.themeColorPalleteTextColorForbidden = testThemeColorPalleteTextColorForbidden;
+		errors.themeColorPalleteTextColorForbidden =
+			testThemeColorPalleteTextColorForbidden;
 	}
 
 	// Run the theme color pallete background forbidden test
-	const testThemeColorPalleteBackgroundColorForbidden = themeColorPalleteBackgroundColorForbidden(
-		block
-	);
-	if ( ! testThemeColorPalleteBackgroundColorForbidden.success ) {
+	const testThemeColorPalleteBackgroundColorForbidden =
+		themeColorPalleteBackgroundColorForbidden(block);
+	if (!testThemeColorPalleteBackgroundColorForbidden.success) {
 		// If it failed the test, add the error to the list of errors.
-		errors.themeColorPalleteBackgroundColorForbidden = testThemeColorPalleteBackgroundColorForbidden;
+		errors.themeColorPalleteBackgroundColorForbidden =
+			testThemeColorPalleteBackgroundColorForbidden;
 	}
 
 	// Run the background color required test
-	const testBackgroundColorRequired = backgroundColorRequired( block );
+	const testBackgroundColorRequired = backgroundColorRequired(block);
 
-	if ( ! testBackgroundColorRequired.success ) {
+	if (!testBackgroundColorRequired.success) {
 		// If it failed the test, add the error to the list of errors.
 		errors.backgroundColorRequired = testBackgroundColorRequired;
 	}
 
 	// Run the heading color required test.
-	const testHeadingColorRequired = headingColorRequired( block );
-	if ( ! testHeadingColorRequired.success ) {
+	const testHeadingColorRequired = headingColorRequired(block);
+	if (!testHeadingColorRequired.success) {
 		// If it failed the test, add the error to the list of errors.
 		errors.headingColorRequired = testHeadingColorRequired;
 	}
 
 	// Run the text color required test.
-	const testTextColorRequired = textColorRequired( block );
-	if ( ! testTextColorRequired.success ) {
+	const testTextColorRequired = textColorRequired(block);
+	if (!testTextColorRequired.success) {
 		// If it failed the test, add the error to the list of errors.
 		errors.textColorRequired = testTextColorRequired;
 	}
 
-	if ( Object.keys( errors ).length > 0 ) {
+	if (Object.keys(errors).length > 0) {
 		return {
 			success: false,
 			errors,
@@ -80,14 +80,14 @@ export function testBlockForErrors( block ) {
 	};
 }
 
-export function testPatternForErrors( patternBlocks ) {
-	for ( const patternBlock in patternBlocks ) {
-		const testResult = testBlockForErrors( patternBlocks[ patternBlock ] );
+export function testPatternForErrors(patternBlocks) {
+	for (const patternBlock in patternBlocks) {
+		const testResult = testBlockForErrors(patternBlocks[patternBlock]);
 
 		// If a block has failed a test, return that error.
-		if ( ! testResult.success ) {
+		if (!testResult.success) {
 			// Add the name of the pattern to the result
-			testResult.pattern = patternBlocks[ patternBlock ].name;
+			testResult.pattern = patternBlocks[patternBlock].name;
 			return testResult;
 		}
 	}
