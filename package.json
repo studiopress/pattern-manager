@@ -5,9 +5,6 @@
 		"type": "git",
 		"url": ""
 	},
-	"dependencies": {
-		"@fse-studio/components": "file:wp-modules/components"
-	},
 	"scripts": {
 		"installation": "sh ./.scripts/install.sh",
 		"dev": "sh ./.scripts/dev.sh"
