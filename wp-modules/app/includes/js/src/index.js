@@ -33,6 +33,7 @@ import {
 	useThemeJsonFiles,
 	useCurrentThemeJsonFileData,
 	useCurrentView,
+	usePatternPreviewParts,
 } from './non-visual/non-visual-logic.js';
 
 
@@ -67,8 +68,9 @@ export function FseStudioApp() {
 				themeJsonFiles: useThemeJsonFiles( fsestudio.themeJsonFiles ),
 				currentThemeJsonFileData: useCurrentThemeJsonFileData(null),
 				siteUrl: fsestudio.siteUrl,
-				apiEndpiints: fsestudio.api_endpoints,
-				blockEditorSettings:  fsestudio.blockEditorSettings
+				apiEndpoints: fsestudio.api_endpoints,
+				blockEditorSettings:  fsestudio.blockEditorSettings,
+				patternPreviewParts: usePatternPreviewParts(),
 			} }
 		>
 			<FseStudio />
@@ -101,7 +103,7 @@ function FseStudio() {
 
 	return (
 		<>
-			<div>
+			<div className={`${sidebarOpen ? "sidebar-open" : "sidebar-closed"}`}>
 				{/* Static sidebar for desktop */}
 				<div
 					className={`hidden md:flex md:w-80 md:flex-col md:fixed md:inset-y-0 ${sidebarOpen ? "sidebar-open" : "!hidden"}`}
@@ -155,64 +157,15 @@ function FseStudio() {
 						</div>
 					</div>
 				</div>
-				<div className={`md:pl-80 flex flex-col ${sidebarOpen ? "md:pl-80" : "md:pl-0"}`}>
-					<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
-						<button
-							type="button"
-							className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
-							onClick={() => setSidebarOpen(true)}
-						>
-							<span className="sr-only">Open sidebar</span>
-							<Icon className='fill-current' icon={ menu } size={ 30 }/>
-						</button>
-						<div className="flex-1 flex">
-							<div className="flex items-stretch w-full">
-								<button 
-									className={`bg-wp-black px-3 ${sidebarOpen ? "hidden" : ""}`}
-									onClick={() => setSidebarOpen(true)}
-								>
-									<Icon className='text-white fill-current' icon={ wordpress } size={ 36 }/>
-									
-								</button>
-								{/* Additional dropdown */}
-								<Menu as="div" className="ml-3 relative self-center">
-									<div>
-										<Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-											Export Theme
-										</Menu.Button>
-									</div>
-									<Transition
-										as={Fragment}
-										enter="transition ease-out duration-100"
-										enterFrom="transform opacity-0 scale-95"
-										enterTo="transform opacity-100 scale-100"
-										leave="transition ease-in duration-75"
-										leaveFrom="transform opacity-100 scale-100"
-										leaveTo="transform opacity-0 scale-95"
-									>
-										<Menu.Items className="origin-center absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-											{userNavigation.map((item) => (
-												<Menu.Item key={item.name}>
-													{({ active }) => (
-														<a
-															href={item.href}
-															className={classNames(
-																active ? 'bg-gray-100' : '',
-																'block px-4 py-2 text-sm text-gray-700'
-															)}
-														>
-															{item.name}
-														</a>
-													)}
-												</Menu.Item>
-											))}
-										</Menu.Items>
-									</Transition>
-								</Menu>
-							</div>
-						</div>
-					</div>
 
+				<button 
+					className={`bg-wp-black px-3 py-3.5 absolute ${sidebarOpen ? "hidden" : ""}`}
+					onClick={() => setSidebarOpen(true)}
+				>
+					<Icon className='text-white fill-current' icon={ wordpress } size={ 36 }/>
+				</button>
+
+				<div className={`md:pl-80 flex flex-col ${sidebarOpen ? "md:pl-80" : "md:pl-0"}`}>
 					<main className="flex-1">
 						{ renderCurrentView() }
 					</main>

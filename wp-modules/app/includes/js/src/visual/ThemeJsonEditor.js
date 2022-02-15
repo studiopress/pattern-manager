@@ -4,14 +4,14 @@
 
 const { __ } = wp.i18n;
 
-import { BlockPreview } from '@wordpress/block-editor';
 import { ColorPicker, Popover } from '@wordpress/components';
-import { serialize, parse } from '@wordpress/blocks';
-import { useContext, useState, useEffect, createPortal, useRef } from '@wordpress/element';
+import { useContext, useState, useEffect } from '@wordpress/element';
 import {
 	FseStudioContext,
 	useThemeJsonFile,
 } from './../non-visual/non-visual-logic.js';
+
+import { PatternPreview } from './PatternPreview';
 
 export function ThemeJsonEditorApp( {visible} ) {
 	const { themeJsonFiles, currentThemeJsonFileData } = useContext( FseStudioContext );
@@ -112,7 +112,7 @@ export function ThemeJsonEditorApp( {visible} ) {
 }
 
 function ThemeJsonEditor({themeJsonFile}) {
-	const { patterns } = useContext( FseStudioContext );
+	const { patterns, patternPreviewParts } = useContext( FseStudioContext );
 	const content = themeJsonFile.data.content;
 	
 	function renderSettings() {
@@ -138,11 +138,16 @@ function ThemeJsonEditor({themeJsonFile}) {
 		const rendered = [];
 		
 		for( const blockPattern in patterns.patterns ) {
-			console.log( patterns.patterns[blockPattern] );
+			console.log( 'Block Pattern', patterns.patterns[blockPattern] );
 			
 			rendered.push(
-				<CustomBlockPatternPreview
-					html={ patterns.patterns[blockPattern].content }
+				<PatternPreview
+					key={blockPattern}
+					wpHead={ patternPreviewParts.data.wpHead }
+					blockPatternData={ patterns.patterns[blockPattern] }
+					wpFooter={ patternPreviewParts.data.wpFooter}
+					themeJsonData={ null }
+					scale={ .5 }
 				/>
 			);
 		}
@@ -154,7 +159,7 @@ function ThemeJsonEditor({themeJsonFile}) {
 	return (
 	<>
 		<div className="fsestudio-theme-json-editor">
-			<div className="grid grid-cols-8">
+			<div className="grid grid-cols-9">
 				<div className="border-2 border-black">
 					Settings
 					{ renderSettings() }
@@ -170,7 +175,7 @@ function ThemeJsonEditor({themeJsonFile}) {
 				<div className="border-2 border-black">
 					Template Parts
 				</div>
-				<div className="columns-10 gap-2 col-span-4">
+				<div className="grid grid-cols-2 gap-2 col-span-5">
 					{ renderPatternPreviews( patterns ) }
 				</div>
 			</div>
@@ -178,88 +183,6 @@ function ThemeJsonEditor({themeJsonFile}) {
 		</div>
 	</>
 	)
-}
-
-function CustomBlockPatternPreview({html}) {
-	const {blockEditorSettings, currentThemeJsonFileData} = useContext( FseStudioContext );
-
-	function renderPortalCssStyles() {
-		const renderedStyles = [
-			<div dangerouslySetInnerHTML={ { __html: blockEditorSettings.__unstableResolvedAssets.styles } } />
-		];
-
-		for( const style in blockEditorSettings.styles ) {
-			renderedStyles.push(
-				<style key={style}>
-					{ blockEditorSettings.styles[style].css }
-				</style>
-			);
-		}
-		
-		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
-			renderedStyles.push(
-				<style key={'renderedGlobalStyles'}>
-					{ currentThemeJsonFileData.value.renderedGlobalStyles }
-				</style>
-			);
-		}
-
-		return renderedStyles;
-	}
-	
-	return (
-		<Portal>
-			<div>
-				{ renderPortalCssStyles() }
-			</div>
-			<div dangerouslySetInnerHTML={{__html: html }} />
-		</Portal>
-	)
-}
-
-function Portal({children}) {
-	const [iframeRef, setRef] = useState();
-	const [iframeInnerContentHeight, setIframeInnerContentHeight] = useState(0);
-	const container = iframeRef?.contentWindow?.document?.body;
-	
-	const scale = .08;
-	const scaleMultiplier = 10 / (scale*10);
-	
-	useEffect( () => {
-		if ( iframeRef ) {
-			setTimeout( () => {
-				setIframeInnerContentHeight( container.scrollHeight );
-			}, [1000]);
-		}
-	} );
-
-	return (
-		<div
-		style={{
-			position:'relative',
-			width: '100%',
-			height: iframeInnerContentHeight / scaleMultiplier,
-			marginTop:'10px',
-			marginBottom:'10px',
-		}}>
-			<iframe
-				ref={setRef}
-				style={ {
-					position: 'absolute',
-					top: '0',
-					left: '0',
-					width: 100 * scaleMultiplier + '%',
-					height: 100 * scaleMultiplier + '%',
-					display: 'block',
-					transform: 'scale(' + scale + ')',
-					transformOrigin: 'top left',
-				} }
-			>
-				
-				{container && createPortal(children, container)}
-			</iframe>
-		</div>
-	);
 }
 
 function FseStudioColorPalette( {themeJsonFile, colors} ) {
