@@ -19,7 +19,7 @@ jobs:
           working_directory: plugins/fse-studio
           command: |
             npm run installation
-            cd ~plugins/wp-plugin-sidekick/wp-modules/linter
+            cd ~/project/plugins/wp-plugin-sidekick/wp-modules/linter
             sh lint-js.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
             sh lint-css.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
 
