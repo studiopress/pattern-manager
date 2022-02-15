@@ -16,6 +16,11 @@ import {
 	__unstableEditorStyles as EditorStyles,
 } from '@wordpress/block-editor';
 
+import { 
+	Icon,
+	layout,
+} from '@wordpress/icons';
+
 import { serialize, parse } from '@wordpress/blocks';
 
 import { getPrefix } from './../non-visual/prefix.js';
@@ -154,12 +159,39 @@ export function PatternEditorApp( { visible } ) {
 	}
 
 	return (
-		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			<div className="fsestudio-subheader">
-				<div>Pattern Editor</div>
-				{ renderPatternSelector() }
-				{ maybeRenderErrors() }
+		<div hidden={!visible} className="fsestudio-pattern-work-area">
+			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+			
+				<div className="flex-1 flex">
+					<div className="flex w-full p-3 gap-5">
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						>
+							<Icon className='text-white fill-current mr-2' icon={ layout } size={ 26 }/> { __( 'Browse Patterns', 'fse-studio' ) }
+						</button>
+
+						{ renderPatternSelector() }
+						{ maybeRenderErrors() }
+					</div>
+				</div>
 			</div>
+
+			<div className="max-w-7xl mx-auto bg-white mt-20">
+				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">{ __( 'Pattern Manager', 'fse-studio' ) }</h1>
+				<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
+					<p className="text-base mb-4 max-w-3xl">{ __( 'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.', 'fse-studio' ) }</p>
+					<div className="bg-[#F8F8F8] p-20 w-full text-center">
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						>
+							<Icon className='text-white fill-current mr-2' icon={ layout } size={ 26 }/> { __( 'Browse Patterns', 'fse-studio' ) }
+						</button>
+					</div>
+				</div>
+			</div>
+
 			{ renderPatternEditorWhenReady() }
 		</div>
 	);
