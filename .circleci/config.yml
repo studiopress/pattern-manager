@@ -9,6 +9,7 @@ jobs:
           path: plugins/fse-studio
       - run:
           name: Linting PHP
+          working_directory: plugins/fse-studio
           command: |
             npm run installation
             npm run lint:php
