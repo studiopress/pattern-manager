@@ -407,25 +407,49 @@ function ThemeDataEditor( { theme } ) {
 	}
 	/* eslint-enable */
 
-	function maybeRenderAddPatternsView() {
-		if ( currentView === 'add_patterns' ) {
-			return (
-				<Modal
-					title="Pick the patterns to include in this theme"
-					onRequestClose={ () => {
-						setCurrentView( 'theme_setup' );
-					} }
-				>
-					<PatternPicker
-						patterns={ patterns.patterns }
-						selectedPatterns={ selectedPatterns }
-						setSelectedPatterns={ setSelectedPatterns }
-						layoutPreview={ LayoutPreview }
-						selectMultiple={ true }
-					/>
-				</Modal>
-			);
-		}
+	function MaybeAddPatternsView() {
+		const [ isModalOpen, setModalOpen ] = useState( false );
+		return currentView === 'add_patterns' ? (
+			<>
+				<div className="w-72 bg-gray-100 p-5 self-start">
+					<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+						{ __( 'Add patterns to your theme', 'fse-studio' ) }
+					</h3>
+					<p className="mt-2">
+						<span>
+							{ __(
+								'You can also create patterns in the',
+								'fse-studio'
+							) }
+						</span>
+						&nbsp;
+						<button className="mt-2">
+							{ __( 'Pattern Manager', 'fse-studio' ) }
+						</button>
+						<button
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => setModalOpen( true ) }
+						>
+							{ __( 'Browse Patterns', 'fse-studio' ) }
+						</button>
+					</p>
+				</div>
+				{ isModalOpen ? (
+					<Modal
+						title="Pick the patterns to include in this theme"
+						onRequestClose={ () => setModalOpen( false ) }
+					>
+						<PatternPicker
+							patterns={ patterns.patterns }
+							selectedPatterns={ selectedPatterns }
+							setSelectedPatterns={ setSelectedPatterns }
+							layoutPreview={ LayoutPreview }
+							selectMultiple={ true }
+						/>
+					</Modal>
+				) : null }
+			</>
+		) : null;
 	}
 
 	function maybeRenderCustomizeStylesView() {}
@@ -790,7 +814,7 @@ function ThemeDataEditor( { theme } ) {
 					) ) }
 				</ul>
 				{ maybeRenderThemeSetupView() }
-				{ maybeRenderAddPatternsView() }
+				<MaybeAddPatternsView />
 				{ maybeRenderCustomizeStylesView() }
 				<div className="w-72 bg-gray-100 p-5 self-start">
 					<h3>Sidebar</h3>
