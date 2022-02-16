@@ -481,7 +481,9 @@ function ThemeDataEditor( { theme } ) {
 							'Pick the patterns to include in this theme',
 							'fse-studio'
 						) }
-						onRequestClose={ () => setModalOpen( false ) }
+						onRequestClose={ () => {
+							setModalOpen( false );
+						} }
 					>
 						<PatternPicker
 							patterns={ patterns.patterns }
