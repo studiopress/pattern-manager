@@ -437,21 +437,43 @@ function ThemeDataEditor( { theme } ) {
 							</button>
 						</p>
 					</div>
-					<div className="grid w-full grid-cols-3 gap-5 p-8">
-						{ selectedPatterns.map( ( patternName, index ) => {
-							return (
-								<div
-									key={ index }
-									className="min-h-[300px] bg-gray-200"
-								>
-									<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
-										{ patterns.patterns[ patternName ].title }
-									</h3>
-									<LayoutPreview bodyHTML={ patterns.patterns[ patternName ].content } />
-								</div>
-							);
-						} ) }
-					</div>
+					{ selectedPatterns.length ? (
+						<>
+							<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+								{ __(
+									'Patterns included in this theme:',
+									'fse-studio'
+								) }
+							</h3>
+							<div className="grid w-full grid-cols-3 gap-5 p-8">
+								{ selectedPatterns.map(
+									( patternName, index ) => {
+										return (
+											<div
+												key={ index }
+												className="min-h-[300px] bg-gray-200"
+											>
+												<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
+													{
+														patterns.patterns[
+															patternName
+														].title
+													}
+												</h3>
+												<LayoutPreview
+													bodyHTML={
+														patterns.patterns[
+															patternName
+														].content
+													}
+												/>
+											</div>
+										);
+									}
+								) }
+							</div>
+						</>
+					) : null }
 				</div>
 				{ isModalOpen ? (
 					<Modal
