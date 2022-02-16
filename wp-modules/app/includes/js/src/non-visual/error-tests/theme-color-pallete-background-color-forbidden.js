@@ -25,10 +25,7 @@ export function themeColorPalleteBackgroundColorForbidden( block ) {
 					success: false,
 					errorCode:
 						'theme_color_pallete_background_color_not_allowed',
-					errorTitle: __(
-						'Invalid Background Color',
-						'fse-studio'
-					),
+					errorTitle: __( 'Invalid Background Color', 'fse-studio' ),
 					errorMessage: __(
 						'You cannot use a color provided by your theme, as the theme could change and the color suddenly be unavailable.',
 						'fse-studio'
