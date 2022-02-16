@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 export function localUrlsForbidden( block ) {
 	/* eslint-disable */
 	console.log(
-		__( 'Testing for local URLs in ', 'genesisstudio' ) + block.name
+		__( 'Testing for local URLs in ', 'fse-studio' ) + block.name
 	);
 	/* eslint-enable */
 
@@ -20,10 +20,10 @@ export function localUrlsForbidden( block ) {
 			return {
 				success: false,
 				errorCode: 'local_urls_forbidden',
-				errorTitle: __( 'Local URL found', 'genesisstudio' ),
+				errorTitle: __( 'Local URL found', 'fse-studio' ),
 				errorMessage: __(
 					'You cannot include locally hosted content. Offload your content to a publicly accessible server.',
-					'genesisstudio'
+					'fse-studio'
 				),
 				invalidValue: block.attributes[ attribute ],
 				block,

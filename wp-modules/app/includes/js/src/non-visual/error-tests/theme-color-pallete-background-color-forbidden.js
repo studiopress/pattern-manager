@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 export function themeColorPalleteBackgroundColorForbidden( block ) {
 	/* eslint-disable */
 	console.log(
-		__( 'Testing No non-themeJson colors for ', 'genesisstudio' ) +
+		__( 'Testing No non-themeJson colors for ', 'fse-studio' ) +
 			block.name,
 		block
 	);
@@ -27,11 +27,11 @@ export function themeColorPalleteBackgroundColorForbidden( block ) {
 						'theme_color_pallete_background_color_not_allowed',
 					errorTitle: __(
 						'Invalid Background Color',
-						'genesisstudio'
+						'fse-studio'
 					),
 					errorMessage: __(
 						'You cannot use a color provided by your theme, as the theme could change and the color suddenly be unavailable.',
-						'genesisstudio'
+						'fse-studio'
 					),
 					invalidValue: block.attributes[ attribute ],
 					block,

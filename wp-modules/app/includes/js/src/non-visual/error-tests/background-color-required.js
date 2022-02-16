@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 export function backgroundColorRequired( block ) {
 	/* eslint-disable */
 	console.log(
-		__( 'Testing Background Color Required for ', 'genesisstudio' ) +
+		__( 'Testing Background Color Required for ', 'fse-studio' ) +
 			block.name
 	);
 	/* eslint-enable */
@@ -32,10 +32,10 @@ export function backgroundColorRequired( block ) {
 	return {
 		success: false,
 		errorCode: 'background_color_not_found',
-		errorTitle: __( 'Background Color Required', 'genesisstudio' ),
+		errorTitle: __( 'Background Color Required', 'fse-studio' ),
 		errorMessage: __(
 			'All top-level blocks must have a background color applied.',
-			'genesisstudio'
+			'fse-studio'
 		),
 		block,
 	};
