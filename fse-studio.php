@@ -32,8 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function include_custom_modules() {
-	$wp_modules = glob( plugin_dir_path( __FILE__ ) . 'wp-modules*/*' )
-	;
+	$wp_modules = glob( plugin_dir_path( __FILE__ ) . 'wp-modules*/*' );
 
 	foreach ( $wp_modules as $wp_module ) {
 		$module_name = basename( $wp_module );
