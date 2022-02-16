@@ -823,7 +823,7 @@ function ThemeDataEditor( { theme } ) {
 				{ maybeRenderCustomizeStylesView() }
 				{ currentView === 'theme_setup' ? (
 					<div className="w-72 bg-gray-100 p-5 self-start">
-						<h3>Sidebar</h3>
+						<h3>{ __( 'Sidebar', 'fse-studio' ) }</h3>
 						<p>
 							Lorem ipsum dolor sit amet, consectetur adipiscing
 							elit. Donec ac purus nec diam laoreet sollicitudin.
