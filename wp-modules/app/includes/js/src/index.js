@@ -411,30 +411,47 @@ function ThemeDataEditor( { theme } ) {
 		const [ isModalOpen, setModalOpen ] = useState( false );
 		return currentView === 'add_patterns' ? (
 			<>
-				<div className="w-full text-center bg-gray-100 p-5 self-start">
-					<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
-						{ __( 'Add patterns to your theme', 'fse-studio' ) }
-					</h3>
-					<p className="mt-2">
-						<span>
-							{ __(
-								'You can also create patterns in the',
-								'fse-studio'
-							) }
-						</span>
-						&nbsp;
-						<button className="mt-2">
-							{ __( 'Pattern Manager', 'fse-studio' ) }
-						</button>
-					</p>
-					<p className="mt-2">
-						<button
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => setModalOpen( true ) }
-						>
-							{ __( 'Browse Patterns', 'fse-studio' ) }
-						</button>
-					</p>
+				<div className="flex flex-col">
+					<div className="w-full text-center bg-gray-100 p-5 self-start">
+						<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							{ __( 'Add patterns to your theme', 'fse-studio' ) }
+						</h3>
+						<p className="mt-2">
+							<span>
+								{ __(
+									'You can also create patterns in the',
+									'fse-studio'
+								) }
+							</span>
+							&nbsp;
+							<button className="mt-2">
+								{ __( 'Pattern Manager', 'fse-studio' ) }
+							</button>
+						</p>
+						<p className="mt-2">
+							<button
+								className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+								onClick={ () => setModalOpen( true ) }
+							>
+								{ __( 'Browse Patterns', 'fse-studio' ) }
+							</button>
+						</p>
+					</div>
+					<div className="grid w-full grid-cols-3 gap-5 p-8">
+						{ selectedPatterns.map( ( patternName, index ) => {
+							return (
+								<div
+									key={ index }
+									className="min-h-[300px] bg-gray-200"
+								>
+									<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
+										{ patterns.patterns[ patternName ].title }
+									</h3>
+									<LayoutPreview bodyHTML={ patterns.patterns[ patternName ].content } />
+								</div>
+							);
+						} ) }
+					</div>
 				</div>
 				{ isModalOpen ? (
 					<Modal

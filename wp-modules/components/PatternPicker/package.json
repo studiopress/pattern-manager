@@ -4,7 +4,7 @@
   "description": "Pattern Picker Component for FSE Studio.",
   "author": "StudioPress",
   "license": "GPL v2 or greater",
-  "main": "index.js",
+  "main": "PatternPicker.js",
   "dependencies": {
     "@wordpress/element": "^4.1.1",
     "@wordpress/i18n": "^4.3.1",
