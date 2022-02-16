@@ -183,7 +183,7 @@ export function PatternEditorApp( { visible } ) {
 			{ ( () => {
 				if ( ! pattern.data ) {
 					return (
-						<div className="max-w-7xl mx-auto bg-white mt-20">
+						<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
 							<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
 								{ __( 'Pattern Manager', 'fse-studio' ) }
 							</h1>

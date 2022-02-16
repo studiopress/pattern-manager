@@ -272,7 +272,7 @@ function ThemeManager( { visible } ) {
 	return (
 		<>
 			<div hidden={ ! visible } className="fsestudio-theme-manager p-12">
-				<div className="max-w-7xl mx-auto bg-white">
+				<div className="max-w-7xl mx-auto bg-white shadow">
 					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
 						{ __( 'Dashboard', 'fse-studio' ) }
 					</h1>
