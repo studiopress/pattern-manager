@@ -336,7 +336,7 @@ function ThemeManager( { visible } ) {
 function ThemeDataEditor( { theme } ) {
 	const { patterns } = useContext( FseStudioContext );
 	const [ currentView, setCurrentView ] = useState( 'theme_setup' );
-	const [ selectedPatterns, setSelectedPatterns ] = useState( {} );
+	const [ selectedPatterns, setSelectedPatterns ] = useState( [] );
 	const views = [
 		{
 			name: __( 'Theme Setup', 'fse-studio' ),

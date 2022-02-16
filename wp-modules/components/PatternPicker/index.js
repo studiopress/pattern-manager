@@ -19,7 +19,7 @@ import { searchItems } from './utils/searchItems.js';
  *
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  selectedPatterns: Record<string, boolean>,
+ *  selectedPatterns: string[],
  *  setSelectedPatterns: Function,
  *  layoutPreview: Function,
  *  selectMultiple: boolean | undefined
@@ -46,27 +46,24 @@ export default function PatternPicker( {
 	 */
 	function togglePatternSelected( patternName ) {
 		if ( selectMultiple ) {
-			setSelectedPatterns( {
-				...selectedPatterns,
-				[ patternName ]: ! isPatternSelected( patternName ),
-			} );
+			if ( selectedPatterns.includes( patternName ) ) {
+				setSelectedPatterns(
+					selectedPatterns.filter(
+						( pattern ) => pattern !== patternName
+					)
+				);
+			} else {
+				setSelectedPatterns( [ ...selectedPatterns, patternName ] );
+			}
 
 			return;
 		}
 
-		setSelectedPatterns( {
-			[ patternName ]: ! isPatternSelected( patternName ),
-		} );
-	}
-
-	/**
-	 * Gets whether the pattern is selected.
-	 *
-	 * @param {string} patternName The name of the pattern.
-	 * @return {boolean} Whether the pattern is checked.
-	 */
-	function isPatternSelected( patternName ) {
-		return !! selectedPatterns[ patternName ];
+		if ( selectedPatterns.includes( patternName ) ) {
+			setSelectedPatterns( [] );
+		} else {
+			setSelectedPatterns( [ patternName ] );
+		}
 	}
 
 	return (
@@ -93,7 +90,9 @@ export default function PatternPicker( {
 					className="grid w-full grid-cols-3 gap-5 p-8"
 				>
 					{ filteredPatterns.map( ( pattern, index ) => {
-						const isChecked = isPatternSelected( pattern.name );
+						const isChecked = selectedPatterns.includes(
+							pattern.name
+						);
 
 						return (
 							<button
