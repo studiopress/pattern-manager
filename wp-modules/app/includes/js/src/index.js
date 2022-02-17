@@ -411,7 +411,11 @@ function ThemeDataEditor( { theme } ) {
 		const [ selectedPatterns, setSelectedPatterns ] = useState( [] );
 		const { currentView: sidebarView } = useContext( FseStudioContext );
 
-		return currentView === 'add_patterns' ? (
+		if ( currentView !== 'add_patterns' ) {
+			return null;
+		}
+
+		return (
 			<>
 				<div className="flex flex-col">
 					<div className="w-full text-center bg-gray-100 p-5 self-start">
@@ -502,7 +506,7 @@ function ThemeDataEditor( { theme } ) {
 					</Modal>
 				) : null }
 			</>
-		) : null;
+		);
 	}
 
 	function maybeRenderCustomizeStylesView() {}
