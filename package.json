@@ -8,6 +8,13 @@
 	},
 	"scripts": {
 		"installation": "sh ./.scripts/install.sh",
-		"dev": "sh ./.scripts/dev.sh"
+		"dev": "sh ./.scripts/dev.sh",
+		"test:phpunit": "cd ../wp-plugin-sidekick/wp-modules/linter; sh phpunit.sh -p fse-studio;",
+		"lint:php": "cd ../wp-plugin-sidekick/wp-modules/linter; sh phpcs.sh -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:php:fix": "cd ../wp-plugin-sidekick/wp-modules/linter; sh phpcs.sh -f 1 -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:js": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-js.sh -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:js:fix": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-js.sh -f 1 -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:css": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-css.sh -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:css:fix": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-css.sh -f 1 -p fse-studio -n FseStudio -t fse-studio;"
 	}
 }

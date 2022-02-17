@@ -9,19 +9,46 @@ jobs:
           path: plugins/fse-studio
       - run:
           name: Linting PHP
+          working_directory: plugins/fse-studio
           command: |
-            cd plugins
-            git clone https://github.com/johnstonphilip/wp-plugin-sidekick
-            cd wp-plugin-sidekick/wp-modules/linter
-            sh phpcs.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
+            npm run installation
+            npm run lint:php
       - run:
           name: Linting JS and CSS
           working_directory: plugins/fse-studio
           command: |
+            npm run lint:js
+            npm run lint:css
+  phpunit:
+    machine:
+      image: ubuntu-2004:202111-02
+
+    steps:
+      - checkout:
+          path: plugins/fse-studio
+      - run:
+          name: Install PHP
+          working_directory: plugins/fse-studio
+          command: |
+            sudo apt update && sudo apt upgrade
+            sudo apt install software-properties-common
+            sudo add-apt-repository ppa:ondrej/php
+            sudo apt update
+            sudo apt -y install php7.4
+      - run:
+          name: Install Composer
+          working_directory: plugins/fse-studio
+          command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            EXPECTED_SIGNATURE=$(curl -s https://composer.github.io/installer.sig)
+            ACTUAL_SIGNATURE=$(php -r "echo hash_file('sha384', 'composer-setup.php');")
+            [[ "$EXPECTED_SIGNATURE" == "$ACTUAL_SIGNATURE" ]] && sudo php composer-setup.php --install-dir=/bin --filename=composer || exit 1
+      - run:
+          name: PHPUnit Integration Tests
+          working_directory: plugins/fse-studio
+          command: |
             npm run installation
-            cd ~/project/plugins/wp-plugin-sidekick/wp-modules/linter
-            sh lint-js.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
-            sh lint-css.sh -f 1 -p ~/project/plugins/fse-studio -n FseStudio -t fse-studio
+            npm run test:phpunit || true
 
 workflows:
   build:
