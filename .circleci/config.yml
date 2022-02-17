@@ -30,6 +30,11 @@ jobs:
           name: PHPUnit Integration Tests
           working_directory: plugins/fse-studio
           command: |
+            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            EXPECTED_SIGNATURE=$(curl -s https://composer.github.io/installer.sig)
+            ACTUAL_SIGNATURE=$(php -r "echo hash_file('sha384', 'composer-setup.php');")
+            [[ "$EXPECTED_SIGNATURE" == "$ACTUAL_SIGNATURE" ]] && sudo php composer-setup.php --install-dir=/bin --filename=composer || exit 1
+          command: |
             npm run installation
             npm run test:phpunit || true
 
