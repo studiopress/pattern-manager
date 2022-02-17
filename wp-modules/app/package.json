@@ -20,7 +20,7 @@
     "test:unit": "wp-scripts test-unit-js"
   },
   "author": "",
-  "license": "GPL v2 or greater",
+  "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@wordpress/scripts": "^20.0.2",
     "autoprefixer": "^10.2.6",
@@ -40,7 +40,7 @@
     "@wordpress/blocks": "^11.2.1",
     "@wordpress/components": "^19.4.0",
     "@wordpress/element": "^4.0.4",
-    "@wordpress/i18n": "^4.2.4",
+    "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^6.2.0",
     "@wordpress/keyboard-shortcuts": "^3.1.1",
     "lodash": "^4.17.21",

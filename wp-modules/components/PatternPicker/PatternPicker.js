@@ -19,7 +19,7 @@ import { searchItems } from './utils/searchItems.js';
  *
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  selectedPatterns: Record<string, boolean>,
+ *  selectedPatterns: string[],
  *  setSelectedPatterns: Function,
  *  layoutPreview: Function,
  *  selectMultiple: boolean | undefined
@@ -46,27 +46,24 @@ export default function PatternPicker( {
 	 */
 	function togglePatternSelected( patternName ) {
 		if ( selectMultiple ) {
-			setSelectedPatterns( {
-				...selectedPatterns,
-				[ patternName ]: ! isPatternSelected( patternName ),
-			} );
+			if ( selectedPatterns.includes( patternName ) ) {
+				setSelectedPatterns(
+					selectedPatterns.filter(
+						( pattern ) => pattern !== patternName
+					)
+				);
+			} else {
+				setSelectedPatterns( [ ...selectedPatterns, patternName ] );
+			}
 
 			return;
 		}
 
-		setSelectedPatterns( {
-			[ patternName ]: ! isPatternSelected( patternName ),
-		} );
-	}
-
-	/**
-	 * Gets whether the pattern is selected.
-	 *
-	 * @param {string} patternName The name of the pattern.
-	 * @return {boolean} Whether the pattern is checked.
-	 */
-	function isPatternSelected( patternName ) {
-		return !! selectedPatterns[ patternName ];
+		if ( selectedPatterns.includes( patternName ) ) {
+			setSelectedPatterns( [] );
+		} else {
+			setSelectedPatterns( [ patternName ] );
+		}
 	}
 
 	return (
@@ -89,7 +86,9 @@ export default function PatternPicker( {
 				</div>
 				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-5">
 					{ filteredPatterns.map( ( pattern, index ) => {
-						const isChecked = isPatternSelected( pattern.name );
+						const isChecked = selectedPatterns.includes(
+							pattern.name
+						);
 
 						return (
 							<button
@@ -102,9 +101,9 @@ export default function PatternPicker( {
 										? 'min-h-[300px] border-2 border-solid border-sky-500 bg-white'
 										: 'min-h-[300px] bg-white border border-[#F0F0F0]'
 								}
-								onClick={ () =>
-									togglePatternSelected( pattern.name )
-								}
+								onClick={ () => {
+									togglePatternSelected( pattern.name );
+								} }
 								onKeyDown={ ( event ) => {
 									if ( 'Enter' === event.code ) {
 										togglePatternSelected( pattern.name );

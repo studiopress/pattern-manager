@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 export function headingColorRequired( block ) {
 	/* eslint-disable */
 	console.log(
-		__( 'Testing Heading Color Required for ', 'genesisstudio' ) +
+		__( 'Testing Heading Color Required for ', 'fse-studio' ) +
 			block.name
 	);
 	/* eslint-enable */
@@ -15,10 +15,10 @@ export function headingColorRequired( block ) {
 	const defaultResponse = {
 		success: false,
 		errorCode: 'heading_color_not_found',
-		errorTitle: __( 'Heading Color Required', 'genesisstudio' ),
+		errorTitle: __( 'Heading Color Required', 'fse-studio' ),
 		errorMessage: __(
 			'All heading blocks must have a color set.',
-			'genesisstudio'
+			'fse-studio'
 		),
 		block,
 	};

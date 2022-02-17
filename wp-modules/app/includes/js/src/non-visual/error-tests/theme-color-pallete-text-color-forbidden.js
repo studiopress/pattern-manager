@@ -9,7 +9,7 @@ export function themeColorPalleteTextColorForbidden( block ) {
 	console.log(
 		__(
 			'Testing Theme Color Pallete Text Color Forbidden for ',
-			'genesisstudio'
+			'fse-studio'
 		) + block.name
 	);
 	/* eslint-enable */
@@ -29,10 +29,10 @@ export function themeColorPalleteTextColorForbidden( block ) {
 			return {
 				success: false,
 				errorCode: 'theme_color_pallete_text_color_not_allowed',
-				errorTitle: __( 'Invalid Text Color', 'genesisstudio' ),
+				errorTitle: __( 'Invalid Text Color', 'fse-studio' ),
 				errorMessage: __(
 					'You cannot use a text color provided by your theme, as the theme could change and the color suddenly be unavailable.',
-					'genesisstudio'
+					'fse-studio'
 				),
 				invalidValue: block.attributes[ attribute ],
 				block,

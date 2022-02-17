@@ -42,7 +42,6 @@ import {
 	usePatternData,
 } from './../non-visual/non-visual-logic.js';
 import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
-import { Portal } from './Portal.js';
 
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
@@ -280,7 +279,7 @@ export function PatternEditor( props ) {
 
 		return editorSettings;
 	}
-
+	/* eslint-disable */
 	function renderPortalCssStyles() {
 		const renderedStyles = [
 			<div
@@ -309,7 +308,7 @@ export function PatternEditor( props ) {
 
 		return renderedStyles;
 	}
-
+	/* eslint-enable */
 	if ( ! pattern.data ) {
 		return 'Select a pattern to edit it here';
 	}

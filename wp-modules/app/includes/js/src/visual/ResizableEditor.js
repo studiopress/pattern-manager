@@ -1,6 +1,7 @@
 /**
  * WordPress dependencies
  */
+/* eslint-disable */
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
 import { ResizableBox } from '@wordpress/components';
 import {
@@ -141,3 +142,4 @@ function ResizableEditor( { enableResizing, settings, ...props } ) {
 }
 
 export default ResizableEditor;
+/* eslint-enable */

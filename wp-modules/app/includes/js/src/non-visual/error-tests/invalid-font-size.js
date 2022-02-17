@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 export function invalidFontSize( block ) {
 	/* eslint-disable */
 	console.log(
-		__( 'Testing Invaid Font Size for ', 'genesisstudio' ) + block.name,
+		__( 'Testing Invaid Font Size for ', 'fse-studio' ) + block.name,
 		block
 	);
 	/* eslint-enable */
@@ -31,10 +31,10 @@ export function invalidFontSize( block ) {
 				return {
 					success: false,
 					errorCode: 'invalid_font_size',
-					errorTitle: __( 'Invaid Font Size', 'genesisstudio' ),
+					errorTitle: __( 'Invaid Font Size', 'fse-studio' ),
 					errorMessage: __(
 						'You cannot use a font size not provided by your theme.',
-						'genesisstudio'
+						'fse-studio'
 					),
 					invalidValue:
 						block.attributes[ attribute ]?.typography?.fontSize,

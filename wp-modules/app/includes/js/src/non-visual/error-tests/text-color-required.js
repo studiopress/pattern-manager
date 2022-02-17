@@ -7,7 +7,7 @@ const { __ } = wp.i18n;
 export function textColorRequired( block ) {
 	/* eslint-disable */
 	console.log(
-		__( 'Testing Text Color Required for ', 'genesisstudio' ) + block.name
+		__( 'Testing Text Color Required for ', 'fse-studio' ) + block.name
 	);
 	/* eslint-enable */
 
@@ -31,10 +31,10 @@ export function textColorRequired( block ) {
 	return {
 		success: false,
 		errorCode: 'text_color_not_found',
-		errorTitle: __( 'Text Color Required', 'genesisstudio' ),
+		errorTitle: __( 'Text Color Required', 'fse-studio' ),
 		errorMessage: __(
 			'All top-level blocks must have a text color applied.',
-			'genesisstudio'
+			'fse-studio'
 		),
 		block,
 	};
