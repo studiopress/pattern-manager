@@ -475,7 +475,7 @@ function ThemeDataEditor( { theme } ) {
 													bodyHTML={
 														patterns.patterns[
 															patternName
-														].content
+														]?.content
 													}
 												/>
 											</div>
