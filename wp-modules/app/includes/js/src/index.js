@@ -409,6 +409,7 @@ function ThemeDataEditor( { theme } ) {
 	function MaybeAddPatternsView() {
 		const [ isModalOpen, setModalOpen ] = useState( false );
 		const [ selectedPatterns, setSelectedPatterns ] = useState( [] );
+		const { currentView: sidebarView } = useContext( FseStudioContext );
 
 		return currentView === 'add_patterns' ? (
 			<>
@@ -425,7 +426,12 @@ function ThemeDataEditor( { theme } ) {
 								) }
 							</span>
 							&nbsp;
-							<button className="mt-2">
+							<button
+								className="mt-2 text-blue-400"
+								onClick={ () => {
+									sidebarView.set( 'pattern_manager' );
+								} }
+							>
 								{ __( 'Pattern Manager', 'fse-studio' ) }
 							</button>
 						</p>
