@@ -542,7 +542,6 @@ export function LayoutPreview( props ) {
 			style={ {
 				width: '200px',
 				height: iframeInnerContentHeight * 0.1 + 'px',
-				boxShadow: '0 0 0px 2px #000',
 				pointerEvents: 'none',
 			} }
 		>
@@ -554,7 +553,7 @@ export function LayoutPreview( props ) {
 				style={ {
 					width: '2000px',
 					height: iframeInnerContentHeight + 'px',
-					transform: 'scale(.1)',
+					transform: 'scale(.2)',
 					transformOrigin: '0 0',
 					overflow: 'hidden',
 					top: '0px',

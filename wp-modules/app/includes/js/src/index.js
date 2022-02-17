@@ -411,7 +411,8 @@ function ThemeDataEditor( { theme } ) {
 		if ( currentView === 'add_patterns' ) {
 			return (
 				<Modal
-					title="Pick the patterns to include in this theme"
+					title="Patterns"
+					isFullScreen={true}
 					onRequestClose={ () => {
 						setCurrentView( 'theme_setup' );
 					} }
