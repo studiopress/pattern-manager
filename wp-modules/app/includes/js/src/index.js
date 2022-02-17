@@ -413,7 +413,7 @@ function ThemeDataEditor( { theme } ) {
 		if ( currentView !== 'add_patterns' ) {
 			return null;
 		}
-		console.log( theme.data );
+
 		return (
 			<>
 				<div className="flex flex-col">
@@ -498,13 +498,12 @@ function ThemeDataEditor( { theme } ) {
 						<PatternPicker
 							patterns={ patterns.patterns }
 							selectedPatterns={ theme.data.included_patterns }
-							setSelectedPatterns={ (selectedPatterns) => {
-								console.log( 'Selected Patterns: ', selectedPatterns );
+							setSelectedPatterns={ ( selectedPatterns ) => {
 								theme.set( {
 									...theme.data,
 									included_patterns: selectedPatterns,
 								} );
-							}}
+							} }
 							layoutPreview={ LayoutPreview }
 							selectMultiple={ true }
 						/>
