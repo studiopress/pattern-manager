@@ -14,8 +14,10 @@ import {
 	MediaPlaceholder,
 	MediaReplaceFlow,
 	__unstableEditorStyles as EditorStyles,
+	__unstableUseTypingObserver as useTypingObserver,
 } from '@wordpress/block-editor';
-
+import ResizableEditor from './ResizableEditor';
+import { useMergeRefs, useViewportMatch } from '@wordpress/compose';
 import { 
 	Icon,
 	layout,
@@ -34,7 +36,7 @@ import {
 } from '@wordpress/components';
 /* eslint-enable */
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import { useContext, useState, useEffect } from '@wordpress/element';
+import { useContext, useState, useEffect, useRef } from '@wordpress/element';
 import {
 	FseStudioContext,
 	usePatternData,
@@ -222,6 +224,9 @@ export function PatternEditorApp( { visible } ) {
 }
 
 export function PatternEditor( props ) {
+	const contentRef = useRef();
+	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
+
 	const { blockEditorSettings, currentThemeJsonFileData } = useContext(
 		FseStudioContext
 	);
@@ -429,19 +434,25 @@ export function PatternEditor( props ) {
 							settings={ getEditorSettings() }
 						>
 							<SlotFillProvider>
+								<Popover.Slot />
 								<BlockTools>
 									<WritingFlow>
 										<ObserveTyping>
 											<div className="fsestudio-pattern-editor-columns">
 												<div className={ 'column' }>
-													<Portal>
-														<div>
-															{ renderPortalCssStyles() }
-														</div>
+													
 														<div className="edit-post-visual-editor editor-styles-wrapper">
-															<BlockList />
+															<ResizableEditor
+																// Reinitialize the editor and reset the states when the template changes.
+																key={ pattern?.data?.name }
+																enableResizing={false}
+																settings={ getEditorSettings() }
+																contentRef={ mergedRefs }
+															>
+																<BlockList />
+															</ResizableEditor>
 														</div>
-													</Portal>
+													
 
 													<div
 														style={ {
@@ -466,7 +477,7 @@ export function PatternEditor( props ) {
 								</BlockTools>
 							</SlotFillProvider>
 						</BlockEditorProvider>
-						<Popover.Slot />
+						
 					</ShortcutProvider>
 				</div>
 			</div>
