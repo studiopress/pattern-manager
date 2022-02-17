@@ -6,11 +6,11 @@ import { __ } from '@wordpress/i18n';
 import PatternPicker from '@fse-studio/pattern-picker';
 
 export default function PatternsView( {
-    currentView, 
-    sidebarView, 
-    patterns, 
-    theme,
-    layoutPreview: LayoutPreview,
+	currentView,
+	sidebarView,
+	patterns,
+	theme,
+	layoutPreview: LayoutPreview,
 } ) {
 	const [ isModalOpen, setModalOpen ] = useState( false );
 

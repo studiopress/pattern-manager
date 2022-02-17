@@ -10,7 +10,6 @@ import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useContext, useEffect, useState } from '@wordpress/element';
-import { Modal } from '@wordpress/components';
 import ReactDOM from 'react-dom';
 import {
 	Icon,
@@ -334,7 +333,9 @@ function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor( { theme } ) {
-	const { patterns, currentView: sidebarView } = useContext( FseStudioContext );
+	const { patterns, currentView: sidebarView } = useContext(
+		FseStudioContext
+	);
 
 	const [ currentView, setCurrentView ] = useState( 'theme_setup' );
 	const views = [
