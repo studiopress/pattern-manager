@@ -772,7 +772,7 @@ function ThemeDataEditor( { theme } ) {
 				{ maybeRenderThemeSetupView() }
 				<PatternsView
 					currentView={ currentView }
-					sidebarView={ sidebarView }
+					setSidebarView={ sidebarView.set }
 					layoutPreview={ LayoutPreview }
 					patterns={ patterns }
 					theme={ theme }

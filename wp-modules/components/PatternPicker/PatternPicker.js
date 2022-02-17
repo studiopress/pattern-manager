@@ -6,12 +6,13 @@ import { __ } from '@wordpress/i18n';
 import { searchItems } from './utils/searchItems.js';
 
 /**
- * @typedef {Object} Pattern
- * @property {Array}  categories    The pattern categories.
- * @property {string} content       The pattern HTML content.
- * @property {string} name          The pattern name.
- * @property {string} title         The pattern title.
- * @property {number} viewportWidth The viewport width.
+ * @typedef {{
+ *   categories: string[],
+ *   content: string,
+ *   name: string,
+ *   title: string,
+ * 	 viewportWidth: number
+ * }} Pattern
  */
 
 /**

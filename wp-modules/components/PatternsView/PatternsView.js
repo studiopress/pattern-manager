@@ -1,13 +1,44 @@
 // @ts-check
 
+import * as React from 'react';
 import { Modal } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import PatternPicker from '@fse-studio/pattern-picker';
 
+/**
+ * @typedef {{
+ *   categories: string[],
+ *   content: string,
+ *   name: string,
+ *   title: string,
+ * 	 viewportWidth: number
+ * }} Pattern
+ */
+
+/**
+ * The pattern view component.
+ *
+ * @param {{
+ *  currentView: string,
+ *  setSidebarView: Function,
+ *  patterns: {
+ * 	  patterns: Record<string, Pattern>,
+ *    setPatterns: Function
+ *  },
+ *  theme: {
+ *    data: {
+ *      included_patterns: string[]
+ * 	  },
+ * 	  set: Function
+ *	},
+ *  layoutPreview: Function
+ * }} props The component props.
+ * @return {React.ReactElement} The rendered component.
+ */
 export default function PatternsView( {
 	currentView,
-	sidebarView,
+	setSidebarView,
 	patterns,
 	theme,
 	layoutPreview: LayoutPreview,
@@ -36,7 +67,7 @@ export default function PatternsView( {
 						<button
 							className="mt-2 text-blue-400"
 							onClick={ () => {
-								sidebarView.set( 'pattern_manager' );
+								setSidebarView( 'pattern_manager' );
 							} }
 						>
 							{ __( 'Pattern Manager', 'fse-studio' ) }
