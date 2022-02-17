@@ -30,6 +30,10 @@ jobs:
           name: Install PHP
           working_directory: plugins/fse-studio
           command: |
+            sudo apt update && sudo apt upgrade
+            sudo apt install software-properties-common
+            sudo add-apt-repository ppa:ondrej/php
+            sudo apt update
             sudo apt -y install php7.4
       - run:
           name: Install Composer
