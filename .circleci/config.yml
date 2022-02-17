@@ -27,11 +27,11 @@ jobs:
       - checkout:
           path: plugins/fse-studio
       - run:
-          name: PHPUnit Integreation Tests
+          name: PHPUnit Integration Tests
           working_directory: plugins/fse-studio
           command: |
             npm run installation
-            npm run test:php || true
+            npm run test:phpunit || true
 
 workflows:
   build:
