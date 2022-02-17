@@ -336,7 +336,6 @@ function ThemeManager( { visible } ) {
 function ThemeDataEditor( { theme } ) {
 	const { patterns } = useContext( FseStudioContext );
 	const [ currentView, setCurrentView ] = useState( 'theme_setup' );
-	const [ selectedPatterns, setSelectedPatterns ] = useState( [] );
 	const views = [
 		{
 			name: __( 'Theme Setup', 'fse-studio' ),
@@ -409,6 +408,8 @@ function ThemeDataEditor( { theme } ) {
 
 	function MaybeAddPatternsView() {
 		const [ isModalOpen, setModalOpen ] = useState( false );
+		const [ selectedPatterns, setSelectedPatterns ] = useState( [] );
+
 		return currentView === 'add_patterns' ? (
 			<>
 				<div className="flex flex-col">
@@ -439,7 +440,7 @@ function ThemeDataEditor( { theme } ) {
 					</div>
 					{ selectedPatterns.length ? (
 						<>
-							<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+							<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
 								{ __(
 									'Patterns included in this theme:',
 									'fse-studio'
