@@ -406,7 +406,7 @@ function ThemeDataEditor( { theme } ) {
 	}
 	/* eslint-enable */
 
-	function MaybeAddPatternsView( { includedPatterns, setTheme }) {
+	function MaybeAddPatternsView() {
 		const { currentView: sidebarView } = useContext( FseStudioContext );
 		const [ isModalOpen, setModalOpen ] = useState( false );
 
@@ -447,7 +447,7 @@ function ThemeDataEditor( { theme } ) {
 							</button>
 						</p>
 					</div>
-					{ includedPatterns.length ? (
+					{ theme.data.included_patterns.length ? (
 						<>
 							<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
 								{ __(
@@ -456,7 +456,7 @@ function ThemeDataEditor( { theme } ) {
 								) }
 							</h3>
 							<div className="grid w-full grid-cols-3 gap-5 p-8">
-								{ includedPatterns.map(
+								{ theme.data.included_patterns.map(
 									( patternName, index ) => {
 										return (
 											<div
@@ -497,9 +497,9 @@ function ThemeDataEditor( { theme } ) {
 					>
 						<PatternPicker
 							patterns={ patterns.patterns }
-							selectedPatterns={ includedPatterns }
+							selectedPatterns={ theme.data.included_patterns }
 							setSelectedPatterns={ ( selectedPatterns ) => {
-								setTheme( {
+								theme.set( {
 									...theme.data,
 									included_patterns: selectedPatterns,
 								} );
@@ -875,10 +875,7 @@ function ThemeDataEditor( { theme } ) {
 					) ) }
 				</ul>
 				{ maybeRenderThemeSetupView() }
-				<MaybeAddPatternsView
-					includedPatterns={ theme.data.included_patterns }
-					setTheme={ theme.set }
-				/>
+				<MaybeAddPatternsView />
 				{ maybeRenderCustomizeStylesView() }
 				{ currentView === 'theme_setup' ? (
 					<div className="w-72 bg-gray-100 p-5 self-start">
