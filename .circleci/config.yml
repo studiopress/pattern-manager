@@ -24,6 +24,19 @@ jobs:
           command: |
             npm run lint:js
             npm run lint:css
+  phpunit:
+    machine:
+      image: ubuntu-2004:202111-02
+
+    steps:
+      - checkout:
+          path: plugins/fse-studio
+      - run:
+          name: PHPUnit Integreation Tests
+          working_directory: plugins/fse-studio
+          command: |
+            npm run installation
+            npm run test:php
 
 workflows:
   build:
