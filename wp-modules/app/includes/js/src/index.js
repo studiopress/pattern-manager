@@ -412,7 +412,7 @@ function ThemeDataEditor( { theme } ) {
 			return (
 				<Modal
 					title="Patterns"
-					isFullScreen={true}
+					isFullScreen={ true }
 					onRequestClose={ () => {
 						setCurrentView( 'theme_setup' );
 					} }

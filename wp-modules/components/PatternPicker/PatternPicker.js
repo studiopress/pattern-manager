@@ -87,10 +87,7 @@ export default function PatternPicker( {
 						/>
 					</div>
 				</div>
-				<div
-					tabIndex={ -1 }
-					className="grid w-full grid-cols-3 gap-5"
-				>
+				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-5">
 					{ filteredPatterns.map( ( pattern, index ) => {
 						const isChecked = isPatternSelected( pattern.name );
 
