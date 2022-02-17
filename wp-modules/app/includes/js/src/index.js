@@ -468,7 +468,7 @@ function ThemeDataEditor( { theme } ) {
 													{
 														patterns.patterns[
 															patternName
-														].title
+														]?.title
 													}
 												</h3>
 												<LayoutPreview
