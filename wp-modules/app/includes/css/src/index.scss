@@ -64,7 +64,7 @@ html body.toplevel_page_fse-studio {
 
 	.fsestudio-pattern-editor-columns {
 		width: 100%;
-		height: calc(100vh - 133px - 32px);
+		height: calc(100vh - 64px - 32px);
 		display: grid;
 		grid-template-columns: minmax(200px, 1fr) 280px;
 		-moz-column-gap: 0;
