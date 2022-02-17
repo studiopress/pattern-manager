@@ -97,7 +97,7 @@ function FseStudio() {
 		localStorage.setItem( 'fseStudioSidebarClosed', ! sidebarOpen );
 	}, [ sidebarOpen ] );
 
-	function RenderCurrentView() {
+	function renderCurrentView() {
 		return (
 			<>
 				<ThemeManager
@@ -215,7 +215,7 @@ function FseStudio() {
 						sidebarOpen ? 'md:pl-80' : 'md:pl-0'
 					}` }
 				>
-					<main className="flex-1"><RenderCurrentView /></main>
+					<main className="flex-1">{ renderCurrentView() }</main>
 				</div>
 			</div>
 		</>
@@ -261,7 +261,7 @@ function ThemeManager( { visible } ) {
 		);
 	}
 
-	function RenderThemeEditorWhenReady() {
+	function renderThemeEditorWhenReady() {
 		if ( ! theme.data ) {
 			return '';
 		}
@@ -326,7 +326,7 @@ function ThemeManager( { visible } ) {
 							</button>
 						</div>
 					</div>
-					<RenderThemeEditorWhenReady />
+					{ renderThemeEditorWhenReady() }
 				</div>
 			</div>
 		</>
@@ -515,7 +515,7 @@ function ThemeDataEditor( { theme } ) {
 
 	function maybeRenderCustomizeStylesView() {}
 
-	function MaybeThemeSetupView() {
+	function maybeRenderThemeSetupView() {
 		return (
 			<div hidden={ currentView !== 'theme_setup' } className="flex-1">
 				<form className="divide-y divide-gray-200">
@@ -874,7 +874,7 @@ function ThemeDataEditor( { theme } ) {
 						</li>
 					) ) }
 				</ul>
-				<MaybeThemeSetupView />
+				{ maybeRenderThemeSetupView() }
 				<MaybeAddPatternsView />
 				{ maybeRenderCustomizeStylesView() }
 				{ currentView === 'theme_setup' ? (
