@@ -407,9 +407,9 @@ function ThemeDataEditor( { theme } ) {
 	/* eslint-enable */
 
 	function MaybeAddPatternsView() {
+		const { currentView: sidebarView } = useContext( FseStudioContext );
 		const [ isModalOpen, setModalOpen ] = useState( false );
 		const [ selectedPatterns, setSelectedPatterns ] = useState( [] );
-		const { currentView: sidebarView } = useContext( FseStudioContext );
 
 		if ( currentView !== 'add_patterns' ) {
 			return null;
