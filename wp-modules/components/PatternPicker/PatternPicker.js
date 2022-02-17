@@ -67,28 +67,24 @@ export default function PatternPicker( {
 	}
 
 	return (
-		<div className="mx-auto mt-12 max-w-7xl bg-white">
-			<h2 className="border-b border-gray-200 p-5 px-4 text-xl sm:px-6 md:px-8">
-				{ __( 'Patterns', 'fse-studio' ) }
-			</h2>
-			<div className="flex">
-				<div className="w-72 p-8">
-					<input
-						value={ searchValue }
-						onChange={ ( event ) =>
-							setSearchValue( event.target.value )
-						}
-						type="text"
-						name="search"
-						id="search"
-						placeholder={ __( 'Search', 'fse-studio' ) }
-						className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-10 w-full !rounded-none !border-gray-300 !bg-gray-100 sm:text-sm"
-					/>
+		<div className="mx-auto bg-white">
+			<div className="flex gap-10">
+				<div className="w-72">
+					<div className="absolute w-56">
+						<input
+							value={ searchValue }
+							onChange={ ( event ) =>
+								setSearchValue( event.target.value )
+							}
+							type="text"
+							name="search"
+							id="search"
+							placeholder={ __( 'Search', 'fse-studio' ) }
+							className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-12 w-full !rounded-none !border-[#F0F0F0] !bg-[#F0F0F0] sm:text-sm"
+						/>
+					</div>
 				</div>
-				<div
-					tabIndex={ -1 }
-					className="grid w-full grid-cols-3 gap-5 p-8"
-				>
+				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-5">
 					{ filteredPatterns.map( ( pattern, index ) => {
 						const isChecked = selectedPatterns.includes(
 							pattern.name
@@ -102,8 +98,8 @@ export default function PatternPicker( {
 								aria-checked={ isChecked }
 								className={
 									isChecked
-										? 'min-h-[300px] border-2 border-solid border-sky-500 bg-gray-200'
-										: 'min-h-[300px] bg-gray-200'
+										? 'min-h-[300px] border-2 border-solid border-sky-500 bg-white'
+										: 'min-h-[300px] bg-white border border-[#F0F0F0]'
 								}
 								onClick={ () => {
 									togglePatternSelected( pattern.name );
@@ -114,10 +110,10 @@ export default function PatternPicker( {
 									}
 								} }
 							>
-								<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
+								<LayoutPreview bodyHTML={ pattern.content } />
+								<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
 									{ pattern.title }
 								</h3>
-								<LayoutPreview bodyHTML={ pattern.content } />
 							</button>
 						);
 					} ) }

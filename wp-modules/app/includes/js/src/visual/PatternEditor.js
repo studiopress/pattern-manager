@@ -440,19 +440,24 @@ export function PatternEditor( props ) {
 										<ObserveTyping>
 											<div className="fsestudio-pattern-editor-columns">
 												<div className={ 'column' }>
-													
-														<div className="edit-post-visual-editor editor-styles-wrapper">
-															<ResizableEditor
-																// Reinitialize the editor and reset the states when the template changes.
-																key={ pattern?.data?.name }
-																enableResizing={false}
-																settings={ getEditorSettings() }
-																contentRef={ mergedRefs }
-															>
-																<BlockList />
-															</ResizableEditor>
-														</div>
-													
+													<div className="edit-post-visual-editor editor-styles-wrapper">
+														<ResizableEditor
+															// Reinitialize the editor and reset the states when the template changes.
+															key={
+																pattern?.data
+																	?.name
+															}
+															enableResizing={
+																false
+															}
+															settings={ getEditorSettings() }
+															contentRef={
+																mergedRefs
+															}
+														>
+															<BlockList />
+														</ResizableEditor>
+													</div>
 
 													<div
 														style={ {
@@ -477,7 +482,6 @@ export function PatternEditor( props ) {
 								</BlockTools>
 							</SlotFillProvider>
 						</BlockEditorProvider>
-						
 					</ShortcutProvider>
 				</div>
 			</div>
