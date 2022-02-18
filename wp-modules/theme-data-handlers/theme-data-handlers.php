@@ -113,10 +113,11 @@ function update_theme( $theme, $patterns ) {
 	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
 
 	// Create the new theme directory.
-	$wp_filesystem->mkdir( $new_theme_dir );
-
-	// Copy the boiler theme into it.
-	copy_dir( $theme_boiler_dir, $new_theme_dir );
+	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
+		$wp_filesystem->mkdir( $new_theme_dir );
+		// Copy the boiler theme into it.
+		copy_dir( $theme_boiler_dir, $new_theme_dir );
+	}
 
 	// Fix strings in the stylesheet.
 	$strings_fixed = \FseStudio\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
@@ -152,7 +153,7 @@ function update_theme( $theme, $patterns ) {
 		);
 	}
 
-	foreach ( $theme['includedPatterns'] as $included_pattern ) {
+	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		$wp_filesystem->copy(
 			$wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php',
 			$new_theme_dir . 'patterns/' . $included_pattern . '.php',

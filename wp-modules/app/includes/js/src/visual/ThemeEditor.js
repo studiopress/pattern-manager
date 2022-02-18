@@ -123,8 +123,8 @@ export function ThemeEditor( props ) {
 
 	function formatPatternValuesForSelect() {
 		const options = [];
-		for ( const patternNum in theme.data.includedPatterns ) {
-			const patternId = theme.data.includedPatterns[ patternNum ];
+		for ( const patternNum in theme.data.included_patterns ) {
+			const patternId = theme.data.included_patterns[ patternNum ];
 			options.push( {
 				value: patterns.patterns[ patternId ].name,
 				label: patterns.patterns[ patternId ].title,
@@ -180,7 +180,7 @@ export function ThemeEditor( props ) {
 
 						theme.set( {
 							...theme.data,
-							includedPatterns: reAssembledThemePatterns,
+							included_patterns: reAssembledThemePatterns,
 						} );
 					} }
 					isMulti={ true }

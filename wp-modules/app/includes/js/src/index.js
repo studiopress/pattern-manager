@@ -360,8 +360,8 @@ function ThemeDataEditor( { theme } ) {
 	/* eslint-disable */
 	function formatPatternValuesForSelect() {
 		const options = [];
-		for ( const patternNum in theme.data.includedPatterns ) {
-			const patternId = theme.data.includedPatterns[ patternNum ];
+		for ( const patternNum in theme.data.included_patterns ) {
+			const patternId = theme.data.included_patterns[ patternNum ];
 			options.push( {
 				value: patterns.patterns[ patternId ].name,
 				label: patterns.patterns[ patternId ].title,
