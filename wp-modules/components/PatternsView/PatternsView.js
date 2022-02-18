@@ -12,7 +12,7 @@ import PatternPicker from '@fse-studio/pattern-picker';
  *   content: string,
  *   name: string,
  *   title: string,
- * 	 viewportWidth: number
+ *   viewportWidth: number
  * }} Pattern
  */
 
