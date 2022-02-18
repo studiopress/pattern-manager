@@ -23,7 +23,7 @@ import PatternPicker from '@fse-studio/pattern-picker';
  *  currentView: string,
  *  setSidebarView: Function,
  *  patterns: {
- * 	  patterns: Record<string, Pattern>,
+ *    patterns: Record<string, Pattern>,
  *    setPatterns: Function
  *  },
  *  theme: {
