@@ -11,7 +11,7 @@ import { searchItems } from './utils/searchItems.js';
  *   content: string,
  *   name: string,
  *   title: string,
- * 	 viewportWidth: number
+ *   viewportWidth: number
  * }} Pattern
  */
 
@@ -19,11 +19,11 @@ import { searchItems } from './utils/searchItems.js';
  * The pattern picker component.
  *
  * @param {{
- *  patterns: Record<string, Pattern>,
- *  selectedPatterns: string[],
- *  setSelectedPatterns: Function,
- *  layoutPreview: Function,
- *  selectMultiple: boolean | undefined
+ *   patterns: Record<string, Pattern>,
+ *   selectedPatterns: string[],
+ *   setSelectedPatterns: Function,
+ *   layoutPreview: Function,
+ *   selectMultiple: boolean | undefined
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
