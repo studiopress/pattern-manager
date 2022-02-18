@@ -29,9 +29,9 @@ import PatternPicker from '@fse-studio/pattern-picker';
  *  theme: {
  *    data: {
  *      included_patterns: string[]
- * 	  },
- * 	  set: Function
- *	},
+ *    },
+ *    set: Function
+ *  },
  *  layoutPreview: Function
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
