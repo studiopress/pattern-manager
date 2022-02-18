@@ -56,7 +56,7 @@ function fse_studio_app() {
 				'getThemeJsonFileEndpoint'        => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
 				'saveThemeJsonFileEndpoint'       => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
 				'getGlobalStylesCssEndpoint'      => get_rest_url( false, 'fsestudio/v1/get-global-styles-css/' ),
-				'getFrontendPreviewPartsEndpoint' => get_rest_url( false, 'fsestudio/v1/get-frontend-preview-parts/' ),
+				'getFrontendPreviewEndpoint'      => get_rest_url( false, 'fsestudio/v1/get-frontend-preview/' ),
 			),
 			'siteUrl'             => get_bloginfo( 'url' ),
 			'defaultPostId'       => null,

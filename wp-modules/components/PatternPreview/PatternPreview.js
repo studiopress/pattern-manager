@@ -2,12 +2,11 @@ import { useState, useEffect, createPortal } from '@wordpress/element';
 
 /* eslint-disable */
 export function PatternPreview( {
-	blockPatternHTML,
 	blockPatternData,
 	themeJsonData,
 	scale,
 } ) {
-	const patternPreview = usePatternPreview(blockPatternHTML);
+	const patternPreview = usePatternPreview({ blockPatternData, themeJsonData });
 	return (
 		<Portal scale={ scale }>
 			<div dangerouslySetInnerHTML={ { __html: patternPreview.renderedHTML } } />
@@ -61,9 +60,9 @@ function Portal( { children, scale = 0.05 } ) {
 	);
 }
 
-export function usePatternPreview(initialBlockPatternHTML) {
+export function usePatternPreview({blockPatternData, themeJsonData}) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [blockPatternHTML, setBlockPatternHTML] = useState( initialBlockPatternHTML );
+	const [blockPatternHTML, setBlockPatternHTML] = useState( blockPatternData.content );
 	const [renderedBlockPatternHTML, setRenderedBlockPatternHTML ] = useState();
 
 	useEffect( () => {
@@ -84,7 +83,8 @@ export function usePatternPreview(initialBlockPatternHTML) {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify( {
-					blockPatternHTML
+					blockPatternHTML,
+					themeJsonData,
 				} ),
 			} )
 			.then( ( response ) => response.json() )

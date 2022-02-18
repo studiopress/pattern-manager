@@ -24,12 +24,12 @@ function register_routes() {
 	$namespace = 'fsestudio/v' . $version;
 	register_rest_route(
 		$namespace,
-		'/get-frontend-preview-parts',
+		'/get-frontend-preview',
 		array(
 			array(
-				'methods'             => 'GET',
-				'callback'            => __NAMESPACE__ . '\get_frontend_preview_parts',
-				'permission_callback' => __NAMESPACE__ . '\get_frontend_preview_parts_permission_check',
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\get_frontend_preview',
+				'permission_callback' => __NAMESPACE__ . '\get_frontend_preview_permission_check',
 			),
 			'schema' => 'response_item_schema',
 		)
@@ -42,15 +42,13 @@ function register_routes() {
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Request
  */
-function get_frontend_preview_parts( $request ) {
+function get_frontend_preview( $request ) {
 	$params = $request->get_params();
 
-	$frontend_preview_parts = array(
-		'wpHead'   => get_wp_head(),
-		'wpFooter' => get_wp_footer(),
-	);
+	$theme_json_data                = $params['themeJsonData'];
+	$rendered_block_pattern_preview = \FseStudio\FrontendBlockPatternPreview\getRenderedBlockPattern( $params['blockPatternHTML'], $theme_json_data['value']['renderedGlobalStyles'] );
 
-	if ( ! $frontend_preview_parts ) {
+	if ( ! $rendered_block_pattern_preview ) {
 		return new \WP_REST_Response(
 			array(
 				'error' => 'something_went_wrong',
@@ -58,30 +56,13 @@ function get_frontend_preview_parts( $request ) {
 			200
 		);
 	} else {
-		return new \WP_REST_Response( $frontend_preview_parts, 200 );
+		return new \WP_REST_Response(
+			array(
+				'rendered_block_pattern_preview' => $rendered_block_pattern_preview,
+			),
+			200
+		);
 	}
-}
-
-/**
- * Set the URL for the link in the menu.
- *
- * @return string
- */
-function get_wp_head() {
-	ob_start();
-	do_action( 'wp_head' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-	return ob_get_clean();
-}
-
-/**
- * Get the HTML for the wp_footer hook as a string.
- *
- * @return string
- */
-function get_wp_footer() {
-	ob_start();
-	do_action( 'wp_footer' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-	return ob_get_clean();
 }
 
 /**
@@ -90,7 +71,7 @@ function get_wp_footer() {
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|bool
  */
-function get_frontend_preview_parts_permission_check( $request ) {
+function get_frontend_preview_permission_check( $request ) {
 	return true;
 }
 

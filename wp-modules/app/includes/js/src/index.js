@@ -12,6 +12,7 @@ import './../../css/src/tailwind.css';
 import { useContext, useEffect, useState } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
 import ReactDOM from 'react-dom';
+import { PatternPreview } from '@fse-studio/pattern-preview';
 import {
 	Icon,
 	wordpress,
@@ -58,7 +59,6 @@ export function FseStudioApp() {
 				siteUrl: fsestudio.siteUrl,
 				apiEndpoints: fsestudio.api_endpoints,
 				blockEditorSettings: fsestudio.blockEditorSettings,
-				patternPreviewParts: usePatternPreviewParts(),
 			} }
 		>
 			<FseStudio />
@@ -407,7 +407,7 @@ function ThemeDataEditor( { theme } ) {
 	/* eslint-enable */
 
 	function MaybeAddPatternsView() {
-		const { currentView: sidebarView } = useContext( FseStudioContext );
+		const { currentView: sidebarView, currentThemeJsonFileData } = useContext( FseStudioContext );
 		const [ isModalOpen, setModalOpen ] = useState( false );
 
 		if ( currentView !== 'add_patterns' ) {
@@ -470,13 +470,13 @@ function ThemeDataEditor( { theme } ) {
 														]?.title
 													}
 												</h3>
-												<LayoutPreview
-													bodyHTML={
-														patterns.patterns[
-															patternName
-														]?.content
-													}
+												<PatternPreview
+													key={  patterns.patterns[ patternName ].name }
+													blockPatternData={ patterns.patterns[ patternName ] }
+													themeJsonData={ currentThemeJsonFileData }
+													scale={ 0.2 }
 												/>
+												
 											</div>
 										);
 									}
@@ -496,6 +496,7 @@ function ThemeDataEditor( { theme } ) {
 						} }
 					>
 						<PatternPicker
+							themeJsonData={ currentThemeJsonFileData }
 							patterns={ patterns.patterns }
 							selectedPatterns={ theme.data.included_patterns }
 							setSelectedPatterns={ ( selectedPatterns ) => {
@@ -504,7 +505,6 @@ function ThemeDataEditor( { theme } ) {
 									included_patterns: selectedPatterns,
 								} );
 							} }
-							layoutPreview={ LayoutPreview }
 							selectMultiple={ true }
 						/>
 					</Modal>

@@ -17,42 +17,6 @@ export function useCurrentThemeJsonFileData( initial ) {
 	};
 }
 
-export function usePatternPreviewParts() {
-	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [ data, set ] = useState();
-
-	useEffect( () => {
-		getPatternPreviewParts();
-	}, [] );
-
-	function getPatternPreviewParts() {
-		return new Promise( ( resolve ) => {
-			if ( fetchInProgress ) {
-				resolve();
-				return;
-			}
-			setFetchInProgress( true );
-			fetch( fsestudio.apiEndpoints.getFrontendPreviewPartsEndpoint, {
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-			} )
-				.then( ( response ) => response.json() )
-				.then( ( response ) => {
-					setFetchInProgress( false );
-					set( response );
-					resolve( response );
-				} );
-		} );
-	}
-
-	return {
-		data,
-	};
-}
-
 export function useThemeJsonFile( id ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ themeJsonData, setThemeJsonData ] = useState();

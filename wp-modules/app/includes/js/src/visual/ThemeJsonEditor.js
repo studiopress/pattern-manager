@@ -11,7 +11,7 @@ import {
 	useThemeJsonFile,
 } from './../non-visual/non-visual-logic.js';
 
-import { PatternPreview } from './PatternPreview';
+//import { PatternPreview } from './PatternPreview';
 
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
@@ -120,7 +120,7 @@ export function ThemeJsonEditorApp( { visible } ) {
 }
 
 function ThemeJsonEditor( { themeJsonFile } ) {
-	const { patterns, patternPreviewParts } = useContext( FseStudioContext );
+	const { patterns } = useContext( FseStudioContext );
 	const content = themeJsonFile.data.content;
 	const [ currentView, setCurrentView ] = useState( 'settings' );
 
@@ -181,9 +181,8 @@ function ThemeJsonEditor( { themeJsonFile } ) {
 			rendered.push(
 				<PatternPreview
 					key={ blockPattern }
-					wpHead={ patternPreviewParts.data.wpHead }
+					html={ patternPreviewParts.data.rendered_block_pattern_preview }
 					blockPatternData={ patterns.patterns[ blockPattern ] }
-					wpFooter={ patternPreviewParts.data.wpFooter }
 					themeJsonData={ null }
 					scale={ 0.5 }
 				/>

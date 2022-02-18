@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './utils/searchItems.js';
+import { PatternPreview } from '@fse-studio/pattern-preview';
 
 /**
  * @typedef {Object} Pattern
@@ -21,8 +22,8 @@ import { searchItems } from './utils/searchItems.js';
  *  patterns: Record<string, Pattern>,
  *  selectedPatterns: string[],
  *  setSelectedPatterns: Function,
- *  layoutPreview: Function,
  *  selectMultiple: boolean | undefined
+ *  themeJsonData: string[]
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
@@ -30,8 +31,8 @@ export default function PatternPicker( {
 	patterns: allPatterns,
 	selectedPatterns,
 	setSelectedPatterns,
-	layoutPreview: LayoutPreview,
 	selectMultiple,
+	themeJsonData,
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 
@@ -110,7 +111,13 @@ export default function PatternPicker( {
 									}
 								} }
 							>
-								<LayoutPreview bodyHTML={ pattern.content } />
+								<PatternPreview
+									key={ pattern.name }
+									blockPatternData={ pattern }
+									themeJsonData={ themeJsonData }
+									scale={ 0.3 }
+								/>
+
 								<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
 									{ pattern.title }
 								</h3>

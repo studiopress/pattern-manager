@@ -25,6 +25,8 @@ import {
 
 import { serialize, parse } from '@wordpress/blocks';
 
+
+
 import { getPrefix } from './../non-visual/prefix.js';
 
 import {
@@ -276,6 +278,13 @@ export function PatternEditor( props ) {
 		editorSettings.mediaUpload = MediaUpload;
 		editorSettings.mediaPlaceholder = MediaPlaceholder;
 		editorSettings.mediaReplaceFlow = MediaReplaceFlow;
+
+		// Inject the current styles rendered by the current themeJsonFileData.
+		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
+			editorSettings.styles.push( {
+				css: currentThemeJsonFileData.value.renderedGlobalStyles,
+			} );
+		}
 
 		return editorSettings;
 	}

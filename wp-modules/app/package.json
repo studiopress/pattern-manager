@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@fse-studio/pattern-picker": "file:../components/PatternPicker",
+    "@fse-studio/pattern-preview": "file:../components/PatternPreview",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/forms": "^0.4.0",
