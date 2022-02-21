@@ -237,12 +237,8 @@ export function PatternEditorApp( { visible } ) {
 				>
 					<PatternPicker
 						patterns={ patterns.patterns }
-						onClickPattern={ (
-							clickedPatternId
-						) => {
-							setCurrentPatternId(
-								clickedPatternId
-							);
+						onClickPattern={ ( clickedPatternId ) => {
+							setCurrentPatternId( clickedPatternId );
 							setIsPatternModalOpen( false );
 						} }
 						layoutPreview={ LayoutPreview }

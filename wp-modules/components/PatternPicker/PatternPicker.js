@@ -20,8 +20,8 @@ import { searchItems } from './utils/searchItems.js';
  * @param {{
  *  patterns: Record<string, Pattern>,
  *  onClickPattern: Function,
- *  layoutPreview: Function
- *  selectedPatterns: string[],
+ *  layoutPreview: Function,
+ *  selectedPatterns: string[]
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
