@@ -520,8 +520,8 @@ function ThemeDataEditor( { theme } ) {
 									} );
 								}
 							} }
-							selectedPatterns={ theme.data.included_patterns }
 							layoutPreview={ LayoutPreview }
+							selectedPatterns={ theme.data.included_patterns }
 						/>
 					</Modal>
 				) : null }
