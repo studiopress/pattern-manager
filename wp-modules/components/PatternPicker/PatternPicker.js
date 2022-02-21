@@ -19,52 +19,23 @@ import { searchItems } from './utils/searchItems.js';
  *
  * @param {{
  *  patterns: Record<string, Pattern>,
+ *  onClickPattern: Function,
+ *  layoutPreview: Function
  *  selectedPatterns: string[],
- *  setSelectedPatterns: Function,
- *  layoutPreview: Function,
- *  selectMultiple: boolean | undefined
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
 export default function PatternPicker( {
 	patterns: allPatterns,
-	selectedPatterns,
-	setSelectedPatterns,
+	onClickPattern,
 	layoutPreview: LayoutPreview,
-	selectMultiple,
+	selectedPatterns = [],
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
 	}, [ searchValue, allPatterns ] );
-
-	/**
-	 * Sets the pattern to selected.
-	 *
-	 * @param {string} patternName The name of the pattern.
-	 */
-	function togglePatternSelected( patternName ) {
-		if ( selectMultiple ) {
-			if ( selectedPatterns.includes( patternName ) ) {
-				setSelectedPatterns(
-					selectedPatterns.filter(
-						( pattern ) => pattern !== patternName
-					)
-				);
-			} else {
-				setSelectedPatterns( [ ...selectedPatterns, patternName ] );
-			}
-
-			return;
-		}
-
-		if ( selectedPatterns.includes( patternName ) ) {
-			setSelectedPatterns( [] );
-		} else {
-			setSelectedPatterns( [ patternName ] );
-		}
-	}
 
 	return (
 		<div className="mx-auto bg-white">
@@ -73,9 +44,9 @@ export default function PatternPicker( {
 					<div className="absolute w-56">
 						<input
 							value={ searchValue }
-							onChange={ ( event ) =>
-								setSearchValue( event.target.value )
-							}
+							onChange={ ( event ) => {
+								setSearchValue( event.target.value );
+							} }
 							type="text"
 							name="search"
 							id="search"
@@ -102,11 +73,11 @@ export default function PatternPicker( {
 										: 'min-h-[300px] bg-white border border-[#F0F0F0]'
 								}
 								onClick={ () => {
-									togglePatternSelected( pattern.name );
+									onClickPattern( pattern.name );
 								} }
 								onKeyDown={ ( event ) => {
 									if ( 'Enter' === event.code ) {
-										togglePatternSelected( pattern.name );
+										onClickPattern( pattern.name );
 									}
 								} }
 							>

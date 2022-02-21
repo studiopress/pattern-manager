@@ -170,6 +170,9 @@ export function PatternEditorApp( { visible } ) {
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								setIsPatternModalOpen( true );
+							} }
 						>
 							<Icon
 								className="text-white fill-current mr-2"
@@ -204,7 +207,7 @@ export function PatternEditorApp( { visible } ) {
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ () => {
 											setIsPatternModalOpen( true );
-										}}
+										} }
 									>
 										<Icon
 											className="text-white fill-current mr-2"
@@ -218,30 +221,34 @@ export function PatternEditorApp( { visible } ) {
 									</button>
 								</div>
 							</div>
-							{ isPatternModalOpen ? (
-								<Modal
-									title={ __(
-										'Pick the patterns to include in this theme',
-										'fse-studio'
-									) }
-									onRequestClose={ () => {
-										setIsPatternModalOpen( false );
-									} }
-								>
-									<PatternPicker
-										patterns={ patterns.patterns }
-										selectedPatterns={ [] }
-										setSelectedPatterns={ ( selectedPatternId ) => {
-											setCurrentPatternId( selectedPatternId )
-										} }
-										layoutPreview={ LayoutPreview }
-									/>
-								</Modal>
-							) : null }
 						</div>
 					);
 				}
 			} )() }
+			{ isPatternModalOpen ? (
+				<Modal
+					title={ __(
+						'Pick the patterns to include in this theme',
+						'fse-studio'
+					) }
+					onRequestClose={ () => {
+						setIsPatternModalOpen( false );
+					} }
+				>
+					<PatternPicker
+						patterns={ patterns.patterns }
+						onClickPattern={ (
+							clickedPatternId
+						) => {
+							setCurrentPatternId(
+								clickedPatternId
+							);
+							setIsPatternModalOpen( false );
+						} }
+						layoutPreview={ LayoutPreview }
+					/>
+				</Modal>
+			) : null }
 
 			{ renderPatternEditorWhenReady() }
 		</div>
