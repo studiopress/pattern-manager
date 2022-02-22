@@ -228,7 +228,7 @@ export function PatternEditor( props ) {
 	const contentRef = useRef();
 	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
 
-	const { blockEditorSettings, currentThemeJsonFileData } = useContext(
+	const { blockEditorSettings, currentThemeJsonFile } = useContext(
 		FseStudioContext
 	);
 	const pattern = props.pattern;
@@ -280,9 +280,9 @@ export function PatternEditor( props ) {
 		editorSettings.mediaReplaceFlow = MediaReplaceFlow;
 
 		// Inject the current styles rendered by the current themeJsonFileData.
-		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
+		if ( currentThemeJsonFile?.data?.renderedGlobalStyles ) {
 			editorSettings.styles.push( {
-				css: currentThemeJsonFileData.value.renderedGlobalStyles,
+				css: currentThemeJsonFile.data.renderedGlobalStyles,
 			} );
 		}
 

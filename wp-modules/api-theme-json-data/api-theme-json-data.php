@@ -57,6 +57,9 @@ function register_routes() {
  * @return WP_Error|WP_REST_Request
  */
 function get_themejson_file( $request ) {
+	global $fsestudio_api_get_theme_json_file;
+	$fsestudio_api_get_theme_json_file = true;
+
 	$params = $request->get_params();
 
 	$id = $params['filename'];

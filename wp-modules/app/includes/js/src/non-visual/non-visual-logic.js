@@ -8,12 +8,12 @@ import { useState, useEffect, createContext } from '@wordpress/element';
 
 export const FseStudioContext = createContext( [ {}, function () {} ] );
 
-export function useCurrentThemeJsonFileData( initial ) {
-	const [ value, setValue ] = useState( initial );
+export function useCurrentId( initial ) {
+	const [ value, set ] = useState( initial );
 
 	return {
 		value,
-		setValue,
+		set,
 	};
 }
 

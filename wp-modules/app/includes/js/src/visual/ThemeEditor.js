@@ -13,9 +13,7 @@ import {
 } from './../non-visual/non-visual-logic.js';
 
 export function ThemeEditorApp() {
-	const { themes } = useContext( FseStudioContext );
-	const [ currentThemeId, setCurrentThemeId ] = useState();
-	const theme = useThemeData( currentThemeId, themes );
+	const { themes, currentThemeId, currentTheme } = useContext( FseStudioContext );
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
@@ -39,9 +37,10 @@ export function ThemeEditorApp() {
 		return (
 			<>
 				<select
-					value={ currentThemeId }
+					value={ currentThemeId.value }
 					onChange={ ( event ) => {
-						setCurrentThemeId( event.target.value );
+						currentThemeId.setValue( event.target.value );
+						
 					} }
 				>
 					{ renderedThemes }
@@ -51,11 +50,11 @@ export function ThemeEditorApp() {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! theme.data ) {
+		if ( ! currentTheme.data ) {
 			return '';
 		}
 
-		return <ThemeEditor theme={ theme } />;
+		return <ThemeEditor theme={ currentTheme } />;
 	}
 
 	return (
@@ -81,6 +80,7 @@ export function ThemeEditorApp() {
 							requires_php: '7.4',
 							version: '1.0.0',
 							text_domain: 'my-new-theme',
+							theme_json_file: 'default',
 							included_patterns: [],
 							'index.html': '',
 							'404.html': '',
@@ -92,18 +92,18 @@ export function ThemeEditorApp() {
 						} );
 
 						// Switch to the newly created theme.
-						setCurrentThemeId( 'my-new-theme' );
+						currentThemeId.setValue( 'my-new-theme' );
 					} }
 				>
 					Create a new theme
 				</button>
 				{ ( () => {
-					if ( theme.data ) {
+					if ( currentTheme.data ) {
 						return (
 							<button
 								className="button"
 								onClick={ () => {
-									theme.save();
+									currentTheme.save();
 								} }
 							>
 								Save theme data to disk

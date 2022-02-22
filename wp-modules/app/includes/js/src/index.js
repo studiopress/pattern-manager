@@ -29,9 +29,11 @@ import PatternPicker from '@fse-studio/pattern-picker';
 import {
 	FseStudioContext,
 	useThemes,
+	useCurrentId,
 	useThemeData,
 	usePatterns,
 	useThemeJsonFiles,
+	useThemeJsonFile,
 	useCurrentThemeJsonFileData,
 	useCurrentView,
 	usePatternPreviewParts,
@@ -48,14 +50,21 @@ function classNames( ...classes ) {
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 export function FseStudioApp() {
+	const themes = useThemes( { themes: fsestudio.themes } );
+	const currentThemeId = useCurrentId();
+	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
+	const currentThemeJsonFileId = useCurrentId();
 	return (
 		<FseStudioContext.Provider
 			value={ {
 				currentView: useCurrentView( { currentView: 'theme_manager' } ),
 				patterns: usePatterns( fsestudio.patterns ),
-				themes: useThemes( { themes: fsestudio.themes } ),
-				themeJsonFiles: useThemeJsonFiles( fsestudio.themeJsonFiles ),
-				currentThemeJsonFileData: useCurrentThemeJsonFileData( null ),
+				themes,
+				currentThemeId,
+				currentTheme: useThemeData( currentThemeId.value, themes ),
+				themeJsonFiles,
+				currentThemeJsonFileId,
+				currentThemeJsonFile: useThemeJsonFile( currentThemeJsonFileId.value ),
 				siteUrl: fsestudio.siteUrl,
 				apiEndpoints: fsestudio.api_endpoints,
 				blockEditorSettings: fsestudio.blockEditorSettings,
@@ -223,9 +232,15 @@ function FseStudio() {
 }
 
 function ThemeManager( { visible } ) {
-	const { themes } = useContext( FseStudioContext );
-	const [ currentThemeId, setCurrentThemeId ] = useState();
-	const theme = useThemeData( currentThemeId, themes );
+	const { themes, currentThemeId, currentTheme, currentThemeJsonFileId } = useContext( FseStudioContext );
+	
+	useEffect( () => {
+		if ( currentTheme.data?.theme_json_file ) {
+			currentThemeJsonFileId.set( currentTheme.data?.theme_json_file );
+		} else {
+			currentThemeJsonFileId.set(false);
+		}
+	}, [currentTheme] );
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
@@ -250,9 +265,9 @@ function ThemeManager( { visible } ) {
 			<>
 				<select
 					className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
-					value={ currentThemeId }
+					value={ currentThemeId.value }
 					onChange={ ( event ) => {
-						setCurrentThemeId( event.target.value );
+						currentThemeId.set( event.target.value );
 					} }
 				>
 					{ renderedThemes }
@@ -262,11 +277,11 @@ function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! theme.data ) {
+		if ( ! currentTheme.data ) {
 			return '';
 		}
 
-		return <ThemeDataEditor theme={ theme } />;
+		return <ThemeDataEditor theme={ currentTheme } />;
 	}
 
 	return (
@@ -308,6 +323,7 @@ function ThemeManager( { visible } ) {
 										requires_php: '7.4',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
+										theme_json_file: 'default',
 										included_patterns: [],
 										'index.html': '',
 										'404.html': '',
@@ -319,7 +335,7 @@ function ThemeManager( { visible } ) {
 									} );
 
 									// Switch to the newly created theme.
-									setCurrentThemeId( 'my-new-theme' );
+									currentThemeId.set( 'my-new-theme' );
 								} }
 							>
 								{ __( 'Create a new theme', 'fse-studio' ) }
@@ -407,7 +423,7 @@ function ThemeDataEditor( { theme } ) {
 	/* eslint-enable */
 
 	function MaybeAddPatternsView() {
-		const { currentView: sidebarView, currentThemeJsonFileData } = useContext( FseStudioContext );
+		const { currentView: sidebarView, currentThemeJsonFile } = useContext( FseStudioContext );
 		const [ isModalOpen, setModalOpen ] = useState( false );
 
 		if ( currentView !== 'add_patterns' ) {
@@ -473,7 +489,7 @@ function ThemeDataEditor( { theme } ) {
 												<PatternPreview
 													key={  patterns.patterns[ patternName ].name }
 													blockPatternData={ patterns.patterns[ patternName ] }
-													themeJsonData={ currentThemeJsonFileData }
+													themeJsonData={ currentThemeJsonFile.data }
 													scale={ 0.2 }
 												/>
 												
@@ -496,7 +512,7 @@ function ThemeDataEditor( { theme } ) {
 						} }
 					>
 						<PatternPicker
-							themeJsonData={ currentThemeJsonFileData }
+							themeJsonData={ currentThemeJsonFile.data }
 							patterns={ patterns.patterns }
 							selectedPatterns={ theme.data.included_patterns }
 							setSelectedPatterns={ ( selectedPatterns ) => {

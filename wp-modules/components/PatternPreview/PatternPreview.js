@@ -5,11 +5,12 @@ export function PatternPreview( {
 	blockPatternData,
 	themeJsonData,
 	scale,
-} ) {
-	const patternPreview = usePatternPreview({ blockPatternData, themeJsonData });
+} ) {	
 	return (
 		<Portal scale={ scale }>
-			<div dangerouslySetInnerHTML={ { __html: patternPreview.renderedHTML } } />
+			<div className="wp-head" dangerouslySetInnerHTML={ { __html: themeJsonData?.patternPreviewParts?.wp_head } } />
+			<div dangerouslySetInnerHTML={ { __html: themeJsonData?.patternPreviewParts?.renderedPatterns[blockPatternData.name] } } />
+			<div className="wp-footer" dangerouslySetInnerHTML={ { __html: themeJsonData?.patternPreviewParts?.wp_footer } } />
 		</Portal>
 	);
 }
@@ -25,9 +26,10 @@ function Portal( { children, scale = 0.05 } ) {
 
 	useEffect( () => {
 		if ( iframeRef ) {
-			setTimeout( () => {
+			setInterval( () => {
 				setIframeInnerContentHeight( container.scrollHeight );
-			}, [ 1000 ] );
+			}, 1000 );
+			
 		}
 	} );
 
@@ -39,6 +41,7 @@ function Portal( { children, scale = 0.05 } ) {
 				height: iframeInnerContentHeight / scaleMultiplier,
 				marginTop: '10px',
 				marginBottom: '10px',
+				pointerEvents: 'none',
 			} }
 		>
 			<iframe
@@ -52,6 +55,8 @@ function Portal( { children, scale = 0.05 } ) {
 					display: 'block',
 					transform: 'scale(' + scale + ')',
 					transformOrigin: 'top left',
+					overflow:'hidden',
+					pointerEvents: 'none',
 				} }
 			>
 				{ container && createPortal( children, container ) }
@@ -60,45 +65,4 @@ function Portal( { children, scale = 0.05 } ) {
 	);
 }
 
-export function usePatternPreview({blockPatternData, themeJsonData}) {
-	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [blockPatternHTML, setBlockPatternHTML] = useState( blockPatternData.content );
-	const [renderedBlockPatternHTML, setRenderedBlockPatternHTML ] = useState();
-
-	useEffect( () => {
-		getPatternPreviewParts();
-	}, [] );
-
-	function getPatternPreviewParts() {
-		return new Promise( ( resolve ) => {
-			if ( fetchInProgress ) {
-				resolve();
-				return;
-			}
-			setFetchInProgress( true );
-			fetch( fsestudio.apiEndpoints.getFrontendPreviewEndpoint, {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify( {
-					blockPatternHTML,
-					themeJsonData,
-				} ),
-			} )
-			.then( ( response ) => response.json() )
-			.then( ( response ) => {
-				setFetchInProgress( false );
-				setRenderedBlockPatternHTML( response.rendered_block_pattern_preview );
-				resolve( response );
-			} );
-		} );
-	}
-
-	return {
-		renderedHTML: renderedBlockPatternHTML,
-		setBlockPatternHTML
-	};
-}
 /* eslint-enable */
