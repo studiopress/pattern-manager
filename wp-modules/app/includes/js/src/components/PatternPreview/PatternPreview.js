@@ -17,6 +17,7 @@ export function PatternPreview( {
 
 function Portal( { children, scale = 0.05 } ) {
 	const [ iframeRef, setRef ] = useState();
+	const [ iframeheightSet, setIframeheightSet ] = useState(false);
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
 		0
 	);
@@ -25,11 +26,12 @@ function Portal( { children, scale = 0.05 } ) {
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	useEffect( () => {
-		if ( iframeRef ) {
-			setInterval( () => {
+		if ( iframeRef && ! iframeheightSet ) {
+			// Check after a second to see if the iframe's inner content height has changed
+			setTimeout( () => {
 				setIframeInnerContentHeight( container.scrollHeight );
+				setIframeheightSet( true );
 			}, 1000 );
-			
 		}
 	} );
 
