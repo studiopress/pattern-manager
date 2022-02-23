@@ -12,7 +12,6 @@ import './../../css/src/tailwind.css';
 import { useContext, useEffect, useState } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
 import ReactDOM from 'react-dom';
-import { PatternPreview } from '@fse-studio/pattern-preview';
 import {
 	Icon,
 	wordpress,
@@ -24,7 +23,8 @@ import {
 	check,
 	download,
 } from '@wordpress/icons';
-import PatternPicker from '@fse-studio/pattern-picker';
+import { PatternPreview } from './components/PatternPreview/PatternPreview.js';
+import PatternPicker from './components/PatternPicker/PatternPicker.js';
 
 import {
 	FseStudioContext,
@@ -350,8 +350,10 @@ function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor( { theme } ) {
-	const { patterns } = useContext( FseStudioContext );
+	const { patterns, currentThemeJsonFile } = useContext( FseStudioContext );
 	const [ currentView, setCurrentView ] = useState( 'theme_setup' );
+	const [ isModalOpen, setModalOpen ] = useState( false );
+
 	const views = [
 		{
 			name: __( 'Theme Setup', 'fse-studio' ),
@@ -422,9 +424,7 @@ function ThemeDataEditor( { theme } ) {
 	}
 	/* eslint-enable */
 
-	function MaybeAddPatternsView() {
-		const { currentView: sidebarView, currentThemeJsonFile } = useContext( FseStudioContext );
-		const [ isModalOpen, setModalOpen ] = useState( false );
+	function maybeAddPatternsView() {
 
 		if ( currentView !== 'add_patterns' ) {
 			return null;
@@ -891,7 +891,7 @@ function ThemeDataEditor( { theme } ) {
 					) ) }
 				</ul>
 				{ maybeRenderThemeSetupView() }
-				<MaybeAddPatternsView />
+				{ maybeAddPatternsView() }
 				{ maybeRenderCustomizeStylesView() }
 				{ currentView === 'theme_setup' ? (
 					<div className="w-72 bg-gray-100 p-5 self-start">

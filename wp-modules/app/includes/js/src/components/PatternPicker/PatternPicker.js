@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './utils/searchItems.js';
-import { PatternPreview } from '@fse-studio/pattern-preview';
+import { PatternPreview } from './../PatternPreview/PatternPreview.js';
 
 /**
  * @typedef {Object} Pattern

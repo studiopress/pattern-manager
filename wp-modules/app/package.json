@@ -31,8 +31,6 @@
     "tailwindcss": "^3.0.18"
   },
   "dependencies": {
-    "@fse-studio/pattern-picker": "file:../components/PatternPicker",
-    "@fse-studio/pattern-preview": "file:../components/PatternPreview",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/forms": "^0.4.0",
@@ -45,6 +43,7 @@
     "@wordpress/icons": "^6.2.0",
     "@wordpress/keyboard-shortcuts": "^3.1.1",
     "lodash": "^4.17.21",
+    "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-select": "^5.2.2"
   }
