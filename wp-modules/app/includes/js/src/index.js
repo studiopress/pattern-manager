@@ -512,8 +512,8 @@ function ThemeDataEditor( { theme } ) {
 						} }
 					>
 						<PatternPicker
-							themeJsonData={ currentThemeJsonFile.data }
 							patterns={ patterns.patterns }
+							themeJsonData={ currentThemeJsonFile.data }
 							selectedPatterns={ theme.data.included_patterns }
 							setSelectedPatterns={ ( selectedPatterns ) => {
 								theme.set( {
