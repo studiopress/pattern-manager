@@ -42,3 +42,4 @@ workflows:
   build:
     jobs:
       - lint
+      - phpunit
