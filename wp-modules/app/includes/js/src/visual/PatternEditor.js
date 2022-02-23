@@ -190,7 +190,7 @@ export function PatternEditorApp( { visible } ) {
 			{ isPatternModalOpen ? (
 				<Modal
 					title={ __(
-						'Pick the patterns to include in this theme',
+						'Pick the patterns to edit',
 						'fse-studio'
 					) }
 					onRequestClose={ () => {
