@@ -8,7 +8,6 @@
   "dependencies": {
     "@wordpress/element": "^4.1.1",
     "@wordpress/i18n": "^4.3.1",
-    "lodash": "^4.17.21",
-    "react": "^16.14.0"
+    "lodash": "^4.17.21"
   }
 }
