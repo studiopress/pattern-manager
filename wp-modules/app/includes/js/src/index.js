@@ -22,7 +22,7 @@ import {
 	check,
 	download,
 } from '@wordpress/icons';
-import PatternsView from '@fse-studio/patterns-view';
+import PatternsView from './components/PatternsView/PatternsView.js';
 
 import {
 	FseStudioContext,
