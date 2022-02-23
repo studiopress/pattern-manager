@@ -532,11 +532,28 @@ function ThemeDataEditor( { theme } ) {
 							patterns={ patterns.patterns }
 							themeJsonData={ currentThemeJsonFile.data }
 							selectedPatterns={ theme.data.included_patterns }
-							setSelectedPatterns={ ( selectedPatterns ) => {
-								theme.set( {
-									...theme.data,
-									included_patterns: selectedPatterns,
-								} );
+							onClickPattern={ ( clickedPatternName ) => {
+								if (
+									theme.data.included_patterns.includes(
+										clickedPatternName
+									)
+								) {
+									theme.set( {
+										...theme.data,
+										included_patterns: theme.data.included_patterns.filter(
+											( pattern ) =>
+												pattern !== clickedPatternName
+										),
+									} );
+								} else {
+									theme.set( {
+										...theme.data,
+										included_patterns: [
+											...theme.data.included_patterns,
+											clickedPatternName,
+										],
+									} );
+								}
 							} }
 							selectMultiple={ true }
 						/>
