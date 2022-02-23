@@ -45,6 +45,7 @@ function fse_studio_app() {
 		'fsestudio',
 		array(
 			'patterns'            => \FseStudio\PatternDataHandlers\get_patterns(),
+			'initialTheme'        => get_template(),
 			'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
 			'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
 			'frontendPreviewUrl'  => null,
