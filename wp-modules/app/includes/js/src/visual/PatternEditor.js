@@ -189,10 +189,7 @@ export function PatternEditorApp( { visible } ) {
 			} )() }
 			{ isPatternModalOpen ? (
 				<Modal
-					title={ __(
-						'Pick the patterns to edit',
-						'fse-studio'
-					) }
+					title={ __( 'Pick the patterns to edit', 'fse-studio' ) }
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
 					} }

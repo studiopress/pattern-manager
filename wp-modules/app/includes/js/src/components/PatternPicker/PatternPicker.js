@@ -20,7 +20,7 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
  *
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: string[]
+ *  themeJsonData: string[],
  *  onClickPattern: Function,
  *  selectedPatterns: string[]
  * }} props The component props.

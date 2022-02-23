@@ -49,7 +49,7 @@ ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 export function FseStudioApp() {
 	const themes = useThemes( { themes: fsestudio.themes } );
-	const currentThemeId = useCurrentId( fsestudio.initialTheme);
+	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
 	const currentThemeJsonFileId = useCurrentId();
 	return (
