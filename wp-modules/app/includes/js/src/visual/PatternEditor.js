@@ -55,41 +55,6 @@ export function PatternEditorApp( { visible } ) {
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
 
-	function renderPatternSelector() {
-		const renderedPatterns = [];
-
-		renderedPatterns.push(
-			<option key={ 1 }>
-				{ __( 'Choose a pattern', 'fse-studio' ) }
-			</option>
-		);
-
-		let counter = 3;
-
-		for ( const thisPattern in patterns.patterns ) {
-			const patternInQuestion = patterns.patterns[ thisPattern ];
-			renderedPatterns.push(
-				<option key={ counter } value={ thisPattern }>
-					{ patternInQuestion.title }
-				</option>
-			);
-			counter++;
-		}
-
-		return (
-			<>
-				<select
-					value={ currentPatternId }
-					onChange={ ( event ) => {
-						setCurrentPatternId( event.target.value );
-					} }
-				>
-					{ renderedPatterns }
-				</select>
-			</>
-		);
-	}
-
 	function renderPatternEditorWhenReady() {
 		if ( pattern.data ) {
 			return (
@@ -180,8 +145,6 @@ export function PatternEditorApp( { visible } ) {
 							/>{ ' ' }
 							{ __( 'Browse Patterns', 'fse-studio' ) }
 						</button>
-
-						{ renderPatternSelector() }
 						{ maybeRenderErrors() }
 					</div>
 				</div>
