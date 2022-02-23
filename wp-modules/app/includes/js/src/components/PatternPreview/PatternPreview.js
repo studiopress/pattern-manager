@@ -5,7 +5,19 @@ export function PatternPreview( {
 	blockPatternData,
 	themeJsonData,
 	scale,
-} ) {	
+} ) {
+	const [initialLoaded, setInitialLoaded] = useState( false );
+	
+	useState(() => {
+		setTimeout(() => {
+			setInitialLoaded( true );
+		}, 100 );
+	}, [] );
+
+	if ( ! initialLoaded ) {
+		return 'loading...'
+	}
+
 	return (
 		<Portal scale={ scale }>
 			<div className="wp-head" dangerouslySetInnerHTML={ { __html: themeJsonData?.patternPreviewParts?.wp_head } } />
