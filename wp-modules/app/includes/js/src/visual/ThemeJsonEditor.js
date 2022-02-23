@@ -5,13 +5,8 @@
 const { __ } = wp.i18n;
 
 import { ColorPicker, Popover } from '@wordpress/components';
-import { useContext, useState, useEffect } from '@wordpress/element';
-import {
-	FseStudioContext,
-	useThemeJsonFile,
-} from './../non-visual/non-visual-logic.js';
-
-//import { PatternPreview } from './PatternPreview';
+import { useContext, useState } from '@wordpress/element';
+import { FseStudioContext } from './../non-visual/non-visual-logic.js';
 
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 

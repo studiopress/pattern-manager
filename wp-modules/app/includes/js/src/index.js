@@ -23,6 +23,7 @@ import {
 	check,
 	download,
 } from '@wordpress/icons';
+
 import { PatternPreview } from './components/PatternPreview/PatternPreview.js';
 import PatternPicker from './components/PatternPicker/PatternPicker.js';
 
@@ -34,14 +35,11 @@ import {
 	usePatterns,
 	useThemeJsonFiles,
 	useThemeJsonFile,
-	useCurrentThemeJsonFileData,
 	useCurrentView,
-	usePatternPreviewParts,
 } from './non-visual/non-visual-logic.js';
 
 import { PatternEditorApp } from './visual/PatternEditor.js';
 import { ThemeJsonEditorApp } from './visual/ThemeJsonEditor.js';
-import { LayoutPreview } from './visual/ThemeEditor.js';
 
 function classNames( ...classes ) {
 	return classes.filter( Boolean ).join( ' ' );
@@ -64,7 +62,9 @@ export function FseStudioApp() {
 				currentTheme: useThemeData( currentThemeId.value, themes ),
 				themeJsonFiles,
 				currentThemeJsonFileId,
-				currentThemeJsonFile: useThemeJsonFile( currentThemeJsonFileId.value ),
+				currentThemeJsonFile: useThemeJsonFile(
+					currentThemeJsonFileId.value
+				),
 				siteUrl: fsestudio.siteUrl,
 				apiEndpoints: fsestudio.api_endpoints,
 				blockEditorSettings: fsestudio.blockEditorSettings,
@@ -232,15 +232,20 @@ function FseStudio() {
 }
 
 function ThemeManager( { visible } ) {
-	const { themes, currentThemeId, currentTheme, currentThemeJsonFileId } = useContext( FseStudioContext );
-	
+	const {
+		themes,
+		currentThemeId,
+		currentTheme,
+		currentThemeJsonFileId,
+	} = useContext( FseStudioContext );
+
 	useEffect( () => {
 		if ( currentTheme.data?.theme_json_file ) {
 			currentThemeJsonFileId.set( currentTheme.data?.theme_json_file );
 		} else {
-			currentThemeJsonFileId.set(false);
+			currentThemeJsonFileId.set( false );
 		}
-	}, [currentTheme] );
+	}, [ currentTheme ] );
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
@@ -350,8 +355,12 @@ function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor( { theme } ) {
-	const { patterns, currentThemeJsonFile } = useContext( FseStudioContext );
-	const [ currentView, setCurrentView ] = useState( 'theme_setup' );
+	const { patterns, currentThemeJsonFile, currentView } = useContext(
+		FseStudioContext
+	);
+	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
+		'theme_setup'
+	);
 	const [ isModalOpen, setModalOpen ] = useState( false );
 
 	const views = [
@@ -425,8 +434,7 @@ function ThemeDataEditor( { theme } ) {
 	/* eslint-enable */
 
 	function maybeAddPatternsView() {
-
-		if ( currentView !== 'add_patterns' ) {
+		if ( themeEditorCurrentTab !== 'add_patterns' ) {
 			return null;
 		}
 
@@ -448,7 +456,7 @@ function ThemeDataEditor( { theme } ) {
 							<button
 								className="mt-2 text-blue-400"
 								onClick={ () => {
-									sidebarView.set( 'pattern_manager' );
+									currentView.set( 'pattern_manager' );
 								} }
 							>
 								{ __( 'Pattern Manager', 'fse-studio' ) }
@@ -487,12 +495,21 @@ function ThemeDataEditor( { theme } ) {
 													}
 												</h3>
 												<PatternPreview
-													key={  patterns.patterns[ patternName ].name }
-													blockPatternData={ patterns.patterns[ patternName ] }
-													themeJsonData={ currentThemeJsonFile.data }
+													key={
+														patterns.patterns[
+															patternName
+														].name
+													}
+													blockPatternData={
+														patterns.patterns[
+															patternName
+														]
+													}
+													themeJsonData={
+														currentThemeJsonFile.data
+													}
 													scale={ 0.2 }
 												/>
-												
 											</div>
 										);
 									}
@@ -533,7 +550,10 @@ function ThemeDataEditor( { theme } ) {
 
 	function maybeRenderThemeSetupView() {
 		return (
-			<div hidden={ currentView !== 'theme_setup' } className="flex-1">
+			<div
+				hidden={ themeEditorCurrentTab !== 'theme_setup' }
+				className="flex-1"
+			>
 				<form className="divide-y divide-gray-200">
 					<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 						<label
@@ -876,13 +896,13 @@ function ThemeDataEditor( { theme } ) {
 							<button
 								className={
 									'w-full text-left p-5 font-medium' +
-									( currentView === item.slug
+									( themeEditorCurrentTab === item.slug
 										? ' bg-gray-100'
 										: ' hover:bg-gray-100' )
 								}
 								key={ item.name }
 								onClick={ () => {
-									setCurrentView( item.slug );
+									setThemeEditorCurrentTab( item.slug );
 								} }
 							>
 								{ item.name }
@@ -893,7 +913,7 @@ function ThemeDataEditor( { theme } ) {
 				{ maybeRenderThemeSetupView() }
 				{ maybeAddPatternsView() }
 				{ maybeRenderCustomizeStylesView() }
-				{ currentView === 'theme_setup' ? (
+				{ themeEditorCurrentTab === 'theme_setup' ? (
 					<div className="w-72 bg-gray-100 p-5 self-start">
 						<h3>{ __( 'Sidebar', 'fse-studio' ) }</h3>
 						<p>

@@ -44,7 +44,6 @@ import {
 } from './../non-visual/non-visual-logic.js';
 import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
 
-
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 
