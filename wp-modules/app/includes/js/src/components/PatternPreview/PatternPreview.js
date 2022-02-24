@@ -23,17 +23,17 @@ export function PatternPreview( { blockPatternData, themeJsonData, scale } ) {
 				} }
 			/>
 			<div
+				className="wp-footer"
+				dangerouslySetInnerHTML={ {
+					__html: themeJsonData?.patternPreviewParts?.wp_footer,
+				} }
+			/>
+			<div
 				dangerouslySetInnerHTML={ {
 					__html:
 						themeJsonData?.patternPreviewParts?.renderedPatterns[
 							blockPatternData.name
 						],
-				} }
-			/>
-			<div
-				className="wp-footer"
-				dangerouslySetInnerHTML={ {
-					__html: themeJsonData?.patternPreviewParts?.wp_footer,
 				} }
 			/>
 		</Portal>
@@ -44,55 +44,78 @@ function Portal( { children, scale = 0.05 } ) {
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeheightSet, setIframeheightSet ] = useState( false );
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
-		50
+		0
 	);
+
 	const container = iframeRef?.contentWindow?.document?.body;
 
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	useEffect( () => {
-		if ( iframeRef && ! iframeheightSet ) {
-			// Check after a second to see if the iframe's inner content height has changed
+		if ( iframeRef ) {
+			if ( ! iframeheightSet ) {
+				setIframeInnerContentHeight( container.scrollHeight );
+			}
+
+			// Putting this into a timeout causes all iframes to get properly set heights.
 			setTimeout( () => {
 				setIframeInnerContentHeight( container.scrollHeight );
-				setIframeheightSet( true );
-			}, 1000 );
+				setTimeout( () => {
+					setIframeheightSet( true );
+				}, 100 );
+			}, 1 );
 		}
 	} );
 
-	function renderChildren() {
-		return <div>{ children }</div>;
+	function maybeRenderSpinner() {
+		if ( ! iframeheightSet ) {
+			return (
+				<div
+					style={ {
+						padding: '10px',
+						position: 'absolute',
+						zIndex: '10',
+					} }
+				>
+					loading...
+				</div>
+			);
+		}
 	}
 
 	return (
-		<div
-			style={ {
-				position: 'relative',
-				width: '100%',
-				height: iframeInnerContentHeight / scaleMultiplier,
-				marginTop: '10px',
-				marginBottom: '10px',
-				pointerEvents: 'none',
-			} }
-		>
-			<iframe
-				title={ __( 'Pattern Preview', 'fsestudio' ) }
-				ref={ setRef }
+		<>
+			<div
 				style={ {
-					position: 'absolute',
-					top: '0',
-					left: '0',
-					width: 100 * scaleMultiplier + '%',
-					height: 100 * scaleMultiplier + '%',
-					display: 'block',
-					transform: 'scale(' + scale + ')',
-					transformOrigin: 'top left',
-					overflow: 'hidden',
+					position: 'relative',
+					width: '100%',
+					height: iframeInnerContentHeight / scaleMultiplier,
+					marginTop: '10px',
+					marginBottom: '10px',
 					pointerEvents: 'none',
 				} }
 			>
-				{ container && createPortal( renderChildren(), container ) }
-			</iframe>
-		</div>
+				{ maybeRenderSpinner() }
+				<iframe
+					title={ __( 'Pattern Preview', 'fsestudio' ) }
+					ref={ setRef }
+					style={ {
+						position: 'absolute',
+						top: '0',
+						left: '0',
+						width: 100 * scaleMultiplier + '%',
+						height: 100 * scaleMultiplier + '%',
+						display: 'block',
+						transform: 'scale(' + scale + ')',
+						transformOrigin: 'top left',
+						overflow: 'hidden',
+						pointerEvents: 'none',
+						visibility: iframeheightSet ? 'visible' : 'hidden',
+					} }
+				>
+					{ container && createPortal( children, container ) }
+				</iframe>
+			</div>
+		</>
 	);
 }
