@@ -1,7 +1,7 @@
 import { useState, useEffect, createPortal } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-export function PatternPreview( { blockPatternData, themeJsonData, scale } ) {
+export function PatternPreview( { blockPatternData, themeJsonData, scale, onLoad = () => {} } ) {
 	const [ initialLoaded, setInitialLoaded ] = useState( false );
 
 	useState( () => {
@@ -11,11 +11,11 @@ export function PatternPreview( { blockPatternData, themeJsonData, scale } ) {
 	}, [] );
 
 	if ( ! initialLoaded ) {
-		return 'loading...';
+		return <div>loading...</div>
 	}
 
 	return (
-		<Portal scale={ scale }>
+		<Portal scale={ scale } onLoad={onLoad}>
 			<div
 				className="wp-head"
 				dangerouslySetInnerHTML={ {
@@ -40,7 +40,7 @@ export function PatternPreview( { blockPatternData, themeJsonData, scale } ) {
 	);
 }
 
-function Portal( { children, scale = 0.05 } ) {
+function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeheightSet, setIframeheightSet ] = useState( false );
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
@@ -62,6 +62,7 @@ function Portal( { children, scale = 0.05 } ) {
 				setIframeInnerContentHeight( container.scrollHeight );
 				setTimeout( () => {
 					setIframeheightSet( true );
+					onLoad();
 				}, 100 );
 			}, 1 );
 		}
