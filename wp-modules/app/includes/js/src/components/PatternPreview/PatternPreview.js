@@ -1,7 +1,12 @@
 import { useState, useEffect, createPortal } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-export function PatternPreview( { blockPatternData, themeJsonData, scale, onLoad = () => {} } ) {
+export function PatternPreview( {
+	blockPatternData,
+	themeJsonData,
+	scale,
+	onLoad = () => {},
+} ) {
 	const [ initialLoaded, setInitialLoaded ] = useState( false );
 
 	useState( () => {
@@ -11,11 +16,11 @@ export function PatternPreview( { blockPatternData, themeJsonData, scale, onLoad
 	}, [] );
 
 	if ( ! initialLoaded ) {
-		return <div>loading...</div>
+		return <div>loading...</div>;
 	}
 
 	return (
-		<Portal scale={ scale } onLoad={onLoad}>
+		<Portal scale={ scale } onLoad={ onLoad }>
 			<div
 				className="wp-head"
 				dangerouslySetInnerHTML={ {
