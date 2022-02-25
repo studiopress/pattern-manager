@@ -48,10 +48,12 @@ function classNames( ...classes ) {
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 export function FseStudioApp() {
-	const themes = useThemes( { themes: fsestudio.themes } );
+	const currentThemeJsonFileId = useCurrentId();
+	const currentThemeJsonFile = useThemeJsonFile(currentThemeJsonFileId.value);
+	const themes = useThemes( { themes: fsestudio.themes, currentThemeJsonFile: currentThemeJsonFile } );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
-	const currentThemeJsonFileId = useCurrentId();
+	
 	return (
 		<FseStudioContext.Provider
 			value={ {
@@ -62,9 +64,7 @@ export function FseStudioApp() {
 				currentTheme: useThemeData( currentThemeId.value, themes ),
 				themeJsonFiles,
 				currentThemeJsonFileId,
-				currentThemeJsonFile: useThemeJsonFile(
-					currentThemeJsonFileId.value
-				),
+				currentThemeJsonFile,
 				siteUrl: fsestudio.siteUrl,
 				apiEndpoints: fsestudio.api_endpoints,
 				blockEditorSettings: fsestudio.blockEditorSettings,
@@ -237,6 +237,7 @@ function ThemeManager( { visible } ) {
 		currentThemeId,
 		currentTheme,
 		currentThemeJsonFileId,
+		currentThemeJsonFile,
 	} = useContext( FseStudioContext );
 
 	useEffect( () => {
@@ -322,7 +323,7 @@ function ThemeManager( { visible } ) {
 										author: 'Me',
 										author_uri: 'mysite.com',
 										description: 'My new FSE Theme',
-										tags: [],
+										tags: '',
 										tested_up_to: '5.9',
 										requires_wp: '5.9',
 										requires_php: '7.4',
@@ -440,7 +441,7 @@ function ThemeDataEditor( { theme } ) {
 
 		return (
 			<>
-				<div className="flex flex-col">
+				<div className="w-full flex flex-col">
 					<div className="w-full text-center bg-gray-100 p-5 self-start">
 						<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 							{ __( 'Add patterns to your theme', 'fse-studio' ) }

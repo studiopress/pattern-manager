@@ -34,6 +34,7 @@ function get_pattern( $pattern_id ) {
  * @return array
  */
 function get_patterns() {
+
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	/**
@@ -42,6 +43,18 @@ function get_patterns() {
 	$pattern_file_paths = glob( $module_dir_path . '/pattern-files/*.php' );
 
 	$patterns = array();
+
+	foreach ( $pattern_file_paths as $path ) {
+		$pattern_data                          = require $path;
+		$pattern_data['name']                  = basename( $path, '.php' );
+		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
+	}
+
+	// Get the custom patterns (ones created by the user, not included in the plugin).
+	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_content_dir = $wp_filesystem->wp_content_dir();
+
+	$pattern_file_paths = glob( $wp_content_dir . '/fsestudio-custom-patterns/*.php' );
 
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern_data                          = require $path;
@@ -63,10 +76,18 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	// Build the files for the theme, located in wp-content/themes/.
 	$wp_content_dir = $wp_filesystem->wp_content_dir();
 	$plugin_dir     = $wp_content_dir . 'plugins/fse-studio/';
-	$patterns_dir   = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
+
+	if ( ! isset( $pattern['type'] ) || 'default' === $pattern['type'] ) {
+		$patterns_dir = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
+	} else {
+		$patterns_dir = $wp_content_dir . 'fsestudio-custom-patterns/';
+		// Create the new theme directory.
+		if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
+			$wp_filesystem->mkdir( $patterns_dir );
+		}
+	}
 
 	$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
 
@@ -97,7 +118,8 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  */
 
 return array(
-	'title'         => __( '" . $pattern['title'] . "', '" . $text_domain . "' ),
+	'type'          => '" . $pattern['type'] . "',
+	'title'         => __( '" . wp_slash( $pattern['title'] ) . "', '" . $text_domain . "' ),
 	'name'          => '" . $pattern['name'] . "',
 	'categories'    => array( '" . implode( ', ', $pattern['categories'] ) . "' ),
 	'viewportWidth' => " . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . ",
@@ -115,5 +137,5 @@ return array(
  * @return bool
  */
 function prepare_content( $pattern_html, $text_domain ) {
-	return $pattern_html;
+	return wp_slash( $pattern_html );
 }

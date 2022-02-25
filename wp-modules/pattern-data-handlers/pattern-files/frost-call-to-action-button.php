@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Call-to-action with text, button.', 'fse-studio' ),
 	'name'          => 'frost-call-to-action-button',
 	'categories'    => array( 'frost-call-to-action' ),
@@ -31,7 +32,7 @@ return array(
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":70} -->
+<!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

@@ -81,6 +81,7 @@ export function useThemeJsonFile( id ) {
 
 	return {
 		data: themeJsonData,
+		get: getThemeJsonData,
 		set: setThemeJsonData,
 		save: saveThemeJsonData,
 		hasSaved,
@@ -163,7 +164,7 @@ export function useThemeData( themeId, themes ) {
 	};
 }
 
-export function usePatternData( patternId ) {
+export function usePatternData( patternId, patterns ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternData, setPatternData ] = useState();
 
@@ -195,8 +196,13 @@ export function usePatternData( patternId ) {
 			)
 				.then( ( response ) => response.json() )
 				.then( ( response ) => {
-					setFetchInProgress( false );
-					setPatternData( response );
+					if ( response.error && 'pattern-not-found' === response.error ) {
+						// Get pattern data
+						setPatternData( patterns.patterns[thisPatternId] );
+					} else {
+						setFetchInProgress( false );
+						setPatternData( response );
+					}
 					resolve( response );
 				} );
 		} );
@@ -226,12 +232,16 @@ export function usePatternData( patternId ) {
 	};
 }
 
-export function useThemes( initial ) {
-	const [ themes, setThemes ] = useState( initial.themes );
+export function useThemes( { themes, currentThemeJsonFile } ) {
+	const [ theThemes, setTheThemes ] = useState( themes );
+	
+	useEffect( () => {
+		currentThemeJsonFile.get();
+	}, [theThemes] );
 
 	return {
-		themes,
-		setThemes,
+		themes: theThemes,
+		setThemes: setTheThemes,
 	};
 }
 

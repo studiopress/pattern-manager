@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Header with site title, navigation.', 'fse-studio' ),
 	'name'          => 'frost-header-with-site-title-navigation',
 	'categories'    => array( 'frost-call-to-action' ),

@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Call-to-action with text, button.', 'fse-studio' ),
 	'name'          => 'frost-call-to-action-with-text-button',
 	'categories'    => array( 'frost-call-to-action' ),

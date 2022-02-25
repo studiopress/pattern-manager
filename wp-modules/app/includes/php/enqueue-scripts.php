@@ -156,12 +156,7 @@ function fse_studio_block_editor_init() {
 	wp_enqueue_style( 'wp-format-library' );
 	wp_enqueue_media();
 
-	if (
-		current_theme_supports( 'wp-block-styles' ) ||
-		( ! is_array( $editor_styles ) || count( $editor_styles ) === 0 )
-	) {
-		wp_enqueue_style( 'wp-block-library-theme' );
-	}
+	wp_enqueue_style( 'wp-block-library-theme' );
 
 	/** This action is documented in wp-admin/edit-form-blocks.php */
 	do_action( 'enqueue_block_editor_assets' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Section with image, text, buttons.', 'fse-studio' ),
 	'name'          => 'frost-hero-section-one-column',
 	'categories'    => array( 'frost-hero-section' ),
@@ -19,7 +20,7 @@ return array(
 <figure class="wp-block-image size-full"><img src="https://frostwp.com/wp-content/uploads/2021/12/sample-black_1920x1200.jpg" alt="Sample Image" class="wp-image-3480"/></figure>
 <!-- /wp:image -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 

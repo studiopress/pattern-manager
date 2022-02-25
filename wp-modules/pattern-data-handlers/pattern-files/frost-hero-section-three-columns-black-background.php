@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Section with image, text, button.', 'fse-studio' ),
 	'name'          => 'frost-hero-section-three-columns-black-background',
 	'categories'    => array( 'frost-hero-section' ),
@@ -23,7 +24,7 @@ return array(
 <p class="has-text-align-center is-style-no-margin">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:spacer {"height":40} -->
+<!-- wp:spacer {"height":"40px"} -->
 <div style="height:40px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -89,7 +90,7 @@ return array(
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":70} -->
+<!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

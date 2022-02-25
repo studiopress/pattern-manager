@@ -1,5 +1,7 @@
 const { __ } = wp.i18n;
 
+import { v4 as uuidv4 } from 'uuid';
+
 /* eslint-disable */
 import {
 	BlockEditorProvider,
@@ -50,10 +52,11 @@ registerCoreBlocks();
 export function PatternEditorApp( { visible } ) {
 	const { patterns, currentThemeJsonFile } = useContext( FseStudioContext );
 	const [ currentPatternId, setCurrentPatternId ] = useState();
-	const pattern = usePatternData( currentPatternId );
+	const pattern = usePatternData( currentPatternId, patterns );
 	const [ errors, setErrors ] = useState( false );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
+	const [patternModalMode, setPatternModalMode] = useState();
 
 	function renderPatternEditorWhenReady() {
 		if ( pattern.data ) {
@@ -135,6 +138,7 @@ export function PatternEditorApp( { visible } ) {
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
+								setPatternModalMode( 'choose' );
 								setIsPatternModalOpen( true );
 							} }
 						>
@@ -144,6 +148,31 @@ export function PatternEditorApp( { visible } ) {
 								size={ 26 }
 							/>{ ' ' }
 							{ __( 'Browse Patterns', 'fse-studio' ) }
+						</button>
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								setPatternModalMode( 'create' );
+								setIsPatternModalOpen( true );
+							} }
+						>
+							{ __( 'Create a new pattern', 'fse-studio' ) }
+						</button>
+						<input value={pattern?.data?.title} onChange={(event) => {
+							pattern.set({
+								...pattern.data,
+								title: event.target.value
+							})
+						}} type="text" />
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								pattern.save()
+							} }
+						>
+							{ __( 'Save pattern to disk (wp-content/fsestudio-custom-patterns)', 'fse-studio' ) }
 						</button>
 						{ maybeRenderErrors() }
 					</div>
@@ -194,7 +223,8 @@ export function PatternEditorApp( { visible } ) {
 						setIsPatternModalOpen( false );
 					} }
 				>
-					<PatternPicker
+					{ patternModalMode === 'choose' ? (
+						<PatternPicker
 						patterns={ patterns.patterns }
 						themeJsonData={ currentThemeJsonFile.data }
 						onClickPattern={ ( clickedPatternId ) => {
@@ -202,6 +232,35 @@ export function PatternEditorApp( { visible } ) {
 							setIsPatternModalOpen( false );
 						} }
 					/>
+					) : null }
+					{ patternModalMode === 'create' ? (
+						<PatternPicker
+							patterns={ patterns.patterns }
+							themeJsonData={ currentThemeJsonFile.data }
+							onClickPattern={ ( clickedPatternId ) => {
+								const newPatternId = uuidv4();
+								const patternBlockHtml = patterns.patterns[clickedPatternId].content;
+								const newPatternData = {
+									type: 'custom',
+									title: 'My New Pattern',
+									name: newPatternId,
+									categories: [],
+									viewportWidth: '',
+									content: patternBlockHtml,
+								};
+
+								patterns.setPatterns( {
+									...patterns.patterns,
+									[newPatternId]: newPatternData,
+								} );
+								console.log( newPatternData );
+								
+								// Switch to the newly created theme.
+								setCurrentPatternId( newPatternId );
+								setIsPatternModalOpen( false );
+							} }
+						/>
+					) : null }
 				</Modal>
 			) : null }
 
@@ -246,12 +305,16 @@ export function PatternEditor( props ) {
 
 	// When blocks are changed in the block editor, update them in their corresponding files as well.
 	useEffect( () => {
-		props.setErrors( testPatternForErrors( blocks ) );
-
+		// Tests temporarily disabled. Will re-enable in another dedicated effort.
+		//props.setErrors( testPatternForErrors( blocks ) );
+		
+		console.log( blocks );
+		
 		pattern.set( {
 			...pattern.data,
-			content: serialize( blocks[ 0 ] ),
+			content: blocks.length > 0 ? serialize( blocks[ 0 ] ) : '',
 		} );
+
 	}, [ blocks ] );
 
 	function getEditorSettings() {

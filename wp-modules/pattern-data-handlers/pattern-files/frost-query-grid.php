@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Grid of posts in three columns.', 'fse-studio' ),
 	'name'          => 'frost-query-grid',
 	'categories'    => array( 'frost-query' ),
@@ -15,13 +16,13 @@ return array(
 <div style="height:100px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:query {"queryId":1,"query":{"perPage":"6","pages":0,"offset":0,"postType":"post","categoryIds":[],"tagIds":[],"order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"displayLayout":{"type":"flex","columns":3},"align":"wide"} -->
+<!-- wp:query {"queryId":1,"query":{"perPage":"6","pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"displayLayout":{"type":"flex","columns":3},"align":"wide"} -->
 <div class="wp-block-query alignwide"><!-- wp:post-template -->
 <!-- wp:post-title {"isLink":true,"style":{"spacing":{"margin":{"bottom":"10px"}}}} /-->
 
 <!-- wp:post-date {"fontSize":"small"} /-->
 
-<!-- wp:spacer {"height":20} -->
+<!-- wp:spacer {"height":"20px"} -->
 <div style="height:20px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 

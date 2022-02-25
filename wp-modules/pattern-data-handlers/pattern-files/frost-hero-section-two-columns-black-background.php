@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Section with media, text, buttons.', 'fse-studio' ),
 	'name'          => 'frost-hero-section-two-columns-black-background',
 	'categories'    => array( 'frost-hero-section' ),

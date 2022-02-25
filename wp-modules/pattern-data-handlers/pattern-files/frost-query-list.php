@@ -6,18 +6,19 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'List of posts in three columns.', 'fse-studio' ),
 	'name'          => 'frost-query-list',
 	'categories'    => array( 'frost-query' ),
 	'viewportWidth' => 1280,
 	'content'       => '<!-- wp:group {"align":"full","layout":{"inherit":true}} -->
-<div class="wp-block-group alignfull"><!-- wp:query {"queryId":1,"query":{"perPage":"6","pages":0,"offset":0,"postType":"post","categoryIds":[],"tagIds":[],"order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"align":"wide"} -->
+<div class="wp-block-group alignfull"><!-- wp:query {"queryId":1,"query":{"perPage":"6","pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false},"displayLayout":{"type":"list"},"align":"wide"} -->
 <div class="wp-block-query alignwide"><!-- wp:post-template -->
 <!-- wp:separator {"className":"is-style-wide"} -->
 <hr class="wp-block-separator is-style-wide"/>
 <!-- /wp:separator -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
