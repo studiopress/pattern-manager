@@ -159,12 +159,14 @@ export function PatternEditorApp( { visible } ) {
 						>
 							{ __( 'Create a new pattern', 'fse-studio' ) }
 						</button>
-						<input value={pattern?.data?.title} onChange={(event) => {
-							pattern.set({
-								...pattern.data,
-								title: event.target.value
-							})
-						}} type="text" />
+						{ pattern?.data ? (
+							<input className="flex-grow" value={pattern?.data?.title} onChange={(event) => {
+								pattern.set({
+									...pattern.data,
+									title: event.target.value
+								})
+							}} type="text" placeholder={ __( 'Name of Pattern', 'fsestudio' ) } />
+						) : null }
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -218,7 +220,7 @@ export function PatternEditorApp( { visible } ) {
 			} )() }
 			{ isPatternModalOpen ? (
 				<Modal
-					title={ __( 'Pick the patterns to edit', 'fse-studio' ) }
+					title={ patternModalMode === 'choose' ? __( 'Pick the patterns to edit', 'fse-studio' ) : __( 'Choose a starting point for your new pattern', 'fse-studio' )}
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
 					} }
