@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  php: circleci/php@1.1.0
+
 jobs:
   lint:
     docker:
@@ -26,23 +29,8 @@ jobs:
     steps:
       - checkout:
           path: plugins/fse-studio
-      - run:
-          name: Install PHP
-          working_directory: plugins/fse-studio
-          command: |
-            sudo apt update && sudo apt upgrade
-            sudo apt install software-properties-common
-            sudo add-apt-repository ppa:ondrej/php
-            sudo apt update
-            sudo apt -y install php7.4
-      - run:
-          name: Install Composer
-          working_directory: plugins/fse-studio
-          command: |
-            php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-            EXPECTED_SIGNATURE=$(curl -s https://composer.github.io/installer.sig)
-            ACTUAL_SIGNATURE=$(php -r "echo hash_file('sha384', 'composer-setup.php');")
-            [[ "$EXPECTED_SIGNATURE" == "$ACTUAL_SIGNATURE" ]] && sudo php composer-setup.php --install-dir=/bin --filename=composer || exit 1
+      - php/install-php
+      - php/install-composer
       - run:
           name: PHPUnit Integration Tests
           working_directory: plugins/fse-studio
