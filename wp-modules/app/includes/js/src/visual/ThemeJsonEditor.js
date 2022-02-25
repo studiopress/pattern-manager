@@ -5,27 +5,16 @@
 const { __ } = wp.i18n;
 
 import { ColorPicker, Popover } from '@wordpress/components';
-import { useContext, useState, useEffect } from '@wordpress/element';
-import {
-	FseStudioContext,
-	useThemeJsonFile,
-} from './../non-visual/non-visual-logic.js';
-
-import { PatternPreview } from './PatternPreview';
+import { useContext, useState } from '@wordpress/element';
+import { FseStudioContext } from './../non-visual/non-visual-logic.js';
 
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
 /* eslint-disable */
 export function ThemeJsonEditorApp( { visible } ) {
-	const { themeJsonFiles, currentThemeJsonFileData } = useContext(
+	const { themeJsonFiles, currentTheme, currentThemeJsonFileId, currentThemeJsonFile } = useContext(
 		FseStudioContext
 	);
-	const [ currentId, setCurrentId ] = useState();
-	const themeJsonFile = useThemeJsonFile( currentId );
-
-	useEffect( () => {
-		currentThemeJsonFileData.setValue( themeJsonFile.data );
-	}, [ themeJsonFile ] );
 
 	function renderSelector() {
 		const renderedOptions = [];
@@ -52,9 +41,13 @@ export function ThemeJsonEditorApp( { visible } ) {
 		return (
 			<>
 				<select
-					value={ currentId }
+					value={ currentThemeJsonFileId.value }
 					onChange={ ( event ) => {
 						setCurrentId( event.target.value );
+						currentTheme.set({
+							...theme.data,
+							theme_json_file: event.target.value,
+						})
 					} }
 				>
 					{ renderedOptions }
@@ -64,11 +57,11 @@ export function ThemeJsonEditorApp( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! themeJsonFile.data ) {
+		if ( ! currentThemeJsonFile.data ) {
 			return '';
 		}
 
-		return <ThemeJsonEditor themeJsonFile={ themeJsonFile } />;
+		return <ThemeJsonEditor themeJsonFile={ currentThemeJsonFile } theme={ currentTheme } />;
 	}
 
 	return (
@@ -78,6 +71,7 @@ export function ThemeJsonEditorApp( { visible } ) {
 					{ __( 'Theme.json Manager', 'fse-studio' ) }
 				</h1>
 				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
+					{/*
 					<div>
 						<label
 							htmlFor="location"
@@ -90,6 +84,8 @@ export function ThemeJsonEditorApp( { visible } ) {
 					<div className="flex flex-col mx-6 my-2.5">
 						{ __( 'or', 'fse-studio' ) }
 					</div>
+					*/
+					}
 					<div className="flex flex-col gap-2">
 						<button
 							type="button"
@@ -119,8 +115,8 @@ export function ThemeJsonEditorApp( { visible } ) {
 	);
 }
 
-function ThemeJsonEditor( { themeJsonFile } ) {
-	const { patterns, patternPreviewParts } = useContext( FseStudioContext );
+function ThemeJsonEditor( { themeJsonFile, theme } ) {
+	const { patterns } = useContext( FseStudioContext );
 	const content = themeJsonFile.data.content;
 	const [ currentView, setCurrentView ] = useState( 'settings' );
 
@@ -181,9 +177,8 @@ function ThemeJsonEditor( { themeJsonFile } ) {
 			rendered.push(
 				<PatternPreview
 					key={ blockPattern }
-					wpHead={ patternPreviewParts.data.wpHead }
+					html={ patternPreviewParts.data.rendered_block_pattern_preview }
 					blockPatternData={ patterns.patterns[ blockPattern ] }
-					wpFooter={ patternPreviewParts.data.wpFooter }
 					themeJsonData={ null }
 					scale={ 0.5 }
 				/>
@@ -276,9 +271,10 @@ function ThemeJsonEditor( { themeJsonFile } ) {
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
 							themeJsonFile.save();
+							theme.save();
 						} }
 					>
-						{ __( 'Save Theme Configuration File', 'fse-studio' ) }
+						{ __( 'Save Theme and Theme Configuration File', 'fse-studio' ) }
 					</button>
 				</div>
 			</div>

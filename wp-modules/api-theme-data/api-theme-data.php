@@ -61,6 +61,9 @@ function get_theme( $request ) {
 
 	$theme_id = $params['themeId'];
 
+	// Activate the theme being requested. This makes it so that previews match the currently chosen theme. This may not be the best place to do this.
+	switch_theme( $theme_id );
+
 	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 
 	if ( ! $theme_data ) {

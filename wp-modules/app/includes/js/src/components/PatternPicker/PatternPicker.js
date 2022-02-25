@@ -4,68 +4,39 @@ import * as React from 'react';
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './utils/searchItems.js';
+import { PatternPreview } from './../PatternPreview/PatternPreview.js';
 
 /**
- * @typedef {{
- *   categories: string[],
- *   content: string,
- *   name: string,
- *   title: string,
- *   viewportWidth: number
- * }} Pattern
+ * @typedef {Object} Pattern
+ * @property {Array}  categories    The pattern categories.
+ * @property {string} content       The pattern HTML content.
+ * @property {string} name          The pattern name.
+ * @property {string} title         The pattern title.
+ * @property {number} viewportWidth The viewport width.
  */
 
 /**
  * The pattern picker component.
  *
  * @param {{
- *   patterns: Record<string, Pattern>,
- *   selectedPatterns: string[],
- *   setSelectedPatterns: Function,
- *   layoutPreview: Function,
- *   selectMultiple: boolean | undefined
+ *  patterns: Record<string, Pattern>,
+ *  themeJsonData: string[],
+ *  onClickPattern: Function,
+ *  selectedPatterns: string[]
  * }} props The component props.
  * @return {React.ReactElement} The rendered component.
  */
 export default function PatternPicker( {
 	patterns: allPatterns,
-	selectedPatterns,
-	setSelectedPatterns,
-	layoutPreview: LayoutPreview,
-	selectMultiple,
+	themeJsonData,
+	onClickPattern,
+	selectedPatterns = [],
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
 	}, [ searchValue, allPatterns ] );
-
-	/**
-	 * Sets the pattern to selected.
-	 *
-	 * @param {string} patternName The name of the pattern.
-	 */
-	function togglePatternSelected( patternName ) {
-		if ( selectMultiple ) {
-			if ( selectedPatterns.includes( patternName ) ) {
-				setSelectedPatterns(
-					selectedPatterns.filter(
-						( pattern ) => pattern !== patternName
-					)
-				);
-			} else {
-				setSelectedPatterns( [ ...selectedPatterns, patternName ] );
-			}
-
-			return;
-		}
-
-		if ( selectedPatterns.includes( patternName ) ) {
-			setSelectedPatterns( [] );
-		} else {
-			setSelectedPatterns( [ patternName ] );
-		}
-	}
 
 	return (
 		<div className="mx-auto bg-white">
@@ -74,9 +45,9 @@ export default function PatternPicker( {
 					<div className="absolute w-56">
 						<input
 							value={ searchValue }
-							onChange={ ( event ) =>
-								setSearchValue( event.target.value )
-							}
+							onChange={ ( event ) => {
+								setSearchValue( event.target.value );
+							} }
 							type="text"
 							name="search"
 							id="search"
@@ -103,15 +74,20 @@ export default function PatternPicker( {
 										: 'min-h-[300px] bg-white border border-[#F0F0F0]'
 								}
 								onClick={ () => {
-									togglePatternSelected( pattern.name );
+									onClickPattern( pattern.name );
 								} }
 								onKeyDown={ ( event ) => {
 									if ( 'Enter' === event.code ) {
-										togglePatternSelected( pattern.name );
+										onClickPattern( pattern.name );
 									}
 								} }
 							>
-								<LayoutPreview bodyHTML={ pattern.content } />
+								<PatternPreview
+									key={ pattern.name }
+									blockPatternData={ pattern }
+									themeJsonData={ themeJsonData }
+									scale={ 0.3 }
+								/>
 								<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
 									{ pattern.title }
 								</h3>

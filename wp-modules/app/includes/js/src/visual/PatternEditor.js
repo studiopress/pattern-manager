@@ -25,8 +25,6 @@ import {
 
 import { serialize, parse } from '@wordpress/blocks';
 
-import { getPrefix } from './../non-visual/prefix.js';
-
 import {
 	SlotFillProvider,
 	Popover,
@@ -34,6 +32,9 @@ import {
 	FormTokenField,
 	Snackbar,
 } from '@wordpress/components';
+
+import PatternPicker from './../components/PatternPicker/PatternPicker.js';
+
 /* eslint-enable */
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
 import { useContext, useState, useEffect, useRef } from '@wordpress/element';
@@ -47,46 +48,12 @@ import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 
 export function PatternEditorApp( { visible } ) {
-	const { patterns } = useContext( FseStudioContext );
+	const { patterns, currentThemeJsonFile } = useContext( FseStudioContext );
 	const [ currentPatternId, setCurrentPatternId ] = useState();
 	const pattern = usePatternData( currentPatternId );
 	const [ errors, setErrors ] = useState( false );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
-
-	function renderPatternSelector() {
-		const renderedPatterns = [];
-
-		renderedPatterns.push(
-			<option key={ 1 }>
-				{ __( 'Choose a pattern', 'fse-studio' ) }
-			</option>
-		);
-
-		let counter = 3;
-
-		for ( const thisPattern in patterns.patterns ) {
-			const patternInQuestion = patterns.patterns[ thisPattern ];
-			renderedPatterns.push(
-				<option key={ counter } value={ thisPattern }>
-					{ patternInQuestion.title }
-				</option>
-			);
-			counter++;
-		}
-
-		return (
-			<>
-				<select
-					value={ currentPatternId }
-					onChange={ ( event ) => {
-						setCurrentPatternId( event.target.value );
-					} }
-				>
-					{ renderedPatterns }
-				</select>
-			</>
-		);
-	}
+	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
 
 	function renderPatternEditorWhenReady() {
 		if ( pattern.data ) {
@@ -167,6 +134,9 @@ export function PatternEditorApp( { visible } ) {
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								setIsPatternModalOpen( true );
+							} }
 						>
 							<Icon
 								className="text-white fill-current mr-2"
@@ -175,8 +145,6 @@ export function PatternEditorApp( { visible } ) {
 							/>{ ' ' }
 							{ __( 'Browse Patterns', 'fse-studio' ) }
 						</button>
-
-						{ renderPatternSelector() }
 						{ maybeRenderErrors() }
 					</div>
 				</div>
@@ -199,6 +167,9 @@ export function PatternEditorApp( { visible } ) {
 									<button
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={ () => {
+											setIsPatternModalOpen( true );
+										} }
 									>
 										<Icon
 											className="text-white fill-current mr-2"
@@ -216,6 +187,23 @@ export function PatternEditorApp( { visible } ) {
 					);
 				}
 			} )() }
+			{ isPatternModalOpen ? (
+				<Modal
+					title={ __( 'Pick the patterns to edit', 'fse-studio' ) }
+					onRequestClose={ () => {
+						setIsPatternModalOpen( false );
+					} }
+				>
+					<PatternPicker
+						patterns={ patterns.patterns }
+						themeJsonData={ currentThemeJsonFile.data }
+						onClickPattern={ ( clickedPatternId ) => {
+							setCurrentPatternId( clickedPatternId );
+							setIsPatternModalOpen( false );
+						} }
+					/>
+				</Modal>
+			) : null }
 
 			{ renderPatternEditorWhenReady() }
 		</div>
@@ -226,7 +214,7 @@ export function PatternEditor( props ) {
 	const contentRef = useRef();
 	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
 
-	const { blockEditorSettings, currentThemeJsonFileData } = useContext(
+	const { blockEditorSettings, currentThemeJsonFile } = useContext(
 		FseStudioContext
 	);
 	const pattern = props.pattern;
@@ -276,6 +264,13 @@ export function PatternEditor( props ) {
 		editorSettings.mediaUpload = MediaUpload;
 		editorSettings.mediaPlaceholder = MediaPlaceholder;
 		editorSettings.mediaReplaceFlow = MediaReplaceFlow;
+
+		// Inject the current styles rendered by the current themeJsonFileData.
+		if ( currentThemeJsonFile?.data?.renderedGlobalStyles ) {
+			editorSettings.styles.push( {
+				css: currentThemeJsonFile.data.renderedGlobalStyles,
+			} );
+		}
 
 		return editorSettings;
 	}

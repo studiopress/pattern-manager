@@ -8,48 +8,12 @@ import { useState, useEffect, createContext } from '@wordpress/element';
 
 export const FseStudioContext = createContext( [ {}, function () {} ] );
 
-export function useCurrentThemeJsonFileData( initial ) {
-	const [ value, setValue ] = useState( initial );
+export function useCurrentId( initial ) {
+	const [ value, set ] = useState( initial );
 
 	return {
 		value,
-		setValue,
-	};
-}
-
-export function usePatternPreviewParts() {
-	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [ data, set ] = useState();
-
-	useEffect( () => {
-		getPatternPreviewParts();
-	}, [] );
-
-	function getPatternPreviewParts() {
-		return new Promise( ( resolve ) => {
-			if ( fetchInProgress ) {
-				resolve();
-				return;
-			}
-			setFetchInProgress( true );
-			fetch( fsestudio.apiEndpoints.getFrontendPreviewPartsEndpoint, {
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-			} )
-				.then( ( response ) => response.json() )
-				.then( ( response ) => {
-					setFetchInProgress( false );
-					set( response );
-					resolve( response );
-				} );
-		} );
-	}
-
-	return {
-		data,
+		set,
 	};
 }
 

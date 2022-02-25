@@ -1,0 +1,12 @@
+{
+  "name": "@fse-studio/pattern-preview",
+  "version": "1.0.0",
+  "description": "Pattern Preview Component for FSE Studio.",
+  "author": "StudioPress",
+  "license": "GPL v2 or greater",
+  "main": "PatternPreview.js",
+  "dependencies": {
+    "@wordpress/element": "^4.1.1",
+    "@wordpress/i18n": "^4.3.1"
+  }
+}

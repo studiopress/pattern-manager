@@ -135,6 +135,14 @@ function update_theme( $theme, $patterns ) {
 		FS_CHMOD_FILE
 	);
 
+	// Copy the theme's selected theme.json file into the theme from its source location.
+	$wp_filesystem->copy(
+		$wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/theme-json-data-handlers/theme-json-files/' . $theme['theme_json_file'] . '.json',
+		$new_theme_dir . 'theme.json',
+		true,
+		FS_CHMOD_FILE
+	);
+
 	// Create the index.html block template file.
 	if ( $theme['index.html'] ) {
 		$success = $wp_filesystem->put_contents(
@@ -161,6 +169,9 @@ function update_theme( $theme, $patterns ) {
 			FS_CHMOD_FILE
 		);
 	}
+
+	// Activate this theme.
+	switch_theme( $theme['dirname'] );
 
 	return true;
 }
