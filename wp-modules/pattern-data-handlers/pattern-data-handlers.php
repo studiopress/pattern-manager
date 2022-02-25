@@ -119,7 +119,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 
 return array(
 	'type'          => '" . $pattern['type'] . "',
-	'title'         => __( '" . wp_slash( $pattern['title'] ) . "', '" . $text_domain . "' ),
+	'title'         => __( '" . addcslashes( $pattern['title'], '\'' ) . "', '" . $text_domain . "' ),
 	'name'          => '" . $pattern['name'] . "',
 	'categories'    => array( '" . implode( ', ', $pattern['categories'] ) . "' ),
 	'viewportWidth' => " . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . ",
@@ -137,5 +137,5 @@ return array(
  * @return bool
  */
 function prepare_content( $pattern_html, $text_domain ) {
-	return wp_slash( $pattern_html );
+	return addcslashes( $pattern_html, '\'' );
 }

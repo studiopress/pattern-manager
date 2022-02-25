@@ -161,13 +161,31 @@ function update_theme( $theme, $patterns ) {
 		);
 	}
 
+	// Delete the current patterns directory in the theme if it exists.
+	$wp_filesystem->delete( $new_theme_dir . '/patterns', true );
+	$wp_filesystem->mkdir( $new_theme_dir . '/patterns' );
+
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		$wp_filesystem->copy(
-			$wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php',
-			$new_theme_dir . 'patterns/' . $included_pattern . '.php',
-			true,
-			FS_CHMOD_FILE
-		);
+		$file_to_copy = '';
+		$default_pattern_path = $wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php';
+		if ( $wp_filesystem->exists( $default_pattern_path ) ) {
+			$file_to_copy = $default_pattern_path;
+		}
+
+		$custom_pattern_path = $wp_filesystem->wp_content_dir() . 'fsestudio-custom-patterns/' . $included_pattern . '.php';
+
+		if ( $wp_filesystem->exists( $custom_pattern_path ) ) {
+			$file_to_copy = $custom_pattern_path;
+		}
+
+		if ( ! empty( $file_to_copy ) ) {
+			$wp_filesystem->copy(
+				$file_to_copy,
+				$new_theme_dir . 'patterns/' . $included_pattern . '.php',
+				true,
+				FS_CHMOD_FILE
+			);
+		}
 	}
 
 	// Activate this theme.
