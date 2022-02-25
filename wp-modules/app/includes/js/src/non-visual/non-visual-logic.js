@@ -28,12 +28,12 @@ export function useThemeJsonFile( id ) {
 
 	useEffect( () => {
 		// If the id passed in changes, get the new themeJson data related to it.
-		getThemeJsonData( id );
+		getThemeJsonData();
 	}, [ id ] );
 
-	function getThemeJsonData( thisId ) {
+	function getThemeJsonData() {
 		return new Promise( ( resolve ) => {
-			if ( ! thisId || fetchInProgress ) {
+			if ( ! id || fetchInProgress ) {
 				resolve();
 				return;
 			}
@@ -41,7 +41,7 @@ export function useThemeJsonFile( id ) {
 			fetch(
 				assembleUrlWithQueryParams(
 					fsestudio.apiEndpoints.getThemeJsonFileEndpoint,
-					{ filename: thisId }
+					{ filename: id }
 				),
 				{
 					method: 'GET',
@@ -72,7 +72,7 @@ export function useThemeJsonFile( id ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					getThemeJsonData( id );
+					getThemeJsonData();
 					setHasSaved( true );
 					resolve( data );
 				} );
@@ -88,10 +88,11 @@ export function useThemeJsonFile( id ) {
 	};
 }
 
-export function useThemeData( themeId, themes ) {
+export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 	const [ themeData, setThemeData ] = useState();
+	const [existsOnDisk, setExistsOnDisk] = useState(false);
 
 	useEffect( () => {
 		setHasSaved( false );
@@ -130,7 +131,9 @@ export function useThemeData( themeId, themes ) {
 						response.error === 'theme_not_found'
 					) {
 						setThemeData( themes.themes[ thisThemeId ] );
+						setExistsOnDisk( false );
 					} else {
+						setExistsOnDisk( true );
 						setThemeData( response );
 						resolve( response );
 					}
@@ -150,7 +153,9 @@ export function useThemeData( themeId, themes ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
+					setExistsOnDisk( true );
 					setHasSaved( true );
+					currentThemeJsonFile.get();
 					resolve( data );
 				} );
 		} );
@@ -160,6 +165,7 @@ export function useThemeData( themeId, themes ) {
 		data: themeData,
 		set: setThemeData,
 		save: saveThemeData,
+		existsOnDisk,
 		hasSaved,
 	};
 }

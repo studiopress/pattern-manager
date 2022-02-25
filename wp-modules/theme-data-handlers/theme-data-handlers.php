@@ -61,33 +61,12 @@ function get_the_themes() {
 	];
 
 	foreach ( $wpthemes as $theme_slug => $theme ) {
-		$theme_data_file = $theme->get_template_directory() . '/fse-studio-data.json';
+		$theme_data_file = $theme->get_template_directory() . '/fsestudio-data.json';
 
 		if ( $wp_filesystem->exists( $theme_data_file ) ) {
 			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
 			$theme_data = wp_parse_args( $theme_data, $default_theme_data );
 
-			$formatted_theme_data[ $theme_slug ] = $theme_data;
-		} else {
-			$theme_data                          = array(
-				'name'              => $theme['Name'],
-				'dirname'           => $theme_slug,
-				'namespace'         => '',
-				'uri'               => $theme['ThemeURI'],
-				'author'            => sanitize_text_field( $theme['Author'] ), // Sanitized to remove html added by WP_Theme.
-				'author_uri'        => $theme['AuthorURI'],
-				'description'       => $theme['Description'],
-				'tags'              => $theme['Tags'],
-				'tested_up_to'      => $theme['TestedUpTo'],
-				'requires_wp'       => $theme['RequiresWP'],
-				'requires_php'      => $theme['RequiresPHP'],
-				'version'           => $theme['Version'],
-				'text_domain'       => $theme['TextDomain'],
-				'included_patterns' => array(),
-				'index.html'        => '',
-				'404.html'          => '',
-			);
-			$theme_data                          = wp_parse_args( $theme_data, $default_theme_data );
 			$formatted_theme_data[ $theme_slug ] = $theme_data;
 		}
 	}
@@ -125,9 +104,9 @@ function update_theme( $theme, $patterns ) {
 	// Fix strings in the functions.php file.
 	$strings_fixed = \FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
 
-	// Create the theme's fse-studio-data.json file.
+	// Create the theme's fsestudio-data.json file.
 	$success = $wp_filesystem->put_contents(
-		$new_theme_dir . 'fse-studio-data.json',
+		$new_theme_dir . 'fsestudio-data.json',
 		wp_json_encode(
 			$theme,
 			JSON_PRETTY_PRINT

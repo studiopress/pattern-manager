@@ -66,7 +66,7 @@ export function FseStudioApp() {
 				patterns: usePatterns( fsestudio.patterns ),
 				themes,
 				currentThemeId,
-				currentTheme: useThemeData( currentThemeId.value, themes ),
+				currentTheme: useThemeData( currentThemeId.value, themes, currentThemeJsonFile ),
 				themeJsonFiles,
 				currentThemeJsonFileId,
 				currentThemeJsonFile,
@@ -81,29 +81,29 @@ export function FseStudioApp() {
 }
 
 function FseStudio() {
-	const { currentView } = useContext( FseStudioContext );
+	const { currentView, currentTheme } = useContext( FseStudioContext );
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
-
+	
 	const navigation = [
 		{
 			name: 'Theme Manager',
 			slug: 'theme_manager',
 			icon: file,
-			current: true,
+			available: true,
 		},
 		{
 			name: 'Pattern Manager',
 			slug: 'pattern_manager',
 			icon: layout,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 		{
 			name: 'Theme.json Manager',
 			slug: 'themejson_manager',
 			icon: globe,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 	];
 
@@ -179,33 +179,38 @@ function FseStudio() {
 								{ __( 'FSE Studio', 'fse-studio' ) }
 							</h3>
 							<nav className="flex-1 px-4 py-4 space-y-1">
-								{ navigation.map( ( item ) => (
-									<button
-										key={ item.name }
-										onClick={ () => {
-											currentView.set( item.slug );
-										} }
-										className={ classNames(
-											item.slug ===
-												currentView.currentView
-												? 'bg-wp-blue text-white hover:text-white'
-												: 'text-white opacity-70 hover:text-white hover:opacity-100',
-											'group flex items-center px-4 py-2 text-sm font-medium rounded-sm w-full'
-										) }
-									>
-										<Icon
+								{ navigation.map( ( item ) => {
+									return (
+										<button
+											disabled={ ! item.available }
+											key={ item.name }
+											onClick={ () => {
+												currentView.set( item.slug );
+											} }
 											className={ classNames(
-												item.current
-													? 'text-white'
-													: 'text-white opacity-70 group-hover:opacity-100 group-hover:text-white',
-												'mr-3 flex-shrink-0 h-6 w-6 fill-current'
+												item.slug ===
+													currentView.currentView
+													? 'bg-wp-blue text-white hover:text-white'
+													: 'text-white opacity-70 hover:text-white hover:opacity-100',
+												'group flex items-center px-4 py-2 text-sm font-medium rounded-sm w-full',
+												! item.available ? 'opacity-30 hover:opacity-30' : ''
 											) }
-											icon={ item.icon }
-											size={ 24 }
-										/>
-										{ item.name }
-									</button>
-								) ) }
+										>
+											<Icon
+												className={ classNames(
+													item.current
+														? 'text-white'
+														: 'text-white opacity-70 group-hover:opacity-100 group-hover:text-white',
+													'mr-3 flex-shrink-0 h-6 w-6 fill-current',
+													! item.available ? 'opacity-30 hover:opacity-30' : ''
+												) }
+												icon={ item.icon }
+												size={ 24 }
+											/>
+											{ item.name }
+										</button>
+									)
+								} ) }
 							</nav>
 						</div>
 					</div>
@@ -360,7 +365,7 @@ function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor( { theme } ) {
-	const { patterns, currentThemeJsonFile, currentView } = useContext(
+	const { patterns, currentTheme, currentThemeJsonFile, currentView } = useContext(
 		FseStudioContext
 	);
 	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
@@ -373,19 +378,19 @@ function ThemeDataEditor( { theme } ) {
 			name: __( 'Theme Setup', 'fse-studio' ),
 			slug: 'theme_setup',
 			icon: file,
-			current: true,
+			available: true,
 		},
 		{
 			name: __( 'Add Patterns', 'fse-studio' ),
 			slug: 'add_patterns',
 			icon: layout,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 		{
 			name: __( 'Customize Styles', 'fse-studio' ),
 			slug: 'customize_styles',
 			icon: globe,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 	];
 
@@ -913,24 +918,29 @@ function ThemeDataEditor( { theme } ) {
 		<>
 			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
 				<ul className="w-72">
-					{ views.map( ( item ) => (
-						<li key={ item.name }>
-							<button
-								className={
-									'w-full text-left p-5 font-medium' +
-									( themeEditorCurrentTab === item.slug
-										? ' bg-gray-100'
-										: ' hover:bg-gray-100' )
-								}
-								key={ item.name }
-								onClick={ () => {
-									setThemeEditorCurrentTab( item.slug );
-								} }
-							>
-								{ item.name }
-							</button>
-						</li>
-					) ) }
+					{ views.map( ( item ) => {
+						return (
+							<li key={ item.name }>
+								<button
+									disabled={ ! item.available }
+									className={ classNames(
+										'w-full text-left p-5 font-medium' +
+										( themeEditorCurrentTab === item.slug
+											? ' bg-gray-100'
+											: ' hover:bg-gray-100' ),
+										! item.available ? 'opacity-30 bg-white-100' : ''
+									)
+									}
+									key={ item.name }
+									onClick={ () => {
+										setThemeEditorCurrentTab( item.slug );
+									} }
+								>
+									{ item.name }
+								</button>
+							</li>
+						)
+					} ) }
 				</ul>
 				{ maybeRenderThemeSetupView() }
 				{ maybeAddPatternsView() }
