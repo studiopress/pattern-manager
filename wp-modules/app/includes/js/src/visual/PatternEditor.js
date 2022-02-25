@@ -44,7 +44,7 @@ import {
 	FseStudioContext,
 	usePatternData,
 } from './../non-visual/non-visual-logic.js';
-import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
+//import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
 
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
@@ -56,7 +56,7 @@ export function PatternEditorApp( { visible } ) {
 	const [ errors, setErrors ] = useState( false );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
-	const [patternModalMode, setPatternModalMode] = useState();
+	const [ patternModalMode, setPatternModalMode ] = useState();
 
 	function renderPatternEditorWhenReady() {
 		if ( pattern.data ) {
@@ -160,21 +160,33 @@ export function PatternEditorApp( { visible } ) {
 							{ __( 'Create a new pattern', 'fse-studio' ) }
 						</button>
 						{ pattern?.data ? (
-							<input className="flex-grow" value={pattern?.data?.title} onChange={(event) => {
-								pattern.set({
-									...pattern.data,
-									title: event.target.value
-								})
-							}} type="text" placeholder={ __( 'Name of Pattern', 'fsestudio' ) } />
+							<input
+								className="flex-grow"
+								value={ pattern?.data?.title }
+								onChange={ ( event ) => {
+									pattern.set( {
+										...pattern.data,
+										title: event.target.value,
+									} );
+								} }
+								type="text"
+								placeholder={ __(
+									'Name of Pattern',
+									'fsestudio'
+								) }
+							/>
 						) : null }
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
-								pattern.save()
+								pattern.save();
 							} }
 						>
-							{ __( 'Save pattern to disk (wp-content/fsestudio-custom-patterns)', 'fse-studio' ) }
+							{ __(
+								'Save pattern to disk (wp-content/fsestudio-custom-patterns)',
+								'fse-studio'
+							) }
 						</button>
 						{ maybeRenderErrors() }
 					</div>
@@ -220,20 +232,27 @@ export function PatternEditorApp( { visible } ) {
 			} )() }
 			{ isPatternModalOpen ? (
 				<Modal
-					title={ patternModalMode === 'choose' ? __( 'Pick the patterns to edit', 'fse-studio' ) : __( 'Choose a starting point for your new pattern', 'fse-studio' )}
+					title={
+						patternModalMode === 'choose'
+							? __( 'Pick the patterns to edit', 'fse-studio' )
+							: __(
+									'Choose a starting point for your new pattern',
+									'fse-studio'
+							  )
+					}
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
 					} }
 				>
 					{ patternModalMode === 'choose' ? (
 						<PatternPicker
-						patterns={ patterns.patterns }
-						themeJsonData={ currentThemeJsonFile.data }
-						onClickPattern={ ( clickedPatternId ) => {
-							setCurrentPatternId( clickedPatternId );
-							setIsPatternModalOpen( false );
-						} }
-					/>
+							patterns={ patterns.patterns }
+							themeJsonData={ currentThemeJsonFile.data }
+							onClickPattern={ ( clickedPatternId ) => {
+								setCurrentPatternId( clickedPatternId );
+								setIsPatternModalOpen( false );
+							} }
+						/>
 					) : null }
 					{ patternModalMode === 'create' ? (
 						<PatternPicker
@@ -241,7 +260,9 @@ export function PatternEditorApp( { visible } ) {
 							themeJsonData={ currentThemeJsonFile.data }
 							onClickPattern={ ( clickedPatternId ) => {
 								const newPatternId = uuidv4();
-								const patternBlockHtml = patterns.patterns[clickedPatternId].content;
+								const patternBlockHtml =
+									patterns.patterns[ clickedPatternId ]
+										.content;
 								const newPatternData = {
 									type: 'custom',
 									title: 'My New Pattern',
@@ -253,10 +274,9 @@ export function PatternEditorApp( { visible } ) {
 
 								patterns.setPatterns( {
 									...patterns.patterns,
-									[newPatternId]: newPatternData,
+									[ newPatternId ]: newPatternData,
 								} );
-								console.log( newPatternData );
-								
+
 								// Switch to the newly created theme.
 								setCurrentPatternId( newPatternId );
 								setIsPatternModalOpen( false );
@@ -309,14 +329,11 @@ export function PatternEditor( props ) {
 	useEffect( () => {
 		// Tests temporarily disabled. Will re-enable in another dedicated effort.
 		//props.setErrors( testPatternForErrors( blocks ) );
-		
-		console.log( blocks );
-		
+
 		pattern.set( {
 			...pattern.data,
 			content: blocks.length > 0 ? serialize( blocks[ 0 ] ) : '',
 		} );
-
 	}, [ blocks ] );
 
 	function getEditorSettings() {

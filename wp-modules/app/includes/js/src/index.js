@@ -49,11 +49,16 @@ ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 export function FseStudioApp() {
 	const currentThemeJsonFileId = useCurrentId();
-	const currentThemeJsonFile = useThemeJsonFile(currentThemeJsonFileId.value);
-	const themes = useThemes( { themes: fsestudio.themes, currentThemeJsonFile: currentThemeJsonFile } );
+	const currentThemeJsonFile = useThemeJsonFile(
+		currentThemeJsonFileId.value
+	);
+	const themes = useThemes( {
+		themes: fsestudio.themes,
+		currentThemeJsonFile,
+	} );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
-	
+
 	return (
 		<FseStudioContext.Provider
 			value={ {
@@ -237,7 +242,6 @@ function ThemeManager( { visible } ) {
 		currentThemeId,
 		currentTheme,
 		currentThemeJsonFileId,
-		currentThemeJsonFile,
 	} = useContext( FseStudioContext );
 
 	useEffect( () => {

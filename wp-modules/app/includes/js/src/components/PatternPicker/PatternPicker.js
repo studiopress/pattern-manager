@@ -33,7 +33,7 @@ export default function PatternPicker( {
 	selectedPatterns = [],
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
-	const [numberToRender, setNumberToRender] = useState( 0 );
+	const [ numberToRender, setNumberToRender ] = useState( 0 );
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
@@ -62,7 +62,7 @@ export default function PatternPicker( {
 						const isChecked = selectedPatterns.includes(
 							pattern.name
 						);
-						
+
 						if ( index <= numberToRender ) {
 							return (
 								<button
@@ -89,9 +89,9 @@ export default function PatternPicker( {
 										blockPatternData={ pattern }
 										themeJsonData={ themeJsonData }
 										scale={ 0.3 }
-										onLoad={() => {
-											setNumberToRender( index + 1 )
-										}}
+										onLoad={ () => {
+											setNumberToRender( index + 1 );
+										} }
 									/>
 									<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
 										{ pattern.title }
@@ -99,6 +99,8 @@ export default function PatternPicker( {
 								</button>
 							);
 						}
+
+						return null;
 					} ) }
 				</div>
 			</div>

@@ -7,9 +7,12 @@ export function PatternPreview( {
 	scale,
 	onLoad = () => {},
 } ) {
-
 	return (
-		<Portal scale={ scale } onLoad={ onLoad } patternData={blockPatternData} >
+		<Portal
+			scale={ scale }
+			onLoad={ onLoad }
+			patternData={ blockPatternData }
+		>
 			<div
 				className="wp-head"
 				dangerouslySetInnerHTML={ {
@@ -34,7 +37,7 @@ export function PatternPreview( {
 	);
 }
 
-function Portal( { onLoad = () => {}, patternData, children, scale = 0.05 } ) {
+function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
 		0
@@ -43,7 +46,7 @@ function Portal( { onLoad = () => {}, patternData, children, scale = 0.05 } ) {
 	const container = iframeRef?.contentWindow?.document?.body;
 
 	const scaleMultiplier = 10 / ( scale * 10 );
-	
+
 	useEffect( () => {
 		// Call the onLoad 1ms after this component is mounted. This helps to space out the rendering of previews if desired.
 		setTimeout( () => {
@@ -72,7 +75,6 @@ function Portal( { onLoad = () => {}, patternData, children, scale = 0.05 } ) {
 					pointerEvents: 'none',
 				} }
 			>
-				
 				<iframe
 					title={ __( 'Pattern Preview', 'fsestudio' ) }
 					ref={ setRef }

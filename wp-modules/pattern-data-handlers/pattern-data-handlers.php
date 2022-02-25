@@ -34,7 +34,6 @@ function get_pattern( $pattern_id ) {
  * @return array
  */
 function get_patterns() {
-
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	/**

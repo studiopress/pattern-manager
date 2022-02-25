@@ -166,7 +166,7 @@ function update_theme( $theme, $patterns ) {
 	$wp_filesystem->mkdir( $new_theme_dir . '/patterns' );
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		$file_to_copy = '';
+		$file_to_copy         = '';
 		$default_pattern_path = $wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php';
 		if ( $wp_filesystem->exists( $default_pattern_path ) ) {
 			$file_to_copy = $default_pattern_path;

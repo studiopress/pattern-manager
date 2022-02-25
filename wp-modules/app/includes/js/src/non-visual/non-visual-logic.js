@@ -196,9 +196,12 @@ export function usePatternData( patternId, patterns ) {
 			)
 				.then( ( response ) => response.json() )
 				.then( ( response ) => {
-					if ( response.error && 'pattern-not-found' === response.error ) {
+					if (
+						response.error &&
+						'pattern-not-found' === response.error
+					) {
 						// Get pattern data
-						setPatternData( patterns.patterns[thisPatternId] );
+						setPatternData( patterns.patterns[ thisPatternId ] );
 					} else {
 						setFetchInProgress( false );
 						setPatternData( response );
@@ -234,10 +237,10 @@ export function usePatternData( patternId, patterns ) {
 
 export function useThemes( { themes, currentThemeJsonFile } ) {
 	const [ theThemes, setTheThemes ] = useState( themes );
-	
+
 	useEffect( () => {
 		currentThemeJsonFile.get();
-	}, [theThemes] );
+	}, [ theThemes ] );
 
 	return {
 		themes: theThemes,
