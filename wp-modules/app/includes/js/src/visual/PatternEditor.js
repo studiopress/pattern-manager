@@ -129,26 +129,32 @@ export function PatternEditorApp( { visible } ) {
 		return '';
 	}
 
+	function renderBrowsePatternsButton() {
+		return (
+			<button
+				type="button"
+				className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+				onClick={ () => {
+					setPatternModalMode( 'choose' );
+					setIsPatternModalOpen( true );
+				} }
+			>
+				<Icon
+					className="text-white fill-current mr-2"
+					icon={ layout }
+					size={ 26 }
+				/>{ ' ' }
+				{ __( 'Browse Patterns', 'fse-studio' ) }
+			</button>
+		);
+	}
+
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
 			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
 				<div className="flex-1 flex">
 					<div className="flex w-full p-3 gap-5">
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								setPatternModalMode( 'choose' );
-								setIsPatternModalOpen( true );
-							} }
-						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={ layout }
-								size={ 26 }
-							/>{ ' ' }
-							{ __( 'Browse Patterns', 'fse-studio' ) }
-						</button>
+						{ renderBrowsePatternsButton() }
 						<button
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -207,23 +213,7 @@ export function PatternEditorApp( { visible } ) {
 									) }
 								</p>
 								<div className="bg-[#F8F8F8] p-20 w-full text-center">
-									<button
-										type="button"
-										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											setIsPatternModalOpen( true );
-										} }
-									>
-										<Icon
-											className="text-white fill-current mr-2"
-											icon={ layout }
-											size={ 26 }
-										/>{ ' ' }
-										{ __(
-											'Browse Patterns',
-											'fse-studio'
-										) }
-									</button>
+									{ renderBrowsePatternsButton() }
 								</div>
 							</div>
 						</div>
