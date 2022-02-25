@@ -66,7 +66,11 @@ export function FseStudioApp() {
 				patterns: usePatterns( fsestudio.patterns ),
 				themes,
 				currentThemeId,
-				currentTheme: useThemeData( currentThemeId.value, themes, currentThemeJsonFile ),
+				currentTheme: useThemeData(
+					currentThemeId.value,
+					themes,
+					currentThemeJsonFile
+				),
 				themeJsonFiles,
 				currentThemeJsonFileId,
 				currentThemeJsonFile,
@@ -85,7 +89,7 @@ function FseStudio() {
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
-	
+
 	const navigation = [
 		{
 			name: 'Theme Manager',
@@ -193,7 +197,9 @@ function FseStudio() {
 													? 'bg-wp-blue text-white hover:text-white'
 													: 'text-white opacity-70 hover:text-white hover:opacity-100',
 												'group flex items-center px-4 py-2 text-sm font-medium rounded-sm w-full',
-												! item.available ? 'opacity-30 hover:opacity-30' : ''
+												! item.available
+													? 'opacity-30 hover:opacity-30'
+													: ''
 											) }
 										>
 											<Icon
@@ -202,14 +208,16 @@ function FseStudio() {
 														? 'text-white'
 														: 'text-white opacity-70 group-hover:opacity-100 group-hover:text-white',
 													'mr-3 flex-shrink-0 h-6 w-6 fill-current',
-													! item.available ? 'opacity-30 hover:opacity-30' : ''
+													! item.available
+														? 'opacity-30 hover:opacity-30'
+														: ''
 												) }
 												icon={ item.icon }
 												size={ 24 }
 											/>
 											{ item.name }
 										</button>
-									)
+									);
 								} ) }
 							</nav>
 						</div>
@@ -365,9 +373,12 @@ function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor( { theme } ) {
-	const { patterns, currentTheme, currentThemeJsonFile, currentView } = useContext(
-		FseStudioContext
-	);
+	const {
+		patterns,
+		currentTheme,
+		currentThemeJsonFile,
+		currentView,
+	} = useContext( FseStudioContext );
 	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
 		'theme_setup'
 	);
@@ -925,12 +936,14 @@ function ThemeDataEditor( { theme } ) {
 									disabled={ ! item.available }
 									className={ classNames(
 										'w-full text-left p-5 font-medium' +
-										( themeEditorCurrentTab === item.slug
-											? ' bg-gray-100'
-											: ' hover:bg-gray-100' ),
-										! item.available ? 'opacity-30 bg-white-100' : ''
-									)
-									}
+											( themeEditorCurrentTab ===
+											item.slug
+												? ' bg-gray-100'
+												: ' hover:bg-gray-100' ),
+										! item.available
+											? 'opacity-30 bg-white-100'
+											: ''
+									) }
 									key={ item.name }
 									onClick={ () => {
 										setThemeEditorCurrentTab( item.slug );
@@ -939,7 +952,7 @@ function ThemeDataEditor( { theme } ) {
 									{ item.name }
 								</button>
 							</li>
-						)
+						);
 					} ) }
 				</ul>
 				{ maybeRenderThemeSetupView() }

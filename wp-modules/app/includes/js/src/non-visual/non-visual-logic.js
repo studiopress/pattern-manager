@@ -92,7 +92,7 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 	const [ themeData, setThemeData ] = useState();
-	const [existsOnDisk, setExistsOnDisk] = useState(false);
+	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 
 	useEffect( () => {
 		setHasSaved( false );
