@@ -170,7 +170,7 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	};
 }
 
-export function usePatternData( patternId, patterns ) {
+export function usePatternData( patternId, patterns, currentThemeJsonFile, currentTheme ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternData, setPatternData ] = useState();
 
@@ -211,6 +211,7 @@ export function usePatternData( patternId, patterns ) {
 					} else {
 						setFetchInProgress( false );
 						setPatternData( response );
+						currentThemeJsonFile.get();
 					}
 					resolve( response );
 				} );
@@ -229,6 +230,8 @@ export function usePatternData( patternId, patterns ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
+					currentTheme.save();
+					currentThemeJsonFile.get();
 					resolve( data );
 				} );
 		} );
