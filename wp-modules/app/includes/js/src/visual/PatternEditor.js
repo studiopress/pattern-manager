@@ -50,9 +50,16 @@ import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 
 export function PatternEditorApp( { visible } ) {
-	const { patterns, currentThemeJsonFile, currentTheme } = useContext( FseStudioContext );
+	const { patterns, currentThemeJsonFile, currentTheme } = useContext(
+		FseStudioContext
+	);
 	const [ currentPatternId, setCurrentPatternId ] = useState();
-	const pattern = usePatternData( currentPatternId, patterns, currentThemeJsonFile, currentTheme );
+	const pattern = usePatternData(
+		currentPatternId,
+		patterns,
+		currentThemeJsonFile,
+		currentTheme
+	);
 	const [ errors, setErrors ] = useState( false );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );

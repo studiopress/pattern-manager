@@ -170,7 +170,12 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	};
 }
 
-export function usePatternData( patternId, patterns, currentThemeJsonFile, currentTheme ) {
+export function usePatternData(
+	patternId,
+	patterns,
+	currentThemeJsonFile,
+	currentTheme
+) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternData, setPatternData ] = useState();
 
