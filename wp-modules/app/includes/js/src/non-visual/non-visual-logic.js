@@ -211,7 +211,7 @@ export function usePatternData(
 						response.error &&
 						'pattern-not-found' === response.error
 					) {
-						// Get pattern data
+						// Get pattern data from the current patterns array, and set it for this pattern.
 						setPatternData( patterns.patterns[ thisPatternId ] );
 					} else {
 						setFetchInProgress( false );
