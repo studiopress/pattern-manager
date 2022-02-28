@@ -257,16 +257,14 @@ export function PatternEditorApp( { visible } ) {
 							themeJsonData={ currentThemeJsonFile.data }
 							onClickPattern={ ( clickedPatternId ) => {
 								const newPatternId = uuidv4();
-								const patternBlockHtml =
-									patterns.patterns[ clickedPatternId ]
-										.content;
+
 								const newPatternData = {
 									type: 'custom',
 									title: 'My New Pattern',
 									name: newPatternId,
 									categories: [],
 									viewportWidth: '',
-									content: patternBlockHtml,
+									content: patterns.patterns[ clickedPatternId ].content,
 								};
 
 								patterns.setPatterns( {
