@@ -96,3 +96,9 @@ html body.toplevel_page_fse-studio {
 .sidebar-closed .sticky {
 	margin-left: 60px;
 }
+
+/* Modal Width */
+.components-modal__content {
+	min-width: 90vw;
+	min-height: 300px;
+}
