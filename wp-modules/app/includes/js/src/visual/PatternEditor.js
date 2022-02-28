@@ -264,7 +264,9 @@ export function PatternEditorApp( { visible } ) {
 									name: newPatternId,
 									categories: [],
 									viewportWidth: '',
-									content: patterns.patterns[ clickedPatternId ].content,
+									content:
+										patterns.patterns[ clickedPatternId ]
+											.content,
 								};
 
 								patterns.setPatterns( {
