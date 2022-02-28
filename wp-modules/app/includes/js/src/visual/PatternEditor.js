@@ -327,7 +327,7 @@ export function PatternEditor( props ) {
 
 		pattern.set( {
 			...pattern.data,
-			content: blocks.length > 0 ? serialize( blocks[ 0 ] ) : '',
+			content: blocks.length ? serialize( blocks[ 0 ] ) : '',
 		} );
 	}, [ blocks ] );
 
