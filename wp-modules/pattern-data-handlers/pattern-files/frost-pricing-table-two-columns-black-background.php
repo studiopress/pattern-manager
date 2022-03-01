@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Pricing table with list, buttons.', 'fse-studio' ),
 	'name'          => 'frost-pricing-table-two-columns-black-background',
 	'categories'    => array( 'frost-pricing-table' ),
@@ -35,7 +36,7 @@ return array(
 <ul class="pricing-table has-small-font-size"><li>Feature Item</li><li>Feature Item</li><li>Feature Item</li><li>Feature Item</li><li>Feature Item</li></ul>
 <!-- /wp:list -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -59,7 +60,7 @@ return array(
 <ul class="pricing-table has-small-font-size"><li>Feature Item</li><li>Feature Item</li><li>Feature Item</li><li>Feature Item</li><li>Feature Item</li></ul>
 <!-- /wp:list -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -71,13 +72,13 @@ return array(
 <!-- /wp:group --></div>
 <!-- /wp:group -->
 
-<!-- wp:spacer {"height":10} -->
+<!-- wp:spacer {"height":"10px"} -->
 <div style="height:10px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":70} -->
+<!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

@@ -96,3 +96,11 @@ html body.toplevel_page_fse-studio {
 .sidebar-closed .sticky {
 	margin-left: 60px;
 }
+
+/* stylelint-disable */
+/* Modal Width */
+.components-modal__content {
+	min-width: 90vw;
+	min-height: 300px;
+}
+/* stylelint-enable */

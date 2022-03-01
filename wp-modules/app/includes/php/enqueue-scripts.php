@@ -40,12 +40,22 @@ function fse_studio_app() {
 	$css_ver = filemtime( $module_dir_path . 'includes/js/build/index.css' );
 	wp_enqueue_style( 'fsethememanger_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 
+	$current_theme_dir = get_template();
+
+	// Spin up the filesystem api.
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+
+	// Make sure the theme WP thinks is active actually exists.
+	if ( ! $wp_filesystem->exists( $wp_filesystem->wp_themes_dir() . $current_theme_dir . '/fsestudio-data.json' ) ) {
+		$current_theme_dir = false;
+	}
+
 	wp_localize_script(
 		'fsestudio',
 		'fsestudio',
 		array(
 			'patterns'            => \FseStudio\PatternDataHandlers\get_patterns(),
-			'initialTheme'        => get_template(),
+			'initialTheme'        => $current_theme_dir,
 			'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
 			'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
 			'frontendPreviewUrl'  => null,
@@ -156,12 +166,7 @@ function fse_studio_block_editor_init() {
 	wp_enqueue_style( 'wp-format-library' );
 	wp_enqueue_media();
 
-	if (
-		current_theme_supports( 'wp-block-styles' ) ||
-		( ! is_array( $editor_styles ) || count( $editor_styles ) === 0 )
-	) {
-		wp_enqueue_style( 'wp-block-library-theme' );
-	}
+	wp_enqueue_style( 'wp-block-library-theme' );
 
 	/** This action is documented in wp-admin/edit-form-blocks.php */
 	do_action( 'enqueue_block_editor_assets' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound

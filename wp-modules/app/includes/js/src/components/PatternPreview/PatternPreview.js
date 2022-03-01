@@ -7,30 +7,16 @@ export function PatternPreview( {
 	scale,
 	onLoad = () => {},
 } ) {
-	const [ initialLoaded, setInitialLoaded ] = useState( false );
-
-	useState( () => {
-		setTimeout( () => {
-			setInitialLoaded( true );
-		}, 100 );
-	}, [] );
-
-	if ( ! initialLoaded ) {
-		return <div>loading...</div>;
-	}
-
 	return (
-		<Portal scale={ scale } onLoad={ onLoad }>
+		<Portal
+			scale={ scale }
+			onLoad={ onLoad }
+			patternData={ blockPatternData }
+		>
 			<div
 				className="wp-head"
 				dangerouslySetInnerHTML={ {
 					__html: themeJsonData?.patternPreviewParts?.wp_head,
-				} }
-			/>
-			<div
-				className="wp-footer"
-				dangerouslySetInnerHTML={ {
-					__html: themeJsonData?.patternPreviewParts?.wp_footer,
 				} }
 			/>
 			<div
@@ -41,13 +27,18 @@ export function PatternPreview( {
 						],
 				} }
 			/>
+			<div
+				className="wp-footer"
+				dangerouslySetInnerHTML={ {
+					__html: themeJsonData?.patternPreviewParts?.wp_footer,
+				} }
+			/>
 		</Portal>
 	);
 }
 
 function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	const [ iframeRef, setRef ] = useState();
-	const [ iframeheightSet, setIframeheightSet ] = useState( false );
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
 		0
 	);
@@ -57,37 +48,20 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	useEffect( () => {
-		if ( iframeRef ) {
-			if ( ! iframeheightSet ) {
-				setIframeInnerContentHeight( container.scrollHeight );
-			}
+		// Call the onLoad 1ms after this component is mounted. This helps to space out the rendering of previews if desired.
+		setTimeout( () => {
+			onLoad();
+		}, 1 );
+	}, [] );
 
-			// Putting this into a timeout causes all iframes to get properly set heights.
+	useEffect( () => {
+		if ( iframeRef ) {
+			// 100ms after any change, check the height of the iframe and make its container match its height.
 			setTimeout( () => {
 				setIframeInnerContentHeight( container.scrollHeight );
-				setTimeout( () => {
-					setIframeheightSet( true );
-					onLoad();
-				}, 100 );
-			}, 1 );
+			}, 500 );
 		}
 	} );
-
-	function maybeRenderSpinner() {
-		if ( ! iframeheightSet ) {
-			return (
-				<div
-					style={ {
-						padding: '10px',
-						position: 'absolute',
-						zIndex: '10',
-					} }
-				>
-					loading...
-				</div>
-			);
-		}
-	}
 
 	return (
 		<>
@@ -101,7 +75,6 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 					pointerEvents: 'none',
 				} }
 			>
-				{ maybeRenderSpinner() }
 				<iframe
 					title={ __( 'Pattern Preview', 'fsestudio' ) }
 					ref={ setRef }
@@ -116,7 +89,6 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 						transformOrigin: 'top left',
 						overflow: 'hidden',
 						pointerEvents: 'none',
-						visibility: iframeheightSet ? 'visible' : 'hidden',
 					} }
 				>
 					{ container && createPortal( children, container ) }

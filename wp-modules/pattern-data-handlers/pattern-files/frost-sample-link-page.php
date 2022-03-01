@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Sample link page.', 'fse-studio' ),
 	'name'          => 'frost-sample-link-page',
 	'categories'    => array( 'frost-call-to-action' ),

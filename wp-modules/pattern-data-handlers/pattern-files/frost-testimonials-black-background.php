@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Testimonials with text.', 'fse-studio' ),
 	'name'          => 'frost-testimonials-black-background',
 	'categories'    => array( 'frost-testimonials' ),
@@ -59,7 +60,7 @@ return array(
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":40} -->
+<!-- wp:spacer {"height":"40px"} -->
 <div style="height:40px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

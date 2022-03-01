@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Footer with heading, text, button.', 'fse-studio' ),
 	'name'          => 'frost-footer-stacked',
 	'categories'    => array( 'frost-footer' ),
@@ -25,7 +26,7 @@ return array(
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 
-<!-- wp:spacer {"height":70} -->
+<!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 

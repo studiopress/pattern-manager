@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Portfolio with images, text.', 'fse-studio' ),
 	'name'          => 'frost-portfolio-black-background',
 	'categories'    => array( 'frost-portfolio' ),
@@ -51,7 +52,7 @@ return array(
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

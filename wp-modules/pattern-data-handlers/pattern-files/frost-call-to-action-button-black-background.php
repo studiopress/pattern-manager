@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Call-to-action with text, button.', 'fse-studio' ),
 	'name'          => 'frost-call-to-action-button-black-background',
 	'categories'    => array( 'frost-call-to-action' ),
@@ -18,7 +19,7 @@ return array(
 <!-- wp:columns {"verticalAlignment":"center","align":"wide"} -->
 <div class="wp-block-columns alignwide are-vertically-aligned-center"><!-- wp:column {"verticalAlignment":"center","width":"60%"} -->
 <div class="wp-block-column is-vertically-aligned-center" style="flex-basis:60%"><!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.5"}},"className":"is-style-no-margin","fontSize":"large"} -->
-<p class="is-style-no-margin has-large-font-size" style="line-height:1.5">Philip Johnston</p>
+<p class="is-style-no-margin has-large-font-size" style="line-height:1.5">Lorem ipsum dolor sit amet, consectetur adipiscing lectus. Vestibulum mi justo, luctus eu pellentesque vitae gravida non.</p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:column -->
 
@@ -31,7 +32,7 @@ return array(
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":70} -->
+<!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

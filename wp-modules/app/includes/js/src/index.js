@@ -48,10 +48,17 @@ function classNames( ...classes ) {
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 export function FseStudioApp() {
-	const themes = useThemes( { themes: fsestudio.themes } );
+	const currentThemeJsonFileId = useCurrentId();
+	const currentThemeJsonFile = useThemeJsonFile(
+		currentThemeJsonFileId.value
+	);
+	const themes = useThemes( {
+		themes: fsestudio.themes,
+		currentThemeJsonFile,
+	} );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
-	const currentThemeJsonFileId = useCurrentId();
+
 	return (
 		<FseStudioContext.Provider
 			value={ {
@@ -59,12 +66,14 @@ export function FseStudioApp() {
 				patterns: usePatterns( fsestudio.patterns ),
 				themes,
 				currentThemeId,
-				currentTheme: useThemeData( currentThemeId.value, themes ),
+				currentTheme: useThemeData(
+					currentThemeId.value,
+					themes,
+					currentThemeJsonFile
+				),
 				themeJsonFiles,
 				currentThemeJsonFileId,
-				currentThemeJsonFile: useThemeJsonFile(
-					currentThemeJsonFileId.value
-				),
+				currentThemeJsonFile,
 				siteUrl: fsestudio.siteUrl,
 				apiEndpoints: fsestudio.api_endpoints,
 				blockEditorSettings: fsestudio.blockEditorSettings,
@@ -76,7 +85,7 @@ export function FseStudioApp() {
 }
 
 function FseStudio() {
-	const { currentView } = useContext( FseStudioContext );
+	const { currentView, currentTheme } = useContext( FseStudioContext );
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
@@ -86,19 +95,19 @@ function FseStudio() {
 			name: 'Theme Manager',
 			slug: 'theme_manager',
 			icon: file,
-			current: true,
+			available: true,
 		},
 		{
 			name: 'Pattern Manager',
 			slug: 'pattern_manager',
 			icon: layout,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 		{
 			name: 'Theme.json Manager',
 			slug: 'themejson_manager',
 			icon: globe,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 	];
 
@@ -174,33 +183,42 @@ function FseStudio() {
 								{ __( 'FSE Studio', 'fse-studio' ) }
 							</h3>
 							<nav className="flex-1 px-4 py-4 space-y-1">
-								{ navigation.map( ( item ) => (
-									<button
-										key={ item.name }
-										onClick={ () => {
-											currentView.set( item.slug );
-										} }
-										className={ classNames(
-											item.slug ===
-												currentView.currentView
-												? 'bg-wp-blue text-white hover:text-white'
-												: 'text-white opacity-70 hover:text-white hover:opacity-100',
-											'group flex items-center px-4 py-2 text-sm font-medium rounded-sm w-full'
-										) }
-									>
-										<Icon
+								{ navigation.map( ( item ) => {
+									return (
+										<button
+											disabled={ ! item.available }
+											key={ item.name }
+											onClick={ () => {
+												currentView.set( item.slug );
+											} }
 											className={ classNames(
-												item.current
-													? 'text-white'
-													: 'text-white opacity-70 group-hover:opacity-100 group-hover:text-white',
-												'mr-3 flex-shrink-0 h-6 w-6 fill-current'
+												item.slug ===
+													currentView.currentView
+													? 'bg-wp-blue text-white hover:text-white'
+													: 'text-white opacity-70 hover:text-white hover:opacity-100',
+												'group flex items-center px-4 py-2 text-sm font-medium rounded-sm w-full',
+												! item.available
+													? 'opacity-30 hover:opacity-30'
+													: ''
 											) }
-											icon={ item.icon }
-											size={ 24 }
-										/>
-										{ item.name }
-									</button>
-								) ) }
+										>
+											<Icon
+												className={ classNames(
+													item.current
+														? 'text-white'
+														: 'text-white opacity-70 group-hover:opacity-100 group-hover:text-white',
+													'mr-3 flex-shrink-0 h-6 w-6 fill-current',
+													! item.available
+														? 'opacity-30 hover:opacity-30'
+														: ''
+												) }
+												icon={ item.icon }
+												size={ 24 }
+											/>
+											{ item.name }
+										</button>
+									);
+								} ) }
 							</nav>
 						</div>
 					</div>
@@ -297,18 +315,22 @@ function ThemeManager( { visible } ) {
 						{ __( 'Theme Manager', 'fse-studio' ) }
 					</h1>
 					<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
-						<div>
-							<label
-								htmlFor="location"
-								className="block text-sm font-medium text-gray-700"
-							>
-								{ __( 'Choose a theme', 'fse-studio' ) }
-							</label>
-							{ renderThemeSelector() }
-						</div>
-						<div className="flex flex-col mx-6 my-2.5">
-							{ __( 'or', 'fse-studio' ) }
-						</div>
+						{ Object.keys( themes.themes ).length > 0 ? (
+							<>
+								<div>
+									<label
+										htmlFor="location"
+										className="block text-sm font-medium text-gray-700"
+									>
+										{ __( 'Choose a theme', 'fse-studio' ) }
+									</label>
+									{ renderThemeSelector() }
+								</div>
+								<div className="flex flex-col mx-6 my-2.5">
+									{ __( 'or', 'fse-studio' ) }
+								</div>
+							</>
+						) : null }
 						<div className="flex flex-col">
 							<button
 								type="button"
@@ -322,7 +344,7 @@ function ThemeManager( { visible } ) {
 										author: 'Me',
 										author_uri: 'mysite.com',
 										description: 'My new FSE Theme',
-										tags: [],
+										tags: '',
 										tested_up_to: '5.9',
 										requires_wp: '5.9',
 										requires_php: '7.4',
@@ -355,9 +377,12 @@ function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor( { theme } ) {
-	const { patterns, currentThemeJsonFile, currentView } = useContext(
-		FseStudioContext
-	);
+	const {
+		patterns,
+		currentTheme,
+		currentThemeJsonFile,
+		currentView,
+	} = useContext( FseStudioContext );
 	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
 		'theme_setup'
 	);
@@ -368,19 +393,19 @@ function ThemeDataEditor( { theme } ) {
 			name: __( 'Theme Setup', 'fse-studio' ),
 			slug: 'theme_setup',
 			icon: file,
-			current: true,
+			available: true,
 		},
 		{
 			name: __( 'Add Patterns', 'fse-studio' ),
 			slug: 'add_patterns',
 			icon: layout,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 		{
 			name: __( 'Customize Styles', 'fse-studio' ),
 			slug: 'customize_styles',
 			icon: globe,
-			current: false,
+			available: currentTheme.existsOnDisk,
 		},
 	];
 
@@ -440,7 +465,7 @@ function ThemeDataEditor( { theme } ) {
 
 		return (
 			<>
-				<div className="flex flex-col">
+				<div className="w-full flex flex-col">
 					<div className="w-full text-center bg-gray-100 p-5 self-start">
 						<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 							{ __( 'Add patterns to your theme', 'fse-studio' ) }
@@ -908,24 +933,31 @@ function ThemeDataEditor( { theme } ) {
 		<>
 			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
 				<ul className="w-72">
-					{ views.map( ( item ) => (
-						<li key={ item.name }>
-							<button
-								className={
-									'w-full text-left p-5 font-medium' +
-									( themeEditorCurrentTab === item.slug
-										? ' bg-gray-100'
-										: ' hover:bg-gray-100' )
-								}
-								key={ item.name }
-								onClick={ () => {
-									setThemeEditorCurrentTab( item.slug );
-								} }
-							>
-								{ item.name }
-							</button>
-						</li>
-					) ) }
+					{ views.map( ( item ) => {
+						return (
+							<li key={ item.name }>
+								<button
+									disabled={ ! item.available }
+									className={ classNames(
+										'w-full text-left p-5 font-medium' +
+											( themeEditorCurrentTab ===
+											item.slug
+												? ' bg-gray-100'
+												: ' hover:bg-gray-100' ),
+										! item.available
+											? 'opacity-30 bg-white-100'
+											: ''
+									) }
+									key={ item.name }
+									onClick={ () => {
+										setThemeEditorCurrentTab( item.slug );
+									} }
+								>
+									{ item.name }
+								</button>
+							</li>
+						);
+					} ) }
 				</ul>
 				{ maybeRenderThemeSetupView() }
 				{ maybeAddPatternsView() }

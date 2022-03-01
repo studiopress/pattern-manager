@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Footer with text, links, buttons.', 'fse-studio' ),
 	'name'          => 'frost-footer-three-columns',
 	'categories'    => array( 'frost-footer' ),

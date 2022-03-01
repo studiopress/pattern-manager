@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Sample link page.', 'fse-studio' ),
 	'name'          => 'frost-page-link-black-background',
 	'categories'    => array( 'frost-page' ),
@@ -40,7 +41,7 @@ return array(
 <!-- wp:social-link {"url":"#","service":"linkedin"} /--></ul>
 <!-- /wp:social-links -->
 
-<!-- wp:spacer {"height":60} -->
+<!-- wp:spacer {"height":"60px"} -->
 <div style="height:60px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -66,7 +67,7 @@ return array(
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 
-<!-- wp:spacer {"height":40} -->
+<!-- wp:spacer {"height":"40px"} -->
 <div style="height:40px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -74,7 +75,7 @@ return array(
 <p class="has-text-align-center"><a href="https://frostwp.com/">Made with Frost</a></p>
 <!-- /wp:paragraph -->
 
-<!-- wp:spacer {"height":70} -->
+<!-- wp:spacer {"height":"70px"} -->
 <div style="height:70px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group --></div>

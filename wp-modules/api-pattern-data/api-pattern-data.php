@@ -64,7 +64,12 @@ function get_pattern( $request ) {
 	$pattern_data = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
 
 	if ( ! $pattern_data ) {
-		return new \WP_REST_Response( $pattern_data, 400 );
+		return new \WP_REST_Response(
+			array(
+				'error' => 'pattern-not-found',
+			),
+			200
+		);
 	} else {
 		return new \WP_REST_Response( $pattern_data, 200 );
 	}
@@ -134,6 +139,13 @@ function get_request_args() {
  */
 function save_request_args() {
 	$return_args = array(
+		'type'       => array(
+			'required'          => true,
+			'type'              => 'string',
+			'description'       => __( 'The type of pattern this is; default, or custom', 'fse-studio' ),
+			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
+			'sanitize_callback' => 'sanitize_text_field',
+		),
 		'name'       => array(
 			'required'          => true,
 			'type'              => 'string',

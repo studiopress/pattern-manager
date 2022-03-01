@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Header with site title, navigation.', 'fse-studio' ),
 	'name'          => 'frost-header-default-black-background',
 	'categories'    => array( 'frost-header' ),

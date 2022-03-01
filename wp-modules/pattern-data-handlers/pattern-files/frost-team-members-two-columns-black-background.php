@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Team with image, text, link.', 'fse-studio' ),
 	'name'          => 'frost-team-members-two-columns-black-background',
 	'categories'    => array( 'frost-team-members' ),
@@ -25,7 +26,7 @@ return array(
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
 
-<!-- wp:spacer {"height":30} -->
+<!-- wp:spacer {"height":"30px"} -->
 <div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
@@ -143,7 +144,7 @@ return array(
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":10} -->
+<!-- wp:spacer {"height":"10px"} -->
 <div style="height:10px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
 <!-- /wp:group -->',

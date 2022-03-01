@@ -33,6 +33,7 @@ export default function PatternPicker( {
 	selectedPatterns = [],
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
+	const [ numberToRender, setNumberToRender ] = useState( 0 );
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
@@ -62,37 +63,44 @@ export default function PatternPicker( {
 							pattern.name
 						);
 
-						return (
-							<button
-								key={ index }
-								tabIndex={ 0 }
-								role="checkbox"
-								aria-checked={ isChecked }
-								className={
-									isChecked
-										? 'min-h-[300px] border-2 border-solid border-sky-500 bg-white'
-										: 'min-h-[300px] bg-white border border-[#F0F0F0]'
-								}
-								onClick={ () => {
-									onClickPattern( pattern.name );
-								} }
-								onKeyDown={ ( event ) => {
-									if ( 'Enter' === event.code ) {
-										onClickPattern( pattern.name );
+						if ( index <= numberToRender ) {
+							return (
+								<button
+									key={ index }
+									tabIndex={ 0 }
+									role="checkbox"
+									aria-checked={ isChecked }
+									className={
+										isChecked
+											? 'min-h-[300px] border-2 border-solid border-sky-500 bg-white'
+											: 'min-h-[300px] bg-white border border-[#F0F0F0]'
 									}
-								} }
-							>
-								<PatternPreview
-									key={ pattern.name }
-									blockPatternData={ pattern }
-									themeJsonData={ themeJsonData }
-									scale={ 0.3 }
-								/>
-								<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
-									{ pattern.title }
-								</h3>
-							</button>
-						);
+									onClick={ () => {
+										onClickPattern( pattern.name );
+									} }
+									onKeyDown={ ( event ) => {
+										if ( 'Enter' === event.code ) {
+											onClickPattern( pattern.name );
+										}
+									} }
+								>
+									<PatternPreview
+										key={ pattern.name }
+										blockPatternData={ pattern }
+										themeJsonData={ themeJsonData }
+										scale={ 0.3 }
+										onLoad={ () => {
+											setNumberToRender( index + 1 );
+										} }
+									/>
+									<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
+										{ pattern.title }
+									</h3>
+								</button>
+							);
+						}
+
+						return null;
 					} ) }
 				</div>
 			</div>

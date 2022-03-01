@@ -6,6 +6,7 @@
  */
 
 return array(
+	'type'          => 'default',
 	'title'         => __( 'Featured boxes with text, button.', 'fse-studio' ),
 	'name'          => 'frost-featured-boxes-with-text-button',
 	'categories'    => array( 'frost-call-to-action' ),
