@@ -307,6 +307,15 @@ function ThemeManager( { visible } ) {
 		return <ThemeDataEditor theme={ currentTheme } />;
 	}
 
+  const { useSelect } = wp.data
+  const site = useSelect(select => {
+    return select('core').getSite()
+  }, [])
+
+  if (!site) {
+    return null
+  }
+
 	return (
 		<>
 			<div hidden={ ! visible } className="fsestudio-theme-manager p-12">
@@ -340,7 +349,7 @@ function ThemeManager( { visible } ) {
 										name: 'My New Theme',
 										dirname: 'my-new-theme',
 										namespace: 'MyNewTheme',
-										uri: 'mysite.com',
+										uri: site.url.replace(/https?:\/\//g, ''),
 										author: 'Me',
 										author_uri: 'mysite.com',
 										description: 'My new FSE Theme',
