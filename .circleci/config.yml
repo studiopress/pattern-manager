@@ -3,42 +3,45 @@ version: 2.1
 orbs:
   php: circleci/php@1.1.0
 
+references:
+  PLUGIN_PATH: &PLUGIN_PATH
+    plugins/fse-studio
+
 jobs:
   lint:
     docker:
       - image: cimg/php:7.3-node
     steps:
       - checkout:
-          path: plugins/fse-studio
+          path: *PLUGIN_PATH
       - run:
           name: Linting PHP
-          working_directory: plugins/fse-studio
+          working_directory: *PLUGIN_PATH
           command: |
             npm run installation
             npm run lint:php
       - run:
           name: Linting JS and CSS
-          working_directory: plugins/fse-studio
+          working_directory: *PLUGIN_PATH
           command: |
             npm run lint:js
             npm run lint:css
   phpunit:
     machine:
       image: ubuntu-2004:202111-02
-
     steps:
       - checkout:
-          path: plugins/fse-studio
-      - php/install-php
+          path: *PLUGIN_PATH
+      - run: sudo apt-get update && sudo apt-get install php php-xml
       - php/install-composer
       - run:
           name: PHPUnit Integration Tests
-          working_directory: plugins/fse-studio
+          working_directory: *PLUGIN_PATH
           command: |
-            npm run installation
-            npm run test:phpunit || true
+            npm run test:phpunit
 
 workflows:
   build:
     jobs:
       - lint
+      - phpunit

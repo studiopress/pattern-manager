@@ -7,14 +7,15 @@
 		"url": "https://github.com/studiopress/fse-studio"
 	},
 	"scripts": {
-		"installation": "sh ./.scripts/install.sh",
-		"dev": "sh ./.scripts/dev.sh",
-		"test:phpunit": "cd ../wp-plugin-sidekick/wp-modules/linter; sh phpunit.sh -p fse-studio;",
-		"lint:php": "cd ../wp-plugin-sidekick/wp-modules/linter; sh phpcs.sh -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:php:fix": "cd ../wp-plugin-sidekick/wp-modules/linter; sh phpcs.sh -f 1 -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:js": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-js.sh -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:js:fix": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-js.sh -f 1 -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:css": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-css.sh -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:css:fix": "cd ../wp-plugin-sidekick/wp-modules/linter; sh lint-css.sh -f 1 -p fse-studio -n FseStudio -t fse-studio;"
+		"clone-wpps": "git clone https://github.com/wp-plugin-sidekick/wpps-scripts; cd ../; git clone https://github.com/wp-plugin-sidekick/wp-plugin-sidekick;",
+		"installation": "npm run clone-wpps; sh wpps-scripts/install-module-dependencies.sh;",
+		"dev": "sh wpps-scripts/dev.sh",
+		"test:phpunit": "npm run clone-wpps; sh wpps-scripts/phpunit.sh -p fse-studio;",
+		"lint:php": "sh wpps-scripts/phpcs.sh -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:php:fix": "sh wpps-scripts/phpcs.sh -p fse-studio -n FseStudio -t fse-studio -f 1;",
+		"lint:js": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio",
+		"lint:js:fix": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio -f 1;",
+		"lint:css": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio;",
+		"lint:css:fix": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio -f 1;"
 	}
 }
