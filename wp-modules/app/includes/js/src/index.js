@@ -312,8 +312,12 @@ function ThemeManager( { visible } ) {
     return select('core').getSite()
   }, [])
 
-  if (!site) {
-    return null
+  if ( ! site ) {
+    return (
+      <>
+        <p>Loading...</p>
+      </>
+    )
   }
 
 	return (
