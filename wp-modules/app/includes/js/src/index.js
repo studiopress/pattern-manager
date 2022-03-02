@@ -5,6 +5,7 @@
 /* global fsestudio, localStorage */
 
 const { __ } = wp.i18n;
+const { useSelect } = wp.data
 
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
@@ -307,7 +308,6 @@ function ThemeManager( { visible } ) {
 		return <ThemeDataEditor theme={ currentTheme } />;
 	}
 
-  const { useSelect } = wp.data
   const site = useSelect(select => {
     return select('core').getSite()
   }, [])
