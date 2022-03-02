@@ -5,7 +5,7 @@
 /* global fsestudio, localStorage */
 
 const { __ } = wp.i18n;
-const { useSelect } = wp.data
+const { useSelect } = wp.data;
 
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
@@ -309,7 +309,7 @@ function ThemeManager( { visible } ) {
 	}
 
   const site = useSelect( select => {
-    return select('core').getSite()
+    return select( 'core' ).getSite()
   }, [] )
 
   if ( ! site ) {
@@ -353,7 +353,7 @@ function ThemeManager( { visible } ) {
 										name: 'My New Theme',
 										dirname: 'my-new-theme',
 										namespace: 'MyNewTheme',
-										uri: site.url.replace(/https?:\/\//g, ''),
+										uri: site.url.replace (/https?:\/\//g, '' ),
 										author: 'Me',
 										author_uri: 'mysite.com',
 										description: 'My new FSE Theme',
