@@ -6,6 +6,7 @@
 
 const { __ } = wp.i18n;
 const { useSelect } = wp.data;
+import { Spinner } from '@wordpress/components';
 
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
@@ -313,11 +314,7 @@ function ThemeManager( { visible } ) {
   }, [] )
 
   if ( ! site ) {
-    return (
-      <>
-        <p>Loading...</p>
-      </>
-    )
+    return <Spinner />;
   }
 
 	return (
