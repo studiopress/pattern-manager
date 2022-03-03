@@ -6,13 +6,12 @@
 
 const { __ } = wp.i18n;
 import { useSelect } from '@wordpress/data';
-import { Spinner } from '@wordpress/components';
+import { Modal, Spinner } from '@wordpress/components';
 
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useContext, useEffect, useState } from '@wordpress/element';
-import { Modal } from '@wordpress/components';
 import ReactDOM from 'react-dom';
 import {
 	Icon,
@@ -309,13 +308,13 @@ function ThemeManager( { visible } ) {
 		return <ThemeDataEditor theme={ currentTheme } />;
 	}
 
-  const site = useSelect( ( select ) => {
-    return select( 'core' ).getSite()
-  }, [] )
+	const site = useSelect( ( select ) => {
+		return select( 'core' ).getSite();
+	}, [] );
 
-  if ( ! site ) {
-    return <Spinner />;
-  }
+	if ( ! site ) {
+		return <Spinner />;
+	}
 
 	return (
 		<>
@@ -350,7 +349,10 @@ function ThemeManager( { visible } ) {
 										name: 'My New Theme',
 										dirname: 'my-new-theme',
 										namespace: 'MyNewTheme',
-										uri: site.url.replace (/https?:\/\//g, '' ),
+										uri: site.url.replace(
+											/https?:\/\//g,
+											''
+										),
 										author: 'Me',
 										author_uri: 'mysite.com',
 										description: 'My new FSE Theme',
