@@ -5,7 +5,7 @@
 /* global fsestudio, localStorage */
 
 const { __ } = wp.i18n;
-const { useSelect } = wp.data;
+import { useSelect } from '@wordpress/data';
 import { Spinner } from '@wordpress/components';
 
 import './../../css/src/index.scss';
