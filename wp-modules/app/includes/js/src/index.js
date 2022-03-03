@@ -309,7 +309,7 @@ function ThemeManager( { visible } ) {
 		return <ThemeDataEditor theme={ currentTheme } />;
 	}
 
-  const site = useSelect( select => {
+  const site = useSelect( ( select ) => {
     return select( 'core' ).getSite()
   }, [] )
 
