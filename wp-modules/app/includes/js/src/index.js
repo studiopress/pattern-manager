@@ -176,7 +176,9 @@ function FseStudio() {
 								icon={ chevronLeft }
 								size={ 24 }
 							/>
-							<span>{ __( 'Dashboard', 'fse-studio' ) }</span>
+							<a href="index.php">
+								{ __( 'Dashboard', 'fse-studio' ) }
+							</a>
 						</div>
 						<div className="flex-1 flex flex-col overflow-y-auto">
 							<h3 className="text-white font-semibold text-xl px-8">
