@@ -76,7 +76,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 				} }
 			>
 				<iframe
-					title={ __( 'Pattern Preview', 'fsestudio' ) }
+					title={ __( 'Pattern Preview', 'fse-studio' ) }
 					ref={ setRef }
 					style={ {
 						position: 'absolute',

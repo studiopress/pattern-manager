@@ -185,7 +185,7 @@ export function PatternEditorApp( { visible } ) {
 								type="text"
 								placeholder={ __(
 									'Name of Pattern',
-									'fsestudio'
+									'fse-studio'
 								) }
 							/>
 						) : null }
