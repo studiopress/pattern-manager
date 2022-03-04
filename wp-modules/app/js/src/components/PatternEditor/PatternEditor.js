@@ -2,7 +2,7 @@ const { __ } = wp.i18n;
 
 import { v4 as uuidv4 } from 'uuid';
 
-/* eslint-disable */
+// WP Dependencies
 import {
 	BlockEditorProvider,
 	BlockList,
@@ -19,37 +19,32 @@ import {
 	__unstableUseTypingObserver as useTypingObserver,
 } from '@wordpress/block-editor';
 import ResizableEditor from './ResizableEditor';
-import { useMergeRefs, useViewportMatch } from '@wordpress/compose';
+import { useMergeRefs } from '@wordpress/compose';
 import { 
 	Icon,
 	layout,
 } from '@wordpress/icons';
-
 import { serialize, parse } from '@wordpress/blocks';
-
 import {
 	SlotFillProvider,
 	Popover,
 	Modal,
-	FormTokenField,
-	Snackbar,
 } from '@wordpress/components';
-
-import PatternPicker from './../components/PatternPicker/PatternPicker.js';
-
-/* eslint-enable */
-import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
-import {
-	FseStudioContext,
-	usePatternData,
-} from './../non-visual/non-visual-logic.js';
-//import { testPatternForErrors } from './../non-visual/error-tests/error-tests.js';
-
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
+import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
+import { useContext, useState, useEffect, useRef } from '@wordpress/element';
 
-export function PatternEditorApp( { visible } ) {
+// Context
+import { FseStudioContext } from './../../contexts/FseStudioContext';
+
+// Hooks
+import { usePatternData } from './../../hooks/usePatternData';
+
+// Components
+import PatternPicker from './../PatternPicker/PatternPicker.js';
+
+export function PatternEditor( { visible } ) {
 	const { patterns, currentThemeJsonFile, currentTheme } = useContext(
 		FseStudioContext
 	);
@@ -68,7 +63,7 @@ export function PatternEditorApp( { visible } ) {
 	function renderPatternEditorWhenReady() {
 		if ( pattern.data ) {
 			return (
-				<PatternEditor pattern={ pattern } setErrors={ setErrors } />
+				<BlockEditor pattern={ pattern } setErrors={ setErrors } />
 			);
 		}
 		return '';
@@ -288,7 +283,7 @@ export function PatternEditorApp( { visible } ) {
 	);
 }
 
-export function PatternEditor( props ) {
+export function BlockEditor( props ) {
 	const contentRef = useRef();
 	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
 
