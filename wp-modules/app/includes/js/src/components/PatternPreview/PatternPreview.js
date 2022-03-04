@@ -23,7 +23,7 @@ export function PatternPreview( {
 				dangerouslySetInnerHTML={ {
 					__html:
 						themeJsonData?.patternPreviewParts?.renderedPatterns[
-							blockPatternData.name
+							blockPatternData?.name
 						],
 				} }
 			/>
@@ -70,8 +70,6 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 					position: 'relative',
 					width: '100%',
 					height: iframeInnerContentHeight / scaleMultiplier,
-					marginTop: '10px',
-					marginBottom: '10px',
 					pointerEvents: 'none',
 				} }
 			>

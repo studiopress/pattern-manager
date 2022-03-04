@@ -24,6 +24,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function get_pattern( $pattern_id ) {
 	$patterns_data = get_patterns();
+	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
+		return false;
+	}
 
 	return $patterns_data[ $pattern_id ];
 }

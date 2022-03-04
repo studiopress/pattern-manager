@@ -56,8 +56,7 @@ function get_the_themes() {
 		'version'           => '1.0.0',
 		'text_domain'       => '',
 		'included_patterns' => [],
-		'index.html'        => [],
-		'404.html'          => [],
+		'template_files'    => [],
 	];
 
 	foreach ( $wpthemes as $theme_slug => $theme ) {
@@ -78,10 +77,9 @@ function get_the_themes() {
  * Update a single theme.
  *
  * @param array $theme Data about the theme.
- * @param array $patterns Collections to include in the theme.
  * @return bool
  */
-function update_theme( $theme, $patterns ) {
+function update_theme( $theme ) {
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
@@ -122,22 +120,20 @@ function update_theme( $theme, $patterns ) {
 		FS_CHMOD_FILE
 	);
 
-	// Create the index.html block template file.
-	if ( $theme['index.html'] ) {
-		$success = $wp_filesystem->put_contents(
-			$new_theme_dir . '/templates/index.html',
-			$patterns[ $theme['index.html'] ],
-			FS_CHMOD_FILE
-		);
-	}
+	// Delete the current templates directory if it exists.
+	$wp_filesystem->delete( $new_theme_dir . '/templates', true );
+	$wp_filesystem->mkdir( $new_theme_dir . '/templates' );
 
-	// Create the 404.html block template file.
-	if ( $theme['404.html'] ) {
-		$success = $wp_filesystem->put_contents(
-			$new_theme_dir . '/templates/404.html',
-			$patterns[ $theme['404.html'] ],
-			FS_CHMOD_FILE
-		);
+	// Add each theme template file to the theme.
+	foreach ( $theme['template_files'] as $template_file_name => $pattern_name ) {
+		$pattern = \FseStudio\PatternDataHandlers\get_pattern( $pattern_name );
+		if ( $pattern ) {
+			$wp_filesystem->put_contents(
+				$new_theme_dir . '/templates/' . $template_file_name . '.html',
+				$pattern['content'],
+				FS_CHMOD_FILE
+			);
+		}
 	}
 
 	// Delete the current patterns directory in the theme if it exists.

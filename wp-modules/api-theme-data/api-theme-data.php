@@ -92,7 +92,7 @@ function get_theme( $request ) {
 function save_theme( $request ) {
 	$theme_data = $request->get_params();
 
-	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data, array() );
+	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
@@ -250,16 +250,10 @@ function save_request_args() {
 			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
-		'index.html'        => array(
+		'template_files'    => array(
 			'required'          => false,
-			'type'              => 'string',
+			'type'              => 'object',
 			'description'       => __( 'The block pattern to use for index.html', 'fse-studio' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-		),
-		'404.html'          => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The block pattern to use for 404.html', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 	);
