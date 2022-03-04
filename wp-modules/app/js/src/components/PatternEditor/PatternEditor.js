@@ -3,6 +3,7 @@ const { __ } = wp.i18n;
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies
+/* eslint-disable */
 import {
 	BlockEditorProvider,
 	BlockList,
@@ -15,21 +16,14 @@ import {
 	MediaUploadCheck,
 	MediaPlaceholder,
 	MediaReplaceFlow,
-	__unstableEditorStyles as EditorStyles,
 	__unstableUseTypingObserver as useTypingObserver,
 } from '@wordpress/block-editor';
+/* eslint-enable */
 import ResizableEditor from './ResizableEditor';
 import { useMergeRefs } from '@wordpress/compose';
-import { 
-	Icon,
-	layout,
-} from '@wordpress/icons';
+import { Icon, layout } from '@wordpress/icons';
 import { serialize, parse } from '@wordpress/blocks';
-import {
-	SlotFillProvider,
-	Popover,
-	Modal,
-} from '@wordpress/components';
+import { SlotFillProvider, Popover, Modal } from '@wordpress/components';
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
@@ -62,9 +56,7 @@ export function PatternEditor( { visible } ) {
 
 	function renderPatternEditorWhenReady() {
 		if ( pattern.data ) {
-			return (
-				<BlockEditor pattern={ pattern } setErrors={ setErrors } />
-			);
+			return <BlockEditor pattern={ pattern } setErrors={ setErrors } />;
 		}
 		return '';
 	}

@@ -28,10 +28,9 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			}
 			setFetchInProgress( true );
 			fetch(
-				assembleUrl(
-					fsestudio.apiEndpoints.getThemeEndpoint,
-					{ themeId: thisThemeId }
-				),
+				assembleUrl( fsestudio.apiEndpoints.getThemeEndpoint, {
+					themeId: thisThemeId,
+				} ),
 				{
 					method: 'GET',
 					headers: {

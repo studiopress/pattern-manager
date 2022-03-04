@@ -2,27 +2,19 @@
  * Fse Studio
  */
 
-/* global fsestudio, localStorage */
-
 const { __ } = wp.i18n;
 
+// WP Dependencies.
 import { useContext, useEffect, useState } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
-import ReactDOM from 'react-dom';
-import {
-	Icon,
-	layout,
-	file,
-	globe,
-	check,
-	download,
-} from '@wordpress/icons';
-
-import { PatternPreview } from './../PatternPreview/PatternPreview.js';
-import PatternPicker from './../PatternPicker/PatternPicker.js';
+import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 
 // Context
 import { FseStudioContext } from './../../contexts/FseStudioContext';
+
+// Components
+import { PatternPreview } from './../PatternPreview/PatternPreview.js';
+import PatternPicker from './../PatternPicker/PatternPicker.js';
 
 // Utils
 import { classNames } from './../../utils/classNames';

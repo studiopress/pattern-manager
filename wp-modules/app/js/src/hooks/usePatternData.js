@@ -28,10 +28,9 @@ export function usePatternData(
 			setFetchInProgress( true );
 
 			fetch(
-				assembleUrl(
-					fsestudio.apiEndpoints.getPatternEndpoint,
-					{ patternId: thisPatternId }
-				),
+				assembleUrl( fsestudio.apiEndpoints.getPatternEndpoint, {
+					patternId: thisPatternId,
+				} ),
 				{
 					method: 'GET',
 					headers: {
