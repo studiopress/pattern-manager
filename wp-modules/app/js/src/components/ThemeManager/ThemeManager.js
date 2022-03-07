@@ -3,9 +3,14 @@
  */
 
 // WP Dependencies.
-import { createInterpolateElement, useContext, useEffect, useState } from '@wordpress/element';
+import {
+	createInterpolateElement,
+	useContext,
+	useEffect,
+	useState,
+} from '@wordpress/element';
 import { Modal } from '@wordpress/components';
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 
 // Context
@@ -644,15 +649,22 @@ function ThemePatterns( { isVisible } ) {
 					</h3>
 					<p className="mt-2">
 						{ createInterpolateElement(
-							__( '<span>You can also create patterns in the</span> <button>Pattern Manager</button>', 'fse-studio' ),
+							__(
+								'<span>You can also create patterns in the</span> <button>Pattern Manager</button>',
+								'fse-studio'
+							),
 							{
 								span: <span />,
-								button: <button
-									className="mt-2 text-blue-400"
-									onClick={ () => {
-										currentView.set( 'pattern_manager' );
-									} }
-								/>,
+								button: (
+									<button
+										className="mt-2 text-blue-400"
+										onClick={ () => {
+											currentView.set(
+												'pattern_manager'
+											);
+										} }
+									/>
+								),
 							}
 						) }
 					</p>
