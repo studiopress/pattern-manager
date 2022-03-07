@@ -38,6 +38,7 @@
     "@wordpress/block-library": "^7.0.0",
     "@wordpress/blocks": "^11.2.1",
     "@wordpress/components": "^19.4.0",
+    "@wordpress/data": "^6.3.0",
     "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^6.2.0",

@@ -5,12 +5,13 @@
 /* global fsestudio, localStorage */
 
 const { __ } = wp.i18n;
+import { useSelect } from '@wordpress/data';
+import { Modal, Spinner } from '@wordpress/components';
 
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useContext, useEffect, useState } from '@wordpress/element';
-import { Modal } from '@wordpress/components';
 import ReactDOM from 'react-dom';
 import {
 	Icon,
@@ -309,6 +310,14 @@ function ThemeManager( { visible } ) {
 		return <ThemeDataEditor />;
 	}
 
+	const site = useSelect( ( select ) => {
+		return select( 'core' ).getSite();
+	}, [] );
+
+	if ( ! site ) {
+		return <Spinner />;
+	}
+
 	return (
 		<>
 			<div hidden={ ! visible } className="fsestudio-theme-manager p-12">
@@ -342,7 +351,10 @@ function ThemeManager( { visible } ) {
 										name: 'My New Theme',
 										dirname: 'my-new-theme',
 										namespace: 'MyNewTheme',
-										uri: 'mysite.com',
+										uri: site.url.replace(
+											/https?:\/\//g,
+											''
+										),
 										author: 'Me',
 										author_uri: 'mysite.com',
 										description: 'My new FSE Theme',
