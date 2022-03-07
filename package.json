@@ -17,8 +17,5 @@
 		"lint:js:fix": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio -f 1;",
 		"lint:css": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio;",
 		"lint:css:fix": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio -f 1;"
-	},
-	"dependencies": {
-		"@wordpress/data": "^6.3.0"
 	}
 }
