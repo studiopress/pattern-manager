@@ -2,11 +2,10 @@
  * Fse Studio
  */
 
-const { __ } = wp.i18n;
-
 // WP Dependencies.
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { createInterpolateElement, useContext, useEffect, useState } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
+import { __, sprintf } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 
 // Context
@@ -644,21 +643,18 @@ function ThemePatterns( { isVisible } ) {
 						{ __( 'Add patterns to your theme', 'fse-studio' ) }
 					</h3>
 					<p className="mt-2">
-						<span>
-							{ __(
-								'You can also create patterns in the',
-								'fse-studio'
-							) }
-						</span>
-						&nbsp;
-						<button
-							className="mt-2 text-blue-400"
-							onClick={ () => {
-								currentView.set( 'pattern_manager' );
-							} }
-						>
-							{ __( 'Pattern Manager', 'fse-studio' ) }
-						</button>
+						{ createInterpolateElement(
+							__( '<span>You can also create patterns in the</span> <button>Pattern Manager</button>', 'fse-studio' ),
+							{
+								span: <span />,
+								button: <button
+									className="mt-2 text-blue-400"
+									onClick={ () => {
+										currentView.set( 'pattern_manager' );
+									} }
+								/>,
+							}
+						) }
 					</p>
 					<p className="mt-2">
 						<button
