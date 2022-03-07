@@ -3,7 +3,7 @@
 import { useState, useEffect } from '@wordpress/element';
 
 // Utils
-import { assembleUrl } from './../utils/assembleUrl';
+import { assembleUrl } from '../utils/assembleUrl';
 
 export function usePatternData(
 	patternId,
