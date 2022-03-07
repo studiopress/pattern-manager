@@ -25,21 +25,21 @@ function fse_studio_app() {
 	$module_dir_path = module_dir_path( __FILE__ );
 	$module_dir_url  = module_dir_url( __FILE__ );
 
-	if ( file_exists( $module_dir_path . 'includes/js/build/index.asset.php' ) ) {
-		$dependencies = require $module_dir_path . 'includes/js/build/index.asset.php';
+	if ( file_exists( $module_dir_path . 'js/build/index.asset.php' ) ) {
+		$dependencies = require $module_dir_path . 'js/build/index.asset.php';
 		$dependencies = $dependencies['dependencies'];
 	} else {
 		return;
 	}
 
 	// Include the app.
-	$js_url = $module_dir_url . 'includes/js/build/index.js';
-	$js_ver = filemtime( $module_dir_path . 'includes/js/build/index.js' );
+	$js_url = $module_dir_url . 'js/build/index.js';
+	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
 	wp_enqueue_script( 'fsestudio', $js_url, $dependencies, $js_ver, true );
 
 	// Enqueue sass and Tailwind styles, combined automatically using PostCSS in wp-scripts.
-	$css_url = $module_dir_url . 'includes/js/build/index.css';
-	$css_ver = filemtime( $module_dir_path . 'includes/js/build/index.css' );
+	$css_url = $module_dir_url . 'js/build/index.css';
+	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
 	wp_enqueue_style( 'fsethememanger_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 
 	$current_theme_dir = get_template();
@@ -186,5 +186,4 @@ function hide_admin_notices() {
 		remove_all_actions( 'admin_notices' );
 	}
 }
-
 add_action( 'admin_head', __NAMESPACE__ . '\hide_admin_notices', 1 );

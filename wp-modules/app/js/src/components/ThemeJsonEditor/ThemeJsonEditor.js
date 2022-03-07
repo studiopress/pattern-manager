@@ -4,14 +4,16 @@
 
 const { __ } = wp.i18n;
 
+// WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
 import { useContext, useState } from '@wordpress/element';
-import { FseStudioContext } from './../non-visual/non-visual-logic.js';
-
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
+// Context
+import { FseStudioContext } from '../../contexts/FseStudioContext';
+
 /* eslint-disable */
-export function ThemeJsonEditorApp( { visible } ) {
+export function ThemeJsonEditor( { visible } ) {
 	const { themeJsonFiles, currentTheme, currentThemeJsonFileId, currentThemeJsonFile } = useContext(
 		FseStudioContext
 	);
@@ -61,7 +63,7 @@ export function ThemeJsonEditorApp( { visible } ) {
 			return '';
 		}
 
-		return <ThemeJsonEditor themeJsonFile={ currentThemeJsonFile } theme={ currentTheme } />;
+		return <ThemeJsonDataEditor themeJsonFile={ currentThemeJsonFile } theme={ currentTheme } />;
 	}
 
 	return (
@@ -115,7 +117,7 @@ export function ThemeJsonEditorApp( { visible } ) {
 	);
 }
 
-function ThemeJsonEditor( { themeJsonFile, theme } ) {
+function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 	const { patterns } = useContext( FseStudioContext );
 	const content = themeJsonFile.data.content;
 	const [ currentView, setCurrentView ] = useState( 'settings' );
