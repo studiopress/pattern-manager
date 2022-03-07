@@ -175,3 +175,15 @@ function fse_studio_block_editor_init() {
 
 	return $editor_settings;
 }
+
+/**
+ * Unhook all the admin_notices.
+ *
+ * @return void
+ */
+function hide_admin_notices() {
+	if ( 'fse-studio' === filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
+		remove_all_actions( 'admin_notices' );
+	}
+}
+add_action( 'admin_head', __NAMESPACE__ . '\hide_admin_notices', 1 );
