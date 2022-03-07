@@ -1,7 +1,7 @@
 // @ts-check
 
 import * as React from 'react';
-import { useMemo, useState } from '@wordpress/element';
+import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './utils/searchItems.js';
 import { PatternPreview } from './../PatternPreview/PatternPreview.js';
@@ -34,10 +34,19 @@ export default function PatternPicker( {
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 	const [ numberToRender, setNumberToRender ] = useState( 0 );
+	const isMountedRef = useRef( false );
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
 	}, [ searchValue, allPatterns ] );
+
+	useEffect( () => {
+		isMountedRef.current = true;
+
+		return () => {
+			isMountedRef.current = false;
+		};
+	}, [] );
 
 	return (
 		<div className="mx-auto bg-white">
@@ -47,7 +56,9 @@ export default function PatternPicker( {
 						<input
 							value={ searchValue }
 							onChange={ ( event ) => {
-								setSearchValue( event.target.value );
+								if ( isMountedRef.current ) {
+									setSearchValue( event.target.value );
+								}
 							} }
 							type="text"
 							name="search"
@@ -66,7 +77,7 @@ export default function PatternPicker( {
 						if ( index <= numberToRender ) {
 							return (
 								<button
-									key={ index }
+									key={ pattern.name }
 									tabIndex={ 0 }
 									role="checkbox"
 									aria-checked={ isChecked }
@@ -90,7 +101,9 @@ export default function PatternPicker( {
 										themeJsonData={ themeJsonData }
 										scale={ 0.3 }
 										onLoad={ () => {
-											setNumberToRender( index + 1 );
+											if ( isMountedRef.current ) {
+												setNumberToRender( index + 1 );
+											}
 										} }
 									/>
 									<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
