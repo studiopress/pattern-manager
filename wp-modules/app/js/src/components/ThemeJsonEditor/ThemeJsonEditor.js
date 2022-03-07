@@ -10,7 +10,7 @@ import { useContext, useState } from '@wordpress/element';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
 // Context
-import { FseStudioContext } from './../../contexts/FseStudioContext';
+import { FseStudioContext } from '../../contexts/FseStudioContext';
 
 /* eslint-disable */
 export function ThemeJsonEditor( { visible } ) {
