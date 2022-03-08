@@ -301,6 +301,7 @@ function ThemeSetup( { isVisible } ) {
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
+							aria-label={ __( 'theme name field', 'fse-studio' ) }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							value={ currentTheme?.data?.name ?? '' }

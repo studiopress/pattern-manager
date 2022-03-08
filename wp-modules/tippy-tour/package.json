@@ -1,0 +1,24 @@
+{
+  "name": "tippy-tour",
+  "version": "1.0.0",
+  "description": "This module contains the code for the tippy tour",
+  "main": "includes/js/build/index.js",
+  "scripts": {
+    "build": "wp-scripts build includes/js/src/index.js --output-path=includes/js/build/",
+    "dev": "wp-scripts start includes/js/src/index.js --output-path=includes/js/build/",
+    "packages-update": "wp-scripts packages-update"
+  },
+  "author": "",
+  "license": "GPL v2 or greater",
+  "devDependencies": {
+    "@wordpress/scripts": "^19.1.0",
+    "prettier": "^2.5.0"
+  },
+  "dependencies": {
+    "@testing-library/dom": "^8.11.1",
+    "@wordpress/data": "^6.1.4",
+    "@wordpress/element": "^4.0.4",
+    "@wordpress/i18n": "^4.2.4",
+    "@wpebeacon/beaconstep": "file:../../../tippy/wp-modules/beaconstep"
+  }
+}
