@@ -1,10 +1,19 @@
-/* global fetch, fsestudio */
+/* global fetch */
+// @ts-check
 
 import { useState, useEffect } from '@wordpress/element';
 
 // Utils
 import { assembleUrl } from '../utils/assembleUrl';
 
+const fsestudio = /** @type {import('../').InitialFseStudio} */ ( window.fsestudio );
+
+/**
+ * @param {string}                                  patternId
+ * @param {import('../').InitialFseStudio.patterns} patterns
+ * @param {import('./useThemeJsonFile').useThemeJsonFile} currentThemeJsonFile
+ * @param {import('../').InitialFseStudio.patterns} currentTheme
+ */
 export function usePatternData(
 	patternId,
 	patterns,

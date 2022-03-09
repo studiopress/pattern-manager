@@ -1,5 +1,3 @@
-// @ts-check
-
 import { __ } from '@wordpress/i18n';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -21,6 +19,7 @@ import {
 	__unstableUseTypingObserver as useTypingObserver,
 } from '@wordpress/block-editor';
 /* eslint-enable */
+// @ts-check
 import ResizableEditor from './ResizableEditor';
 import { useMergeRefs } from '@wordpress/compose';
 import { Icon, layout } from '@wordpress/icons';

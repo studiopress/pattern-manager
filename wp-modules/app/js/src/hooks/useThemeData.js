@@ -1,14 +1,18 @@
-/* global fetch, fsestudio */
+/* global fetch */
+// @ts-check
 
 import { useState, useEffect } from '@wordpress/element';
 
 // Utils
 import { assembleUrl } from './../utils/assembleUrl';
 
+// @ts-ignore The global fsestudio exists.
+const fsestudio = /** @type {import('../').InitialFseStudio} */ ( window.fsestudio );
+
 /**
- * @param {string}                                themeId
- * @param {import('../').InitialFseStudio.themes} themes
- * @param {import('./useCurrentId').CurrentId}    currentThemeJsonFile
+ * @param {string}                                                    themeId
+ * @param {import('../').InitialFseStudio.themes}                     themes
+ * @param {ReturnType<import('./useThemeJsonFile').useThemeJsonFile>} currentThemeJsonFile
  */
 export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );

@@ -1,3 +1,6 @@
+// @ts-check
+
 import { createContext } from '@wordpress/element';
 
-export const FseStudioContext = createContext( [ {}, function() {} ] );
+/** @type {ReturnType<import('@wordpress/element').createContext<import('../').InitialContext | undefined>>} */
+export const FseStudioContext = createContext( undefined );

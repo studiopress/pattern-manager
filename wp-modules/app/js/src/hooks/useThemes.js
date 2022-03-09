@@ -1,10 +1,11 @@
+// @ts-check
+
 import { useState, useEffect } from '@wordpress/element';
 
 /**
- * @param {import('../').InitialFseStudio.themeJsonFiles} initial
- * @return {{
- *  themeJsonFiles: import('../').InitialFseStudio.themeJsonFiles,
- *  setThemeJsonFiles: Function
+ * @param {{
+ *  themes: import('../').InitialFseStudio.themeJsonFiles,
+ *  currentThemeJsonFile: ReturnType<import('./useThemeJsonFile').useThemeJsonFile>
  * }} The themes and a way to change them.
  */
 export function useThemes( { themes, currentThemeJsonFile } ) {

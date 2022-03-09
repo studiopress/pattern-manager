@@ -10,7 +10,7 @@ import { __ } from '@wordpress/i18n';
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import ReactDOM from 'react-dom';
 
 // Icons
@@ -26,6 +26,7 @@ import {
 
 // Context
 import { FseStudioContext } from './contexts/FseStudioContext';
+import useStudioContext from './hooks/useStudioContext';
 
 // Hooks
 import { useThemes } from './hooks/useThemes';
@@ -46,14 +47,41 @@ import { classNames } from './utils/classNames';
 
 /**
  * @typedef {{
- *  apiEndpoints: Record<string, unknown>,
+ *  apiEndpoints: {
+ * 	 getPatternEndpoint: string,
+ *   getThemeEndpoint: string,
+ *   getThemeJsonFileEndpoint: string,
+ *   savePatternEndpoint: string,
+ *   saveThemeEndpoint: string,
+ *   saveThemeJsonFileEndpoint:	string
+ *  },
  *  blockEditorSettings: Record<string, unknown>,
  *  initialTheme: string,
  *  patterns: Record<string, import('./components/PatternPicker/PatternPicker.js').Pattern>,
  *  siteUrl: string,
- *  themeJsonFiles: Record<string, unknown>,
+ *  themeJsonFiles: Record<string, {
+ * 	 content: Record<string, unknown>,
+ *   name: string,
+ *   patternPreviewParts: import('./components/PatternPicker/PatternPicker').PatternPreviewParts | null
+ *  }>,
  *  themes: Record<string, unknown>
  * }} InitialFseStudio
+ */
+
+/**
+ * @typedef {{
+ *  currentView: ReturnType<import('./hooks/useCurrentView').useCurrentView>,
+ *  patterns: ReturnType<import('./hooks/usePatterns').usePatterns>,
+ *  themes: ReturnType<import('./hooks/useThemes').useThemes>,
+ *  currentThemeId: ReturnType<import('./hooks/useCurrentId').useCurrentId>,
+ *  currentTheme: ReturnType<import('./hooks/useThemeData').useThemeData>,
+ *  themeJsonFiles: ReturnType<import('./hooks/useThemeJsonFiles').useThemeJsonFiles>,
+ *  currentThemeJsonFileId: ReturnType<import('./hooks/useCurrentId').useCurrentId>,
+ *  currentThemeJsonFile: ReturnType<import('./hooks/useThemeJsonFile').useThemeJsonFile>,
+ *  siteUrl: InitialFseStudio['siteUrl'],
+ *  apiEndpoints: InitialFseStudio['apiEndpoints'],
+ *  blockEditorSettings: InitialFseStudio['blockEditorSettings']
+ * }} InitialContext
  */
 
 // @ts-ignore The global window.fsestudio exists.
@@ -73,26 +101,28 @@ function FseStudioApp() {
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
 
+	/** @type {InitialContext} */
+	const providerValue = {
+		currentView: useCurrentView( 'theme_manager' ),
+		patterns: usePatterns( fsestudio.patterns ),
+		themes,
+		currentThemeId,
+		currentTheme: useThemeData(
+			currentThemeId.value,
+			themes,
+			currentThemeJsonFile
+		),
+		themeJsonFiles,
+		currentThemeJsonFileId,
+		currentThemeJsonFile,
+		siteUrl: fsestudio.siteUrl,
+		apiEndpoints: fsestudio.apiEndpoints,
+		blockEditorSettings: fsestudio.blockEditorSettings,
+	};
+
 	return (
 		<FseStudioContext.Provider
-			value={ {
-				// @ts-ignore
-				currentView: useCurrentView( 'theme_manager' ),
-				patterns: usePatterns( fsestudio.patterns ),
-				themes,
-				currentThemeId,
-				currentTheme: useThemeData(
-					currentThemeId.value,
-					themes,
-					currentThemeJsonFile
-				),
-				themeJsonFiles,
-				currentThemeJsonFileId,
-				currentThemeJsonFile,
-				siteUrl: fsestudio.siteUrl,
-				apiEndpoints: fsestudio.apiEndpoints,
-				blockEditorSettings: fsestudio.blockEditorSettings,
-			} }
+			value={ providerValue }
 		>
 			<FseStudio />
 		</FseStudioContext.Provider>
@@ -101,7 +131,7 @@ function FseStudioApp() {
 
 function FseStudio() {
 	// @ts-ignore
-	const { currentView, currentTheme } = useContext( FseStudioContext );
+	const { currentView, currentTheme } = useStudioContext();
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);

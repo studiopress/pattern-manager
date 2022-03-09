@@ -18,18 +18,16 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
 
 /**
  * @typedef {{
- *   patternPreviewParts: {
- *    renderedPatterns: Record<string, string>,
- *    wp_head: string,
- *    wp_footer: string
- *   }
- *  }} ThemeJsonData
+ *  renderedPatterns: Record<string, string>,
+ *  wp_head: string,
+ *  wp_footer: string
+ * }} PatternPreviewParts
  */
 
 /**
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: ThemeJsonData,
+ *  themeJsonData: PatternPreviewParts,
  *  onClickPattern: Function,
  *  selectedPatterns?: string[]
  * }} props The component props.
