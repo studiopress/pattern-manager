@@ -61,6 +61,7 @@ const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
+/** @return {React.Provider<InitialFseStudio>} The app. */
 function FseStudioApp() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(

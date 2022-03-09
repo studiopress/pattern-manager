@@ -54,13 +54,13 @@ export function PatternPreview( {
  * }} props
  */
 function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
-	const [ iframeRef, setRef ] = useState();
+	const iframeRef = useRef( null );
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
 		0
 	);
 	const isMountedRef = useRef( false );
 
-	const container = iframeRef?.contentWindow?.document?.body;
+	const container = iframeRef?.current?.contentWindow?.document?.body : null;
 
 	const scaleMultiplier = 10 / ( scale * 10 );
 
@@ -102,7 +102,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 			>
 				<iframe
 					title={ __( 'Pattern Preview', 'fse-studio' ) }
-					ref={ setRef }
+					ref={ iframeRef }
 					style={ {
 						position: 'absolute',
 						top: '0',
