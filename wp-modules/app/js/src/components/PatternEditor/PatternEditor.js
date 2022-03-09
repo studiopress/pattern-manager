@@ -39,6 +39,7 @@ import { usePatternData } from './../../hooks/usePatternData';
 // Components
 import PatternPicker from './../PatternPicker/PatternPicker.js';
 
+/** @param {{visible: boolean}} props */
 export function PatternEditor( { visible } ) {
 	const { patterns, currentThemeJsonFile, currentTheme } = useContext(
 		FseStudioContext
@@ -56,10 +57,9 @@ export function PatternEditor( { visible } ) {
 	const [ patternModalMode, setPatternModalMode ] = useState();
 
 	function renderPatternEditorWhenReady() {
-		if ( pattern.data ) {
-			return <BlockEditor pattern={ pattern } setErrors={ setErrors } />;
-		}
-		return null;
+		return pattern.data
+			? <BlockEditor pattern={ pattern } setErrors={ setErrors } />
+			: null;
 	}
 
 	function formatErrorMessage( testResult ) {
@@ -88,9 +88,7 @@ export function PatternEditor( { visible } ) {
 
 	function maybeRenderErrors() {
 		if ( errors && ! errors?.success ) {
-			/* eslint-disable */
-			console.log( errors );
-			/* eslint-enable */
+			console.log( errors ); // eslint-disable-line
 			return (
 				<div>
 					<span>Errors </span>
@@ -101,27 +99,27 @@ export function PatternEditor( { visible } ) {
 					>
 						{ Object.keys( errors?.errors ).length }
 					</button>
-					{ ( () => {
-						if ( errorModalOpen ) {
-							return (
-								<Modal
-									title={ __(
-										'Errors in pattern',
-										'fse-studio'
-									) }
-									onRequestClose={ () =>
-										setErrorModalOpen( false )
-									}
-								>
-									{ formatErrorMessage( errors ) }
-								</Modal>
-							);
-						}
-					} )() }
+					{ errorModalOpen
+						? (
+							<Modal
+								title={ __(
+									'Errors in pattern',
+									'fse-studio'
+								) }
+								onRequestClose={ () =>
+									setErrorModalOpen( false )
+								}
+							>
+								{ formatErrorMessage( errors ) }
+							</Modal>
+						)
+						: null
+					}
 				</div>
 			);
 		}
-		return '';
+
+		return null;
 	}
 
 	function renderBrowsePatternsButton() {
@@ -193,28 +191,27 @@ export function PatternEditor( { visible } ) {
 					</div>
 				</div>
 			</div>
-			{ ( () => {
-				if ( ! pattern.data ) {
-					return (
-						<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
-							<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-								{ __( 'Pattern Manager', 'fse-studio' ) }
-							</h1>
-							<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
-								<p className="text-base mb-4 max-w-3xl">
-									{ __(
-										'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
-										'fse-studio'
-									) }
-								</p>
-								<div className="bg-[#F8F8F8] p-20 w-full text-center">
-									{ renderBrowsePatternsButton() }
-								</div>
+			{ pattern.data
+				? null
+				: (
+					<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
+						<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
+							{ __( 'Pattern Manager', 'fse-studio' ) }
+						</h1>
+						<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
+							<p className="text-base mb-4 max-w-3xl">
+								{ __(
+									'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
+									'fse-studio'
+								) }
+							</p>
+							<div className="bg-[#F8F8F8] p-20 w-full text-center">
+								{ renderBrowsePatternsButton() }
 							</div>
 						</div>
-					);
-				}
-			} )() }
+					</div>
+				)
+			}
 			{ isPatternModalOpen ? (
 				<Modal
 					title={
