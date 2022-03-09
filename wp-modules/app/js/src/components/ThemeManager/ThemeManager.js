@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Fse Studio
  */
@@ -23,6 +25,7 @@ import PatternPicker from './../PatternPicker/PatternPicker.js';
 // Utils
 import { classNames } from './../../utils/classNames';
 
+/** @param {{visible: boolean}} props */
 export function ThemeManager( { visible } ) {
 	const {
 		themes,
@@ -75,7 +78,7 @@ export function ThemeManager( { visible } ) {
 
 	function renderThemeEditorWhenReady() {
 		if ( ! currentTheme.data ) {
-			return '';
+			return null;
 		}
 
 		return <ThemeDataEditor />;
@@ -761,7 +764,6 @@ function ThemePatterns( { isVisible } ) {
 								} );
 							}
 						} }
-						selectMultiple={ true }
 					/>
 				</Modal>
 			) : null }
@@ -769,6 +771,7 @@ function ThemePatterns( { isVisible } ) {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemeTemplateFiles( { isVisible } ) {
 	const { patterns, currentTheme, currentThemeJsonFile } = useContext(
 		FseStudioContext

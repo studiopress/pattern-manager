@@ -1,8 +1,10 @@
+// @ts-check
+
 /**
  * Genesis Studio App
  */
 
-const { __ } = wp.i18n;
+import { __ } from '@wordpress/i18n';
 
 // WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
@@ -12,8 +14,9 @@ import { Icon, layout, file, globe, check } from '@wordpress/icons';
 // Context
 import { FseStudioContext } from '../../contexts/FseStudioContext';
 
-/* eslint-disable */
+/** @param {{visible: boolean}} props */
 export function ThemeJsonEditor( { visible } ) {
+	/* eslint-disable */
 	const { themeJsonFiles, currentTheme, currentThemeJsonFileId, currentThemeJsonFile } = useContext(
 		FseStudioContext
 	);
@@ -179,7 +182,6 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 			rendered.push(
 				<PatternPreview
 					key={ blockPattern }
-					html={ patternPreviewParts.data.rendered_block_pattern_preview }
 					blockPatternData={ patterns.patterns[ blockPattern ] }
 					themeJsonData={ null }
 					scale={ 0.5 }
@@ -382,4 +384,3 @@ function FseStudioColorPalettePicker( { themeJsonFile, color, index } ) {
 		</>
 	);
 }
-/* eslint-enable */

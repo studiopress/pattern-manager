@@ -45,7 +45,7 @@ import { classNames } from './utils/classNames';
 
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
-export function FseStudioApp() {
+function FseStudioApp() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
 		currentThemeJsonFileId.value

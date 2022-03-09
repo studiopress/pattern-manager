@@ -1,6 +1,18 @@
+// @ts-check
+
 import { useState, useEffect, createPortal, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
+import '../PatternPicker/PatternPicker';
+
+/**
+ * @param {{
+ *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,
+ *  themeJsonData: Record<string, any>,
+ *  scale: number,
+ *  onLoad: Function
+ * }} props
+ */
 export function PatternPreview( {
 	blockPatternData,
 	themeJsonData,
@@ -8,11 +20,7 @@ export function PatternPreview( {
 	onLoad = () => {},
 } ) {
 	return (
-		<Portal
-			scale={ scale }
-			onLoad={ onLoad }
-			patternData={ blockPatternData }
-		>
+		<Portal scale={ scale } onLoad={ onLoad }>
 			<div
 				className="wp-head"
 				dangerouslySetInnerHTML={ {

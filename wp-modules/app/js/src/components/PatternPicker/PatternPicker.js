@@ -16,15 +16,12 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
  */
 
 /**
- * The pattern picker component.
- *
  * @param {{
  *  patterns: Record<string, Pattern>,
  *  themeJsonData: string[],
  *  onClickPattern: Function,
- *  selectedPatterns: string[]
+ *  selectedPatterns?: string[]
  * }} props The component props.
- * @return {React.ReactElement} The rendered component.
  */
 export default function PatternPicker( {
 	patterns: allPatterns,
