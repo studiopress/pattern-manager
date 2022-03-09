@@ -1,14 +1,18 @@
 import { useState } from '@wordpress/element';
 
 /**
- * @param {string} [initial]
- * @return {{
+ * @typedef {{
  *  value: string,
  *  set: Function
- * }} The current ID and a way to change it.
+ * }} CurrentId
  */
-export function useCurrentId( initial ) {
-	const [ value, set ] = useState( initial );
+
+/**
+ * @param {string} [initialId]
+ * @return {CurrentId} The current ID and a way to change it.
+ */
+export function useCurrentId( initialId ) {
+	const [ value, set ] = useState( initialId );
 
 	return {
 		value,

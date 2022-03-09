@@ -60,7 +60,7 @@ export function PatternEditor( { visible } ) {
 		if ( pattern.data ) {
 			return <BlockEditor pattern={ pattern } setErrors={ setErrors } />;
 		}
-		return '';
+		return null;
 	}
 
 	function formatErrorMessage( testResult ) {
@@ -297,7 +297,7 @@ export function BlockEditor( props ) {
 		),
 	] );
 
-	const [ serializedBlocks, updateSerializedBlocks ] = useState();
+	const [ serializedBlocks, updateSerializedBlocks ] = useState( '' );
 
 	const [ currentView, setCurrentView ] = useState( 'blockEditor' ); //Other option is "frontend"
 	const [ editorWidth, setEditorWidth ] = useState( '100%' );
@@ -364,10 +364,10 @@ export function BlockEditor( props ) {
 			);
 		}
 
-		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
+		if ( currentThemeJsonFile.data?.value?.renderedGlobalStyles ) {
 			renderedStyles.push(
 				<style key={ 'renderedGlobalStyles' }>
-					{ currentThemeJsonFileData.value.renderedGlobalStyles }
+					{ currentThemeJsonFile.data.value.renderedGlobalStyles }
 				</style>
 			);
 		}
@@ -376,7 +376,7 @@ export function BlockEditor( props ) {
 	}
 	/* eslint-enable */
 	if ( ! pattern.data ) {
-		return 'Select a pattern to edit it here';
+		return <span>{ __( 'Select a pattern to edit it here', 'fse-studio' ) }</span>;
 	}
 
 	function getViewToggleClassName( toggleInQuestion ) {
@@ -384,7 +384,7 @@ export function BlockEditor( props ) {
 			return ' fsestudio-active-tab';
 		}
 
-		return '';
+		return null;
 	}
 
 	return (
@@ -429,7 +429,7 @@ export function BlockEditor( props ) {
 							setCurrentView( 'frontend' );
 						} }
 					>
-						Frontend Preview
+						{ __( 'Frontend Preview', 'fse-studio' ) }
 					</button>
 					<select
 						onChange={ ( event ) => {
@@ -437,11 +437,11 @@ export function BlockEditor( props ) {
 						} }
 						value={ editorWidth }
 					>
-						<option value={ '100%' }>Desktop</option>
-						<option value={ '320px' }>320px (iPhone 5/SE)</option>
-						<option value={ '375px' }>375px (iPhone X)</option>
-						<option value={ '768px' }>768px (iPad)</option>
-						<option value={ '1024px' }>1024px (iPad Pro)</option>
+						<option value="100%">Desktop</option>
+						<option value="320px">320px (iPhone 5/SE)</option>
+						<option value="375px">375px (iPhone X)</option>
+						<option value="768px">768px (iPad)</option>
+						<option value="1024px">1024px (iPad Pro)</option>
 					</select>
 				</div>
 			</div>
@@ -461,7 +461,10 @@ export function BlockEditor( props ) {
 							} catch ( error ) {
 								/* eslint-disable */
 								alert(
-									'Invalid block content. Please check your code to make sure it is valid.'
+									__(
+										'Invalid block content. Please check your code to make sure it is valid.',
+										'fse-studio'
+									)
 								);
 								/* eslint-enable */
 								return;

@@ -5,6 +5,11 @@ import { useState, useEffect } from '@wordpress/element';
 // Utils
 import { assembleUrl } from './../utils/assembleUrl';
 
+/**
+ * @param {string}                                themeId
+ * @param {import('../').InitialFseStudio.themes} themes
+ * @param {import('./useCurrentId').CurrentId}    currentThemeJsonFile
+ */
 export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
