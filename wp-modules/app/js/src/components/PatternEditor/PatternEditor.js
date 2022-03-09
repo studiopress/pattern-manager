@@ -44,7 +44,7 @@ export function PatternEditor( { visible } ) {
 	const { patterns, currentThemeJsonFile, currentTheme } = useContext(
 		FseStudioContext
 	);
-	const [ currentPatternId, setCurrentPatternId ] = useState();
+	const [ currentPatternId, setCurrentPatternId ] = useState( '' );
 	const pattern = usePatternData(
 		currentPatternId,
 		patterns,

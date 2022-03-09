@@ -7,18 +7,29 @@ import { searchItems } from './utils/searchItems.js';
 import { PatternPreview } from './../PatternPreview/PatternPreview.js';
 
 /**
- * @typedef {Object} Pattern
- * @property {Array}  categories    The pattern categories.
- * @property {string} content       The pattern HTML content.
- * @property {string} name          The pattern name.
- * @property {string} title         The pattern title.
- * @property {number} viewportWidth The viewport width.
+ * @typedef {{
+ * 	categories: Array,
+ *  content: string,
+ *  name: string,
+ *  title: string,
+ *  viewportWidth: number
+ * }} Pattern
+ */
+
+/**
+ * @typedef {{
+ *   patternPreviewParts: {
+ *    renderedPatterns: Record<string, string>,
+ *    wp_head: string,
+ *    wp_footer: string
+ *   }
+ *  }} ThemeJsonData
  */
 
 /**
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: Record<string, unknown>,
+ *  themeJsonData: ThemeJsonData,
  *  onClickPattern: Function,
  *  selectedPatterns?: string[]
  * }} props The component props.

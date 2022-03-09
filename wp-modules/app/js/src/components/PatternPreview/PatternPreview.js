@@ -9,7 +9,7 @@ import '../PatternPicker/PatternPicker';
 /**
  * @param {{
  *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,
- *  themeJsonData: Record<string, unknown>,
+ *  themeJsonData: import('../PatternPicker/PatternPicker').ThemeJsonData,
  *  scale: number,
  *  onLoad?: Function
  * }} props
@@ -60,7 +60,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	);
 	const isMountedRef = useRef( false );
 
-	const container = iframeRef?.current?.contentWindow?.document?.body : null;
+	const container = iframeRef?.current?.contentWindow?.document?.body;
 
 	const scaleMultiplier = 10 / ( scale * 10 );
 
