@@ -1,4 +1,6 @@
-const { __ } = wp.i18n;
+// @ts-check
+
+import { __ } from '@wordpress/i18n';
 
 import { v4 as uuidv4 } from 'uuid';
 
