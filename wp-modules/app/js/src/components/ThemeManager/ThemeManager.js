@@ -7,7 +7,6 @@
 // WP Dependencies.
 import {
 	createInterpolateElement,
-	useContext,
 	useEffect,
 	useState,
 } from '@wordpress/element';
@@ -15,8 +14,7 @@ import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 
-// Context
-import { FseStudioContext } from './../../contexts/FseStudioContext';
+import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
 import { PatternPreview } from './../PatternPreview/PatternPreview.js';
@@ -32,7 +30,7 @@ export function ThemeManager( { visible } ) {
 		currentThemeId,
 		currentTheme,
 		currentThemeJsonFileId,
-	} = useContext( FseStudioContext );
+	} = useStudioContext();
 
 	useEffect( () => {
 		if ( currentTheme.data?.theme_json_file ) {
@@ -156,7 +154,7 @@ export function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor() {
-	const { currentTheme } = useContext( FseStudioContext );
+	const { currentTheme } = useStudioContext();
 
 	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
 		'theme_setup'
@@ -288,7 +286,7 @@ function ThemeDataEditor() {
 }
 
 function ThemeSetup( { isVisible } ) {
-	const { currentTheme } = useContext( FseStudioContext );
+	const { currentTheme } = useStudioContext();
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -637,7 +635,7 @@ function ThemePatterns( { isVisible } ) {
 		currentTheme,
 		currentThemeJsonFile,
 		currentView,
-	} = useContext( FseStudioContext );
+	} = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 
@@ -771,9 +769,7 @@ function ThemePatterns( { isVisible } ) {
 
 /** @param {{isVisible: boolean}} props */
 function ThemeTemplateFiles( { isVisible } ) {
-	const { patterns, currentTheme, currentThemeJsonFile } = useContext(
-		FseStudioContext
-	);
+	const { patterns, currentTheme, currentThemeJsonFile } = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(

@@ -28,22 +28,18 @@ import { SlotFillProvider, Popover, Modal } from '@wordpress/components';
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
-
-// Context
-import { FseStudioContext } from './../../contexts/FseStudioContext';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Hooks
 import { usePatternData } from './../../hooks/usePatternData';
+import useStudioContext from './../../hooks/useStudioContext';
 
 // Components
 import PatternPicker from './../PatternPicker/PatternPicker.js';
 
 /** @param {{visible: boolean}} props */
 export function PatternEditor( { visible } ) {
-	const { patterns, currentThemeJsonFile, currentTheme } = useContext(
-		FseStudioContext
-	);
+	const { patterns, currentThemeJsonFile, currentTheme } = useStudioContext();
 	const [ currentPatternId, setCurrentPatternId ] = useState( '' );
 	const pattern = usePatternData(
 		currentPatternId,
@@ -280,9 +276,7 @@ export function BlockEditor( props ) {
 	const contentRef = useRef();
 	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
 
-	const { blockEditorSettings, currentThemeJsonFile } = useContext(
-		FseStudioContext
-	);
+	const { blockEditorSettings, currentThemeJsonFile } = useStudioContext();
 	const pattern = props.pattern;
 
 	const [ blocks, updateBlocks ] = useState( [

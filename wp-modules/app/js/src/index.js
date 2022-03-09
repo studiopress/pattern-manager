@@ -24,10 +24,6 @@ import {
 	chevronLeft,
 } from '@wordpress/icons';
 
-// Context
-import { FseStudioContext } from './contexts/FseStudioContext';
-import useStudioContext from './hooks/useStudioContext';
-
 // Hooks
 import { useThemes } from './hooks/useThemes';
 import { useCurrentId } from './hooks/useCurrentId';
@@ -36,6 +32,7 @@ import { useThemeJsonFiles } from './hooks/useThemeJsonFiles';
 import { useThemeJsonFile } from './hooks/useThemeJsonFile';
 import { usePatterns } from './hooks/usePatterns';
 import { useCurrentView } from './hooks/useCurrentView';
+import useStudioContext from './hooks/useStudioContext';
 
 // Components
 import { ThemeManager } from './components/ThemeManager/ThemeManager.js';
