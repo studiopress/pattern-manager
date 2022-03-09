@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Entire file forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/8029f73ff0d4066a5d3fd72fb5a7cff9b6a05b7e/packages/block-editor/src/components/inserter/index.js
  */
@@ -19,7 +21,6 @@ const defaultGetCollection = () => null;
  * Sanitizes the search input string.
  *
  * @param {string} input The search input to normalize.
- *
  * @return {string} The normalized search input.
  */
 function normalizeSearchInput( input = '' ) {
@@ -42,7 +43,6 @@ function normalizeSearchInput( input = '' ) {
  * Converts the search term into a list of normalized terms.
  *
  * @param {string} input The search term to normalize.
- *
  * @return {string[]} The normalized list of search terms.
  */
 export const getNormalizedSearchTerms = ( input = '' ) => {
@@ -86,7 +86,6 @@ export const searchBlockItems = (
  * @param {Array}  items       Item list
  * @param {string} searchInput Search input.
  * @param {Object} config      Search Config.
- *
  * @return {Array} Filtered item list.
  */
 export const searchItems = ( items = [], searchInput = '', config = {} ) => {
@@ -113,7 +112,6 @@ export const searchItems = ( items = [], searchInput = '', config = {} ) => {
  * @param {Object} item       Item to filter.
  * @param {string} searchTerm Search term.
  * @param {Object} config     Search Config.
- *
  * @return {number} Search Rank.
  */
 export function getItemSearchRank( item, searchTerm, config = {} ) {

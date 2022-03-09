@@ -9,9 +9,9 @@ import '../PatternPicker/PatternPicker';
 /**
  * @param {{
  *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,
- *  themeJsonData: Record<string, any>,
+ *  themeJsonData: Record<string, unknown>,
  *  scale: number,
- *  onLoad: Function
+ *  onLoad?: Function
  * }} props
  */
 export function PatternPreview( {
