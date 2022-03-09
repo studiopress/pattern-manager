@@ -222,9 +222,9 @@ export function PatternEditor( { visible } ) {
 						patternModalMode === 'choose'
 							? __( 'Pick the patterns to edit', 'fse-studio' )
 							: __(
-									'Choose a starting point for your new pattern',
-									'fse-studio'
-							  )
+								'Choose a starting point for your new pattern',
+								'fse-studio'
+							)
 					}
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
