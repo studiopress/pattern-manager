@@ -4,8 +4,6 @@ import * as React from 'react';
 import { useState, useEffect, createPortal, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import '../PatternPicker/PatternPicker';
-
 /**
  * @param {{
  *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,

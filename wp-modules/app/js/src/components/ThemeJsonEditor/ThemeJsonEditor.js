@@ -11,6 +11,8 @@ import { ColorPicker, Popover } from '@wordpress/components';
 import { useContext, useState } from '@wordpress/element';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
+import { PatternPreview } from '../PatternPreview/PatternPreview';
+
 // Context
 import { FseStudioContext } from '../../contexts/FseStudioContext';
 

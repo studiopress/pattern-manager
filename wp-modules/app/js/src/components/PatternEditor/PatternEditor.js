@@ -234,10 +234,13 @@ export function PatternEditor( { visible } ) {
 						<PatternPicker
 							patterns={ patterns.patterns }
 							themeJsonData={ currentThemeJsonFile.data }
-							onClickPattern={ ( clickedPatternId ) => {
-								setCurrentPatternId( clickedPatternId );
-								setIsPatternModalOpen( false );
-							} }
+							onClickPattern={
+								/** @param {string} clickedPatternId */
+								( clickedPatternId ) => {
+									setCurrentPatternId( clickedPatternId );
+									setIsPatternModalOpen( false );
+								}
+							}
 						/>
 					) : null }
 					{ patternModalMode === 'create' ? (
