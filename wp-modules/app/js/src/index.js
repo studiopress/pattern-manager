@@ -1,10 +1,11 @@
+// @ts-check
+
 /**
  * Fse Studio
  */
 
-/* global fsestudio, localStorage */
-
-const { __ } = wp.i18n;
+import * as React from 'react';
+import { __ } from '@wordpress/i18n';
 
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
@@ -43,12 +44,27 @@ import { ThemeJsonEditor } from './components/ThemeJsonEditor/ThemeJsonEditor.js
 // Utils
 import { classNames } from './utils/classNames';
 
+/**
+ * @typedef {{
+ *  apiEndpoints: Record<string, unknown>,
+ *  blockEditorSettings: Record<string, unknown>,
+ *  initialTheme: string,
+ *  patterns: Record<string, import('./components/PatternPicker/PatternPicker.js').Pattern>,
+ *  siteUrl: string,
+ *  themeJsonFiles: Record<string, unknown>,
+ *  themes: Record<string, unknown>
+ * }} InitialFseStudio
+ */
+
+// @ts-ignore The global window.fsestudio exists.
+const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
+
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 function FseStudioApp() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
-		currentThemeJsonFileId.value
+		currentThemeJsonFileId.valu
 	);
 	const themes = useThemes( {
 		themes: fsestudio.themes,
@@ -60,7 +76,8 @@ function FseStudioApp() {
 	return (
 		<FseStudioContext.Provider
 			value={ {
-				currentView: useCurrentView( { currentView: 'theme_manager' } ),
+				// @ts-ignore
+				currentView: useCurrentView( 'theme_manager' ),
 				patterns: usePatterns( fsestudio.patterns ),
 				themes,
 				currentThemeId,
@@ -73,6 +90,7 @@ function FseStudioApp() {
 				currentThemeJsonFileId,
 				currentThemeJsonFile,
 				siteUrl: fsestudio.siteUrl,
+				// @ts-ignore
 				apiEndpoints: fsestudio.api_endpoints,
 				blockEditorSettings: fsestudio.blockEditorSettings,
 			} }
@@ -83,9 +101,10 @@ function FseStudioApp() {
 }
 
 function FseStudio() {
+	// @ts-ignore
 	const { currentView, currentTheme } = useContext( FseStudioContext );
 	const [ sidebarOpen, setSidebarOpen ] = useState(
-		! JSON.parse( localStorage.getItem( 'fseStudioSidebarClosed' ) )
+		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
 
 	const navigation = [
@@ -110,7 +129,8 @@ function FseStudio() {
 	];
 
 	useEffect( () => {
-		localStorage.setItem( 'fseStudioSidebarClosed', ! sidebarOpen );
+		// @ts-ignore
+		window.localStorage.setItem( 'fseStudioSidebarClosed', ! sidebarOpen );
 	}, [ sidebarOpen ] );
 
 	function renderCurrentView() {
@@ -131,11 +151,7 @@ function FseStudio() {
 
 	return (
 		<>
-			<div
-				className={ `${
-					sidebarOpen ? 'sidebar-open' : 'sidebar-closed'
-				}` }
-			>
+			<div className={ sidebarOpen ? 'sidebar-open' : 'sidebar-closed' }>
 				{ /* Static sidebar for desktop */ }
 				<div
 					className={ `hidden md:flex md:w-80 md:flex-col md:fixed md:inset-y-0 ${
