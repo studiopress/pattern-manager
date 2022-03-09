@@ -46,26 +46,23 @@ export function ThemeJsonEditor( { visible } ) {
 		}
 
 		return (
-			<>
-				<select
-					value={ currentThemeJsonFileId.value }
-					onChange={ ( event ) => {
-						setCurrentId( event.target.value );
-						currentTheme.set({
-							...theme.data,
-							theme_json_file: event.target.value,
-						})
-					} }
-				>
-					{ renderedOptions }
-				</select>
-			</>
+			<select
+				value={ currentThemeJsonFileId.value }
+				onChange={ ( event ) => {
+					currentTheme.set({
+						...currentTheme.data,
+						theme_json_file: event.target.value,
+					})
+				} }
+			>
+				{ renderedOptions }
+			</select>
 		);
 	}
 
 	function renderThemeEditorWhenReady() {
 		if ( ! currentThemeJsonFile.data ) {
-			return '';
+			return null;
 		}
 
 		return <ThemeJsonDataEditor themeJsonFile={ currentThemeJsonFile } theme={ currentTheme } />;
@@ -258,20 +255,18 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
 				<div className="flex items-center">
-					{ ( () => {
-						if ( themeJsonFile.hasSaved ) {
-							return (
-								<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-									<Icon
-										className="fill-current"
-										icon={ check }
-										size={ 26 }
-									/>{ ' ' }
-									{ __( 'Saved to disk', 'fse-studio' ) }
-								</span>
-							);
-						}
-					} )() }
+					{ themeJsonFile.hasSaved ?
+						(
+							<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+								<Icon
+									className="fill-current"
+									icon={ check }
+									size={ 26 }
+								/>{ ' ' }
+								{ __( 'Saved to disk', 'fse-studio' ) }
+							</span>
+						) : null
+					}
 					<button
 						type="button"
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -282,27 +277,6 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 					>
 						{ __( 'Save Theme and Theme Configuration File', 'fse-studio' ) }
 					</button>
-				</div>
-			</div>
-		</>
-	);
-
-	return (
-		<>
-			<div className="fsestudio-theme-json-editor">
-				<div className="grid grid-cols-9">
-					<div className="border-2 border-black">
-						Settings
-						{ renderSettings() }
-					</div>
-					<div className="border-2 border-black">Styles</div>
-					<div className="border-2 border-black">
-						Custom Templates
-					</div>
-					<div className="border-2 border-black">Template Parts</div>
-					<div className="grid grid-cols-2 gap-2 col-span-5">
-						{ renderPatternPreviews( patterns ) }
-					</div>
 				</div>
 			</div>
 		</>
@@ -338,6 +312,7 @@ function FseStudioColorPalettePicker( { themeJsonFile, color, index } ) {
 					<div className="p-2">
 						<ColorPicker
 							color={ color.color }
+							// @ts-ignore The declaration file is wrong.
 							onChange={ ( colorValue ) => {
 								const modifiedData = { ...themeJsonFile.data };
 								modifiedData.content.settings.color.palette[
