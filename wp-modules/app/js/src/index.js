@@ -24,7 +24,7 @@ import {
 	chevronLeft,
 } from '@wordpress/icons';
 
-import FseStudioContext from '../contexts/FseStudioContext';
+import FseStudioContext from './contexts/FseStudioContext';
 
 // Hooks
 import { useThemes } from './hooks/useThemes';
@@ -120,9 +120,7 @@ function FseStudioApp() {
 	};
 
 	return (
-		<FseStudioContext.Provider
-			value={ providerValue }
-		>
+		<FseStudioContext.Provider value={ providerValue }>
 			<FseStudio />
 		</FseStudioContext.Provider>
 	);

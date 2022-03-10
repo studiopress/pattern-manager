@@ -53,9 +53,9 @@ export function PatternEditor( { visible } ) {
 	const [ patternModalMode, setPatternModalMode ] = useState();
 
 	function renderPatternEditorWhenReady() {
-		return pattern.data
-			? <BlockEditor pattern={ pattern } setErrors={ setErrors } />
-			: null;
+		return pattern.data ? (
+			<BlockEditor pattern={ pattern } setErrors={ setErrors } />
+		) : null;
 	}
 
 	function formatErrorMessage( testResult ) {
@@ -95,22 +95,14 @@ export function PatternEditor( { visible } ) {
 					>
 						{ Object.keys( errors?.errors ).length }
 					</button>
-					{ errorModalOpen
-						? (
-							<Modal
-								title={ __(
-									'Errors in pattern',
-									'fse-studio'
-								) }
-								onRequestClose={ () =>
-									setErrorModalOpen( false )
-								}
-							>
-								{ formatErrorMessage( errors ) }
-							</Modal>
-						)
-						: null
-					}
+					{ errorModalOpen ? (
+						<Modal
+							title={ __( 'Errors in pattern', 'fse-studio' ) }
+							onRequestClose={ () => setErrorModalOpen( false ) }
+						>
+							{ formatErrorMessage( errors ) }
+						</Modal>
+					) : null }
 				</div>
 			);
 		}
@@ -187,36 +179,33 @@ export function PatternEditor( { visible } ) {
 					</div>
 				</div>
 			</div>
-			{ pattern.data
-				? null
-				: (
-					<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
-						<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-							{ __( 'Pattern Manager', 'fse-studio' ) }
-						</h1>
-						<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
-							<p className="text-base mb-4 max-w-3xl">
-								{ __(
-									'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
-									'fse-studio'
-								) }
-							</p>
-							<div className="bg-[#F8F8F8] p-20 w-full text-center">
-								{ renderBrowsePatternsButton() }
-							</div>
+			{ pattern.data ? null : (
+				<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
+					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
+						{ __( 'Pattern Manager', 'fse-studio' ) }
+					</h1>
+					<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
+						<p className="text-base mb-4 max-w-3xl">
+							{ __(
+								'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
+								'fse-studio'
+							) }
+						</p>
+						<div className="bg-[#F8F8F8] p-20 w-full text-center">
+							{ renderBrowsePatternsButton() }
 						</div>
 					</div>
-				)
-			}
+				</div>
+			) }
 			{ isPatternModalOpen ? (
 				<Modal
 					title={
 						patternModalMode === 'choose'
 							? __( 'Pick the patterns to edit', 'fse-studio' )
 							: __(
-								'Choose a starting point for your new pattern',
-								'fse-studio'
-							)
+									'Choose a starting point for your new pattern',
+									'fse-studio'
+							  )
 					}
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
@@ -366,7 +355,11 @@ export function BlockEditor( props ) {
 	}
 	/* eslint-enable */
 	if ( ! pattern.data ) {
-		return <span>{ __( 'Select a pattern to edit it here', 'fse-studio' ) }</span>;
+		return (
+			<span>
+				{ __( 'Select a pattern to edit it here', 'fse-studio' ) }
+			</span>
+		);
 	}
 
 	function getViewToggleClassName( toggleInQuestion ) {
