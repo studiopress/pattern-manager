@@ -1,6 +1,6 @@
 /**
- * @param {string}                  theUrl
- * @param {Record<string, unknown>} params
+ * @param {string}                 theUrl
+ * @param {Record<string, string>} params
  * @return {URL} THe full URL.
  */
 export function assembleUrl( theUrl, params ) {
