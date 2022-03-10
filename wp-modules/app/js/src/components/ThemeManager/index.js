@@ -21,7 +21,7 @@ import PatternPreview from '../PatternPreview';
 import PatternPicker from '../PatternPicker';
 
 // Utils
-import { classNames } from '../../utils/classNames';
+import classNames from '../../utils/classNames';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeManager( { visible } ) {

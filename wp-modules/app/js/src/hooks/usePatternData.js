@@ -5,7 +5,7 @@ import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
 import { fsestudio } from '../';
-import { assembleUrl } from '../utils/assembleUrl';
+import assembleUrl from '../utils/assembleUrl';
 
 /**
  * @param {string}                                                    patternId

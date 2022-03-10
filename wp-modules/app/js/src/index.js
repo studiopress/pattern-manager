@@ -40,7 +40,7 @@ import PatternEditor from './components/PatternEditor';
 import ThemeJsonEditor from './components/ThemeJsonEditor';
 
 // Utils
-import { classNames } from './utils/classNames';
+import classNames from './utils/classNames';
 
 /**
  * @typedef {{
