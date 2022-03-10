@@ -17,7 +17,7 @@ const fsestudio = /** @type {import('../').InitialFseStudio} */ ( window.fsestud
 export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
-	const [ themeData, setThemeData ] = useState();
+	const [ themeData, setThemeData ] = useState( {} );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 
 	useEffect( () => {

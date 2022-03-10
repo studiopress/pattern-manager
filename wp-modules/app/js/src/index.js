@@ -24,6 +24,8 @@ import {
 	chevronLeft,
 } from '@wordpress/icons';
 
+import FseStudioContext from '../contexts/FseStudioContext';
+
 // Hooks
 import { useThemes } from './hooks/useThemes';
 import { useCurrentId } from './hooks/useCurrentId';

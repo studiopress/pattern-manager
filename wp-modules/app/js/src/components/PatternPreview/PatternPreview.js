@@ -89,34 +89,32 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	} );
 
 	return (
-		<>
-			<div
+		<div
+			style={ {
+				position: 'relative',
+				width: '100%',
+				height: iframeInnerContentHeight / scaleMultiplier,
+				pointerEvents: 'none',
+			} }
+		>
+			<iframe
+				title={ __( 'Pattern Preview', 'fse-studio' ) }
+				ref={ iframeRef }
 				style={ {
-					position: 'relative',
-					width: '100%',
-					height: iframeInnerContentHeight / scaleMultiplier,
+					position: 'absolute',
+					top: '0',
+					left: '0',
+					width: `${ 100 * scaleMultiplier }%`,
+					height: `${ 100 * scaleMultiplier }%`,
+					display: 'block',
+					transform: 'scale(' + scale + ')',
+					transformOrigin: 'top left',
+					overflow: 'hidden',
 					pointerEvents: 'none',
 				} }
 			>
-				<iframe
-					title={ __( 'Pattern Preview', 'fse-studio' ) }
-					ref={ iframeRef }
-					style={ {
-						position: 'absolute',
-						top: '0',
-						left: '0',
-						width: `${ 100 * scaleMultiplier }%`,
-						height: `${ 100 * scaleMultiplier }%`,
-						display: 'block',
-						transform: 'scale(' + scale + ')',
-						transformOrigin: 'top left',
-						overflow: 'hidden',
-						pointerEvents: 'none',
-					} }
-				>
-					{ container && createPortal( children, container ) }
-				</iframe>
-			</div>
-		</>
+				{ container && createPortal( children, container ) }
+			</iframe>
+		</div>
 	);
 }
