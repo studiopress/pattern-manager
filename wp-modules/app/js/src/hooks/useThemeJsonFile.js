@@ -7,11 +7,18 @@ import { useState, useEffect } from '@wordpress/element';
 import { fsestudio } from '../';
 import { assembleUrl } from '../utils/assembleUrl';
 
-/** @typedef {undefined | import('./useThemeData').ThemeData} StateThemeJsonData */
+/**
+ * @typedef {{
+ *  name: string,
+ *  content: string,
+ *  renderedGlobalStyles: Record<string, unknown>,
+ *  patternPreviewParts: import('./useThemeData').PatternPreviewParts
+ * }} ThemeData
+ */
 
 /** @param {string} id */
 export function useThemeJsonFile( id ) {
-	/** @type {[StateThemeJsonData, React.Dispatch<React.SetStateAction<StateThemeJsonData>>]} */
+	/** @type {[ThemeData, React.Dispatch<React.SetStateAction<ThemeData>>]} */
 	const [ themeJsonData, setThemeJsonData ] = useState();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );

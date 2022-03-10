@@ -771,7 +771,7 @@ function ThemeTemplateFiles( { isVisible } ) {
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(
-		false
+		''
 	);
 
 	return (
@@ -805,7 +805,7 @@ function ThemeTemplateFiles( { isVisible } ) {
 								key={ 'index' }
 								blockPatternData={
 									patterns?.patterns[
-										currentTheme.data?.template_files?.index
+										currentTheme.data?.template_files.index
 									]
 								}
 								themeJsonData={ currentThemeJsonFile.data }

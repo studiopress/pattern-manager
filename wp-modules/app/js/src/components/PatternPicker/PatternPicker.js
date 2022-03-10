@@ -19,9 +19,9 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
 /**
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: import('../../hooks/useThemeData').ThemeData,
+ *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
  *  onClickPattern: Function,
- *  selectedPatterns: string[]
+ *  selectedPatterns?: string[]
  * }} props The component props.
  */
 export default function PatternPicker( {

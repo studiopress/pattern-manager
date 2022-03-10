@@ -8,7 +8,7 @@ import { fsestudio } from '../';
 import { assembleUrl } from './../utils/assembleUrl';
 
 /**
- * @typedef {{
+ * @typedef {Partial<{
  * 	 name: string,
  *   namespace: string,
  *   'index.html': string,
@@ -17,18 +17,21 @@ import { assembleUrl } from './../utils/assembleUrl';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
- *   included_patterns: Array,
+ *   included_patterns: string[],
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route: string,
  *   tags: string,
- *   template_files: Record<string, unknown>,
+ *   template_files: Partial<{
+ *    '404': string,
+ *    index: string
+ *   }>,
  *   tested_up_to: string,
  *   text_domain: string,
  *   theme_json_file: string,
  *   uri: string,
  *   version: string
- * }} Theme
+ * }>} Theme
  */
 
 /**
@@ -40,15 +43,6 @@ import { assembleUrl } from './../utils/assembleUrl';
  */
 
 /**
- * @typedef {{
- *  name: string,
- *  content: string,
- *  renderedGlobalStyles: Record<string, unknown>,
- *  patternPreviewParts: PatternPreviewParts
- * }} ThemeData
- */
-
-/**
  * @param {string}                                                    themeId
  * @param {ReturnType<import('./useThemes').useThemes>}               themes
  * @param {ReturnType<import('./useThemeJsonFile').useThemeJsonFile>} currentThemeJsonFile
@@ -57,7 +51,7 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
-	/** @type {[Theme | {}, React.Dispatch<React.SetStateAction<Theme>>]} */
+	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState( {} );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 
