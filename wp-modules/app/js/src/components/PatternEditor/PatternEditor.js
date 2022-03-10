@@ -47,10 +47,10 @@ export function PatternEditor( { visible } ) {
 		currentThemeJsonFile,
 		currentTheme
 	);
-	const [ errors, setErrors ] = useState( false );
+	const [ errors, setErrors ] = useState( { errors: {}, success: false } );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
-	const [ patternModalMode, setPatternModalMode ] = useState();
+	const [ patternModalMode, setPatternModalMode ] = useState( '' );
 
 	function renderPatternEditorWhenReady() {
 		return pattern.data ? (
@@ -83,7 +83,7 @@ export function PatternEditor( { visible } ) {
 	}
 
 	function maybeRenderErrors() {
-		if ( errors && ! errors?.success ) {
+		if ( Object.keys( errors ).length && ! errors?.success ) {
 			console.log( errors ); // eslint-disable-line
 			return (
 				<div>
@@ -343,10 +343,14 @@ export function BlockEditor( props ) {
 			);
 		}
 
+		// @ts-ignore
 		if ( currentThemeJsonFile.data?.value?.renderedGlobalStyles ) {
 			renderedStyles.push(
 				<style key={ 'renderedGlobalStyles' }>
-					{ currentThemeJsonFile.data.value.renderedGlobalStyles }
+					{
+						// @ts-ignore
+						currentThemeJsonFile.data.value.renderedGlobalStyles 
+					}
 				</style>
 			);
 		}

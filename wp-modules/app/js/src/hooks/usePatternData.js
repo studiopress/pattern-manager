@@ -1,6 +1,7 @@
 /* global fetch */
 // @ts-check
 
+import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
 import { fsestudio } from '../';
@@ -19,6 +20,8 @@ export function usePatternData(
 	currentTheme
 ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+
+	/** @type {[import('../components/PatternPicker/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker/PatternPicker').Pattern>>]} */
 	const [ patternData, setPatternData ] = useState();
 
 	useEffect( () => {

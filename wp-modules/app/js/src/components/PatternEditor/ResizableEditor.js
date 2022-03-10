@@ -39,7 +39,11 @@ const HANDLE_STYLES_OVERRIDE = {
 
 function ResizableEditor( { enableResizing, settings, ...props } ) {
 	const [ width, setWidth ] = useState( DEFAULT_STYLES.width );
+
+	/** @type {[string | number, React.Dispatch<React.SetStateAction<string | number>>]} */
 	const [ height, setHeight ] = useState( DEFAULT_STYLES.height );
+
+	/** @type {React.MutableRefObject<HTMLIFrameElement>} */
 	const iframeRef = useRef();
 	const mouseMoveTypingResetRef = useMouseMoveTypingReset();
 	const ref = useMergeRefs( [ iframeRef, mouseMoveTypingResetRef ] );
@@ -74,6 +78,7 @@ function ResizableEditor( { enableResizing, settings, ...props } ) {
 			function registerObserver() {
 				resizeObserver?.disconnect();
 
+				// @ts-ignore
 				resizeObserver = new iframe.contentWindow.ResizeObserver(
 					resizeHeight
 				);

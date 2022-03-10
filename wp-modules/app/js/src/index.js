@@ -54,7 +54,10 @@ import { classNames } from './utils/classNames';
  *   saveThemeEndpoint: string,
  *   saveThemeJsonFileEndpoint:	string
  *  },
- *  blockEditorSettings: Record<string, unknown>,
+ *  blockEditorSettings: Partial<{
+ *   '__unstableResolvedAssets': {styles: string},
+ *   styles: Record<string, unknown>[]
+ *  }>,
  *  initialTheme: string,
  *  patterns: Record<string, import('./components/PatternPicker/PatternPicker.js').Pattern>,
  *  siteUrl: string,

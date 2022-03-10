@@ -1,3 +1,3 @@
 import { createContext } from '@wordpress/element';
 
-export default createContext( [ {}, function () {} ] );
+export default createContext( {} );
