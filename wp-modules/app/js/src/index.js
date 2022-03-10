@@ -47,7 +47,7 @@ import { classNames } from './utils/classNames';
 /**
  * @typedef {{
  *  apiEndpoints: {
- * 	 getPatternEndpoint: string,
+ *   getPatternEndpoint: string,
  *   getThemeEndpoint: string,
  *   getThemeJsonFileEndpoint: string,
  *   savePatternEndpoint: string,
@@ -59,7 +59,7 @@ import { classNames } from './utils/classNames';
  *  patterns: Record<string, import('./components/PatternPicker/PatternPicker.js').Pattern>,
  *  siteUrl: string,
  *  themeJsonFiles: Record<string, {
- * 	 content: Record<string, unknown>,
+ *   content: Record<string, unknown>,
  *   name: string,
  *   patternPreviewParts: import('./components/PatternPicker/PatternPicker').PatternPreviewParts | null
  *  }>,

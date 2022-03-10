@@ -142,4 +142,3 @@ function ResizableEditor( { enableResizing, settings, ...props } ) {
 }
 
 export default ResizableEditor;
-/* eslint-enable */
