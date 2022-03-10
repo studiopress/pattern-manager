@@ -9,7 +9,7 @@ import assembleUrl from './../utils/assembleUrl';
 
 /**
  * @typedef {Partial<{
- * 	 name: string,
+ *   name: string,
  *   namespace: string,
  *   'index.html': string,
  *   '404.html': string,
