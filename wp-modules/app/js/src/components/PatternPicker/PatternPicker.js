@@ -1,6 +1,5 @@
 // @ts-check
 
-import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './utils/searchItems.js';

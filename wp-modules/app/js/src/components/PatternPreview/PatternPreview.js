@@ -1,4 +1,5 @@
 // @ts-check
+
 import * as React from 'react';
 import { useState, useEffect, createPortal, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';

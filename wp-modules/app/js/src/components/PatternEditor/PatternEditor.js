@@ -1,5 +1,3 @@
-import { __ } from '@wordpress/i18n';
-
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies
@@ -22,6 +20,7 @@ import {
 // @ts-check
 import ResizableEditor from './ResizableEditor';
 import { useMergeRefs } from '@wordpress/compose';
+import { __ } from '@wordpress/i18n';
 import { Icon, layout } from '@wordpress/icons';
 import { serialize, parse } from '@wordpress/blocks';
 import { SlotFillProvider, Popover, Modal } from '@wordpress/components';

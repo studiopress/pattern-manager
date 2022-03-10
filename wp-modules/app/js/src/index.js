@@ -4,13 +4,11 @@
  * Fse Studio
  */
 
-import * as React from 'react';
-import { __ } from '@wordpress/i18n';
-
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useEffect, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import ReactDOM from 'react-dom';
 
 // Icons
