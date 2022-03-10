@@ -807,7 +807,7 @@ function ThemeTemplateFiles( { isVisible } ) {
 								key={ 'index' }
 								blockPatternData={
 									patterns?.patterns[
-										currentTheme.data?.template_files.index
+										currentTheme.data?.template_files?.index
 									]
 								}
 								themeJsonData={ currentThemeJsonFile.data }

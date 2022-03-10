@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { useState } from '@wordpress/element';
 
-/** @param {string} initial */
+/** @param {{currentView: string}} initial */
 export default function useCurrentView( initial ) {
 	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
-	const [ currentView, set ] = useState( initial );
+	const [ currentView, set ] = useState( initial.currentView );
 
 	return {
 		currentView,
