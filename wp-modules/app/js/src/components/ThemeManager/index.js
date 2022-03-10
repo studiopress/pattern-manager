@@ -676,7 +676,7 @@ function ThemePatterns( { isVisible } ) {
 						</button>
 					</p>
 				</div>
-				{ currentTheme.data.included_patterns.length ? (
+				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
 						<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
 							{ __(
