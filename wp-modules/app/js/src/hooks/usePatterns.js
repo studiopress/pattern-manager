@@ -3,9 +3,9 @@
 import { useState } from '@wordpress/element';
 
 /**
- * @param {import('../').InitialFseStudio.patterns} initialPatterns
+ * @param {module:Main.InitialFseStudio.patterns} initialPatterns
  * @return {{
- *  patterns: import('../').InitialFseStudio.patterns,
+ *  patterns: typeof import('../').fsestudio.patterns,
  *  setPatterns: Function
  * }} The patterns and a way to change them.
  */

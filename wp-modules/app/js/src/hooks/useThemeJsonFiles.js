@@ -3,9 +3,9 @@
 import { useState } from '@wordpress/element';
 
 /**
- * @param {import('../').InitialFseStudio.themeJsonFiles} initial
+ * @param {typeof import('../').fsestudio.themeJsonFiles} initial
  * @return {{
- *  themeJsonFiles: import('../').InitialFseStudio.themeJsonFiles,
+ *  themeJsonFiles: typeof import('../').fsestudio.themeJsonFiles,
  *  setThemeJsonFiles: Function
  * }} The theme JSON files and a way to change them.
  */

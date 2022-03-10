@@ -3,16 +3,14 @@
 
 import { useState, useEffect } from '@wordpress/element';
 
-// Utils
+import { fsestudio } from '../';
 import { assembleUrl } from '../utils/assembleUrl';
-
-const fsestudio = /** @type {import('../').InitialFseStudio} */ ( window.fsestudio );
 
 /**
  * @param {string}                                        patternId
- * @param {import('../').InitialFseStudio.patterns}       patterns
+ * @param {module:Main.InitialFseStudio.patterns}         patterns
  * @param {import('./useThemeJsonFile').useThemeJsonFile} currentThemeJsonFile
- * @param {import('../').InitialFseStudio.patterns}       currentTheme
+ * @param {module:Main.InitialFseStudio.patterns}         currentTheme
  */
 export function usePatternData(
 	patternId,

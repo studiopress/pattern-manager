@@ -4,7 +4,7 @@ import { useState, useEffect } from '@wordpress/element';
 
 /**
  * @param {{
- *  themes: import('../').InitialFseStudio.themeJsonFiles,
+ *  themes: typeof import('../').fsestudio.themes,
  *  currentThemeJsonFile: ReturnType<import('./useThemeJsonFile').useThemeJsonFile>
  * }} The themes and a way to change them.
  */

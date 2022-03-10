@@ -29,7 +29,7 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
  *  patterns: Record<string, Pattern>,
  *  themeJsonData: PatternPreviewParts,
  *  onClickPattern: Function,
- *  selectedPatterns?: string[]
+ *  selectedPatterns: string[]
  * }} props The component props.
  */
 export default function PatternPicker( {

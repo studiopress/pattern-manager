@@ -3,10 +3,8 @@
 
 import { useState, useEffect } from '@wordpress/element';
 
-// Utils
-import { assembleUrl } from './../utils/assembleUrl';
-
-const fsestudio = /** @type {import('../').InitialFseStudio} */ ( window.fsestudio );
+import { fsestudio } from '../';
+import { assembleUrl } from '../utils/assembleUrl';
 
 /** @param {string} id */
 export function useThemeJsonFile( id ) {

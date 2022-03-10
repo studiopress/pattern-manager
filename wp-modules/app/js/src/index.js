@@ -84,7 +84,7 @@ import { classNames } from './utils/classNames';
  */
 
 // @ts-ignore The global window.fsestudio exists.
-const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
+export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
