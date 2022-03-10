@@ -1,6 +1,7 @@
 /* global fetch */
 // @ts-check
 
+import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
 import { fsestudio } from '../';
@@ -8,12 +9,20 @@ import { assembleUrl } from './../utils/assembleUrl';
 
 /**
  * @param {string}                                                    themeId
- * @param {typeof import('../').fsestudio}                            themes
+ * @param {ReturnType<import('./useThemes').useThemes>}               themes
  * @param {ReturnType<import('./useThemeJsonFile').useThemeJsonFile>} currentThemeJsonFile
  */
 export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
+
+	/**
+	 * @typedef {{
+	 *  name: string,
+	 *  theme_json_file: string
+	 * } | {}} ThemeData
+	 */
+	/** @type {[ThemeData, React.Dispatch<React.SetStateAction<ThemeData>>]} */
 	const [ themeData, setThemeData ] = useState( {} );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 
@@ -34,6 +43,7 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			}
 			setFetchInProgress( true );
 			fetch(
+				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getThemeEndpoint, {
 					themeId: thisThemeId,
 				} ),

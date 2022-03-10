@@ -7,10 +7,10 @@ import { fsestudio } from '../';
 import { assembleUrl } from '../utils/assembleUrl';
 
 /**
- * @param {string}                                        patternId
- * @param {module:Main.InitialFseStudio.patterns}         patterns
- * @param {import('./useThemeJsonFile').useThemeJsonFile} currentThemeJsonFile
- * @param {module:Main.InitialFseStudio.patterns}         currentTheme
+ * @param {string}                                                    patternId
+ * @param {module:Main.InitialFseStudio.patterns}                     patterns
+ * @param {ReturnType<import('./useThemeJsonFile').useThemeJsonFile>} currentThemeJsonFile
+ * @param {module:Main.InitialFseStudio.patterns}                     currentTheme
  */
 export function usePatternData(
 	patternId,
@@ -35,6 +35,7 @@ export function usePatternData(
 			setFetchInProgress( true );
 
 			fetch(
+				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getPatternEndpoint, {
 					patternId: thisPatternId,
 				} ),

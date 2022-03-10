@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * @param {{
  *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,
- *  themeJsonData: import('../PatternPicker/PatternPicker').ThemeJsonData,
+ *  themeJsonData: typeof import('../../').fsestudio.themeJsonFiles,
  *  scale: number,
  *  onLoad?: Function
  * }} props
@@ -48,7 +48,7 @@ export function PatternPreview( {
  * @param {{
  *   onLoad: Function,
  *   children: React.ReactElement[],
- * 	 scale?: number
+ * 	 scale: number
  * }} props
  */
 function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {

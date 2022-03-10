@@ -9,6 +9,7 @@ import { useState, useEffect } from '@wordpress/element';
  * }} The themes and a way to change them.
  */
 export function useThemes( { themes, currentThemeJsonFile } ) {
+	/** @typedef {ReturnType<import('./useThemeData').useThemeData>} UseThemeData */
 	const [ theThemes, setTheThemes ] = useState( themes );
 
 	useEffect( () => {

@@ -21,13 +21,13 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
  *  renderedPatterns: Record<string, string>,
  *  wp_head: string,
  *  wp_footer: string
- * }} PatternPreviewParts
+ * }} ThemeJsonData
  */
 
 /**
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: PatternPreviewParts,
+ *  themeJsonData: ThemeJsonData,
  *  onClickPattern: Function,
  *  selectedPatterns: string[]
  * }} props The component props.

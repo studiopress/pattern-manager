@@ -61,7 +61,7 @@ import { classNames } from './utils/classNames';
  *  themeJsonFiles: Record<string, {
  *   content: Record<string, unknown>,
  *   name: string,
- *   patternPreviewParts: import('./components/PatternPicker/PatternPicker').PatternPreviewParts | null
+ *   patternPreviewParts: import('./components/PatternPicker/PatternPicker').ThemeJsonData | null
  *  }>,
  *  themes: Record<string, unknown>
  * }} InitialFseStudio

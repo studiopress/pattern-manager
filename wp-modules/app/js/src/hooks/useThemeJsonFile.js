@@ -1,15 +1,19 @@
 /* global fetch */
 // @ts-check
 
+import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
 import { fsestudio } from '../';
 import { assembleUrl } from '../utils/assembleUrl';
 
+/** @typedef {undefined | import('../components/PatternPicker/PatternPicker').ThemeJsonData} StateThemeJsonData */
+
 /** @param {string} id */
 export function useThemeJsonFile( id ) {
-	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+	/** @type {[StateThemeJsonData, React.Dispatch<React.SetStateAction<StateThemeJsonData>>]} */
 	const [ themeJsonData, setThemeJsonData ] = useState();
+	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	useEffect( () => {
@@ -29,6 +33,7 @@ export function useThemeJsonFile( id ) {
 			}
 			setFetchInProgress( true );
 			fetch(
+				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getThemeJsonFileEndpoint, {
 					filename: id,
 				} ),
