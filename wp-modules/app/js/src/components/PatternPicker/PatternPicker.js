@@ -17,17 +17,9 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
  */
 
 /**
- * @typedef {{
- *  renderedPatterns: Record<string, string>,
- *  wp_head: string,
- *  wp_footer: string
- * }} ThemeJsonData
- */
-
-/**
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: ThemeJsonData,
+ *  themeJsonData: import('../../hooks/useThemeData').ThemeData,
  *  onClickPattern: Function,
  *  selectedPatterns: string[]
  * }} props The component props.

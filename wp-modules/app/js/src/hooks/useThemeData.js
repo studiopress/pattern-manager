@@ -8,6 +8,47 @@ import { fsestudio } from '../';
 import { assembleUrl } from './../utils/assembleUrl';
 
 /**
+ * @typedef {{
+ * 	 name: string,
+ *   namespace: string,
+ *   'index.html': string,
+ *   '404.html': string,
+ *   author: string,
+ *   author_uri: string,
+ *   description: string,
+ *   dirname: string,
+ *   included_patterns: Array,
+ *   requires_php: string,
+ *   requires_wp: string,
+ *   rest_route: string,
+ *   tags: string,
+ *   template_files: Record<string, unknown>,
+ *   tested_up_to: string,
+ *   text_domain: string,
+ *   theme_json_file: string,
+ *   uri: string,
+ *   version: string
+ * }} Theme
+ */
+
+/**
+ * @typedef {{
+ *  wp_head: string,
+ *  wp_footer: string,
+ *  renderedPatterns: string
+ * }} PatternPreviewParts
+ */
+
+/**
+ * @typedef {{
+ *  name: string,
+ *  content: string,
+ *  renderedGlobalStyles: Record<string, unknown>,
+ *  patternPreviewParts: PatternPreviewParts
+ * }} ThemeData
+ */
+
+/**
  * @param {string}                                                    themeId
  * @param {ReturnType<import('./useThemes').useThemes>}               themes
  * @param {ReturnType<import('./useThemeJsonFile').useThemeJsonFile>} currentThemeJsonFile
@@ -16,13 +57,7 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
-	/**
-	 * @typedef {{
-	 *  name: string,
-	 *  theme_json_file: string
-	 * } | {}} ThemeData
-	 */
-	/** @type {[ThemeData, React.Dispatch<React.SetStateAction<ThemeData>>]} */
+	/** @type {[Theme | {}, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState( {} );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 

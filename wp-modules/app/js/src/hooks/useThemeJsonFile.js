@@ -7,7 +7,7 @@ import { useState, useEffect } from '@wordpress/element';
 import { fsestudio } from '../';
 import { assembleUrl } from '../utils/assembleUrl';
 
-/** @typedef {undefined | import('../components/PatternPicker/PatternPicker').ThemeJsonData} StateThemeJsonData */
+/** @typedef {undefined | import('./useThemeData').ThemeData} StateThemeJsonData */
 
 /** @param {string} id */
 export function useThemeJsonFile( id ) {

@@ -45,10 +45,10 @@ export function ThemeJsonEditor( { visible } ) {
 			<select
 				value={ currentThemeJsonFileId.value }
 				onChange={ ( event ) => {
-					currentTheme.set({
+					currentTheme.set( {
 						...currentTheme.data,
 						theme_json_file: event.target.value,
-					})
+					} )
 				} }
 			>
 				{ renderedOptions }

@@ -63,7 +63,7 @@ import { classNames } from './utils/classNames';
  *   name: string,
  *   patternPreviewParts: import('./components/PatternPicker/PatternPicker').ThemeJsonData | null
  *  }>,
- *  themes: Record<string, unknown>
+ *  themes: Record<string, import('./hooks/useThemeData').Theme>
  * }} InitialFseStudio
  */
 

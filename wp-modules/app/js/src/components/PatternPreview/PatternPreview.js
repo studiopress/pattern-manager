@@ -7,7 +7,7 @@ import { __ } from '@wordpress/i18n';
 /**
  * @param {{
  *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,
- *  themeJsonData: typeof import('../../').fsestudio.themeJsonFiles,
+ *  themeJsonData: import('../../hooks/useThemeData').ThemeData,
  *  scale: number,
  *  onLoad?: Function
  * }} props
