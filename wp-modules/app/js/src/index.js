@@ -36,7 +36,7 @@ import useStudioContext from './hooks/useStudioContext';
 
 // Components
 import { ThemeManager } from './components/ThemeManager/ThemeManager.js';
-import { PatternEditor } from './components/PatternEditor/PatternEditor.js';
+import PatternEditor from './components/PatternEditor';
 import { ThemeJsonEditor } from './components/ThemeJsonEditor/ThemeJsonEditor.js';
 
 // Utils
