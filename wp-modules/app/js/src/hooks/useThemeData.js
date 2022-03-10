@@ -43,8 +43,8 @@ import assembleUrl from './../utils/assembleUrl';
  */
 
 /**
- * @param {string}                                                    themeId
- * @param {ReturnType<import('./useThemes').default>}               themes
+ * @param {string}                                           themeId
+ * @param {ReturnType<import('./useThemes').default>}        themes
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  */
 export default function useThemeData( themeId, themes, currentThemeJsonFile ) {

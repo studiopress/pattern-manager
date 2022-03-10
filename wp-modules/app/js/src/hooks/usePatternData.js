@@ -8,10 +8,10 @@ import { fsestudio } from '../';
 import assembleUrl from '../utils/assembleUrl';
 
 /**
- * @param {string}                                                    patternId
- * @param {module:Main.InitialFseStudio.patterns}                     patterns
+ * @param {string}                                           patternId
+ * @param {module:Main.InitialFseStudio.patterns}            patterns
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
- * @param {ReturnType<import('./useThemeData').default>}         currentTheme
+ * @param {ReturnType<import('./useThemeData').default>}     currentTheme
  */
 export default function usePatternData(
 	patternId,
