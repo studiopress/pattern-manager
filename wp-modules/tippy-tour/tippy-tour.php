@@ -16,29 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// Get the tour data.
-$tour_data = require 'tour-data.php';
-
-// Do nothing if the slug of the tour is not a URL param.
-if ( ! isset( $_GET[ $tour_data['tourSlug'] ] ) ) {
-	return;
-}
-
-/**
- * Enqueue the stepped tour file in the WpeBeacon plugin.
- */
-function enqueue_stepped_tour_file() {
-	if ( function_exists( 'Tippy\SteppedTour\enqueue' ) ) {
-		add_action( 'init', 'Tippy\SteppedTour\enqueue' );
-	}
-}
-add_action( 'init', __NAMESPACE__ . '\enqueue_stepped_tour_file', 9 );
-
 /**
  * Output the javascript that creates this tour.
  */
 function create_tour() {
+	// Get the tour data.
+	$tour_data = require 'tour-data.php';
+
+	// Do nothing if the slug of the tour is not a URL param.
+	if ( ! isset( $_GET[ $tour_data['tourSlug'] ] ) ) { /// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+
 	if ( function_exists( 'Tippy\SteppedTour\enqueue' ) ) {
+		\Tippy\SteppedTour\enqueue();
 		wp_add_inline_script(
 			'wpe_beacon_stepped_tour',
 			'wpeBeaconCreateSteppedTour(' . wp_json_encode( require 'tour-data.php' ) . ');'

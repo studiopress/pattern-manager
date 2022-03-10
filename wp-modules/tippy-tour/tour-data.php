@@ -1,4 +1,15 @@
 <?php
+/**
+ * The data for the tour.
+ *
+ * @package fse-studio
+ */
+
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 return [
 	'tourTitle'   => __( 'FSE Studio Tour', 'fse-studio' ),
 	'tourSlug'    => 'FseStudioTour',
