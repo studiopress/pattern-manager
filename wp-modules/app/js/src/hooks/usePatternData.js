@@ -21,7 +21,7 @@ export function usePatternData(
 ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 
-	/** @type {[import('../components/PatternPicker/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker/PatternPicker').Pattern>>]} */
+	/** @type {[import('../components/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker').Pattern>>]} */
 	const [ patternData, setPatternData ] = useState();
 
 	useEffect( () => {

@@ -18,7 +18,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
 import { PatternPreview } from './../PatternPreview/PatternPreview.js';
-import PatternPicker from './../PatternPicker/PatternPicker.js';
+import PatternPicker from '../PatternPicker';
 
 // Utils
 import { classNames } from './../../utils/classNames';

@@ -57,7 +57,7 @@ import { classNames } from './utils/classNames';
  *   styles: Record<string, unknown>[]
  *  }>,
  *  initialTheme: string,
- *  patterns: Record<string, import('./components/PatternPicker/PatternPicker.js').Pattern>,
+ *  patterns: Record<string, import('./components/PatternPicker').Pattern>,
  *  siteUrl: string,
  *  themeJsonFiles: Record<string, {
  *   content: string,

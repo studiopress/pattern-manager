@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 
 /**
  * @param {{
- *  blockPatternData: import('../PatternPicker/PatternPicker').Pattern,
+ *  blockPatternData: import('../PatternPicker').Pattern,
  *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
  *  scale: number,
  *  onLoad?: Function
