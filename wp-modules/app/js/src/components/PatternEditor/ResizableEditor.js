@@ -38,6 +38,13 @@ const HANDLE_STYLES_OVERRIDE = {
 	left: undefined,
 };
 
+/**
+ * @param {{
+ *   enableResizing: boolean,
+ *   settings: Record<string, unknown>,
+ *   ...props: Record<string, unknown>
+ * }} props
+ */
 function ResizableEditor( { enableResizing, settings, ...props } ) {
 	const [ width, setWidth ] = useState( DEFAULT_STYLES.width );
 
