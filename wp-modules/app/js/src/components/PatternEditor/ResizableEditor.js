@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * WordPress dependencies
  */
@@ -14,6 +12,8 @@ import {
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useMergeRefs } from '@wordpress/compose';
+
+// @ts-check
 
 /**
  * Internal dependencies
