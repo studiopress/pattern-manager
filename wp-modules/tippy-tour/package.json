@@ -11,14 +11,10 @@
   "author": "",
   "license": "GPL v2 or greater",
   "devDependencies": {
-    "@wordpress/scripts": "^19.1.0",
-    "prettier": "^2.5.0"
+    "@wordpress/scripts": "^19.1.0"
   },
   "dependencies": {
-    "@testing-library/dom": "^8.11.1",
-    "@wordpress/data": "^6.1.4",
-    "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.2.4",
-    "@wpebeacon/beaconstep": "file:../../../tippy/wp-modules/beaconstep"
+    "@wpebeacon/stepped-tour": "file:../../../tippy/wp-modules/stepped-tour"
   }
 }

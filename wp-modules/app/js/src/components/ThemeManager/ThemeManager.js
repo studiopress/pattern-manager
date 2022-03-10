@@ -301,7 +301,8 @@ function ThemeSetup( { isVisible } ) {
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
-							aria-label={ __( 'theme name field', 'fse-studio' ) }
+							id="theme-name"
+							aria-label={ __( 'Theme Name', 'fse-studio' ) }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							value={ currentTheme?.data?.name ?? '' }
@@ -324,6 +325,8 @@ function ThemeSetup( { isVisible } ) {
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
+							id="directory-name"
+							aria-label={ __( 'Directory Name', 'fse-studio' ) }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							value={
