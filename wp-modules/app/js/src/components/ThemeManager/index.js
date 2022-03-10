@@ -283,6 +283,7 @@ function ThemeDataEditor() {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
 
@@ -627,6 +628,7 @@ function ThemeSetup( { isVisible } ) {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemePatterns( { isVisible } ) {
 	const {
 		patterns,
