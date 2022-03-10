@@ -35,7 +35,7 @@ import useCurrentView from './hooks/useCurrentView';
 import useStudioContext from './hooks/useStudioContext';
 
 // Components
-import ThemeManager from './components/ThemeManager/index.js';
+import ThemeManager from './components/ThemeManager';
 import PatternEditor from './components/PatternEditor';
 import ThemeJsonEditor from './components/ThemeJsonEditor';
 

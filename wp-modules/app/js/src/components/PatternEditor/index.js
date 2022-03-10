@@ -34,7 +34,7 @@ import usePatternData from '../../hooks/usePatternData';
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
-import PatternPicker from '../PatternPicker/index.js';
+import PatternPicker from '../PatternPicker';
 
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
