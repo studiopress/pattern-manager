@@ -25,19 +25,19 @@ import {
 import FseStudioContext from './contexts/FseStudioContext';
 
 // Hooks
-import { useThemes } from './hooks/useThemes';
-import { useCurrentId } from './hooks/useCurrentId';
-import { useThemeData } from './hooks/useThemeData';
-import { useThemeJsonFiles } from './hooks/useThemeJsonFiles';
-import { useThemeJsonFile } from './hooks/useThemeJsonFile';
-import { usePatterns } from './hooks/usePatterns';
-import { useCurrentView } from './hooks/useCurrentView';
+import useThemes from './hooks/useThemes';
+import useCurrentId from './hooks/useCurrentId';
+import useThemeData from './hooks/useThemeData';
+import useThemeJsonFiles from './hooks/useThemeJsonFiles';
+import useThemeJsonFile from './hooks/useThemeJsonFile';
+import usePatterns from './hooks/usePatterns';
+import useCurrentView from './hooks/useCurrentView';
 import useStudioContext from './hooks/useStudioContext';
 
 // Components
-import { ThemeManager } from './components/ThemeManager/ThemeManager.js';
+import ThemeManager from './components/ThemeManager/index.js';
 import PatternEditor from './components/PatternEditor';
-import { ThemeJsonEditor } from './components/ThemeJsonEditor/ThemeJsonEditor.js';
+import ThemeJsonEditor from './components/ThemeJsonEditor';
 
 // Utils
 import { classNames } from './utils/classNames';
@@ -70,14 +70,14 @@ import { classNames } from './utils/classNames';
 
 /**
  * @typedef {{
- *  currentView: ReturnType<import('./hooks/useCurrentView').useCurrentView>,
- *  patterns: ReturnType<import('./hooks/usePatterns').usePatterns>,
- *  themes: ReturnType<import('./hooks/useThemes').useThemes>,
- *  currentThemeId: ReturnType<import('./hooks/useCurrentId').useCurrentId>,
- *  currentTheme: ReturnType<import('./hooks/useThemeData').useThemeData>,
- *  themeJsonFiles: ReturnType<import('./hooks/useThemeJsonFiles').useThemeJsonFiles>,
- *  currentThemeJsonFileId: ReturnType<import('./hooks/useCurrentId').useCurrentId>,
- *  currentThemeJsonFile: ReturnType<import('./hooks/useThemeJsonFile').useThemeJsonFile>,
+ *  currentView: ReturnType<import('./hooks/useCurrentView').default>,
+ *  patterns: ReturnType<import('./hooks/usePatterns').default>,
+ *  themes: ReturnType<import('./hooks/useThemes').default>,
+ *  currentThemeId: ReturnType<import('./hooks/useCurrentId').default>,
+ *  currentTheme: ReturnType<import('./hooks/useThemeData').default>,
+ *  themeJsonFiles: ReturnType<import('./hooks/useThemeJsonFiles').default>,
+ *  currentThemeJsonFileId: ReturnType<import('./hooks/useCurrentId').default>,
+ *  currentThemeJsonFile: ReturnType<import('./hooks/useThemeJsonFile').default>,
  *  siteUrl: InitialFseStudio['siteUrl'],
  *  apiEndpoints: InitialFseStudio['apiEndpoints'],
  *  blockEditorSettings: InitialFseStudio['blockEditorSettings']

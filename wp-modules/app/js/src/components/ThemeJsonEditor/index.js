@@ -10,11 +10,11 @@ import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
-import { PatternPreview } from '../PatternPreview/PatternPreview';
-import useStudioContext from './../../hooks/useStudioContext';
+import PatternPreview from '../PatternPreview';
+import useStudioContext from '../../hooks/useStudioContext';
 
 /** @param {{visible: boolean}} props */
-export function ThemeJsonEditor( { visible } ) {
+export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
 	const { themeJsonFiles, currentTheme, currentThemeJsonFileId, currentThemeJsonFile } = useStudioContext();
 

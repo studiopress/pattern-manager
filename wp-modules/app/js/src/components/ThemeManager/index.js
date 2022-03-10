@@ -17,14 +17,14 @@ import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
-import { PatternPreview } from './../PatternPreview/PatternPreview.js';
+import PatternPreview from '../PatternPreview';
 import PatternPicker from '../PatternPicker';
 
 // Utils
-import { classNames } from './../../utils/classNames';
+import { classNames } from '../../utils/classNames';
 
 /** @param {{visible: boolean}} props */
-export function ThemeManager( { visible } ) {
+export default function ThemeManager( { visible } ) {
 	const {
 		themes,
 		currentThemeId,

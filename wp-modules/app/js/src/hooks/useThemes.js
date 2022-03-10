@@ -6,10 +6,10 @@ import { useState, useEffect } from '@wordpress/element';
 /**
  * @param {{
  *  themes: typeof import('../').fsestudio.themes,
- *  currentThemeJsonFile: ReturnType<import('./useThemeJsonFile').useThemeJsonFile>
+ *  currentThemeJsonFile: ReturnType<import('./useThemeJsonFile').default>
  * }} The themes.
  */
-export function useThemes( { themes, currentThemeJsonFile } ) {
+export default function useThemes( { themes, currentThemeJsonFile } ) {
 	/** @type {[typeof import('../').fsestudio.themes, React.Dispatch<React.SetStateAction<typeof import('../').fsestudio.themes>>]} */
 	const [ theThemes, setTheThemes ] = useState( themes );
 

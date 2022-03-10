@@ -12,7 +12,7 @@ import { __ } from '@wordpress/i18n';
  *  onLoad?: Function
  * }} props
  */
-export function PatternPreview( {
+export default function PatternPreview( {
 	blockPatternData,
 	themeJsonData,
 	scale,

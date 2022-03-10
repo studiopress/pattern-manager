@@ -10,10 +10,10 @@ import { assembleUrl } from '../utils/assembleUrl';
 /**
  * @param {string}                                                    patternId
  * @param {module:Main.InitialFseStudio.patterns}                     patterns
- * @param {ReturnType<import('./useThemeJsonFile').useThemeJsonFile>} currentThemeJsonFile
- * @param {ReturnType<import('./useThemeData').useThemeData>}         currentTheme
+ * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
+ * @param {ReturnType<import('./useThemeData').default>}         currentTheme
  */
-export function usePatternData(
+export default function usePatternData(
 	patternId,
 	patterns,
 	currentThemeJsonFile,

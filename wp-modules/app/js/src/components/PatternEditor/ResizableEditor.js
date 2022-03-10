@@ -10,7 +10,6 @@ import {
 	__unstableIframe as Iframe,
 	__unstableUseMouseMoveTypingReset as useMouseMoveTypingReset,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import { useMergeRefs } from '@wordpress/compose';
 
 // @ts-check

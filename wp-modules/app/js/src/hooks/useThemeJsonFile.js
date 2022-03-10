@@ -17,7 +17,7 @@ import { assembleUrl } from '../utils/assembleUrl';
  */
 
 /** @param {string} id */
-export function useThemeJsonFile( id ) {
+export default function useThemeJsonFile( id ) {
 	/** @type {[ThemeData, React.Dispatch<React.SetStateAction<ThemeData>>]} */
 	const [ themeJsonData, setThemeJsonData ] = useState();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
