@@ -1,15 +1,11 @@
 // @ts-check
 
+import * as React from 'react';
 import { useState } from '@wordpress/element';
 
-/**
- * @param {string} initial
- * @return {{
- *  currentView: string,
- *  set: Function
- * }} The current view and a way to change it.
- */
+/** @param {string} initial */
 export function useCurrentView( initial ) {
+	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
 	const [ currentView, set ] = useState( initial );
 
 	return {

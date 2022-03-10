@@ -1,19 +1,11 @@
 // @ts-check
 
+import * as React from 'react';
 import { useState } from '@wordpress/element';
 
-/**
- * @typedef {{
- *  value: string,
- *  set: Function
- * }} CurrentId
- */
-
-/**
- * @param {string} [initialId]
- * @return {CurrentId} The current ID and a way to change it.
- */
+/** @param {string} [initialId] */
 export function useCurrentId( initialId ) {
+	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
 	const [ value, set ] = useState( initialId );
 
 	return {

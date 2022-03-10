@@ -62,9 +62,9 @@ import { classNames } from './utils/classNames';
  *  patterns: Record<string, import('./components/PatternPicker/PatternPicker.js').Pattern>,
  *  siteUrl: string,
  *  themeJsonFiles: Record<string, {
- *   content: Record<string, unknown>,
+ *   content: string,
  *   name: string,
- *   patternPreviewParts: import('./hooks/useThemeJsonFile').ThemeData | null
+ *   patternPreviewParts?: import('./hooks/useThemeJsonFile').ThemeData | null
  *  }>,
  *  themes: Record<string, import('./hooks/useThemeData').Theme>
  * }} InitialFseStudio

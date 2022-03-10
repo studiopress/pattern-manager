@@ -8,7 +8,7 @@ import { PatternPreview } from './../PatternPreview/PatternPreview.js';
 
 /**
  * @typedef {{
- * 	categories: Array,
+ *  categories: Array,
  *  content: string,
  *  name: string,
  *  title: string,

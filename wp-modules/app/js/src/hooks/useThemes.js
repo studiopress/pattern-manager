@@ -1,15 +1,16 @@
 // @ts-check
 
+import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
 /**
  * @param {{
  *  themes: typeof import('../').fsestudio.themes,
  *  currentThemeJsonFile: ReturnType<import('./useThemeJsonFile').useThemeJsonFile>
- * }} The themes and a way to change them.
+ * }} The themes.
  */
 export function useThemes( { themes, currentThemeJsonFile } ) {
-	/** @typedef {ReturnType<import('./useThemeData').useThemeData>} UseThemeData */
+	/** @type {[typeof import('../').fsestudio.themes, React.Dispatch<React.SetStateAction<typeof import('../').fsestudio.themes>>]} */
 	const [ theThemes, setTheThemes ] = useState( themes );
 
 	useEffect( () => {

@@ -36,7 +36,7 @@ export function ThemeManager( { visible } ) {
 		if ( currentTheme.data?.theme_json_file ) {
 			currentThemeJsonFileId.set( currentTheme.data?.theme_json_file );
 		} else {
-			currentThemeJsonFileId.set( false );
+			currentThemeJsonFileId.set( '' );
 		}
 	}, [ currentTheme ] );
 
