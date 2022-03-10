@@ -4,11 +4,10 @@
  * Genesis Studio App
  */
 
-import { __ } from '@wordpress/i18n';
-
 // WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
 import { PatternPreview } from '../PatternPreview/PatternPreview';
