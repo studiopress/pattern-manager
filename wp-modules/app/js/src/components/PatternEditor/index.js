@@ -88,11 +88,11 @@ export default function PatternEditor( { visible } ) {
 		return output;
 	}
 
-	function maybeRenderErrors( patternErrors ) {
-		const numberOfErrors = Object.keys( patternErrors?.errors ).length;
+	function maybeRenderErrors( errors ) {
+		const numberOfErrors = Object.keys( errors?.errors ).length;
 
-		if ( numberOfErrors && ! patternErrors?.success ) {
-			console.log( patternErrors ); // eslint-disable-line
+		if ( numberOfErrors && ! errors?.success ) {
+			console.log( errors ); // eslint-disable-line
 			return (
 				<div>
 					<span>Errors </span>
