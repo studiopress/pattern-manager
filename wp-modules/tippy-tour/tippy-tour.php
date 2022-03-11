@@ -24,7 +24,7 @@ function create_tour() {
 	$tour_data = require 'tour-data.php';
 
 	// Do nothing if the slug of the tour is not a URL param.
-	if ( ! isset( $_GET[ $tour_data['tourSlug'] ] ) ) { /// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! isset( $_GET[ $tour_data['tourSlug'] ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
