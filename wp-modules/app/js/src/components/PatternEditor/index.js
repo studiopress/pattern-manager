@@ -88,7 +88,7 @@ export default function PatternEditor( { visible } ) {
 		return output;
 	}
 
-	function maybeRenderErrors( errors ) {
+	function maybeRenderErrors() {
 		const numberOfErrors = Object.keys( errors?.errors ).length;
 
 		if ( numberOfErrors && ! errors?.success ) {
