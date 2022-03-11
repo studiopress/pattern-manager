@@ -48,7 +48,6 @@ export default function PatternEditor( { visible } ) {
 	);
 	const initialErrors = { errors: {}, success: false };
 
-	/** @type {[typeof initialErrors, React.Dispatch<React.SetStateAction<typeof initialErrors>>]} */
 	const [ errors, setErrors ] = useState( initialErrors );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
@@ -89,9 +88,11 @@ export default function PatternEditor( { visible } ) {
 		return output;
 	}
 
-	function maybeRenderErrors() {
-		if ( Object.keys( errors?.errors ).length && ! errors?.success ) {
-			console.log( errors ); // eslint-disable-line
+	function maybeRenderErrors( patternErrors ) {
+		const numberOfErrors = Object.keys( patternErrors?.errors ).length;
+
+		if ( numberOfErrors && ! patternErrors?.success ) {
+			console.log( patternErrors ); // eslint-disable-line
 			return (
 				<div>
 					<span>Errors </span>
@@ -100,7 +101,7 @@ export default function PatternEditor( { visible } ) {
 							setErrorModalOpen( true );
 						} }
 					>
-						{ Object.keys( errors?.errors ).length }
+						{ numberOfErrors }
 					</button>
 					{ errorModalOpen ? (
 						<Modal
