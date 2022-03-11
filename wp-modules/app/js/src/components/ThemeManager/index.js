@@ -75,7 +75,7 @@ export default function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! currentTheme.data ) {
+		if ( ! Object.keys( currentTheme.data ).length ) {
 			return null;
 		}
 
