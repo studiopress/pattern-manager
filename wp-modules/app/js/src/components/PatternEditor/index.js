@@ -46,14 +46,22 @@ export default function PatternEditor( { visible } ) {
 		currentThemeJsonFile,
 		currentTheme
 	);
-	const [ errors, setErrors ] = useState( { errors: {}, success: false } );
+	const initialErrors = { errors: {}, success: false };
+
+	/** @type {[typeof initialErrors, React.Dispatch<React.SetStateAction<typeof initialErrors>>]} */
+	const [ errors, setErrors ] = useState( initialErrors );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
 	const [ patternModalMode, setPatternModalMode ] = useState( '' );
 
 	function renderPatternEditorWhenReady() {
 		return pattern.data ? (
-			<BlockEditor pattern={ pattern } setErrors={ setErrors } />
+			<BlockEditor
+				pattern={ pattern }
+				removeErrors={ () => {
+					setErrors( initialErrors );
+				} }
+			/>
 		) : null;
 	}
 
@@ -82,7 +90,7 @@ export default function PatternEditor( { visible } ) {
 	}
 
 	function maybeRenderErrors() {
-		if ( Object.keys( errors.errors ).length && ! errors?.success ) {
+		if ( Object.keys( errors?.errors ).length && ! errors?.success ) {
 			console.log( errors ); // eslint-disable-line
 			return (
 				<div>
@@ -289,13 +297,13 @@ export function BlockEditor( props ) {
 					: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
 			)
 		);
-		props.setErrors( false );
+		props.removeErrors();
 	}, [ pattern?.data?.name ] );
 
 	// When blocks are changed in the block editor, update them in their corresponding files as well.
 	useEffect( () => {
 		// Tests temporarily disabled. Will re-enable in another dedicated effort.
-		//props.setErrors( testPatternForErrors( blocks ) );
+		// props.removeErrors( testPatternForErrors( blocks ) );
 
 		pattern.set( {
 			...pattern.data,
