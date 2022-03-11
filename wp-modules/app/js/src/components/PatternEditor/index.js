@@ -82,7 +82,7 @@ export default function PatternEditor( { visible } ) {
 	}
 
 	function maybeRenderErrors() {
-		if ( Object.keys( errors ).length && ! errors?.success ) {
+		if ( Object.keys( errors.errors ).length && ! errors?.success ) {
 			console.log( errors ); // eslint-disable-line
 			return (
 				<div>
