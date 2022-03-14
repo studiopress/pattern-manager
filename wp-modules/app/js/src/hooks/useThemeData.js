@@ -1,14 +1,58 @@
-/* global fetch, fsestudio */
+/* global fetch */
+// @ts-check
 
+import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
-// Utils
-import { assembleUrl } from './../utils/assembleUrl';
+import { fsestudio } from '../';
+import assembleUrl from './../utils/assembleUrl';
 
-export function useThemeData( themeId, themes, currentThemeJsonFile ) {
+/**
+ * @typedef {Partial<{
+ *   name: string,
+ *   namespace: string,
+ *   'index.html': string,
+ *   '404.html': string,
+ *   author: string,
+ *   author_uri: string,
+ *   description: string,
+ *   dirname: string,
+ *   included_patterns: string[],
+ *   requires_php: string,
+ *   requires_wp: string,
+ *   rest_route: string,
+ *   tags: string,
+ *   template_files: Partial<{
+ *    '404': string,
+ *    index: string
+ *   }>,
+ *   tested_up_to: string,
+ *   text_domain: string,
+ *   theme_json_file: string,
+ *   uri: string,
+ *   version: string
+ * }>} Theme
+ */
+
+/**
+ * @typedef {{
+ *  wp_head: string,
+ *  wp_footer: string,
+ *  renderedPatterns: string
+ * }} PatternPreviewParts
+ */
+
+/**
+ * @param {string}                                           themeId
+ * @param {ReturnType<import('./useThemes').default>}        themes
+ * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
+ */
+export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
-	const [ themeData, setThemeData ] = useState();
+
+	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
+	const [ themeData, setThemeData ] = useState( {} );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 
 	useEffect( () => {
@@ -28,6 +72,7 @@ export function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			}
 			setFetchInProgress( true );
 			fetch(
+				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getThemeEndpoint, {
 					themeId: thisThemeId,
 				} ),

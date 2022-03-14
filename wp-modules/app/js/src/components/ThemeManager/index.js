@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Fse Studio
  */
@@ -5,7 +7,6 @@
 // WP Dependencies.
 import {
 	createInterpolateElement,
-	useContext,
 	useEffect,
 	useState,
 } from '@wordpress/element';
@@ -13,29 +14,29 @@ import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 
-// Context
-import { FseStudioContext } from './../../contexts/FseStudioContext';
+import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
-import { PatternPreview } from './../PatternPreview/PatternPreview.js';
-import PatternPicker from './../PatternPicker/PatternPicker.js';
+import PatternPreview from '../PatternPreview';
+import PatternPicker from '../PatternPicker';
 
 // Utils
-import { classNames } from './../../utils/classNames';
+import classNames from '../../utils/classNames';
 
-export function ThemeManager( { visible } ) {
+/** @param {{visible: boolean}} props */
+export default function ThemeManager( { visible } ) {
 	const {
 		themes,
 		currentThemeId,
 		currentTheme,
 		currentThemeJsonFileId,
-	} = useContext( FseStudioContext );
+	} = useStudioContext();
 
 	useEffect( () => {
 		if ( currentTheme.data?.theme_json_file ) {
 			currentThemeJsonFileId.set( currentTheme.data?.theme_json_file );
 		} else {
-			currentThemeJsonFileId.set( false );
+			currentThemeJsonFileId.set( '' );
 		}
 	}, [ currentTheme ] );
 
@@ -74,8 +75,8 @@ export function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! currentTheme.data ) {
-			return '';
+		if ( ! Object.keys( currentTheme.data ).length ) {
+			return null;
 		}
 
 		return <ThemeDataEditor />;
@@ -153,7 +154,7 @@ export function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor() {
-	const { currentTheme } = useContext( FseStudioContext );
+	const { currentTheme } = useStudioContext();
 
 	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
 		'theme_setup'
@@ -254,23 +255,19 @@ function ThemeDataEditor() {
 				</button>
 
 				<div className="flex items-center">
-					{ ( () => {
-						if ( currentTheme.hasSaved ) {
-							return (
-								<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-									<Icon
-										className="fill-current"
-										icon={ check }
-										size={ 26 }
-									/>{ ' ' }
-									{ __(
-										'Theme saved to your /themes/ folder',
-										'fse-studio'
-									) }
-								</span>
-							);
-						}
-					} )() }
+					{ currentTheme.hasSaved ? (
+						<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+							<Icon
+								className="fill-current"
+								icon={ check }
+								size={ 26 }
+							/>{ ' ' }
+							{ __(
+								'Theme saved to your /themes/ folder',
+								'fse-studio'
+							) }
+						</span>
+					) : null }
 					<button
 						type="button"
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -286,8 +283,9 @@ function ThemeDataEditor() {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemeSetup( { isVisible } ) {
-	const { currentTheme } = useContext( FseStudioContext );
+	const { currentTheme } = useStudioContext();
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -630,13 +628,14 @@ function ThemeSetup( { isVisible } ) {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemePatterns( { isVisible } ) {
 	const {
 		patterns,
 		currentTheme,
 		currentThemeJsonFile,
 		currentView,
-	} = useContext( FseStudioContext );
+	} = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 
@@ -677,7 +676,7 @@ function ThemePatterns( { isVisible } ) {
 						</button>
 					</p>
 				</div>
-				{ currentTheme.data.included_patterns.length ? (
+				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
 						<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
 							{ __(
@@ -761,7 +760,6 @@ function ThemePatterns( { isVisible } ) {
 								} );
 							}
 						} }
-						selectMultiple={ true }
 					/>
 				</Modal>
 			) : null }
@@ -769,14 +767,13 @@ function ThemePatterns( { isVisible } ) {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemeTemplateFiles( { isVisible } ) {
-	const { patterns, currentTheme, currentThemeJsonFile } = useContext(
-		FseStudioContext
-	);
+	const { patterns, currentTheme, currentThemeJsonFile } = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(
-		false
+		''
 	);
 
 	return (

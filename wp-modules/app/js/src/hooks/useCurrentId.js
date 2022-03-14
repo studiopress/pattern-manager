@@ -1,7 +1,12 @@
+// @ts-check
+
+import * as React from 'react';
 import { useState } from '@wordpress/element';
 
-export function useCurrentId( initial ) {
-	const [ value, set ] = useState( initial );
+/** @param {string} [initialId] */
+export default function useCurrentId( initialId ) {
+	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
+	const [ value, set ] = useState( initialId );
 
 	return {
 		value,

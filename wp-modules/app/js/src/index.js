@@ -1,15 +1,14 @@
+// @ts-check
+
 /**
  * Fse Studio
  */
 
-/* global fsestudio, localStorage */
-
-const { __ } = wp.i18n;
-
 import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
-import { useContext, useEffect, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 import ReactDOM from 'react-dom';
 
 // Icons
@@ -23,29 +22,74 @@ import {
 	chevronLeft,
 } from '@wordpress/icons';
 
-// Context
-import { FseStudioContext } from './contexts/FseStudioContext';
+import FseStudioContext from './contexts/FseStudioContext';
 
 // Hooks
-import { useThemes } from './hooks/useThemes';
-import { useCurrentId } from './hooks/useCurrentId';
-import { useThemeData } from './hooks/useThemeData';
-import { useThemeJsonFiles } from './hooks/useThemeJsonFiles';
-import { useThemeJsonFile } from './hooks/useThemeJsonFile';
-import { usePatterns } from './hooks/usePatterns';
-import { useCurrentView } from './hooks/useCurrentView';
+import useThemes from './hooks/useThemes';
+import useCurrentId from './hooks/useCurrentId';
+import useThemeData from './hooks/useThemeData';
+import useThemeJsonFiles from './hooks/useThemeJsonFiles';
+import useThemeJsonFile from './hooks/useThemeJsonFile';
+import usePatterns from './hooks/usePatterns';
+import useCurrentView from './hooks/useCurrentView';
+import useStudioContext from './hooks/useStudioContext';
 
 // Components
-import { ThemeManager } from './components/ThemeManager/ThemeManager.js';
-import { PatternEditor } from './components/PatternEditor/PatternEditor.js';
-import { ThemeJsonEditor } from './components/ThemeJsonEditor/ThemeJsonEditor.js';
+import ThemeManager from './components/ThemeManager';
+import PatternEditor from './components/PatternEditor';
+import ThemeJsonEditor from './components/ThemeJsonEditor';
 
 // Utils
-import { classNames } from './utils/classNames';
+import classNames from './utils/classNames';
+
+/**
+ * @typedef {{
+ *  apiEndpoints: {
+ *   getPatternEndpoint: string,
+ *   getThemeEndpoint: string,
+ *   getThemeJsonFileEndpoint: string,
+ *   savePatternEndpoint: string,
+ *   saveThemeEndpoint: string,
+ *   saveThemeJsonFileEndpoint:	string
+ *  },
+ *  blockEditorSettings: Partial<{
+ *   '__unstableResolvedAssets': {styles: string},
+ *   styles: Record<string, unknown>[]
+ *  }>,
+ *  initialTheme: string,
+ *  patterns: Record<string, import('./components/PatternPicker').Pattern>,
+ *  siteUrl: string,
+ *  themeJsonFiles: Record<string, {
+ *   content: string,
+ *   name: string,
+ *   patternPreviewParts?: import('./hooks/useThemeJsonFile').ThemeData | null
+ *  }>,
+ *  themes: Record<string, import('./hooks/useThemeData').Theme>
+ * }} InitialFseStudio
+ */
+
+/**
+ * @typedef {{
+ *  currentView: ReturnType<import('./hooks/useCurrentView').default>,
+ *  patterns: ReturnType<import('./hooks/usePatterns').default>,
+ *  themes: ReturnType<import('./hooks/useThemes').default>,
+ *  currentThemeId: ReturnType<import('./hooks/useCurrentId').default>,
+ *  currentTheme: ReturnType<import('./hooks/useThemeData').default>,
+ *  themeJsonFiles: ReturnType<import('./hooks/useThemeJsonFiles').default>,
+ *  currentThemeJsonFileId: ReturnType<import('./hooks/useCurrentId').default>,
+ *  currentThemeJsonFile: ReturnType<import('./hooks/useThemeJsonFile').default>,
+ *  siteUrl: InitialFseStudio['siteUrl'],
+ *  apiEndpoints: InitialFseStudio['apiEndpoints'],
+ *  blockEditorSettings: InitialFseStudio['blockEditorSettings']
+ * }} InitialContext
+ */
+
+// @ts-ignore The global window.fsestudio exists.
+export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
-export function FseStudioApp() {
+function FseStudioApp() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
 		currentThemeJsonFileId.value
@@ -57,35 +101,37 @@ export function FseStudioApp() {
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
 
+	/** @type {InitialContext} */
+	const providerValue = {
+		currentView: useCurrentView( 'theme_manager' ),
+		patterns: usePatterns( fsestudio.patterns ),
+		themes,
+		currentThemeId,
+		currentTheme: useThemeData(
+			currentThemeId.value,
+			themes,
+			currentThemeJsonFile
+		),
+		themeJsonFiles,
+		currentThemeJsonFileId,
+		currentThemeJsonFile,
+		siteUrl: fsestudio.siteUrl,
+		apiEndpoints: fsestudio.apiEndpoints,
+		blockEditorSettings: fsestudio.blockEditorSettings,
+	};
+
 	return (
-		<FseStudioContext.Provider
-			value={ {
-				currentView: useCurrentView( { currentView: 'theme_manager' } ),
-				patterns: usePatterns( fsestudio.patterns ),
-				themes,
-				currentThemeId,
-				currentTheme: useThemeData(
-					currentThemeId.value,
-					themes,
-					currentThemeJsonFile
-				),
-				themeJsonFiles,
-				currentThemeJsonFileId,
-				currentThemeJsonFile,
-				siteUrl: fsestudio.siteUrl,
-				apiEndpoints: fsestudio.api_endpoints,
-				blockEditorSettings: fsestudio.blockEditorSettings,
-			} }
-		>
+		<FseStudioContext.Provider value={ providerValue }>
 			<FseStudio />
 		</FseStudioContext.Provider>
 	);
 }
 
 function FseStudio() {
-	const { currentView, currentTheme } = useContext( FseStudioContext );
+	// @ts-ignore
+	const { currentView, currentTheme } = useStudioContext();
 	const [ sidebarOpen, setSidebarOpen ] = useState(
-		! JSON.parse( localStorage.getItem( 'fseStudioSidebarClosed' ) )
+		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
 
 	const navigation = [
@@ -110,7 +156,8 @@ function FseStudio() {
 	];
 
 	useEffect( () => {
-		localStorage.setItem( 'fseStudioSidebarClosed', ! sidebarOpen );
+		// @ts-ignore
+		window.localStorage.setItem( 'fseStudioSidebarClosed', ! sidebarOpen );
 	}, [ sidebarOpen ] );
 
 	function renderCurrentView() {
@@ -131,11 +178,7 @@ function FseStudio() {
 
 	return (
 		<>
-			<div
-				className={ `${
-					sidebarOpen ? 'sidebar-open' : 'sidebar-closed'
-				}` }
-			>
+			<div className={ sidebarOpen ? 'sidebar-open' : 'sidebar-closed' }>
 				{ /* Static sidebar for desktop */ }
 				<div
 					className={ `hidden md:flex md:w-80 md:flex-col md:fixed md:inset-y-0 ${

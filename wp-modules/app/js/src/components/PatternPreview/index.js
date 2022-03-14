@@ -1,18 +1,25 @@
+// @ts-check
+
+import * as React from 'react';
 import { useState, useEffect, createPortal, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-export function PatternPreview( {
+/**
+ * @param {{
+ *  blockPatternData: import('../PatternPicker').Pattern,
+ *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
+ *  scale: number,
+ *  onLoad?: Function
+ * }} props
+ */
+export default function PatternPreview( {
 	blockPatternData,
 	themeJsonData,
 	scale,
 	onLoad = () => {},
 } ) {
 	return (
-		<Portal
-			scale={ scale }
-			onLoad={ onLoad }
-			patternData={ blockPatternData }
-		>
+		<Portal scale={ scale } onLoad={ onLoad }>
 			<div
 				className="wp-head"
 				dangerouslySetInnerHTML={ {
@@ -37,6 +44,13 @@ export function PatternPreview( {
 	);
 }
 
+/**
+ * @param {{
+ *   onLoad: Function,
+ *   children: React.ReactElement[],
+ *   scale: number
+ * }} props
+ */
 function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
@@ -44,6 +58,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	);
 	const isMountedRef = useRef( false );
 
+	// @ts-ignore
 	const container = iframeRef?.contentWindow?.document?.body;
 
 	const scaleMultiplier = 10 / ( scale * 10 );
@@ -75,34 +90,33 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	} );
 
 	return (
-		<>
-			<div
+		<div
+			style={ {
+				position: 'relative',
+				width: '100%',
+				height: iframeInnerContentHeight / scaleMultiplier,
+				pointerEvents: 'none',
+			} }
+		>
+			<iframe
+				title={ __( 'Pattern Preview', 'fse-studio' ) }
+				// @ts-ignore
+				ref={ setRef }
 				style={ {
-					position: 'relative',
-					width: '100%',
-					height: iframeInnerContentHeight / scaleMultiplier,
+					position: 'absolute',
+					top: '0',
+					left: '0',
+					width: `${ 100 * scaleMultiplier }%`,
+					height: `${ 100 * scaleMultiplier }%`,
+					display: 'block',
+					transform: 'scale(' + scale + ')',
+					transformOrigin: 'top left',
+					overflow: 'hidden',
 					pointerEvents: 'none',
 				} }
 			>
-				<iframe
-					title={ __( 'Pattern Preview', 'fse-studio' ) }
-					ref={ setRef }
-					style={ {
-						position: 'absolute',
-						top: '0',
-						left: '0',
-						width: 100 * scaleMultiplier + '%',
-						height: 100 * scaleMultiplier + '%',
-						display: 'block',
-						transform: 'scale(' + scale + ')',
-						transformOrigin: 'top left',
-						overflow: 'hidden',
-						pointerEvents: 'none',
-					} }
-				>
-					{ container && createPortal( children, container ) }
-				</iframe>
-			</div>
-		</>
+				{ container && createPortal( children, container ) }
+			</iframe>
+		</div>
 	);
 }

@@ -10,8 +10,9 @@ import {
 	__unstableIframe as Iframe,
 	__unstableUseMouseMoveTypingReset as useMouseMoveTypingReset,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
 import { useMergeRefs } from '@wordpress/compose';
+
+// @ts-check
 
 /**
  * Internal dependencies
@@ -37,9 +38,20 @@ const HANDLE_STYLES_OVERRIDE = {
 	left: undefined,
 };
 
+/**
+ * @param {{
+ *   enableResizing: boolean,
+ *   settings: Record<string, unknown>,
+ *   ...props: Record<string, unknown>
+ * }} props
+ */
 function ResizableEditor( { enableResizing, settings, ...props } ) {
 	const [ width, setWidth ] = useState( DEFAULT_STYLES.width );
+
+	/** @type {[string | number, React.Dispatch<React.SetStateAction<string | number>>]} */
 	const [ height, setHeight ] = useState( DEFAULT_STYLES.height );
+
+	/** @type {React.MutableRefObject<HTMLIFrameElement>} */
 	const iframeRef = useRef();
 	const mouseMoveTypingResetRef = useMouseMoveTypingReset();
 	const ref = useMergeRefs( [ iframeRef, mouseMoveTypingResetRef ] );
@@ -74,6 +86,7 @@ function ResizableEditor( { enableResizing, settings, ...props } ) {
 			function registerObserver() {
 				resizeObserver?.disconnect();
 
+				// @ts-ignore
 				resizeObserver = new iframe.contentWindow.ResizeObserver(
 					resizeHeight
 				);
@@ -142,4 +155,3 @@ function ResizableEditor( { enableResizing, settings, ...props } ) {
 }
 
 export default ResizableEditor;
-/* eslint-enable */

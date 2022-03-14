@@ -1,5 +1,3 @@
-const { __ } = wp.i18n;
-
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies
@@ -19,46 +17,51 @@ import {
 	__unstableUseTypingObserver as useTypingObserver,
 } from '@wordpress/block-editor';
 /* eslint-enable */
+// @ts-check
 import ResizableEditor from './ResizableEditor';
 import { useMergeRefs } from '@wordpress/compose';
+import { __ } from '@wordpress/i18n';
 import { Icon, layout } from '@wordpress/icons';
 import { serialize, parse } from '@wordpress/blocks';
 import { SlotFillProvider, Popover, Modal } from '@wordpress/components';
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import { useContext, useState, useEffect, useRef } from '@wordpress/element';
-
-// Context
-import { FseStudioContext } from './../../contexts/FseStudioContext';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Hooks
-import { usePatternData } from './../../hooks/usePatternData';
+import usePatternData from '../../hooks/usePatternData';
+import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
-import PatternPicker from './../PatternPicker/PatternPicker.js';
+import PatternPicker from '../PatternPicker';
 
-export function PatternEditor( { visible } ) {
-	const { patterns, currentThemeJsonFile, currentTheme } = useContext(
-		FseStudioContext
-	);
-	const [ currentPatternId, setCurrentPatternId ] = useState();
+/** @param {{visible: boolean}} props */
+export default function PatternEditor( { visible } ) {
+	const { patterns, currentThemeJsonFile, currentTheme } = useStudioContext();
+	const [ currentPatternId, setCurrentPatternId ] = useState( '' );
 	const pattern = usePatternData(
 		currentPatternId,
 		patterns,
 		currentThemeJsonFile,
 		currentTheme
 	);
-	const [ errors, setErrors ] = useState( false );
+	const initialErrors = { errors: {}, success: false };
+
+	const [ errors, setErrors ] = useState( initialErrors );
 	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
-	const [ patternModalMode, setPatternModalMode ] = useState();
+	const [ patternModalMode, setPatternModalMode ] = useState( '' );
 
 	function renderPatternEditorWhenReady() {
-		if ( pattern.data ) {
-			return <BlockEditor pattern={ pattern } setErrors={ setErrors } />;
-		}
-		return '';
+		return pattern.data ? (
+			<BlockEditor
+				pattern={ pattern }
+				removeErrors={ () => {
+					setErrors( initialErrors );
+				} }
+			/>
+		) : null;
 	}
 
 	function formatErrorMessage( testResult ) {
@@ -86,10 +89,10 @@ export function PatternEditor( { visible } ) {
 	}
 
 	function maybeRenderErrors() {
-		if ( errors && ! errors?.success ) {
-			/* eslint-disable */
-			console.log( errors );
-			/* eslint-enable */
+		const numberOfErrors = Object.keys( errors?.errors ).length;
+
+		if ( numberOfErrors && ! errors?.success ) {
+			console.log( errors ); // eslint-disable-line
 			return (
 				<div>
 					<span>Errors </span>
@@ -98,29 +101,21 @@ export function PatternEditor( { visible } ) {
 							setErrorModalOpen( true );
 						} }
 					>
-						{ Object.keys( errors?.errors ).length }
+						{ numberOfErrors }
 					</button>
-					{ ( () => {
-						if ( errorModalOpen ) {
-							return (
-								<Modal
-									title={ __(
-										'Errors in pattern',
-										'fse-studio'
-									) }
-									onRequestClose={ () =>
-										setErrorModalOpen( false )
-									}
-								>
-									{ formatErrorMessage( errors ) }
-								</Modal>
-							);
-						}
-					} )() }
+					{ errorModalOpen ? (
+						<Modal
+							title={ __( 'Errors in pattern', 'fse-studio' ) }
+							onRequestClose={ () => setErrorModalOpen( false ) }
+						>
+							{ formatErrorMessage( errors ) }
+						</Modal>
+					) : null }
 				</div>
 			);
 		}
-		return '';
+
+		return null;
 	}
 
 	function renderBrowsePatternsButton() {
@@ -192,28 +187,24 @@ export function PatternEditor( { visible } ) {
 					</div>
 				</div>
 			</div>
-			{ ( () => {
-				if ( ! pattern.data ) {
-					return (
-						<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
-							<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-								{ __( 'Pattern Manager', 'fse-studio' ) }
-							</h1>
-							<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
-								<p className="text-base mb-4 max-w-3xl">
-									{ __(
-										'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
-										'fse-studio'
-									) }
-								</p>
-								<div className="bg-[#F8F8F8] p-20 w-full text-center">
-									{ renderBrowsePatternsButton() }
-								</div>
-							</div>
+			{ pattern.data ? null : (
+				<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
+					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
+						{ __( 'Pattern Manager', 'fse-studio' ) }
+					</h1>
+					<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
+						<p className="text-base mb-4 max-w-3xl">
+							{ __(
+								'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
+								'fse-studio'
+							) }
+						</p>
+						<div className="bg-[#F8F8F8] p-20 w-full text-center">
+							{ renderBrowsePatternsButton() }
 						</div>
-					);
-				}
-			} )() }
+					</div>
+				</div>
+			) }
 			{ isPatternModalOpen ? (
 				<Modal
 					title={
@@ -232,10 +223,13 @@ export function PatternEditor( { visible } ) {
 						<PatternPicker
 							patterns={ patterns.patterns }
 							themeJsonData={ currentThemeJsonFile.data }
-							onClickPattern={ ( clickedPatternId ) => {
-								setCurrentPatternId( clickedPatternId );
-								setIsPatternModalOpen( false );
-							} }
+							onClickPattern={
+								/** @param {string} clickedPatternId */
+								( clickedPatternId ) => {
+									setCurrentPatternId( clickedPatternId );
+									setIsPatternModalOpen( false );
+								}
+							}
 						/>
 					) : null }
 					{ patternModalMode === 'create' ? (
@@ -279,9 +273,7 @@ export function BlockEditor( props ) {
 	const contentRef = useRef();
 	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
 
-	const { blockEditorSettings, currentThemeJsonFile } = useContext(
-		FseStudioContext
-	);
+	const { blockEditorSettings, currentThemeJsonFile } = useStudioContext();
 	const pattern = props.pattern;
 
 	const [ blocks, updateBlocks ] = useState( [
@@ -292,7 +284,7 @@ export function BlockEditor( props ) {
 		),
 	] );
 
-	const [ serializedBlocks, updateSerializedBlocks ] = useState();
+	const [ serializedBlocks, updateSerializedBlocks ] = useState( '' );
 
 	const [ currentView, setCurrentView ] = useState( 'blockEditor' ); //Other option is "frontend"
 	const [ editorWidth, setEditorWidth ] = useState( '100%' );
@@ -306,13 +298,13 @@ export function BlockEditor( props ) {
 					: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
 			)
 		);
-		props.setErrors( false );
+		props.removeErrors();
 	}, [ pattern?.data?.name ] );
 
 	// When blocks are changed in the block editor, update them in their corresponding files as well.
 	useEffect( () => {
 		// Tests temporarily disabled. Will re-enable in another dedicated effort.
-		//props.setErrors( testPatternForErrors( blocks ) );
+		// props.removeErrors( testPatternForErrors( blocks ) );
 
 		pattern.set( {
 			...pattern.data,
@@ -359,10 +351,14 @@ export function BlockEditor( props ) {
 			);
 		}
 
-		if ( currentThemeJsonFileData?.value?.renderedGlobalStyles ) {
+		// @ts-ignore
+		if ( currentThemeJsonFile.data?.value?.renderedGlobalStyles ) {
 			renderedStyles.push(
 				<style key={ 'renderedGlobalStyles' }>
-					{ currentThemeJsonFileData.value.renderedGlobalStyles }
+					{
+						// @ts-ignore
+						currentThemeJsonFile.data.value.renderedGlobalStyles 
+					}
 				</style>
 			);
 		}
@@ -371,7 +367,11 @@ export function BlockEditor( props ) {
 	}
 	/* eslint-enable */
 	if ( ! pattern.data ) {
-		return 'Select a pattern to edit it here';
+		return (
+			<span>
+				{ __( 'Select a pattern to edit it here', 'fse-studio' ) }
+			</span>
+		);
 	}
 
 	function getViewToggleClassName( toggleInQuestion ) {
@@ -379,7 +379,7 @@ export function BlockEditor( props ) {
 			return ' fsestudio-active-tab';
 		}
 
-		return '';
+		return null;
 	}
 
 	return (
@@ -424,7 +424,7 @@ export function BlockEditor( props ) {
 							setCurrentView( 'frontend' );
 						} }
 					>
-						Frontend Preview
+						{ __( 'Frontend Preview', 'fse-studio' ) }
 					</button>
 					<select
 						onChange={ ( event ) => {
@@ -432,11 +432,11 @@ export function BlockEditor( props ) {
 						} }
 						value={ editorWidth }
 					>
-						<option value={ '100%' }>Desktop</option>
-						<option value={ '320px' }>320px (iPhone 5/SE)</option>
-						<option value={ '375px' }>375px (iPhone X)</option>
-						<option value={ '768px' }>768px (iPad)</option>
-						<option value={ '1024px' }>1024px (iPad Pro)</option>
+						<option value="100%">Desktop</option>
+						<option value="320px">320px (iPhone 5/SE)</option>
+						<option value="375px">375px (iPhone X)</option>
+						<option value="768px">768px (iPad)</option>
+						<option value="1024px">1024px (iPad Pro)</option>
 					</select>
 				</div>
 			</div>
@@ -456,7 +456,10 @@ export function BlockEditor( props ) {
 							} catch ( error ) {
 								/* eslint-disable */
 								alert(
-									'Invalid block content. Please check your code to make sure it is valid.'
+									__(
+										'Invalid block content. Please check your code to make sure it is valid.',
+										'fse-studio'
+									)
 								);
 								/* eslint-enable */
 								return;

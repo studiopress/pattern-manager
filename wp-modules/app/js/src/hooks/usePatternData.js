@@ -1,17 +1,27 @@
-/* global fetch, fsestudio */
+/* global fetch */
+// @ts-check
 
+import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
-// Utils
-import { assembleUrl } from '../utils/assembleUrl';
+import { fsestudio } from '../';
+import assembleUrl from '../utils/assembleUrl';
 
-export function usePatternData(
+/**
+ * @param {string}                                           patternId
+ * @param {module:Main.InitialFseStudio.patterns}            patterns
+ * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
+ * @param {ReturnType<import('./useThemeData').default>}     currentTheme
+ */
+export default function usePatternData(
 	patternId,
 	patterns,
 	currentThemeJsonFile,
 	currentTheme
 ) {
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+
+	/** @type {[import('../components/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker').Pattern>>]} */
 	const [ patternData, setPatternData ] = useState();
 
 	useEffect( () => {
@@ -28,6 +38,7 @@ export function usePatternData(
 			setFetchInProgress( true );
 
 			fetch(
+				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getPatternEndpoint, {
 					patternId: thisPatternId,
 				} ),
