@@ -22,6 +22,7 @@ import PatternPicker from '../PatternPicker';
 
 // Utils
 import classNames from '../../utils/classNames';
+import convertToSlug from '../../utils/convertToSlug';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeManager( { visible } ) {
@@ -306,6 +307,7 @@ function ThemeSetup( { isVisible } ) {
 								currentTheme.set( {
 									...currentTheme.data,
 									name: event.target.value,
+									dirname: convertToSlug( event.target.value ),
 								} );
 							} }
 						/>
@@ -323,17 +325,8 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
-							value={
-								currentTheme?.data?.dirname
-									? currentTheme.data.dirname
-									: ''
-							}
-							onChange={ ( event ) => {
-								currentTheme.set( {
-									...currentTheme.data,
-									dirname: event.target.value,
-								} );
-							} }
+							value={ currentTheme?.data?.dirname ?? '' }
+							disabled
 						/>
 					</div>
 				</div>
