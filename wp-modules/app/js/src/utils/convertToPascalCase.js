@@ -1,3 +1,4 @@
+/** @param {string} name */
 function capitalize( name ) {
 	return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }
@@ -11,7 +12,7 @@ function capitalize( name ) {
  export default function convertToPascalCase( toConvert = '' ) {
 	return toConvert
 		.replace( 
-			/(^|_|[^\w])([\w]*)/g,
+			/(^|[^\w])([\w]*)/g,
 			( fullMatch, firstMatch, secondMatch ) => capitalize( secondMatch )
 		)
 }
