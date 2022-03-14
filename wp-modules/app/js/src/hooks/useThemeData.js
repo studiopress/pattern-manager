@@ -5,7 +5,9 @@ import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
 import { fsestudio } from '../';
-import assembleUrl from './../utils/assembleUrl';
+import assembleUrl from '../utils/assembleUrl';
+import convertToSlug from '../utils/convertToSlug';
+import convertToPascalCase from '../utils/convertToPascalCase';
 
 /**
  * @typedef {Partial<{
@@ -63,6 +65,14 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 		// If the themeId passed in changes, get the new theme data related to it.
 		getThemeData( themeId );
 	}, [ themeId ] );
+
+	useEffect( () => {
+		setThemeData( {
+			...themeData,
+			dirname: convertToSlug( themeData.name ),
+			namespace: convertToPascalCase( themeData.name ),
+		} );
+	}, [ themeData.name ] );
 
 	function getThemeData( thisThemeId ) {
 		return new Promise( ( resolve ) => {
