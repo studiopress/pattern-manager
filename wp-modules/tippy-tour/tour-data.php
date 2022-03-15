@@ -57,7 +57,7 @@ return [
 				'html' => __( 'Give your theme a unique name', 'fse-studio' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Give your theme a unique name', 'fse-studio' ) . __( 'Looks good! Feel free to keep working on your unique name. When ready, click "next".', 'fse-studio' ),
+				'html'    => __( 'Give your theme a unique name', 'fse-studio' ) . ' ' . __( 'Looks good! Feel free to keep working on your unique name. When ready, click "next".', 'fse-studio' ),
 				'type'    => 'elementDoesNotHaveValues',
 				'element' => [
 					'role'   => 'textbox',
@@ -106,7 +106,7 @@ return [
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Give your theme a unique namespace', 'fse-studio' ) . __( 'This is the PHP namespace that will be used to ensure your theme\'s code does not conflict with any other themes.', 'fse-studio' ),
+				'html' => __( 'Give your theme a unique namespace', 'fse-studio' ) . ' ' . __( 'This is the PHP namespace that will be used to ensure your theme\'s code does not conflict with any other themes.', 'fse-studio' ),
 			],
 			'completionData'     => [
 				'html'    => __( 'Great Job', 'fse-studio' ),
