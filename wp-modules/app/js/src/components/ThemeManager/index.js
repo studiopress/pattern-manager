@@ -63,7 +63,7 @@ export default function ThemeManager( { visible } ) {
 			<>
 				<select
 					className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
-					name="themes"
+					id="themes"
 					value={ currentThemeId.value }
 					onChange={ ( event ) => {
 						currentThemeId.set( event.target.value );
