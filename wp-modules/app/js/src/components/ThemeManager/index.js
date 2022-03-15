@@ -229,17 +229,6 @@ function ThemeDataEditor() {
 						themeEditorCurrentTab === 'theme_template_files'
 					}
 				/>
-				{ themeEditorCurrentTab === 'theme_setup' ? (
-					<div className="w-72 bg-gray-100 p-5 self-start">
-						<h3>{ __( 'Sidebar', 'fse-studio' ) }</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Donec ac purus nec diam laoreet sollicitudin.
-							Fusce ullamcorper imperdiet turpis, non accumsan
-							enim egestas in.
-						</p>
-					</div>
-				) : null }
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
 				<button
@@ -301,6 +290,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="theme-name"
 							value={ currentTheme?.data?.name ?? '' }
 							onChange={ ( event ) => {
 								currentTheme.set( {
@@ -323,6 +313,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="directory-name"
 							value={
 								currentTheme?.data?.dirname
 									? currentTheme.data.dirname
@@ -349,6 +340,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="namespace"
 							value={
 								currentTheme?.data?.namespace
 									? currentTheme.data.namespace
@@ -375,6 +367,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="uri"
 							value={
 								currentTheme?.data?.uri
 									? currentTheme.data.uri
@@ -401,6 +394,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="author"
 							value={
 								currentTheme?.data?.author
 									? currentTheme.data.author
@@ -427,6 +421,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="author-uri"
 							value={
 								currentTheme?.data?.author_uri
 									? currentTheme.data.author_uri
@@ -453,6 +448,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="description"
 							value={
 								currentTheme?.data?.description
 									? currentTheme.data.description
@@ -479,6 +475,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="tags"
 							value={
 								currentTheme?.data?.tags
 									? currentTheme.data.tags
@@ -505,6 +502,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="tested"
 							value={
 								currentTheme?.data?.tested_up_to
 									? currentTheme.data.tested_up_to
@@ -531,6 +529,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="minimum-wp"
 							value={
 								currentTheme?.data?.requires_wp
 									? currentTheme.data.requires_wp
@@ -557,6 +556,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="minimum-php"
 							value={
 								currentTheme?.data?.requires_php
 									? currentTheme.data.requires_php
@@ -583,6 +583,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="version"
 							value={
 								currentTheme?.data?.version
 									? currentTheme.data.version
@@ -609,6 +610,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="text-domain"
 							value={
 								currentTheme?.data?.text_domain
 									? currentTheme.data.text_domain
