@@ -76,7 +76,7 @@ export default function ThemeJsonEditor( { visible } ) {
 							htmlFor="location"
 							className="block text-sm font-medium text-gray-700"
 						>
-							{ __( 'Choose a theme', 'fse-studio' ) }
+							{ __( 'Choose a theme JSON file', 'fse-studio' ) }
 						</label>
 						{ renderSelector() }
 					</div>
@@ -146,29 +146,6 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 		},
 	];
 
-	function renderSettings() {
-		const rendered = [];
-		for ( const setting in content.settings ) {
-			if ( setting === 'color' ) {
-				for ( const colorSetting in content.settings[ setting ] ) {
-					if ( colorSetting === 'palette' ) {
-						rendered.push(
-							<FseStudioColorPalette
-								key={ colorSetting }
-								themeJsonFile={ themeJsonFile }
-								colors={
-									content.settings[ setting ][ colorSetting ]
-								}
-							/>
-						);
-					}
-				}
-			}
-		}
-
-		return rendered;
-	}
-
 	function renderPatternPreviews() {
 		const rendered = [];
 
@@ -207,6 +184,22 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 							/>
 						);
 					}
+				}
+			}
+			if ( setting === 'layout' ) {
+				for ( const colorSetting in content.settings[ setting ] ) {
+					"contentSize": "640px",
+					"wideSize": "1200px"
+					rendered.push(
+						<FseStudioColorPalette
+							key={ colorSetting }
+							themeJsonFile={ themeJsonFile }
+							colors={
+								content.settings[ setting ][ colorSetting ]
+							}
+						/>
+					);
+					
 				}
 			}
 		}
@@ -276,6 +269,35 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 			</div>
 		</>
 	);
+}
+
+function InputField( { themeJsonFile, colors } ) {
+	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+		<label
+			htmlFor="directory-name"
+			className="block text-sm font-medium text-gray-700 sm:col-span-1"
+		>
+			{ __( 'Directory Name', 'fse-studio' ) }
+		</label>
+		<div className="mt-1 sm:mt-0 sm:col-span-2">
+			<input
+				className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+				type="text"
+				id="directory-name"
+				value={
+					currentTheme?.data?.dirname
+						? currentTheme.data.dirname
+						: ''
+				}
+				onChange={ ( event ) => {
+					currentTheme.set( {
+						...currentTheme.data,
+						dirname: event.target.value,
+					} );
+				} }
+			/>
+		</div>
+	</div>
 }
 
 function FseStudioColorPalette( { themeJsonFile, colors } ) {
