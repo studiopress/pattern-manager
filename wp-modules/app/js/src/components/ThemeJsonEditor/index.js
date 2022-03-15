@@ -271,7 +271,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 	);
 }
 
-function InputField( { themeJsonFile, colors } ) {
+function InputField( { themeJsonFile, settingName } ) {
 	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 		<label
 			htmlFor="directory-name"
@@ -285,15 +285,15 @@ function InputField( { themeJsonFile, colors } ) {
 				type="text"
 				id="directory-name"
 				value={
-					currentTheme?.data?.dirname
-						? currentTheme.data.dirname
+					themeJsonFile?.data?.content?.settings[settingName]
+						? themeJsonFile?.data?.content?.settings[settingName]
 						: ''
 				}
+				// @ts-ignore The declaration file is wrong.
 				onChange={ ( event ) => {
-					currentTheme.set( {
-						...currentTheme.data,
-						dirname: event.target.value,
-					} );
+					const modifiedData = { ...themeJsonFile.data };
+					modifiedData.content.settings[settingName] = event.target.value;
+					themeJsonFile.set( modifiedData );
 				} }
 			/>
 		</div>
