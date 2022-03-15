@@ -69,7 +69,7 @@ export default function ThemeJsonEditor( { visible } ) {
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
 					{ __( 'Theme.json Manager', 'fse-studio' ) }
 				</h1>
-				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
+				<div className="px-4 sm:px-6 md:px-8 bg-[#f8f8f8] py-8 flex sm:flex-row flex-col items-end">
 					{/*
 					<div>
 						<label
@@ -88,7 +88,7 @@ export default function ThemeJsonEditor( { visible } ) {
 					<div className="flex flex-col gap-2">
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
 								const newData = {
 									name: 'new',
@@ -264,7 +264,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 					}
 					<button
 						type="button"
-						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
 							themeJsonFile.save();
 							theme.save();
