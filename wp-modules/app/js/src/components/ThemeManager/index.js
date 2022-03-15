@@ -229,17 +229,6 @@ function ThemeDataEditor() {
 						themeEditorCurrentTab === 'theme_template_files'
 					}
 				/>
-				{ themeEditorCurrentTab === 'theme_setup' ? (
-					<div className="w-72 bg-gray-100 p-5 self-start">
-						<h3>{ __( 'Sidebar', 'fse-studio' ) }</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Donec ac purus nec diam laoreet sollicitudin.
-							Fusce ullamcorper imperdiet turpis, non accumsan
-							enim egestas in.
-						</p>
-					</div>
-				) : null }
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
 				<button
