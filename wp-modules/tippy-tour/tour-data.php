@@ -16,7 +16,7 @@ return [
 	'stepsInTour' => [
 		[
 			'initialData' => [
-				'html' => __( 'Welcome to the Fse Studio Tour. Let\'s make a theme.', 'fse-studio' ),
+				'html' => __( 'Welcome to the FSE Studio Tour. Let\'s make a theme.', 'fse-studio' ),
 			],
 			'navigation'  => [
 				'backButton' => false,
