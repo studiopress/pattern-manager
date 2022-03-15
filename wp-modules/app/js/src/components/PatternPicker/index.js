@@ -1,30 +1,27 @@
 // @ts-check
 
-import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { searchItems } from './utils/searchItems.js';
-import { PatternPreview } from './../PatternPreview/PatternPreview.js';
+import { searchItems } from './searchItems.js';
+import PatternPreview from '../PatternPreview';
 
 /**
- * @typedef {Object} Pattern
- * @property {Array}  categories    The pattern categories.
- * @property {string} content       The pattern HTML content.
- * @property {string} name          The pattern name.
- * @property {string} title         The pattern title.
- * @property {number} viewportWidth The viewport width.
+ * @typedef {{
+ *  categories: Array,
+ *  content: string,
+ *  name: string,
+ *  title: string,
+ *  viewportWidth: number
+ * }} Pattern
  */
 
 /**
- * The pattern picker component.
- *
  * @param {{
  *  patterns: Record<string, Pattern>,
- *  themeJsonData: string[],
+ *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
  *  onClickPattern: Function,
- *  selectedPatterns: string[]
+ *  selectedPatterns?: string[]
  * }} props The component props.
- * @return {React.ReactElement} The rendered component.
  */
 export default function PatternPicker( {
 	patterns: allPatterns,

@@ -1,3 +1,5 @@
+// @ts-check
+
 /**
  * Fse Studio
  */
@@ -5,7 +7,6 @@
 // WP Dependencies.
 import {
 	createInterpolateElement,
-	useContext,
 	useEffect,
 	useState,
 } from '@wordpress/element';
@@ -13,29 +14,29 @@ import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
 
-// Context
-import { FseStudioContext } from './../../contexts/FseStudioContext';
+import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
-import { PatternPreview } from './../PatternPreview/PatternPreview.js';
-import PatternPicker from './../PatternPicker/PatternPicker.js';
+import PatternPreview from '../PatternPreview';
+import PatternPicker from '../PatternPicker';
 
 // Utils
-import { classNames } from './../../utils/classNames';
+import classNames from '../../utils/classNames';
 
-export function ThemeManager( { visible } ) {
+/** @param {{visible: boolean}} props */
+export default function ThemeManager( { visible } ) {
 	const {
 		themes,
 		currentThemeId,
 		currentTheme,
 		currentThemeJsonFileId,
-	} = useContext( FseStudioContext );
+	} = useStudioContext();
 
 	useEffect( () => {
 		if ( currentTheme.data?.theme_json_file ) {
 			currentThemeJsonFileId.set( currentTheme.data?.theme_json_file );
 		} else {
-			currentThemeJsonFileId.set( false );
+			currentThemeJsonFileId.set( '' );
 		}
 	}, [ currentTheme ] );
 
@@ -74,8 +75,8 @@ export function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! currentTheme.data ) {
-			return '';
+		if ( ! Object.keys( currentTheme.data ).length ) {
+			return null;
 		}
 
 		return <ThemeDataEditor />;
@@ -153,7 +154,7 @@ export function ThemeManager( { visible } ) {
 }
 
 function ThemeDataEditor() {
-	const { currentTheme } = useContext( FseStudioContext );
+	const { currentTheme } = useStudioContext();
 
 	const [ themeEditorCurrentTab, setThemeEditorCurrentTab ] = useState(
 		'theme_setup'
@@ -228,17 +229,6 @@ function ThemeDataEditor() {
 						themeEditorCurrentTab === 'theme_template_files'
 					}
 				/>
-				{ themeEditorCurrentTab === 'theme_setup' ? (
-					<div className="w-72 bg-gray-100 p-5 self-start">
-						<h3>{ __( 'Sidebar', 'fse-studio' ) }</h3>
-						<p>
-							Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit. Donec ac purus nec diam laoreet sollicitudin.
-							Fusce ullamcorper imperdiet turpis, non accumsan
-							enim egestas in.
-						</p>
-					</div>
-				) : null }
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
 				<button
@@ -254,23 +244,19 @@ function ThemeDataEditor() {
 				</button>
 
 				<div className="flex items-center">
-					{ ( () => {
-						if ( currentTheme.hasSaved ) {
-							return (
-								<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-									<Icon
-										className="fill-current"
-										icon={ check }
-										size={ 26 }
-									/>{ ' ' }
-									{ __(
-										'Theme saved to your /themes/ folder',
-										'fse-studio'
-									) }
-								</span>
-							);
-						}
-					} )() }
+					{ currentTheme.hasSaved ? (
+						<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+							<Icon
+								className="fill-current"
+								icon={ check }
+								size={ 26 }
+							/>{ ' ' }
+							{ __(
+								'Theme saved to your /themes/ folder',
+								'fse-studio'
+							) }
+						</span>
+					) : null }
 					<button
 						type="button"
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -286,8 +272,9 @@ function ThemeDataEditor() {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemeSetup( { isVisible } ) {
-	const { currentTheme } = useContext( FseStudioContext );
+	const { currentTheme } = useStudioContext();
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -305,6 +292,7 @@ function ThemeSetup( { isVisible } ) {
 							aria-label={ __( 'Theme Name', 'fse-studio' ) }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="theme-name"
 							value={ currentTheme?.data?.name ?? '' }
 							onChange={ ( event ) => {
 								currentTheme.set( {
@@ -329,6 +317,7 @@ function ThemeSetup( { isVisible } ) {
 							aria-label={ __( 'Directory Name', 'fse-studio' ) }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="directory-name"
 							value={
 								currentTheme?.data?.dirname
 									? currentTheme.data.dirname
@@ -355,6 +344,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="namespace"
 							value={
 								currentTheme?.data?.namespace
 									? currentTheme.data.namespace
@@ -381,6 +371,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="uri"
 							value={
 								currentTheme?.data?.uri
 									? currentTheme.data.uri
@@ -407,6 +398,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="author"
 							value={
 								currentTheme?.data?.author
 									? currentTheme.data.author
@@ -433,6 +425,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="author-uri"
 							value={
 								currentTheme?.data?.author_uri
 									? currentTheme.data.author_uri
@@ -459,6 +452,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="description"
 							value={
 								currentTheme?.data?.description
 									? currentTheme.data.description
@@ -485,6 +479,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="tags"
 							value={
 								currentTheme?.data?.tags
 									? currentTheme.data.tags
@@ -511,6 +506,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="tested"
 							value={
 								currentTheme?.data?.tested_up_to
 									? currentTheme.data.tested_up_to
@@ -537,6 +533,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="minimum-wp"
 							value={
 								currentTheme?.data?.requires_wp
 									? currentTheme.data.requires_wp
@@ -563,6 +560,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="minimum-php"
 							value={
 								currentTheme?.data?.requires_php
 									? currentTheme.data.requires_php
@@ -589,6 +587,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="version"
 							value={
 								currentTheme?.data?.version
 									? currentTheme.data.version
@@ -615,6 +614,7 @@ function ThemeSetup( { isVisible } ) {
 						<input
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
+							id="text-domain"
 							value={
 								currentTheme?.data?.text_domain
 									? currentTheme.data.text_domain
@@ -634,13 +634,14 @@ function ThemeSetup( { isVisible } ) {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemePatterns( { isVisible } ) {
 	const {
 		patterns,
 		currentTheme,
 		currentThemeJsonFile,
 		currentView,
-	} = useContext( FseStudioContext );
+	} = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 
@@ -681,7 +682,7 @@ function ThemePatterns( { isVisible } ) {
 						</button>
 					</p>
 				</div>
-				{ currentTheme.data.included_patterns.length ? (
+				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
 						<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
 							{ __(
@@ -765,7 +766,6 @@ function ThemePatterns( { isVisible } ) {
 								} );
 							}
 						} }
-						selectMultiple={ true }
 					/>
 				</Modal>
 			) : null }
@@ -773,14 +773,13 @@ function ThemePatterns( { isVisible } ) {
 	);
 }
 
+/** @param {{isVisible: boolean}} props */
 function ThemeTemplateFiles( { isVisible } ) {
-	const { patterns, currentTheme, currentThemeJsonFile } = useContext(
-		FseStudioContext
-	);
+	const { patterns, currentTheme, currentThemeJsonFile } = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(
-		false
+		''
 	);
 
 	return (
