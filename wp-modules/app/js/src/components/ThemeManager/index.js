@@ -63,6 +63,7 @@ export default function ThemeManager( { visible } ) {
 			<>
 				<select
 					className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
+					name="themes"
 					value={ currentThemeId.value }
 					onChange={ ( event ) => {
 						currentThemeId.set( event.target.value );
@@ -89,12 +90,12 @@ export default function ThemeManager( { visible } ) {
 					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
 						{ __( 'Theme Manager', 'fse-studio' ) }
 					</h1>
-					<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
+					<div className="px-4 sm:px-6 md:px-8 bg-[#f8f8f8] py-8 flex sm:flex-row flex-col items-end">
 						{ Object.keys( themes.themes ).length > 0 ? (
 							<>
 								<div>
 									<label
-										htmlFor="location"
+										htmlFor="themes"
 										className="block text-sm font-medium text-gray-700"
 									>
 										{ __( 'Choose a theme', 'fse-studio' ) }

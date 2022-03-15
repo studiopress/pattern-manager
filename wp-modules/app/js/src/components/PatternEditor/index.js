@@ -199,7 +199,7 @@ export default function PatternEditor( { visible } ) {
 								'fse-studio'
 							) }
 						</p>
-						<div className="bg-[#F8F8F8] p-20 w-full text-center">
+						<div className="bg-[#f8f8f8] p-20 w-full text-center">
 							{ renderBrowsePatternsButton() }
 						</div>
 					</div>
