@@ -4,7 +4,7 @@ describe( 'convertToPascalCase', () => {
 	it.each( [
 		[ undefined, '' ],
 		[ '', '' ],
-        [ 'word', 'Word' ],
+		[ 'word', 'Word' ],
 		[ 'two words', 'TwoWords' ],
 		[ 'here three words', 'HereThreeWords' ],
 		[ 'with a number 6243', 'WithANumber6243' ],
