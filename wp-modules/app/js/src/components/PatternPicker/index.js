@@ -21,6 +21,7 @@ import PatternPreview from '../PatternPreview';
  *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
  *  onClickPattern: Function,
  *  selectedPatterns?: string[]
+ *  showSidebar?: boolean
  * }} props The component props.
  */
 export default function PatternPicker( {
@@ -28,6 +29,7 @@ export default function PatternPicker( {
 	themeJsonData,
 	onClickPattern,
 	selectedPatterns = [],
+	showSidebar = true,
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 	const [ numberToRender, setNumberToRender ] = useState( 0 );
@@ -48,23 +50,25 @@ export default function PatternPicker( {
 	return (
 		<div className="mx-auto bg-white">
 			<div className="flex gap-10">
-				<div className="w-72">
-					<div className="absolute w-56">
-						<input
-							value={ searchValue }
-							onChange={ ( event ) => {
-								if ( isMountedRef.current ) {
-									setSearchValue( event.target.value );
-								}
-							} }
-							type="text"
-							name="search"
-							id="search"
-							placeholder={ __( 'Search', 'fse-studio' ) }
-							className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-12 w-full !rounded-none !border-[#F0F0F0] !bg-[#F0F0F0] sm:text-sm"
-						/>
+				{ showSidebar ? (
+					<div className="w-72">
+						<div className="absolute w-56">
+							<input
+								value={ searchValue }
+								onChange={ ( event ) => {
+									if ( isMountedRef.current ) {
+										setSearchValue( event.target.value );
+									}
+								} }
+								type="text"
+								name="search"
+								id="search"
+								placeholder={ __( 'Search', 'fse-studio' ) }
+								className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-12 w-full !rounded-none !border-[#F0F0F0] !bg-[#F0F0F0] sm:text-sm"
+							/>
+						</div>
 					</div>
-				</div>
+				) : null }
 				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-5">
 					{ filteredPatterns.map( ( pattern, index ) => {
 						const isChecked = selectedPatterns.includes(

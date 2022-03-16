@@ -1,9 +1,5 @@
 // @ts-check
 
-/**
- * Genesis Studio App
- */
-
 // WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
 import { useState } from '@wordpress/element';
@@ -11,7 +7,10 @@ import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
 import PatternPreview from '../PatternPreview';
+import PatternPicker from '../PatternPicker';
 import useStudioContext from '../../hooks/useStudioContext';
+
+import { fsestudio } from '../../';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
@@ -106,6 +105,16 @@ export default function ThemeJsonEditor( { visible } ) {
 								'fse-studio'
 							) }
 						</button>
+						<button
+							type="button"
+							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={ () => {
+								currentThemeJsonFile.save();
+								currentTheme.save();
+							} }
+						>
+							{ __( 'Save Theme and Theme Configuration File', 'fse-studio' ) }
+						</button>
 					</div>
 				</div>
 				{ renderThemeEditorWhenReady() }
@@ -115,7 +124,7 @@ export default function ThemeJsonEditor( { visible } ) {
 }
 
 function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
-	const { patterns } = useStudioContext();
+	const { patterns, currentThemeJsonFile } = useStudioContext();
 	const content = themeJsonFile.data.content;
 	const [ currentView, setCurrentView ] = useState( 'settings' );
 
@@ -151,63 +160,28 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 
 		for ( const blockPattern in patterns.patterns ) {
 			rendered.push(
-				<PatternPreview
-					key={ blockPattern }
-					blockPatternData={ patterns.patterns[ blockPattern ] }
-					themeJsonData={ null }
-					scale={ 0.5 }
-				/>
+				<div className="w-full">
+					<PatternPreview
+						key={ blockPattern }
+						blockPatternData={ patterns.patterns[ blockPattern ] }
+						themeJsonData={ currentThemeJsonFile.data }
+						scale={ 0.15 }
+					/>
+				</div>
 			);
 		}
 
 		return rendered;
 	}
 
-	function maybeRenderSettingsView() {
-		if ( currentView !== 'settings' ) {
+	function maybeRenderStylesView() {
+		if ( currentView !== 'styles' ) {
 			return '';
 		}
-
-		const rendered = [];
-
-		for ( const setting in content.settings ) {
-			if ( setting === 'color' ) {
-				for ( const colorSetting in content.settings[ setting ] ) {
-					if ( colorSetting === 'palette' ) {
-						rendered.push(
-							<FseStudioColorPalette
-								key={ colorSetting }
-								themeJsonFile={ themeJsonFile }
-								colors={
-									content.settings[ setting ][ colorSetting ]
-								}
-							/>
-						);
-					}
-				}
-			}
-			if ( setting === 'layout' ) {
-				for ( const colorSetting in content.settings[ setting ] ) {
-					"contentSize": "640px",
-					"wideSize": "1200px"
-					rendered.push(
-						<FseStudioColorPalette
-							key={ colorSetting }
-							themeJsonFile={ themeJsonFile }
-							colors={
-								content.settings[ setting ][ colorSetting ]
-							}
-						/>
-					);
-					
-				}
-			}
-		}
-
-		return rendered;
+		return <div>
+			<h2>{ fsestudio.schemas.themejson.properties.styles.description }</h2>
+		</div>
 	}
-
-	function maybeRenderStylesView() {}
 
 	function maybeRenderCustomTemplatesView() {}
 
@@ -215,8 +189,8 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 
 	return (
 		<>
-			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-				<ul className="w-72">
+			<div className="">
+				<ul className="flex">
 					{ views.map( ( item ) => (
 						<li key={ item.name }>
 							<button
@@ -236,10 +210,12 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 						</li>
 					) ) }
 				</ul>
-				{ maybeRenderSettingsView() }
-				{ maybeRenderStylesView() }
-				{ maybeRenderCustomTemplatesView() }
-				{ maybeRenderTemplatePartsView() }
+				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
+					<SettingsView isVisible={ currentView === 'settings' } />
+					{ maybeRenderStylesView() }
+					{ maybeRenderCustomTemplatesView() }
+					{ maybeRenderTemplatePartsView() }
+				</div>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
 				<div className="flex items-center">
@@ -271,30 +247,163 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 	);
 }
 
-function InputField( { themeJsonFile, settingName } ) {
+function SettingsView({ isVisible }) {
+	const { currentThemeJsonFile } = useStudioContext();
+	const [ currentView, setCurrentView ] = useState( 'color' );
+	
+	function renderSetting( schemaSettingData, settingName, settingData ) {
+	
+		return <div hidden={ currentView !== settingName }>
+			{ renderSettingInner( schemaSettingData, settingName, settingData ) }
+		</div>
+	
+	}
+	function renderSettingInner( schemaSettingData, settingName, settingData ) {
+		if ( settingName === 'color' ) {
+			console.log(schemaSettingData, settingName, settingData );
+			for ( const colorSetting in settingData ) {
+				if ( colorSetting === 'palette' ) {
+					return (
+						<FseStudioColorPalette
+							key={ colorSetting }
+							themeJsonFile={ currentThemeJsonFile }
+							colors={
+								settingData[ colorSetting ]
+							}
+						/>
+					)
+				}
+			}
+		}
+		if ( settingName === 'layout' ) {
+				return (
+					<>
+					<InputField
+						key={ 'contentSize' }
+						name={ __( 'Width of "content" content', 'fse-studio' ) }
+						value={
+							currentThemeJsonFile?.data?.content?.settings.layout['contentSize']
+								? currentThemeJsonFile?.data?.content?.settings.layout['contentSize']
+								: ''
+						}
+						// @ts-ignore The declaration file is wrong.
+						onChange={ ( event ) => {
+							const modifiedData = { ...currentThemeJsonFile.data };
+							modifiedData.content.settings.layout['contentSize'] = event.target.value;
+							currentThemeJsonFile.set( modifiedData );
+						} }
+					/>
+					<InputField
+						key={ 'wideSize' }
+						name={ __( 'Width of "wide" content', 'fse-studio' ) }
+						value={
+							currentThemeJsonFile?.data?.content?.settings.layout['wideSize']
+								? currentThemeJsonFile?.data?.content?.settings.layout['wideSize']
+								: ''
+						}
+						// @ts-ignore The declaration file is wrong.
+						onChange={ ( event ) => {
+							const modifiedData = { ...currentThemeJsonFile.data };
+							modifiedData.content.settings.layout['wideSize'] = event.target.value;
+							currentThemeJsonFile.set( modifiedData );
+						} }
+					/>
+					</>
+				)
+		}
+		
+		return (
+			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<label
+					htmlFor={settingName}
+					className="block text-sm font-medium text-gray-700 sm:col-span-1"
+				>
+					{ settingName }
+				</label>
+				<div className="mt-1 sm:mt-0 sm:col-span-2">
+					<input
+						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+						type="text"
+						id={settingName}
+						value={
+							settingName
+						}
+						// @ts-ignore The declaration file is wrong.
+						onChange={ () => {
+						
+						}}
+					/>
+				</div>
+			</div>
+		)
+	}
+	
+	// Use the themeJson schema and currentThemeJsonFile to generate the settings and values.
+	const rendered = [];
+	const settingsTabs = [];
+	const settingsPropertiesComplete = fsestudio.schemas.themejson.definitions.settingsPropertiesComplete;
+	for ( const setting in fsestudio.schemas.themejson.definitions ) {
+		if ( setting === 'settingsPropertiesComplete' || ! setting.startsWith( 'settingsProperties' ) ) { continue }
+		const settingData = fsestudio.schemas.themejson.definitions[setting];
+		// If this is not a "setting" that is defined inside settingsPropertiesComplete, skip it.
+		for ( const propertyName in settingData.properties ) {
+			if ( ! ( propertyName in settingsPropertiesComplete.allOf[1].properties ) ) { continue }
+			rendered.push( renderSetting( settingData.properties[propertyName], propertyName, currentThemeJsonFile.data.content.settings[propertyName] ) );
+			settingsTabs.push({
+				name: propertyName,
+				slug: propertyName,
+			});
+		}
+	}
+
+	return <div hidden={!isVisible}>
+		<div className="flex flex-row gap-14">
+			<ul className="w-72">
+				{ settingsTabs.map( ( item ) => (
+					<li key={ item.name }>
+						<button
+							className={
+								'w-full text-left p-5 font-medium' +
+								( currentView === item.slug
+									? ' bg-gray-100'
+									: ' hover:bg-gray-100' )
+							}
+							key={ item.name }
+							onClick={ () => {
+								setCurrentView( item.slug );
+							} }
+						>
+							{ item.name }
+						</button>
+					</li>
+				) ) }
+			</ul>
+			<div>
+				<h2>{ fsestudio.schemas.themejson.properties.settings.description }</h2>
+				<div className="divide-y divide-gray-200">{ rendered }</div>
+			</div>
+		</div>
+	</div>
+}
+
+function InputField( { name, value, onChange = () => {} } ) {
 	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 		<label
-			htmlFor="directory-name"
+			htmlFor={name}
 			className="block text-sm font-medium text-gray-700 sm:col-span-1"
 		>
-			{ __( 'Directory Name', 'fse-studio' ) }
+			{ name }
 		</label>
 		<div className="mt-1 sm:mt-0 sm:col-span-2">
 			<input
 				className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 				type="text"
-				id="directory-name"
+				id={name}
 				value={
-					themeJsonFile?.data?.content?.settings[settingName]
-						? themeJsonFile?.data?.content?.settings[settingName]
-						: ''
+					value
 				}
 				// @ts-ignore The declaration file is wrong.
-				onChange={ ( event ) => {
-					const modifiedData = { ...themeJsonFile.data };
-					modifiedData.content.settings[settingName] = event.target.value;
-					themeJsonFile.set( modifiedData );
-				} }
+				onChange={ onChange }
 			/>
 		</div>
 	</div>
@@ -312,7 +421,17 @@ function FseStudioColorPalette( { themeJsonFile, colors } ) {
 		) );
 	}
 
-	return <div className="grid gap-5">{ renderColorOptions() }</div>;
+	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+		<label
+			htmlFor={ 'colorpalette' }
+			className="block text-sm font-medium text-gray-700 sm:col-span-1"
+		>
+			{ __( 'Color Palette', 'fse-studio' ) }
+		</label>
+		<div className="mt-1 sm:mt-0 sm:col-span-2">
+			<div className="grid gap-5">{ renderColorOptions() }</div>
+		</div>
+	</div>
 }
 
 function FseStudioColorPalettePicker( { themeJsonFile, color, index } ) {

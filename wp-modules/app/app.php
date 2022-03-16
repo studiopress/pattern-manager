@@ -60,6 +60,9 @@ function fse_studio_app() {
 			'initialTheme'        => $current_theme_dir,
 			'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
 			'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
+			'schemas'              => array(
+				'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/gutenberg/schemas/json/theme.json' ),
+			),
 			'frontendPreviewUrl'  => null,
 			'apiEndpoints'        => array(
 				'getPatternEndpoint'        => get_rest_url( false, 'fsestudio/v1/get-pattern/' ),

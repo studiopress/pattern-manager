@@ -65,7 +65,7 @@
                 {
                     "name": "Black",
                     "slug": "black",
-                    "color": "#000000"
+                    "color": "#0e00ff"
                 },
                 {
                     "name": "Primary",
@@ -90,7 +90,7 @@
                 {
                     "name": "White",
                     "slug": "white",
-                    "color": "#ffffff"
+                    "color": "#fffefe"
                 }
             ]
         },
@@ -196,7 +196,8 @@
                 }
             ],
             "lineHeight": true
-        }
+        },
+        "contentSize": "50"
     },
     "styles": {
         "blocks": {
