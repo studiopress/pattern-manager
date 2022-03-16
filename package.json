@@ -6,6 +6,9 @@
 		"type": "git",
 		"url": "https://github.com/studiopress/fse-studio"
 	},
+	"engines": {
+		"node": "14"
+	},
 	"scripts": {
 		"clone-wpps": "if [ ! -d ./wpps-scripts ]; then git clone https://github.com/wp-plugin-sidekick/wpps-scripts; fi; cd ../; if [ ! -d ./wp-plugin-sidekick ]; then git clone https://github.com/wp-plugin-sidekick/wp-plugin-sidekick; fi",
 		"installation": "npm run clone-wpps; sh wpps-scripts/install-module-dependencies.sh;",
