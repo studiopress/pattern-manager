@@ -2,7 +2,9 @@ import convertToPascalCase from '../convertToPascalCase';
 
 describe( 'convertToPascalCase', () => {
 	it.each( [
-		[ 'word', 'Word' ],
+		[ undefined, '' ],
+		[ '', '' ],
+        [ 'word', 'Word' ],
 		[ 'two words', 'TwoWords' ],
 		[ 'here three words', 'HereThreeWords' ],
 		[ 'with a number 6243', 'WithANumber6243' ],

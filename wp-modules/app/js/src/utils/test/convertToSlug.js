@@ -2,6 +2,8 @@ import convertToSlug from '../convertToSlug';
 
 describe( 'convertToSlug', () => {
 	it.each( [
+		[ undefined, '' ],
+		[ '', '' ],
 		[ 'Example', 'example' ],
 		[ 'Two Words', 'two-words' ],
 		[ 'Has Three Words', 'has-three-words' ],
