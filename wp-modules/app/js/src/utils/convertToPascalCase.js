@@ -6,7 +6,7 @@
  */
 export default function convertToPascalCase( toConvert = '' ) {
 	return toConvert.replace(
-		/(?<=^|[_\W])\w/g,
+		/(?<=^|[_\W])[a-z]/g,
 		( match ) => match.toUpperCase()
 	);
 }
