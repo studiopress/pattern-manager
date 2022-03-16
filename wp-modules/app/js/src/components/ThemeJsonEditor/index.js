@@ -251,14 +251,100 @@ function SettingsView({ isVisible }) {
 	const { currentThemeJsonFile } = useStudioContext();
 	const [ currentView, setCurrentView ] = useState( 'color' );
 	
-	function renderSetting( schemaSettingData, settingName, settingData ) {
-	
-		return <div hidden={ currentView !== settingName }>
-			{ renderSettingInner( schemaSettingData, settingName, settingData ) }
+	function renderSetting( schemaSettingData, settingName, settingData, topLevelSettingName ) {
+		const renderedProperties = [];
+		for( const propertyName in schemaSettingData.properties ) {
+			renderedProperties.push(
+				<div key={propertyName} className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<label
+					htmlFor={propertyName}
+					className="block text-sm font-medium text-gray-700 sm:col-span-1"
+				>
+					<h2>{ propertyName }</h2>
+					<p>{schemaSettingData.properties[propertyName].description}</p>
+				</label>
+				<div className="mt-1 sm:mt-0 sm:col-span-2">
+					{ renderSettingProperty( schemaSettingData.properties[propertyName], propertyName, settingData?.hasOwnProperty( propertyName ) ? settingData[propertyName] : null, topLevelSettingName ) }
+				</div>
+			</div>
+			)
+		}
+		
+		return <div key={settingName} hidden={ currentView !== topLevelSettingName } className="divide-y divide-gray-200">
+			{ renderedProperties }
 		</div>
 	
 	}
+	function renderSettingProperty( propertySchema, propertyName, settingValue, topLevelSettingName ) {
+		if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
+			return <input
+				
+				type="checkbox"
+				id={propertyName}
+				name={propertyName}
+				checked={settingValue ? true : false}
+				// @ts-ignore The declaration file is wrong.
+				onChange={( event ) => {
+					const modifiedData = { ...currentThemeJsonFile.data };
+					modifiedData.content.settings[topLevelSettingName][propertyName] = modifiedData.content.settings[topLevelSettingName][propertyName] ? false : true;
+					currentThemeJsonFile.set( modifiedData );
+				}}
+			/>
+		}
+		if ( propertySchema.type === 'string' || propertySchema.type === 'number' ) {
+			
+			return <input
+				className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+				type="text"
+				id={propertyName}
+				value={
+					settingValue
+				}
+				// @ts-ignore The declaration file is wrong.
+				onChange={( event ) => {
+					const modifiedData = { ...currentThemeJsonFile.data };
+					modifiedData.content.settings[topLevelSettingName][propertyName] = event.target.value;
+					currentThemeJsonFile.set( modifiedData );
+				}}
+			/>
+		}
+		if ( propertySchema.type === 'array' ) {
+			
+			const rendered = [];
+			
+				rendered.push( renderSetting( propertySchema.items, propertyName, currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName], topLevelSettingName ) );
+			
+			return rendered;
+		}
+		if ( propertySchema.type === 'object' ) {
+			const rendered = [];
+			for ( const subProperty in propertySchema.properties ) {
+				rendered.push( renderSetting( propertySchema.properties[subProperty], subProperty, currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName], topLevelSettingName ) );
+			}
+			return rendered;
+		}
+		
+	}
 	function renderSettingInner( schemaSettingData, settingName, settingData ) {
+		const renderedProperties = [];
+		for( const propertyName in schemaSettingData.properties ) {
+			renderedProperties.push(
+				<div key={settingName} className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<label
+					htmlFor={propertyName}
+					className="block text-sm font-medium text-gray-700 sm:col-span-1"
+				>
+					<h2>{ propertyName }</h2>
+					<p>{schemaSettingData.properties[propertyName].description}</p>
+				</label>
+				<div className="mt-1 sm:mt-0 sm:col-span-2">
+					{ renderSettingProperty( schemaSettingData.properties[propertyName], propertyName, settingData ) }
+				</div>
+			</div>
+			)
+		}
+		
+		return renderedProperties;
 		if ( settingName === 'color' ) {
 			console.log(schemaSettingData, settingName, settingData );
 			for ( const colorSetting in settingData ) {
@@ -281,6 +367,7 @@ function SettingsView({ isVisible }) {
 					<InputField
 						key={ 'contentSize' }
 						name={ __( 'Width of "content" content', 'fse-studio' ) }
+						description={ schemaSettingData.description }
 						value={
 							currentThemeJsonFile?.data?.content?.settings.layout['contentSize']
 								? currentThemeJsonFile?.data?.content?.settings.layout['contentSize']
@@ -296,6 +383,7 @@ function SettingsView({ isVisible }) {
 					<InputField
 						key={ 'wideSize' }
 						name={ __( 'Width of "wide" content', 'fse-studio' ) }
+						description={ schemaSettingData.description }
 						value={
 							currentThemeJsonFile?.data?.content?.settings.layout['wideSize']
 								? currentThemeJsonFile?.data?.content?.settings.layout['wideSize']
@@ -348,7 +436,7 @@ function SettingsView({ isVisible }) {
 		// If this is not a "setting" that is defined inside settingsPropertiesComplete, skip it.
 		for ( const propertyName in settingData.properties ) {
 			if ( ! ( propertyName in settingsPropertiesComplete.allOf[1].properties ) ) { continue }
-			rendered.push( renderSetting( settingData.properties[propertyName], propertyName, currentThemeJsonFile.data.content.settings[propertyName] ) );
+			rendered.push( renderSetting( settingData.properties[propertyName], propertyName, currentThemeJsonFile.data.content.settings[propertyName], propertyName ) );
 			settingsTabs.push({
 				name: propertyName,
 				slug: propertyName,
@@ -357,6 +445,7 @@ function SettingsView({ isVisible }) {
 	}
 
 	return <div hidden={!isVisible}>
+		<p>{ fsestudio.schemas.themejson.properties.settings.description }</p>
 		<div className="flex flex-row gap-14">
 			<ul className="w-72">
 				{ settingsTabs.map( ( item ) => (
@@ -378,21 +467,20 @@ function SettingsView({ isVisible }) {
 					</li>
 				) ) }
 			</ul>
-			<div>
-				<h2>{ fsestudio.schemas.themejson.properties.settings.description }</h2>
-				<div className="divide-y divide-gray-200">{ rendered }</div>
-			</div>
+			<div className="divide-y divide-gray-200">{ rendered }</div>
 		</div>
 	</div>
 }
 
-function InputField( { name, value, onChange = () => {} } ) {
+function InputField( { name, description, value, onChange = () => {} } ) {
 	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 		<label
 			htmlFor={name}
 			className="block text-sm font-medium text-gray-700 sm:col-span-1"
 		>
-			{ name }
+			<p>{ name }</p>
+			<p>{ description }</p>
+			
 		</label>
 		<div className="mt-1 sm:mt-0 sm:col-span-2">
 			<input

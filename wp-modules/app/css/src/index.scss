@@ -104,3 +104,7 @@ html body.toplevel_page_fse-studio {
 	min-height: 300px;
 }
 /* stylelint-enable */
+
+input[type="checkbox"]:checked::before{
+	content: inherit;
+}
