@@ -36,4 +36,3 @@ import convertToPascalCase from '../convertToPascalCase';
          }
      );
  } );
- 
