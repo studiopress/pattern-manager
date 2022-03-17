@@ -71,6 +71,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			...themeData,
 			dirname: convertToSlug( themeData.name ),
 			namespace: convertToPascalCase( themeData.name ),
+			text_domain: convertToSlug( themeData.name ),
 		} );
 	}, [ themeData.name ] );
 
