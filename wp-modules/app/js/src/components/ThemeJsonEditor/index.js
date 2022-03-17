@@ -211,7 +211,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 					) ) }
 				</ul>
 				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-					<SettingsView isVisible={ currentView === 'settings' } />
+					<SettingsView isVisible={ currentView === 'settings' } mode="settings" />
 					{ maybeRenderStylesView() }
 					{ maybeRenderCustomTemplatesView() }
 					{ maybeRenderTemplatePartsView() }
@@ -247,224 +247,47 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 	);
 }
 
-function SettingsView({ isVisible }) {
+function SettingsView({ isVisible, mode='settings' }) {
 	const { currentThemeJsonFile } = useStudioContext();
 	const [ currentView, setCurrentView ] = useState( 'color' );
 	
-	function renderSetting( schemaSettingData, settingName, settingData, topLevelSettingName ) {
-		const renderedProperties = [];
-		for( const propertyName in schemaSettingData.properties ) {
-			renderedProperties.push(
-				<div key={propertyName} className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-top">
-				<label
-					htmlFor={propertyName}
-					className="block text-sm font-medium text-gray-700 sm:col-span-1"
-				>
-					<h2>{ propertyName }</h2>
-					<p>{schemaSettingData.properties[propertyName].description}</p>
-				</label>
-				<div className="mt-1 sm:mt-0 sm:col-span-2">
-					{ renderSettingProperty( schemaSettingData.properties[propertyName], propertyName, settingData?.hasOwnProperty( propertyName ) ? settingData[propertyName] : null, topLevelSettingName ) }
-				</div>
-			</div>
-			)
-		}
-		
-		return <div key={settingName} hidden={ currentView !== topLevelSettingName } className="divide-y divide-gray-200">
-			{ renderedProperties }
-		</div>
-	
-	}
-	function renderSettingProperty( propertySchema, propertyName, settingValue, topLevelSettingName ) {
-		if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
-			return <input
-				
-				type="checkbox"
-				id={propertyName}
-				name={propertyName}
-				checked={settingValue ? true : false}
-				// @ts-ignore The declaration file is wrong.
-				onChange={( event ) => {
-					const modifiedData = { ...currentThemeJsonFile.data };
-					modifiedData.content.settings[topLevelSettingName][propertyName] = modifiedData.content.settings[topLevelSettingName][propertyName] ? false : true;
-					currentThemeJsonFile.set( modifiedData );
-				}}
-			/>
-		}
-		if ( propertySchema.type === 'string' || propertySchema.type === 'number' ) {
-			
-			return <input
-				className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-				type="text"
-				id={propertyName}
-				value={
-					settingValue
-				}
-				// @ts-ignore The declaration file is wrong.
-				onChange={( event ) => {
-					const modifiedData = { ...currentThemeJsonFile.data };
-					modifiedData.content.settings[topLevelSettingName][propertyName] = event.target.value;
-					currentThemeJsonFile.set( modifiedData );
-				}}
-			/>
-		}
-		if ( propertySchema.type === 'array' ) {
-			
-			const rendered = [];
-			//rendered.push( renderSetting( propertySchema.items, propertyName, currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName], topLevelSettingName ) );
-			//return rendered;
-			for( const value in currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName] ) {
-				if ( propertySchema.items.type === 'object' ) {
-					for( const theObject in currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][value] ) {
-						const previouslySavedValue = currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][value];
-						for( const theSchemaName in propertySchema.items.properties ) {
-							if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
-								rendered.push(
-									<>
-										<p>{theSchemaName}:</p>
-										{ 'gradient' === theSchemaName ? (
-											<CustomGradientPicker
-												value={ previouslySavedValue[theSchemaName] }
-												onChange={ ( newGradient ) =>
-													console.log( newGradient )
-												}
-											/>
-										) : (
-											<input type="text" value={previouslySavedValue[theSchemaName]} />
-										) }
-									</>
-								);
-							}
-						}
-						break;
-					}
-				}
-				//rendered.push(currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][value]);
-			}
-			return rendered;
-		}
-		if ( propertySchema.type === 'object' ) {
-			const rendered = [];
-			for ( const subProperty in propertySchema.properties ) {
-				rendered.push( renderSetting( propertySchema.properties[subProperty], subProperty, currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName], topLevelSettingName ) );
-			}
-			return rendered;
-		}
-		
-	}
-	function renderSettingInner( schemaSettingData, settingName, settingData ) {
-		const renderedProperties = [];
-		for( const propertyName in schemaSettingData.properties ) {
-			renderedProperties.push(
-				<div key={settingName} className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-				<label
-					htmlFor={propertyName}
-					className="block text-sm font-medium text-gray-700 sm:col-span-1"
-				>
-					<h2>{ propertyName }</h2>
-					<p>{schemaSettingData.properties[propertyName].description}</p>
-				</label>
-				<div className="mt-1 sm:mt-0 sm:col-span-2">
-					{ renderSettingProperty( schemaSettingData.properties[propertyName], propertyName, settingData ) }
-				</div>
-			</div>
-			)
-		}
-		
-		return renderedProperties;
-		if ( settingName === 'color' ) {
-			console.log(schemaSettingData, settingName, settingData );
-			for ( const colorSetting in settingData ) {
-				if ( colorSetting === 'palette' ) {
-					return (
-						<FseStudioColorPalette
-							key={ colorSetting }
-							themeJsonFile={ currentThemeJsonFile }
-							colors={
-								settingData[ colorSetting ]
-							}
-						/>
-					)
-				}
-			}
-		}
-		if ( settingName === 'layout' ) {
-				return (
-					<>
-					<InputField
-						key={ 'contentSize' }
-						name={ __( 'Width of "content" content', 'fse-studio' ) }
-						description={ schemaSettingData.description }
-						value={
-							currentThemeJsonFile?.data?.content?.settings.layout['contentSize']
-								? currentThemeJsonFile?.data?.content?.settings.layout['contentSize']
-								: ''
-						}
-						// @ts-ignore The declaration file is wrong.
-						onChange={ ( event ) => {
-							const modifiedData = { ...currentThemeJsonFile.data };
-							modifiedData.content.settings.layout['contentSize'] = event.target.value;
-							currentThemeJsonFile.set( modifiedData );
-						} }
-					/>
-					<InputField
-						key={ 'wideSize' }
-						name={ __( 'Width of "wide" content', 'fse-studio' ) }
-						description={ schemaSettingData.description }
-						value={
-							currentThemeJsonFile?.data?.content?.settings.layout['wideSize']
-								? currentThemeJsonFile?.data?.content?.settings.layout['wideSize']
-								: ''
-						}
-						// @ts-ignore The declaration file is wrong.
-						onChange={ ( event ) => {
-							const modifiedData = { ...currentThemeJsonFile.data };
-							modifiedData.content.settings.layout['wideSize'] = event.target.value;
-							currentThemeJsonFile.set( modifiedData );
-						} }
-					/>
-					</>
-				)
-		}
-		
-		return (
-			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-				<label
-					htmlFor={settingName}
-					className="block text-sm font-medium text-gray-700 sm:col-span-1"
-				>
-					{ settingName }
-				</label>
-				<div className="mt-1 sm:mt-0 sm:col-span-2">
-					<input
-						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-						type="text"
-						id={settingName}
-						value={
-							settingName
-						}
-						// @ts-ignore The declaration file is wrong.
-						onChange={ () => {
-						
-						}}
-					/>
-				</div>
-			</div>
-		)
-	}
-	
 	// Use the themeJson schema and currentThemeJsonFile to generate the settings and values.
 	const rendered = [];
-	const settingsTabs = [];
-	const settingsPropertiesComplete = fsestudio.schemas.themejson.definitions.settingsPropertiesComplete;
+	const tabs = [];
+	let propertiesCompleteName = 'settings';
+	if ( mode === 'settings' ) {
+		propertiesCompleteName = 'settingsPropertiesComplete' ;
+	}
+	
+	const propertiesComplete = fsestudio.schemas.themejson.definitions[propertiesCompleteName];
+	
 	for ( const setting in fsestudio.schemas.themejson.definitions ) {
-		if ( setting === 'settingsPropertiesComplete' || ! setting.startsWith( 'settingsProperties' ) ) { continue }
+		// Skip schemas that are not settings.
+		if ( setting === propertiesCompleteName || ! setting.startsWith( mode + 'Properties' ) ) { continue }
+		
+		// Get the data for this setting from the schema.
 		const settingData = fsestudio.schemas.themejson.definitions[setting];
-		// If this is not a "setting" that is defined inside settingsPropertiesComplete, skip it.
+	
+		// Loop through each property in each setting in the schema.
 		for ( const propertyName in settingData.properties ) {
-			if ( ! ( propertyName in settingsPropertiesComplete.allOf[1].properties ) ) { continue }
-			rendered.push( renderSetting( settingData.properties[propertyName], propertyName, currentThemeJsonFile.data.content.settings[propertyName], propertyName ) );
-			settingsTabs.push({
+			// If this is not a "setting" that is defined inside propertiesComplete, skip it.
+			if ( ! ( propertyName in propertiesComplete.allOf[1].properties ) ) { continue }
+			
+			// FSE Studio does not yet handle the "blocks"
+			if ( ! ( propertyName in propertiesComplete.allOf[1].properties ) ) { continue }
+			
+			console.log( propertyName );
+			rendered.push(
+				<Setting
+					isVisible={currentView === propertyName}
+					schemaSettingData={settingData.properties[propertyName]}
+					settingName={propertyName}
+					settingData={currentThemeJsonFile.data.content[mode][propertyName]}
+					topLevelSettingName={propertyName}
+				/>
+			);
+
+			tabs.push({
 				name: propertyName,
 				slug: propertyName,
 			});
@@ -472,10 +295,10 @@ function SettingsView({ isVisible }) {
 	}
 
 	return <div hidden={!isVisible}>
-		<p>{ fsestudio.schemas.themejson.properties.settings.description }</p>
+		<p>{ fsestudio.schemas.themejson.properties[mode].description }</p>
 		<div className="flex flex-row gap-14">
 			<ul className="w-72">
-				{ settingsTabs.map( ( item ) => (
+				{ tabs.map( ( item ) => (
 					<li key={ item.name }>
 						<button
 							className={
@@ -497,6 +320,157 @@ function SettingsView({ isVisible }) {
 			<div className="divide-y divide-gray-200">{ rendered }</div>
 		</div>
 	</div>
+}
+
+function Setting( { isVisible, schemaSettingData, settingName, settingData, topLevelSettingName } ) {
+	const renderedProperties = [];
+	
+	if ( schemaSettingData.type = 'object' ) {
+		for( const propertyName in schemaSettingData.properties ) {
+			renderedProperties.push(
+				<div key={propertyName} className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
+				<label
+					htmlFor={propertyName}
+					className="block text-sm font-medium text-gray-700 sm:col-span-1"
+				>
+					<h2>{ propertyName }</h2>
+					<p>{schemaSettingData.properties[propertyName].description}</p>
+				</label>
+				<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
+					<SettingProperty
+						propertySchema={schemaSettingData.properties[propertyName]}
+						propertyName={propertyName}
+						settingValue={settingData?.hasOwnProperty( propertyName ) ? settingData[propertyName] : null}
+						topLevelSettingName={topLevelSettingName}
+						mode="settings"
+					/>
+				</div>
+			</div>
+			)
+		}
+	} else {
+		renderedProperties.push(
+			<SettingProperty
+				propertySchema={schemaSettingData}
+				propertyName={settingName}
+				settingValue={settingData ? settingData : null}
+				topLevelSettingName={topLevelSettingName}
+				mode="settings"
+			/>
+		)
+	}
+	
+	return <div key={settingName} hidden={ ! isVisible } className="divide-y divide-gray-200">
+		<p>{schemaSettingData.description}</p>
+		{ renderedProperties }
+	</div>
+
+}
+
+function SettingProperty( {propertySchema, propertyName, settingValue, topLevelSettingName, mode = "settings" } ) {
+	const { currentThemeJsonFile } = useStudioContext();
+
+	if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
+		return <input
+			
+			type="checkbox"
+			id={propertyName}
+			name={propertyName}
+			checked={settingValue ? true : false}
+			// @ts-ignore The declaration file is wrong.
+			onChange={( event ) => {
+				const modifiedData = { ...currentThemeJsonFile.data };
+				modifiedData.content[mode][topLevelSettingName][propertyName] = modifiedData.content[mode][topLevelSettingName][propertyName] ? false : true;
+				currentThemeJsonFile.set( modifiedData );
+			}}
+		/>
+	}
+	if ( propertySchema.type === 'string' || propertySchema.type === 'number' ) {
+		
+		return <input
+			className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+			type="text"
+			id={propertyName}
+			value={
+				settingValue
+			}
+			// @ts-ignore The declaration file is wrong.
+			onChange={( event ) => {
+				const modifiedData = { ...currentThemeJsonFile.data };
+				modifiedData.content[mode][topLevelSettingName][propertyName] = event.target.value;
+				currentThemeJsonFile.set( modifiedData );
+			}}
+		/>
+	}
+	if ( propertySchema.type === 'array' ) {
+		
+		const rendered = [];
+
+		// Loop through each saved property in the theme.json file.
+		for( const objectNumber in currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName] ) {
+			if ( propertySchema.items.type === 'object' ) {
+				rendered.push(
+					<div className="flex sm:gap-4  py-6">
+					{ (() => {
+						const renderedValue = [];
+						const previouslySavedValue = currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][objectNumber];
+						// Loop through each schema property in this property.
+						for( const theSchemaName in propertySchema.items.properties ) {
+							if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
+								renderedValue.push(
+									<div>
+										<h2>{theSchemaName}</h2>
+										<p>{propertySchema.items.properties[theSchemaName].description}</p>
+										<ValueSetter
+											name={ theSchemaName }
+											value={ previouslySavedValue[theSchemaName] }
+											onChange={ (newValue) => {
+												const modifiedData = { ...currentThemeJsonFile.data };
+												modifiedData.content[mode][topLevelSettingName][propertyName][objectNumber][theSchemaName] = newValue;
+												currentThemeJsonFile.set( modifiedData );
+											}}
+										/>
+									</div>
+								);
+							}
+						}
+						return renderedValue;
+					})() }
+					</div>
+				)
+			}
+		}
+		return rendered;
+	}
+	
+}
+
+function ValueSetter({name, value, onChange}) {
+	
+	if( 'gradient' === name ) {
+		return <div>
+			<CustomGradientPicker
+				value={ value }
+				onChange={ onChange }
+			/>
+		</div>
+	}
+
+	if( 'color' === name ) {
+		return <div>
+			<ColorPicker
+				color={ value }
+				// @ts-ignore The declaration file is wrong.
+				onChange={ onChange }
+				enableAlpha
+				defaultValue="#000"
+			/>
+		</div>
+	}
+	
+	return <input type="text" value={value} onChange={(event) => {
+		onChange(event.target.value);
+	}} />
 }
 
 function InputField( { name, description, value, onChange = () => {} } ) {
