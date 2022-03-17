@@ -1,7 +1,7 @@
 // @ts-check
 
 // WP Dependencies
-import { ColorPicker, Popover } from '@wordpress/components';
+import { ColorPicker, Popover, CustomGradientPicker } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
@@ -255,7 +255,7 @@ function SettingsView({ isVisible }) {
 		const renderedProperties = [];
 		for( const propertyName in schemaSettingData.properties ) {
 			renderedProperties.push(
-				<div key={propertyName} className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div key={propertyName} className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-top">
 				<label
 					htmlFor={propertyName}
 					className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -311,9 +311,36 @@ function SettingsView({ isVisible }) {
 		if ( propertySchema.type === 'array' ) {
 			
 			const rendered = [];
-			
-				rendered.push( renderSetting( propertySchema.items, propertyName, currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName], topLevelSettingName ) );
-			
+			//rendered.push( renderSetting( propertySchema.items, propertyName, currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName], topLevelSettingName ) );
+			//return rendered;
+			for( const value in currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName] ) {
+				if ( propertySchema.items.type === 'object' ) {
+					for( const theObject in currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][value] ) {
+						const previouslySavedValue = currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][value];
+						for( const theSchemaName in propertySchema.items.properties ) {
+							if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
+								rendered.push(
+									<>
+										<p>{theSchemaName}:</p>
+										{ 'gradient' === theSchemaName ? (
+											<CustomGradientPicker
+												value={ previouslySavedValue[theSchemaName] }
+												onChange={ ( newGradient ) =>
+													console.log( newGradient )
+												}
+											/>
+										) : (
+											<input type="text" value={previouslySavedValue[theSchemaName]} />
+										) }
+									</>
+								);
+							}
+						}
+						break;
+					}
+				}
+				//rendered.push(currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][value]);
+			}
 			return rendered;
 		}
 		if ( propertySchema.type === 'object' ) {
