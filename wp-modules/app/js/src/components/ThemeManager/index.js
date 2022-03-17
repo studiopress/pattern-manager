@@ -593,17 +593,8 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="text-domain"
-							value={
-								currentTheme?.data?.text_domain
-									? currentTheme.data.text_domain
-									: ''
-							}
-							onChange={ ( event ) => {
-								currentTheme.set( {
-									...currentTheme.data,
-									text_domain: event.target.value,
-								} );
-							} }
+							value={ currentTheme?.data?.text_domain ?? '' }
+							disabled
 						/>
 					</div>
 				</div>
