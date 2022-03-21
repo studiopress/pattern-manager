@@ -29,7 +29,7 @@ function register_routes() {
 			array(
 				'methods'             => 'GET',
 				'callback'            => __NAMESPACE__ . '\get_theme',
-				'permission_callback' => __NAMESPACE__ . '\get_theme_permission_check',
+				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => get_request_args(),
 			),
 			'schema' => 'response_item_schema',
@@ -42,7 +42,7 @@ function register_routes() {
 			array(
 				'methods'             => 'POST',
 				'callback'            => __NAMESPACE__ . '\save_theme',
-				'permission_callback' => __NAMESPACE__ . '\save_theme_permission_check',
+				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => save_request_args(),
 			),
 			'schema' => 'response_item_schema',
@@ -105,20 +105,10 @@ function save_theme( $request ) {
  * Check the permissions required to take this action.
  *
  * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|bool
+ * @return bool
  */
-function get_theme_permission_check( $request ) {
-	return true;
-}
-
-/**
- * Check the permissions required to take this action.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|bool
- */
-function save_theme_permission_check( $request ) {
-	return true;
+function permission_check( $request ) {
+	return current_user_can( 'manage_options' );
 }
 
 /**
