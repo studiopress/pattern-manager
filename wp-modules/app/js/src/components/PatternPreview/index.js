@@ -46,9 +46,9 @@ export default function PatternPreview( {
 
 /**
  * @param {{
- *   onLoad: Function,
- *   children: React.ReactElement[],
- *   scale: number
+ *  onLoad: Function,
+ *  children: React.ReactElement[],
+ *  scale: number
  * }} props
  */
 function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
