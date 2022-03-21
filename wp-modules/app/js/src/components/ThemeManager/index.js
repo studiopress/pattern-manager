@@ -315,17 +315,8 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="directory-name"
-							value={
-								currentTheme?.data?.dirname
-									? currentTheme.data.dirname
-									: ''
-							}
-							onChange={ ( event ) => {
-								currentTheme.set( {
-									...currentTheme.data,
-									dirname: event.target.value,
-								} );
-							} }
+							value={ currentTheme?.data?.dirname ?? '' }
+							disabled
 						/>
 					</div>
 				</div>
@@ -342,17 +333,8 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="namespace"
-							value={
-								currentTheme?.data?.namespace
-									? currentTheme.data.namespace
-									: ''
-							}
-							onChange={ ( event ) => {
-								currentTheme.set( {
-									...currentTheme.data,
-									namespace: event.target.value,
-								} );
-							} }
+							value={ currentTheme?.data?.namespace ?? '' }
+							disabled
 						/>
 					</div>
 				</div>
@@ -612,17 +594,8 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="text-domain"
-							value={
-								currentTheme?.data?.text_domain
-									? currentTheme.data.text_domain
-									: ''
-							}
-							onChange={ ( event ) => {
-								currentTheme.set( {
-									...currentTheme.data,
-									text_domain: event.target.value,
-								} );
-							} }
+							value={ currentTheme?.data?.text_domain ?? '' }
+							disabled
 						/>
 					</div>
 				</div>

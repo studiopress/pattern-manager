@@ -40,9 +40,9 @@ const HANDLE_STYLES_OVERRIDE = {
 
 /**
  * @param {{
- *   enableResizing: boolean,
- *   settings: Record<string, unknown>,
- *   ...props: Record<string, unknown>
+ *  enableResizing: boolean,
+ *  settings: Record<string, unknown>,
+ *  ...props: Record<string, unknown>
  * }} props
  */
 function ResizableEditor( { enableResizing, settings, ...props } ) {
