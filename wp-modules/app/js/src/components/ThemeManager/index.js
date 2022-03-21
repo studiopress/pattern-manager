@@ -302,7 +302,7 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div hidden className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 					<label
 						htmlFor="directory-name"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -320,7 +320,7 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div hidden className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 					<label
 						htmlFor="namespace"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -581,7 +581,7 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div hidden className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 					<label
 						htmlFor="text-domain"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
