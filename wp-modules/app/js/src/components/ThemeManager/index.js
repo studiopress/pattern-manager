@@ -75,7 +75,7 @@ export default function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! Object.keys( currentTheme.data ).length ) {
+		if ( ! currentTheme.data ) {
 			return null;
 		}
 
@@ -410,11 +410,7 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="author-uri"
-							value={
-								currentTheme?.data?.author_uri
-									? currentTheme.data.author_uri
-									: ''
-							}
+							value={ currentTheme?.data?.author_uri ?? '' }
 							onChange={ ( event ) => {
 								currentTheme.set( {
 									...currentTheme.data,

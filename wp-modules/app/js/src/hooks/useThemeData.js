@@ -10,7 +10,7 @@ import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
 /**
- * @typedef {Partial<{
+ * @typedef {{
  *   name: string,
  *   namespace: string,
  *   'index.html': string,
@@ -33,7 +33,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  *   theme_json_file: string,
  *   uri: string,
  *   version: string
- * }>} Theme
+ * }} Theme
  */
 
 /**
@@ -54,7 +54,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
-	const [ themeData, setThemeData ] = useState( {} );
+	const [ themeData, setThemeData ] = useState();
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 
 	useEffect( () => {
@@ -67,13 +67,15 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	}, [ themeId ] );
 
 	useEffect( () => {
-		setThemeData( {
-			...themeData,
-			dirname: convertToSlug( themeData.name ),
-			namespace: convertToPascalCase( themeData.name ),
-			text_domain: convertToSlug( themeData.name ),
-		} );
-	}, [ themeData.name ] );
+		if ( themeData?.name ) {
+			setThemeData( {
+				...themeData,
+				dirname: convertToSlug( themeData?.name ),
+				namespace: convertToPascalCase( themeData?.name ),
+				text_domain: convertToSlug( themeData?.name ),
+			} );
+		}
+	}, [ themeData?.name ] );
 
 	function getThemeData( thisThemeId ) {
 		return new Promise( ( resolve ) => {

@@ -40,19 +40,20 @@ export default function ThemeJsonEditor( { visible } ) {
 			counter++;
 		}
 
-		return (
-			<select
-				value={ currentThemeJsonFileId.value }
-				onChange={ ( event ) => {
-					currentTheme.set( {
-						...currentTheme.data,
-						theme_json_file: event.target.value,
-					} )
-				} }
-			>
-				{ renderedOptions }
-			</select>
-		);
+		return currentTheme.data
+			? (
+				<select
+					value={ currentThemeJsonFileId.value }
+					onChange={ ( event ) => {
+						currentTheme.set( {
+							...currentTheme.data,
+							theme_json_file: event.target.value,
+						} )
+					} }
+				>
+					{ renderedOptions }
+				</select>
+			) : null;
 	}
 
 	function renderThemeEditorWhenReady() {
