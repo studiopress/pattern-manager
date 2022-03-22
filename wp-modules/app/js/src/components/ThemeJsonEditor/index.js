@@ -71,21 +71,6 @@ export default function ThemeJsonEditor( { visible } ) {
 					{ __( 'Theme.json Manager', 'fse-studio' ) }
 				</h1>
 				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
-					{/*
-					<div>
-						<label
-							htmlFor="location"
-							className="block text-sm font-medium text-gray-700"
-						>
-							{ __( 'Choose a theme', 'fse-studio' ) }
-						</label>
-						{ renderSelector() }
-					</div>
-					<div className="flex flex-col mx-6 my-2.5">
-						{ __( 'or', 'fse-studio' ) }
-					</div>
-					*/
-					}
 					<div className="flex flex-col gap-2">
 						<button
 							type="button"

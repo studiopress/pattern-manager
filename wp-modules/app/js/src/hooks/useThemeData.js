@@ -13,8 +13,8 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  * @typedef {{
  *   name: string,
  *   namespace: string,
- *   'index.html': string,
- *   '404.html': string,
+ *   'index.html'?: string,
+ *   '404.html'?: string,
  *   author: string,
  *   author_uri: string,
  *   description: string,
@@ -22,7 +22,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  *   included_patterns: string[],
  *   requires_php: string,
  *   requires_wp: string,
- *   rest_route: string,
+ *   rest_route?: string,
  *   tags: string,
  *   template_files: Partial<{
  *    '404': string,
