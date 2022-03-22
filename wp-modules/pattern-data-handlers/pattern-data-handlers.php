@@ -148,7 +148,6 @@ function prepare_content( $pattern_html, $text_domain ) {
  * @return void
  */
 function register_block_patterns() {
-
 	if ( 'fse-studio' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
 		return;
 	}
