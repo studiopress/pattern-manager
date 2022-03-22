@@ -92,9 +92,10 @@ export default function ThemeManager( { visible } ) {
 					<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
 						{ 
 							// There should be at least 1 theme other than the currently selected theme.
-							// Otherwise, there's no need to select anything.
+							// Or the current theme should have been saved to disk.
+							// Otherwise, there's no need to select any theme.
 							Object.keys( themes.themes ).some( ( themeName ) =>
-								themeName !== currentThemeId.value
+								themeName !== currentThemeId.value || currentTheme.existsOnDisk
 							) ? (
 								<>
 									<div>
