@@ -10,7 +10,7 @@ import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
 /**
- * @typedef {{
+ * @typedef {Partial<{
  *   name: string,
  *   namespace: string,
  *   'index.html'?: string,
@@ -33,7 +33,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  *   theme_json_file: string,
  *   uri: string,
  *   version: string
- * }} Theme
+ * }>} Theme
  */
 
 /**

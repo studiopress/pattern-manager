@@ -53,7 +53,10 @@ export default function ThemeManager( { visible } ) {
 			const themeInQuestion = themes.themes[ thisTheme ];
 			renderedThemes.push(
 				<option key={ counter } value={ themeInQuestion.dirname }>
-					{ themeInQuestion.name }
+					{ thisTheme === currentThemeId.value
+						? currentTheme.data?.name
+						: themeInQuestion?.name
+					}
 				</option>
 			);
 			counter++;
