@@ -133,10 +133,28 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 		} );
 	}
 
+	function exportThemeData() {
+		return new Promise( ( resolve ) => {
+			fetch( fsestudio.apiEndpoints.exportThemeEndpoint, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify( themeData ),
+			} )
+				.then( ( response ) => response.json() )
+				.then( ( data ) => {
+					resolve( data );
+				} );
+		} );
+	}
+
 	return {
 		data: themeData,
 		set: setThemeData,
 		save: saveThemeData,
+		export: exportThemeData,
 		existsOnDisk,
 		hasSaved,
 	};

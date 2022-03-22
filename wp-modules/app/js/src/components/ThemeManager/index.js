@@ -234,6 +234,12 @@ function ThemeDataEditor() {
 				<button
 					type="button"
 					className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+					disabled={ ! currentTheme.existsOnDisk }
+					onClick={ () => {
+						currentTheme.export().then( ( response ) => {
+							window.open( response );
+						} );
+					} }
 				>
 					<Icon
 						className="fill-current mr-2"

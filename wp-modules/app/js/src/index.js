@@ -50,7 +50,8 @@ import classNames from './utils/classNames';
  *   getThemeJsonFileEndpoint: string,
  *   savePatternEndpoint: string,
  *   saveThemeEndpoint: string,
- *   saveThemeJsonFileEndpoint:	string
+ *   saveThemeJsonFileEndpoint:	string,
+ *   exportThemeEndpoint:	string,
  *  },
  *  blockEditorSettings: Partial<{
  *   '__unstableResolvedAssets': {styles: string},
