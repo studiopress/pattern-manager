@@ -55,7 +55,7 @@ function register_routes() {
 			array(
 				'methods'             => 'POST',
 				'callback'            => __NAMESPACE__ . '\export_theme',
-				'permission_callback' => __NAMESPACE__ . '\export_theme_permission_check',
+				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => save_request_args(),
 			),
 			'schema' => 'response_item_schema',
@@ -140,16 +140,6 @@ function export_theme( $request ) {
  */
 function permission_check( $request ) {
 	return current_user_can( 'manage_options' );
-}
-
-/**
- * Check the permissions required to take this action.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return bool
- */
-function export_theme_permission_check( $request ) {
-	return true;
 }
 
 /**
