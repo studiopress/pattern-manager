@@ -48,6 +48,19 @@ function register_routes() {
 			'schema' => 'response_item_schema',
 		)
 	);
+	register_rest_route(
+		$namespace,
+		'/export-theme',
+		array(
+			array(
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\export_theme',
+				'permission_callback' => __NAMESPACE__ . '\export_theme_permission_check',
+				'args'                => save_request_args(),
+			),
+			'schema' => 'response_item_schema',
+		)
+	);
 }
 
 /**
@@ -102,6 +115,24 @@ function save_theme( $request ) {
 }
 
 /**
+ * Export a theme's data to a zip file.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_Error|WP_REST_Request
+ */
+function export_theme( $request ) {
+	$theme_data = $request->get_params();
+
+	$result = \FseStudio\ThemeDataHandlers\export_theme( $theme_data );
+
+	if ( is_wp_error( $result ) ) {
+		return new \WP_REST_Response( $result, 400 );
+	} else {
+		return new \WP_REST_Response( $result, 200 );
+	}
+}
+
+/**
  * Check the permissions required to take this action.
  *
  * @param WP_REST_Request $request Full data about the request.
@@ -118,6 +149,16 @@ function get_theme_permission_check( $request ) {
  * @return WP_Error|bool
  */
 function save_theme_permission_check( $request ) {
+	return true;
+}
+
+/**
+ * Check the permissions required to take this action.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return bool
+ */
+function export_theme_permission_check( $request ) {
 	return true;
 }
 

@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace FseStudio\ThemeDataHandlers;
 
+use WP_REST_Response;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -71,6 +73,52 @@ function get_the_themes() {
 	}
 
 	return $formatted_theme_data;
+}
+
+/**
+ * Export a zip of the theme.
+ *
+ * @param array $theme Data about the theme.
+ * @return WP_Error|string
+ */
+function export_theme( $theme ) {
+	if ( ! class_exists( 'ZipArchive' ) ) {
+		return new \WP_Error( 'no_zip_archive_class', __( 'No ZipArchive class found', 'fse-studio' ) );
+	}
+
+	// Spin up the filesystem api.
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+
+	// Build the files for the theme, located in wp-content/themes/.
+	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/theme-boiler/theme-boiler/';
+	$themes_dir       = $wp_filesystem->wp_themes_dir();
+	$new_theme_dir    = $themes_dir . trailingslashit( $theme['dirname'] );
+
+	$files = list_files( $new_theme_dir );
+
+	$zip      = new \ZipArchive();
+	$zip_name = $theme_boiler_dir . $theme['dirname'] . '.zip';
+	$zip->open( $zip_name, \ZipArchive::CREATE );
+	foreach ( $files as $file ) {
+		$file_in_the_zip = str_replace( $new_theme_dir, './', $file );
+		if ( is_file( $file ) ) {
+			$zip->addFile( $file, $file_in_the_zip );
+		}
+
+		if ( is_dir( $file ) ) {
+			$zip->addEmptyDir( $file_in_the_zip );
+		}
+	}
+
+	$zip->close();
+
+	if ( ! is_file( $zip_name ) ) {
+		return new \WP_Error( 'file_not_found', __( 'Zip file not found', 'fse-studio' ) );
+	}
+
+	$zip_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $zip_name );
+
+	return $zip_url;
 }
 
 /**
