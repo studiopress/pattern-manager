@@ -90,12 +90,14 @@ export default function ThemeManager( { visible } ) {
 						{ __( 'Theme Manager', 'fse-studio' ) }
 					</h1>
 					<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
-						{ 
+						{
+							// In order to render the selector…
 							// There should be at least 1 theme other than the currently selected theme.
 							// Or the current theme should have been saved to disk.
-							// Otherwise, there's no need to select any theme.
-							Object.keys( themes.themes ).some( ( themeName ) =>
-								themeName !== currentThemeId.value || currentTheme.existsOnDisk
+							Object.keys( themes.themes ).some(
+								( themeName ) =>
+									themeName !== currentThemeId.value ||
+									currentTheme.existsOnDisk
 							) ? (
 								<>
 									<div>
@@ -103,7 +105,10 @@ export default function ThemeManager( { visible } ) {
 											htmlFor="location"
 											className="block text-sm font-medium text-gray-700"
 										>
-											{ __( 'Choose a theme', 'fse-studio' ) }
+											{ __(
+												'Choose a theme',
+												'fse-studio'
+											) }
 										</label>
 										{ renderThemeSelector() }
 									</div>
