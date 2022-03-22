@@ -55,8 +55,7 @@ export default function ThemeManager( { visible } ) {
 				<option key={ counter } value={ themeInQuestion.dirname }>
 					{ thisTheme === currentThemeId.value
 						? currentTheme.data?.name
-						: themeInQuestion?.name
-					}
+						: themeInQuestion?.name }
 				</option>
 			);
 			counter++;
