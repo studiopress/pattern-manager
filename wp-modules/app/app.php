@@ -66,6 +66,7 @@ function fse_studio_app() {
 				'savePatternEndpoint'       => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),
 				'getThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
 				'saveThemeEndpoint'         => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
+				'exportThemeEndpoint'       => get_rest_url( false, 'fsestudio/v1/export-theme/' ),
 				'getThemeJsonFileEndpoint'  => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
 				'saveThemeJsonFileEndpoint' => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
 			),

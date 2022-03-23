@@ -53,7 +53,9 @@ export default function ThemeManager( { visible } ) {
 			const themeInQuestion = themes.themes[ thisTheme ];
 			renderedThemes.push(
 				<option key={ counter } value={ themeInQuestion.dirname }>
-					{ themeInQuestion.name }
+					{ thisTheme === currentThemeId.value
+						? currentTheme.data?.name
+						: themeInQuestion?.name }
 				</option>
 			);
 			counter++;
@@ -76,7 +78,7 @@ export default function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! Object.keys( currentTheme.data ).length ) {
+		if ( ! currentTheme.data ) {
 			return null;
 		}
 
@@ -90,23 +92,35 @@ export default function ThemeManager( { visible } ) {
 					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
 						{ __( 'Theme Manager', 'fse-studio' ) }
 					</h1>
-					<div className="px-4 sm:px-6 md:px-8 bg-[#f8f8f8] py-8 flex sm:flex-row flex-col items-end">
-						{ Object.keys( themes.themes ).length > 0 ? (
-							<>
-								<div>
-									<label
-										htmlFor="themes"
-										className="block text-sm font-medium text-gray-700"
-									>
-										{ __( 'Choose a theme', 'fse-studio' ) }
-									</label>
-									{ renderThemeSelector() }
-								</div>
-								<div className="flex flex-col mx-6 my-2.5">
-									{ __( 'or', 'fse-studio' ) }
-								</div>
-							</>
-						) : null }
+					<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
+						{
+							// In order to render the selector…
+							// There should be at least 1 theme other than the currently selected theme.
+							// Or the current theme should have been saved to disk.
+							Object.keys( themes.themes ).some(
+								( themeName ) =>
+									themeName !== currentThemeId.value ||
+									currentTheme.existsOnDisk
+							) ? (
+								<>
+									<div>
+										<label
+											htmlFor="location"
+											className="block text-sm font-medium text-gray-700"
+										>
+											{ __(
+												'Choose a theme',
+												'fse-studio'
+											) }
+										</label>
+										{ renderThemeSelector() }
+									</div>
+									<div className="flex flex-col mx-6 my-2.5">
+										{ __( 'or', 'fse-studio' ) }
+									</div>
+								</>
+							) : null
+						}
 						<div className="flex flex-col">
 							<button
 								type="button"
@@ -235,6 +249,12 @@ function ThemeDataEditor() {
 				<button
 					type="button"
 					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+					disabled={ ! currentTheme.existsOnDisk }
+					onClick={ () => {
+						currentTheme.export().then( ( response ) => {
+							window.open( response );
+						} );
+					} }
 				>
 					<Icon
 						className="fill-current mr-2"
@@ -303,7 +323,10 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div
+					hidden
+					className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
+				>
 					<label
 						htmlFor="directory-name"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -321,7 +344,10 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div
+					hidden
+					className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
+				>
 					<label
 						htmlFor="namespace"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -405,11 +431,7 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="author-uri"
-							value={
-								currentTheme?.data?.author_uri
-									? currentTheme.data.author_uri
-									: ''
-							}
+							value={ currentTheme?.data?.author_uri ?? '' }
 							onChange={ ( event ) => {
 								currentTheme.set( {
 									...currentTheme.data,
@@ -582,7 +604,10 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div
+					hidden
+					className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
+				>
 					<label
 						htmlFor="text-domain"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"

@@ -16,6 +16,7 @@
 		"lint:js": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio",
 		"lint:js:fix": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio -f 1;",
 		"lint:css": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:css:fix": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio -f 1;"
+		"lint:css:fix": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio -f 1;",
+		"test:js": "sh wpps-scripts/test-js.sh"
 	}
 }
