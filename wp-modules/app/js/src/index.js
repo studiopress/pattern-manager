@@ -231,7 +231,11 @@ function FseStudio() {
 								{ navigation.map( ( item ) => {
 									return (
 										<button
-											style={{display: ! item.available ? 'none' : '' }}
+											style={ {
+												display: ! item.available
+													? 'none'
+													: '',
+											} }
 											disabled={ ! item.available }
 											key={ item.name }
 											onClick={ () => {
