@@ -44,6 +44,7 @@ import classNames from './utils/classNames';
 
 /**
  * @typedef {{
+ *  apiNonce: string,
  *  apiEndpoints: {
  *   getPatternEndpoint: string,
  *   getThemeEndpoint: string,
