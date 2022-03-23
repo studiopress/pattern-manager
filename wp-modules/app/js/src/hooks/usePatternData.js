@@ -47,6 +47,7 @@ export default function usePatternData(
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-WP-Nonce': fsestudio.apiNonce,
 					},
 				}
 			)
@@ -75,6 +76,7 @@ export default function usePatternData(
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
 				},
 				body: JSON.stringify( patternData ),
 			} )
