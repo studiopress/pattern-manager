@@ -94,6 +94,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-WP-Nonce': fsestudio.apiNonce,
 					},
 				}
 			)
@@ -122,6 +123,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
 				},
 				body: JSON.stringify( themeData ),
 			} )
@@ -142,6 +144,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
 				},
 				body: JSON.stringify( themeData ),
 			} )
