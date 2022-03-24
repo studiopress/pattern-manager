@@ -83,10 +83,10 @@ return [
 				'html' => __( 'Save your theme.', 'fse-studio' ) . ' ' . __( 'When you\'re done adding your theme information above, click "Save Theme Settings".', 'fse-studio' ),
 			],
 			'completionData'     => [
-				'html' => __( 'Theme Saved!', 'fse-studio' ),
+				'html'    => __( 'Theme Saved!', 'fse-studio' ),
 				'type'    => 'elementExists',
 				'element' => [
-					'role'   => 'dialog',
+					'role' => 'dialog',
 					'name' => [
 						__( 'Theme Saved', 'fse-studio' ),
 					],
