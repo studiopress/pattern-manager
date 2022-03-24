@@ -146,5 +146,9 @@ function default_theme_args() {
 		'included_patterns' => [],
 		'index.html'        => [],
 		'404.html'          => [],
+		'archive.html'      => [],
+		'single.html'       => [],
+		'page.html'         => [],
+		'search.html'       => [],
 	);
 }
