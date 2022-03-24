@@ -74,7 +74,7 @@ export default function ThemeJsonEditor( { visible } ) {
 					<div className="flex flex-col gap-2">
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
 								const newData = {
 									name: 'new',
@@ -255,7 +255,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 					}
 					<button
 						type="button"
-						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
 							themeJsonFile.save();
 							theme.save();

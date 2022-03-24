@@ -66,6 +66,7 @@ export default function ThemeManager( { visible } ) {
 			<>
 				<select
 					className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
+					id="themes"
 					value={ currentThemeId.value }
 					onChange={ ( event ) => {
 						currentThemeId.set( event.target.value );
@@ -124,7 +125,7 @@ export default function ThemeManager( { visible } ) {
 						<div className="flex flex-col">
 							<button
 								type="button"
-								className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
 									const newThemeData = {
 										name: 'My New Theme',
@@ -137,7 +138,7 @@ export default function ThemeManager( { visible } ) {
 										tags: '',
 										tested_up_to: '5.9',
 										requires_wp: '5.9',
-										requires_php: '7.4',
+										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
 										theme_json_file: 'default',
@@ -252,7 +253,7 @@ function ThemeDataEditor() {
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
 				<button
 					type="button"
-					className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 					hidden={ ! currentTheme.existsOnDisk }
 					onClick={ () => {
 						currentTheme.export().then( ( response ) => {
@@ -270,21 +271,23 @@ function ThemeDataEditor() {
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
-						<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+						<div className="text-sm text-green-600 flex flex-row items-center mr-6">
 							<Icon
 								className="fill-current"
 								icon={ check }
 								size={ 26 }
 							/>{ ' ' }
-							{ __(
-								'Theme saved to your /themes/ folder',
-								'fse-studio'
-							) }
-						</span>
+							<span role="dialog" aria-label="Theme Saved">
+								{ __(
+									'Theme saved to your themes folder',
+									'fse-studio'
+								) }
+							</span>
+						</div>
 					) : null }
 					<button
 						type="button"
-						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
 							currentTheme.save();
 						} }
@@ -674,7 +677,7 @@ function ThemePatterns( { isVisible } ) {
 					</p>
 					<p className="mt-2">
 						<button
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => setModalOpen( true ) }
 						>
 							{ __( 'Browse Patterns', 'fse-studio' ) }

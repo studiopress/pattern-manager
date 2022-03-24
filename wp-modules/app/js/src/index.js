@@ -292,7 +292,7 @@ function FseStudio() {
 						sidebarOpen ? 'md:pl-80' : 'md:pl-0'
 					}` }
 				>
-					<main className="flex-1">{ renderCurrentView() }</main>
+					<div className="flex-1">{ renderCurrentView() }</div>
 				</div>
 			</div>
 		</>
