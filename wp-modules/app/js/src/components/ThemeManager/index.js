@@ -197,7 +197,7 @@ function ThemeDataEditor() {
 			name: __( 'Customize Styles', 'fse-studio' ),
 			slug: 'customize_styles',
 			icon: globe,
-			available: currentTheme.existsOnDisk,
+			available: false, // @todo: change back to currentTheme.existsOnDisk or delete this object.
 		},
 		{
 			name: __( 'Theme Template Files', 'fse-studio' ),
