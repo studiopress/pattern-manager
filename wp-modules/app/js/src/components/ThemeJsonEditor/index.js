@@ -210,24 +210,29 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 		<>
 			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
 				<ul className="w-72">
-					{ views.map( ( item ) => (
-						<li key={ item.name }>
-							<button
-								className={
-									'w-full text-left p-5 font-medium' +
-									( currentView === item.slug
-										? ' bg-gray-100'
-										: ' hover:bg-gray-100' )
-								}
-								key={ item.name }
-								onClick={ () => {
-									setCurrentView( item.slug );
-								} }
-							>
-								{ item.name }
-							</button>
-						</li>
-					) ) }
+					{ views.map( ( item ) => {
+						if ( item.slug !== 'settings' ) {
+							return;
+						}
+						return (
+							<li key={ item.name }>
+								<button
+									className={
+										'w-full text-left p-5 font-medium' +
+										( currentView === item.slug
+											? ' bg-gray-100'
+											: ' hover:bg-gray-100' )
+									}
+									key={ item.name }
+									onClick={ () => {
+										setCurrentView( item.slug );
+									} }
+								>
+									{ item.name }
+								</button>
+							</li>
+						)
+					} ) }
 				</ul>
 				{ maybeRenderSettingsView() }
 				{ maybeRenderStylesView() }
