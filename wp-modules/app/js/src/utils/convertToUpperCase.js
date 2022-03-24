@@ -10,8 +10,10 @@ function capitalize( name ) {
  * @return {string} The string in Upper Case, like 'Example Here'.
  */
 export default function convertToUpperCase( toConvert = '' ) {
-	return capitalize( toConvert.replace(
-		/(?<=[a-z1-9])[A-Z1-9](?=[a-z]+)/g,
-		( match ) => ` ${ capitalize( match ) }`
-	) );
+	return capitalize(
+		toConvert.replace(
+			/(?<=[a-z])[A-Z1-9](?=[a-z]+)/g,
+			( match ) => ` ${ capitalize( match ) }`
+		)
+	);
 }
