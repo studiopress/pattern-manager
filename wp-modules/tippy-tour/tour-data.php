@@ -54,10 +54,10 @@ return [
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Give your theme a unique name', 'fse-studio' ),
+				'html' => __( 'Give your theme a unique name.', 'fse-studio' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Give your theme a unique name', 'fse-studio' ) . ' ' . __( 'Looks good! Feel free to keep working on your unique name. When ready, click "next".', 'fse-studio' ),
+				'html'    => __( 'Your theme name looks good! When you\'re finished naming your theme, click "Next".', 'fse-studio' ),
 				'type'    => 'elementDoesNotHaveValues',
 				'element' => [
 					'role'   => 'textbox',
@@ -75,48 +75,20 @@ return [
 		],
 		[
 			'highlightedElement' => [
-				'role' => 'textbox',
-				'name' => __( 'Directory Name', 'fse-studio' ),
+				'role' => 'button',
+				'name' => __( 'Save Theme Settings', 'fse-studio' ),
 			],
-			'beaconPosition'     => 'right',
+			'beaconPosition'     => 'top',
 			'initialData'        => [
-				'html' => __( 'Give your theme a unique directory name.', 'fse-studio' ) . __( 'Ideally this matches your theme\'s name, but without any special characters or spaces. Replace spaces with dashes.', 'fse-studio' ),
+				'html' => __( 'Save your theme.', 'fse-studio' ) . ' ' . __( 'When you\'re done adding your theme information above, click "Save Theme Settings".', 'fse-studio' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Give your theme a unique directory name.', 'fse-studio' ) . __( 'Ideally this matches your theme\'s name, but without any special characters or spaces. Replace spaces with dashes.', 'fse-studio' ),
-				'type'    => 'elementDoesNotHaveValues',
+				'html' => __( 'Theme Saved!', 'fse-studio' ),
+				'type'    => 'elementExists',
 				'element' => [
-					'role'   => 'textbox',
-					'name'   => __( 'Directory Name', 'fse-studio' ),
-					'values' => [
-						'',
-						'my-new-theme',
-					],
-				],
-			],
-			'navigation'         => [
-				'backButton' => true,
-				'nextButton' => true,
-			],
-		],
-		[
-			'highlightedElement' => [
-				'role' => 'textbox',
-				'name' => __( 'Namespace', 'fse-studio' ),
-			],
-			'beaconPosition'     => 'right',
-			'initialData'        => [
-				'html' => __( 'Give your theme a unique namespace', 'fse-studio' ) . ' ' . __( 'This is the PHP namespace that will be used to ensure your theme\'s code does not conflict with any other themes.', 'fse-studio' ),
-			],
-			'completionData'     => [
-				'html'    => __( 'Great Job', 'fse-studio' ),
-				'type'    => 'elementDoesNotHaveValues',
-				'element' => [
-					'role'   => 'textbox',
-					'name'   => __( 'Namespace', 'fse-studio' ),
-					'values' => [
-						'',
-						'MyNewTheme',
+					'role'   => 'dialog',
+					'name' => [
+						__( 'Theme Saved', 'fse-studio' ),
 					],
 				],
 			],

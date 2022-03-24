@@ -138,7 +138,7 @@ export default function ThemeManager( { visible } ) {
 										tags: '',
 										tested_up_to: '5.9',
 										requires_wp: '5.9',
-										requires_php: '7.4',
+										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
 										theme_json_file: 'default',
@@ -271,17 +271,19 @@ function ThemeDataEditor() {
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
-						<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+						<div className="text-sm text-green-600 flex flex-row items-center mr-6">
 							<Icon
 								className="fill-current"
 								icon={ check }
 								size={ 26 }
 							/>{ ' ' }
-							{ __(
-								'Theme saved to your /themes/ folder',
-								'fse-studio'
-							) }
-						</span>
+							<span role="dialog" aria-label="Theme Saved">
+								{ __(
+									'Theme saved to your themes folder',
+									'fse-studio'
+								) }
+							</span>
+						</div>
 					) : null }
 					<button
 						type="button"
