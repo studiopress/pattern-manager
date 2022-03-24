@@ -657,7 +657,7 @@ function ThemePatterns( { isVisible } ) {
 					<p className="mt-2">
 						{ createInterpolateElement(
 							__(
-								'<span>You can also create patterns in the</span> <button>Pattern Manager</button>',
+								'<span>You can also create patterns in the</span> <button>Pattern Editor</button>',
 								'fse-studio'
 							),
 							{
@@ -666,9 +666,7 @@ function ThemePatterns( { isVisible } ) {
 									<button
 										className="mt-2 text-blue-400"
 										onClick={ () => {
-											currentView.set(
-												'pattern_manager'
-											);
+											currentView.set( 'pattern_editor' );
 										} }
 									/>
 								),

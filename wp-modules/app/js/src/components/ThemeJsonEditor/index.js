@@ -68,7 +68,7 @@ export default function ThemeJsonEditor( { visible } ) {
 		<div hidden={ ! visible } className="fsestudio-theme-manager p-12">
 			<div className="max-w-7xl mx-auto bg-white shadow">
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-					{ __( 'Theme.json Manager', 'fse-studio' ) }
+					{ __( 'Theme.json Editor', 'fse-studio' ) }
 				</h1>
 				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
 					<div className="flex flex-col gap-2">

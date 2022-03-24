@@ -133,7 +133,7 @@ export default function PatternEditor( { visible } ) {
 					icon={ layout }
 					size={ 26 }
 				/>{ ' ' }
-				{ __( 'Browse Patterns', 'fse-studio' ) }
+				{ __( 'Edit Patterns', 'fse-studio' ) }
 			</button>
 		);
 	}
@@ -190,12 +190,12 @@ export default function PatternEditor( { visible } ) {
 			{ pattern.data ? null : (
 				<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
 					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-						{ __( 'Pattern Manager', 'fse-studio' ) }
+						{ __( 'Pattern Editor', 'fse-studio' ) }
 					</h1>
 					<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
 						<p className="text-base mb-4 max-w-3xl">
 							{ __(
-								'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
+								'Welcome to the Pattern Editor! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Edit Patterns button to the right, or by using the Edit Patterns button in the header.',
 								'fse-studio'
 							) }
 						</p>

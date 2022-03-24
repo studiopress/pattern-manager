@@ -144,14 +144,14 @@ function FseStudio() {
 			available: true,
 		},
 		{
-			name: 'Pattern Manager',
-			slug: 'pattern_manager',
+			name: 'Pattern Editor',
+			slug: 'pattern_editor',
 			icon: layout,
 			available: currentTheme.existsOnDisk,
 		},
 		{
-			name: 'Theme.json Manager',
-			slug: 'themejson_manager',
+			name: 'Theme.json Editor',
+			slug: 'themejson_editor',
 			icon: globe,
 			available: currentTheme.existsOnDisk,
 		},
@@ -169,10 +169,10 @@ function FseStudio() {
 					visible={ 'theme_manager' === currentView.currentView }
 				/>
 				<PatternEditor
-					visible={ 'pattern_manager' === currentView.currentView }
+					visible={ 'pattern_editor' === currentView.currentView }
 				/>
 				<ThemeJsonEditor
-					visible={ 'themejson_manager' === currentView.currentView }
+					visible={ 'themejson_editor' === currentView.currentView }
 				/>
 			</>
 		);
