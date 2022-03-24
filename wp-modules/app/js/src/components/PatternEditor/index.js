@@ -308,7 +308,7 @@ export function BlockEditor( props ) {
 
 		pattern.set( {
 			...pattern.data,
-			content: blocks.length ? serialize( blocks[ 0 ] ) : '',
+			content: blocks[ 0 ]?.clientId ? serialize( blocks ) : '',
 		} );
 	}, [ blocks ] );
 
