@@ -70,7 +70,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 	return (
 		<>
 			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
-				<label htmlFor="theme-name">
+				<div>
 					<span className="block text-sm font-medium text-gray-700 sm:col-span-1">
 						{ data[ templateName ]?.title ||
 							__(
@@ -98,7 +98,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 							__( 'Change Pattern', 'fse-studio' ) ) ||
 							__( 'Set Pattern', 'fse-studio' ) }
 					</button>
-				</label>
+				</div>
 				<div className="mt-1 sm:mt-0 sm:col-span-1">
 					<div className="min-h-[30px] bg-white border border-[#F0F0F0]">
 						<PatternPreview
