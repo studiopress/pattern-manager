@@ -651,9 +651,9 @@ function ThemePatterns( { isVisible } ) {
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="w-full flex flex-col">
 				<div className="w-full text-center bg-gray-100 p-5 self-start">
-					<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+					<h2 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 						{ __( 'Add patterns to your theme', 'fse-studio' ) }
-					</h3>
+					</h2>
 					<p className="mt-2">
 						{ createInterpolateElement(
 							__(
