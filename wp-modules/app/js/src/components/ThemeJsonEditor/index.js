@@ -68,13 +68,13 @@ export default function ThemeJsonEditor( { visible } ) {
 		<div hidden={ ! visible } className="fsestudio-theme-manager p-12">
 			<div className="max-w-7xl mx-auto bg-white shadow">
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-					{ __( 'Theme.json Manager', 'fse-studio' ) }
+					{ __( 'Theme.json Editor', 'fse-studio' ) }
 				</h1>
 				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
 					<div className="flex flex-col gap-2">
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
 								const newData = {
 									name: 'new',
@@ -210,24 +210,29 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 		<>
 			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
 				<ul className="w-72">
-					{ views.map( ( item ) => (
-						<li key={ item.name }>
-							<button
-								className={
-									'w-full text-left p-5 font-medium' +
-									( currentView === item.slug
-										? ' bg-gray-100'
-										: ' hover:bg-gray-100' )
-								}
-								key={ item.name }
-								onClick={ () => {
-									setCurrentView( item.slug );
-								} }
-							>
-								{ item.name }
-							</button>
-						</li>
-					) ) }
+					{ views.map( ( item ) => {
+						if ( item.slug !== 'settings' ) {
+							return;
+						}
+						return (
+							<li key={ item.name }>
+								<button
+									className={
+										'w-full text-left p-5 font-medium' +
+										( currentView === item.slug
+											? ' bg-gray-100'
+											: ' hover:bg-gray-100' )
+									}
+									key={ item.name }
+									onClick={ () => {
+										setCurrentView( item.slug );
+									} }
+								>
+									{ item.name }
+								</button>
+							</li>
+						)
+					} ) }
 				</ul>
 				{ maybeRenderSettingsView() }
 				{ maybeRenderStylesView() }
@@ -250,7 +255,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 					}
 					<button
 						type="button"
-						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
 							themeJsonFile.save();
 							theme.save();

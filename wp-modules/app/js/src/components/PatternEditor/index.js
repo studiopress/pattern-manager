@@ -122,7 +122,7 @@ export default function PatternEditor( { visible } ) {
 		return (
 			<button
 				type="button"
-				className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+				className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 				onClick={ () => {
 					setPatternModalMode( 'choose' );
 					setIsPatternModalOpen( true );
@@ -133,7 +133,7 @@ export default function PatternEditor( { visible } ) {
 					icon={ layout }
 					size={ 26 }
 				/>{ ' ' }
-				{ __( 'Browse Patterns', 'fse-studio' ) }
+				{ __( 'Edit Patterns', 'fse-studio' ) }
 			</button>
 		);
 	}
@@ -146,7 +146,7 @@ export default function PatternEditor( { visible } ) {
 						{ renderBrowsePatternsButton() }
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
 								setPatternModalMode( 'create' );
 								setIsPatternModalOpen( true );
@@ -173,7 +173,7 @@ export default function PatternEditor( { visible } ) {
 						) : null }
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
 								pattern.save();
 							} }
@@ -190,16 +190,16 @@ export default function PatternEditor( { visible } ) {
 			{ pattern.data ? null : (
 				<div className="max-w-7xl mx-auto bg-white mt-20 shadow">
 					<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-						{ __( 'Pattern Manager', 'fse-studio' ) }
+						{ __( 'Pattern Editor', 'fse-studio' ) }
 					</h1>
 					<div className="px-4 sm:px-6 md:px-8 py-8 flex flex-row gap-14 items-center">
 						<p className="text-base mb-4 max-w-3xl">
 							{ __(
-								'Welcome to the Pattern Manager! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Browse Patterns button to the right, or by using the Browse Patterns button in the header.',
+								'Welcome to the Pattern Editor! Here, you can create and edit patterns for your site. Browse your patterns by clicking the Edit Patterns button to the right, or by using the Edit Patterns button in the header.',
 								'fse-studio'
 							) }
 						</p>
-						<div className="bg-[#F8F8F8] p-20 w-full text-center">
+						<div className="bg-[#f8f8f8] p-20 w-full text-center">
 							{ renderBrowsePatternsButton() }
 						</div>
 					</div>
@@ -308,7 +308,7 @@ export function BlockEditor( props ) {
 
 		pattern.set( {
 			...pattern.data,
-			content: blocks.length ? serialize( blocks[ 0 ] ) : '',
+			content: blocks[ 0 ]?.clientId ? serialize( blocks ) : '',
 		} );
 	}, [ blocks ] );
 

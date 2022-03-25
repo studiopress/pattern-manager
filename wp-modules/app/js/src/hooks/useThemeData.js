@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
-import { fsestudio } from '../components/FseStudioApp';
+import { fsestudio } from '../';
 import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
@@ -15,6 +15,10 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  *   namespace: string,
  *   'index.html'?: string,
  *   '404.html'?: string,
+ *   'archive.html'?: string,
+ *   'single.html'?: string,
+ *   'page.html'?: string,
+ *   'search.html'?: string,
  *   author: string,
  *   author_uri: string,
  *   description: string,
@@ -25,8 +29,12 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  *   rest_route?: string,
  *   tags: string,
  *   template_files: Partial<{
+ *    index: string,
  *    '404': string,
- *    index: string
+ *    archive: string,
+ *    single: string,
+ *    page: string,
+ *    search: string,
  *   }>,
  *   tested_up_to: string,
  *   text_domain: string,
