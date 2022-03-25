@@ -4,12 +4,12 @@
 import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
-import { fsestudio } from '../';
+import { fsestudio } from '../globals';
 import assembleUrl from '../utils/assembleUrl';
 
 /**
  * @param {string}                                           patternId
- * @param {module:Main.InitialFseStudio.patterns}            patterns
+ * @param {typeof import('../globals').fsestudio.patterns}   patterns
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  * @param {ReturnType<import('./useThemeData').default>}     currentTheme
  */

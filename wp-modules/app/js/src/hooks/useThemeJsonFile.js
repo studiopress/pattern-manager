@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 
-import { fsestudio } from '../components/FseStudioApp/test/FseStudioApp';
+import { fsestudio } from '../globals';
 import assembleUrl from '../utils/assembleUrl';
 
 /**
