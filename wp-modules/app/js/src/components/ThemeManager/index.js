@@ -106,7 +106,7 @@ export default function ThemeManager( { visible } ) {
 								<>
 									<div>
 										<label
-											htmlFor="location"
+											htmlFor="themes"
 											className="block text-sm font-medium text-gray-700"
 										>
 											{ __(
@@ -271,7 +271,7 @@ function ThemeDataEditor() {
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
-						<div className="text-sm text-green-600 flex flex-row items-center mr-6">
+						<div className="text-sm text-green-700 flex flex-row items-center mr-6">
 							<Icon
 								className="fill-current"
 								icon={ check }
