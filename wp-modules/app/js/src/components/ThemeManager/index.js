@@ -125,6 +125,7 @@ export default function ThemeManager( { visible } ) {
 								type="button"
 								className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
+									/** @type {import('../../hooks/useThemeData').Theme} */
 									const newThemeData = {
 										name: 'My New Theme',
 										dirname: 'my-new-theme',
