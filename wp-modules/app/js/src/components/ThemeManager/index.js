@@ -481,7 +481,7 @@ function ThemeSetup( { isVisible } ) {
 						htmlFor="tags"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
 					>
-						{ __( 'Tags (comma separated', 'fse-studio' ) }
+						{ __( 'Tags (comma separated)', 'fse-studio' ) }
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
