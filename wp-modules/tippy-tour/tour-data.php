@@ -192,14 +192,14 @@ return [
 				'onComplete' => 'goToNextStep',
 			],
 		],
-		[ // Theme Template Files > Set Patterns.
+		[ // Theme Template Files > Set Pattern.
 			'highlightedElement' => [
 				'role' => 'heading',
 				'name' => __( 'Template: 404.html', 'fse-studio' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'To add a template, click the "Set Patterns" button to open the patterns modal. There, you can search for and select a pattern to use for each template.', 'fse-studio' ),
+				'html' => __( 'To add a template, click the "Set Pattern" button to open the patterns modal. There, you can search for and select a pattern to use for each template.', 'fse-studio' ),
 			],
 			'completionData'     => [
 				'type'    => 'elementExists',
@@ -265,6 +265,20 @@ return [
 			'navigation'         => [
 				'backButton' => true,
 				'nextButton' => true,
+			],
+		],
+		[ // Finish.
+			'highlightedElement' => [
+				'role' => 'button',
+				'name' => __( 'Theme.json Editor', 'fse-studio' ),
+			],
+			'beaconPosition'     => 'right',
+			'initialData'        => [
+				'html' => __( 'Congratulations! You\'ve completed the FSE Studio Tour.', 'fse-studio' ),
+			],
+			'navigation'         => [
+				'backButton' => true,
+				'nextButton' => false,
 			],
 		],
 	],
