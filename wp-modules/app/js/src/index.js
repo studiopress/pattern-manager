@@ -1,7 +1,7 @@
 // @ts-check
 
 import ReactDOM from 'react-dom';
-import FseStudioApp from './components/FseStudioApp';
+import FseStudioApp from './components/FseStudioApp/test/FseStudioApp';
 
 /**
  * @typedef {{
