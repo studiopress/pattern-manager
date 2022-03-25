@@ -279,7 +279,7 @@ function ThemeDataEditor() {
 							/>{ ' ' }
 							<span role="dialog" aria-label="Theme Saved">
 								{ __(
-									'Theme saved to your themes folder',
+									'Theme saved to your /themes/ folder',
 									'fse-studio'
 								) }
 							</span>

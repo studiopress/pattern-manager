@@ -119,7 +119,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 			{ isModalOpen ? (
 				<Modal
 					title={ __(
-						'Pick the patterns to use for this template file',
+						'Pick the pattern to use for this template file',
 						'fse-studio'
 					) }
 					onRequestClose={ () => {
