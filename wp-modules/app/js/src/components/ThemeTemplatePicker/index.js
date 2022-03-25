@@ -71,13 +71,13 @@ export default function ThemeTemplatePicker( { templateName } ) {
 		<>
 			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 				<div>
-					<span className="block text-sm font-medium text-gray-700 sm:col-span-1">
+					<h2 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 						{ data[ templateName ]?.title ||
 							__(
 								'Template: this template is not recognized',
 								'fse-studio'
 							) }
-					</span>
+					</h2>
 					<span>
 						{ data[ templateName ]?.description ||
 							__(
