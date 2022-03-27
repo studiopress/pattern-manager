@@ -9,6 +9,8 @@ import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
+import useSnackbarContext from './useSnackbarContext';
+
 /**
  * @typedef {Partial<{
  *   name: string,
@@ -58,6 +60,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  */
 export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
+	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
@@ -125,7 +128,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	}
 
 	function saveThemeData() {
-		return new Promise( ( resolve ) => {
+		return new Promise( ( resolve, reject ) => {
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
@@ -135,13 +138,23 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				},
 				body: JSON.stringify( themeData ),
 			} )
-				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					if (!response.ok) {
+						throw Error(response.statusText);
+					}
+					return response.json() 
+				} )
 				.then( ( data ) => {
 					setExistsOnDisk( true );
 					setHasSaved( true );
 					currentThemeJsonFile.get();
+					console.log( snackBar );
+					snackBar.setValue( data.data );
 					resolve( data );
-				} );
+				} )
+				.catch( (data) => {
+					snackBar.setValue( JSON.stringify( 'Something went wrong' ) );
+				});
 		} );
 	}
 
@@ -158,6 +171,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
+					snackBar.setValue( JSON.stringify( data ));
 					resolve( data );
 				} );
 		} );

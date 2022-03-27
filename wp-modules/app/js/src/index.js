@@ -8,6 +8,7 @@ import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useEffect, useState } from '@wordpress/element';
+import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import ReactDOM from 'react-dom';
 
@@ -23,6 +24,7 @@ import {
 } from '@wordpress/icons';
 
 import FseStudioContext from './contexts/FseStudioContext';
+import FseStudioSnackbarContext from './contexts/FseStudioSnackbarContext';
 
 // Hooks
 import useThemes from './hooks/useThemes';
@@ -33,6 +35,8 @@ import useThemeJsonFile from './hooks/useThemeJsonFile';
 import usePatterns from './hooks/usePatterns';
 import useCurrentView from './hooks/useCurrentView';
 import useStudioContext from './hooks/useStudioContext';
+import useSnackbarContext from './hooks/useSnackbarContext';
+import useSnackbar from './hooks/useSnackbar';
 
 // Components
 import ThemeManager from './components/ThemeManager';
@@ -92,6 +96,15 @@ export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 function FseStudioApp() {
+	return (
+		<FseStudioSnackbarContext.Provider value={ useSnackbar() }>
+			<Aight />
+		</FseStudioSnackbarContext.Provider>
+	);
+}
+
+
+function Aight() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
 		currentThemeJsonFileId.value
@@ -104,26 +117,25 @@ function FseStudioApp() {
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
 
 	/** @type {InitialContext} */
-	const providerValue = {
-		currentView: useCurrentView( 'theme_manager' ),
-		patterns: usePatterns( fsestudio.patterns ),
-		themes,
-		currentThemeId,
-		currentTheme: useThemeData(
-			currentThemeId.value,
-			themes,
-			currentThemeJsonFile
-		),
-		themeJsonFiles,
-		currentThemeJsonFileId,
-		currentThemeJsonFile,
-		siteUrl: fsestudio.siteUrl,
-		apiEndpoints: fsestudio.apiEndpoints,
-		blockEditorSettings: fsestudio.blockEditorSettings,
-	};
 
 	return (
-		<FseStudioContext.Provider value={ providerValue }>
+		<FseStudioContext.Provider value={ {
+				currentView: useCurrentView( 'theme_manager' ),
+				patterns: usePatterns( fsestudio.patterns ),
+				themes,
+				currentThemeId,
+				currentTheme: useThemeData(
+					currentThemeId.value,
+					themes,
+					currentThemeJsonFile
+				),
+				themeJsonFiles,
+				currentThemeJsonFileId,
+				currentThemeJsonFile,
+				siteUrl: fsestudio.siteUrl,
+				apiEndpoints: fsestudio.apiEndpoints,
+				blockEditorSettings: fsestudio.blockEditorSettings,
+			} }>
 			<FseStudio />
 		</FseStudioContext.Provider>
 	);
@@ -132,6 +144,8 @@ function FseStudioApp() {
 function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme } = useStudioContext();
+	const snackBar = useSnackbarContext();
+
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
@@ -180,6 +194,11 @@ function FseStudio() {
 
 	return (
 		<>
+			{ snackBar.isVisible ? (
+				<Snackbar onRemove={ () => {
+					snackBar.setIsVisible( false );
+				}}>{snackBar.value}</Snackbar>
+			) : null }
 			<div className={ sidebarOpen ? 'sidebar-open' : 'sidebar-closed' }>
 				{ /* Static sidebar for desktop */ }
 				<div
