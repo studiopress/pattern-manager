@@ -128,7 +128,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	}
 
 	function saveThemeData() {
-		return new Promise( ( resolve, reject ) => {
+		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
@@ -139,22 +139,23 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => {
-					if (!response.ok) {
-						throw Error(response.statusText);
+					if ( ! response.ok ) {
+						throw Error( response.statusText );
 					}
-					return response.json() 
+					return response.json();
 				} )
 				.then( ( data ) => {
 					setExistsOnDisk( true );
 					setHasSaved( true );
 					currentThemeJsonFile.get();
-					console.log( snackBar );
 					snackBar.setValue( data.data );
 					resolve( data );
 				} )
-				.catch( (data) => {
-					snackBar.setValue( JSON.stringify( 'Something went wrong' ) );
-				});
+				.catch( () => {
+					snackBar.setValue(
+						JSON.stringify( 'Something went wrong' )
+					);
+				} );
 		} );
 	}
 
@@ -171,7 +172,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					snackBar.setValue( JSON.stringify( data ));
+					snackBar.setValue( JSON.stringify( data ) );
 					resolve( data );
 				} );
 		} );

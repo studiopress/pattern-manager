@@ -98,13 +98,12 @@ ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 function FseStudioApp() {
 	return (
 		<FseStudioSnackbarContext.Provider value={ useSnackbar() }>
-			<Aight />
+			<FseStudioContextHydrator />
 		</FseStudioSnackbarContext.Provider>
 	);
 }
 
-
-function Aight() {
+function FseStudioContextHydrator() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
 		currentThemeJsonFileId.value
@@ -117,25 +116,26 @@ function Aight() {
 	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
 
 	/** @type {InitialContext} */
+	const providerValue = {
+		currentView: useCurrentView( 'theme_manager' ),
+		patterns: usePatterns( fsestudio.patterns ),
+		themes,
+		currentThemeId,
+		currentTheme: useThemeData(
+			currentThemeId.value,
+			themes,
+			currentThemeJsonFile
+		),
+		themeJsonFiles,
+		currentThemeJsonFileId,
+		currentThemeJsonFile,
+		siteUrl: fsestudio.siteUrl,
+		apiEndpoints: fsestudio.apiEndpoints,
+		blockEditorSettings: fsestudio.blockEditorSettings,
+	};
 
 	return (
-		<FseStudioContext.Provider value={ {
-				currentView: useCurrentView( 'theme_manager' ),
-				patterns: usePatterns( fsestudio.patterns ),
-				themes,
-				currentThemeId,
-				currentTheme: useThemeData(
-					currentThemeId.value,
-					themes,
-					currentThemeJsonFile
-				),
-				themeJsonFiles,
-				currentThemeJsonFileId,
-				currentThemeJsonFile,
-				siteUrl: fsestudio.siteUrl,
-				apiEndpoints: fsestudio.apiEndpoints,
-				blockEditorSettings: fsestudio.blockEditorSettings,
-			} }>
+		<FseStudioContext.Provider value={ providerValue }>
 			<FseStudio />
 		</FseStudioContext.Provider>
 	);
@@ -195,9 +195,13 @@ function FseStudio() {
 	return (
 		<>
 			{ snackBar.isVisible ? (
-				<Snackbar onRemove={ () => {
-					snackBar.setIsVisible( false );
-				}}>{snackBar.value}</Snackbar>
+				<Snackbar
+					onRemove={ () => {
+						snackBar.setIsVisible( false );
+					} }
+				>
+					{ snackBar.value }
+				</Snackbar>
 			) : null }
 			<div className={ sidebarOpen ? 'sidebar-open' : 'sidebar-closed' }>
 				{ /* Static sidebar for desktop */ }

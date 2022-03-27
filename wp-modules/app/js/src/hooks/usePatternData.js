@@ -87,7 +87,7 @@ export default function usePatternData(
 				.then( ( data ) => {
 					currentTheme.save();
 					currentThemeJsonFile.get();
-					snackBar.setValue( JSON.stringify( data ));
+					snackBar.setValue( JSON.stringify( data ) );
 					resolve( data );
 				} );
 		} );

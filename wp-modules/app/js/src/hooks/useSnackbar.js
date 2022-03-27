@@ -10,7 +10,7 @@ export default function useSnackbar() {
 
 	useEffect( () => {
 		if ( ! snackBarValue ) {
-			return
+			return;
 		}
 		setIsVisible( true );
 		setTimeout( () => {
@@ -23,6 +23,6 @@ export default function useSnackbar() {
 		isVisible,
 		setIsVisible,
 		value: snackBarValue,
-		setValue: setSnackbarValue
+		setValue: setSnackbarValue,
 	};
 }
