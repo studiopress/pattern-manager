@@ -144,7 +144,7 @@ export default function ThemeManager( { visible } ) {
 										theme_json_file: 'default',
 										included_patterns: [],
 										template_files: {
-											index: null,
+											index: 'homepage',
 											404: null,
 											archive: null,
 											single: null,
