@@ -65,9 +65,9 @@ jobs:
             npm run installation
             npm run build
             npm run zip
-            mv fse-studio*.zip /tmp/artifacts
+            mv fse-studio*.zip /tmp/artifacts/
       - store_artifacts:
-          path: /tmp/artifacts/fse-studio*.zip
+          path: /tmp/artifacts/
 
 workflows:
   build:
