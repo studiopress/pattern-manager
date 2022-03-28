@@ -296,7 +296,7 @@ function SettingsView({ isVisible, mode='settings' }) {
 
 	return <div hidden={!isVisible}>
 		<p>{ fsestudio.schemas.themejson.properties[mode].description }</p>
-		<div className="flex flex-row gap-14">
+		<div className="flex flex-row gap-14 mt-4">
 			<ul className="w-72">
 				{ tabs.map( ( item ) => (
 					<li key={ item.name }>
