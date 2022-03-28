@@ -9,6 +9,7 @@
 	"scripts": {
 		"clone-wpps": "if [ ! -d ./wpps-scripts ]; then git clone -b add/create-zip https://github.com/wp-plugin-sidekick/wpps-scripts; fi; cd ../; if [ ! -d ./wp-plugin-sidekick ]; then git clone https://github.com/wp-plugin-sidekick/wp-plugin-sidekick; fi",
 		"installation": "npm run clone-wpps; sh wpps-scripts/install-module-dependencies.sh;",
+		"build": "sh wpps-scripts/build.sh",
 		"dev": "sh wpps-scripts/dev.sh",
 		"test:phpunit": "npm run clone-wpps; sh wpps-scripts/phpunit.sh -p fse-studio;",
 		"lint:php": "sh wpps-scripts/phpcs.sh -p fse-studio -n FseStudio -t fse-studio;",

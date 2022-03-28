@@ -59,7 +59,7 @@ jobs:
       - checkout:
           path: *PLUGIN_PATH
       - run:
-          name: Testing JS
+          name: Creating the zip file
           working_directory: *PLUGIN_PATH
           command: |
             npm run installation
