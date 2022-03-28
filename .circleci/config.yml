@@ -52,6 +52,21 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: |
             npm run test:phpunit
+  create-zip:
+    docker:
+      - image: cimg/php:7.3-node
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - run:
+          name: Testing JS
+          working_directory: *PLUGIN_PATH
+          command: |
+            npm run installation
+            npm run build
+            npm run zip
+      - store_artifacts:
+          path: ~/fse-studio
 
 workflows:
   build:
@@ -59,3 +74,4 @@ workflows:
       - lint
       - test-js
       - phpunit
+      - create-zip
