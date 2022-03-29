@@ -3,7 +3,7 @@
  * Plugin Name: FSE Studio
  * Plugin URI: wpengine.com
  * Description: An app for creating an maintaining FSE Themes.
- * Version: 0.0.0
+ * Version: 1.0.0
  * Author: WP Engine
  * Author URI: wpengine.com
  * Text Domain: fse-studio
