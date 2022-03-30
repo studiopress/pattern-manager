@@ -251,23 +251,25 @@ function ThemeDataEditor() {
 				/>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
-				<button
-					type="button"
-					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-					hidden={ ! currentTheme.existsOnDisk }
-					onClick={ () => {
-						currentTheme.export().then( ( response ) => {
-							window.open( response );
-						} );
-					} }
-				>
-					<Icon
-						className="fill-current mr-2"
-						icon={ download }
-						size={ 24 }
-					/>
-					{ __( 'Export theme to zip', 'fse-studio' ) }
-				</button>
+				<div>
+					<button
+						type="button"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						hidden={ ! currentTheme.existsOnDisk }
+						onClick={ () => {
+							currentTheme.export().then( ( response ) => {
+								window.open( response );
+							} );
+						} }
+					>
+						<Icon
+							className="fill-current mr-2"
+							icon={ download }
+							size={ 24 }
+						/>
+						{ __( 'Export theme to zip', 'fse-studio' ) }
+					</button>
+				</div>
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
