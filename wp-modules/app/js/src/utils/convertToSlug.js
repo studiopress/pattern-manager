@@ -5,5 +5,8 @@
  * @return {string} The string as a slug, like 'example-here'.
  */
 export default function convertToSlug( toConvert = '' ) {
-	return toConvert.replace( /[_\W]+(?=\w+)/g, '-' ).toLowerCase();
+	return toConvert
+		.replace( /[_\W]+(?=\w+)/g, '-' )
+		.replace( /[^-\w]/g, '' )
+		.toLowerCase();
 }
