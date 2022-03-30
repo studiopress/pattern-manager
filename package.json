@@ -6,16 +6,19 @@
 		"type": "git",
 		"url": "https://github.com/studiopress/fse-studio"
 	},
+	"wpps_options": "-p fse-studio -n FseStudio -t fse-studio",
 	"scripts": {
 		"preinstall": "if [ ! -d ./wpps-scripts ]; then git clone https://github.com/wp-plugin-sidekick/wpps-scripts; fi;",
-		"dev": "sh wpps-scripts/dev.sh",
-		"test:phpunit": "npm run clone-wpps; sh wpps-scripts/phpunit.sh -p fse-studio;",
-		"lint:php": "sh wpps-scripts/phpcs.sh -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:php:fix": "sh wpps-scripts/phpcs.sh -p fse-studio -n FseStudio -t fse-studio -f 1;",
-		"lint:js": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio",
-		"lint:js:fix": "sh wpps-scripts/lint-js.sh -n FseStudio -t fse-studio -f 1;",
-		"lint:css": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio;",
-		"lint:css:fix": "sh wpps-scripts/lint-css.sh -p fse-studio -n FseStudio -t fse-studio -f 1;",
-		"test:js": "sh wpps-scripts/test-js.sh"
+		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options",
+		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options",
+		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options;",
+		"lint:php": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options;",
+		"lint:php:fix": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -f 1;",
+		"lint:js": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options",
+		"lint:js:fix": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options -f 1;",
+		"lint:css": "cd ../../wpps-scripts; sh lint-css.sh $npm_package_wpps_options;",
+		"lint:css:fix": "cd ../../wpps-scripts; sh lint-css.sh $npm_package_wpps_options -f 1;",
+		"test:js": "cd ../../wpps-scripts; sh test-js.sh $npm_package_wpps_options;",
+		"zip": "cd ../../wpps-scripts; sh zip.sh $npm_package_wpps_options"
 	}
 }
