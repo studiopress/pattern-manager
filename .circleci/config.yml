@@ -19,7 +19,7 @@ jobs:
           name: Linting PHP
           working_directory: *PLUGIN_PATH
           command: |
-            npm run install
+            npm install
             npm run lint:php
       - run:
           name: Linting JS and CSS
@@ -37,7 +37,7 @@ jobs:
           name: Testing JS
           working_directory: *PLUGIN_PATH
           command: |
-            npm run install
+            npm install
             npm run test:js
   phpunit:
     machine:
