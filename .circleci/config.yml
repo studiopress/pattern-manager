@@ -25,7 +25,6 @@ jobs:
           name: Linting JS and CSS
           working_directory: *PLUGIN_PATH
           command: |
-            npm run build
             npm run lint:js
             npm run lint:css
   test-js:
@@ -40,7 +39,6 @@ jobs:
           name: Testing JS
           working_directory: *PLUGIN_PATH
           command: |
-            npm run build
             npm run test:js
   phpunit:
     machine:
