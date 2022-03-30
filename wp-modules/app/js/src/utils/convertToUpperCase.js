@@ -1,6 +1,6 @@
 /** @param {string} name */
-function capitalize(name) {
-	return name.charAt(0).toUpperCase() + name.slice(1);
+function capitalize( name ) {
+	return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }
 
 /**
@@ -9,11 +9,11 @@ function capitalize(name) {
  * @param {string?} toConvert The string to convert, like 'exampleHere'.
  * @return {string} The string in Upper Case, like 'Example Here'.
  */
-export default function convertToUpperCase(toConvert = '') {
+export default function convertToUpperCase( toConvert = '' ) {
 	return capitalize(
 		toConvert.replace(
 			/(?<=[a-z])[A-Z1-9](?=[a-z]+)/g,
-			(match) => ` ${capitalize(match)}`
+			( match ) => ` ${ capitalize( match ) }`
 		)
 	);
 }

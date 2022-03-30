@@ -1,6 +1,6 @@
 /** @param {string} name */
-function capitalize(name) {
-	return name.charAt(0).toUpperCase() + name.slice(1);
+function capitalize( name ) {
+	return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }
 
 /**
@@ -9,10 +9,11 @@ function capitalize(name) {
  * @param {string?} toConvert The string to convert to a slug like 'example here'.
  * @return {string} The string in PascalCase, like 'ExampleHere'.
  */
-export default function convertToPascalCase(toConvert = '') {
+export default function convertToPascalCase( toConvert = '' ) {
 	return toConvert
-		.replace(/(^|[_\W]+)(\w)/g, (fullMatch, firstMatch, secondMatch) =>
-			capitalize(secondMatch)
+		.replace(
+			/(^|[_\W]+)(\w)/g,
+			( fullMatch, firstMatch, secondMatch ) => capitalize( secondMatch )
 		)
-		.replace(/[^\w]/g, '');
+		.replace( /[^\w]/g, '' )
 }
