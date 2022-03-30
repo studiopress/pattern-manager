@@ -7,6 +7,6 @@
 export default function convertToSlug( toConvert = '' ) {
 	return toConvert
 		.replace( /[_\W]+(?=\w+)/g, '-' )
-		.replace( /[^-\w]/g, '' )
+		.replace( /\W/g, '' )
 		.toLowerCase();
 }
