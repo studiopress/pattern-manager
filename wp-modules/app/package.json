@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "The frontend react app for FSE Studio",
   "main": "js/build/index.js",
+  "scripts": {
+    "build": "wp-scripts build js/src/index.js --output-path=js/build/",
+    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+  },
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@wordpress/scripts": "^20.0.2",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
@@ -14,7 +19,6 @@
     "tailwindcss": "^3.0.18"
   },
   "dependencies": {
-    "@wordpress/scripts": "^20.0.2",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/forms": "^0.4.0",
