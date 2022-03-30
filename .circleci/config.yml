@@ -53,6 +53,7 @@ jobs:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: |
+            npm install
             npm run test:phpunit
 
 workflows:
