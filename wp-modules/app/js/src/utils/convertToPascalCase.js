@@ -11,9 +11,8 @@ function capitalize( name ) {
  */
 export default function convertToPascalCase( toConvert = '' ) {
 	return toConvert
-		.replace(
-			/(^|[_\W]+)(\w)/g,
-			( fullMatch, firstMatch, secondMatch ) => capitalize( secondMatch )
+		.replace( /(^|[_\W]+)(\w)/g, ( fullMatch, firstMatch, secondMatch ) =>
+			capitalize( secondMatch )
 		)
-		.replace( /[^\w]/g, '' )
+		.replace( /[^\w]/g, '' );
 }
