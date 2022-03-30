@@ -8,7 +8,7 @@
 	},
 	"wpps_options": "-p fse-studio -n FseStudio -t fse-studio",
 	"scripts": {
-		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone -b re-architect https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; fi;",
+		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone -b re-architect https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; fi; npm run build",
 		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options",
 		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options",
 		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options;",
