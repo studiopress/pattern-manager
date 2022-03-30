@@ -34,11 +34,13 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - node/install-packages:
+          app-dir: *PLUGIN_PATH
       - run:
           name: Testing JS
           working_directory: *PLUGIN_PATH
           command: |
-            npm install
+            npm run build
             npm run test:js
   phpunit:
     machine:
@@ -54,7 +56,7 @@ jobs:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: |
-            npm install
+            npm run build
             npm run test:phpunit
 
 workflows:
