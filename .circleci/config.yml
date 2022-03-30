@@ -25,6 +25,7 @@ jobs:
           name: Linting JS and CSS
           working_directory: *PLUGIN_PATH
           command: |
+            npm install
             npm run lint:js
             npm run lint:css
   test-js:
