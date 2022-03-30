@@ -14,5 +14,5 @@ export default function convertToPascalCase( toConvert = '' ) {
 		.replace( /(^|[_\W]+)(\w)/g, ( fullMatch, firstMatch, secondMatch ) =>
 			capitalize( secondMatch )
 		)
-		.replace( /[^\w]/g, '' );
+		.replace( /\W/g, '' );
 }
