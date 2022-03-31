@@ -44,6 +44,7 @@ import classNames from './utils/classNames';
 
 /**
  * @typedef {{
+ *  apiNonce: string,
  *  apiEndpoints: {
  *   getPatternEndpoint: string,
  *   getThemeEndpoint: string,
@@ -143,14 +144,14 @@ function FseStudio() {
 			available: true,
 		},
 		{
-			name: 'Pattern Manager',
-			slug: 'pattern_manager',
+			name: 'Pattern Editor',
+			slug: 'pattern_editor',
 			icon: layout,
 			available: currentTheme.existsOnDisk,
 		},
 		{
-			name: 'Theme.json Manager',
-			slug: 'themejson_manager',
+			name: 'Theme.json Editor',
+			slug: 'themejson_editor',
 			icon: globe,
 			available: currentTheme.existsOnDisk,
 		},
@@ -168,10 +169,10 @@ function FseStudio() {
 					visible={ 'theme_manager' === currentView.currentView }
 				/>
 				<PatternEditor
-					visible={ 'pattern_manager' === currentView.currentView }
+					visible={ 'pattern_editor' === currentView.currentView }
 				/>
 				<ThemeJsonEditor
-					visible={ 'themejson_manager' === currentView.currentView }
+					visible={ 'themejson_editor' === currentView.currentView }
 				/>
 			</>
 		);
@@ -230,6 +231,11 @@ function FseStudio() {
 								{ navigation.map( ( item ) => {
 									return (
 										<button
+											style={ {
+												display: ! item.available
+													? 'none'
+													: '',
+											} }
 											disabled={ ! item.available }
 											key={ item.name }
 											onClick={ () => {
@@ -286,7 +292,7 @@ function FseStudio() {
 						sidebarOpen ? 'md:pl-80' : 'md:pl-0'
 					}` }
 				>
-					<main className="flex-1">{ renderCurrentView() }</main>
+					<div className="flex-1">{ renderCurrentView() }</div>
 				</div>
 			</div>
 		</>

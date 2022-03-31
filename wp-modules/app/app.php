@@ -61,6 +61,7 @@ function fse_studio_app() {
 			'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
 			'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
 			'frontendPreviewUrl'  => null,
+			'apiNonce'            => wp_create_nonce( 'wp_rest' ),
 			'apiEndpoints'        => array(
 				'getPatternEndpoint'        => get_rest_url( false, 'fsestudio/v1/get-pattern/' ),
 				'savePatternEndpoint'       => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),

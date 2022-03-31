@@ -100,6 +100,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 		>
 			<iframe
 				title={ __( 'Pattern Preview', 'fse-studio' ) }
+				role={ 'img' }
 				// @ts-ignore
 				ref={ setRef }
 				style={ {

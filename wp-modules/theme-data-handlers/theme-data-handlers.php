@@ -185,8 +185,8 @@ function update_theme( $theme ) {
 	}
 
 	// Delete the current patterns directory in the theme if it exists.
-	$wp_filesystem->delete( $new_theme_dir . '/patterns', true );
-	$wp_filesystem->mkdir( $new_theme_dir . '/patterns' );
+	$wp_filesystem->delete( $new_theme_dir . '/theme-patterns', true );
+	$wp_filesystem->mkdir( $new_theme_dir . '/theme-patterns' );
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		$file_to_copy         = '';
@@ -204,7 +204,7 @@ function update_theme( $theme ) {
 		if ( ! empty( $file_to_copy ) ) {
 			$wp_filesystem->copy(
 				$file_to_copy,
-				$new_theme_dir . 'patterns/' . $included_pattern . '.php',
+				$new_theme_dir . 'theme-patterns/' . $included_pattern . '.php',
 				true,
 				FS_CHMOD_FILE
 			);

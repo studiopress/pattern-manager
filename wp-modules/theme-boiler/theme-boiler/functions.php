@@ -87,7 +87,7 @@ function register_block_patterns() {
 	/**
 	 * Scan Patterns directory and auto require all PHP files, and register them as block patterns.
 	 */
-	$pattern_file_paths = glob( dirname( __FILE__ ) . '/patterns/*.php' );
+	$pattern_file_paths = glob( dirname( __FILE__ ) . '/theme-patterns/*.php' );
 
 	foreach ( $pattern_file_paths as $path ) {
 		register_block_pattern(
