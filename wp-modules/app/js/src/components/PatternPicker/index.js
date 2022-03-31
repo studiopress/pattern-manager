@@ -82,7 +82,6 @@ export default function PatternPicker( {
 										isChecked
 											? 'min-h-[300px] bg-gray-100 flex flex-col justify-between border-2 border-blue-500 rounded relative group'
 											: 'min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group'
-											
 									}
 									onClick={ () => {
 										onClickPattern( pattern.name );
@@ -101,7 +100,9 @@ export default function PatternPicker( {
 											scale={ 0.3 }
 											onLoad={ () => {
 												if ( isMountedRef.current ) {
-													setNumberToRender( index + 1 );
+													setNumberToRender(
+														index + 1
+													);
 												}
 											} }
 										/>

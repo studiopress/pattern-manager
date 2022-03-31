@@ -12,7 +12,15 @@ import {
 } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check, download, close } from '@wordpress/icons';
+import {
+	Icon,
+	layout,
+	file,
+	globe,
+	check,
+	download,
+	close,
+} from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
