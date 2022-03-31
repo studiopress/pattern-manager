@@ -64,6 +64,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState();
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
+	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 
 	useEffect( () => {
 		setHasSaved( false );
@@ -125,6 +126,11 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	}
 
 	function saveThemeData() {
+		if ( themeData.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+			return;
+		}
+
 		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
@@ -170,5 +176,6 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 		export: exportThemeData,
 		existsOnDisk,
 		hasSaved,
+		themeNameIsDefault,
 	};
 }

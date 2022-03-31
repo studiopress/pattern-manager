@@ -8,6 +8,7 @@
 import {
 	createInterpolateElement,
 	useEffect,
+	useRef,
 	useState,
 } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
@@ -180,6 +181,8 @@ function ThemeDataEditor() {
 		'theme_setup'
 	);
 
+	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
+
 	const views = [
 		{
 			name: __( 'Theme Setup', 'fse-studio' ),
@@ -308,6 +311,11 @@ function ThemeDataEditor() {
 /** @param {{isVisible: boolean}} props */
 function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
+	const themeNameInput = useRef( null );
+
+	if ( currentTheme.themeNameIsDefault ) {
+		themeNameInput.current.focus();
+	}
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -321,6 +329,8 @@ function ThemeSetup( { isVisible } ) {
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
+							ref={ themeNameInput }
+							disabled={ currentTheme.existsOnDisk }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="theme-name"
@@ -332,6 +342,21 @@ function ThemeSetup( { isVisible } ) {
 								} );
 							} }
 						/>
+						{ currentTheme.themeNameIsDefault ? (
+							<div className="text-sm text-red-700 flex flex-row items-center mr-6">
+								<Icon
+									className="fill-current"
+									icon={ check }
+									size={ 26 }
+								/>{ ' ' }
+								<span role="dialog" aria-label="Theme Saved">
+									{ __(
+										'Theme name needs to be different than My New Theme',
+										'fse-studio'
+									) }
+								</span>
+							</div>
+						) : null }
 					</div>
 				</div>
 
