@@ -96,8 +96,10 @@ export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 function FseStudioApp() {
+	/** @type {ReturnType<import('./hooks/useSnackbar').default>} */
+	const providerValue = useSnackbar();
 	return (
-		<FseStudioSnackbarContext.Provider value={ useSnackbar() }>
+		<FseStudioSnackbarContext.Provider value={ providerValue }>
 			<FseStudioContextHydrator />
 		</FseStudioSnackbarContext.Provider>
 	);
@@ -194,10 +196,10 @@ function FseStudio() {
 
 	return (
 		<>
-			{ snackBar.isVisible ? (
+			{ snackBar.value ? (
 				<Snackbar
 					onRemove={ () => {
-						snackBar.setIsVisible( false );
+						snackBar.setValue( null );
 					} }
 				>
 					{ snackBar.value }
