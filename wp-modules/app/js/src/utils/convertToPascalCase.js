@@ -10,8 +10,9 @@ function capitalize( name ) {
  * @return {string} The string in PascalCase, like 'ExampleHere'.
  */
 export default function convertToPascalCase( toConvert = '' ) {
-	return toConvert.replace(
-		/(^|[_\W]+)(\w)/g,
-		( fullMatch, firstMatch, secondMatch ) => capitalize( secondMatch )
-	);
+	return toConvert
+		.replace( /(^|[_\W]+)(\w)/g, ( fullMatch, firstMatch, secondMatch ) =>
+			capitalize( secondMatch )
+		)
+		.replace( /\W/g, '' );
 }
