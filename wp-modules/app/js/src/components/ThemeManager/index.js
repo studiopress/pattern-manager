@@ -181,8 +181,6 @@ function ThemeDataEditor() {
 		'theme_setup'
 	);
 
-	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
-
 	const views = [
 		{
 			name: __( 'Theme Setup', 'fse-studio' ),
