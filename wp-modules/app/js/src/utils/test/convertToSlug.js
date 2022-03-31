@@ -12,6 +12,8 @@ describe( 'convertToSlug', () => {
 		[ 'Multiple   Spaces', 'multiple-spaces' ],
 		[ 'snake_case', 'snake-case' ],
 		[ 'with&&&***non.,.word$$characters', 'with-non-word-characters' ],
+		[ 'EndingInApostrophe!', 'endinginapostrophe' ],
+		[ 'With 🥁Emojis🏇', 'with-emojis' ],
 	] )( 'should convert to the slug', ( toConvert, expected ) => {
 		expect( convertToSlug( toConvert ) ).toEqual( expected );
 	} );
