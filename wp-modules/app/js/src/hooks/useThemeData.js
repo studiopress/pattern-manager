@@ -132,6 +132,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 		}
 
 		return new Promise( ( resolve ) => {
+			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
