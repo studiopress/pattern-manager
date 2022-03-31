@@ -243,7 +243,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 				<div className="flex items-center">
 					{ themeJsonFile.hasSaved ?
 						(
-							<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+							<span className="text-sm text-green-700 flex flex-row items-center mr-6">
 								<Icon
 									className="fill-current"
 									icon={ check }

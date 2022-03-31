@@ -106,7 +106,7 @@ export default function ThemeManager( { visible } ) {
 								<>
 									<div>
 										<label
-											htmlFor="location"
+											htmlFor="themes"
 											className="block text-sm font-medium text-gray-700"
 										>
 											{ __(
@@ -144,7 +144,7 @@ export default function ThemeManager( { visible } ) {
 										theme_json_file: 'default',
 										included_patterns: [],
 										template_files: {
-											index: null,
+											index: 'homepage',
 											404: null,
 											archive: null,
 											single: null,
@@ -271,7 +271,7 @@ function ThemeDataEditor() {
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
-						<div className="text-sm text-green-600 flex flex-row items-center mr-6">
+						<div className="text-sm text-green-700 flex flex-row items-center mr-6">
 							<Icon
 								className="fill-current"
 								icon={ check }
@@ -279,7 +279,7 @@ function ThemeDataEditor() {
 							/>{ ' ' }
 							<span role="dialog" aria-label="Theme Saved">
 								{ __(
-									'Theme saved to your themes folder',
+									'Theme saved to your /themes/ folder',
 									'fse-studio'
 								) }
 							</span>
@@ -481,7 +481,7 @@ function ThemeSetup( { isVisible } ) {
 						htmlFor="tags"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
 					>
-						{ __( 'Tags (comma separated', 'fse-studio' ) }
+						{ __( 'Tags (comma separated)', 'fse-studio' ) }
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
@@ -651,9 +651,9 @@ function ThemePatterns( { isVisible } ) {
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="w-full flex flex-col">
 				<div className="w-full text-center bg-gray-100 p-5 self-start">
-					<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+					<h2 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 						{ __( 'Add patterns to your theme', 'fse-studio' ) }
-					</h3>
+					</h2>
 					<p className="mt-2">
 						{ createInterpolateElement(
 							__(
