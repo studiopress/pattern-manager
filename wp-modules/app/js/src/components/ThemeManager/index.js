@@ -12,7 +12,15 @@ import {
 } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
+import {
+	Icon,
+	layout,
+	file,
+	globe,
+	check,
+	download,
+	close,
+} from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -251,23 +259,25 @@ function ThemeDataEditor() {
 				/>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
-				<button
-					type="button"
-					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-					hidden={ ! currentTheme.existsOnDisk }
-					onClick={ () => {
-						currentTheme.export().then( ( response ) => {
-							window.open( response );
-						} );
-					} }
-				>
-					<Icon
-						className="fill-current mr-2"
-						icon={ download }
-						size={ 24 }
-					/>
-					{ __( 'Export theme to zip', 'fse-studio' ) }
-				</button>
+				<div>
+					<button
+						type="button"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						hidden={ ! currentTheme.existsOnDisk }
+						onClick={ () => {
+							currentTheme.export().then( ( response ) => {
+								window.open( response );
+							} );
+						} }
+					>
+						<Icon
+							className="fill-current mr-2"
+							icon={ download }
+							size={ 24 }
+						/>
+						{ __( 'Export theme to zip', 'fse-studio' ) }
+					</button>
+				</div>
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
@@ -650,8 +660,8 @@ function ThemePatterns( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="w-full flex flex-col">
-				<div className="w-full text-center bg-gray-100 p-5 self-start">
-					<h2 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+				<div className="w-full text-center bg-gray-100 p-7 self-start">
+					<h2 className="block text-lg font-medium text-gray-700 sm:col-span-1">
 						{ __( 'Add patterns to your theme', 'fse-studio' ) }
 					</h2>
 					<p className="mt-2">
@@ -673,7 +683,7 @@ function ThemePatterns( { isVisible } ) {
 							}
 						) }
 					</p>
-					<p className="mt-2">
+					<p className="mt-5">
 						<button
 							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => setModalOpen( true ) }
@@ -684,43 +694,59 @@ function ThemePatterns( { isVisible } ) {
 				</div>
 				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
-						<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
+						<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
 							{ __(
 								'Patterns included in this theme:',
 								'fse-studio'
 							) }
 						</h3>
-						<div className="grid w-full grid-cols-3 gap-5 p-8">
+						<div className="grid w-full grid-cols-3 gap-5">
 							{ currentTheme.data.included_patterns.map(
 								( patternName, index ) => {
 									return (
 										<div
 											key={ index }
-											className="min-h-[300px] bg-gray-200"
+											className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
 										>
-											<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
-												{
-													patterns.patterns[
-														patternName
-													]?.title
-												}
-											</h3>
-											<PatternPreview
-												key={
-													patterns.patterns[
-														patternName
-													].name
-												}
-												blockPatternData={
-													patterns.patterns[
-														patternName
-													]
-												}
-												themeJsonData={
-													currentThemeJsonFile.data
-												}
-												scale={ 0.2 }
-											/>
+											<button
+												type="button"
+												className="absolute top-2 right-2"
+												// onClick={ }
+											>
+												<Icon
+													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+													icon={ close }
+													size={ 30 }
+												/>
+											</button>
+
+											<div className="p-3 flex flex-grow items-center">
+												<PatternPreview
+													key={
+														patterns.patterns[
+															patternName
+														].name
+													}
+													blockPatternData={
+														patterns.patterns[
+															patternName
+														]
+													}
+													themeJsonData={
+														currentThemeJsonFile.data
+													}
+													scale={ 0.2 }
+												/>
+											</div>
+											<div>
+												<h3 className="text-sm bg-white p-4 rounded-b">
+													{
+														patterns.patterns[
+															patternName
+														]?.title
+													}
+												</h3>
+											</div>
 										</div>
 									);
 								}

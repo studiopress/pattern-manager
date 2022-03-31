@@ -239,7 +239,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 				{ maybeRenderCustomTemplatesView() }
 				{ maybeRenderTemplatePartsView() }
 			</div>
-			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
+			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-end items-center">
 				<div className="flex items-center">
 					{ themeJsonFile.hasSaved ?
 						(
