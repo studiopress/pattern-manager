@@ -8,6 +8,7 @@ import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useEffect, useState } from '@wordpress/element';
+import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import ReactDOM from 'react-dom';
 
@@ -23,6 +24,7 @@ import {
 } from '@wordpress/icons';
 
 import FseStudioContext from './contexts/FseStudioContext';
+import FseStudioSnackbarContext from './contexts/FseStudioSnackbarContext';
 
 // Hooks
 import useThemes from './hooks/useThemes';
@@ -33,6 +35,8 @@ import useThemeJsonFile from './hooks/useThemeJsonFile';
 import usePatterns from './hooks/usePatterns';
 import useCurrentView from './hooks/useCurrentView';
 import useStudioContext from './hooks/useStudioContext';
+import useSnackbarContext from './hooks/useSnackbarContext';
+import useSnackbar from './hooks/useSnackbar';
 
 // Components
 import ThemeManager from './components/ThemeManager';
@@ -92,6 +96,16 @@ export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 function FseStudioApp() {
+	/** @type {ReturnType<import('./hooks/useSnackbar').default>} */
+	const providerValue = useSnackbar();
+	return (
+		<FseStudioSnackbarContext.Provider value={ providerValue }>
+			<FseStudioContextHydrator />
+		</FseStudioSnackbarContext.Provider>
+	);
+}
+
+function FseStudioContextHydrator() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
 		currentThemeJsonFileId.value
@@ -132,6 +146,8 @@ function FseStudioApp() {
 function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme } = useStudioContext();
+	const snackBar = useSnackbarContext();
+
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
@@ -180,6 +196,15 @@ function FseStudio() {
 
 	return (
 		<>
+			{ snackBar.value ? (
+				<Snackbar
+					onRemove={ () => {
+						snackBar.setValue( null );
+					} }
+				>
+					{ snackBar.value }
+				</Snackbar>
+			) : null }
 			<div className={ sidebarOpen ? 'sidebar-open' : 'sidebar-closed' }>
 				{ /* Static sidebar for desktop */ }
 				<div

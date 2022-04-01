@@ -9,6 +9,8 @@ import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
+import useSnackbarContext from './useSnackbarContext';
+
 /**
  * @typedef {Partial<{
  *   name: string,
@@ -58,6 +60,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  */
 export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
+	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
@@ -148,12 +151,21 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				},
 				body: JSON.stringify( themeData ),
 			} )
-				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					if ( ! response.ok ) {
+						throw response.statusText;
+					}
+					return response.json();
+				} )
 				.then( ( data ) => {
 					setExistsOnDisk( true );
 					setHasSaved( true );
 					currentThemeJsonFile.get();
+					snackBar.setValue( data );
 					resolve( data );
+				} )
+				.catch( ( errorMessage ) => {
+					snackBar.setValue( JSON.stringify( errorMessage ) );
 				} );
 		} );
 	}
@@ -171,6 +183,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
+					snackBar.setValue( JSON.stringify( data ) );
 					resolve( data );
 				} );
 		} );
