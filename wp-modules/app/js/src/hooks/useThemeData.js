@@ -151,10 +151,8 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 					snackBar.setValue( data );
 					resolve( data );
 				} )
-				.catch( (errorMessage) => {
-					snackBar.setValue(
-						JSON.stringify( errorMessage )
-					);
+				.catch( ( errorMessage ) => {
+					snackBar.setValue( JSON.stringify( errorMessage ) );
 				} );
 		} );
 	}
