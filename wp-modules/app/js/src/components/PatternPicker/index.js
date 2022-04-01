@@ -65,7 +65,7 @@ export default function PatternPicker( {
 						/>
 					</div>
 				</div>
-				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-5">
+				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-10">
 					{ filteredPatterns.map( ( pattern, index ) => {
 						const isChecked = selectedPatterns.includes(
 							pattern.name
@@ -80,8 +80,8 @@ export default function PatternPicker( {
 									aria-checked={ isChecked }
 									className={
 										isChecked
-											? 'min-h-[300px] border-2 border-solid border-sky-500 bg-white'
-											: 'min-h-[300px] bg-white border border-[#F0F0F0]'
+											? 'min-h-[300px] bg-gray-100 flex flex-col justify-between border-2 border-blue-500 rounded relative group'
+											: 'min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group'
 									}
 									onClick={ () => {
 										onClickPattern( pattern.name );
@@ -92,20 +92,26 @@ export default function PatternPicker( {
 										}
 									} }
 								>
-									<PatternPreview
-										key={ pattern.name }
-										blockPatternData={ pattern }
-										themeJsonData={ themeJsonData }
-										scale={ 0.3 }
-										onLoad={ () => {
-											if ( isMountedRef.current ) {
-												setNumberToRender( index + 1 );
-											}
-										} }
-									/>
-									<h3 className="p-5 px-4 text-lg sm:px-6 md:px-8">
-										{ pattern.title }
-									</h3>
+									<div className="p-3 flex flex-grow items-center w-full">
+										<PatternPreview
+											key={ pattern.name }
+											blockPatternData={ pattern }
+											themeJsonData={ themeJsonData }
+											scale={ 0.3 }
+											onLoad={ () => {
+												if ( isMountedRef.current ) {
+													setNumberToRender(
+														index + 1
+													);
+												}
+											} }
+										/>
+									</div>
+									<div className="w-full">
+										<h3 className="text-sm bg-white p-4 rounded-b w-full">
+											{ pattern.title }
+										</h3>
+									</div>
 								</button>
 							);
 						}
