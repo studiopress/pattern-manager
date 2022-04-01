@@ -148,7 +148,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 					setExistsOnDisk( true );
 					setHasSaved( true );
 					currentThemeJsonFile.get();
-					snackBar.setValue( data.data );
+					snackBar.setValue( data );
 					resolve( data );
 				} )
 				.catch( () => {
