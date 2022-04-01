@@ -140,7 +140,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			} )
 				.then( ( response ) => {
 					if ( ! response.ok ) {
-						throw Error( response.statusText );
+						throw response.statusText;
 					}
 					return response.json();
 				} )
@@ -151,9 +151,9 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 					snackBar.setValue( data );
 					resolve( data );
 				} )
-				.catch( () => {
+				.catch( (errorMessage) => {
 					snackBar.setValue(
-						JSON.stringify( 'Something went wrong' )
+						JSON.stringify( errorMessage )
 					);
 				} );
 		} );
