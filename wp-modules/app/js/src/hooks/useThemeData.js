@@ -74,6 +74,8 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 
 		if ( themeData?.name === 'My New Theme' ) {
 			setThemeNameIsDefault( true );
+		} else {
+			setThemeNameIsDefault( false );
 		}
 	}, [ themeData ] );
 
