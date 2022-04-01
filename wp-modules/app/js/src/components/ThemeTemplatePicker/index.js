@@ -69,7 +69,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 
 	return (
 		<>
-			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
+			<div className="sm:grid sm:grid-cols-2 sm:gap-10 py-6 sm:items-center">
 				<div>
 					<h2 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 						{ data[ templateName ]?.title ||
