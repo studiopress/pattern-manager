@@ -141,3 +141,24 @@ return array(
 function prepare_content( $pattern_html, $text_domain ) {
 	return addcslashes( $pattern_html, '\'' );
 }
+
+/**
+ * If we are on the fse-studio app page, register the patterns with WP.
+ *
+ * @return void
+ */
+function register_block_patterns() {
+	if ( 'fse-studio' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
+		return;
+	}
+
+	$patterns = get_patterns();
+
+	foreach ( $patterns as $pattern ) {
+		register_block_pattern(
+			$pattern['name'],
+			$pattern,
+		);
+	}
+}
+add_action( 'init', __NAMESPACE__ . '\register_block_patterns', 9 );

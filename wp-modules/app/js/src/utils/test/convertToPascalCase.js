@@ -12,7 +12,9 @@ describe( 'convertToPascalCase', () => {
 		[ 'Many   Spaces', 'ManySpaces' ],
 		[ 'initially_snake_case', 'InitiallySnakeCase' ],
 		[ 'with&&&***non.,.word$$characters', 'WithNonWordCharacters' ],
-	] )( 'should convert to the PascalCase', ( toConvert, expected ) => {
+		[ 'ending in apostrophe!', 'EndingInApostrophe' ],
+		[ 'with 🥁emojis🏇', 'WithEmojis' ],
+	] )( 'should convert to PascalCase', ( toConvert, expected ) => {
 		expect( convertToPascalCase( toConvert ) ).toEqual( expected );
 	} );
 } );

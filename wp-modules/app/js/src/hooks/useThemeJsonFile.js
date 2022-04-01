@@ -49,6 +49,7 @@ export default function useThemeJsonFile( id ) {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-WP-Nonce': fsestudio.apiNonce,
 					},
 				}
 			)
@@ -68,6 +69,7 @@ export default function useThemeJsonFile( id ) {
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
 				},
 				body: JSON.stringify( themeJsonData ),
 			} )

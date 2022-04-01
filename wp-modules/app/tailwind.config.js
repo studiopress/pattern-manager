@@ -3,10 +3,10 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				'wp-black': '#1E1E1E',
-				'wp-blue': '#007BBA',
+				'wp-black': '#1e1e1e',
+				'wp-blue': '#007bba',
 				'wp-blue-hover': '#006ba1',
-				'wp-gray': '#687B81',
+				'wp-gray': '#5d7179',
 			},
 		},
 	},

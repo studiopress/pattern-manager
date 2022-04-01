@@ -8,17 +8,27 @@
 import {
 	createInterpolateElement,
 	useEffect,
+	useRef,
 	useState,
 } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
+import {
+	Icon,
+	layout,
+	file,
+	globe,
+	check,
+	download,
+	close,
+} from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
 import PatternPreview from '../PatternPreview';
 import PatternPicker from '../PatternPicker';
+import ThemeTemplatePicker from '../ThemeTemplatePicker';
 
 // Utils
 import classNames from '../../utils/classNames';
@@ -53,7 +63,9 @@ export default function ThemeManager( { visible } ) {
 			const themeInQuestion = themes.themes[ thisTheme ];
 			renderedThemes.push(
 				<option key={ counter } value={ themeInQuestion.dirname }>
-					{ themeInQuestion.name }
+					{ thisTheme === currentThemeId.value
+						? currentTheme.data?.name
+						: themeInQuestion?.name }
 				</option>
 			);
 			counter++;
@@ -63,6 +75,7 @@ export default function ThemeManager( { visible } ) {
 			<>
 				<select
 					className="mt-1 block w-60 h-10 pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-md"
+					id="themes"
 					value={ currentThemeId.value }
 					onChange={ ( event ) => {
 						currentThemeId.set( event.target.value );
@@ -75,7 +88,7 @@ export default function ThemeManager( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		if ( ! Object.keys( currentTheme.data ).length ) {
+		if ( ! currentTheme.data ) {
 			return null;
 		}
 
@@ -90,26 +103,38 @@ export default function ThemeManager( { visible } ) {
 						{ __( 'Theme Manager', 'fse-studio' ) }
 					</h1>
 					<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
-						{ Object.keys( themes.themes ).length > 0 ? (
-							<>
-								<div>
-									<label
-										htmlFor="location"
-										className="block text-sm font-medium text-gray-700"
-									>
-										{ __( 'Choose a theme', 'fse-studio' ) }
-									</label>
-									{ renderThemeSelector() }
-								</div>
-								<div className="flex flex-col mx-6 my-2.5">
-									{ __( 'or', 'fse-studio' ) }
-								</div>
-							</>
-						) : null }
+						{
+							// In order to render the selector…
+							// There should be at least 1 theme other than the currently selected theme.
+							// Or the current theme should have been saved to disk.
+							Object.keys( themes.themes ).some(
+								( themeName ) =>
+									themeName !== currentThemeId.value ||
+									currentTheme.existsOnDisk
+							) ? (
+								<>
+									<div>
+										<label
+											htmlFor="themes"
+											className="block text-sm font-medium text-gray-700"
+										>
+											{ __(
+												'Choose a theme',
+												'fse-studio'
+											) }
+										</label>
+										{ renderThemeSelector() }
+									</div>
+									<div className="flex flex-col mx-6 my-2.5">
+										{ __( 'or', 'fse-studio' ) }
+									</div>
+								</>
+							) : null
+						}
 						<div className="flex flex-col">
 							<button
 								type="button"
-								className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
 									const newThemeData = {
 										name: 'My New Theme',
@@ -122,14 +147,18 @@ export default function ThemeManager( { visible } ) {
 										tags: '',
 										tested_up_to: '5.9',
 										requires_wp: '5.9',
-										requires_php: '7.4',
+										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
 										theme_json_file: 'default',
 										included_patterns: [],
 										template_files: {
-											index: null,
+											index: 'homepage',
 											404: null,
+											archive: null,
+											single: null,
+											page: null,
+											search: null,
 										},
 									};
 
@@ -177,7 +206,7 @@ function ThemeDataEditor() {
 			name: __( 'Customize Styles', 'fse-studio' ),
 			slug: 'customize_styles',
 			icon: globe,
-			available: currentTheme.existsOnDisk,
+			available: false, // @todo: change back to currentTheme.existsOnDisk or delete this object.
 		},
 		{
 			name: __( 'Theme Template Files', 'fse-studio' ),
@@ -195,7 +224,7 @@ function ThemeDataEditor() {
 						return (
 							<li key={ item.name }>
 								<button
-									disabled={ ! item.available }
+									hidden={ ! item.available }
 									className={ classNames(
 										'w-full text-left p-5 font-medium' +
 											( themeEditorCurrentTab ===
@@ -231,41 +260,47 @@ function ThemeDataEditor() {
 				/>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
-				<button
-					type="button"
-					className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-					disabled={ ! currentTheme.existsOnDisk }
-					onClick={ () => {
-						currentTheme.export().then( ( response ) => {
-							window.open( response );
-						} );
-					} }
-				>
-					<Icon
-						className="fill-current mr-2"
-						icon={ download }
-						size={ 24 }
-					/>
-					{ __( 'Export theme to zip', 'fse-studio' ) }
-				</button>
+				<div>
+					<button
+						type="button"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						style={ {
+							display: ! currentTheme.existsOnDisk ? 'none' : '',
+						} }
+						onClick={ () => {
+							currentTheme.export().then( ( response ) => {
+								window.open( response );
+							} );
+						} }
+					>
+						<Icon
+							className="fill-current mr-2"
+							icon={ download }
+							size={ 24 }
+						/>
+						{ __( 'Export theme to zip', 'fse-studio' ) }
+					</button>
+				</div>
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
-						<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+						<div className="text-sm text-green-700 flex flex-row items-center mr-6">
 							<Icon
 								className="fill-current"
 								icon={ check }
 								size={ 26 }
 							/>{ ' ' }
-							{ __(
-								'Theme saved to your /themes/ folder',
-								'fse-studio'
-							) }
-						</span>
+							<span role="dialog" aria-label="Theme Saved">
+								{ __(
+									'Theme saved to your /themes/ folder',
+									'fse-studio'
+								) }
+							</span>
+						</div>
 					) : null }
 					<button
 						type="button"
-						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
 							currentTheme.save();
 						} }
@@ -281,6 +316,7 @@ function ThemeDataEditor() {
 /** @param {{isVisible: boolean}} props */
 function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
+	const themeNameInput = useRef( null );
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -294,6 +330,11 @@ function ThemeSetup( { isVisible } ) {
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
+							ref={ themeNameInput }
+							disabled={
+								currentTheme.existsOnDisk &&
+								! currentTheme.themeNameIsDefault
+							}
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="theme-name"
@@ -305,10 +346,28 @@ function ThemeSetup( { isVisible } ) {
 								} );
 							} }
 						/>
+						{ currentTheme.themeNameIsDefault ? (
+							<div className="text-sm text-red-700 flex flex-row items-center mr-6">
+								<Icon
+									className="fill-current"
+									icon={ check }
+									size={ 26 }
+								/>{ ' ' }
+								<span role="dialog" aria-label="Theme Saved">
+									{ __(
+										'Theme name needs to be different than My New Theme',
+										'fse-studio'
+									) }
+								</span>
+							</div>
+						) : null }
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div
+					hidden
+					className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
+				>
 					<label
 						htmlFor="directory-name"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -326,7 +385,10 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div
+					hidden
+					className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
+				>
 					<label
 						htmlFor="namespace"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -410,11 +472,7 @@ function ThemeSetup( { isVisible } ) {
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="author-uri"
-							value={
-								currentTheme?.data?.author_uri
-									? currentTheme.data.author_uri
-									: ''
-							}
+							value={ currentTheme?.data?.author_uri ?? '' }
 							onChange={ ( event ) => {
 								currentTheme.set( {
 									...currentTheme.data,
@@ -457,7 +515,7 @@ function ThemeSetup( { isVisible } ) {
 						htmlFor="tags"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
 					>
-						{ __( 'Tags (comma separated', 'fse-studio' ) }
+						{ __( 'Tags (comma separated)', 'fse-studio' ) }
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
@@ -587,7 +645,10 @@ function ThemeSetup( { isVisible } ) {
 					</div>
 				</div>
 
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<div
+					hidden
+					className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
+				>
 					<label
 						htmlFor="text-domain"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
@@ -623,14 +684,14 @@ function ThemePatterns( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="w-full flex flex-col">
-				<div className="w-full text-center bg-gray-100 p-5 self-start">
-					<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+				<div className="w-full text-center bg-gray-100 p-7 self-start">
+					<h2 className="block text-lg font-medium text-gray-700 sm:col-span-1">
 						{ __( 'Add patterns to your theme', 'fse-studio' ) }
-					</h3>
+					</h2>
 					<p className="mt-2">
 						{ createInterpolateElement(
 							__(
-								'<span>You can also create patterns in the</span> <button>Pattern Manager</button>',
+								'<span>You can also create patterns in the</span> <button>Pattern Editor</button>',
 								'fse-studio'
 							),
 							{
@@ -639,18 +700,16 @@ function ThemePatterns( { isVisible } ) {
 									<button
 										className="mt-2 text-blue-400"
 										onClick={ () => {
-											currentView.set(
-												'pattern_manager'
-											);
+											currentView.set( 'pattern_editor' );
 										} }
 									/>
 								),
 							}
 						) }
 					</p>
-					<p className="mt-2">
+					<p className="mt-5">
 						<button
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => setModalOpen( true ) }
 						>
 							{ __( 'Browse Patterns', 'fse-studio' ) }
@@ -659,43 +718,59 @@ function ThemePatterns( { isVisible } ) {
 				</div>
 				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
-						<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
+						<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
 							{ __(
 								'Patterns included in this theme:',
 								'fse-studio'
 							) }
 						</h3>
-						<div className="grid w-full grid-cols-3 gap-5 p-8">
+						<div className="grid w-full grid-cols-3 gap-5">
 							{ currentTheme.data.included_patterns.map(
 								( patternName, index ) => {
 									return (
 										<div
 											key={ index }
-											className="min-h-[300px] bg-gray-200"
+											className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
 										>
-											<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
-												{
-													patterns.patterns[
-														patternName
-													]?.title
-												}
-											</h3>
-											<PatternPreview
-												key={
-													patterns.patterns[
-														patternName
-													].name
-												}
-												blockPatternData={
-													patterns.patterns[
-														patternName
-													]
-												}
-												themeJsonData={
-													currentThemeJsonFile.data
-												}
-												scale={ 0.2 }
-											/>
+											<button
+												type="button"
+												className="absolute top-2 right-2"
+												// onClick={ }
+											>
+												<Icon
+													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+													icon={ close }
+													size={ 30 }
+												/>
+											</button>
+
+											<div className="p-3 flex flex-grow items-center">
+												<PatternPreview
+													key={
+														patterns.patterns[
+															patternName
+														].name
+													}
+													blockPatternData={
+														patterns.patterns[
+															patternName
+														]
+													}
+													themeJsonData={
+														currentThemeJsonFile.data
+													}
+													scale={ 0.2 }
+												/>
+											</div>
+											<div>
+												<h3 className="text-sm bg-white p-4 rounded-b">
+													{
+														patterns.patterns[
+															patternName
+														]?.title
+													}
+												</h3>
+											</div>
 										</div>
 									);
 								}
@@ -750,116 +825,22 @@ function ThemePatterns( { isVisible } ) {
 
 /** @param {{isVisible: boolean}} props */
 function ThemeTemplateFiles( { isVisible } ) {
-	const { patterns, currentTheme, currentThemeJsonFile } = useStudioContext();
-
-	const [ isModalOpen, setModalOpen ] = useState( false );
-	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(
-		''
-	);
+	const { currentTheme } = useStudioContext();
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="divide-y divide-gray-200">
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
-					<label htmlFor="theme-name">
-						<span className="block text-sm font-medium text-gray-700 sm:col-span-1">
-							{ __( 'Template: index.html', 'fse-studio' ) }
-						</span>
-						<span>
-							{ __(
-								'This template is used to show any post or page if no other template makes sense.',
-								'fse-studio'
-							) }
-							other template makes sense.
-						</span>
-						<button
-							className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								setFocusedTemplateFileName( 'index' );
-								setModalOpen( true );
-							} }
-						>
-							Set Pattern
-						</button>
-					</label>
-					<div className="mt-1 sm:mt-0 sm:col-span-1">
-						<div className="min-h-[30px] bg-white border border-[#F0F0F0]">
-							<PatternPreview
-								key={ 'index' }
-								blockPatternData={
-									patterns?.patterns[
-										currentTheme.data?.template_files?.index
-									]
-								}
-								themeJsonData={ currentThemeJsonFile.data }
-								scale={ 0.2 }
+				{ Object.keys( currentTheme.data?.template_files ).map(
+					( templateName ) => {
+						return (
+							<ThemeTemplatePicker
+								key={ templateName }
+								templateName={ templateName }
 							/>
-						</div>
-					</div>
-				</div>
-				<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-					<label htmlFor="theme-name">
-						<span className="block text-sm font-medium text-gray-700 sm:col-span-1">
-							{ __( 'Template: 404.html', 'fse-studio' ) }
-						</span>
-						<span>
-							This template is used when the URL does not match
-							anything on the website.
-						</span>
-						<button
-							className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								setFocusedTemplateFileName( '404' );
-								setModalOpen( true );
-							} }
-						>
-							Set Pattern
-						</button>
-					</label>
-					<div className="mt-1 sm:mt-0 sm:col-span-1">
-						<div className="min-h-[30px] bg-white border border-[#F0F0F0]">
-							<PatternPreview
-								key={ 'index' }
-								blockPatternData={
-									patterns?.patterns[
-										currentTheme.data?.template_files?.[
-											'404'
-										]
-									]
-								}
-								themeJsonData={ currentThemeJsonFile.data }
-								scale={ 0.2 }
-							/>
-						</div>
-					</div>
-				</div>
+						);
+					}
+				) }
 			</div>
-			{ isModalOpen ? (
-				<Modal
-					title={ __(
-						'Pick the patterns to include in this theme',
-						'fse-studio'
-					) }
-					onRequestClose={ () => {
-						setModalOpen( false );
-					} }
-				>
-					<PatternPicker
-						patterns={ patterns.patterns }
-						themeJsonData={ currentThemeJsonFile.data }
-						onClickPattern={ ( clickedPatternName ) => {
-							setModalOpen( false );
-							currentTheme.set( {
-								...currentTheme.data,
-								template_files: {
-									...currentTheme.data.template_files,
-									[ focusedTemplateFileName ]: clickedPatternName,
-								},
-							} );
-						} }
-					/>
-				</Modal>
-			) : null }
 		</div>
 	);
 }

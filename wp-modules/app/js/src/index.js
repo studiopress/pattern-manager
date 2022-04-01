@@ -8,6 +8,7 @@ import './../../css/src/index.scss';
 import './../../css/src/tailwind.css';
 
 import { useEffect, useState } from '@wordpress/element';
+import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import ReactDOM from 'react-dom';
 
@@ -23,6 +24,7 @@ import {
 } from '@wordpress/icons';
 
 import FseStudioContext from './contexts/FseStudioContext';
+import FseStudioSnackbarContext from './contexts/FseStudioSnackbarContext';
 
 // Hooks
 import useThemes from './hooks/useThemes';
@@ -33,6 +35,8 @@ import useThemeJsonFile from './hooks/useThemeJsonFile';
 import usePatterns from './hooks/usePatterns';
 import useCurrentView from './hooks/useCurrentView';
 import useStudioContext from './hooks/useStudioContext';
+import useSnackbarContext from './hooks/useSnackbarContext';
+import useSnackbar from './hooks/useSnackbar';
 
 // Components
 import ThemeManager from './components/ThemeManager';
@@ -44,6 +48,7 @@ import classNames from './utils/classNames';
 
 /**
  * @typedef {{
+ *  apiNonce: string,
  *  apiEndpoints: {
  *   getPatternEndpoint: string,
  *   getThemeEndpoint: string,
@@ -91,6 +96,16 @@ export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
 ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
 
 function FseStudioApp() {
+	/** @type {ReturnType<import('./hooks/useSnackbar').default>} */
+	const providerValue = useSnackbar();
+	return (
+		<FseStudioSnackbarContext.Provider value={ providerValue }>
+			<FseStudioContextHydrator />
+		</FseStudioSnackbarContext.Provider>
+	);
+}
+
+function FseStudioContextHydrator() {
 	const currentThemeJsonFileId = useCurrentId();
 	const currentThemeJsonFile = useThemeJsonFile(
 		currentThemeJsonFileId.value
@@ -131,6 +146,8 @@ function FseStudioApp() {
 function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme } = useStudioContext();
+	const snackBar = useSnackbarContext();
+
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
 	);
@@ -143,14 +160,14 @@ function FseStudio() {
 			available: true,
 		},
 		{
-			name: 'Pattern Manager',
-			slug: 'pattern_manager',
+			name: 'Pattern Editor',
+			slug: 'pattern_editor',
 			icon: layout,
 			available: currentTheme.existsOnDisk,
 		},
 		{
-			name: 'Theme.json Manager',
-			slug: 'themejson_manager',
+			name: 'Theme.json Editor',
+			slug: 'themejson_editor',
 			icon: globe,
 			available: currentTheme.existsOnDisk,
 		},
@@ -168,10 +185,10 @@ function FseStudio() {
 					visible={ 'theme_manager' === currentView.currentView }
 				/>
 				<PatternEditor
-					visible={ 'pattern_manager' === currentView.currentView }
+					visible={ 'pattern_editor' === currentView.currentView }
 				/>
 				<ThemeJsonEditor
-					visible={ 'themejson_manager' === currentView.currentView }
+					visible={ 'themejson_editor' === currentView.currentView }
 				/>
 			</>
 		);
@@ -179,6 +196,15 @@ function FseStudio() {
 
 	return (
 		<>
+			{ snackBar.value ? (
+				<Snackbar
+					onRemove={ () => {
+						snackBar.setValue( null );
+					} }
+				>
+					{ snackBar.value }
+				</Snackbar>
+			) : null }
 			<div className={ sidebarOpen ? 'sidebar-open' : 'sidebar-closed' }>
 				{ /* Static sidebar for desktop */ }
 				<div
@@ -230,6 +256,11 @@ function FseStudio() {
 								{ navigation.map( ( item ) => {
 									return (
 										<button
+											style={ {
+												display: ! item.available
+													? 'none'
+													: '',
+											} }
 											disabled={ ! item.available }
 											key={ item.name }
 											onClick={ () => {
@@ -286,7 +317,7 @@ function FseStudio() {
 						sidebarOpen ? 'md:pl-80' : 'md:pl-0'
 					}` }
 				>
-					<main className="flex-1">{ renderCurrentView() }</main>
+					<div className="flex-1">{ renderCurrentView() }</div>
 				</div>
 			</div>
 		</>

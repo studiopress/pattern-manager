@@ -9,12 +9,18 @@ import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
+import useSnackbarContext from './useSnackbarContext';
+
 /**
  * @typedef {Partial<{
  *   name: string,
  *   namespace: string,
- *   'index.html': string,
- *   '404.html': string,
+ *   'index.html'?: string,
+ *   '404.html'?: string,
+ *   'archive.html'?: string,
+ *   'single.html'?: string,
+ *   'page.html'?: string,
+ *   'search.html'?: string,
  *   author: string,
  *   author_uri: string,
  *   description: string,
@@ -22,11 +28,15 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  *   included_patterns: string[],
  *   requires_php: string,
  *   requires_wp: string,
- *   rest_route: string,
+ *   rest_route?: string,
  *   tags: string,
  *   template_files: Partial<{
+ *    index: string,
  *    '404': string,
- *    index: string
+ *    archive: string,
+ *    single: string,
+ *    page: string,
+ *    search: string,
  *   }>,
  *   tested_up_to: string,
  *   text_domain: string,
@@ -50,30 +60,42 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  */
 export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
+	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
-	const [ themeData, setThemeData ] = useState( {} );
+	const [ themeData, setThemeData ] = useState();
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
+	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 
 	useEffect( () => {
 		setHasSaved( false );
+
+		if ( themeData?.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+		} else {
+			setThemeNameIsDefault( false );
+		}
 	}, [ themeData ] );
 
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
 		getThemeData( themeId );
+
+		setThemeNameIsDefault( false );
 	}, [ themeId ] );
 
 	useEffect( () => {
-		setThemeData( {
-			...themeData,
-			dirname: convertToSlug( themeData.name ),
-			namespace: convertToPascalCase( themeData.name ),
-			text_domain: convertToSlug( themeData.name ),
-		} );
-	}, [ themeData.name ] );
+		if ( themeData?.name ) {
+			setThemeData( {
+				...themeData,
+				dirname: convertToSlug( themeData?.name ),
+				namespace: convertToPascalCase( themeData?.name ),
+				text_domain: convertToSlug( themeData?.name ),
+			} );
+		}
+	}, [ themeData?.name ] );
 
 	function getThemeData( thisThemeId ) {
 		return new Promise( ( resolve ) => {
@@ -92,6 +114,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
+						'X-WP-Nonce': fsestudio.apiNonce,
 					},
 				}
 			)
@@ -114,21 +137,37 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	}
 
 	function saveThemeData() {
+		if ( themeData.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+			return;
+		}
+
 		return new Promise( ( resolve ) => {
+			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
 				},
 				body: JSON.stringify( themeData ),
 			} )
-				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					if ( ! response.ok ) {
+						throw response.statusText;
+					}
+					return response.json();
+				} )
 				.then( ( data ) => {
 					setExistsOnDisk( true );
 					setHasSaved( true );
 					currentThemeJsonFile.get();
+					snackBar.setValue( data );
 					resolve( data );
+				} )
+				.catch( ( errorMessage ) => {
+					snackBar.setValue( JSON.stringify( errorMessage ) );
 				} );
 		} );
 	}
@@ -140,11 +179,13 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
 				},
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
+					snackBar.setValue( JSON.stringify( data ) );
 					resolve( data );
 				} );
 		} );
@@ -157,5 +198,6 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 		export: exportThemeData,
 		existsOnDisk,
 		hasSaved,
+		themeNameIsDefault,
 	};
 }

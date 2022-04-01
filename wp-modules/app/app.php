@@ -64,6 +64,7 @@ function fse_studio_app() {
 				'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/gutenberg/schemas/json/theme.json' ),
 			),
 			'frontendPreviewUrl'  => null,
+			'apiNonce'            => wp_create_nonce( 'wp_rest' ),
 			'apiEndpoints'        => array(
 				'getPatternEndpoint'        => get_rest_url( false, 'fsestudio/v1/get-pattern/' ),
 				'savePatternEndpoint'       => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),
