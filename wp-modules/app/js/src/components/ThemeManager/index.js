@@ -316,10 +316,6 @@ function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
 	const themeNameInput = useRef( null );
 
-	if ( currentTheme.themeNameIsDefault ) {
-		themeNameInput.current.focus();
-	}
-
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
 			<form className="divide-y divide-gray-200">
@@ -333,7 +329,7 @@ function ThemeSetup( { isVisible } ) {
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
 							ref={ themeNameInput }
-							disabled={ currentTheme.existsOnDisk }
+							disabled={ currentTheme.existsOnDisk && ! currentTheme.themeNameIsDefault }
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="theme-name"
