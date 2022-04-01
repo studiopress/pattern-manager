@@ -68,7 +68,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 
 	useEffect( () => {
 		setHasSaved( false );
-		
+
 		if ( themeData?.name === 'My New Theme' ) {
 			setThemeNameIsDefault( true );
 		}
@@ -77,7 +77,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
 		getThemeData( themeId );
-		
+
 		setThemeNameIsDefault( false );
 	}, [ themeId ] );
 
