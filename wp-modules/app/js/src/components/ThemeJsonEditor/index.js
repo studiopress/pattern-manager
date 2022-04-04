@@ -155,25 +155,6 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 		},
 	];
 
-	function renderPatternPreviews() {
-		const rendered = [];
-
-		for ( const blockPattern in patterns.patterns ) {
-			rendered.push(
-				<div className="w-full">
-					<PatternPreview
-						key={ blockPattern }
-						blockPatternData={ patterns.patterns[ blockPattern ] }
-						themeJsonData={ currentThemeJsonFile.data }
-						scale={ 0.15 }
-					/>
-				</div>
-			);
-		}
-
-		return rendered;
-	}
-
 	function maybeRenderStylesView() {
 		if ( currentView !== 'styles' ) {
 			return '';
@@ -393,9 +374,12 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 				const modifiedData = { ...currentThemeJsonFile.data };
 				if ( propertyName ) {
 					console.log( modifiedData.content[mode] );
-					if( modifiedData.content[mode][topLevelSettingName][propertyName] ) {
+					if( modifiedData.content[mode][topLevelSettingName] && modifiedData.content[mode][topLevelSettingName][propertyName] ) {
 						modifiedData.content[mode][topLevelSettingName][propertyName] = modifiedData.content[mode][topLevelSettingName][propertyName] ? false : true;
 					} else {
+						if ( ! modifiedData.content[mode][topLevelSettingName] ) {
+							modifiedData.content[mode][topLevelSettingName] = {};
+						}
 						modifiedData.content[mode][topLevelSettingName][propertyName] = true;
 					}
 				} else {
@@ -443,24 +427,20 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 						for( const theSchemaName in propertySchema.items.properties ) {
 							if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
 								renderedValue.push(
-									<div>
-										<h2>{theSchemaName}</h2>
-										<p>{propertySchema.items.properties[theSchemaName].description}</p>
-										<ValueSetter
-											name={ theSchemaName }
-											value=''
-											onChange={ (newValue) => {
-												const modifiedData = { ...currentThemeJsonFile.data };
-												if ( propertyName ) {
-													modifiedData.content[mode][topLevelSettingName][propertyName] = [{}];
-													modifiedData.content[mode][topLevelSettingName][propertyName][0][theSchemaName] = newValue;
-												} else {
-													modifiedData.content[mode][topLevelSettingName][0][theSchemaName] = newValue;
-												}
-												currentThemeJsonFile.set( modifiedData );
-											}}
-										/>
-									</div>
+									<button
+										onClick={ () => {
+											const modifiedData = { ...currentThemeJsonFile.data };
+											if ( propertyName ) {
+												modifiedData.content[mode][topLevelSettingName][propertyName] = [{}];
+												modifiedData.content[mode][topLevelSettingName][propertyName][0][theSchemaName] = '';
+											} else {
+												modifiedData.content[mode][topLevelSettingName][0][theSchemaName] = '';
+											}
+											currentThemeJsonFile.set( modifiedData );
+										}}
+									>
+										Add one of these
+									</button>
 								);
 							}
 							// This handles cases like "duotone", in which an array of options contains it's own array of options.
@@ -479,6 +459,8 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 										mode="settings"
 									/>
 								);
+								
+								renderedValue.push( 'Add Anther suboption!' );
 								
 							}
 						}
@@ -531,7 +513,7 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 											mode="settings"
 										/>
 									);
-									
+									renderedValue.push( 'Add Anther suboption!' );
 								}
 							}
 							return renderedValue;
