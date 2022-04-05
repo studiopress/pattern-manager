@@ -8,11 +8,20 @@
 import {
 	createInterpolateElement,
 	useEffect,
+	useRef,
 	useState,
 } from '@wordpress/element';
 import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check, download } from '@wordpress/icons';
+import {
+	Icon,
+	layout,
+	file,
+	globe,
+	check,
+	download,
+	close,
+} from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -106,7 +115,7 @@ export default function ThemeManager( { visible } ) {
 								<>
 									<div>
 										<label
-											htmlFor="location"
+											htmlFor="themes"
 											className="block text-sm font-medium text-gray-700"
 										>
 											{ __(
@@ -145,7 +154,7 @@ export default function ThemeManager( { visible } ) {
 										theme_json_file: 'default',
 										included_patterns: [],
 										template_files: {
-											index: null,
+											index: 'homepage',
 											404: null,
 											archive: null,
 											single: null,
@@ -252,27 +261,31 @@ function ThemeDataEditor() {
 				/>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
-				<button
-					type="button"
-					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-					hidden={ ! currentTheme.existsOnDisk }
-					onClick={ () => {
-						currentTheme.export().then( ( response ) => {
-							window.open( response );
-						} );
-					} }
-				>
-					<Icon
-						className="fill-current mr-2"
-						icon={ download }
-						size={ 24 }
-					/>
-					{ __( 'Export theme to zip', 'fse-studio' ) }
-				</button>
+				<div>
+					<button
+						type="button"
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						style={ {
+							display: ! currentTheme.existsOnDisk ? 'none' : '',
+						} }
+						onClick={ () => {
+							currentTheme.export().then( ( response ) => {
+								window.open( response );
+							} );
+						} }
+					>
+						<Icon
+							className="fill-current mr-2"
+							icon={ download }
+							size={ 24 }
+						/>
+						{ __( 'Export theme to zip', 'fse-studio' ) }
+					</button>
+				</div>
 
 				<div className="flex items-center">
 					{ currentTheme.hasSaved ? (
-						<div className="text-sm text-green-600 flex flex-row items-center mr-6">
+						<div className="text-sm text-green-700 flex flex-row items-center mr-6">
 							<Icon
 								className="fill-current"
 								icon={ check }
@@ -280,7 +293,7 @@ function ThemeDataEditor() {
 							/>{ ' ' }
 							<span role="dialog" aria-label="Theme Saved">
 								{ __(
-									'Theme saved to your themes folder',
+									'Theme saved to your /themes/ folder',
 									'fse-studio'
 								) }
 							</span>
@@ -304,6 +317,7 @@ function ThemeDataEditor() {
 /** @param {{isVisible: boolean}} props */
 function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
+	const themeNameInput = useRef( null );
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -317,6 +331,11 @@ function ThemeSetup( { isVisible } ) {
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
+							ref={ themeNameInput }
+							disabled={
+								currentTheme.existsOnDisk &&
+								! currentTheme.themeNameIsDefault
+							}
 							className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
 							type="text"
 							id="theme-name"
@@ -328,6 +347,21 @@ function ThemeSetup( { isVisible } ) {
 								} );
 							} }
 						/>
+						{ currentTheme.themeNameIsDefault ? (
+							<div className="text-sm text-red-700 flex flex-row items-center mr-6">
+								<Icon
+									className="fill-current"
+									icon={ check }
+									size={ 26 }
+								/>{ ' ' }
+								<span role="dialog" aria-label="Theme Saved">
+									{ __(
+										'Theme name needs to be different than My New Theme',
+										'fse-studio'
+									) }
+								</span>
+							</div>
+						) : null }
 					</div>
 				</div>
 
@@ -482,7 +516,7 @@ function ThemeSetup( { isVisible } ) {
 						htmlFor="tags"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
 					>
-						{ __( 'Tags (comma separated', 'fse-studio' ) }
+						{ __( 'Tags (comma separated)', 'fse-studio' ) }
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
@@ -651,10 +685,10 @@ function ThemePatterns( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="w-full flex flex-col">
-				<div className="w-full text-center bg-gray-100 p-5 self-start">
-					<h3 className="block text-sm font-medium text-gray-700 sm:col-span-1">
+				<div className="w-full text-center bg-gray-100 p-7 self-start">
+					<h2 className="block text-lg font-medium text-gray-700 sm:col-span-1">
 						{ __( 'Add patterns to your theme', 'fse-studio' ) }
-					</h3>
+					</h2>
 					<p className="mt-2">
 						{ createInterpolateElement(
 							__(
@@ -674,7 +708,7 @@ function ThemePatterns( { isVisible } ) {
 							}
 						) }
 					</p>
-					<p className="mt-2">
+					<p className="mt-5">
 						<button
 							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => setModalOpen( true ) }
@@ -685,43 +719,59 @@ function ThemePatterns( { isVisible } ) {
 				</div>
 				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
-						<h3 className="mt-2 block text-sm font-medium text-gray-700 sm:col-span-1">
+						<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
 							{ __(
 								'Patterns included in this theme:',
 								'fse-studio'
 							) }
 						</h3>
-						<div className="grid w-full grid-cols-3 gap-5 p-8">
+						<div className="grid w-full grid-cols-3 gap-5">
 							{ currentTheme.data.included_patterns.map(
 								( patternName, index ) => {
 									return (
 										<div
 											key={ index }
-											className="min-h-[300px] bg-gray-200"
+											className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
 										>
-											<h3 className="border-b border-gray-200 p-5 px-4 text-lg sm:px-6 md:px-8">
-												{
-													patterns.patterns[
-														patternName
-													]?.title
-												}
-											</h3>
-											<PatternPreview
-												key={
-													patterns.patterns[
-														patternName
-													].name
-												}
-												blockPatternData={
-													patterns.patterns[
-														patternName
-													]
-												}
-												themeJsonData={
-													currentThemeJsonFile.data
-												}
-												scale={ 0.2 }
-											/>
+											<button
+												type="button"
+												className="absolute top-2 right-2"
+												// onClick={ }
+											>
+												<Icon
+													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+													icon={ close }
+													size={ 30 }
+												/>
+											</button>
+
+											<div className="p-3 flex flex-grow items-center">
+												<PatternPreview
+													key={
+														patterns.patterns[
+															patternName
+														].name
+													}
+													blockPatternData={
+														patterns.patterns[
+															patternName
+														]
+													}
+													themeJsonData={
+														currentThemeJsonFile.data
+													}
+													scale={ 0.2 }
+												/>
+											</div>
+											<div>
+												<h3 className="text-sm bg-white p-4 rounded-b">
+													{
+														patterns.patterns[
+															patternName
+														]?.title
+													}
+												</h3>
+											</div>
 										</div>
 									);
 								}

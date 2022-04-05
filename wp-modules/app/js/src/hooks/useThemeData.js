@@ -9,6 +9,8 @@ import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
+import useSnackbarContext from './useSnackbarContext';
+
 /**
  * @typedef {Partial<{
  *   name: string,
@@ -58,20 +60,30 @@ import convertToPascalCase from '../utils/convertToPascalCase';
  * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  */
 export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
+	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState();
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
+	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 
 	useEffect( () => {
 		setHasSaved( false );
+
+		if ( themeData?.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+		} else {
+			setThemeNameIsDefault( false );
+		}
 	}, [ themeData ] );
 
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
 		getThemeData( themeId );
+
+		setThemeNameIsDefault( false );
 	}, [ themeId ] );
 
 	useEffect( () => {
@@ -125,7 +137,13 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 	}
 
 	function saveThemeData() {
+		if ( themeData.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+			return;
+		}
+
 		return new Promise( ( resolve ) => {
+			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
@@ -135,12 +153,21 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 				},
 				body: JSON.stringify( themeData ),
 			} )
-				.then( ( response ) => response.json() )
+				.then( ( response ) => {
+					if ( ! response.ok ) {
+						throw response.statusText;
+					}
+					return response.json();
+				} )
 				.then( ( data ) => {
 					setExistsOnDisk( true );
 					setHasSaved( true );
 					currentThemeJsonFile.get();
+					snackBar.setValue( data );
 					resolve( data );
+				} )
+				.catch( ( errorMessage ) => {
+					snackBar.setValue( JSON.stringify( errorMessage ) );
 				} );
 		} );
 	}
@@ -158,6 +185,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
+					snackBar.setValue( JSON.stringify( data ) );
 					resolve( data );
 				} );
 		} );
@@ -170,5 +198,6 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 		export: exportThemeData,
 		existsOnDisk,
 		hasSaved,
+		themeNameIsDefault,
 	};
 }

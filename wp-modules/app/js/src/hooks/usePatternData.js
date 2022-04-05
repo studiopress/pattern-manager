@@ -7,6 +7,8 @@ import { useState, useEffect } from '@wordpress/element';
 import { fsestudio } from '../globals';
 import assembleUrl from '../utils/assembleUrl';
 
+import useSnackbarContext from './useSnackbarContext';
+
 /**
  * @param {string}                                           patternId
  * @param {typeof import('../globals').fsestudio.patterns}   patterns
@@ -19,6 +21,7 @@ export default function usePatternData(
 	currentThemeJsonFile,
 	currentTheme
 ) {
+	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 
 	/** @type {[import('../components/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker').Pattern>>]} */
@@ -84,6 +87,7 @@ export default function usePatternData(
 				.then( ( data ) => {
 					currentTheme.save();
 					currentThemeJsonFile.get();
+					snackBar.setValue( JSON.stringify( data ) );
 					resolve( data );
 				} );
 		} );

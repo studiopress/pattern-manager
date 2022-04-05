@@ -69,15 +69,15 @@ export default function ThemeTemplatePicker( { templateName } ) {
 
 	return (
 		<>
-			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
-				<label htmlFor="theme-name">
-					<span className="block text-sm font-medium text-gray-700 sm:col-span-1">
+			<div className="sm:grid sm:grid-cols-2 sm:gap-10 py-6 sm:items-center">
+				<div>
+					<h2 className="block text-sm font-medium text-gray-700 sm:col-span-1">
 						{ data[ templateName ]?.title ||
 							__(
 								'Template: this template is not recognized',
 								'fse-studio'
 							) }
-					</span>
+					</h2>
 					<span>
 						{ data[ templateName ]?.description ||
 							__(
@@ -86,7 +86,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 							) }
 					</span>
 					<button
-						className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						className="mt-4 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue block"
 						onClick={ () => {
 							setFocusedTemplateFileName( templateName );
 							setModalOpen( true );
@@ -98,7 +98,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 							__( 'Change Pattern', 'fse-studio' ) ) ||
 							__( 'Set Pattern', 'fse-studio' ) }
 					</button>
-				</label>
+				</div>
 				<div className="mt-1 sm:mt-0 sm:col-span-1">
 					<div className="min-h-[30px] bg-white border border-[#F0F0F0]">
 						<PatternPreview
@@ -119,7 +119,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 			{ isModalOpen ? (
 				<Modal
 					title={ __(
-						'Pick the patterns to use for this template file',
+						'Pick the pattern to use for this template file',
 						'fse-studio'
 					) }
 					onRequestClose={ () => {
