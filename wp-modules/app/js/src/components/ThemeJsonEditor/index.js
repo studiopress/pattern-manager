@@ -375,130 +375,128 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 	
 		const numberOfKeys = keys.length;
 	
-		//for (let count = 0; count < numberOfKeys; count++) {
-			if ( numberOfKeys === 1 ) {
-				const keyOne = [keys[0]];
+		if ( numberOfKeys === 1 ) {
+			const keyOne = [keys[0]];
+			if ( value ) {
+				modifiedData.content['settings'][keyOne] = value;
+			} else {
+				delete modifiedData.content['settings'][keyOne];
+			}
+		}
+		if ( numberOfKeys === 2 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+
+			// If keyone already exists, and keytwo already exists, just change the value.
+			if( modifiedData.content['settings'][keyOne] && modifiedData.content['settings'][keyOne][keyTwo] ) {
 				if ( value ) {
-					modifiedData.content['settings'][keyOne] = value;
+					modifiedData.content['settings'][keyOne][keyTwo] = value;
 				} else {
-					delete modifiedData.content['settings'][keyOne];
+					delete modifiedData.content['settings'][keyOne][keyTwo];
+					// If this is the last value in keyOne, delete the keyOne as well.
+					if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
+						delete modifiedData.content['settings'][keyOne];
+					}
+				}
+			} else {
+				if ( value ) {
+					// If keyone does not exist yet, set it first, then set keytwo after.
+					if ( ! modifiedData.content['settings'][keyOne] ) {
+						modifiedData.content['settings'][keyOne] = {};
+					}
+					modifiedData.content['settings'][keyOne][keyTwo] = value;
+					if ( propertyName === 'radius' ) {
+						console.log( selectorString, keys, numberOfKeys, modifiedData.content['settings'][keyOne][keyTwo], value );
+					}
 				}
 			}
-			if ( numberOfKeys === 2 ) {
-				const keyOne = [keys[0]];
-				const keyTwo = [keys[1]];
+		}
+		if ( numberOfKeys === 3 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+			const keyThree = [keys[2]];
 
-				// If keyone already exists, and keytwo already exists, just change the value.
-				if( modifiedData.content['settings'][keyOne] && modifiedData.content['settings'][keyOne][keyTwo] ) {
-					if ( value ) {
-						modifiedData.content['settings'][keyOne][keyTwo] = value;
-					} else {
+			// If keys aready exists, just change the value.
+			if (
+				modifiedData.content['settings'][keyOne] &&
+				modifiedData.content['settings'][keyOne][keyTwo] &&
+				modifiedData.content['settings'][keyOne][keyThree]
+			) {
+				if ( value ) {
+					modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
+				} else {
+					delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
+					// If this is the last value in keyTwo, delete the keyTwo as well.
+					if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
 						delete modifiedData.content['settings'][keyOne][keyTwo];
-						// If this is the last value in keyOne, delete the keyOne as well.
-						if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
-							delete modifiedData.content['settings'][keyOne];
-						}
 					}
-				} else {
-					if ( value ) {
-						// If keyone does not exist yet, set it first, then set keytwo after.
-						if ( ! modifiedData.content['settings'][keyOne] ) {
-							modifiedData.content['settings'][keyOne] = {};
-						}
-						modifiedData.content['settings'][keyOne][keyTwo] = value;
-						if ( propertyName === 'radius' ) {
-							console.log( selectorString, keys, numberOfKeys, modifiedData.content['settings'][keyOne][keyTwo], value );
-						}
+					// If this is the last value in keyOne, delete the keyOne as well.
+					if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
+						delete modifiedData.content['settings'][keyOne];
 					}
 				}
+			} else {
+				if ( value ) {
+					// If keyone does not exist yet, set it first, then set keytwo after.
+					if ( ! modifiedData.content['settings'][keyOne] ) {
+						modifiedData.content['settings'][keyOne] = {};
+					}
+					if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
+						modifiedData.content['settings'][keyOne][keyTwo] = {};
+					}
+					modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
+				}
 			}
-			if ( numberOfKeys === 3 ) {
-				const keyOne = [keys[0]];
-				const keyTwo = [keys[1]];
-				const keyThree = [keys[2]];
+		}
+		if ( numberOfKeys === 4 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+			const keyThree = [keys[2]];
+			const keyFour = [keys[3]];
 
-				// If keys aready exists, just change the value.
-				if (
-					modifiedData.content['settings'][keyOne] &&
-					modifiedData.content['settings'][keyOne][keyTwo] &&
-					modifiedData.content['settings'][keyOne][keyThree]
-				) {
-					if ( value ) {
-						modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
-					} else {
+			// If keys aready exists, just change the value.
+			if (
+				modifiedData.content['settings'][keyOne] &&
+				modifiedData.content['settings'][keyOne][keyTwo] &&
+				modifiedData.content['settings'][keyOne][keyThree] &&
+				modifiedData.content['settings'][keyOne][keyFour]
+			) {
+				if ( value ) {
+					modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
+				} else {
+					delete modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour];
+					// If this is the last value in keyThree, delete the keyThree as well.
+					if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo][keyThree]).length === 0 ) {
 						delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
-						// If this is the last value in keyTwo, delete the keyTwo as well.
-						if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
-							delete modifiedData.content['settings'][keyOne][keyTwo];
-						}
-						// If this is the last value in keyOne, delete the keyOne as well.
-						if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
-							delete modifiedData.content['settings'][keyOne];
-						}
 					}
-				} else {
-					if ( value ) {
-						// If keyone does not exist yet, set it first, then set keytwo after.
-						if ( ! modifiedData.content['settings'][keyOne] ) {
-							modifiedData.content['settings'][keyOne] = {};
-						}
-						if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
-							modifiedData.content['settings'][keyOne][keyTwo] = {};
-						}
-						modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
+					// If this is the last value in keyTwo, delete the keyTwo as well.
+					if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
+						delete modifiedData.content['settings'][keyOne][keyTwo];
+					}
+					// If this is the last value in keyOne, delete the keyOne as well.
+					if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
+						delete modifiedData.content['settings'][keyOne];
 					}
 				}
+			} else {
+				if ( value ) {
+					// If keyone does not exist yet, set it first, then set keytwo after.
+					if ( ! modifiedData.content['settings'][keyOne] ) {
+						modifiedData.content['settings'][keyOne] = {};
+					}
+					if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
+						modifiedData.content['settings'][keyOne][keyTwo] = {};
+					}
+					if ( ! modifiedData.content['settings'][keyOne][keyTwo][keyThree] ) {
+						modifiedData.content['settings'][keyOne][keyTwo][keyThree] = {};
+					}
+					modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
+				}
 			}
-			if ( numberOfKeys === 4 ) {
-				const keyOne = [keys[0]];
-				const keyTwo = [keys[1]];
-				const keyThree = [keys[2]];
-				const keyFour = [keys[3]];
+		}
 
-				// If keys aready exists, just change the value.
-				if (
-					modifiedData.content['settings'][keyOne] &&
-					modifiedData.content['settings'][keyOne][keyTwo] &&
-					modifiedData.content['settings'][keyOne][keyThree] &&
-					modifiedData.content['settings'][keyOne][keyFour]
-				) {
-					if ( value ) {
-						modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
-					} else {
-						delete modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour];
-						// If this is the last value in keyThree, delete the keyThree as well.
-						if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo][keyThree]).length === 0 ) {
-							delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
-						}
-						// If this is the last value in keyTwo, delete the keyTwo as well.
-						if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
-							delete modifiedData.content['settings'][keyOne][keyTwo];
-						}
-						// If this is the last value in keyOne, delete the keyOne as well.
-						if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
-							delete modifiedData.content['settings'][keyOne];
-						}
-					}
-				} else {
-					if ( value ) {
-						// If keyone does not exist yet, set it first, then set keytwo after.
-						if ( ! modifiedData.content['settings'][keyOne] ) {
-							modifiedData.content['settings'][keyOne] = {};
-						}
-						if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
-							modifiedData.content['settings'][keyOne][keyTwo] = {};
-						}
-						if ( ! modifiedData.content['settings'][keyOne][keyTwo][keyThree] ) {
-							modifiedData.content['settings'][keyOne][keyTwo][keyThree] = {};
-						}
-						modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
-					}
-				}
-			}
-		//}
-		
 		currentThemeJsonFile.set( modifiedData );
-		
+
 	}
 	
 	function getCurrentValue( data, selectorString, propertyName, type ) {
@@ -506,49 +504,47 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 		const keys = selectorString.split(',');
 	
 		const numberOfKeys = keys.length;
-		
-		for (let count = 0; count < numberOfKeys; count++) {
-			if ( numberOfKeys === 1 ) {
-				const keyOne = [keys[0]];
-				if (data?.content?.settings.hasOwnProperty(keyOne)) {
-					return data.content.settings[keyOne];
+
+		if ( numberOfKeys === 1 ) {
+			const keyOne = [keys[0]];
+			if (data?.content?.settings.hasOwnProperty(keyOne)) {
+				return data.content.settings[keyOne];
+			}
+		}
+		if ( numberOfKeys === 2 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+
+			if (data?.content?.settings.hasOwnProperty(keyOne)) {
+				if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
+					return data?.content?.settings[keyOne][keyTwo]
 				}
 			}
-			if ( numberOfKeys === 2 ) {
-				const keyOne = [keys[0]];
-				const keyTwo = [keys[1]];
+		}
+		if ( numberOfKeys === 3 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+			const keyThree = [keys[2]];
 
-				if (data?.content?.settings.hasOwnProperty(keyOne)) {
-					if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
-						return data?.content?.settings[keyOne][keyTwo]
+			if (data?.content?.settings.hasOwnProperty(keyOne)) {
+				if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
+					if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
+						return data?.content?.settings[keyOne][keyTwo][keyThree]
 					}
 				}
 			}
-			if ( numberOfKeys === 3 ) {
-				const keyOne = [keys[0]];
-				const keyTwo = [keys[1]];
-				const keyThree = [keys[2]];
+		}
+		if ( numberOfKeys === 4 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+			const keyThree = [keys[2]];
+			const keyFour = [keys[3]];
 
-				if (data?.content?.settings.hasOwnProperty(keyOne)) {
-					if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
-						if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
-							return data?.content?.settings[keyOne][keyTwo][keyThree]
-						}
-					}
-				}
-			}
-			if ( numberOfKeys === 4 ) {
-				const keyOne = [keys[0]];
-				const keyTwo = [keys[1]];
-				const keyThree = [keys[2]];
-				const keyFour = [keys[3]];
-
-				if (data?.content?.settings.hasOwnProperty(keyOne)) {
-					if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
-						if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
-							if ( data?.content?.settings[keyOne][keyTwo][keyThree].hasOwnProperty(keyFour) ) {
-								return data?.content?.settings[keyOne][keyTwo][keyThree][keyFour]
-							}
+			if (data?.content?.settings.hasOwnProperty(keyOne)) {
+				if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
+					if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
+						if ( data?.content?.settings[keyOne][keyTwo][keyThree].hasOwnProperty(keyFour) ) {
+							return data?.content?.settings[keyOne][keyTwo][keyThree][keyFour]
 						}
 					}
 				}
@@ -620,17 +616,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					rendered.push(
 						<div key={value} hidden={!isVisible}>
 							<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
-								<label
-									htmlFor={propertyName}
-									className="block text-sm font-medium text-gray-700 sm:col-span-1"
-								>
-									<h2>{ propertyName }</h2>
-									<p>{propertySchema.items.description}</p>
-								</label>
 								<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
-									{(() => {
-										console.log( schemaPosition + ',' + value  );
-									})()}
 									<RenderProperty
 										isVisible={isVisible}
 										propertySchema={propertySchema.items}
@@ -640,107 +626,6 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 									/>
 								</div>
 							</div>
-						</div>
-					)
-				}
-			}
-		}
-		return rendered;
-		
-		// If this setting does not exist in the current theme.json file.
-		if ( ! currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName] ) {
-			rendered.push(
-				<div className="flex sm:gap-4  py-6">
-					{ (() => {
-						const renderedValue = [];
-						// Loop through each schema property in this property.
-						renderedValue.push(
-							<button
-								onClick={ () => {
-									const modifiedData = { ...currentThemeJsonFile.data };
-									
-									// Set up empty values for each of the properties.
-									for( const theSchemaName in propertySchema.items.properties ) {
-										if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
-											if ( propertyName ) {
-												modifiedData.content['settings'][topLevelSettingName][propertyName] = [{}];
-												modifiedData.content['settings'][topLevelSettingName][propertyName][0][theSchemaName] = '';
-											} else {
-												modifiedData.content['settings'][topLevelSettingName][0][theSchemaName] = '';
-											}
-										}
-										if ( propertySchema.items.properties[theSchemaName].type === 'array' ) {
-											if ( propertyName ) {
-												modifiedData.content['settings'][topLevelSettingName][propertyName] = [{}];
-												modifiedData.content['settings'][topLevelSettingName][propertyName][0][theSchemaName] = [];
-											} else {
-												modifiedData.content['settings'][topLevelSettingName][0][theSchemaName] = [];
-											}
-										}
-									}
-									
-									
-									currentThemeJsonFile.set( modifiedData );
-								}}
-							>
-								Add one of these
-							</button>
-						);
-
-						return renderedValue;
-					})() }
-					Add Anther!
-				</div>
-			)
-		} else {
-			// Loop through each saved property in the theme.json file.
-			for( const objectNumber in currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName] ) {
-				if ( propertySchema.items.type === 'object' ) {
-					rendered.push(
-						<div className="flex sm:gap-4  py-6">
-						{ (() => {
-							const renderedValue = [];
-							const previouslySavedValue = currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName][objectNumber];
-							// Loop through each schema property in this property.
-							for( const theSchemaName in propertySchema.items.properties ) {
-								if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
-									renderedValue.push(
-										<div>
-											<h2>{theSchemaName}</h2>
-											<p>{propertySchema.items.properties[theSchemaName].description}</p>
-											<ValueSetter
-												name={ theSchemaName }
-												value={ previouslySavedValue[theSchemaName] }
-												onChange={ (newValue) => {
-													const modifiedData = { ...currentThemeJsonFile.data };
-													if ( propertyName ) {
-														modifiedData.content['settings'][topLevelSettingName][propertyName][objectNumber][theSchemaName] = newValue;
-													} else {
-														modifiedData.content['settings'][topLevelSettingName][objectNumber][theSchemaName] = newValue;
-													}
-													currentThemeJsonFile.set( modifiedData );
-												}}
-											/>
-										</div>
-									);
-								}
-								// This handles cases like "duotone", in which an array of options contains it's own array of options.
-								if ( propertySchema.items.properties[theSchemaName].type === 'array' ) {
-									renderedValue.push(
-										<RenderProperties
-											isVisible={true}
-											schemaSettingData={propertySchema.items.properties[theSchemaName].items}
-											settingName={theSchemaName}
-											settingData={previouslySavedValue[theSchemaName]}
-											topLevelSettingName={topLevelSettingName}
-										/>
-									);
-									renderedValue.push( 'Add Anther suboption!' );
-								}
-							}
-							return renderedValue;
-						})() }
-						Add Anther!
 						</div>
 					)
 				}
