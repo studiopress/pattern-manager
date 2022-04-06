@@ -4,8 +4,8 @@
  * Fse Studio
  */
 
-import '../../css/src/index.scss';
-import '../../css/src/tailwind.css';
+import '../../../../css/src/index.scss';
+import '../../../../css/src/tailwind.css';
 
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { Snackbar } from '@wordpress/components';
