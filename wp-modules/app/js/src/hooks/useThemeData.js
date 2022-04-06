@@ -133,9 +133,6 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 						resolve( response );
 					}
 				} )
-				.catch( ( error ) => {
-					console.log('setThemeData error is ', error);
-				})
 		} );
 	}
 

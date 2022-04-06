@@ -9,7 +9,7 @@ const getThemeEndpoint = 'https://example.com/get-theme'
 const saveThemeEndpoint = 'https://example.com/save-theme'
 const getThemeJsonFileEndpoint = 'https://example.com/get-themejson-file'
 
-const themeSavedMessage = 'Theme saved to your /themes/ folder';
+const themeSavedMessage = 'Theme successfully saved to disk';
 
 jest.mock( '../../../globals', () => {
 	return { fsestudio: {
@@ -279,7 +279,7 @@ global.fetch = jest.fn( ( request ) => {
 			if ( request.toString().includes( getThemeEndpoint ) ) {
 				return Promise.resolve( mockThemeJson );
 			}
-			if ( request.path.includes( saveThemeEndpoint ) ) {
+			if ( request.includes( saveThemeEndpoint ) ) {
 				return Promise.resolve( themeSavedMessage );
 			}
 			if ( request.path.includes( getThemeJsonFileEndpoint ) ) {
@@ -320,7 +320,5 @@ test( 'FseStudioApp', async () => {
 		);
 	} );
 
-	expect( 
-		await screen.findByText( themeSavedMessage )
-	).toBeInTheDocument();
+	await screen.findAllByText( themeSavedMessage );
 } );
