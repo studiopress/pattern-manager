@@ -18,9 +18,9 @@ import FseStudioApp from './components/FseStudioApp';
  *  themeJsonFiles: ReturnType<import('./hooks/useThemeJsonFiles').default>,
  *  currentThemeJsonFileId: ReturnType<import('./hooks/useCurrentId').default>,
  *  currentThemeJsonFile: ReturnType<import('./hooks/useThemeJsonFile').default>,
- *  siteUrl: InitialFseStudio['siteUrl'],
- *  apiEndpoints: InitialFseStudio['apiEndpoints'],
- *  blockEditorSettings: InitialFseStudio['blockEditorSettings']
+ *  siteUrl: import('./globals').InitialFseStudio['siteUrl'],
+ *  apiEndpoints: import('./globals').InitialFseStudio['apiEndpoints'],
+ *  blockEditorSettings: import('./globals').InitialFseStudio['blockEditorSettings']
  * }} InitialContext
  */
 

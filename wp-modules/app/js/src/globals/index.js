@@ -26,5 +26,5 @@
  * }} InitialFseStudio
  */
 
-// @ts-ignore The global window.fsestudio exists.
-export const fsestudio = /** @type {InitialFseStudio} */ ( window.fsestudio );
+/** @type {InitialFseStudio} */
+export const fsestudio = window.fsestudio;

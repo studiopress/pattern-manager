@@ -1,7 +1,7 @@
 // @ts-check
 
 import '@testing-library/jest-dom/extend-expect';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import FseStudioApp from '../';
 
@@ -67,8 +67,11 @@ test( 'FseStudioApp', async () => {
 	).not.toBeInTheDocument();
 
 	user.click(
-		await screen.findByRole( 'button', { name: /create a new theme/i } )
+		await screen.findByRole( 'button', {
+			name: /create a new theme/i,
+		} )
 	);
+
 	user.click(
 		await screen.findByRole( 'button', {
 			name: /save theme settings/i,
