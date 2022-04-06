@@ -7,7 +7,7 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
@@ -30,6 +30,7 @@ import FseStudioSnackbarContext from '../../contexts/FseStudioSnackbarContext';
 // Hooks
 import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
+import useMounted from '../../hooks/useMounted';
 import useThemeData from '../../hooks/useThemeData';
 import useThemeJsonFiles from '../../hooks/useThemeJsonFiles';
 import useThemeJsonFile from '../../hooks/useThemeJsonFile';
@@ -115,14 +116,7 @@ function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme } = useStudioContext();
 	const snackBar = useSnackbarContext();
-	const mountedRef = useRef( false );
-
-	useEffect( () => {
-		mountedRef.current = true;
-		return () => {
-			mountedRef.current = false;
-		};
-	} );
+	const { isMounted } = useMounted();
 
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
@@ -240,7 +234,7 @@ function FseStudio() {
 											disabled={ ! item.available }
 											key={ item.name }
 											onClick={ () => {
-												if ( mountedRef.current ) {
+												if ( isMounted() ) {
 													currentView.set(
 														item.slug
 													);

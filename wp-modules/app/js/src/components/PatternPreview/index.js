@@ -1,8 +1,9 @@
 // @ts-check
 
 import * as React from 'react';
-import { useState, useEffect, createPortal, useRef } from '@wordpress/element';
+import { useState, useEffect, createPortal } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import useMounted from '../../hooks/useMounted';
 
 /**
  * @param {{
@@ -56,7 +57,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
 		0
 	);
-	const isMountedRef = useRef( false );
+	const { isMounted } = useMounted();
 
 	// @ts-ignore
 	const container = iframeRef?.contentWindow?.document?.body;
@@ -74,19 +75,11 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 		if ( iframeRef ) {
 			// 100ms after any change, check the height of the iframe and make its container match its height.
 			setTimeout( () => {
-				if ( isMountedRef.current ) {
+				if ( isMounted() ) {
 					setIframeInnerContentHeight( container.scrollHeight );
 				}
 			}, 500 );
 		}
-	} );
-
-	useEffect( () => {
-		isMountedRef.current = true;
-
-		return () => {
-			isMountedRef.current = false;
-		};
 	} );
 
 	return (
