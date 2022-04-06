@@ -66,16 +66,14 @@ test( 'FseStudioApp', async () => {
 		} )
 	).not.toBeInTheDocument();
 
-	await act( async () => {
-		user.click(
-			await screen.findByRole( 'button', { name: /create a new theme/i } )
-		);
-		user.click(
-			await screen.findByRole( 'button', {
-				name: /save theme settings/i,
-			} )
-		);
-	} );
+	user.click(
+		await screen.findByRole( 'button', { name: /create a new theme/i } )
+	);
+	user.click(
+		await screen.findByRole( 'button', {
+			name: /save theme settings/i,
+		} )
+	);
 
 	await screen.findAllByText( themeSavedMessage );
 } );
