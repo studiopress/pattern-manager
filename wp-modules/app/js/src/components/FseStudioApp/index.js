@@ -57,9 +57,9 @@ import classNames from '../../utils/classNames';
  *  themeJsonFiles: ReturnType<import('../../hooks/useThemeJsonFiles').default>,
  *  currentThemeJsonFileId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentThemeJsonFile: ReturnType<import('../../hooks/useThemeJsonFile').default>,
- *  siteUrl: import('../../globals').InitialFseStudio['siteUrl'],
- *  apiEndpoints: import('../../globals').InitialFseStudio['apiEndpoints'],
- *  blockEditorSettings: import('../../globals').InitialFseStudio['blockEditorSettings']
+ *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
+ *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
+ *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings
  * }} InitialContext
  */
 
