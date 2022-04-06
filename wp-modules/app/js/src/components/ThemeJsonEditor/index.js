@@ -192,7 +192,7 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 					) ) }
 				</ul>
 				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-					<SettingsView isVisible={ currentView === 'settings' } mode="settings" />
+					<SettingsView isVisible={ currentView === 'settings' } />
 					{ maybeRenderStylesView() }
 					{ maybeRenderCustomTemplatesView() }
 					{ maybeRenderTemplatePartsView() }
@@ -228,23 +228,15 @@ function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
 	);
 }
 
-function SettingsView({ isVisible, mode='settings' }) {
-	const { currentThemeJsonFile } = useStudioContext();
-	const [ currentView, setCurrentView ] = useState( 'color' );
+function getSettingsFromThemeJsonSchema() {
+
+	const listOfSettingsInSchema = {};
 	
-	// Use the themeJson schema and currentThemeJsonFile to generate the settings and values.
-	const rendered = [];
-	const tabs = [];
-	let propertiesCompleteName = 'settings';
-	if ( mode === 'settings' ) {
-		propertiesCompleteName = 'settingsPropertiesComplete' ;
-	}
-	
-	const propertiesComplete = fsestudio.schemas.themejson.definitions[propertiesCompleteName];
-	
+	const propertiesComplete = fsestudio.schemas.themejson.definitions['settingsPropertiesComplete'];
+
 	for ( const setting in fsestudio.schemas.themejson.definitions ) {
 		// Skip schemas that are not settings.
-		if ( setting === propertiesCompleteName || ! setting.startsWith( mode + 'Properties' ) ) { continue }
+		if ( setting === 'settingsPropertiesComplete' || ! setting.startsWith( 'settingsProperties' ) ) { continue }
 		
 		// Get the data for this setting from the schema.
 		const settingData = fsestudio.schemas.themejson.definitions[setting];
@@ -256,27 +248,58 @@ function SettingsView({ isVisible, mode='settings' }) {
 			
 			// FSE Studio does not yet handle the "blocks"
 			if ( ! ( propertyName in propertiesComplete.allOf[1].properties ) ) { continue }
-			
-			console.log( propertyName );
-			rendered.push(
-				<Setting
-					isVisible={currentView === propertyName}
-					schemaSettingData={settingData.properties[propertyName]}
-					settingName={propertyName}
-					settingData={currentThemeJsonFile.data.content[mode][propertyName]}
-					topLevelSettingName={propertyName}
-				/>
-			);
 
-			tabs.push({
-				name: propertyName,
-				slug: propertyName,
-			});
+			listOfSettingsInSchema[propertyName] = settingData;
 		}
+	}
+	
+	return listOfSettingsInSchema;
+}
+
+function SettingsView({ isVisible }) {
+	const { currentThemeJsonFile } = useStudioContext();
+	const [ currentView, setCurrentView ] = useState( 'color' );
+	
+	// Use the themeJson schema and currentThemeJsonFile to generate the settings and values.
+	const rendered = [];
+	const tabs = [];
+	
+	const settings = getSettingsFromThemeJsonSchema();
+	
+	for ( const setting in settings ) {
+		for ( const propertyName in settings[setting].properties ) {
+			if ( settings[setting].properties[propertyName].type === 'object' ) {
+				rendered.push(
+					<RenderProperty
+						key={propertyName}
+						isVisible={ currentView === setting }
+						propertySchema={settings[setting].properties[propertyName]}
+						propertyName={propertyName}
+						schemaPosition={propertyName }
+						topLevelSettingName={setting}
+					/>
+				)
+			} else {
+				rendered.push(
+					<RenderProperties
+						key={propertyName}
+						isVisible={ currentView === setting }
+						properties={settings[setting].properties}
+						schemaPosition={setting}
+						topLevelSettingName={setting}
+					/>
+				)
+			}
+		}
+
+		tabs.push({
+			name: setting,
+			slug: setting,
+		});
 	}
 
 	return <div hidden={!isVisible}>
-		<p>{ fsestudio.schemas.themejson.properties[mode].description }</p>
+		<p>{ fsestudio.schemas.themejson.properties['settings'].description }</p>
 		<div className="flex flex-row gap-14 mt-4">
 			<ul className="w-72">
 				{ tabs.map( ( item ) => (
@@ -303,64 +326,241 @@ function SettingsView({ isVisible, mode='settings' }) {
 	</div>
 }
 
-function Setting( { isVisible, schemaSettingData, settingName, settingData, topLevelSettingName } ) {
+function RenderProperties( { isVisible, properties, schemaPosition, topLevelSettingName } ) {
 	const renderedProperties = [];
 	
-	if ( schemaSettingData.type === 'object' ) {
-		for( const propertyName in schemaSettingData.properties ) {
-			renderedProperties.push(
-				<div key={propertyName} className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
-				<label
-					htmlFor={propertyName}
-					className="block text-sm font-medium text-gray-700 sm:col-span-1"
-				>
-					<h2>{ propertyName }</h2>
-					<p>{schemaSettingData.properties[propertyName].description}</p>
-				</label>
-				<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
-					<SettingProperty
-						propertySchema={schemaSettingData.properties[propertyName]}
-						propertyName={propertyName}
-						settingValue={settingData?.hasOwnProperty( propertyName ) ? settingData[propertyName] : null}
-						topLevelSettingName={topLevelSettingName}
-						mode="settings"
-					/>
-				</div>
-			</div>
-			)
-		}
-	} else {
+	for( const propertyName in properties ) {
+		
+		
+			console.log( 'Schema:', schemaPosition + ',' + propertyName );
+		
+	
 		renderedProperties.push(
-			<div key={settingName} className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
-				<label
-					htmlFor={settingName}
-					className="block text-sm font-medium text-gray-700 sm:col-span-1"
-				>
-					<h2>{ settingName }</h2>
-					<p>{schemaSettingData.description}</p>
-				</label>
-				<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
-					<SettingProperty
-						propertySchema={schemaSettingData}
-						propertyName={settingName}
-						settingValue={settingData ? settingData : null}
-						topLevelSettingName={topLevelSettingName}
-						mode="settings"
-					/>
+			<div key={propertyName} hidden={!isVisible}>
+				<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
+					<label
+						htmlFor={propertyName}
+						className="block text-sm font-medium text-gray-700 sm:col-span-1"
+					>
+						<h2>{ propertyName }</h2>
+						<p>{properties[propertyName].description}</p>
+					</label>
+					<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
+						<RenderProperty
+							isVisible={isVisible}
+							propertySchema={properties[propertyName]}
+							propertyName={propertyName}
+							schemaPosition={schemaPosition + ',' + propertyName }
+							topLevelSettingName={topLevelSettingName}
+						/>
+					</div>
 				</div>
 			</div>
 		)
 	}
-
-	return <div key={settingName} hidden={ ! isVisible } className="divide-y divide-gray-200">
-		<p>{schemaSettingData.description}</p>
-		{ renderedProperties }
-	</div>
-
+	
+	return renderedProperties;
 }
 
-function SettingProperty( {propertySchema, propertyName, settingValue, topLevelSettingName, mode = "settings" } ) {
+
+function RenderProperty( {isVisible, propertySchema, propertyName, schemaPosition, topLevelSettingName } ) {
 	const { currentThemeJsonFile } = useStudioContext();
+	const currentValue = getCurrentValue( currentThemeJsonFile.data, schemaPosition, propertyName, propertySchema.type );
+
+	function updateCurrentValue( data, selectorString, value ) {
+		const modifiedData = { ...data };
+		
+		// Split the selector string at commas
+		const keys = selectorString.split(',');
+	
+		const numberOfKeys = keys.length;
+	
+		//for (let count = 0; count < numberOfKeys; count++) {
+			if ( numberOfKeys === 1 ) {
+				const keyOne = [keys[0]];
+				if ( value ) {
+					modifiedData.content['settings'][keyOne] = value;
+				} else {
+					delete modifiedData.content['settings'][keyOne];
+				}
+			}
+			if ( numberOfKeys === 2 ) {
+				const keyOne = [keys[0]];
+				const keyTwo = [keys[1]];
+
+				// If keyone already exists, and keytwo already exists, just change the value.
+				if( modifiedData.content['settings'][keyOne] && modifiedData.content['settings'][keyOne][keyTwo] ) {
+					if ( value ) {
+						modifiedData.content['settings'][keyOne][keyTwo] = value;
+					} else {
+						delete modifiedData.content['settings'][keyOne][keyTwo];
+						// If this is the last value in keyOne, delete the keyOne as well.
+						if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
+							delete modifiedData.content['settings'][keyOne];
+						}
+					}
+				} else {
+					if ( value ) {
+						// If keyone does not exist yet, set it first, then set keytwo after.
+						if ( ! modifiedData.content['settings'][keyOne] ) {
+							modifiedData.content['settings'][keyOne] = {};
+						}
+						modifiedData.content['settings'][keyOne][keyTwo] = value;
+						if ( propertyName === 'radius' ) {
+							console.log( selectorString, keys, numberOfKeys, modifiedData.content['settings'][keyOne][keyTwo], value );
+						}
+					}
+				}
+			}
+			if ( numberOfKeys === 3 ) {
+				const keyOne = [keys[0]];
+				const keyTwo = [keys[1]];
+				const keyThree = [keys[2]];
+
+				// If keys aready exists, just change the value.
+				if (
+					modifiedData.content['settings'][keyOne] &&
+					modifiedData.content['settings'][keyOne][keyTwo] &&
+					modifiedData.content['settings'][keyOne][keyThree]
+				) {
+					if ( value ) {
+						modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
+					} else {
+						delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
+						// If this is the last value in keyTwo, delete the keyTwo as well.
+						if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
+							delete modifiedData.content['settings'][keyOne][keyTwo];
+						}
+						// If this is the last value in keyOne, delete the keyOne as well.
+						if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
+							delete modifiedData.content['settings'][keyOne];
+						}
+					}
+				} else {
+					if ( value ) {
+						// If keyone does not exist yet, set it first, then set keytwo after.
+						if ( ! modifiedData.content['settings'][keyOne] ) {
+							modifiedData.content['settings'][keyOne] = {};
+						}
+						if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
+							modifiedData.content['settings'][keyOne][keyTwo] = {};
+						}
+						modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
+					}
+				}
+			}
+			if ( numberOfKeys === 4 ) {
+				const keyOne = [keys[0]];
+				const keyTwo = [keys[1]];
+				const keyThree = [keys[2]];
+				const keyFour = [keys[3]];
+
+				// If keys aready exists, just change the value.
+				if (
+					modifiedData.content['settings'][keyOne] &&
+					modifiedData.content['settings'][keyOne][keyTwo] &&
+					modifiedData.content['settings'][keyOne][keyThree] &&
+					modifiedData.content['settings'][keyOne][keyFour]
+				) {
+					if ( value ) {
+						modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
+					} else {
+						delete modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour];
+						// If this is the last value in keyThree, delete the keyThree as well.
+						if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo][keyThree]).length === 0 ) {
+							delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
+						}
+						// If this is the last value in keyTwo, delete the keyTwo as well.
+						if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
+							delete modifiedData.content['settings'][keyOne][keyTwo];
+						}
+						// If this is the last value in keyOne, delete the keyOne as well.
+						if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
+							delete modifiedData.content['settings'][keyOne];
+						}
+					}
+				} else {
+					if ( value ) {
+						// If keyone does not exist yet, set it first, then set keytwo after.
+						if ( ! modifiedData.content['settings'][keyOne] ) {
+							modifiedData.content['settings'][keyOne] = {};
+						}
+						if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
+							modifiedData.content['settings'][keyOne][keyTwo] = {};
+						}
+						if ( ! modifiedData.content['settings'][keyOne][keyTwo][keyThree] ) {
+							modifiedData.content['settings'][keyOne][keyTwo][keyThree] = {};
+						}
+						modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
+					}
+				}
+			}
+		//}
+		
+		currentThemeJsonFile.set( modifiedData );
+		
+	}
+	
+	function getCurrentValue( data, selectorString, propertyName, type ) {
+		// Split the selector string at commas
+		const keys = selectorString.split(',');
+	
+		const numberOfKeys = keys.length;
+		
+		for (let count = 0; count < numberOfKeys; count++) {
+			if ( numberOfKeys === 1 ) {
+				const keyOne = [keys[0]];
+				if (data?.content?.settings.hasOwnProperty(keyOne)) {
+					return data.content.settings[keyOne];
+				}
+			}
+			if ( numberOfKeys === 2 ) {
+				const keyOne = [keys[0]];
+				const keyTwo = [keys[1]];
+
+				if (data?.content?.settings.hasOwnProperty(keyOne)) {
+					if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
+						return data?.content?.settings[keyOne][keyTwo]
+					}
+				}
+			}
+			if ( numberOfKeys === 3 ) {
+				const keyOne = [keys[0]];
+				const keyTwo = [keys[1]];
+				const keyThree = [keys[2]];
+
+				if (data?.content?.settings.hasOwnProperty(keyOne)) {
+					if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
+						if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
+							return data?.content?.settings[keyOne][keyTwo][keyThree]
+						}
+					}
+				}
+			}
+			if ( numberOfKeys === 4 ) {
+				const keyOne = [keys[0]];
+				const keyTwo = [keys[1]];
+				const keyThree = [keys[2]];
+				const keyFour = [keys[3]];
+
+				if (data?.content?.settings.hasOwnProperty(keyOne)) {
+					if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
+						if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
+							if ( data?.content?.settings[keyOne][keyTwo][keyThree].hasOwnProperty(keyFour) ) {
+								return data?.content?.settings[keyOne][keyTwo][keyThree][keyFour]
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if ( type === 'boolean' ) {
+			return false;
+		}
+		
+		return null;
+	}
 
 	if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
 		return <input
@@ -368,28 +568,9 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 			type="checkbox"
 			id={propertyName}
 			name={propertyName}
-			checked={settingValue ? true : false}
-			// @ts-ignore The declaration file is wrong.
+			checked={ currentValue }
 			onChange={( event ) => {
-				const modifiedData = { ...currentThemeJsonFile.data };
-				if ( propertyName ) {
-					console.log( modifiedData.content[mode] );
-					if( modifiedData.content[mode][topLevelSettingName] && modifiedData.content[mode][topLevelSettingName][propertyName] ) {
-						modifiedData.content[mode][topLevelSettingName][propertyName] = modifiedData.content[mode][topLevelSettingName][propertyName] ? false : true;
-					} else {
-						if ( ! modifiedData.content[mode][topLevelSettingName] ) {
-							modifiedData.content[mode][topLevelSettingName] = {};
-						}
-						modifiedData.content[mode][topLevelSettingName][propertyName] = true;
-					}
-				} else {
-					if ( modifiedData.content[mode][topLevelSettingName] ) {
-						modifiedData.content[mode][topLevelSettingName] = modifiedData.content[mode][topLevelSettingName] ? false : true;
-					} else {
-						modifiedData.content[mode][topLevelSettingName] = true;
-					}
-				}
-				currentThemeJsonFile.set( modifiedData );
+				updateCurrentValue( currentThemeJsonFile.data, schemaPosition, currentValue ? false : true, propertySchema.type );
 			}}
 		/>
 	}
@@ -399,23 +580,72 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 		
 		return <ValueSetter
 			name={ propertyName }
-			value={
-				settingValue
-			}
+			value={ currentValue }
 			onChange={ (newValue) => {
-				const modifiedData = { ...currentThemeJsonFile.data };
-				if ( propertyName ) {
-					modifiedData.content[mode][topLevelSettingName][propertyName] = newValue;
-				} else {
-					modifiedData.content[mode][topLevelSettingName] = newValue;
-				}
-				currentThemeJsonFile.set( modifiedData );
+				updateCurrentValue( currentThemeJsonFile.data, schemaPosition, newValue );
 			}}
 		/>
 	}
+	if ( propertySchema.type === 'object' ) {
+		return <RenderProperties
+			isVisible={isVisible}
+			properties={propertySchema.properties}
+			schemaPosition={schemaPosition}
+			topLevelSettingName={topLevelSettingName}
+		/>
+	}
 	if ( propertySchema.type === 'array' ) {
-		
+
 		const rendered = [];
+
+		// If this setting does not exist in the current theme.json file.
+		if ( ! currentValue ) {
+			return 'Nothing yet!';
+		} else {
+			// Loop through each saved item in the theme.json file for this array.
+			for ( const value in currentValue ) {
+				// If these array items are objects (an array of objects)
+				if ( propertySchema.items.type === 'object' ) {
+					// Render the properties in the schema, using the current loop's values for the properties
+					rendered.push(
+						<RenderProperties
+							key={value}
+							isVisible={isVisible}
+							properties={propertySchema.items.properties}
+							schemaPosition={schemaPosition + ',' + value}
+							topLevelSettingName={topLevelSettingName}
+						/>
+					)
+				} else {
+					rendered.push(
+						<div key={value} hidden={!isVisible}>
+							<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
+								<label
+									htmlFor={propertyName}
+									className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								>
+									<h2>{ propertyName }</h2>
+									<p>{propertySchema.items.description}</p>
+								</label>
+								<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
+									{(() => {
+										console.log( schemaPosition + ',' + value  );
+									})()}
+									<RenderProperty
+										isVisible={isVisible}
+										propertySchema={propertySchema.items}
+										propertyName={propertyName}
+										schemaPosition={schemaPosition + ',' + value }
+										topLevelSettingName={topLevelSettingName}
+									/>
+								</div>
+							</div>
+						</div>
+					)
+				}
+			}
+		}
+		return rendered;
 		
 		// If this setting does not exist in the current theme.json file.
 		if ( ! currentThemeJsonFile.data.content.settings[topLevelSettingName][propertyName] ) {
@@ -424,46 +654,39 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 					{ (() => {
 						const renderedValue = [];
 						// Loop through each schema property in this property.
-						for( const theSchemaName in propertySchema.items.properties ) {
-							if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
-								renderedValue.push(
-									<button
-										onClick={ () => {
-											const modifiedData = { ...currentThemeJsonFile.data };
+						renderedValue.push(
+							<button
+								onClick={ () => {
+									const modifiedData = { ...currentThemeJsonFile.data };
+									
+									// Set up empty values for each of the properties.
+									for( const theSchemaName in propertySchema.items.properties ) {
+										if ( propertySchema.items.properties[theSchemaName].type === 'string' ) {
 											if ( propertyName ) {
-												modifiedData.content[mode][topLevelSettingName][propertyName] = [{}];
-												modifiedData.content[mode][topLevelSettingName][propertyName][0][theSchemaName] = '';
+												modifiedData.content['settings'][topLevelSettingName][propertyName] = [{}];
+												modifiedData.content['settings'][topLevelSettingName][propertyName][0][theSchemaName] = '';
 											} else {
-												modifiedData.content[mode][topLevelSettingName][0][theSchemaName] = '';
+												modifiedData.content['settings'][topLevelSettingName][0][theSchemaName] = '';
 											}
-											currentThemeJsonFile.set( modifiedData );
-										}}
-									>
-										Add one of these
-									</button>
-								);
-							}
-							// This handles cases like "duotone", in which an array of options contains it's own array of options.
-							if ( propertySchema.items.properties[theSchemaName].type === 'array' ) {
-								//console.log( propertySchema.items.properties[theSchemaName] );
-								
-								console.log( propertySchema.items.properties[theSchemaName].items );
-								
-								renderedValue.push(
-									<Setting
-										isVisible={true}
-										schemaSettingData={propertySchema.items.properties[theSchemaName].items}
-										settingName={theSchemaName}
-										settingData={null}
-										topLevelSettingName={topLevelSettingName}
-										mode="settings"
-									/>
-								);
-								
-								renderedValue.push( 'Add Anther suboption!' );
-								
-							}
-						}
+										}
+										if ( propertySchema.items.properties[theSchemaName].type === 'array' ) {
+											if ( propertyName ) {
+												modifiedData.content['settings'][topLevelSettingName][propertyName] = [{}];
+												modifiedData.content['settings'][topLevelSettingName][propertyName][0][theSchemaName] = [];
+											} else {
+												modifiedData.content['settings'][topLevelSettingName][0][theSchemaName] = [];
+											}
+										}
+									}
+									
+									
+									currentThemeJsonFile.set( modifiedData );
+								}}
+							>
+								Add one of these
+							</button>
+						);
+
 						return renderedValue;
 					})() }
 					Add Anther!
@@ -491,9 +714,9 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 												onChange={ (newValue) => {
 													const modifiedData = { ...currentThemeJsonFile.data };
 													if ( propertyName ) {
-														modifiedData.content[mode][topLevelSettingName][propertyName][objectNumber][theSchemaName] = newValue;
+														modifiedData.content['settings'][topLevelSettingName][propertyName][objectNumber][theSchemaName] = newValue;
 													} else {
-														modifiedData.content[mode][topLevelSettingName][objectNumber][theSchemaName] = newValue;
+														modifiedData.content['settings'][topLevelSettingName][objectNumber][theSchemaName] = newValue;
 													}
 													currentThemeJsonFile.set( modifiedData );
 												}}
@@ -504,13 +727,12 @@ function SettingProperty( {propertySchema, propertyName, settingValue, topLevelS
 								// This handles cases like "duotone", in which an array of options contains it's own array of options.
 								if ( propertySchema.items.properties[theSchemaName].type === 'array' ) {
 									renderedValue.push(
-										<Setting
+										<RenderProperties
 											isVisible={true}
 											schemaSettingData={propertySchema.items.properties[theSchemaName].items}
 											settingName={theSchemaName}
 											settingData={previouslySavedValue[theSchemaName]}
 											topLevelSettingName={topLevelSettingName}
-											mode="settings"
 										/>
 									);
 									renderedValue.push( 'Add Anther suboption!' );
@@ -554,7 +776,7 @@ function ValueSetter({name, value, onChange}) {
 		</div>
 	}
 	
-	return <input valueSetter={name} type="text" value={value} onChange={(event) => {
+	return <input name={name} type="text" value={value} onChange={(event) => {
 		onChange(event.target.value);
 	}} />
 }
