@@ -49,34 +49,6 @@ import classNames from '../../utils/classNames';
 
 /**
  * @typedef {{
- *  apiNonce: string,
- *  apiEndpoints: {
- *   getPatternEndpoint: string,
- *   getThemeEndpoint: string,
- *   getThemeJsonFileEndpoint: string,
- *   savePatternEndpoint: string,
- *   saveThemeEndpoint: string,
- *   saveThemeJsonFileEndpoint:	string,
- *   exportThemeEndpoint:	string,
- *  },
- *  blockEditorSettings: Partial<{
- *   '__unstableResolvedAssets': {styles: string},
- *   styles: Record<string, unknown>[]
- *  }>,
- *  initialTheme: string,
- *  patterns: Record<string, import('../PatternPicker').Pattern>,
- *  siteUrl: string,
- *  themeJsonFiles: Record<string, {
- *   content: string,
- *   name: string,
- *   patternPreviewParts?: import('../../hooks/useThemeJsonFile').ThemeData | null
- *  }>,
- *  themes: Record<string, import('../../hooks/useThemeData').Theme>
- * }} InitialFseStudio
- */
-
-/**
- * @typedef {{
  *  currentView: ReturnType<import('../../hooks/useCurrentView').default>,
  *  patterns: ReturnType<import('../../hooks/usePatterns').default>,
  *  themes: ReturnType<import('../../hooks/useThemes').default>,
@@ -85,9 +57,9 @@ import classNames from '../../utils/classNames';
  *  themeJsonFiles: ReturnType<import('../../hooks/useThemeJsonFiles').default>,
  *  currentThemeJsonFileId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentThemeJsonFile: ReturnType<import('../../hooks/useThemeJsonFile').default>,
- *  siteUrl: InitialFseStudio['siteUrl'],
- *  apiEndpoints: InitialFseStudio['apiEndpoints'],
- *  blockEditorSettings: InitialFseStudio['blockEditorSettings']
+ *  siteUrl: import('../../globals').InitialFseStudio['siteUrl'],
+ *  apiEndpoints: import('../../globals').InitialFseStudio['apiEndpoints'],
+ *  blockEditorSettings: import('../../globals').InitialFseStudio['blockEditorSettings']
  * }} InitialContext
  */
 
