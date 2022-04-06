@@ -132,7 +132,7 @@ export default function useThemeData( themeId, themes, currentThemeJsonFile ) {
 						setThemeData( response );
 						resolve( response );
 					}
-				} )
+				} );
 		} );
 	}
 

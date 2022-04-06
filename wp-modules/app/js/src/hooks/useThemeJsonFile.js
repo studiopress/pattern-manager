@@ -58,7 +58,7 @@ export default function useThemeJsonFile( id ) {
 					setFetchInProgress( false );
 					setThemeJsonData( response );
 					resolve( response );
-				} )
+				} );
 		} );
 	}
 

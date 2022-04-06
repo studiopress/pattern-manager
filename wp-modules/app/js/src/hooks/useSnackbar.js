@@ -12,8 +12,8 @@ export default function useSnackbar() {
 		mountedRef.current = true;
 		return () => {
 			mountedRef.current = false;
-		}
-	})
+		};
+	} );
 
 	useEffect( () => {
 		if ( ! snackBarValue ) {

@@ -149,8 +149,8 @@ function FseStudio() {
 		mountedRef.current = true;
 		return () => {
 			mountedRef.current = false;
-		}
-	})
+		};
+	} );
 
 	const [ sidebarOpen, setSidebarOpen ] = useState(
 		! JSON.parse( window.localStorage.getItem( 'fseStudioSidebarClosed' ) )
@@ -269,7 +269,9 @@ function FseStudio() {
 											key={ item.name }
 											onClick={ () => {
 												if ( mountedRef.current ) {
-													currentView.set( item.slug );
+													currentView.set(
+														item.slug
+													);
 												}
 											} }
 											className={ classNames(
