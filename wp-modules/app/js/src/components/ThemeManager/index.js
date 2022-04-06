@@ -831,7 +831,7 @@ function ThemeTemplateFiles( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="divide-y divide-gray-200">
-				{ Object.keys( currentTheme.data?.template_files ).map(
+				{ Object.keys( currentTheme.data?.template_files ?? {} ).map(
 					( templateName ) => {
 						return (
 							<ThemeTemplatePicker
