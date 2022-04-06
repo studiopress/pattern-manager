@@ -92,7 +92,7 @@ export default function PatternPicker( {
 											themeJsonData={ themeJsonData }
 											scale={ 0.3 }
 											onLoad={ () => {
-												if ( isMountedRef.current ) {
+												if ( isMounted() ) {
 													setNumberToRender(
 														index + 1
 													);
