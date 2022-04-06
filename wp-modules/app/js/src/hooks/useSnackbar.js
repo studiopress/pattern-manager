@@ -5,7 +5,8 @@ import { useState, useEffect } from '@wordpress/element';
 import useMounted from './useMounted';
 
 export default function useSnackbar() {
-	const [ snackBarValue, setSnackbarValue ] = useState( '' );
+	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
+	const [ snackBarValue, setSnackbarValue ] = useState();
 	const { isMounted } = useMounted();
 
 	useEffect( () => {
