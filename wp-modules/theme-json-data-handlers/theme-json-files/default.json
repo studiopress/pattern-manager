@@ -86,14 +86,7 @@
                     "slug": "white",
                     "color": "#fff"
                 }
-            ],
-            "duotone": [
-                {
-                    "name": "test",
-                    "slug": "test"
-                }
-            ],
-            "colors": "#e71e1e"
+            ]
         },
         "custom": {
             "fontWeight": {
