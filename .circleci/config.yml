@@ -53,7 +53,7 @@ jobs:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: npm run test:phpunit
-  create-zip:
+  zip:
     docker:
       - image: cimg/php:7.3-node
     steps:
@@ -77,4 +77,4 @@ workflows:
       - lint
       - test-js
       - phpunit
-      - create-zip
+      - zip
