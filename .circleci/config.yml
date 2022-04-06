@@ -59,11 +59,12 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - node/install-packages:
+          app-dir: *PLUGIN_PATH
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
           command: |
-            npm run installation
             npm run build
             npm run zip
             mkdir /tmp/artifacts
