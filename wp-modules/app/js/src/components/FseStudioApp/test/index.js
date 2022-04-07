@@ -84,7 +84,7 @@ test( 'FseStudioApp', async () => {
 
 	// The Add Patterns tab should now be present.
 	expect(
-		screen.queryByRole( 'button', {
+		screen.getByRole( 'button', {
 			name: /add patterns/i,
 		} )
 	).toBeInTheDocument();
