@@ -82,10 +82,10 @@ test( 'FseStudioApp', async () => {
 
 	screen.getAllByText( themeSavedMessage );
 
-	// The Pattern Editor tab should now be present.
+	// The Add Patterns tab should now be present.
 	expect(
 		screen.queryByRole( 'button', {
-			name: /pattern editor/i,
+			name: /add patterns/i,
 		} )
 	).toBeInTheDocument();
 } );
