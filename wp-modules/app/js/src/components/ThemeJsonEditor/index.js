@@ -15,6 +15,7 @@ import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
 import { fsestudio } from '../../';
 
 import GradientEditor from './GradientEditor';
+import PaletteEditor from './PaletteEditor';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
@@ -414,6 +415,13 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					if ( propertyName === 'gradients' ) {
 						rendered.push(
 							<GradientEditor
+								properties={propertySchema.items.properties}
+								schemaPosition={schemaPosition + '.' + arrIndex}
+							/>
+						);
+					} else if ( propertyName === 'palette' ) {
+						rendered.push(
+							<PaletteEditor
 								properties={propertySchema.items.properties}
 								schemaPosition={schemaPosition + '.' + arrIndex}
 							/>
