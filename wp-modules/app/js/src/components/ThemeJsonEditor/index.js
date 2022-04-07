@@ -440,11 +440,24 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					}
 
 					rendered.push(
-						<button onClick={() => {
-							currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
-						}}>
-							Add Another
-						</button>
+						<>
+							<button onClick={() => {
+								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+							}}>
+								Add Another
+							</button>
+							<button
+								className="text-red-500 hover:text-red-700"
+								onClick={(e) => {
+									e.preventDefault();
+									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
+										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex );
+									}
+								}}
+							>
+								{ __( 'Delete', 'fse-studio' ) }
+							</button>
+						</>
 					)
 				} else {
 					rendered.push(
