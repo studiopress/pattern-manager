@@ -1,7 +1,7 @@
 // @ts-check
 
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import FseStudioApp from '../';
 
@@ -52,13 +52,6 @@ test( 'FseStudioApp', async () => {
 	// When there is no theme saved, you shouldn't be able to choose a theme.
 	expect( screen.queryByText( /choose a theme/i ) ).not.toBeInTheDocument();
 
-	// The Theme Manager tab should be present.
-	expect(
-		screen.getByRole( 'button', {
-			name: /theme manager/i,
-		} )
-	).toBeInTheDocument();
-
 	// The Pattern Editor tab shouldn't be present, as there's no theme saved.
 	expect(
 		screen.queryByRole( 'button', {
@@ -66,19 +59,28 @@ test( 'FseStudioApp', async () => {
 		} )
 	).not.toBeInTheDocument();
 
-	user.click(
-		await screen.findByRole( 'button', {
-			name: /create a new theme/i,
-		} )
-	);
+	await act( async () => {
+		user.click(
+			screen.getByRole( 'button', {
+				name: /create a new theme/i,
+			} )
+		);
 
-	user.click(
-		await screen.findByRole( 'button', {
-			name: /save theme settings/i,
-		} )
-	);
+		user.type(
+			await screen.findByRole( 'textbox', {
+				name: /theme name/i,
+			} ),
+			'Longer Theme Name'
+		);
 
-	await screen.findAllByText( themeSavedMessage );
+		user.click(
+			screen.getByRole( 'button', {
+				name: /save theme settings/i,
+			} )
+		);
+	} );
+
+	screen.getAllByText( themeSavedMessage );
 
 	// The Pattern Editor tab should now be present.
 	expect(
