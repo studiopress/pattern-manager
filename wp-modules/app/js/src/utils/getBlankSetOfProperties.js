@@ -7,7 +7,7 @@
 export default function getBlankArrayFromSchema(items) {
 	console.log( items.type  );
 	if ( items.type === 'string' ) {
-		return ' ';
+		return '';
 	}
 		
 	if ( items.type === 'boolean' ) {

@@ -85,7 +85,7 @@ export default function useThemeJsonFile( id ) {
 		} );
 	}
 	
-	function setValue( topLevelSection = 'settings', selectorString, value, mode = 'overwrite' ) {
+	function setValue( topLevelSection = 'settings', selectorString, value = null, defaultValue = null, mode = 'overwrite' ) {
 		const modifiedData = { ...themeJsonData };
 		
 		// Remove any leading commas that might exist.
@@ -94,7 +94,7 @@ export default function useThemeJsonFile( id ) {
 		}
 		
 		// Split the selector string at commas
-		const keys = selectorString.split(',');
+		const keys = selectorString.split('.');
 	
 		const numberOfKeys = keys.length;
 		
@@ -114,7 +114,11 @@ export default function useThemeJsonFile( id ) {
 				modifiedData.content[topLevelSection].splice(parseInt(keyOne) + 1, 0, value);
 			} 
 			if ( mode === 'overwrite' ) {
-				modifiedData.content[topLevelSection][keyOne]
+				modifiedData.content[topLevelSection][keyOne] = value;
+			}
+			if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+				delete modifiedData.content[topLevelSection][keyOne];
+				modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
 			}
 			
 		}
@@ -128,6 +132,13 @@ export default function useThemeJsonFile( id ) {
 				} 
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
+				}
+				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne] ) ) {
+						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
+					} else {
+						delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+					}
 				}
 			} else {
 				// If the top level section does not exist yet, set it first.
@@ -143,6 +154,13 @@ export default function useThemeJsonFile( id ) {
 				} 
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
+				}
+				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne] ) ) {
+						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
+					} else {
+						delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+					}
 				}
 			}
 		}
@@ -163,6 +181,13 @@ export default function useThemeJsonFile( id ) {
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
 				}
+				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo] ) ) {
+						modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 1);
+					} else {
+						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
+					}
+				}
 			} else {
 				// If the top level section does not exist yet, set it first.
 				if ( ! modifiedData.content[topLevelSection] ) {
@@ -180,6 +205,13 @@ export default function useThemeJsonFile( id ) {
 				} 
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
+				}
+				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo] ) ) {
+						modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 1);
+					} else {
+						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
+					}
 				}
 			}
 		
@@ -203,6 +235,13 @@ export default function useThemeJsonFile( id ) {
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
 				}
+				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) ) {
+						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 1);
+					} else {
+						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour];
+					}
+				}
 			} else {
 				// If the top level section does not exist yet, set it first.
 				if ( ! modifiedData.content[topLevelSection] ) {
@@ -224,6 +263,13 @@ export default function useThemeJsonFile( id ) {
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
 				}
+				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) ) {
+						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 1);
+					} else {
+						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour];
+					}
+				}
 			}
 			
 		}
@@ -232,14 +278,14 @@ export default function useThemeJsonFile( id ) {
 
 	}
 	
-	function getValue( topLevelSection = 'settings', selectorString, defaultValue ) {
+	function getValue( topLevelSection = 'settings', selectorString, defaultValue = undefined ) {
 		// Remove any leading commas that might exist.
 		if (selectorString[0] == ',') { 
 			selectorString = selectorString.substring(1);
 		}
 
 		// Split the selector string at commas
-		const keys = selectorString.split(',');
+		const keys = selectorString.split('.');
 	
 		const numberOfKeys = keys.length;
 

@@ -349,7 +349,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 							isVisible={isVisible}
 							propertySchema={properties[propertyName]}
 							propertyName={propertyName}
-							schemaPosition={schemaPosition + ',' + propertyName }
+							schemaPosition={schemaPosition + '.' + propertyName }
 							topLevelSettingName={topLevelSettingName}
 						/>
 					</div>
@@ -374,7 +374,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			name={propertyName}
 			checked={ currentValue }
 			onChange={( event ) => {
-				currentThemeJsonFile.setValue( 'settings', schemaPosition, currentValue ? false : true );
+				currentThemeJsonFile.setValue( 'settings', schemaPosition, currentValue ? false : true, propertySchema?.default );
 			}}
 		/>
 	}
@@ -386,7 +386,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			name={ propertyName }
 			value={ currentValue }
 			onChange={ (newValue) => {
-				currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue );
+				currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue, propertySchema?.default );
 			}}
 		/>
 	}
@@ -407,7 +407,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			return 'Nothing yet!';
 		} else {
 			// Loop through each saved item in the theme.json file for this array.
-			for ( const value in currentValue ) {
+			for ( const arrIndex in currentValue ) {
 				// If these array items are objects (an array of objects)
 				if ( propertySchema.items.type === 'object' ) {
 					// If this is a gradient, render each graidnet using our custom component.
@@ -415,17 +415,17 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 						rendered.push(
 							<GradientEditor
 								properties={propertySchema.items.properties}
-								schemaPosition={schemaPosition + ',' + value}
+								schemaPosition={schemaPosition + '.' + arrIndex}
 							/>
 						);
 					} else {
 						// Render the properties in the schema, using the current loop's values for the properties
 						rendered.push(
 							<RenderProperties
-								key={value}
+								key={arrIndex}
 								isVisible={isVisible}
 								properties={propertySchema.items.properties}
-								schemaPosition={schemaPosition + ',' + value}
+								schemaPosition={schemaPosition + '.' + arrIndex}
 								topLevelSettingName={topLevelSettingName}
 							/>
 						)
@@ -433,21 +433,21 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 					rendered.push(
 						<button onClick={() => {
-							currentThemeJsonFile.setValue( 'settings', schemaPosition + ',' + value, getBlankArrayFromSchema(propertySchema.items), 'insert' );
+							currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
 						}}>
 							Add Another
 						</button>
 					)
 				} else {
 					rendered.push(
-						<div key={value} hidden={!isVisible}>
+						<div key={arrIndex} hidden={!isVisible}>
 							<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
 								<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
 									<RenderProperty
 										isVisible={isVisible}
 										propertySchema={propertySchema.items}
 										propertyName={propertyName}
-										schemaPosition={schemaPosition + ',' + value }
+										schemaPosition={schemaPosition + '.' + arrIndex }
 										topLevelSettingName={topLevelSettingName}
 									/>
 								</div>
@@ -456,11 +456,24 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					)
 					
 					rendered.push(
-						<button onClick={() => {
-							currentThemeJsonFile.setValue( 'settings', schemaPosition + ',' + value, getBlankArrayFromSchema(propertySchema.items), 'insert' );
-						}}>
-							Add Another
-						</button>
+						<>
+							<button onClick={() => {
+								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+							}}>
+								{ __( 'Add Another', 'fse-studio' ) }
+							</button>
+							<button
+								className="text-red-500 hover:text-red-700"
+								onClick={(e) => {
+									e.preventDefault();
+									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
+										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex );
+									}
+								}}
+							>
+								{ __( 'Delete', 'fse-studio' ) }
+							</button>
+						</>
 					)
 				}
 			}
