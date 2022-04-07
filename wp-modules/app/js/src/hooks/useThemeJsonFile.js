@@ -89,7 +89,7 @@ export default function useThemeJsonFile( id ) {
 		const modifiedData = { ...themeJsonData };
 		
 		// Remove any leading commas that might exist.
-		if (selectorString[0] == ',') { 
+		if (selectorString[0] === '.') { 
 			selectorString = selectorString.substring(1);
 		}
 		
@@ -109,7 +109,6 @@ export default function useThemeJsonFile( id ) {
 			if ( ! modifiedData.content[topLevelSection] ) {
 				modifiedData.content[topLevelSection] = {};
 			}
-			
 			if ( mode === 'insert' ) {
 				modifiedData.content[topLevelSection].splice(parseInt(keyOne) + 1, 0, value);
 			} 
@@ -118,7 +117,6 @@ export default function useThemeJsonFile( id ) {
 			}
 			if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
 				delete modifiedData.content[topLevelSection][keyOne];
-				modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
 			}
 			
 		}
@@ -280,7 +278,7 @@ export default function useThemeJsonFile( id ) {
 	
 	function getValue( topLevelSection = 'settings', selectorString, defaultValue = undefined ) {
 		// Remove any leading commas that might exist.
-		if (selectorString[0] == ',') { 
+		if (selectorString[0] === '.') { 
 			selectorString = selectorString.substring(1);
 		}
 
