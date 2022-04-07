@@ -52,10 +52,10 @@ test( 'FseStudioApp', async () => {
 	// When there is no theme saved, you shouldn't be able to choose a theme.
 	expect( screen.queryByText( /choose a theme/i ) ).not.toBeInTheDocument();
 
-	// The Pattern Editor tab shouldn't be present, as there's no theme saved.
+	// The Add Patterns tab shouldn't be present, as there's no theme saved.
 	expect(
 		screen.queryByRole( 'button', {
-			name: /pattern editor/i,
+			name: /add patterns/i,
 		} )
 	).not.toBeInTheDocument();
 
