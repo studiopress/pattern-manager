@@ -24,6 +24,7 @@ export default function useThemeJsonFile( id ) {
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	useEffect( () => {
+		console.log( 'Theme Json updated to', themeJsonData );
 		setHasSaved( false );
 	}, [ themeJsonData ] );
 
@@ -63,7 +64,9 @@ export default function useThemeJsonFile( id ) {
 	}
 
 	function saveThemeJsonData() {
+		console.log( 'Saving JSON1', themeJsonData );
 		return new Promise( ( resolve ) => {
+			console.log( 'Saving JSON2', themeJsonData, JSON.stringify(themeJsonData.content) );
 			fetch( fsestudio.apiEndpoints.saveThemeJsonFileEndpoint, {
 				method: 'POST',
 				headers: {
@@ -82,7 +85,7 @@ export default function useThemeJsonFile( id ) {
 		} );
 	}
 	
-	function setValue( topLevelSection = 'settings', selectorString, value, type = 'overwrite' ) {
+	function setValue( topLevelSection = 'settings', selectorString, value, mode = 'overwrite' ) {
 		const modifiedData = { ...themeJsonData };
 		
 		// Remove any leading commas that might exist.
@@ -94,50 +97,52 @@ export default function useThemeJsonFile( id ) {
 		const keys = selectorString.split(',');
 	
 		const numberOfKeys = keys.length;
-	
+		
+		if ( ! modifiedData.content[topLevelSection] || Array.isArray( modifiedData.content[topLevelSection] ) ) {
+			modifiedData.content[topLevelSection] = {};
+		}
+
 		if ( numberOfKeys === 1 ) {
 			const keyOne = [keys[0]];
-			if ( value ) {
-				if ( type === 'insert' ) {
-					modifiedData.content[topLevelSection].splice(keyOne, 0, value);
-				} 
-				if ( type === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne]
-				}
-			} else {
-				delete modifiedData.content[topLevelSection][keyOne];
+			
+			// If keyone does not exist yet, set it first, then set keytwo after.
+			if ( ! modifiedData.content[topLevelSection] ) {
+				modifiedData.content[topLevelSection] = {};
 			}
+			
+			if ( mode === 'insert' ) {
+				modifiedData.content[topLevelSection].splice(parseInt(keyOne) + 1, 0, value);
+			} 
+			if ( mode === 'overwrite' ) {
+				modifiedData.content[topLevelSection][keyOne]
+			}
+			
 		}
 		if ( numberOfKeys === 2 ) {
 			const keyOne = [keys[0]];
 			const keyTwo = [keys[1]];
-			
-			if ( value ) {
-				// If keyone already exists, and keytwo already exists, just change the value.
-				if( modifiedData.content[topLevelSection][keyOne] && modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
-					if ( type === 'insert' ) {
-						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 0, value);
-					} 
-					if ( type === 'overwrite' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
-					}
-				} else {
-					// If keyone does not exist yet, set it first, then set keytwo after.
-					if ( ! modifiedData.content[topLevelSection][keyOne] ) {
-						modifiedData.content[topLevelSection][keyOne] = {};
-					}
-					if ( type === 'insert' ) {
-						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 0, value);
-					} 
-					if ( type === 'overwrite' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
-					}
+			// If keyone already exists, and keytwo already exists, just change the value.
+			if( modifiedData.content[topLevelSection][keyOne] && modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
+				if ( mode === 'insert' ) {
+					modifiedData.content[topLevelSection][keyOne].splice(parseInt(keyTwo) + 1, 0, value);
+				} 
+				if ( mode === 'overwrite' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
 				}
 			} else {
-				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
-				// If this is the last value in keyOne, delete the keyOne as well.
-				if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
-					delete modifiedData.content[topLevelSection][keyOne];
+				// If the top level section does not exist yet, set it first.
+				if ( ! modifiedData.content[topLevelSection] ) {
+					modifiedData.content[topLevelSection] = {};
+				}
+				// If keyone does not exist yet, set it first, then set keytwo after.
+				if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+					modifiedData.content[topLevelSection][keyOne] = {};
+				}
+				if ( mode === 'insert' ) {
+					modifiedData.content[topLevelSection][keyOne].splice(parseInt(keyTwo) + 1, 0, value);
+				} 
+				if ( mode === 'overwrite' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
 				}
 			}
 		}
@@ -145,107 +150,89 @@ export default function useThemeJsonFile( id ) {
 			const keyOne = [keys[0]];
 			const keyTwo = [keys[1]];
 			const keyThree = [keys[2]];
-
-			if ( value ) {
-				// If keys aready exists, just change the value.
-				if (
-					modifiedData.content[topLevelSection][keyOne] &&
-					modifiedData.content[topLevelSection][keyOne][keyTwo] &&
-					modifiedData.content[topLevelSection][keyOne][keyThree]
-				) {
-					if ( type === 'insert' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 0, value);
-					} 
-					if ( type === 'overwrite' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
-					}
-				} else {
-					// If keyone does not exist yet, set it first, then set keytwo after.
-					if ( ! modifiedData.content[topLevelSection][keyOne] ) {
-						modifiedData.content[topLevelSection][keyOne] = {};
-					}
-					if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
-					}
-					if ( type === 'insert' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 0, value);
-					} 
-					if ( type === 'overwrite' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
-					}
+			
+			// If keys aready exists, just change the value.
+			if (
+				modifiedData.content[topLevelSection][keyOne] &&
+				modifiedData.content[topLevelSection][keyOne][keyTwo] &&
+				modifiedData.content[topLevelSection][keyOne][keyThree]
+			) {
+				if ( mode === 'insert' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo].splice(parseInt(keyThree) + 1, 0, value);
+				} 
+				if ( mode === 'overwrite' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
 				}
 			} else {
-				delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
-
-				// If this is the last value in keyTwo, delete the keyTwo as well.
-				if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo]).length === 0 ) {
-					delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+				// If the top level section does not exist yet, set it first.
+				if ( ! modifiedData.content[topLevelSection] ) {
+					modifiedData.content[topLevelSection] = {};
 				}
-				// If this is the last value in keyOne, delete the keyOne as well.
-				if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
-					delete modifiedData.content[topLevelSection][keyOne];
+				// If keyone does not exist yet, set it first, then set keytwo after.
+				if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+					modifiedData.content[topLevelSection][keyOne] = {};
+				}
+				if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
+				}
+				if ( mode === 'insert' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo].splice(parseInt(keyThree) + 1, 0, value);
+				} 
+				if ( mode === 'overwrite' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
 				}
 			}
+		
 		}
 		if ( numberOfKeys === 4 ) {
 			const keyOne = [keys[0]];
 			const keyTwo = [keys[1]];
 			const keyThree = [keys[2]];
 			const keyFour = [keys[3]];
-			if ( value ) {
-				// If keys aready exists, just change the value.
-				if (
-					modifiedData.content[topLevelSection][keyOne] &&
-					modifiedData.content[topLevelSection][keyOne][keyTwo] &&
-					modifiedData.content[topLevelSection][keyOne][keyThree] &&
-					modifiedData.content[topLevelSection][keyOne][keyFour]
-				) {
-					if ( type === 'insert' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 0, value);
-					} 
-					if ( type === 'overwrite' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
-					}
-				} else {
-					// If keyone does not exist yet, set it first, then set keytwo after.
-					if ( ! modifiedData.content[topLevelSection][keyOne] ) {
-						modifiedData.content[topLevelSection][keyOne] = {};
-					}
-					if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
-					}
-					if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = {};
-					}
-					if ( type === 'insert' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 0, value);
-					} 
-					if ( type === 'overwrite' ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
-					}
+
+			// If keys aready exists, just change the value.
+			if (
+				modifiedData.content[topLevelSection][keyOne] &&
+				modifiedData.content[topLevelSection][keyOne][keyTwo] &&
+				modifiedData.content[topLevelSection][keyOne][keyThree] &&
+				modifiedData.content[topLevelSection][keyOne][keyFour]
+			) {
+				if ( mode === 'insert' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(parseInt(keyFour) + 1, 0, value);
+				} 
+				if ( mode === 'overwrite' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
 				}
 			} else {
-				delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour];
-				// If this is the last value in keyThree, delete the keyThree as well.
-				if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree]).length === 0 ) {
-					delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
+				// If the top level section does not exist yet, set it first.
+				if ( ! modifiedData.content[topLevelSection] ) {
+					modifiedData.content[topLevelSection] = {};
 				}
-				// If this is the last value in keyTwo, delete the keyTwo as well.
-				if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo]).length === 0 ) {
-					delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+				// If keyone does not exist yet, set it first, then set keytwo after.
+				if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+					modifiedData.content[topLevelSection][keyOne] = {};
 				}
-				// If this is the last value in keyOne, delete the keyOne as well.
-				if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
-					delete modifiedData.content[topLevelSection][keyOne];
+				if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
+				}
+				if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = {};
+				}
+				if ( mode === 'insert' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(parseInt(keyFour) + 1, 0, value);
+				} 
+				if ( mode === 'overwrite' ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
 				}
 			}
+			
 		}
 
 		setThemeJsonData( modifiedData );
 
 	}
 	
-	function getValue( topLevelSection = 'settings', selectorString, type ) {
+	function getValue( topLevelSection = 'settings', selectorString, defaultValue ) {
 		// Remove any leading commas that might exist.
 		if (selectorString[0] == ',') { 
 			selectorString = selectorString.substring(1);
@@ -302,11 +289,8 @@ export default function useThemeJsonFile( id ) {
 			}
 		}
 		
-		if ( type === 'boolean' ) {
-			return false;
-		}
-		
-		return null;
+		// Return the default value for this from the schema.
+		return defaultValue;
 	}
 
 	return {

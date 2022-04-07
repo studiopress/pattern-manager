@@ -10,6 +10,8 @@ import PatternPreview from '../PatternPreview';
 import PatternPicker from '../PatternPicker';
 import useStudioContext from '../../hooks/useStudioContext';
 
+import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
+
 import { fsestudio } from '../../';
 
 import GradientEditor from './GradientEditor';
@@ -362,7 +364,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 
 function RenderProperty( {isVisible, propertySchema, propertyName, schemaPosition, topLevelSettingName } ) {
 	const { currentThemeJsonFile } = useStudioContext();
-	const currentValue = currentThemeJsonFile.getValue( 'settings', schemaPosition, propertySchema.type );
+	const currentValue = currentThemeJsonFile.getValue( 'settings', schemaPosition, propertySchema.default );
 
 	if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
 		return <input
@@ -372,7 +374,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			name={propertyName}
 			checked={ currentValue }
 			onChange={( event ) => {
-				currentThemeJsonFile.setValue( 'settings', schemaPosition, currentValue ? false : true, propertySchema.type );
+				currentThemeJsonFile.setValue( 'settings', schemaPosition, currentValue ? false : true );
 			}}
 		/>
 	}
@@ -428,9 +430,10 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 							/>
 						)
 					}
+
 					rendered.push(
 						<button onClick={() => {
-							currentThemeJsonFile.setValue( 'settings', schemaPosition + ',' + value, propertySchema.items.properties, 'insert' );
+							currentThemeJsonFile.setValue( 'settings', schemaPosition + ',' + value, getBlankArrayFromSchema(propertySchema.items), 'insert' );
 						}}>
 							Add Another
 						</button>
@@ -450,6 +453,14 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 								</div>
 							</div>
 						</div>
+					)
+					
+					rendered.push(
+						<button onClick={() => {
+							currentThemeJsonFile.setValue( 'settings', schemaPosition + ',' + value, getBlankArrayFromSchema(propertySchema.items), 'insert' );
+						}}>
+							Add Another
+						</button>
 					)
 				}
 			}
