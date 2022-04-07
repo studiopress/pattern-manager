@@ -12,6 +12,8 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 import { fsestudio } from '../../';
 
+import GradientEditor from './GradientEditor';
+
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
@@ -275,7 +277,7 @@ function SettingsView({ isVisible }) {
 						isVisible={ currentView === setting }
 						propertySchema={settings[setting].properties[propertyName]}
 						propertyName={propertyName}
-						schemaPosition={propertyName }
+						schemaPosition={propertyName}
 						topLevelSettingName={setting}
 					/>
 				)
@@ -285,7 +287,7 @@ function SettingsView({ isVisible }) {
 						key={propertyName}
 						isVisible={ currentView === setting }
 						properties={settings[setting].properties}
-						schemaPosition={setting}
+						schemaPosition={''}
 						topLevelSettingName={setting}
 					/>
 				)
@@ -330,11 +332,6 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 	const renderedProperties = [];
 	
 	for( const propertyName in properties ) {
-		
-		
-			console.log( 'Schema:', schemaPosition + ',' + propertyName );
-		
-	
 		renderedProperties.push(
 			<div key={propertyName} hidden={!isVisible}>
 				<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
@@ -365,198 +362,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 
 function RenderProperty( {isVisible, propertySchema, propertyName, schemaPosition, topLevelSettingName } ) {
 	const { currentThemeJsonFile } = useStudioContext();
-	const currentValue = getCurrentValue( currentThemeJsonFile.data, schemaPosition, propertyName, propertySchema.type );
-
-	function updateCurrentValue( data, selectorString, value ) {
-		const modifiedData = { ...data };
-		
-		// Split the selector string at commas
-		const keys = selectorString.split(',');
-	
-		const numberOfKeys = keys.length;
-	
-		if ( numberOfKeys === 1 ) {
-			const keyOne = [keys[0]];
-			if ( value ) {
-				modifiedData.content['settings'][keyOne] = value;
-			} else {
-				delete modifiedData.content['settings'][keyOne];
-			}
-		}
-		if ( numberOfKeys === 2 ) {
-			const keyOne = [keys[0]];
-			const keyTwo = [keys[1]];
-
-			// If keyone already exists, and keytwo already exists, just change the value.
-			if( modifiedData.content['settings'][keyOne] && modifiedData.content['settings'][keyOne][keyTwo] ) {
-				if ( value ) {
-					modifiedData.content['settings'][keyOne][keyTwo] = value;
-				} else {
-					delete modifiedData.content['settings'][keyOne][keyTwo];
-					// If this is the last value in keyOne, delete the keyOne as well.
-					if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
-						delete modifiedData.content['settings'][keyOne];
-					}
-				}
-			} else {
-				if ( value ) {
-					// If keyone does not exist yet, set it first, then set keytwo after.
-					if ( ! modifiedData.content['settings'][keyOne] ) {
-						modifiedData.content['settings'][keyOne] = {};
-					}
-					modifiedData.content['settings'][keyOne][keyTwo] = value;
-					if ( propertyName === 'radius' ) {
-						console.log( selectorString, keys, numberOfKeys, modifiedData.content['settings'][keyOne][keyTwo], value );
-					}
-				}
-			}
-		}
-		if ( numberOfKeys === 3 ) {
-			const keyOne = [keys[0]];
-			const keyTwo = [keys[1]];
-			const keyThree = [keys[2]];
-
-			// If keys aready exists, just change the value.
-			if (
-				modifiedData.content['settings'][keyOne] &&
-				modifiedData.content['settings'][keyOne][keyTwo] &&
-				modifiedData.content['settings'][keyOne][keyThree]
-			) {
-				if ( value ) {
-					modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
-				} else {
-					delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
-					// If this is the last value in keyTwo, delete the keyTwo as well.
-					if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
-						delete modifiedData.content['settings'][keyOne][keyTwo];
-					}
-					// If this is the last value in keyOne, delete the keyOne as well.
-					if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
-						delete modifiedData.content['settings'][keyOne];
-					}
-				}
-			} else {
-				if ( value ) {
-					// If keyone does not exist yet, set it first, then set keytwo after.
-					if ( ! modifiedData.content['settings'][keyOne] ) {
-						modifiedData.content['settings'][keyOne] = {};
-					}
-					if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
-						modifiedData.content['settings'][keyOne][keyTwo] = {};
-					}
-					modifiedData.content['settings'][keyOne][keyTwo][keyThree] = value;
-				}
-			}
-		}
-		if ( numberOfKeys === 4 ) {
-			const keyOne = [keys[0]];
-			const keyTwo = [keys[1]];
-			const keyThree = [keys[2]];
-			const keyFour = [keys[3]];
-
-			// If keys aready exists, just change the value.
-			if (
-				modifiedData.content['settings'][keyOne] &&
-				modifiedData.content['settings'][keyOne][keyTwo] &&
-				modifiedData.content['settings'][keyOne][keyThree] &&
-				modifiedData.content['settings'][keyOne][keyFour]
-			) {
-				if ( value ) {
-					modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
-				} else {
-					delete modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour];
-					// If this is the last value in keyThree, delete the keyThree as well.
-					if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo][keyThree]).length === 0 ) {
-						delete modifiedData.content['settings'][keyOne][keyTwo][keyThree];
-					}
-					// If this is the last value in keyTwo, delete the keyTwo as well.
-					if ( Object.entries(modifiedData.content['settings'][keyOne][keyTwo]).length === 0 ) {
-						delete modifiedData.content['settings'][keyOne][keyTwo];
-					}
-					// If this is the last value in keyOne, delete the keyOne as well.
-					if ( Object.entries(modifiedData.content['settings'][keyOne]).length === 0 ) {
-						delete modifiedData.content['settings'][keyOne];
-					}
-				}
-			} else {
-				if ( value ) {
-					// If keyone does not exist yet, set it first, then set keytwo after.
-					if ( ! modifiedData.content['settings'][keyOne] ) {
-						modifiedData.content['settings'][keyOne] = {};
-					}
-					if ( ! modifiedData.content['settings'][keyOne][keyTwo] ) {
-						modifiedData.content['settings'][keyOne][keyTwo] = {};
-					}
-					if ( ! modifiedData.content['settings'][keyOne][keyTwo][keyThree] ) {
-						modifiedData.content['settings'][keyOne][keyTwo][keyThree] = {};
-					}
-					modifiedData.content['settings'][keyOne][keyTwo][keyThree][keyFour] = value;
-				}
-			}
-		}
-
-		currentThemeJsonFile.set( modifiedData );
-
-	}
-	
-	function getCurrentValue( data, selectorString, propertyName, type ) {
-		// Split the selector string at commas
-		const keys = selectorString.split(',');
-	
-		const numberOfKeys = keys.length;
-
-		if ( numberOfKeys === 1 ) {
-			const keyOne = [keys[0]];
-			if (data?.content?.settings.hasOwnProperty(keyOne)) {
-				return data.content.settings[keyOne];
-			}
-		}
-		if ( numberOfKeys === 2 ) {
-			const keyOne = [keys[0]];
-			const keyTwo = [keys[1]];
-
-			if (data?.content?.settings.hasOwnProperty(keyOne)) {
-				if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
-					return data?.content?.settings[keyOne][keyTwo]
-				}
-			}
-		}
-		if ( numberOfKeys === 3 ) {
-			const keyOne = [keys[0]];
-			const keyTwo = [keys[1]];
-			const keyThree = [keys[2]];
-
-			if (data?.content?.settings.hasOwnProperty(keyOne)) {
-				if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
-					if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
-						return data?.content?.settings[keyOne][keyTwo][keyThree]
-					}
-				}
-			}
-		}
-		if ( numberOfKeys === 4 ) {
-			const keyOne = [keys[0]];
-			const keyTwo = [keys[1]];
-			const keyThree = [keys[2]];
-			const keyFour = [keys[3]];
-
-			if (data?.content?.settings.hasOwnProperty(keyOne)) {
-				if ( data?.content?.settings[keyOne].hasOwnProperty(keyTwo) ) {
-					if ( data?.content?.settings[keyOne][keyTwo].hasOwnProperty(keyThree) ) {
-						if ( data?.content?.settings[keyOne][keyTwo][keyThree].hasOwnProperty(keyFour) ) {
-							return data?.content?.settings[keyOne][keyTwo][keyThree][keyFour]
-						}
-					}
-				}
-			}
-		}
-		
-		if ( type === 'boolean' ) {
-			return false;
-		}
-		
-		return null;
-	}
+	const currentValue = currentThemeJsonFile.getValue( 'settings', schemaPosition, propertySchema.type );
 
 	if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
 		return <input
@@ -566,7 +372,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			name={propertyName}
 			checked={ currentValue }
 			onChange={( event ) => {
-				updateCurrentValue( currentThemeJsonFile.data, schemaPosition, currentValue ? false : true, propertySchema.type );
+				currentThemeJsonFile.setValue( 'settings', schemaPosition, currentValue ? false : true, propertySchema.type );
 			}}
 		/>
 	}
@@ -578,7 +384,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			name={ propertyName }
 			value={ currentValue }
 			onChange={ (newValue) => {
-				updateCurrentValue( currentThemeJsonFile.data, schemaPosition, newValue );
+				currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue );
 			}}
 		/>
 	}
@@ -602,15 +408,32 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			for ( const value in currentValue ) {
 				// If these array items are objects (an array of objects)
 				if ( propertySchema.items.type === 'object' ) {
-					// Render the properties in the schema, using the current loop's values for the properties
+					// If this is a gradient, render each graidnet using our custom component.
+					if ( propertyName === 'gradients' ) {
+						rendered.push(
+							<GradientEditor
+								properties={propertySchema.items.properties}
+								schemaPosition={schemaPosition + ',' + value}
+							/>
+						);
+					} else {
+						// Render the properties in the schema, using the current loop's values for the properties
+						rendered.push(
+							<RenderProperties
+								key={value}
+								isVisible={isVisible}
+								properties={propertySchema.items.properties}
+								schemaPosition={schemaPosition + ',' + value}
+								topLevelSettingName={topLevelSettingName}
+							/>
+						)
+					}
 					rendered.push(
-						<RenderProperties
-							key={value}
-							isVisible={isVisible}
-							properties={propertySchema.items.properties}
-							schemaPosition={schemaPosition + ',' + value}
-							topLevelSettingName={topLevelSettingName}
-						/>
+						<button onClick={() => {
+							currentThemeJsonFile.setValue( 'settings', schemaPosition + ',' + value, propertySchema.items.properties, 'insert' );
+						}}>
+							Add Another
+						</button>
 					)
 				} else {
 					rendered.push(
@@ -664,118 +487,4 @@ function ValueSetter({name, value, onChange}) {
 	return <input name={name} type="text" value={value} onChange={(event) => {
 		onChange(event.target.value);
 	}} />
-}
-
-function InputField( { name, description, value, onChange = () => {} } ) {
-	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-		<label
-			htmlFor={name}
-			className="block text-sm font-medium text-gray-700 sm:col-span-1"
-		>
-			<p>{ name }</p>
-			<p>{ description }</p>
-			
-		</label>
-		<div className="mt-1 sm:mt-0 sm:col-span-2">
-			<input
-				className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
-				type="text"
-				id={name}
-				value={
-					value
-				}
-				// @ts-ignore The declaration file is wrong.
-				onChange={ onChange }
-			/>
-		</div>
-	</div>
-}
-
-function FseStudioColorPalette( { themeJsonFile, colors } ) {
-	function renderColorOptions() {
-		return colors.map( ( color, index ) => (
-			<FseStudioColorPalettePicker
-				key={ color.slug }
-				themeJsonFile={ themeJsonFile }
-				color={ color }
-				index={ index }
-			/>
-		) );
-	}
-
-	return <div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-		<label
-			htmlFor={ 'colorpalette' }
-			className="block text-sm font-medium text-gray-700 sm:col-span-1"
-		>
-			{ __( 'Color Palette', 'fse-studio' ) }
-		</label>
-		<div className="mt-1 sm:mt-0 sm:col-span-2">
-			<div className="grid gap-5">{ renderColorOptions() }</div>
-		</div>
-	</div>
-}
-
-function FseStudioColorPalettePicker( { themeJsonFile, color, index } ) {
-	const [ popoverIsVisible, setPopoverIsVisible ] = useState( false );
-
-	function maybeRenderPickerPopover() {
-		if ( popoverIsVisible ) {
-			return (
-				<Popover
-					onClose={ () => {
-						setPopoverIsVisible( false );
-					} }
-				>
-					<div className="p-2">
-						<ColorPicker
-							color={ color.color }
-							// @ts-ignore The declaration file is wrong.
-							onChange={ ( colorValue ) => {
-								const modifiedData = { ...themeJsonFile.data };
-								modifiedData.content.settings.color.palette[
-									index
-								] = {
-									...modifiedData.content.settings.color
-										.palette[ index ],
-									color: colorValue,
-								};
-
-								themeJsonFile.set( modifiedData );
-							} }
-							enableAlpha
-							defaultValue="#000"
-						/>
-					</div>
-				</Popover>
-			);
-		}
-	}
-
-	return (
-		<>
-			<div>
-				<label
-					className="flex gap-1"
-					onClick={ () => {
-						setPopoverIsVisible( true );
-					} }
-				>
-					<div
-						style={ {
-							width: '20px',
-							height: '20px',
-							backgroundColor: color.color,
-						} }
-						onClick={ () => {
-							setPopoverIsVisible( true );
-						} }
-					>
-						{ maybeRenderPickerPopover() }
-					</div>
-					<div>{ color.name }</div>
-				</label>
-			</div>
-		</>
-	);
 }
