@@ -1,12 +1,14 @@
 // @ts-check
 
 // WP Dependencies
-import { ColorPicker } from '@wordpress/components';
+import { ColorPicker, Popover } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
 export default function PaletteEditor({properties, schemaPosition}) {
+	const [popoverOpen, setPopoverOpen] = useState( false );
 	const { currentThemeJsonFile } = useStudioContext();
 	
 	const nameValue = currentThemeJsonFile.getValue( 'settings', schemaPosition + '.name', properties.name.type );
@@ -33,15 +35,32 @@ export default function PaletteEditor({properties, schemaPosition}) {
 			</div>
 			<div className="gradient mt-12">
 				<div>
-					<ColorPicker
-						color={ colorValue }
-						// @ts-ignore The declaration file is wrong.
-						onChange={ (newValue) => {
-							currentThemeJsonFile.setValue( 'settings', schemaPosition + '.color', newValue );
-						} }
-						enableAlpha
-						defaultValue="#000"
-					/>
+					<div
+						style={{
+							width: '100px',
+							height: '100px',
+							backgroundColor: colorValue
+						}}
+						onClick={() => {
+							setPopoverOpen( true );
+						}}
+					>
+						{ popoverOpen ? 
+							<Popover onFocusOutside={() => {
+								setPopoverOpen( false );
+							}}>
+								<ColorPicker
+									color={ colorValue }
+									// @ts-ignore The declaration file is wrong.
+									onChange={ (newValue) => {
+										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.color', newValue );
+									} }
+									enableAlpha
+									defaultValue="#000"
+								/>
+							</Popover>
+						: null }
+					</div>
 				</div>
 			</div>
 		</div>
