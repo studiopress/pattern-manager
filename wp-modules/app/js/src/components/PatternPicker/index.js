@@ -1,9 +1,10 @@
 // @ts-check
 
-import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './searchItems.js';
 import PatternPreview from '../PatternPreview';
+import useMounted from '../../hooks/useMounted';
 
 /**
  * @typedef {{
@@ -31,19 +32,11 @@ export default function PatternPicker( {
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 	const [ numberToRender, setNumberToRender ] = useState( 0 );
-	const isMountedRef = useRef( false );
+	const { isMounted } = useMounted();
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
 	}, [ searchValue, allPatterns ] );
-
-	useEffect( () => {
-		isMountedRef.current = true;
-
-		return () => {
-			isMountedRef.current = false;
-		};
-	}, [] );
 
 	return (
 		<div className="mx-auto bg-white">
@@ -53,7 +46,7 @@ export default function PatternPicker( {
 						<input
 							value={ searchValue }
 							onChange={ ( event ) => {
-								if ( isMountedRef.current ) {
+								if ( isMounted() ) {
 									setSearchValue( event.target.value );
 								}
 							} }
@@ -99,7 +92,7 @@ export default function PatternPicker( {
 											themeJsonData={ themeJsonData }
 											scale={ 0.3 }
 											onLoad={ () => {
-												if ( isMountedRef.current ) {
+												if ( isMounted() ) {
 													setNumberToRender(
 														index + 1
 													);
