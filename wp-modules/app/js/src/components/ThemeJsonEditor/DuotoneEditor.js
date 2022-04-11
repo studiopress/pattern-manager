@@ -36,18 +36,22 @@ export default function DuotoneEditor({properties, schemaPosition}) {
 					}} />
 				</div>
 			</div>
-			<div className="gradient mt-12">
-				<div>
-					<div
-						style={{
-							width: '100px',
-							height: '100px',
-							backgroundColor: color1Value
-						}}
-						onClick={() => {
-							setPopover1Open( true );
-						}}
-					>
+			<div className="gradient mt-8 w-[230px] flex flex-col gap-3">
+				<div 
+					onClick={() => {
+						setPopover1Open( true );
+					}}
+					className="bg-white rounded-md shadow-sm p-4 hover:shadow transition ease-in-out hover:cursor-pointer"
+				>
+					<div className="flex items-center gap-3">	
+						<span 
+							className="h-10 w-10 rounded-full inline-block"
+							style={{
+								backgroundColor: color1Value
+							}}
+						>
+						</span>
+						<span className="font-semibold">{ __( 'Duotone Highlight', 'fse-studio' ) }</span>
 						{ popover1Open ? 
 							<Popover onFocusOutside={() => {
 								setPopover1Open( false );
@@ -65,17 +69,21 @@ export default function DuotoneEditor({properties, schemaPosition}) {
 						: null }
 					</div>
 				</div>
-				<div>
-					<div
-						style={{
-							width: '100px',
-							height: '100px',
-							backgroundColor: color2Value
-						}}
-						onClick={() => {
-							setPopover2Open( true );
-						}}
-					>
+				<div 
+					onClick={() => {
+						setPopover2Open( true );
+					}}
+					className="bg-white rounded-md shadow-sm p-4 hover:shadow transition ease-in-out hover:cursor-pointer"
+				>
+					<div className="flex items-center gap-3">	
+						<span 
+							className="h-10 w-10 rounded-full inline-block"
+							style={{
+								backgroundColor: color2Value
+							}}
+						>
+						</span>
+						<span className="font-semibold">{ __( 'Duotone Shadow', 'fse-studio' ) }</span>
 						{ popover2Open ? 
 							<Popover onFocusOutside={() => {
 								setPopover2Open( false );
@@ -94,6 +102,10 @@ export default function DuotoneEditor({properties, schemaPosition}) {
 					</div>
 				</div>
 			</div>
+
+
+			
+
 		</div>
 		<div className="text-right border-t border-dotted border-gray-300 pt-3 mt-5">
 			<button
