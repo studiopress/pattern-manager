@@ -60,7 +60,7 @@ function fse_studio_app() {
 			'initialTheme'        => $current_theme_dir,
 			'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
 			'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
-			'schemas'              => array(
+			'schemas'             => array(
 				'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/schemas/json/theme.json' ),
 			),
 			'frontendPreviewUrl'  => null,
