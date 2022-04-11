@@ -16,6 +16,7 @@ import { fsestudio } from '../../';
 
 import GradientEditor from './GradientEditor';
 import PaletteEditor from './PaletteEditor';
+import DuotoneEditor from './DuotoneEditor';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
@@ -422,6 +423,13 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					} else if ( propertyName === 'palette' ) {
 						rendered.push(
 							<PaletteEditor
+								properties={propertySchema.items.properties}
+								schemaPosition={schemaPosition + '.' + arrIndex}
+							/>
+						);
+					} else if ( propertyName === 'duotone' ) {
+						rendered.push(
+							<DuotoneEditor
 								properties={propertySchema.items.properties}
 								schemaPosition={schemaPosition + '.' + arrIndex}
 							/>
