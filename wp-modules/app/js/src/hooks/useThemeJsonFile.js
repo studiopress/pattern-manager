@@ -131,11 +131,16 @@ export default function useThemeJsonFile( id ) {
 				if ( mode === 'overwrite' ) {
 					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
 				}
+				// If we are deleting or setting this value back to its default from the schema.
 				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
 					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne] ) ) {
 						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
 					} else {
 						delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+					}
+					// Clean up the parent if there's no more children.
+					if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
+						delete modifiedData.content[topLevelSection][keyOne];
 					}
 				}
 			} else {
@@ -158,6 +163,10 @@ export default function useThemeJsonFile( id ) {
 						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
 					} else {
 						delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+					}
+					// Clean up the parent if there's no more children.
+					if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
+						delete modifiedData.content[topLevelSection][keyOne];
 					}
 				}
 			}
