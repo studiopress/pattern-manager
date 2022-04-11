@@ -123,52 +123,33 @@ export default function useThemeJsonFile( id ) {
 		if ( numberOfKeys === 2 ) {
 			const keyOne = [keys[0]];
 			const keyTwo = [keys[1]];
-			// If keyone already exists, and keytwo already exists, just change the value.
-			if( modifiedData.content[topLevelSection][keyOne] && modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
-				if ( mode === 'insert' ) {
-					modifiedData.content[topLevelSection][keyOne].splice(parseInt(keyTwo) + 1, 0, value);
-				} 
-				if ( mode === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
+			
+			// If the top level section does not exist yet, set it first.
+			if ( ! modifiedData.content[topLevelSection] ) {
+				modifiedData.content[topLevelSection] = {};
+			}
+			// If keyone does not exist yet, set it first, then set keytwo after.
+			if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+				modifiedData.content[topLevelSection][keyOne] = {};
+			}
+			if ( mode === 'insert' ) {
+				modifiedData.content[topLevelSection][keyOne].splice(parseInt(keyTwo) + 1, 0, value);
+			} 
+			if ( mode === 'overwrite' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
+			}
+			// If we are deleting or setting this value back to its default from the schema.
+			if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+				if ( Array.isArray(modifiedData.content[topLevelSection][keyOne] ) ) {
+					modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
+				} else {
+					delete modifiedData.content[topLevelSection][keyOne][keyTwo];
 				}
-				// If we are deleting or setting this value back to its default from the schema.
-				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
-					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne] ) ) {
-						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
-					} else {
-						delete modifiedData.content[topLevelSection][keyOne][keyTwo];
-					}
-					// Clean up the parent if there's no more children.
-					if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
-						delete modifiedData.content[topLevelSection][keyOne];
-					}
-				}
-			} else {
-				// If the top level section does not exist yet, set it first.
-				if ( ! modifiedData.content[topLevelSection] ) {
-					modifiedData.content[topLevelSection] = {};
-				}
-				// If keyone does not exist yet, set it first, then set keytwo after.
-				if ( ! modifiedData.content[topLevelSection][keyOne] ) {
-					modifiedData.content[topLevelSection][keyOne] = {};
-				}
-				if ( mode === 'insert' ) {
-					modifiedData.content[topLevelSection][keyOne].splice(parseInt(keyTwo) + 1, 0, value);
-				} 
-				if ( mode === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo] = value;
-				}
-				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
-					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne] ) ) {
-						modifiedData.content[topLevelSection][keyOne].splice(keyTwo, 1);
-					} else {
-						delete modifiedData.content[topLevelSection][keyOne][keyTwo];
-					}
-					// Clean up the parent if there's no more children.
-					if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
-						delete modifiedData.content[topLevelSection][keyOne];
-					}
-				}
+			}
+			
+			// Clean up the parent if there's no more children.
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne];
 			}
 		}
 		if ( numberOfKeys === 3 ) {
@@ -176,50 +157,37 @@ export default function useThemeJsonFile( id ) {
 			const keyTwo = [keys[1]];
 			const keyThree = [keys[2]];
 			
-			// If keys aready exists, just change the value.
-			if (
-				modifiedData.content[topLevelSection][keyOne] &&
-				modifiedData.content[topLevelSection][keyOne][keyTwo] &&
-				modifiedData.content[topLevelSection][keyOne][keyThree]
-			) {
-				if ( mode === 'insert' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo].splice(parseInt(keyThree) + 1, 0, value);
-				} 
-				if ( mode === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
+			// If the top level section does not exist yet, set it first.
+			if ( ! modifiedData.content[topLevelSection] ) {
+				modifiedData.content[topLevelSection] = {};
+			}
+			// If keyone does not exist yet, set it first, then set keytwo after.
+			if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+				modifiedData.content[topLevelSection][keyOne] = {};
+			}
+			if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
+			}
+			if ( mode === 'insert' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo].splice(parseInt(keyThree) + 1, 0, value);
+			} 
+			if ( mode === 'overwrite' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
+			}
+			if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+				if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo] ) ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 1);
+				} else {
+					delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
 				}
-				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
-					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo] ) ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 1);
-					} else {
-						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
-					}
-				}
-			} else {
-				// If the top level section does not exist yet, set it first.
-				if ( ! modifiedData.content[topLevelSection] ) {
-					modifiedData.content[topLevelSection] = {};
-				}
-				// If keyone does not exist yet, set it first, then set keytwo after.
-				if ( ! modifiedData.content[topLevelSection][keyOne] ) {
-					modifiedData.content[topLevelSection][keyOne] = {};
-				}
-				if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
-				}
-				if ( mode === 'insert' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo].splice(parseInt(keyThree) + 1, 0, value);
-				} 
-				if ( mode === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = value;
-				}
-				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
-					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo] ) ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo].splice(keyThree, 1);
-					} else {
-						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree];
-					}
-				}
+			}
+			
+			// Clean up the parents if there's no more children.
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+			}
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne];
 			}
 		
 		}
@@ -229,54 +197,97 @@ export default function useThemeJsonFile( id ) {
 			const keyThree = [keys[2]];
 			const keyFour = [keys[3]];
 
-			// If keys aready exists, just change the value.
-			if (
-				modifiedData.content[topLevelSection][keyOne] &&
-				modifiedData.content[topLevelSection][keyOne][keyTwo] &&
-				modifiedData.content[topLevelSection][keyOne][keyThree] &&
-				modifiedData.content[topLevelSection][keyOne][keyFour]
-			) {
-				if ( mode === 'insert' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(parseInt(keyFour) + 1, 0, value);
-				} 
-				if ( mode === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
+			// If the top level section does not exist yet, set it first.
+			if ( ! modifiedData.content[topLevelSection] ) {
+				modifiedData.content[topLevelSection] = {};
+			}
+			// If keyone does not exist yet, set it first, then set keytwo after.
+			if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+				modifiedData.content[topLevelSection][keyOne] = {};
+			}
+			if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
+			}
+			if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = {};
+			}
+			if ( mode === 'insert' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(parseInt(keyFour) + 1, 0, value);
+			} 
+			if ( mode === 'overwrite' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
+			}
+			if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+				if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 1);
+				} else {
+					delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour];
 				}
-				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
-					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 1);
-					} else {
-						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour];
-					}
+			}
+			
+			// Clean up the parents if there's no more children.
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+			}
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+			}
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne];
+			}
+			
+		}
+		
+		if ( numberOfKeys === 5 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+			const keyThree = [keys[2]];
+			const keyFour = [keys[3]];
+			const keyFive = [keys[4]];
+
+			// If the top level section does not exist yet, set it first.
+			if ( ! modifiedData.content[topLevelSection] ) {
+				modifiedData.content[topLevelSection] = {};
+			}
+			// If keyone does not exist yet, set it first, then set keytwo after.
+			if ( ! modifiedData.content[topLevelSection][keyOne] ) {
+				modifiedData.content[topLevelSection][keyOne] = {};
+			}
+			if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
+			}
+			if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = {};
+			}
+			if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = {};
+			}
+			if ( mode === 'insert' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour].splice(parseInt(keyFive) + 1, 0, value);
+			} 
+			if ( mode === 'overwrite' ) {
+				modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour][keyFive] = value;
+			}
+			if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
+				if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] ) ) {
+					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour].splice(keyFive, 1);
+				} else {
+					delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour][keyFive];
 				}
-			} else {
-				// If the top level section does not exist yet, set it first.
-				if ( ! modifiedData.content[topLevelSection] ) {
-					modifiedData.content[topLevelSection] = {};
-				}
-				// If keyone does not exist yet, set it first, then set keytwo after.
-				if ( ! modifiedData.content[topLevelSection][keyOne] ) {
-					modifiedData.content[topLevelSection][keyOne] = {};
-				}
-				if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo] ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo] = {};
-				}
-				if ( ! modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] = {};
-				}
-				if ( mode === 'insert' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(parseInt(keyFour) + 1, 0, value);
-				} 
-				if ( mode === 'overwrite' ) {
-					modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour] = value;
-				}
-				if ( ( defaultValue !== null && defaultValue === value ) || null === value ) {
-					if ( Array.isArray(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree] ) ) {
-						modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree].splice(keyFour, 1);
-					} else {
-						delete modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour];
-					}
-				}
+			}
+			
+			// Clean up the parents if there's no more children.
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+			}
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo][keyThree]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+			}
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne][keyTwo]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne][keyTwo];
+			}
+			if ( Object.entries(modifiedData.content[topLevelSection][keyOne]).length === 0 ) {
+				delete modifiedData.content[topLevelSection][keyOne];
 			}
 			
 		}
@@ -336,6 +347,26 @@ export default function useThemeJsonFile( id ) {
 					if ( themeJsonData.content[topLevelSection][keyOne][keyTwo].hasOwnProperty(keyThree) ) {
 						if ( themeJsonData.content[topLevelSection][keyOne][keyTwo][keyThree].hasOwnProperty(keyFour) ) {
 							return themeJsonData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour]
+						}
+					}
+				}
+			}
+		}
+		
+		if ( numberOfKeys === 5 ) {
+			const keyOne = [keys[0]];
+			const keyTwo = [keys[1]];
+			const keyThree = [keys[2]];
+			const keyFour = [keys[3]];
+			const keyFive = [keys[4]];
+
+			if (themeJsonData.content[topLevelSection].hasOwnProperty(keyOne)) {
+				if ( themeJsonData.content[topLevelSection][keyOne].hasOwnProperty(keyTwo) ) {
+					if ( themeJsonData.content[topLevelSection][keyOne][keyTwo].hasOwnProperty(keyThree) ) {
+						if ( themeJsonData.content[topLevelSection][keyOne][keyTwo][keyThree].hasOwnProperty(keyFour) ) {
+							if ( themeJsonData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour].hasOwnProperty(keyFive) ) {
+								return themeJsonData.content[topLevelSection][keyOne][keyTwo][keyThree][keyFour][keyFive]
+							}
 						}
 					}
 				}
