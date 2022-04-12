@@ -9,7 +9,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
 
-import { fsestudio } from '../../';
+import { fsestudio } from '../../globals';
 
 import GradientEditor from './GradientEditor';
 import PaletteEditor from './PaletteEditor';
