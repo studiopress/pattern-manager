@@ -446,13 +446,16 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 					rendered.push(
 						<>
-							<button onClick={() => {
-								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
-							}}>
-								Add Another
+							<button 
+								onClick={() => {
+									currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+								}}
+								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+							>
+								{ __( 'Add Another', 'fse-studio' ) }
 							</button>
 							<button
-								className="text-red-500 hover:text-red-700"
+								className="text-red-500 hover:text-red-700 hidden"
 								onClick={(e) => {
 									e.preventDefault();
 									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
