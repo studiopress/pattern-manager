@@ -53,6 +53,24 @@ jobs:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: npm run test:phpunit
+  zip:
+    docker:
+      - image: cimg/php:7.3-node
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - node/install-packages:
+          app-dir: *PLUGIN_PATH
+      - run:
+          name: Creating the zip file
+          working_directory: *PLUGIN_PATH
+          command: |
+            npm run build
+            npm run zip
+            mkdir /tmp/artifacts
+            mv fse-studio*.zip /tmp/artifacts
+      - store_artifacts:
+          path: /tmp/artifacts
 
 workflows:
   build:
@@ -60,3 +78,4 @@ workflows:
       - lint
       - test-js
       - phpunit
+      - zip

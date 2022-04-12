@@ -1,9 +1,10 @@
 // @ts-check
 
-import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { searchItems } from './searchItems.js';
 import PatternPreview from '../PatternPreview';
+import useMounted from '../../hooks/useMounted';
 
 /**
  * @typedef {{
@@ -21,7 +22,6 @@ import PatternPreview from '../PatternPreview';
  *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
  *  onClickPattern: Function,
  *  selectedPatterns?: string[]
- *  showSidebar?: boolean
  * }} props The component props.
  */
 export default function PatternPicker( {
@@ -29,46 +29,35 @@ export default function PatternPicker( {
 	themeJsonData,
 	onClickPattern,
 	selectedPatterns = [],
-	showSidebar = true,
 } ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 	const [ numberToRender, setNumberToRender ] = useState( 0 );
-	const isMountedRef = useRef( false );
+	const { isMounted } = useMounted();
 
 	const filteredPatterns = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
 	}, [ searchValue, allPatterns ] );
 
-	useEffect( () => {
-		isMountedRef.current = true;
-
-		return () => {
-			isMountedRef.current = false;
-		};
-	}, [] );
-
 	return (
 		<div className="mx-auto bg-white">
 			<div className="flex gap-10">
-				{ showSidebar ? (
-					<div className="w-72">
-						<div className="absolute w-56">
-							<input
-								value={ searchValue }
-								onChange={ ( event ) => {
-									if ( isMountedRef.current ) {
-										setSearchValue( event.target.value );
-									}
-								} }
-								type="text"
-								name="search"
-								id="search"
-								placeholder={ __( 'Search', 'fse-studio' ) }
-								className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-12 w-full !rounded-none !border-[#F0F0F0] !bg-[#F0F0F0] sm:text-sm"
-							/>
-						</div>
+				<div className="w-72">
+					<div className="absolute w-56">
+						<input
+							value={ searchValue }
+							onChange={ ( event ) => {
+								if ( isMounted() ) {
+									setSearchValue( event.target.value );
+								}
+							} }
+							type="text"
+							name="search"
+							id="search"
+							placeholder={ __( 'Search', 'fse-studio' ) }
+							className="!focus:bg-white !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue mb-10 block !h-12 w-full !rounded-none !border-[#F0F0F0] !bg-[#F0F0F0] sm:text-sm"
+						/>
 					</div>
-				) : null }
+				</div>
 				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-10">
 					{ filteredPatterns.map( ( pattern, index ) => {
 						const isChecked = selectedPatterns.includes(
@@ -103,7 +92,7 @@ export default function PatternPicker( {
 											themeJsonData={ themeJsonData }
 											scale={ 0.3 }
 											onLoad={ () => {
-												if ( isMountedRef.current ) {
+												if ( isMounted() ) {
 													setNumberToRender(
 														index + 1
 													);

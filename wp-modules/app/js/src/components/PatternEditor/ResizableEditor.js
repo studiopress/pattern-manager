@@ -3,7 +3,6 @@
  */
 /* eslint-disable */
 import { useState, useEffect, useRef, useCallback } from '@wordpress/element';
-import { ResizableBox } from '@wordpress/components';
 import {
 	__experimentalUseResizeCanvas as useResizeCanvas,
 	__unstableEditorStyles as EditorStyles,

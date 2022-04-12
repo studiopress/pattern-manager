@@ -27,6 +27,24 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Notice to show when running outside a local or development environment.
+ *
+ * @return void
+ */
+function wrong_environment_warning() {
+	?>
+	<div class="notice notice-warning is-dismissible" style="margin-top: 1rem; padding-top: 1rem;padding-bottom: 1rem;">
+		<?php echo esc_html_e( 'FSE Studio will not load. It should run on sites that are in development or local environment only.', 'fse-studio' ); ?>
+	</div>
+	<?php
+}
+
+if ( ! preg_match( '/\.local\/?$/', get_site_url() ) && ! preg_match( '/(local|development)/', wp_get_environment_type() ) ) {
+	add_action( 'admin_notices', __NAMESPACE__ . '\wrong_environment_warning' );
+	return;
+}
+
+/**
  * Automatically include wp modules, which sit in the "wp-modules" directory.
  *
  * @return void

@@ -136,6 +136,7 @@ export default function ThemeManager( { visible } ) {
 								type="button"
 								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
+									/** @type {import('../../hooks/useThemeData').Theme} */
 									const newThemeData = {
 										name: 'My New Theme',
 										dirname: 'my-new-theme',
@@ -411,7 +412,7 @@ function ThemeSetup( { isVisible } ) {
 						htmlFor="uri"
 						className="block text-sm font-medium text-gray-700 sm:col-span-1"
 					>
-						{ __( 'URI', 'fse-studio' ) }
+						{ __( 'Theme URI', 'fse-studio' ) }
 					</label>
 					<div className="mt-1 sm:mt-0 sm:col-span-2">
 						<input
@@ -830,7 +831,7 @@ function ThemeTemplateFiles( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="divide-y divide-gray-200">
-				{ Object.keys( currentTheme.data?.template_files ).map(
+				{ Object.keys( currentTheme.data?.template_files ?? {} ).map(
 					( templateName ) => {
 						return (
 							<ThemeTemplatePicker
