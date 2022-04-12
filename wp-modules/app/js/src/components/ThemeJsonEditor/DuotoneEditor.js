@@ -81,13 +81,14 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 					>
 						<div className="flex items-center gap-3">
 							<span
-								className="h-10 w-10 rounded-full inline-block"
+								className="h-10 w-10 rounded-full inline-block border border-gray-200"
 								style={ {
 									backgroundColor: color1Value,
 								} }
 							></span>
-							<span className="font-semibold">
-								{ __( 'Duotone Highlight', 'fse-studio' ) }
+							<span className="font-semibold text-left">
+								{ __( 'Duotone Highlight', 'fse-studio' ) } <br/>
+								<small className="text-gray-500">{ color1Value ? color1Value : null }</small>
 							</span>
 							{ popover1Open ? (
 								<Popover
@@ -120,13 +121,14 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 					>
 						<div className="flex items-center gap-3">
 							<span
-								className="h-10 w-10 rounded-full inline-block"
+								className="h-10 w-10 rounded-full inline-block border border-gray-200"
 								style={ {
 									backgroundColor: color2Value,
 								} }
 							></span>
-							<span className="font-semibold">
-								{ __( 'Duotone Shadow', 'fse-studio' ) }
+							<span className="font-semibold text-left">
+								{ __( 'Duotone Shadow', 'fse-studio' ) } <br/>
+								<small className="text-gray-500">{ color2Value ? color2Value : null }</small>
 							</span>
 							{ popover2Open ? (
 								<Popover

@@ -66,39 +66,47 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 						/>
 					</div>
 				</div>
-				<div className="gradient mt-12">
+				<div className="gradient mt-8 w-[230px]">
 					<div>
 						<button
-							style={ {
-								width: '100px',
-								height: '100px',
-								backgroundColor: colorValue,
-							} }
 							onClick={ () => {
 								setPopoverOpen( true );
 							} }
+							className="bg-white rounded-md shadow-sm p-4 hover:shadow transition ease-in-out hover:cursor-pointer w-full"
 						>
-							{ popoverOpen ? (
-								<Popover
-									onFocusOutside={ () => {
-										setPopoverOpen( false );
+							<div className="flex items-center gap-3">
+								<span
+									className="h-10 w-10 rounded-full inline-block border border-gray-200"
+									style={ {
+										backgroundColor: colorValue,
 									} }
-								>
-									<ColorPicker
-										color={ colorValue }
-										// @ts-ignore The declaration file is wrong.
-										onChange={ ( newValue ) => {
-											currentThemeJsonFile.setValue(
-												'settings',
-												schemaPosition + '.color',
-												newValue
-											);
+								></span>
+								<span className="font-semibold text-left">
+									{ __( 'Choose Color', 'fse-studio' ) } <br/>
+									<small className="text-gray-500">{ colorValue ? colorValue : null }</small>
+								</span>
+								{ popoverOpen ? (
+									<Popover
+										onFocusOutside={ () => {
+											setPopoverOpen( false );
 										} }
-										enableAlpha
-										defaultValue="#000"
-									/>
-								</Popover>
-							) : null }
+									>
+										<ColorPicker
+											color={ colorValue }
+											// @ts-ignore The declaration file is wrong.
+											onChange={ ( newValue ) => {
+												currentThemeJsonFile.setValue(
+													'settings',
+													schemaPosition + '.color',
+													newValue
+												);
+											} }
+											enableAlpha
+											defaultValue="#000"
+										/>
+									</Popover>
+								) : null }
+							</div>
 						</button>
 					</div>
 				</div>
