@@ -270,10 +270,218 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor( props ) {
+	const contentRef = useRef();
+	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
+
+	const { blockEditorSettings, currentThemeJsonFile } = useStudioContext();
+	const pattern = props.pattern;
+
+	const [ blocks, updateBlocks ] = useState( [
+		parseBlocks(
+			pattern?.data?.content
+				? pattern?.data?.content
+				: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
+		),
+	] );
+
+	const [ serializedBlocks, updateSerializedBlocks ] = useState( '' );
+
+	const [ currentView, setCurrentView ] = useState( 'blockEditor' ); //Other option is "frontend"
+	const [ editorWidth, setEditorWidth ] = useState( '100%' );
+
+	useEffect( () => {
+		// If the pattern prop changes to a new pattern, reset the blocks in the editor to be that pattern's blocks.
+		updateBlocks(
+			parse(
+				pattern?.data?.content
+					? pattern?.data?.content
+					: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
+			)
+		);
+		props.removeErrors();
+	}, [ pattern?.data?.name ] );
+
+	// When blocks are changed in the block editor, update them in their corresponding files as well.
+	useEffect( () => {
+		// Tests temporarily disabled. Will re-enable in another dedicated effort.
+		// props.removeErrors( testPatternForErrors( blocks ) );
+
+		pattern.set( {
+			...pattern.data,
+			content: blocks[ 0 ]?.clientId ? serialize( blocks ) : '',
+		} );
+	}, [ blocks ] );
+
+	function getEditorSettings() {
+		const editorSettings = JSON.parse(
+			JSON.stringify( blockEditorSettings )
+		);
+
+		// Make media library work.
+		editorSettings.mediaUploadCheck = MediaUploadCheck;
+		editorSettings.mediaUpload = MediaUpload;
+		editorSettings.mediaPlaceholder = MediaPlaceholder;
+		editorSettings.mediaReplaceFlow = MediaReplaceFlow;
+
+		// Inject the current styles rendered by the current themeJsonFileData.
+		if ( currentThemeJsonFile?.data?.renderedGlobalStyles ) {
+			editorSettings.styles.push( {
+				css: currentThemeJsonFile.data.renderedGlobalStyles,
+			} );
+		}
+
+		return editorSettings;
+	}
+	/* eslint-disable */
+	function renderPortalCssStyles() {
+		const renderedStyles = [
+			<div
+				key="inline-style-from-block-editor"
+				dangerouslySetInnerHTML={ {
+					__html: blockEditorSettings.__unstableResolvedAssets.styles,
+				} }
+			/>,
+		];
+
+		for ( const style in blockEditorSettings.styles ) {
+			renderedStyles.push(
+				<style key={ style }>
+					{ blockEditorSettings.styles[ style ].css }
+				</style>
+			);
+		}
+
+		// @ts-ignore
+		if ( currentThemeJsonFile.data?.value?.renderedGlobalStyles ) {
+			renderedStyles.push(
+				<style key={ 'renderedGlobalStyles' }>
+					{
+						// @ts-ignore
+						currentThemeJsonFile.data.value.renderedGlobalStyles 
+					}
+				</style>
+			);
+		}
+
+		return renderedStyles;
+	}
+	/* eslint-enable */
+	if ( ! pattern.data ) {
+		return (
+			<span>
+				{ __( 'Select a pattern to edit it here', 'fse-studio' ) }
+			</span>
+		);
+	}
+
+	function getViewToggleClassName( toggleInQuestion ) {
+		if ( currentView === toggleInQuestion ) {
+			return ' fsestudio-active-tab';
+		}
+
+		return null;
+	}
 
 	return (
 		<div className="fsestudio-pattern-editor">
+			<div
+				style={ { display: 'none' } }
+				className="fsestudio-editor-header"
+			>
+				<div className="fsestudio-pattern-image"></div>
+				<div className="fsestudio-pattern-name">
+					<h2>{ pattern.data.name }</h2>
+				</div>
+				<div className="fsestudio-pattern-tabs">
+					<button
+						className={
+							'fsestudio-tab' +
+							getViewToggleClassName( 'blockEditor' )
+						}
+						onClick={ () => {
+							setCurrentView( 'blockEditor' );
+						} }
+					>
+						Block Editor
+					</button>
+					<button
+						className={
+							'fsestudio-tab' +
+							getViewToggleClassName( 'codeEditor' )
+						}
+						onClick={ () => {
+							setCurrentView( 'codeEditor' );
+						} }
+					>
+						Code Editor
+					</button>
+					<button
+						className={
+							'fsestudio-tab' +
+							getViewToggleClassName( 'frontend' )
+						}
+						onClick={ () => {
+							setCurrentView( 'frontend' );
+						} }
+					>
+						{ __( 'Frontend Preview', 'fse-studio' ) }
+					</button>
+					<select
+						onChange={ ( event ) => {
+							setEditorWidth( event.target.value );
+						} }
+						value={ editorWidth }
+					>
+						<option value="100%">Desktop</option>
+						<option value="320px">320px (iPhone 5/SE)</option>
+						<option value="375px">375px (iPhone X)</option>
+						<option value="768px">768px (iPad)</option>
+						<option value="1024px">1024px (iPad Pro)</option>
+					</select>
+				</div>
+			</div>
 			<div className="fsestudio-pattern-editor-body">
+				<div
+					className="fsestudio-pattern-editor-view"
+					style={ {
+						display:
+							currentView === 'codeEditor' ? 'block' : 'none',
+					} }
+				>
+					<button
+						className="button"
+						onClick={ () => {
+							try {
+								parse( serializedBlocks );
+							} catch ( error ) {
+								/* eslint-disable */
+								alert(
+									__(
+										'Invalid block content. Please check your code to make sure it is valid.',
+										'fse-studio'
+									)
+								);
+								/* eslint-enable */
+								return;
+							}
+
+							updateBlocks( parse( serializedBlocks ) );
+						} }
+					>
+						{ __( 'Done Editing', 'fse-studio' ) }
+					</button>
+					<textarea
+						style={ {
+							width: '100%',
+							height: '90%',
+						} }
+						value={ serializedBlocks }
+						onChange={ ( event ) => {
+							updateSerializedBlocks( event.target.value );
+						} }
+					/>
+				</div>
+
 				<div
 					className="fsestudio-pattern-editor-view"
 					style={ {
@@ -281,13 +489,63 @@ export function BlockEditor( props ) {
 							currentView === 'blockEditor' ? 'block' : 'none',
 					} }
 				>
-					<iframe
-						style={{
-							width: '100%',
-							height: '100%',
-						}}
-						src={ pattern.block_editor_url }
-					/>
+					<ShortcutProvider>
+						<BlockEditorProvider
+							value={ blocks }
+							onChange={ updateBlocks }
+							onInput={ updateBlocks }
+							settings={ getEditorSettings() }
+						>
+							<SlotFillProvider>
+								<Popover.Slot />
+								<BlockTools>
+									<WritingFlow>
+										<ObserveTyping>
+											<div className="fsestudio-pattern-editor-columns">
+												<div className={ 'column' }>
+													<div className="edit-post-visual-editor editor-styles-wrapper">
+														<ResizableEditor
+															// Reinitialize the editor and reset the states when the template changes.
+															key={
+																pattern?.data
+																	?.name
+															}
+															enableResizing={
+																false
+															}
+															settings={ getEditorSettings() }
+															contentRef={
+																mergedRefs
+															}
+														>
+															<BlockList />
+														</ResizableEditor>
+													</div>
+
+													<div
+														style={ {
+															position: 'fixed',
+															bottom: '0px',
+															width: '100%',
+															backgroundColor:
+																'#fff',
+															padding: '4px',
+															zIndex: '999',
+														} }
+													>
+														<BlockBreadcrumb />
+													</div>
+												</div>
+												<div className={ 'column' }>
+													<BlockInspector />
+												</div>
+											</div>
+										</ObserveTyping>
+									</WritingFlow>
+								</BlockTools>
+							</SlotFillProvider>
+						</BlockEditorProvider>
+					</ShortcutProvider>
 				</div>
 			</div>
 		</div>

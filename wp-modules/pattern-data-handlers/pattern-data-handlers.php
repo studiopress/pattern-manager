@@ -162,3 +162,41 @@ function register_block_patterns() {
 	}
 }
 add_action( 'init', __NAMESPACE__ . '\register_block_patterns', 9 );
+
+/**
+ * Generate a "fsestudio_pattern" post, populating the post_content with the passed-in value.
+ *
+ * @param array $block_pattern The data for the block pattern.
+ */
+function generate_pattern_post( $block_pattern ) {
+	$new_post_details = array(
+		'post_title'   => $block_pattern->title,
+		'post_content' => $block_pattern->content,
+		'post_type'    => 'fsestudio_pattern',
+		'tags_input'   => $block_pattern->categories,
+	);
+
+	// Insert the post into the database.
+	$post_id = wp_insert_post( $new_post_details );
+
+	update_post_meta( $post_id, 'name', $block_pattern->name );
+	update_post_meta( $post_id, 'type', $block_pattern->type );
+
+	return $post_id;
+}
+
+/**
+ * Delete all fsestudio_pattern posts.
+ */
+function delete_all_pattern_post_types() {
+	$allposts = get_posts(
+		array(
+			'post_type'   => 'fsestudio_pattern',
+			'numberposts' => -1,
+		)
+	);
+
+	foreach ( $allposts as $eachpost ) {
+		wp_delete_post( $eachpost->ID, true );
+	}
+}
