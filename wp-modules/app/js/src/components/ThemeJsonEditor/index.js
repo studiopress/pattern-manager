@@ -1,13 +1,10 @@
 // @ts-check
 
 // WP Dependencies
-import { ColorPicker, Popover, CustomGradientPicker } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout, file, globe, check } from '@wordpress/icons';
 
-import PatternPreview from '../PatternPreview';
-import PatternPicker from '../PatternPicker';
 import useStudioContext from '../../hooks/useStudioContext';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
@@ -515,27 +512,6 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 }
 
 function ValueSetter({name, value, onChange}) {
-	
-	if( 'gradient' === name ) {
-		return <div>
-			<CustomGradientPicker
-				value={ value }
-				onChange={ onChange }
-			/>
-		</div>
-	}
-
-	if( 'color' === name || 'colors' === name ) {
-		return <div>
-			<ColorPicker
-				color={ value }
-				// @ts-ignore The declaration file is wrong.
-				onChange={ onChange }
-				enableAlpha
-				defaultValue="#000"
-			/>
-		</div>
-	}
 	
 	return <input name={name} type="text" value={value} onChange={(event) => {
 		onChange(event.target.value);
