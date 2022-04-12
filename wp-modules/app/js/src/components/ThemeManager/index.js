@@ -220,7 +220,7 @@ function ThemeDataEditor() {
 	return (
 		<>
 			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-				<ul className="w-72">
+				<ul className="w-[180px] min-w-[180px]">
 					{ views.map( ( item ) => {
 						return (
 							<li key={ item.name }>
