@@ -111,9 +111,8 @@ html body.toplevel_page_fse-studio {
 	min-width: 90vw;
 	min-height: 300px;
 }
-/* stylelint-enable */
 
-input[type="checkbox"]:checked::before{
+input[type="checkbox"]:checked::before {
 	content: inherit;
 }
 
@@ -121,4 +120,4 @@ input[type="checkbox"]:checked::before{
 	max-height: 90vh;
 	min-height: 90vh;
 }
-/* stylelint-enable */
+
