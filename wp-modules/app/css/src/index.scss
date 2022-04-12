@@ -112,8 +112,12 @@ html body.toplevel_page_fse-studio {
 	min-height: 300px;
 }
 
+input[type="checkbox"]:checked::before {
+	content: inherit;
+}
+
 .components-modal__frame {
 	max-height: 90vh;
 	min-height: 90vh;
 }
-/* stylelint-enable */
+
