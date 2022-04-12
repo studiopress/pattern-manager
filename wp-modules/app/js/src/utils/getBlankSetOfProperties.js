@@ -1,10 +1,10 @@
 /**
  * Get a blank set of properties from a schema object.
  *
- * @param {object?} items The schema that defines the properties to return.
+ * @param {object} [items] The schema that defines the properties to return.
  * @return {object} The properties with blank values.
  */
-export default function getBlankArrayFromSchema(items) {
+export default function getBlankArrayFromSchema( items ) {
 	if ( items.type === 'string' ) {
 		return '';
 	}
