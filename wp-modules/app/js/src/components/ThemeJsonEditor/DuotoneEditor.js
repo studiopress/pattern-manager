@@ -87,8 +87,11 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 								} }
 							></span>
 							<span className="font-semibold text-left">
-								{ __( 'Duotone Highlight', 'fse-studio' ) } <br/>
-								<small className="text-gray-500">{ color1Value ? color1Value : null }</small>
+								{ __( 'Duotone Highlight', 'fse-studio' ) }{ ' ' }
+								<br />
+								<small className="text-gray-500">
+									{ color1Value ? color1Value : null }
+								</small>
 							</span>
 							{ popover1Open ? (
 								<Popover
@@ -127,8 +130,10 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 								} }
 							></span>
 							<span className="font-semibold text-left">
-								{ __( 'Duotone Shadow', 'fse-studio' ) } <br/>
-								<small className="text-gray-500">{ color2Value ? color2Value : null }</small>
+								{ __( 'Duotone Shadow', 'fse-studio' ) } <br />
+								<small className="text-gray-500">
+									{ color2Value ? color2Value : null }
+								</small>
 							</span>
 							{ popover2Open ? (
 								<Popover

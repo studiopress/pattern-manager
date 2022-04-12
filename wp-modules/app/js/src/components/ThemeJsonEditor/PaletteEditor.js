@@ -82,8 +82,11 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 									} }
 								></span>
 								<span className="font-semibold text-left">
-									{ __( 'Choose Color', 'fse-studio' ) } <br/>
-									<small className="text-gray-500">{ colorValue ? colorValue : null }</small>
+									{ __( 'Choose Color', 'fse-studio' ) }{ ' ' }
+									<br />
+									<small className="text-gray-500">
+										{ colorValue ? colorValue : null }
+									</small>
 								</span>
 								{ popoverOpen ? (
 									<Popover
