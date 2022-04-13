@@ -260,7 +260,7 @@ function ThemeDataEditor() {
 					}
 				/>
 			</div>
-			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
+			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 				<div>
 					<button
 						type="button"
