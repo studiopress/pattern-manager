@@ -3,7 +3,7 @@
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check } from '@wordpress/icons';
+import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
