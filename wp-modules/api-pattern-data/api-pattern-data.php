@@ -63,9 +63,6 @@ function get_pattern( $request ) {
 
 	$pattern_data = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
 
-	// Temporarily generate a WP post with this pattern.
-	$the_post_id = \FseStudio\PatternDataHandlers\generate_pattern_post( $pattern_data );
-
 	if ( ! $pattern_data ) {
 		return new \WP_REST_Response(
 			array(
@@ -74,8 +71,6 @@ function get_pattern( $request ) {
 			200
 		);
 	} else {
-		// Get the URL to the page where this pattern can be edited.
-		$pattern_data['block_editor_url'] = admin_url( 'post.php?post=' . $the_post_id . '&action=edit' );
 		return new \WP_REST_Response( $pattern_data, 200 );
 	}
 }

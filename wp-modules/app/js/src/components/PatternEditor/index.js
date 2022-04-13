@@ -269,24 +269,20 @@ export default function PatternEditor( { visible } ) {
 	);
 }
 
-export function BlockEditor( props ) {
-
+export function BlockEditor( {pattern} ) {
+	console.log( pattern );
 	return (
 		<div className="fsestudio-pattern-editor">
 			<div className="fsestudio-pattern-editor-body">
 				<div
 					className="fsestudio-pattern-editor-view"
-					style={ {
-						display:
-							currentView === 'blockEditor' ? 'block' : 'none',
-					} }
 				>
 					<iframe
 						style={{
 							width: '100%',
-							height: '100%',
+							height: 'calc( 100vh - 64px )',
 						}}
-						src={ pattern.block_editor_url }
+						src={ pattern.data.block_editor_url }
 					/>
 				</div>
 			</div>

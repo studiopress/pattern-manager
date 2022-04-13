@@ -23,12 +23,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function get_pattern( $pattern_id ) {
+	delete_all_pattern_post_types();
 	$patterns_data = get_patterns();
 	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
 		return false;
 	}
 
-	return $patterns_data[ $pattern_id ];
+	$pattern_data = $patterns_data[ $pattern_id ];
+
+	// Temporarily generate a WP post with this pattern.
+	$the_post_id                      = \FseStudio\PatternDataHandlers\generate_pattern_post( $pattern_data );
+	$pattern_data['block_editor_url'] = admin_url( 'post.php?post=' . $the_post_id . '&action=edit' );
+
+	return $pattern_data;
 }
 
 /**
@@ -37,6 +44,7 @@ function get_pattern( $pattern_id ) {
  * @return array
  */
 function get_patterns() {
+	delete_all_pattern_post_types();
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	/**
@@ -100,6 +108,8 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
+	delete_all_pattern_post_types();
+
 	return $pattern_file_created;
 }
 
@@ -123,7 +133,7 @@ return array(
 	'type'          => '" . $pattern['type'] . "',
 	'title'         => __( '" . addcslashes( $pattern['title'], '\'' ) . "', '" . $text_domain . "' ),
 	'name'          => '" . $pattern['name'] . "',
-	'categories'    => array( '" . implode( ', ', $pattern['categories'] ) . "' ),
+	'categories'    => array( '" . implode( '\', \'', $pattern['categories'] ) . "' ),
 	'viewportWidth' => " . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . ",
 	'content'       => '" . prepare_content( $pattern['content'], $text_domain ) . "',
 );
@@ -169,18 +179,19 @@ add_action( 'init', __NAMESPACE__ . '\register_block_patterns', 9 );
  * @param array $block_pattern The data for the block pattern.
  */
 function generate_pattern_post( $block_pattern ) {
+
 	$new_post_details = array(
-		'post_title'   => $block_pattern->title,
-		'post_content' => $block_pattern->content,
+		'post_title'   => $block_pattern['title'],
+		'post_content' => $block_pattern['content'],
 		'post_type'    => 'fsestudio_pattern',
-		'tags_input'   => $block_pattern->categories,
+		'tags_input'   => $block_pattern['categories'],
 	);
 
 	// Insert the post into the database.
 	$post_id = wp_insert_post( $new_post_details );
 
-	update_post_meta( $post_id, 'name', $block_pattern->name );
-	update_post_meta( $post_id, 'type', $block_pattern->type );
+	update_post_meta( $post_id, 'name', $block_pattern['name'] );
+	update_post_meta( $post_id, 'type', $block_pattern['type'] );
 
 	return $post_id;
 }
@@ -200,3 +211,34 @@ function delete_all_pattern_post_types() {
 		wp_delete_post( $eachpost->ID, true );
 	}
 }
+
+/**
+ * When an fsestudio_pattern post is saved, save it to the pattern file, and then delete the post.
+ *
+ * @param WP_Post $post The Post that was updated.
+ */
+function handle_pattern_save( $post ) {
+
+	$post_id = $post->ID;
+
+	$tags = wp_get_post_tags( $post_id );
+
+	$tag_slugs = array();
+
+	foreach ( $tags as $tag ) {
+		$tag_slugs[] = $tag->slug;
+	}
+
+	$block_pattern_data = array(
+		'type'          => get_post_meta( $post_id, 'type', true ),
+		'title'         => $post->post_title,
+		'name'          => get_post_meta( $post_id, 'name', true ),
+		'categories'    => $tag_slugs,
+		'viewportWidth' => 1280,
+		'content'       => $post->post_content,
+	);
+
+	update_pattern( $block_pattern_data );
+
+}
+add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_pattern_save' );
