@@ -40,8 +40,8 @@ function wrong_environment_warning() {
 }
 
 if ( ! preg_match( '/\.local\/?$/', get_site_url() ) && ! preg_match( '/(local|development)/', wp_get_environment_type() ) ) {
-	//add_action( 'admin_notices', __NAMESPACE__ . '\wrong_environment_warning' );
-	// return;
+	add_action( 'admin_notices', __NAMESPACE__ . '\wrong_environment_warning' );
+	return;
 }
 
 /**
