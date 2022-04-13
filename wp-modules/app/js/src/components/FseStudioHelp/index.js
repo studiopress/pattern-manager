@@ -24,7 +24,10 @@ export default function FseStudioHelp( { visible } ) {
 						) }
 					</p>
 					<p className="text-base p-5 px-4 sm:px-6 md:px-8">
-						{ __( 'Purus ut faucibus pulvinar elementum integer enim neque volutpat. Sit amet purus gravida quis blandit turpis cursus in hac. Sed blandit libero volutpat sed. Sit amet dictum sit amet justo donec. Pretium fusce id velit ut tortor pretium viverra suspendisse potenti. Nulla facilisi morbi tempus iaculis urna id. Sed id semper risus in hendrerit gravida rutrum quisque. Penatibus et magnis dis parturient montes nascetur ridiculus. Lacus vestibulum sed arcu non odio euismod lacinia. Diam in arcu cursus euismod. Urna et pharetra pharetra massa massa ultricies mi. Blandit cursus risus at ultrices mi. Nascetur ridiculus mus mauris vitae. Egestas erat imperdiet sed euismod. Morbi tristique senectus et netus et malesuada fames ac. Dui accumsan sit amet nulla facilisi morbi tempus iaculis urna. Vulputate odio ut enim blandit volutpat maecenas volutpat blandit aliquam. Eu nisl nunc mi ipsum faucibus vitae aliquet.', 'fse-studio' ) }
+						{ __(
+							'Purus ut faucibus pulvinar elementum integer enim neque volutpat. Sit amet purus gravida quis blandit turpis cursus in hac. Sed blandit libero volutpat sed. Sit amet dictum sit amet justo donec. Pretium fusce id velit ut tortor pretium viverra suspendisse potenti. Nulla facilisi morbi tempus iaculis urna id. Sed id semper risus in hendrerit gravida rutrum quisque. Penatibus et magnis dis parturient montes nascetur ridiculus. Lacus vestibulum sed arcu non odio euismod lacinia. Diam in arcu cursus euismod. Urna et pharetra pharetra massa massa ultricies mi. Blandit cursus risus at ultrices mi. Nascetur ridiculus mus mauris vitae. Egestas erat imperdiet sed euismod. Morbi tristique senectus et netus et malesuada fames ac. Dui accumsan sit amet nulla facilisi morbi tempus iaculis urna. Vulputate odio ut enim blandit volutpat maecenas volutpat blandit aliquam. Eu nisl nunc mi ipsum faucibus vitae aliquet.',
+							'fse-studio'
+						) }
 					</p>
 				</div>
 			</div>
