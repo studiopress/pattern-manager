@@ -14,6 +14,7 @@ import { fsestudio } from '../../globals';
 import GradientEditor from './GradientEditor';
 import PaletteEditor from './PaletteEditor';
 import DuotoneEditor from './DuotoneEditor';
+import convertToCssClass from '../../utils/convertToCssClass';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
@@ -334,7 +335,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 	
 	for( const propertyName in properties ) {
 		renderedProperties.push(
-			<div key={propertyName} hidden={!isVisible}>
+			<div key={propertyName} hidden={!isVisible} className={convertToCssClass(propertyName)}>
 				<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
 					<label
 						htmlFor={propertyName}
