@@ -45,6 +45,7 @@ import useSnackbar from '../../hooks/useSnackbar';
 import ThemeManager from '../ThemeManager';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
+import FseStudioHelp from '../FseStudioHelp';
 
 // Utils
 import classNames from '../../utils/classNames';
@@ -166,6 +167,9 @@ function FseStudio() {
 				/>
 				<ThemeJsonEditor
 					visible={ 'themejson_editor' === currentView.currentView }
+				/>
+				<FseStudioHelp
+					visible={ 'fse_studio_help' === currentView.currentView }
 				/>
 			</>
 		);
