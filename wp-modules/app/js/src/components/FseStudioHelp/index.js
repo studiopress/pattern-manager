@@ -8,7 +8,7 @@ export default function FseStudioHelp( { visible } ) {
 		<div hidden={ ! visible } className="p-12">
 			<div className="max-w-7xl mx-auto bg-white shadow">
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
-					{ __( `Learn about FSE Studio`, 'fse-studio' ) }
+					{ __( 'Learn about FSE Studio', 'fse-studio' ) }
 				</h1>
 				<div className="px-4 sm:px-6 md:px-8 py-8">
 					<h1 className="p-5 text-5xl px-4 sm:px-6 md:px-8">

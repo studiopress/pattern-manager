@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
 import FseStudioHelp from '../';
 
-expect( 'FseStudioHelp', () => {
+describe( 'FseStudioHelp', () => {
 	it( 'should not be visible', () => {
 		render( <FseStudioHelp visible={ false }  /> );
 
