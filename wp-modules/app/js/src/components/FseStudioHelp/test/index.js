@@ -8,12 +8,16 @@ describe( 'FseStudioHelp', () => {
 	it( 'should not be visible', () => {
 		render( <FseStudioHelp visible={ false }  /> );
 
-		expect( screen.queryByText( /welcome to fse studio/i ) ).not.toBeInTheDocument();
+		expect(
+			screen.queryByText( /welcome to fse studio/i )
+		).not.toBeInTheDocument();
 	} );
 
 	it( 'should be visible', () => {
 		render( <FseStudioHelp visible={ true } /> );
 
-		expect( screen.getByText( /welcome to fse studio/i ) ).toBeInTheDocument();
+		expect(
+			screen.getByText( /welcome to fse studio/i )
+		).toBeInTheDocument();
 	} );
 } );

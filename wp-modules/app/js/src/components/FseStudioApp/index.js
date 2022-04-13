@@ -148,7 +148,7 @@ function FseStudio() {
 			slug: 'fse_studio_help',
 			icon: info,
 			available: true,
-		}
+		},
 	];
 
 	useEffect( () => {
