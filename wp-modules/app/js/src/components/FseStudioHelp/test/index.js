@@ -5,15 +5,7 @@ import { render, screen } from '@testing-library/react';
 import FseStudioHelp from '../';
 
 describe( 'FseStudioHelp', () => {
-	it( 'should not be visible', () => {
-		render( <FseStudioHelp visible={ false }  /> );
-
-		expect(
-			screen.queryByText( /welcome to fse studio/i )
-		).not.toBeInTheDocument();
-	} );
-
-	it( 'should be visible', () => {
+	it( 'should have the right heading', () => {
 		render( <FseStudioHelp visible={ true } /> );
 
 		expect(
