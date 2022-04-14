@@ -120,3 +120,43 @@ input[type="checkbox"]:checked::before {
 	min-height: 90vh;
 }
 
+/* Settings UI */
+
+.fses-duotone,
+.fses-gradients,
+.fses-palette {
+	.fses-property {
+		@apply col-span-full;
+	}
+	.fses-label {
+		@apply col-span-full;
+	}
+}
+
+.fses-type-boolean {
+	&> div {
+		@apply items-center;
+	}
+	.fses-label {
+		@apply col-span-2; 
+	}
+	.fses-property {
+		@apply col-span-2;
+	}
+	input[type=checkbox], 
+	input[type=radio],
+	[type='checkbox']:checked, 
+	[type='radio']:checked {	
+		@apply w-[1.25rem] h-[1.25rem];
+	}
+	[type='checkbox']:checked, 
+	[type='radio']:checked {	
+		@apply bg-wp-blue;
+	}
+	[type='checkbox']:checked:focus {
+		@apply bg-wp-blue shadow-black;
+	}
+	[type='checkbox']:checked:hover {
+		@apply bg-wp-blue-hover;
+	}
+}
