@@ -340,7 +340,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 
 	for( const propertyName in properties ) {
 		renderedProperties.push(
-			<div key={propertyName} hidden={!isVisible} className={`fses-${convertToCssClass(propertyName)} fses-type-${properties[propertyName].type}`}>
+			<div key={propertyName} hidden={!isVisible} className={`fses-${convertToCssClass(propertyName)} fses-type-${convertToCssClass(properties[propertyName].type) || "boolean" }`}>
 				<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
 					<label
 						htmlFor={propertyName}
