@@ -68,9 +68,9 @@ function removeMatchingTerms( unmatchedTerms, unprocessedTerms ) {
  * @return {Array} Filtered item list.
  */
 export default function searchItems(
-    items = [],
-    searchInput = '',
-    config = {}
+	items = [],
+	searchInput = '',
+	config = {}
 ) {
 	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
 	if ( normalizedSearchTerms.length === 0 ) {
