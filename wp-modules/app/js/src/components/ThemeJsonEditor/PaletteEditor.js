@@ -29,8 +29,8 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 
 	return (
 		<div className="bg-gray-100 p-5 rounded">
-			<div className="flex justify-between items-center gap-5">
-				<div className="flex flex-col gap-5">
+			<div className="flex justify-between items-center gap-12">
+				<div className="flex flex-col gap-5 w-full">
 					<div className="name flex flex-col space-y-1">
 						<div className="font-semibold">
 							{ __( 'Name', 'fse-studio' ) }
@@ -66,7 +66,7 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 						/>
 					</div>
 				</div>
-				<div className="gradient mt-8 w-[230px]">
+				<div className="gradient mt-8 w-full">
 					<div>
 						<button
 							onClick={ () => {

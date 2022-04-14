@@ -133,7 +133,8 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
-.fses-type-boolean {
+.fses-type-boolean,
+.fses-type-string {
 	&> div {
 		@apply items-center;
 	}
@@ -143,6 +144,9 @@ input[type="checkbox"]:checked::before {
 	.fses-property {
 		@apply col-span-2;
 	}
+}
+
+.fses-type-boolean {
 	input[type=checkbox], 
 	input[type=radio],
 	[type='checkbox']:checked, 
@@ -158,5 +162,11 @@ input[type="checkbox"]:checked::before {
 	}
 	[type='checkbox']:checked:hover {
 		@apply bg-wp-blue-hover;
+	}
+}
+
+.fses-font-sizes {
+	.fses-label {
+		// @apply col-span-full;
 	}
 }

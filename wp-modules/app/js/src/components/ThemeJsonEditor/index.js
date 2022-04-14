@@ -330,7 +330,7 @@ function SettingsView({ isVisible }) {
 					</li>
 				) ) }
 			</ul>
-			<div className="divide-y divide-gray-200">{ rendered }</div>
+			<div className="divide-y divide-gray-200 w-full">{ rendered }</div>
 		</div>
 	</div>
 }
@@ -341,10 +341,10 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 	for( const propertyName in properties ) {
 		renderedProperties.push(
 			<div key={propertyName} hidden={!isVisible} className={`fses-${convertToCssClass(propertyName)} fses-type-${convertToCssClass(properties[propertyName].type) || "boolean" }`}>
-				<div className="grid grid-cols-4 gap-4 py-6 items-top">
+				<div className="grid grid-cols-4 gap-6 py-6 items-top">
 					<label
 						htmlFor={propertyName}
-						className="block text-sm font-medium text-gray-700 sm:col-span-1 fses-label"
+						className="block text-sm font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]"
 					>
 						<h2>{ propertyName }</h2>
 						<p>{properties[propertyName].description}</p>
