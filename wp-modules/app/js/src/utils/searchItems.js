@@ -45,7 +45,7 @@ function normalizeSearchInput( input = '' ) {
  * @param {string} input The search term to normalize.
  * @return {string[]} The normalized list of search terms.
  */
-function getNormalizedSearchTerms ( input = '' ) {
+function getNormalizedSearchTerms( input = '' ) {
 	// Extract words.
 	return words( normalizeSearchInput( input ) );
 }
