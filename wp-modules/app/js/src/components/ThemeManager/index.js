@@ -220,7 +220,7 @@ function ThemeDataEditor() {
 	return (
 		<>
 			<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-				<ul className="w-72">
+				<ul className="w-[180px] min-w-[180px]">
 					{ views.map( ( item ) => {
 						return (
 							<li key={ item.name }>
@@ -260,7 +260,7 @@ function ThemeDataEditor() {
 					}
 				/>
 			</div>
-			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center">
+			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex justify-between items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 				<div>
 					<button
 						type="button"
