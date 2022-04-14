@@ -7,7 +7,7 @@
 /**
  * External dependencies
  */
-import { deburr, differenceWith, find, words } from 'lodash';
+import { deburr, differenceWith, words } from 'lodash';
 
 // Default search helpers
 const defaultGetName = ( item ) => item.name || '';
@@ -57,7 +57,7 @@ function removeMatchingTerms( unmatchedTerms, unprocessedTerms ) {
 		( unmatchedTerm, unprocessedTerm ) =>
 			unprocessedTerm.includes( unmatchedTerm )
 	);
-};
+}
 
 /**
  * Filters an item list given a search term.
@@ -67,7 +67,11 @@ function removeMatchingTerms( unmatchedTerms, unprocessedTerms ) {
  * @param {Object} config      Search Config.
  * @return {Array} Filtered item list.
  */
-export default function searchItems( items = [], searchInput = '', config = {} ) {
+export default function searchItems(
+    items = [],
+    searchInput = '',
+    config = {}
+) {
 	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
 	if ( normalizedSearchTerms.length === 0 ) {
 		return items;
