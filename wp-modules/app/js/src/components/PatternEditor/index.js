@@ -23,7 +23,7 @@ import { useMergeRefs } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout } from '@wordpress/icons';
 import { serialize, parse } from '@wordpress/blocks';
-import { SlotFillProvider, Popover, Modal } from '@wordpress/components';
+import { SlotFillProvider, Popover, Modal, Spinner } from '@wordpress/components';
 import { registerCoreBlocks } from '@wordpress/block-library';
 registerCoreBlocks();
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
@@ -154,35 +154,6 @@ export default function PatternEditor( { visible } ) {
 						>
 							{ __( 'Create a new pattern', 'fse-studio' ) }
 						</button>
-						{ pattern?.data ? (
-							<input
-								className="flex-grow"
-								value={ pattern?.data?.title }
-								onChange={ ( event ) => {
-									pattern.set( {
-										...pattern.data,
-										title: event.target.value,
-									} );
-								} }
-								type="text"
-								placeholder={ __(
-									'Name of Pattern',
-									'fse-studio'
-								) }
-							/>
-						) : null }
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								pattern.save();
-							} }
-						>
-							{ __(
-								'Save pattern to disk (wp-content/fsestudio-custom-patterns)',
-								'fse-studio'
-							) }
-						</button>
 						{ maybeRenderErrors() }
 					</div>
 				</div>
@@ -233,33 +204,63 @@ export default function PatternEditor( { visible } ) {
 						/>
 					) : null }
 					{ patternModalMode === 'create' ? (
-						<PatternPicker
-							patterns={ patterns.patterns }
-							themeJsonData={ currentThemeJsonFile.data }
-							onClickPattern={ ( clickedPatternId ) => {
-								const newPatternId = uuidv4();
+						<div>
+							<div className="p-4">
+								<button
+									onClick={() => {
+										const newPatternId = uuidv4();
+	
+										const newPatternData = {
+											type: 'custom',
+											title: 'My New Pattern',
+											name: newPatternId,
+											categories: [],
+											viewportWidth: '',
+											content:''
+										};
+		
+										patterns.createNewPattern( newPatternData )
+										.then(() => {
+											// Switch to the newly created theme.
+											setCurrentPatternId( newPatternId );
+											setIsPatternModalOpen( false );
+										});
 
-								const newPatternData = {
-									type: 'custom',
-									title: 'My New Pattern',
-									name: newPatternId,
-									categories: [],
-									viewportWidth: '',
-									content:
-										patterns.patterns[ clickedPatternId ]
-											.content,
-								};
-
-								patterns.setPatterns( {
-									...patterns.patterns,
-									[ newPatternId ]: newPatternData,
-								} );
-
-								// Switch to the newly created theme.
-								setCurrentPatternId( newPatternId );
-								setIsPatternModalOpen( false );
-							} }
-						/>
+									}}
+									className="button mb-3"
+								>
+									{ __( 'Start with a blank Pattern', 'fse-studio' ) }
+								</button>
+								<p>Or, start by cloning an existing pattern from your library of patterns.</p>
+							</div>
+							<PatternPicker
+								patterns={ patterns.patterns }
+								themeJsonData={ currentThemeJsonFile.data }
+								onClickPattern={ ( clickedPatternId ) => {
+									const newPatternId = uuidv4();
+	
+									const newPatternData = {
+										type: 'custom',
+										title: 'My New Pattern',
+										name: newPatternId,
+										categories: [],
+										viewportWidth: '',
+										content:
+											patterns.patterns[ clickedPatternId ]
+												.content,
+									};
+	
+									patterns.setPatterns( {
+										...patterns.patterns,
+										[ newPatternId ]: newPatternData,
+									} );
+	
+									// Switch to the newly created theme.
+									setCurrentPatternId( newPatternId );
+									setIsPatternModalOpen( false );
+								} }
+							/>
+						</div>
 					) : null }
 				</Modal>
 			) : null }
@@ -270,14 +271,41 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor( {pattern} ) {
-	console.log( pattern );
+	const [currentPatternName, setCurrentPatternName] = useState();
+	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
+	
+	useEffect( () => {
+		// The iframed block editor will send a message to let us know when it is ready.
+		window.addEventListener('message', (event) => {
+			switch(event.data) {
+				case "fsestudio_pattern_editor_loaded":
+					setBlockEditorLoaded( true );
+			}
+		}, false);
+	}, [] );
+	
+	useEffect( () => {
+		
+		if ( pattern.data.name !== currentPatternName ) {
+			setBlockEditorLoaded( false );
+		}
+		setCurrentPatternName( pattern.data.name );
+	}, [pattern] );
+
 	return (
 		<div className="fsestudio-pattern-editor">
 			<div className="fsestudio-pattern-editor-body">
 				<div
 					className="fsestudio-pattern-editor-view"
 				>
+					{ ! blockEditorLoaded ?
+						<div>
+							<Spinner />
+							Loading Pattern in Editor...
+						</div>
+					: null }
 					<iframe
+						hidden={ ! blockEditorLoaded }
 						style={{
 							width: '100%',
 							height: 'calc( 100vh - 64px )',
@@ -288,18 +316,4 @@ export function BlockEditor( {pattern} ) {
 			</div>
 		</div>
 	);
-}
-
-function parseBlocks( blocksToParse ) {
-	if ( parse( blocksToParse ) ) {
-		return parse( blocksToParse );
-	}
-	/* eslint-disable */
-	console.log(
-		'Invalid block content. Unable to parse.',
-		blocksToParse,
-		parse( blocksToParse )
-	);
-	/* eslint-enable */
-	return parse( blocksToParse );
 }

@@ -108,8 +108,6 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
-	delete_all_pattern_post_types();
-
 	return $pattern_file_created;
 }
 
