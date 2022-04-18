@@ -3,7 +3,7 @@
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check } from '@wordpress/icons';
+import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -128,78 +128,11 @@ export default function ThemeJsonEditor( { visible } ) {
 }
 
 function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
-	const { patterns, currentThemeJsonFile } = useStudioContext();
-	const content = themeJsonFile.data.content;
-	const [ currentView, setCurrentView ] = useState( 'settings' );
-
-	const views = [
-		{
-			name: __( 'Settings', 'fse-studio' ),
-			slug: 'settings',
-			icon: file,
-			current: true,
-		},
-		{
-			name: __( 'Styles', 'fse-studio' ),
-			slug: 'styles',
-			icon: layout,
-			current: false,
-		},
-		{
-			name: __( 'Custom Templates', 'fse-studio' ),
-			slug: 'custom_templates',
-			icon: globe,
-			current: false,
-		},
-		{
-			name: __( 'Template Parts', 'fse-studio' ),
-			slug: 'template_parts',
-			icon: globe,
-			current: false,
-		},
-	];
-
-	function maybeRenderStylesView() {
-		if ( currentView !== 'styles' ) {
-			return '';
-		}
-		return <div>
-			<h2>{ fsestudio.schemas.themejson.properties.styles.description }</h2>
-		</div>
-	}
-
-	function maybeRenderCustomTemplatesView() {}
-
-	function maybeRenderTemplatePartsView() {}
-
 	return (
 		<>
-			<div className="">
-				<ul className="flex">
-					{ views.map( ( item ) => (
-						<li key={ item.name }>
-							<button
-								className={
-									'w-full text-left p-5 font-medium' +
-									( currentView === item.slug
-										? ' bg-gray-100'
-										: ' hover:bg-gray-100' )
-								}
-								key={ item.name }
-								onClick={ () => {
-									setCurrentView( item.slug );
-								} }
-							>
-								{ item.name }
-							</button>
-						</li>
-					) ) }
-				</ul>
+			<div>
 				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-					<SettingsView isVisible={ currentView === 'settings' } />
-					{ maybeRenderStylesView() }
-					{ maybeRenderCustomTemplatesView() }
-					{ maybeRenderTemplatePartsView() }
+					<SettingsView isVisible={ true } />
 				</div>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
