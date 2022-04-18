@@ -11,7 +11,7 @@ export default function usePatterns( initialPatterns ) {
 	
 	function createNewPattern( patternData ) {
 		return new Promise( ( resolve ) => {
-			fetch( fsestudio.apiEndpoints.createPatternEndpoint, {
+			fetch( fsestudio.apiEndpoints.savePatternEndpoint, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
@@ -30,5 +30,6 @@ export default function usePatterns( initialPatterns ) {
 	return {
 		patterns,
 		setPatterns,
+		createNewPattern,
 	};
 }
