@@ -349,7 +349,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 						<h2>{ propertyName }</h2>
 						<p>{properties[propertyName].description}</p>
 					</label>
-					<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y fses-property">
+					<div className={`mt-1 sm:mt-0 sm:col-span-3 divide-y fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
 						<RenderProperty
 							isVisible={isVisible}
 							propertySchema={properties[propertyName]}
@@ -363,7 +363,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 		)
 	}
 	
-	return renderedProperties;
+	return <div className={`fses-${convertToCssClass(schemaPosition)}`}>{renderedProperties}</div>
 }
 
 
@@ -449,30 +449,6 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 							/>
 						)
 					}
-
-					rendered.push(
-						<>
-							<button 
-								onClick={() => {
-									currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
-								}}
-								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
-							>
-								{ __( 'Add Another', 'fse-studio' ) }
-							</button>
-							<button
-								className="text-red-500 hover:text-red-700 hidden"
-								onClick={(e) => {
-									e.preventDefault();
-									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex );
-									}
-								}}
-							>
-								{ __( 'Delete', 'fse-studio' ) }
-							</button>
-						</>
-					)
 				} else {
 					rendered.push(
 						<div key={arrIndex} hidden={!isVisible}>
@@ -489,29 +465,32 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 							</div>
 						</div>
 					)
-					
-					rendered.push(
-						<>
-							<button onClick={() => {
-								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
-							}}>
-								{ __( 'Add Another', 'fse-studio' ) }
-							</button>
-							<button
-								className="text-red-500 hover:text-red-700"
-								onClick={(e) => {
-									e.preventDefault();
-									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex );
-									}
-								}}
-							>
-								{ __( 'Delete', 'fse-studio' ) }
-							</button>
-						</>
-					)
 				}
 			}
+
+			rendered.push(
+				<>
+					<button 
+						onClick={() => {
+							currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+						}}
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+					>
+						{ __( 'Add Another', 'fse-studio' ) }
+					</button>
+					<button
+						className="text-red-500 hover:text-red-700 hidden"
+						onClick={(e) => {
+							e.preventDefault();
+							if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
+								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length );
+							}
+						}}
+					>
+						{ __( 'Delete', 'fse-studio' ) }
+					</button>
+				</>
+			)
 		}
 		return rendered;
 	}
