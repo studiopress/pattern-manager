@@ -363,7 +363,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 		)
 	}
 	
-	return renderedProperties;
+	return <div className={`fses-` + schemaPosition}>{renderedProperties}</div>
 }
 
 
