@@ -330,7 +330,7 @@ function SettingsView({ isVisible }) {
 					</li>
 				) ) }
 			</ul>
-			<div className="divide-y divide-gray-200 w-full">{ rendered }</div>
+			<div className="w-full fses-settings-wrap">{ rendered }</div>
 		</div>
 	</div>
 }
@@ -349,7 +349,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 						<h2>{ propertyName }</h2>
 						<p>{properties[propertyName].description}</p>
 					</label>
-					<div className={`mt-1 sm:mt-0 sm:col-span-3 divide-y fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
+					<div className={`mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
 						<RenderProperty
 							isVisible={isVisible}
 							propertySchema={properties[propertyName]}
@@ -363,7 +363,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 		)
 	}
 	
-	return <div className={`fses-${convertToCssClass(schemaPosition)}`}>{renderedProperties}</div>
+	return <div className={`divide-y divide-gray-200 fses-${convertToCssClass(schemaPosition)}`}>{renderedProperties}</div>
 }
 
 

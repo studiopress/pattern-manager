@@ -165,8 +165,23 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
-.fses-font-sizes {
+.fses-font-sizes,
+.fses-font-families {
 	.fses-label {
-		// @apply col-span-full;
+		@apply col-span-full;
+	}
+	.fses-property {
+		@apply col-span-full;
 	}
 }
+
+.fses-typography-font-sizes,
+.fses-typography-font-families {
+	&> div {
+		@apply bg-gray-100 px-5 rounded;
+	}
+	&> div > div .grid {
+		@apply gap-2 py-4;
+	}
+}
+
