@@ -5,15 +5,15 @@
  * @return {string} The string as a slug, like 'example-here'.
  */
 export default function convertToCssClass( toConvert = '' ) {
-	const matches = toConvert.match( /([A-Z]|\d{1,})/g );
+	const matches = toConvert.match( /([A-Z]|\d{1,}|\.)/g );
 
 	if ( ! matches ) {
 		return toConvert;
 	}
 
-	matches.forEach( ( match ) => {
+	Array.from( new Set(matches) ).forEach( ( match ) => {
 		toConvert = toConvert.replace( match, '-' + match );
 	} );
 
-	return toConvert.replace( /^\-/, '' ).toLowerCase();
+	return toConvert.replace( /(^\-|\.)/g, '' ).toLowerCase();
 }
