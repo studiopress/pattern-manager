@@ -11,7 +11,7 @@ export default function convertToCssClass( toConvert = '' ) {
 		return toConvert;
 	}
 
-	Array.from( new Set(matches) ).forEach( ( match ) => {
+	Array.from( new Set( matches ) ).forEach( ( match ) => {
 		toConvert = toConvert.replace( match, '-' + match );
 	} );
 
