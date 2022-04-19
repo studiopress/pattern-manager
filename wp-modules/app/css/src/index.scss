@@ -120,3 +120,68 @@ input[type="checkbox"]:checked::before {
 	min-height: 90vh;
 }
 
+/* Settings UI */
+
+.fses-duotone,
+.fses-gradients,
+.fses-palette {
+	.fses-property {
+		@apply col-span-full;
+	}
+	.fses-label {
+		@apply col-span-full;
+	}
+}
+
+.fses-type-boolean,
+.fses-type-string {
+	&> div {
+		@apply items-center;
+	}
+	.fses-label {
+		@apply col-span-2; 
+	}
+	.fses-property {
+		@apply col-span-2;
+	}
+}
+
+.fses-type-boolean {
+	input[type=checkbox], 
+	input[type=radio],
+	[type='checkbox']:checked, 
+	[type='radio']:checked {	
+		@apply w-[1.25rem] h-[1.25rem];
+	}
+	[type='checkbox']:checked, 
+	[type='radio']:checked {	
+		@apply bg-wp-blue;
+	}
+	[type='checkbox']:checked:focus {
+		@apply bg-wp-blue shadow-black;
+	}
+	[type='checkbox']:checked:hover {
+		@apply bg-wp-blue-hover;
+	}
+}
+
+.fses-font-sizes,
+.fses-font-families {
+	.fses-label {
+		@apply col-span-full;
+	}
+	.fses-property {
+		@apply col-span-full;
+	}
+}
+
+.fses-typography-font-sizes,
+.fses-typography-font-families {
+	&> div {
+		@apply bg-gray-100 px-5 rounded;
+	}
+	&> div > div .grid {
+		@apply gap-2 py-4;
+	}
+}
+

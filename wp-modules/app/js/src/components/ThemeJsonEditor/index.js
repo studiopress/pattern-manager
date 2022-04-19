@@ -3,7 +3,7 @@
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, layout, file, globe, check } from '@wordpress/icons';
+import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -128,78 +128,11 @@ export default function ThemeJsonEditor( { visible } ) {
 }
 
 function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
-	const { patterns, currentThemeJsonFile } = useStudioContext();
-	const content = themeJsonFile.data.content;
-	const [ currentView, setCurrentView ] = useState( 'settings' );
-
-	const views = [
-		{
-			name: __( 'Settings', 'fse-studio' ),
-			slug: 'settings',
-			icon: file,
-			current: true,
-		},
-		{
-			name: __( 'Styles', 'fse-studio' ),
-			slug: 'styles',
-			icon: layout,
-			current: false,
-		},
-		{
-			name: __( 'Custom Templates', 'fse-studio' ),
-			slug: 'custom_templates',
-			icon: globe,
-			current: false,
-		},
-		{
-			name: __( 'Template Parts', 'fse-studio' ),
-			slug: 'template_parts',
-			icon: globe,
-			current: false,
-		},
-	];
-
-	function maybeRenderStylesView() {
-		if ( currentView !== 'styles' ) {
-			return '';
-		}
-		return <div>
-			<h2>{ fsestudio.schemas.themejson.properties.styles.description }</h2>
-		</div>
-	}
-
-	function maybeRenderCustomTemplatesView() {}
-
-	function maybeRenderTemplatePartsView() {}
-
 	return (
 		<>
-			<div className="">
-				<ul className="flex">
-					{ views.map( ( item ) => (
-						<li key={ item.name }>
-							<button
-								className={
-									'w-full text-left p-5 font-medium' +
-									( currentView === item.slug
-										? ' bg-gray-100'
-										: ' hover:bg-gray-100' )
-								}
-								key={ item.name }
-								onClick={ () => {
-									setCurrentView( item.slug );
-								} }
-							>
-								{ item.name }
-							</button>
-						</li>
-					) ) }
-				</ul>
+			<div>
 				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-					<SettingsView isVisible={ currentView === 'settings' } />
-					{ maybeRenderStylesView() }
-					{ maybeRenderCustomTemplatesView() }
-					{ maybeRenderTemplatePartsView() }
+					<SettingsView isVisible={ true } />
 				</div>
 			</div>
 			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
@@ -330,7 +263,7 @@ function SettingsView({ isVisible }) {
 					</li>
 				) ) }
 			</ul>
-			<div className="divide-y divide-gray-200">{ rendered }</div>
+			<div className="w-full fses-settings-wrap">{ rendered }</div>
 		</div>
 	</div>
 }
@@ -341,15 +274,15 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 	for( const propertyName in properties ) {
 		renderedProperties.push(
 			<div key={propertyName} hidden={!isVisible} className={`fses-${convertToCssClass(propertyName)} fses-type-${convertToCssClass(properties[propertyName].type) || "boolean" }`}>
-				<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
+				<div className="grid grid-cols-4 gap-6 py-6 items-top">
 					<label
 						htmlFor={propertyName}
-						className="block text-sm font-medium text-gray-700 sm:col-span-1"
+						className="block text-sm font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]"
 					>
 						<h2>{ propertyName }</h2>
 						<p>{properties[propertyName].description}</p>
 					</label>
-					<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
+					<div className={`mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
 						<RenderProperty
 							isVisible={isVisible}
 							propertySchema={properties[propertyName]}
@@ -363,7 +296,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 		)
 	}
 	
-	return renderedProperties;
+	return <div className={`divide-y divide-gray-200 fses-${convertToCssClass(schemaPosition)}`}>{renderedProperties}</div>
 }
 
 
@@ -449,30 +382,6 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 							/>
 						)
 					}
-
-					rendered.push(
-						<>
-							<button 
-								onClick={() => {
-									currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
-								}}
-								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
-							>
-								{ __( 'Add Another', 'fse-studio' ) }
-							</button>
-							<button
-								className="text-red-500 hover:text-red-700 hidden"
-								onClick={(e) => {
-									e.preventDefault();
-									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex );
-									}
-								}}
-							>
-								{ __( 'Delete', 'fse-studio' ) }
-							</button>
-						</>
-					)
 				} else {
 					rendered.push(
 						<div key={arrIndex} hidden={!isVisible}>
@@ -489,29 +398,32 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 							</div>
 						</div>
 					)
-					
-					rendered.push(
-						<>
-							<button onClick={() => {
-								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
-							}}>
-								{ __( 'Add Another', 'fse-studio' ) }
-							</button>
-							<button
-								className="text-red-500 hover:text-red-700"
-								onClick={(e) => {
-									e.preventDefault();
-									if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-										currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + arrIndex );
-									}
-								}}
-							>
-								{ __( 'Delete', 'fse-studio' ) }
-							</button>
-						</>
-					)
 				}
 			}
+
+			rendered.push(
+				<>
+					<button 
+						onClick={() => {
+							currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+						}}
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+					>
+						{ __( 'Add Another', 'fse-studio' ) }
+					</button>
+					<button
+						className="text-red-500 hover:text-red-700 hidden"
+						onClick={(e) => {
+							e.preventDefault();
+							if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
+								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length );
+							}
+						}}
+					>
+						{ __( 'Delete', 'fse-studio' ) }
+					</button>
+				</>
+			)
 		}
 		return rendered;
 	}
