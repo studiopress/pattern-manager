@@ -4,11 +4,11 @@ import { CheckboxControl } from '@wordpress/components';
 
 /**
  * @param {{
- *  value: Array,
+ *  value?: Array,
  *  onChange: Function
  * }} props
  */
-export default function MultiCheckbox( { value, onChange } ) {
+export default function MultiCheckbox( { value = [], onChange } ) {
 	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
 
 	return (
