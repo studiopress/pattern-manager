@@ -90,3 +90,29 @@ function enqueue_meta_fields_in_editor() {
 	wp_enqueue_style( 'fsestudio_post_meta_style', $css_url, array(), $css_ver );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
+
+/**
+ * If we are on the fse-studio app page, register the patterns with WP.
+ *
+ * @return void
+ */
+function register_block_patterns() {
+	$current_screen = get_current_screen();
+
+	if ( 'fsestudio_pattern' !== $current_screen->post_type ) {
+		return;
+	}
+
+	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
+
+	foreach ( $patterns as $pattern ) {
+		foreach ( $pattern['categories'] as $category ) {
+			register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
+		}
+		register_block_pattern(
+			$pattern['name'],
+			$pattern,
+		);
+	}
+}
+add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );

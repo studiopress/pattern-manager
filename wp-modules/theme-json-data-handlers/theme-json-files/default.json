@@ -82,7 +82,8 @@
                     "slug": "white",
                     "color": "#fff"
                 }
-            ]
+            ],
+            "background": false
         },
         "custom": {
             "fontWeight": {

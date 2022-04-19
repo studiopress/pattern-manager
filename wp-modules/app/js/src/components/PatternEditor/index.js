@@ -1,33 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies
-/* eslint-disable */
-import {
-	BlockEditorProvider,
-	BlockList,
-	BlockTools,
-	WritingFlow,
-	ObserveTyping,
-	BlockInspector,
-	BlockBreadcrumb,
-	MediaUpload,
-	MediaUploadCheck,
-	MediaPlaceholder,
-	MediaReplaceFlow,
-	__unstableUseTypingObserver as useTypingObserver,
-} from '@wordpress/block-editor';
-/* eslint-enable */
+
 // @ts-check
-import ResizableEditor from './ResizableEditor';
-import { useMergeRefs } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout } from '@wordpress/icons';
-import { serialize, parse } from '@wordpress/blocks';
-import { SlotFillProvider, Popover, Modal, Spinner } from '@wordpress/components';
-import { registerCoreBlocks } from '@wordpress/block-library';
-registerCoreBlocks();
-import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { Modal, Spinner } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
 
 // Hooks
 import usePatternData from '../../hooks/usePatternData';
@@ -46,85 +25,15 @@ export default function PatternEditor( { visible } ) {
 		currentThemeJsonFile,
 		currentTheme
 	);
-	const initialErrors = { errors: {}, success: false };
 
-	const [ errors, setErrors ] = useState( initialErrors );
-	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
-	const [ patternModalMode, setPatternModalMode ] = useState( '' );
-
-	function renderPatternEditorWhenReady() {
-		return pattern.data ? (
-			<BlockEditor
-				pattern={ pattern }
-				removeErrors={ () => {
-					setErrors( initialErrors );
-				} }
-			/>
-		) : null;
-	}
-
-	function formatErrorMessage( testResult ) {
-		const output = [];
-		let counter = 0;
-		for ( const error in testResult.errors ) {
-			counter++;
-			const errorTitle = testResult.errors[ error ].errorTitle;
-			const errorMessage = testResult.errors[ error ].errorMessage;
-			const block = testResult.errors[ error ].block;
-			const invalidValue =
-				'Invalid Value: ' + testResult.errors[ error ].invalidValue;
-			output.push(
-				<div key={ counter }>
-					<h2>Error: { errorTitle }</h2>
-					<h2>{ errorMessage }</h2>
-					<h4>Pattern: { testResult.pattern }</h4>
-					<p>Block: { block.name }</p>
-					<p>{ invalidValue }</p>
-				</div>
-			);
-		}
-
-		return output;
-	}
-
-	function maybeRenderErrors() {
-		const numberOfErrors = Object.keys( errors?.errors ).length;
-
-		if ( numberOfErrors && ! errors?.success ) {
-			console.log( errors ); // eslint-disable-line
-			return (
-				<div>
-					<span>Errors </span>
-					<button
-						onClick={ () => {
-							setErrorModalOpen( true );
-						} }
-					>
-						{ numberOfErrors }
-					</button>
-					{ errorModalOpen ? (
-						<Modal
-							title={ __( 'Errors in pattern', 'fse-studio' ) }
-							onRequestClose={ () => setErrorModalOpen( false ) }
-						>
-							{ formatErrorMessage( errors ) }
-						</Modal>
-					) : null }
-				</div>
-			);
-		}
-
-		return null;
-	}
-
+	
 	function renderBrowsePatternsButton() {
 		return (
 			<button
 				type="button"
 				className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 				onClick={ () => {
-					setPatternModalMode( 'choose' );
 					setIsPatternModalOpen( true );
 				} }
 			>
@@ -148,13 +57,26 @@ export default function PatternEditor( { visible } ) {
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
-								setPatternModalMode( 'create' );
-								setIsPatternModalOpen( true );
+								const newPatternId = uuidv4();
+
+								const newPatternData = {
+									type: 'custom',
+									title: 'My New Pattern',
+									name: newPatternId,
+									categories: [],
+									viewportWidth: '',
+									content:''
+								};
+
+								patterns.createNewPattern( newPatternData )
+								.then(() => {
+									// Switch to the newly created theme.
+									setCurrentPatternId( newPatternId );
+								});
 							} }
 						>
 							{ __( 'Create a new pattern', 'fse-studio' ) }
 						</button>
-						{ maybeRenderErrors() }
 					</div>
 				</div>
 			</div>
@@ -178,94 +100,28 @@ export default function PatternEditor( { visible } ) {
 			) }
 			{ isPatternModalOpen ? (
 				<Modal
-					title={
-						patternModalMode === 'choose'
-							? __( 'Pick the patterns to edit', 'fse-studio' )
-							: __(
-									'Choose a starting point for your new pattern',
-									'fse-studio'
-							  )
-					}
+					title={ __( 'Edit one of your existing patterns', 'fse-studio' ) }
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
 					} }
 				>
-					{ patternModalMode === 'choose' ? (
-						<PatternPicker
-							patterns={ patterns.patterns }
-							themeJsonData={ currentThemeJsonFile.data }
-							onClickPattern={
-								/** @param {string} clickedPatternId */
-								( clickedPatternId ) => {
-									setCurrentPatternId( clickedPatternId );
-									setIsPatternModalOpen( false );
-								}
+					<PatternPicker
+						patterns={ patterns.patterns }
+						themeJsonData={ currentThemeJsonFile.data }
+						onClickPattern={
+							/** @param {string} clickedPatternId */
+							( clickedPatternId ) => {
+								setCurrentPatternId( clickedPatternId );
+								setIsPatternModalOpen( false );
 							}
-						/>
-					) : null }
-					{ patternModalMode === 'create' ? (
-						<div>
-							<div className="p-4">
-								<button
-									onClick={() => {
-										const newPatternId = uuidv4();
-	
-										const newPatternData = {
-											type: 'custom',
-											title: 'My New Pattern',
-											name: newPatternId,
-											categories: [],
-											viewportWidth: '',
-											content:''
-										};
-		
-										patterns.createNewPattern( newPatternData )
-										.then(() => {
-											// Switch to the newly created theme.
-											setCurrentPatternId( newPatternId );
-											setIsPatternModalOpen( false );
-										});
-
-									}}
-									className="button mb-3"
-								>
-									{ __( 'Start with a blank Pattern', 'fse-studio' ) }
-								</button>
-								<p>Or, start by cloning an existing pattern from your library of patterns.</p>
-							</div>
-							<PatternPicker
-								patterns={ patterns.patterns }
-								themeJsonData={ currentThemeJsonFile.data }
-								onClickPattern={ ( clickedPatternId ) => {
-									const newPatternId = uuidv4();
-	
-									const newPatternData = {
-										type: 'custom',
-										title: 'My New Pattern',
-										name: newPatternId,
-										categories: [],
-										viewportWidth: '',
-										content:
-											patterns.patterns[ clickedPatternId ]
-												.content,
-									};
-	
-									patterns.setPatterns( {
-										...patterns.patterns,
-										[ newPatternId ]: newPatternData,
-									} );
-	
-									// Switch to the newly created theme.
-									setCurrentPatternId( newPatternId );
-									setIsPatternModalOpen( false );
-								} }
-							/>
-						</div>
-					) : null }
+						}
+					/>
 				</Modal>
 			) : null }
 
-			{ renderPatternEditorWhenReady() }
+			{ pattern.data ? (
+				<BlockEditor pattern={ pattern } />
+			) : null }
 		</div>
 	);
 }
@@ -282,6 +138,11 @@ export function BlockEditor( {pattern} ) {
 					setBlockEditorLoaded( true );
 			}
 		}, false);
+		
+		// As a fallback, if 5 seconds have passed, hide the spinner.
+		setTimeout( () => {
+			setBlockEditorLoaded( true );
+		}, 5000 );
 	}, [] );
 	
 	useEffect( () => {
