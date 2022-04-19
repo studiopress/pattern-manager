@@ -7,14 +7,10 @@ import MultiCheckbox from '../MultiCheckbox';
 function Container( { initialValue } ) {
 	const [ checkboxValue, setCheckboxValue ] = useState( initialValue );
 
-	return (
-		<div>
-			<MultiCheckbox
-				value={ checkboxValue }
-				onChange={ setCheckboxValue }
-			/>
-		</div>
-	);
+	return <MultiCheckbox
+		value={ checkboxValue }
+		onChange={ setCheckboxValue }
+	/>;
 }
 
 describe( 'MultiCheckbox', () => {

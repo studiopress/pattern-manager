@@ -4,7 +4,7 @@ import { CheckboxControl } from '@wordpress/components';
 
 /**
  * @param {{
- *	value: Array,
+ *  value: Array,
  *  onChange: Function
  * }} props
  */
