@@ -16,13 +16,17 @@ function Container( { initialValue } ) {
 describe( 'MultiCheckbox', () => {
 	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
 
-	render( <Container initialValue={ units } /> );
-
 	it.each( units )( 'should have checked checkboxes', ( unit ) => {
+        render( <Container initialValue={ units } /> );
+
 		expect( screen.getByLabelText( unit ).checked ).toEqual( true );
 	} );
 
-	const checkbox = screen.getByLabelText( 'px' );
-	fireEvent.click( checkbox );
-	expect( checkbox.checked ).toEqual( false );
+    it( 'should handle unchecking', () => {
+        render( <Container initialValue={ units } /> );
+
+        const checkbox = screen.getByLabelText( 'px' );
+        fireEvent.click( checkbox );
+        expect( checkbox.checked ).toEqual( false );
+    } );
 } );
