@@ -1,12 +1,15 @@
 // @ts-check
 
+import { useState } from '@wordpress/element';
 import '@testing-library/jest-dom/extend-expect';
 import { fireEvent, render, screen } from '@testing-library/react';
 import MultiCheckbox from '../MultiCheckbox';
 
 describe( 'MultiCheckbox', () => {
 	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
-	render( <MultiCheckbox value={ units } onChange={ () => {} } /> );
+    const [ checkboxValue, setCheckboxValue ] = useState( units );
+
+    render( <MultiCheckbox value={ checkboxValue } onChange={ setCheckboxValue } /> );
 
 	it.each( units )( 'should render the checkbox', ( unit ) => {
 		expect(
