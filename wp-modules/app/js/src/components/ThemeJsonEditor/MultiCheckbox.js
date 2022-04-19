@@ -16,7 +16,6 @@ export default function MultiCheckbox( { value, onChange } ) {
 			{ units.map( ( unit ) => {
 				return (
 					<CheckboxControl
-						className="rounded"
 						key={ unit }
 						label={ unit }
 						checked={ value.includes( unit ) }
