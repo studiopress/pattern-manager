@@ -146,6 +146,15 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
+.fses-type-array {
+	.fses-label {
+		@apply col-span-2;
+	}
+	.fses-property {
+		@apply col-span-2;
+	}
+}
+
 .fses-type-boolean {
 	input[type=checkbox], 
 	input[type=radio],
