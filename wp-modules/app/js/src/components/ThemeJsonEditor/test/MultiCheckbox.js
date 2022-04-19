@@ -25,6 +25,7 @@ describe( 'MultiCheckbox', () => {
 		render( <Container initialValue={ units } /> );
 
 		const checkbox = screen.getByLabelText( 'px' );
+		expect( checkbox.checked ).toEqual( true );
 		fireEvent.click( checkbox );
 		expect( checkbox.checked ).toEqual( false );
 	} );
