@@ -12,10 +12,11 @@ export default function MultiCheckbox( { value, onChange } ) {
 	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
 
 	return (
-		<div>
+		<>
 			{ units.map( ( unit ) => {
 				return (
 					<CheckboxControl
+						className="rounded"
 						key={ unit }
 						label={ unit }
 						checked={ value.includes( unit ) }
@@ -34,6 +35,6 @@ export default function MultiCheckbox( { value, onChange } ) {
 					/>
 				);
 			} ) }
-		</div>
+		</>
 	);
 }
