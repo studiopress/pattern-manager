@@ -19,7 +19,14 @@ export default function MultiCheckbox( { value, onChange } ) {
 						key={ unit }
 						label={ unit }
 						checked={ value.includes( unit ) }
-						onChange={ onChange }
+						onChange={ ( isChecked ) => {
+							const newUnits = isChecked
+								? [ ...value, unit ]
+								: value.filter( ( previousUnit ) => {
+										return unit !== previousUnit;
+								  } );
+							onChange( newUnits );
+						} }
 					/>
 				);
 			} ) }

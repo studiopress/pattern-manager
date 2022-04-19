@@ -338,7 +338,6 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 		/>
 	}
 	if ( propertySchema.type === 'array' ) {
-
 		if ( schemaPosition === 'spacing.units' ) {
 			return <MultiCheckbox 
 				value={ currentValue }

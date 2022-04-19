@@ -1,7 +1,7 @@
 // @ts-check
 
 import '@testing-library/jest-dom/extend-expect';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import MultiCheckbox from '../MultiCheckbox';
 
 describe( 'MultiCheckbox', () => {
@@ -9,7 +9,12 @@ describe( 'MultiCheckbox', () => {
 	render( <MultiCheckbox value={ units } onChange={ () => {} } /> );
 
 	it.each( units )( 'should render the checkbox', ( unit ) => {
-		const checkbox = screen.getByRole( 'checkbox', { name: unit } );
-		expect( checkbox.checked ).toEqual( true );
+		expect(
+			screen.getByRole( 'checkbox', { name: unit } ).checked
+		).toEqual( true );
 	} );
+
+	const checkbox = screen.getByRole( 'checkbox', { name: 'px' } );
+	fireEvent.click( checkbox );
+	expect( checkbox.checked ).toEqual( false );
 } );
