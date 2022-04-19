@@ -22,13 +22,11 @@ describe( 'MultiCheckbox', () => {
 
 	render( <Container initialValue={ units } /> );
 
-	it.each( units )( 'should render the checkbox', ( unit ) => {
-		expect(
-			screen.getByRole( 'checkbox', { name: unit } ).checked
-		).toEqual( true );
+	it.each( units )( 'should have checked checkboxes', ( unit ) => {
+		expect( screen.getByLabelText( unit ).checked ).toEqual( true );
 	} );
 
-	const checkbox = screen.getByRole( 'checkbox', { name: 'px' } );
+	const checkbox = screen.getByLabelText( 'px' );
 	fireEvent.click( checkbox );
 	expect( checkbox.checked ).toEqual( false );
 } );
