@@ -340,7 +340,12 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 	if ( propertySchema.type === 'array' ) {
 
 		if ( schemaPosition === 'spacing.units' ) {
-			return <MultiCheckbox />
+			return <MultiCheckbox 
+				value={ currentValue }
+				onChange={ (newValue) => {
+					currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue, propertySchema?.default );
+				}}
+			/>
 		}
 
 		const rendered = [];

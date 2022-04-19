@@ -5,16 +5,11 @@ import { render, screen } from '@testing-library/react';
 import MultiCheckbox from '../MultiCheckbox';
 
 describe( 'MultiCheckbox', () => {
-	render( <MultiCheckbox /> );
+	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
+	render( <MultiCheckbox value={ units } onChange={ () => {} } /> );
 
-    it.each( [
-        'px',
-        'em',
-        'rem',
-        'vh',
-        'vw',
-        '%'
-    ] )( 'should render the checkbox', ( unit ) => {
-        expect( screen.getByRole('checkbox', { name: unit }) ).toBeInTheDocument();
+	it.each( units )( 'should render the checkbox', ( unit ) => {
+		const checkbox = screen.getByRole( 'checkbox', { name: unit } );
+		expect( checkbox.checked ).toEqual( true );
 	} );
 } );
