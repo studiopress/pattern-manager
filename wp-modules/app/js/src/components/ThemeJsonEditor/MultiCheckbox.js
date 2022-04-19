@@ -20,7 +20,11 @@ export default function MultiCheckbox( { value, onChange } ) {
 						label={ unit }
 						checked={ value.includes( unit ) }
 						onChange={ ( isChecked ) => {
-							const newUnits = isChecked && ! value.includes( unit )
+							if ( isChecked && value.includes( unit ) ) {
+								return;
+							}
+
+							const newUnits = isChecked
 								? [ ...value, unit ]
 								: value.filter( ( previousUnit ) => {
 										return unit !== previousUnit;
