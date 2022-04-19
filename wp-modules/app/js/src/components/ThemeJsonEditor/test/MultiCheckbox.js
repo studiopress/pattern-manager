@@ -2,13 +2,13 @@
 
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import user from '@testing-library/user-event';
 import MultiCheckbox from '../MultiCheckbox';
 
 test( 'MultiCheckbox', async () => {
 	render( <MultiCheckbox /> );
+	const pxUnitName = 'px unit';
+	const remUnitName = 'rem unit';
 
-	expect(
-		screen.getByText( /this is a multicheckbox/i )
-	).toBeInTheDocument();
+	expect( screen.getByLabelText( pxUnitName ) ).toBeInTheDocument();
+	expect( screen.getByLabelText( remUnitName ) ).toBeInTheDocument();
 } );
