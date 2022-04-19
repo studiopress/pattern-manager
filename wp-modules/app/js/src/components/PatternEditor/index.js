@@ -15,6 +15,9 @@ import useStudioContext from '../../hooks/useStudioContext';
 // Components
 import PatternPicker from '../PatternPicker';
 
+// Utils
+import searchItems from '../../utils/searchItems';
+
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
 	const { patterns, currentThemeJsonFile, currentTheme } = useStudioContext();
@@ -106,7 +109,7 @@ export default function PatternEditor( { visible } ) {
 					} }
 				>
 					<PatternPicker
-						patterns={ patterns.patterns }
+						patterns={ searchItems( Object.values( patterns.patterns ), 'custom' ) }
 						themeJsonData={ currentThemeJsonFile.data }
 						onClickPattern={
 							/** @param {string} clickedPatternId */
@@ -136,6 +139,16 @@ export function BlockEditor( {pattern} ) {
 			switch(event.data) {
 				case "fsestudio_pattern_editor_loaded":
 					setBlockEditorLoaded( true );
+			}
+		}, false);
+		
+		// The iframes block editor will send a message whenever the pattern is saved.
+		window.addEventListener('message', (event) => {
+			switch(event.data) {
+				case "fsestudio_pattern_saved":
+					console.log( 'pattern was saved' );
+					// When a pattern is saved, re-grab it from the disk to store in the state.
+					pattern.get();
 			}
 		}, false);
 		

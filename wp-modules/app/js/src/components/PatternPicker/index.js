@@ -8,6 +8,7 @@ import useMounted from '../../hooks/useMounted';
 
 /**
  * @typedef {{
+ *  type: string,
  *  categories: Array,
  *  content: string,
  *  name: string,

@@ -83,5 +83,19 @@ wp.data.subscribe(() => {
 		window.parent.postMessage("fsestudio_pattern_editor_loaded");
 		fsestudio_pattern_editor_loaded = true;
 	}
+	if ( wp.data.select( 'core/editor' ).isSavingPost() ) {
+		window.parent.postMessage(
+			JSON.stringify( {
+				message: "fsestudio_pattern_saved",
+				blockPatternData: {
+					title:
+					name:
+					content:
+					type:
+					categories:
+				}
+			} )
+		);
+	}
 });
 

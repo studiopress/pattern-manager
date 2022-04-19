@@ -30,7 +30,7 @@ export default function usePatternData(
 
 	useEffect( () => {
 		// If the patternId passed in changes, get the new pattern data related to it.
-		getPatternData( patternId );
+		getPatternData();
 	}, [ patternId ] );
 	
 	useEffect( () => {
@@ -47,9 +47,9 @@ export default function usePatternData(
 		}
 	}, [patternData] );
 
-	function getPatternData( thisPatternId ) {
+	function getPatternData() {
 		return new Promise( ( resolve ) => {
-			if ( ! thisPatternId || fetchInProgress ) {
+			if ( ! patternId || fetchInProgress ) {
 				resolve();
 				return;
 			}
@@ -58,7 +58,7 @@ export default function usePatternData(
 			fetch(
 				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getPatternEndpoint, {
-					patternId: thisPatternId,
+					patternId: patternId,
 				} ),
 				{
 					method: 'GET',
@@ -78,7 +78,7 @@ export default function usePatternData(
 					) {
 						setCreatingNewPattern( true );
 						// Get pattern data from the current patterns array, and set it for this pattern.
-						setPatternData( patterns.patterns[ thisPatternId ] );
+						setPatternData( patterns.patterns[ patternId ] );
 					} else {
 						setPatternData( response );
 						currentThemeJsonFile.get();
@@ -119,6 +119,7 @@ export default function usePatternData(
 
 	return {
 		data: patternData,
+		get: getPatternData,
 		set: setPatternData,
 		save: savePatternData,
 	};
