@@ -3,18 +3,24 @@
 import { CheckboxControl } from '@wordpress/components';
 
 export default function MultiCheckbox() {
+	const units = [
+		'px',
+        'em',
+        'rem',
+        'vh',
+        'vw',
+        '%'
+	];
+
 	return (
 		<div>
-			<CheckboxControl
-				label={ 'px unit' }
-				checked={ true }
-				onChange={ () => {} }
-			/>
-			<CheckboxControl
-				label={ 'rem unit' }
-				checked={ true }
-				onChange={ () => {} }
-			/>
+			{ units.map( ( unit ) => {
+				return <CheckboxControl
+					label={ unit }
+					checked={ true }
+					onChange={ () => {} }
+				/>;
+			})}
 		</div>
 	);
 }

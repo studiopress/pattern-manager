@@ -4,11 +4,17 @@ import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
 import MultiCheckbox from '../MultiCheckbox';
 
-test( 'MultiCheckbox', async () => {
+describe( 'MultiCheckbox', () => {
 	render( <MultiCheckbox /> );
-	const pxUnitName = 'px unit';
-	const remUnitName = 'rem unit';
 
-	expect( screen.getByLabelText( pxUnitName ) ).toBeInTheDocument();
-	expect( screen.getByLabelText( remUnitName ) ).toBeInTheDocument();
+    it.each( [
+        'px',
+        'em',
+        'rem',
+        'vh',
+        'vw',
+        '%'
+    ] )( 'should render the checkbox', ( unit ) => {
+        expect( screen.getByRole('checkbox', { name: unit }) ).toBeInTheDocument();
+	} );
 } );
