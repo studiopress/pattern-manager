@@ -6,7 +6,7 @@ function capitalize( name ) {
 /**
  * Converts a string to a Upper Case.
  *
- * @param {string?} toConvert The string to convert, like 'exampleHere'.
+ * @param {string} [toConvert] The string to convert, like 'exampleHere'.
  * @return {string} The string in Upper Case, like 'Example Here'.
  */
 export default function convertToUpperCase( toConvert = '' ) {

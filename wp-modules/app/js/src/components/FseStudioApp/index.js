@@ -18,6 +18,7 @@ import {
 	layout,
 	file,
 	globe,
+	info,
 	close,
 	chevronLeft,
 } from '@wordpress/icons';
@@ -44,6 +45,7 @@ import useSnackbar from '../../hooks/useSnackbar';
 import ThemeManager from '../ThemeManager';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
+import FseStudioHelp from '../FseStudioHelp';
 
 // Utils
 import classNames from '../../utils/classNames';
@@ -124,22 +126,28 @@ function FseStudio() {
 
 	const navigation = [
 		{
-			name: 'Theme Manager',
+			name: __( 'Theme Manager', 'fse-studio' ),
 			slug: 'theme_manager',
 			icon: file,
 			available: true,
 		},
 		{
-			name: 'Pattern Editor',
+			name: __( 'Pattern Editor', 'fse-studio' ),
 			slug: 'pattern_editor',
 			icon: layout,
 			available: currentTheme.existsOnDisk,
 		},
 		{
-			name: 'Theme.json Editor',
+			name: __( 'Theme.json Editor', 'fse-studio' ),
 			slug: 'themejson_editor',
 			icon: globe,
 			available: currentTheme.existsOnDisk,
+		},
+		{
+			name: __( 'FSE Studio Help', 'fse-studio' ),
+			slug: 'fse_studio_help',
+			icon: info,
+			available: true,
 		},
 	];
 
@@ -159,6 +167,9 @@ function FseStudio() {
 				/>
 				<ThemeJsonEditor
 					visible={ 'themejson_editor' === currentView.currentView }
+				/>
+				<FseStudioHelp
+					visible={ 'fse_studio_help' === currentView.currentView }
 				/>
 			</>
 		);
