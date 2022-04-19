@@ -7,9 +7,11 @@ import MultiCheckbox from '../MultiCheckbox';
 
 describe( 'MultiCheckbox', () => {
 	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
-    const [ checkboxValue, setCheckboxValue ] = useState( units );
+	const [ checkboxValue, setCheckboxValue ] = useState( units );
 
-    render( <MultiCheckbox value={ checkboxValue } onChange={ setCheckboxValue } /> );
+	render(
+		<MultiCheckbox value={ checkboxValue } onChange={ setCheckboxValue } />
+	);
 
 	it.each( units )( 'should render the checkbox', ( unit ) => {
 		expect(
