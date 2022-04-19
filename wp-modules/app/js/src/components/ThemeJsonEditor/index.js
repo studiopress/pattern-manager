@@ -341,9 +341,9 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 		if ( schemaPosition === 'spacing.units' ) {
 			return <MultiCheckbox 
 				value={ currentValue }
-				onChange={ (newValue) => {
+				onChange={ ( newValue ) => {
 					currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue, propertySchema?.default );
-				}}
+				} }
 			/>
 		}
 
