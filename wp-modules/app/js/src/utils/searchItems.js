@@ -7,7 +7,7 @@
 /**
  * External dependencies
  */
-import { deburr, differenceWith, find, words } from 'lodash';
+import { deburr, differenceWith, words } from 'lodash';
 
 // Default search helpers
 const defaultGetName = ( item ) => item.name || '';
@@ -20,7 +20,7 @@ const defaultGetCollection = () => null;
 /**
  * Sanitizes the search input string.
  *
- * @param {string} input The search input to normalize.
+ * @param {string} [input] The search input to normalize.
  * @return {string} The normalized search input.
  */
 function normalizeSearchInput( input = '' ) {
@@ -42,53 +42,36 @@ function normalizeSearchInput( input = '' ) {
 /**
  * Converts the search term into a list of normalized terms.
  *
- * @param {string} input The search term to normalize.
+ * @param {string} [input] The search term to normalize.
  * @return {string[]} The normalized list of search terms.
  */
-export const getNormalizedSearchTerms = ( input = '' ) => {
+function getNormalizedSearchTerms( input = '' ) {
 	// Extract words.
 	return words( normalizeSearchInput( input ) );
-};
+}
 
-const removeMatchingTerms = ( unmatchedTerms, unprocessedTerms ) => {
+function removeMatchingTerms( unmatchedTerms, unprocessedTerms ) {
 	return differenceWith(
 		unmatchedTerms,
 		getNormalizedSearchTerms( unprocessedTerms ),
 		( unmatchedTerm, unprocessedTerm ) =>
 			unprocessedTerm.includes( unmatchedTerm )
 	);
-};
-
-export const searchBlockItems = (
-	items,
-	categories,
-	collections,
-	searchInput
-) => {
-	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
-	if ( normalizedSearchTerms.length === 0 ) {
-		return items;
-	}
-
-	const config = {
-		getCategory: ( item ) =>
-			find( categories, { slug: item.category } )?.title,
-		getCollection: ( item ) =>
-			collections[ item.name.split( '/' )[ 0 ] ]?.title,
-	};
-
-	return searchItems( items, searchInput, config );
-};
+}
 
 /**
  * Filters an item list given a search term.
  *
- * @param {Array}  items       Item list
- * @param {string} searchInput Search input.
- * @param {Object} config      Search Config.
+ * @param {Array}  [items]       Item list
+ * @param {string} [searchInput] Search input.
+ * @param {Object} [config]      Search Config.
  * @return {Array} Filtered item list.
  */
-export const searchItems = ( items = [], searchInput = '', config = {} ) => {
+export default function searchItems(
+	items = [],
+	searchInput = '',
+	config = {}
+) {
 	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
 	if ( normalizedSearchTerms.length === 0 ) {
 		return items;
@@ -102,7 +85,7 @@ export const searchItems = ( items = [], searchInput = '', config = {} ) => {
 
 	rankedItems.sort( ( [ , rank1 ], [ , rank2 ] ) => rank2 - rank1 );
 	return rankedItems.map( ( [ item ] ) => item );
-};
+}
 
 /**
  * Get the search rank for a given item and a specific search term.
@@ -111,10 +94,10 @@ export const searchItems = ( items = [], searchInput = '', config = {} ) => {
  *
  * @param {Object} item       Item to filter.
  * @param {string} searchTerm Search term.
- * @param {Object} config     Search Config.
+ * @param {Object} [config]   Search Config.
  * @return {number} Search Rank.
  */
-export function getItemSearchRank( item, searchTerm, config = {} ) {
+function getItemSearchRank( item, searchTerm, config = {} ) {
 	const {
 		getName = defaultGetName,
 		getTitle = defaultGetTitle,
