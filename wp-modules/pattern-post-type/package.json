@@ -10,6 +10,7 @@
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@wordpress/i18n": "^4.3.1",
     "@wordpress/scripts": "^20.0.2"
   }
 }

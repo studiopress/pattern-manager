@@ -32,12 +32,12 @@ export default function usePatternData(
 		// If the patternId passed in changes, get the new pattern data related to it.
 		getPatternData();
 	}, [ patternId ] );
-	
+
 	useEffect( () => {
 		if ( creatingNewPattern ) {
 			savePatternData();
 		}
-		
+
 		if ( patternData?.name ) {
 			// Hoist the current pattern data up to the object containing all patterns.
 			patterns.setPatterns( {
@@ -45,7 +45,7 @@ export default function usePatternData(
 				[ patternData.name ]: patternData,
 			} );
 		}
-	}, [patternData] );
+	}, [ patternData ] );
 
 	function getPatternData() {
 		return new Promise( ( resolve ) => {
@@ -58,7 +58,7 @@ export default function usePatternData(
 			fetch(
 				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getPatternEndpoint, {
-					patternId: patternId,
+					patternId,
 				} ),
 				{
 					method: 'GET',
@@ -105,7 +105,7 @@ export default function usePatternData(
 						setCreatingNewPattern( false );
 						setPatternData( data.patternData );
 					} else {
-						// Whenever the user saved a pattern, save their theme as well, just in case this pattern is part of this theme. 
+						// Whenever the user saved a pattern, save their theme as well, just in case this pattern is part of this theme.
 						currentTheme.save();
 						// Get the updated themejson file, which includes global styled CSS for all patterns.
 						currentThemeJsonFile.get();

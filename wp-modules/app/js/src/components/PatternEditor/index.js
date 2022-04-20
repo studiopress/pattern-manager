@@ -30,7 +30,7 @@ export default function PatternEditor( { visible } ) {
 	);
 
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
-	
+
 	function renderBrowsePatternsButton() {
 		return (
 			<button
@@ -68,14 +68,15 @@ export default function PatternEditor( { visible } ) {
 									name: newPatternId,
 									categories: [],
 									viewportWidth: '',
-									content:''
+									content: '',
 								};
 
-								patterns.createNewPattern( newPatternData )
-								.then(() => {
-									// Switch to the newly created theme.
-									setCurrentPatternId( newPatternId );
-								});
+								patterns
+									.createNewPattern( newPatternData )
+									.then( () => {
+										// Switch to the newly created theme.
+										setCurrentPatternId( newPatternId );
+									} );
 							} }
 						>
 							{ __( 'Create a new pattern', 'fse-studio' ) }
@@ -103,13 +104,19 @@ export default function PatternEditor( { visible } ) {
 			) }
 			{ isPatternModalOpen ? (
 				<Modal
-					title={ __( 'Edit one of your existing patterns', 'fse-studio' ) }
+					title={ __(
+						'Edit one of your existing patterns',
+						'fse-studio'
+					) }
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
 					} }
 				>
 					<PatternPicker
-						patterns={ searchItems( Object.values( patterns.patterns ), 'custom' ) }
+						patterns={ searchItems(
+							Object.values( patterns.patterns ),
+							'custom'
+						) }
 						themeJsonData={ currentThemeJsonFile.data }
 						onClickPattern={
 							/** @param {string} clickedPatternId */
@@ -122,23 +129,20 @@ export default function PatternEditor( { visible } ) {
 				</Modal>
 			) : null }
 
-			{ pattern.data ? (
-				<BlockEditor pattern={ pattern } />
-			) : null }
+			{ pattern.data ? <BlockEditor pattern={ pattern } /> : null }
 		</div>
 	);
 }
 
-export function BlockEditor( {pattern} ) {
+export function BlockEditor( { pattern } ) {
 	const { currentThemeJsonFile } = useStudioContext();
-	const [currentPatternName, setCurrentPatternName] = useState();
-	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
+	const [ currentPatternName, setCurrentPatternName ] = useState();
+	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const iframeRef = useRef();
 	useEffect( () => {
-		console.log( 'Save and refresh irame', currentThemeJsonFile.data );
 		saveAndRefreshPatternIframe();
-	}, [currentThemeJsonFile.hasSaved] );
-	
+	}, [ currentThemeJsonFile.hasSaved ] );
+
 	function saveAndRefreshPatternIframe() {
 		setBlockEditorLoaded( false );
 		// Send a message to the iframe, telling it to save and refresh.
@@ -146,78 +150,78 @@ export function BlockEditor( {pattern} ) {
 			// It might be better to try updating the editor settings, but this apears to be broken.
 			// See: https://github.com/WordPress/gutenberg/issues/15993
 			JSON.stringify( {
-				message: "fsestudio_save_and_refresh",
+				message: 'fsestudio_save_and_refresh',
 			} )
 		);
 	}
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
-		window.addEventListener('message', (event) => {
-			switch(event.data) {
-				case "fsestudio_pattern_editor_loaded":
-					setBlockEditorLoaded( true );
-			}
-		}, false);
-		
-		// The iframes block editor will send a message whenever the pattern is saved.
-		window.addEventListener('message', (event) => {
-			try {
-				const response = JSON.parse( event.data );
-				if ( response.message === 'fsestudio_pattern_saved' ) {
-					// When a pattern is saved, push its new data into our pattern state so that it is up to date in thumbnails, etc.
-					console.log ( 'Pattern data changing from', {
-						...pattern.data,
-						title: response.blockPatternData.title,
-						content: response.blockPatternData.content,
-						type: response.blockPatternData.type,
-					} );
-					pattern.set( {
-						...pattern.data,
-						title: response.blockPatternData.title,
-						content: response.blockPatternData.content,
-						type: response.blockPatternData.type,
-					} );
+		window.addEventListener(
+			'message',
+			( event ) => {
+				switch ( event.data ) {
+					case 'fsestudio_pattern_editor_loaded':
+						setBlockEditorLoaded( true );
 				}
-			}
-			catch (e) {
-				// Message posted was not JSON, so do nothing.
-			  }
-		}, false);
-		
+			},
+			false
+		);
+
+		// The iframes block editor will send a message whenever the pattern is saved.
+		window.addEventListener(
+			'message',
+			( event ) => {
+				try {
+					const response = JSON.parse( event.data );
+					if ( response.message === 'fsestudio_pattern_saved' ) {
+						// When a pattern is saved, push its new data into our pattern state so that it is up to date in thumbnails, etc.
+						pattern.set( {
+							...pattern.data,
+							title: response.blockPatternData.title,
+							content: response.blockPatternData.content,
+							type: response.blockPatternData.type,
+						} );
+					}
+				} catch ( e ) {
+					// Message posted was not JSON, so do nothing.
+				}
+			},
+			false
+		);
+
 		// As a fallback, if 5 seconds have passed, hide the spinner.
 		setTimeout( () => {
 			setBlockEditorLoaded( true );
 		}, 5000 );
 	}, [] );
-	
+
 	useEffect( () => {
-		
 		if ( pattern.data.name !== currentPatternName ) {
 			setBlockEditorLoaded( false );
 		}
 		setCurrentPatternName( pattern.data.name );
-	}, [pattern] );
+	}, [ pattern ] );
 
 	return (
 		<div className="fsestudio-pattern-editor">
 			<div className="fsestudio-pattern-editor-body">
-				<div
-					className="fsestudio-pattern-editor-view"
-				>
-					{ ! blockEditorLoaded ?
+				<div className="fsestudio-pattern-editor-view">
+					{ ! blockEditorLoaded ? (
 						<div>
 							<Spinner />
-							Getting the latest version of this Pattern into the block Editor...
+							Getting the latest version of this Pattern into the
+							block Editor...
 						</div>
-					: null }
+					) : null }
 					<iframe
-						ref={iframeRef}
+						title={ __( 'Pattern Editor', 'fse-studio' ) }
+						ref={ iframeRef }
 						hidden={ ! blockEditorLoaded }
-						style={{
+						style={ {
 							width: '100%',
 							height: 'calc( 100vh - 64px )',
-						}}
+						} }
 						src={ pattern.data.block_editor_url }
 					/>
 				</div>

@@ -1,3 +1,4 @@
+/* global fetch */
 // @ts-check
 
 import * as React from 'react';
@@ -8,7 +9,7 @@ import { fsestudio } from '../globals';
 export default function usePatterns( initialPatterns ) {
 	/** @type {[typeof import('../').fsestudio.patterns, React.Dispatch<React.SetStateAction<typeof import('../').fsestudio.patterns>>]} */
 	const [ patterns, setPatterns ] = useState( initialPatterns );
-	
+
 	function createNewPattern( patternData ) {
 		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.savePatternEndpoint, {

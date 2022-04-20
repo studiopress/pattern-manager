@@ -1,7 +1,7 @@
 <?php
 /**
  * Module Name: Pattern Post Type
- * Description: This module registers a post type to be used when editing block patterns.
+ * Description: This module registers a post type to be used when editing block patterns, and sets up how things work in the block editor.
  * Namespace: StringFixer
  *
  * @package fse-studio
