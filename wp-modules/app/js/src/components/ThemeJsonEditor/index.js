@@ -14,6 +14,7 @@ import { fsestudio } from '../../globals';
 import GradientEditor from './GradientEditor';
 import PaletteEditor from './PaletteEditor';
 import DuotoneEditor from './DuotoneEditor';
+import MultiCheckbox from './MultiCheckbox';
 import convertToCssClass from '../../utils/convertToCssClass';
 
 /** @param {{visible: boolean}} props */
@@ -337,6 +338,14 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 		/>
 	}
 	if ( propertySchema.type === 'array' ) {
+		if ( schemaPosition === 'spacing.units' ) {
+			return <MultiCheckbox 
+				value={ currentValue }
+				onChange={ ( newValue ) => {
+					currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue, propertySchema?.default );
+				} }
+			/>
+		}
 
 		const rendered = [];
 
