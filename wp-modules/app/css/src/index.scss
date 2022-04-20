@@ -145,12 +145,22 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
+.fses-type-array {
+	.fses-label {
+		@apply col-span-2;
+	}
+	.fses-property {
+		@apply col-span-2;
+	}
+}
+
+.fses-type-array,
 .fses-type-boolean {
 	input[type=checkbox], 
 	input[type=radio],
 	[type='checkbox']:checked, 
 	[type='radio']:checked {	
-		@apply w-[1.25rem] h-[1.25rem];
+		@apply w-[1.25rem] h-[1.25rem] rounded;
 	}
 	[type='checkbox']:checked, 
 	[type='radio']:checked {	
