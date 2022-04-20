@@ -33,7 +33,7 @@ function pattern_post_type() {
 				'editor',
 				'custom-fields',
 			),
-			'labels' => array(
+			'labels'       => array(
 				'name' => __( 'Pattern', 'fse-studio' ),
 			),
 		)
@@ -42,6 +42,16 @@ function pattern_post_type() {
 	register_post_meta(
 		'fsestudio_pattern',
 		'type',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		)
+	);
+
+	register_post_meta(
+		'fsestudio_pattern',
+		'title',
 		array(
 			'show_in_rest' => true,
 			'single'       => true,

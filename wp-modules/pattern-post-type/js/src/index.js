@@ -67,6 +67,9 @@ function changePublishToSavePattern( translation, text, domain ) {
 	if ( text === 'Update' ||  text === 'Post updated.' ) {
 		return 'Update Pattern';
 	}
+	if ( text === 'Tags' ) {
+		return 'Pattern Categories';
+	}
 	
 	return translation;
 }
@@ -77,25 +80,58 @@ wp.hooks.addFilter(
 );
 
 // Tell the parent page (fse studio) that we are loaded.
-let fsestudio_pattern_editor_loaded = false;
+let fsestudioPatternEditorLoaded = false;
+let fsestudioPatternSavedDeBounce = null;
 wp.data.subscribe(() => {
-	if ( ! fsestudio_pattern_editor_loaded ) {
+	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage("fsestudio_pattern_editor_loaded");
-		fsestudio_pattern_editor_loaded = true;
+		fsestudioPatternEditorLoaded = true;
 	}
 	if ( wp.data.select( 'core/editor' ).isSavingPost() ) {
-		window.parent.postMessage(
-			JSON.stringify( {
-				message: "fsestudio_pattern_saved",
-				blockPatternData: {
-					title:
-					name:
-					content:
-					type:
-					categories:
-				}
-			} )
-		);
+		const postMeta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		clearTimeout( fsestudioPatternSavedDeBounce );
+		fsestudioPatternSavedDeBounce = setTimeout( () => {
+			window.parent.postMessage(
+				JSON.stringify( {
+					message: "fsestudio_pattern_saved",
+					blockPatternData: {
+						title: postMeta.title,
+						name: postMeta.name,
+						content: wp.data.select( 'core/editor' ).getEditedPostAttribute( 'content' ),
+						type: postMeta.type,
+						categories: wp.data.select( 'core/editor' ).getEditedPostAttribute( 'tags' ),
+					}
+				} )
+			);
+		}, 1000 );
 	}
 });
+
+let fsestudioSaveAndRefreshDebounce = null;
+// If the FSE Studio app sends an instruction, listen for and do it here.
+window.addEventListener('message', (event) => {
+	try {
+		const response = JSON.parse( event.data );
+		if ( response.message === 'fsestudio_update_block_editor_settings' ) {
+			const currentSettings = wp.data.select( 'core/block-editor' ).getSettings();
+			
+			currentSettings.colors = response.colors;
+			console.log( currentSettings );
+			wp.data.dispatch( 'core/block-editor' ).updateSettings(currentSettings);
+		}
+		
+		if ( response.message === 'fsestudio_save_and_refresh' ) {
+			// If the FSE Studio apps tells us to save the current post, do it:
+			clearTimeout( fsestudioSaveAndRefreshDebounce );
+			fsestudioSaveAndRefreshDebounce = setTimeout( () => {
+				wp.data.dispatch( 'core/editor' ).savePost().then(() => {
+					window.location.reload();
+				});
+			}, 2000 );
+		}
+	}
+	catch (e) {
+		// Message posted was not JSON, so do nothing.
+	  }
+}, false);
 

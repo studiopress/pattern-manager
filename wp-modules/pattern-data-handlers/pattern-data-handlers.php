@@ -23,7 +23,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function get_pattern( $pattern_id ) {
-	delete_all_pattern_post_types();
 	$patterns_data = get_patterns();
 	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
 		return false;
@@ -32,7 +31,7 @@ function get_pattern( $pattern_id ) {
 	$pattern_data = $patterns_data[ $pattern_id ];
 
 	// Temporarily generate a WP post with this pattern.
-	$the_post_id                      = \FseStudio\PatternDataHandlers\generate_pattern_post( $pattern_data );
+	$the_post_id                      = generate_pattern_post( $pattern_data );
 	$pattern_data['block_editor_url'] = admin_url( 'post.php?post=' . $the_post_id . '&action=edit' );
 
 	return $pattern_data;
@@ -44,7 +43,6 @@ function get_pattern( $pattern_id ) {
  * @return array
  */
 function get_patterns() {
-	delete_all_pattern_post_types();
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	/**
@@ -122,7 +120,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 	// phpcs:ignore
 	$file_contents = "<?php
 /**
- * Frost: " . $pattern['title'] . "
+ * Pattern: " . $pattern['title'] . "
  *
  * @package fse-studio
  */
@@ -156,7 +154,6 @@ function prepare_content( $pattern_html, $text_domain ) {
  * @param array $block_pattern The data for the block pattern.
  */
 function generate_pattern_post( $block_pattern ) {
-
 	$new_post_details = array(
 		'post_title'   => $block_pattern['title'],
 		'post_content' => $block_pattern['content'],
@@ -167,6 +164,7 @@ function generate_pattern_post( $block_pattern ) {
 	// Insert the post into the database.
 	$post_id = wp_insert_post( $new_post_details );
 
+	update_post_meta( $post_id, 'title', $block_pattern['title'] );
 	update_post_meta( $post_id, 'name', $block_pattern['name'] );
 	update_post_meta( $post_id, 'type', $block_pattern['type'] );
 
@@ -195,7 +193,6 @@ function delete_all_pattern_post_types() {
  * @param WP_Post $post The Post that was updated.
  */
 function handle_pattern_save( $post ) {
-
 	$post_id = $post->ID;
 
 	$tags = wp_get_post_tags( $post_id );
@@ -208,7 +205,7 @@ function handle_pattern_save( $post ) {
 
 	$block_pattern_data = array(
 		'type'          => get_post_meta( $post_id, 'type', true ),
-		'title'         => $post->post_title,
+		'title'         => get_post_meta( $post_id, 'title', true ),
 		'name'          => get_post_meta( $post_id, 'name', true ),
 		'categories'    => $tag_slugs,
 		'viewportWidth' => 1280,
@@ -216,6 +213,5 @@ function handle_pattern_save( $post ) {
 	);
 
 	update_pattern( $block_pattern_data );
-
 }
 add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_pattern_save' );

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout } from '@wordpress/icons';
 import { Modal, Spinner } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Hooks
 import usePatternData from '../../hooks/usePatternData';
@@ -130,9 +130,27 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor( {pattern} ) {
+	const { currentThemeJsonFile } = useStudioContext();
 	const [currentPatternName, setCurrentPatternName] = useState();
 	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
+	const iframeRef = useRef();
+	useEffect( () => {
+		console.log( 'Save and refresh irame', currentThemeJsonFile.data );
+		saveAndRefreshPatternIframe();
+	}, [currentThemeJsonFile.hasSaved] );
 	
+	function saveAndRefreshPatternIframe() {
+		setBlockEditorLoaded( false );
+		// Send a message to the iframe, telling it to save and refresh.
+		iframeRef.current.contentWindow.postMessage(
+			// It might be better to try updating the editor settings, but this apears to be broken.
+			// See: https://github.com/WordPress/gutenberg/issues/15993
+			JSON.stringify( {
+				message: "fsestudio_save_and_refresh",
+			} )
+		);
+	}
+
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
 		window.addEventListener('message', (event) => {
@@ -144,12 +162,27 @@ export function BlockEditor( {pattern} ) {
 		
 		// The iframes block editor will send a message whenever the pattern is saved.
 		window.addEventListener('message', (event) => {
-			switch(event.data) {
-				case "fsestudio_pattern_saved":
-					console.log( 'pattern was saved' );
-					// When a pattern is saved, re-grab it from the disk to store in the state.
-					pattern.get();
+			try {
+				const response = JSON.parse( event.data );
+				if ( response.message === 'fsestudio_pattern_saved' ) {
+					// When a pattern is saved, push its new data into our pattern state so that it is up to date in thumbnails, etc.
+					console.log ( 'Pattern data changing from', {
+						...pattern.data,
+						title: response.blockPatternData.title,
+						content: response.blockPatternData.content,
+						type: response.blockPatternData.type,
+					} );
+					pattern.set( {
+						...pattern.data,
+						title: response.blockPatternData.title,
+						content: response.blockPatternData.content,
+						type: response.blockPatternData.type,
+					} );
+				}
 			}
+			catch (e) {
+				// Message posted was not JSON, so do nothing.
+			  }
 		}, false);
 		
 		// As a fallback, if 5 seconds have passed, hide the spinner.
@@ -175,10 +208,11 @@ export function BlockEditor( {pattern} ) {
 					{ ! blockEditorLoaded ?
 						<div>
 							<Spinner />
-							Loading Pattern in Editor...
+							Getting the latest version of this Pattern into the block Editor...
 						</div>
 					: null }
 					<iframe
+						ref={iframeRef}
 						hidden={ ! blockEditorLoaded }
 						style={{
 							width: '100%',

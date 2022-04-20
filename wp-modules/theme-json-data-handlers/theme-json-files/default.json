@@ -4,7 +4,6 @@
     "customTemplates": [],
     "settings": {
         "color": {
-            "custom": true,
             "customDuotone": true,
             "defaultGradients": false,
             "defaultPalette": false,
@@ -55,7 +54,7 @@
                 {
                     "name": "Black",
                     "slug": "black",
-                    "color": "#000"
+                    "color": "#2c502f"
                 },
                 {
                     "name": "Primary",
