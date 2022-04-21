@@ -41,31 +41,12 @@ const FseStudioMetaControls = () => {
 						} }
 					/>
 				</PanelRow>
-				<PanelRow>
-					<RadioControl
-						label={ __( 'Pattern Type', 'fse-studio' ) }
-						help={ __(
-							'The type of the pattern this is',
-							'fse-studio'
-						) }
-						selected={ postMeta.type }
-						options={ [
-							{ label: 'Default', value: 'default' },
-							{ label: 'Custom', value: 'custom' },
-						] }
-						onChange={ ( value ) => {
-							wp.data
-								.dispatch( 'core/editor' )
-								.editPost( { meta: { type: value } } );
-						} }
-					/>
-				</PanelRow>
 			</PluginDocumentSettingPanel>
 		</div>
 	);
 };
 
-registerPlugin( 'my-custom-postmeta-plugin', {
+registerPlugin( 'fsestudio-postmeta-for-patterns', {
 	icon: null,
 	render: () => {
 		return <FseStudioMetaControls />;
@@ -86,7 +67,7 @@ function changePublishToSavePattern( translation, text ) {
 	if ( text === 'Update' || text === 'Post updated.' ) {
 		return 'Update Pattern';
 	}
-	if ( text === 'Tags' ) {
+	if ( text === 'Add New Tag' ) {
 		return 'Pattern Categories';
 	}
 
