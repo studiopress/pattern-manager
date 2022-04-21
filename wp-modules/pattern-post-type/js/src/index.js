@@ -1,48 +1,67 @@
-// @ts-check
-
 import '../../css/src/index.scss';
 import { registerPlugin } from '@wordpress/plugins';
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
-import { RadioControl, PanelRow } from '@wordpress/components';
+import { RadioControl, PanelRow, TextControl } from '@wordpress/components';
+import { useState, useEffect } from '@wordpress/element';
 
 const FseStudioMetaControls = () => {
-	// @ts-ignore
+	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
+
+	useEffect( () => {
+		wp.data.subscribe( () => {
+			setCoreLastUpdate( Date.now() );
+		} );
+	}, [] );
+
 	if (
 		'fsestudio_pattern' !==
 		wp.data.select( 'core/editor' ).getCurrentPostType()
 	)
 		return null; // Will only render component for post type 'post'
 
-	// @ts-ignore
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
 
 	return (
-		<PluginDocumentSettingPanel
-			title={ __( 'Pattern Settings', 'txtdomain' ) }
-			icon="edit"
-		>
-			<PanelRow>
-				<RadioControl
-					label="Pattern Type"
-					help="The type of the pattern this is"
-					// @ts-ignore
-					selected={ postMeta.type }
-					options={ [
-						{ label: 'Default', value: 'default' },
-						{ label: 'Custom', value: 'custom' },
-					] }
-					onChange={ ( value ) => {
-						// @ts-ignore
-						wp.data
-							.dispatch( 'core/editor' )
-							.editPost( { meta: { _my_custom_text: value } } );
-					} }
-				/>
-			</PanelRow>
-		</PluginDocumentSettingPanel>
+		<div id={ coreLastUpdate }>
+			<PluginDocumentSettingPanel
+				title={ __( 'Pattern Settings', 'fse-studio' ) }
+				icon="edit"
+			>
+				<PanelRow>
+					<TextControl
+						label={ __( 'Pattern Name', 'fse-studio' ) }
+						value={ postMeta.title }
+						onChange={ ( value ) => {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: { ...postMeta, title: value },
+							} );
+						} }
+					/>
+				</PanelRow>
+				<PanelRow>
+					<RadioControl
+						label={ __( 'Pattern Type', 'fse-studio' ) }
+						help={ __(
+							'The type of the pattern this is',
+							'fse-studio'
+						) }
+						selected={ postMeta.type }
+						options={ [
+							{ label: 'Default', value: 'default' },
+							{ label: 'Custom', value: 'custom' },
+						] }
+						onChange={ ( value ) => {
+							wp.data
+								.dispatch( 'core/editor' )
+								.editPost( { meta: { type: value } } );
+						} }
+					/>
+				</PanelRow>
+			</PluginDocumentSettingPanel>
+		</div>
 	);
 };
 
@@ -73,7 +92,7 @@ function changePublishToSavePattern( translation, text ) {
 
 	return translation;
 }
-// @ts-ignore
+
 wp.hooks.addFilter(
 	'i18n.gettext',
 	'fse-studio/change-publish-to-save-pattern',
@@ -83,15 +102,14 @@ wp.hooks.addFilter(
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
 let fsestudioPatternSavedDeBounce = null;
-// @ts-ignore
+
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
-	// @ts-ignore
+
 	if ( wp.data.select( 'core/editor' ).isSavingPost() ) {
-		// @ts-ignore
 		const postMeta = wp.data
 			.select( 'core/editor' )
 			.getEditedPostAttribute( 'meta' );
@@ -103,12 +121,12 @@ wp.data.subscribe( () => {
 					blockPatternData: {
 						title: postMeta.title,
 						name: postMeta.name,
-						// @ts-ignore
+
 						content: wp.data
 							.select( 'core/editor' )
 							.getEditedPostAttribute( 'content' ),
 						type: postMeta.type,
-						// @ts-ignore
+
 						categories: wp.data
 							.select( 'core/editor' )
 							.getEditedPostAttribute( 'tags' ),
@@ -131,7 +149,6 @@ window.addEventListener(
 				// If the FSE Studio apps tells us to save the current post, do it:
 				clearTimeout( fsestudioSaveAndRefreshDebounce );
 				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
-					// @ts-ignore
 					wp.data
 						.dispatch( 'core/editor' )
 						.savePost()
