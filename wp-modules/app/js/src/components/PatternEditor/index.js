@@ -44,7 +44,7 @@ export default function PatternEditor( { visible } ) {
 					icon={ layout }
 					size={ 26 }
 				/>{ ' ' }
-				{ __( 'Edit Patterns', 'fse-studio' ) }
+				{ __( 'Edit Theme Patterns', 'fse-studio' ) }
 			</button>
 		);
 	}
@@ -78,7 +78,7 @@ export default function PatternEditor( { visible } ) {
 									} );
 							} }
 						>
-							{ __( 'Create a new pattern', 'fse-studio' ) }
+							{ __( 'Create a new pattern for this theme', 'fse-studio' ) }
 						</button>
 					</div>
 				</div>

@@ -60,14 +60,20 @@ function get_patterns() {
 
 	// Get the custom patterns (ones created by the user, not included in the plugin).
 	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-	$wp_content_dir = $wp_filesystem->wp_content_dir();
+	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
 
-	$pattern_file_paths = glob( $wp_content_dir . '/fsestudio-custom-assets/patterns/*.php' );
+	$themes = glob( $wp_themes_dir . '*' );
 
-	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data                          = require $path;
-		$pattern_data['name']                  = basename( $path, '.php' );
-		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
+	foreach ( $themes as $theme ) {
+
+		// Grab all of the pattrns in this theme.
+		$pattern_file_paths = glob( $theme . '/theme-patterns/*.php' );
+
+		foreach ( $pattern_file_paths as $path ) {
+			$pattern_data                          = require $path;
+			$pattern_data['name']                  = basename( $path, '.php' );
+			$patterns[ basename( $path, '.php' ) ] = $pattern_data;
+		}
 	}
 
 	return $patterns;
@@ -84,17 +90,15 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	$wp_content_dir = $wp_filesystem->wp_content_dir();
-	$plugin_dir     = $wp_content_dir . 'plugins/fse-studio/';
+	$wp_theme_dir = get_template_directory();
+	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'default' === $pattern['type'] ) {
 		$patterns_dir = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
 	} else {
-		$assets_dir = $wp_content_dir . 'fsestudio-custom-assets/';
-		if ( ! $wp_filesystem->exists( $assets_dir ) ) {
-			$wp_filesystem->mkdir( $assets_dir );
-		}
-		$patterns_dir = $wp_content_dir . 'fsestudio-custom-assets/patterns/';
+
+		$patterns_dir = $wp_theme_dir . '/theme-patterns/';
+
 		if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
 			$wp_filesystem->mkdir( $patterns_dir );
 		}
@@ -195,7 +199,7 @@ function delete_all_pattern_post_types() {
  *
  * @param WP_Post $post The Post that was updated.
  */
-function handle_pattern_save( $post ) {
+function handle_pattern_post_save( $post ) {
 	$post_id = $post->ID;
 
 	$tags = wp_get_post_tags( $post_id );
@@ -217,4 +221,4 @@ function handle_pattern_save( $post ) {
 
 	update_pattern( $block_pattern_data );
 }
-add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_pattern_save' );
+add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_pattern_post_save' );

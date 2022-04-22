@@ -59,7 +59,7 @@ function changePublishToSavePattern( translation, text ) {
 		return 'Save pattern to file';
 	}
 	if ( text === 'Saved' ) {
-		return 'Saved to your wp-content/fsestudio-custom-patterns/ directory';
+		return 'Saved to your theme directory';
 	}
 	if ( text === 'Post published.' || text === 'Post updated.' ) {
 		return 'Pattern saved to disk';
