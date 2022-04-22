@@ -8,6 +8,7 @@ import { Icon, check } from '@wordpress/icons';
 import useStudioContext from '../../hooks/useStudioContext';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
+import convertToUpperCase from '../../utils/convertToUpperCase';
 
 import { fsestudio } from '../../globals';
 
@@ -259,7 +260,7 @@ function SettingsView({ isVisible }) {
 								setCurrentView( item.slug );
 							} }
 						>
-							{ item.name }
+							{ convertToUpperCase( item.name ) }
 						</button>
 					</li>
 				) ) }
@@ -280,7 +281,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 						htmlFor={propertyName}
 						className="block text-sm font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]"
 					>
-						<h2>{ propertyName }</h2>
+						<h2>{ convertToUpperCase( propertyName ) }</h2>
 						<p>{properties[propertyName].description}</p>
 					</label>
 					<div className={`mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
