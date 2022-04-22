@@ -20,12 +20,11 @@ import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
-	const { patterns, currentThemeJsonFile, currentTheme } = useStudioContext();
+	const { patterns, currentTheme } = useStudioContext();
 	const [ currentPatternId, setCurrentPatternId ] = useState( '' );
 	const pattern = usePatternData(
 		currentPatternId,
 		patterns,
-		currentThemeJsonFile,
 		currentTheme
 	);
 
@@ -117,7 +116,6 @@ export default function PatternEditor( { visible } ) {
 							Object.values( patterns.patterns ),
 							'custom'
 						) }
-						themeJsonData={ currentThemeJsonFile.data }
 						onClickPattern={
 							/** @param {string} clickedPatternId */
 							( clickedPatternId ) => {
@@ -135,13 +133,13 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor( { pattern } ) {
-	const { currentThemeJsonFile } = useStudioContext();
+	const { currentTheme } = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const iframeRef = useRef();
 	useEffect( () => {
 		saveAndRefreshPatternIframe();
-	}, [ currentThemeJsonFile.hasSaved ] );
+	}, [ currentTheme.hasSaved ] );
 
 	function saveAndRefreshPatternIframe() {
 		setBlockEditorLoaded( false );

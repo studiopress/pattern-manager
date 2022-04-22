@@ -84,41 +84,6 @@ function get_all_theme_json_files() {
 }
 
 /**
- * Update a single theme json file.
- *
- * @param array $theme_json_file_data Data about the theme json file.
- * @return bool
- */
-function update_theme_json_file( $theme_json_file_data ) {
-
-	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-
-	$module_dir_path = module_dir_path( __FILE__ );
-
-	if ( ! isset( $theme_json_file_data['type'] ) || 'default' === $theme_json_file_data['type'] ) {
-		$themejsons_dir = $module_dir_path . '/theme-json-files/';
-	} else {
-		$assets_dir = $wp_content_dir . 'fsestudio-custom-assets/';
-		if ( ! $wp_filesystem->exists( $assets_dir ) ) {
-			$wp_filesystem->mkdir( $assets_dir );
-		}
-		$themejsons_dir = $wp_content_dir . 'fsestudio-custom-assets/themejson-files/';
-		if ( ! $wp_filesystem->exists( $themejsons_dir ) ) {
-			$wp_filesystem->mkdir( $themejsons_dir );
-		}
-	}
-
-	$success = $wp_filesystem->put_contents(
-		$themejsons_dir . $theme_json_file_data['name'] . '.json',
-		wp_json_encode( $theme_json_file_data['content'], JSON_PRETTY_PRINT ),
-		FS_CHMOD_FILE
-	);
-
-	return $success;
-}
-
-/**
  * Run a string of HTML through the_content filters. This makes it so everything needed will be rendered in wp_footer.
  *
  * @param string $content The html content to run through the filters.

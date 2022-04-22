@@ -33,8 +33,6 @@ import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
 import useMounted from '../../hooks/useMounted';
 import useThemeData from '../../hooks/useThemeData';
-import useThemeJsonFiles from '../../hooks/useThemeJsonFiles';
-import useThemeJsonFile from '../../hooks/useThemeJsonFile';
 import usePatterns from '../../hooks/usePatterns';
 import useCurrentView from '../../hooks/useCurrentView';
 import useStudioContext from '../../hooks/useStudioContext';
@@ -57,9 +55,6 @@ import classNames from '../../utils/classNames';
  *  themes: ReturnType<import('../../hooks/useThemes').default>,
  *  currentThemeId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentTheme: ReturnType<import('../../hooks/useThemeData').default>,
- *  themeJsonFiles: ReturnType<import('../../hooks/useThemeJsonFiles').default>,
- *  currentThemeJsonFileId: ReturnType<import('../../hooks/useCurrentId').default>,
- *  currentThemeJsonFile: ReturnType<import('../../hooks/useThemeJsonFile').default>,
  *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
  *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
  *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings
@@ -77,16 +72,10 @@ export default function FseStudioApp() {
 }
 
 function FseStudioContextHydrator() {
-	const currentThemeJsonFileId = useCurrentId();
-	const currentThemeJsonFile = useThemeJsonFile(
-		currentThemeJsonFileId.value
-	);
 	const themes = useThemes( {
 		themes: fsestudio.themes,
-		currentThemeJsonFile,
 	} );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
-	const themeJsonFiles = useThemeJsonFiles( fsestudio.themeJsonFiles );
 
 	/** @type {InitialContext} */
 	const providerValue = {
@@ -97,11 +86,7 @@ function FseStudioContextHydrator() {
 		currentTheme: useThemeData(
 			currentThemeId.value,
 			themes,
-			currentThemeJsonFile
 		),
-		themeJsonFiles,
-		currentThemeJsonFileId,
-		currentThemeJsonFile,
 		siteUrl: fsestudio.siteUrl,
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,

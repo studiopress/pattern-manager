@@ -21,148 +21,55 @@ import convertToCssClass from '../../utils/convertToCssClass';
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
-	const { themeJsonFiles, currentTheme, currentThemeJsonFileId, currentThemeJsonFile } = useStudioContext();
-
-	function renderSelector() {
-		const renderedOptions = [];
-
-		renderedOptions.push(
-			<option key={ 1 }>
-				{ __( 'Choose a Theme JSON File', 'fse-studio' ) }
-			</option>
-		);
-
-		let counter = 3;
-
-		for ( const fileId in themeJsonFiles.themeJsonFiles ) {
-			const optionInQuestion = themeJsonFiles.themeJsonFiles[ fileId ];
-
-			renderedOptions.push(
-				<option key={ counter } value={ optionInQuestion.name }>
-					{ optionInQuestion.name }
-				</option>
-			);
-			counter++;
-		}
-
-		return (
-			<select
-				value={ currentThemeJsonFileId.value }
-				onChange={ ( event ) => {
-					currentTheme.set( {
-						...currentTheme.data,
-						theme_json_file: event.target.value,
-					} )
-				} }
-			>
-				{ renderedOptions }
-			</select>
-		);
-	}
-
-	function renderThemeEditorWhenReady() {
-		if ( ! currentThemeJsonFile.data ) {
-			return <Spinner />;
-		}
-		
-		if ( 'themejson_file_not_found' === currentThemeJsonFile.data?.error ) {
-			return __( 'No theme.json file found with the name ' + currentThemeJsonFileId.value );
-		}
+	const { currentTheme } = useStudioContext();
 	
-		return <ThemeJsonDataEditor themeJsonFile={ currentThemeJsonFile } theme={ currentTheme } />;
+	if ( ! currentTheme?.data?.theme_json_file ) {
+		return ''
 	}
-
+	
 	return (
 		<div hidden={ ! visible } className="fsestudio-theme-manager p-12">
 			<div className="max-w-7xl mx-auto bg-white shadow">
 				<h1 className="p-5 text-xl border-b border-gray-200 px-4 sm:px-6 md:px-8">
 					{ __( 'Theme.json Manager', 'fse-studio' ) }
 				</h1>
-				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
-					
-					<div>
-						<label
-							htmlFor="location"
-							className="block text-sm font-medium text-gray-700"
-						>
-							{ __( 'Choose a theme JSON file', 'fse-studio' ) }
-						</label>
-						{ renderSelector() }
-					</div>
-					<div className="flex flex-col mx-6 my-2.5">
-						{ __( 'or', 'fse-studio' ) }
-					</div>
-					
-					
-					<div className="flex flex-col gap-2">
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								const newData = {
-									name: 'new',
-									content: '',
-								};
-
-								themeJsonFiles.setThemeJsonFiles( {
-									...themeJsonFiles.themeJsonFiles,
-									my: newData,
-								} );
-							} }
-						>
-							{ __(
-								'Create a new theme JSON file',
-								'fse-studio'
-							) }
-						</button>
+				<div>
+					<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
+						<SettingsView isVisible={ true } />
 					</div>
 				</div>
-				{ renderThemeEditorWhenReady() }
+				<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
+					<div className="flex items-center justify-between w-full">
+						<div className="flex items-center">
+							<p className="text-sm m-0">{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }</p>
+						</div>
+						<div className="flex items-center">
+							{ currentTheme.hasSaved ?
+								(
+									<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+										<Icon
+											className="fill-current"
+											icon={ check }
+											size={ 26 }
+										/>{ ' ' }
+										{ __( 'Settings Saved!', 'fse-studio' ) }
+									</span>
+								) : null
+							}
+							<button
+								type="button"
+								className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+								onClick={ () => {
+									currentTheme.save();
+								} }
+							>
+								{ __( 'Save Settings & Styles', 'fse-studio' ) }
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-	);
-}
-
-function ThemeJsonDataEditor( { themeJsonFile, theme } ) {
-	return (
-		<>
-			<div>
-				<div className="flex flex-row px-4 sm:px-6 md:px-8 py-8 gap-14">
-					<SettingsView isVisible={ true } />
-				</div>
-			</div>
-			<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
-				<div className="flex items-center justify-between w-full">
-					<div className="flex items-center">
-						<p className="text-sm m-0">{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }</p>
-					</div>
-					<div className="flex items-center">
-						{ themeJsonFile.hasSaved ?
-							(
-								<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-									<Icon
-										className="fill-current"
-										icon={ check }
-										size={ 26 }
-									/>{ ' ' }
-									{ __( 'Settings Saved!', 'fse-studio' ) }
-								</span>
-							) : null
-						}
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								themeJsonFile.save();
-								theme.save();
-							} }
-						>
-							{ __( 'Save Settings & Styles', 'fse-studio' ) }
-						</button>
-					</div>
-				</div>
-			</div>
-		</>
 	);
 }
 
@@ -195,10 +102,10 @@ function getSettingsFromThemeJsonSchema() {
 }
 
 function SettingsView({ isVisible }) {
-	const { currentThemeJsonFile } = useStudioContext();
+	const { currentTheme } = useStudioContext();
 	const [ currentView, setCurrentView ] = useState( 'color' );
 	
-	// Use the themeJson schema and currentThemeJsonFile to generate the settings and values.
+	// Use the themeJson schema and currentTheme.themeJson to generate the settings and values.
 	const rendered = [];
 	const tabs = [];
 	
@@ -280,6 +187,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 					</label>
 					<div className={`mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
 						<RenderProperty
+							key={propertyName}
 							isVisible={isVisible}
 							propertySchema={properties[propertyName]}
 							propertyName={propertyName}
@@ -297,18 +205,18 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 
 
 function RenderProperty( {isVisible, propertySchema, propertyName, schemaPosition, topLevelSettingName } ) {
-	const { currentThemeJsonFile } = useStudioContext();
-	const currentValue = currentThemeJsonFile.getValue( 'settings', schemaPosition, propertySchema.default );
+	const { currentTheme } = useStudioContext();
+	const currentValue = currentTheme.getThemeJsonValue( 'settings', schemaPosition, propertySchema.default );
 
 	if ( propertySchema.type === 'boolean' || propertySchema.oneOf ) {
 		return <input
-			
+			key={schemaPosition}
 			type="checkbox"
 			id={propertyName}
 			name={propertyName}
 			checked={ currentValue }
 			onChange={( event ) => {
-				currentThemeJsonFile.setValue( 'settings', schemaPosition, currentValue ? false : true, propertySchema?.default );
+				currentTheme.setThemeJsonValue( 'settings', schemaPosition, currentValue ? false : true, propertySchema?.default );
 			}}
 		/>
 	}
@@ -317,15 +225,17 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 	) {
 		
 		return <ValueSetter
+			key={schemaPosition}
 			name={ propertyName }
 			value={ currentValue }
 			onChange={ (newValue) => {
-				currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue, propertySchema?.default );
+				currentTheme.setThemeJsonValue( 'settings', schemaPosition, newValue, propertySchema?.default );
 			}}
 		/>
 	}
 	if ( propertySchema.type === 'object' ) {
 		return <RenderProperties
+			key={schemaPosition}
 			isVisible={isVisible}
 			properties={propertySchema.properties}
 			schemaPosition={schemaPosition}
@@ -334,10 +244,11 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 	}
 	if ( propertySchema.type === 'array' ) {
 		if ( schemaPosition === 'spacing.units' ) {
-			return <MultiCheckbox 
+			return <MultiCheckbox
+				key={schemaPosition}
 				value={ currentValue }
 				onChange={ ( newValue ) => {
-					currentThemeJsonFile.setValue( 'settings', schemaPosition, newValue, propertySchema?.default );
+					currentTheme.setThemeJsonValue( 'settings', schemaPosition, newValue, propertySchema?.default );
 				} }
 			/>
 		}
@@ -356,6 +267,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					if ( propertyName === 'gradients' ) {
 						rendered.push(
 							<GradientEditor
+								key={schemaPosition + '.' + arrIndex}
 								properties={propertySchema.items.properties}
 								schemaPosition={schemaPosition + '.' + arrIndex}
 							/>
@@ -363,6 +275,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					} else if ( propertyName === 'palette' ) {
 						rendered.push(
 							<PaletteEditor
+								key={schemaPosition + '.' + arrIndex}
 								properties={propertySchema.items.properties}
 								schemaPosition={schemaPosition + '.' + arrIndex}
 							/>
@@ -370,6 +283,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					} else if ( propertyName === 'duotone' ) {
 						rendered.push(
 							<DuotoneEditor
+								key={schemaPosition + '.' + arrIndex}
 								properties={propertySchema.items.properties}
 								schemaPosition={schemaPosition + '.' + arrIndex}
 							/>
@@ -378,7 +292,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 						// Render the properties in the schema, using the current loop's values for the properties
 						rendered.push(
 							<RenderProperties
-								key={arrIndex}
+								key={schemaPosition + '.' + arrIndex}
 								isVisible={isVisible}
 								properties={propertySchema.items.properties}
 								schemaPosition={schemaPosition + '.' + arrIndex}
@@ -388,7 +302,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					}
 				} else {
 					rendered.push(
-						<div key={arrIndex} hidden={!isVisible}>
+						<div key={schemaPosition + '.' + arrIndex } hidden={!isVisible}>
 							<div className="sm:grid sm:grid-cols-4 sm:gap-4 py-6 sm:items-top">
 								<div className="mt-1 sm:mt-0 sm:col-span-3 divide-y">
 									<RenderProperty
@@ -406,27 +320,29 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			}
 
 			rendered.push(
-				<>
+				<div key={'addAndRemoveButtons'}>
 					<button 
+						key={'addAnother'}
 						onClick={() => {
-							currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+							currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
 						}}
 						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
 					>
 						{ __( 'Add Another', 'fse-studio' ) }
 					</button>
 					<button
+						key={'delete'}
 						className="text-red-500 hover:text-red-700 hidden"
 						onClick={(e) => {
 							e.preventDefault();
 							if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-								currentThemeJsonFile.setValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length );
+								currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length );
 							}
 						}}
 					>
 						{ __( 'Delete', 'fse-studio' ) }
 					</button>
-				</>
+				</div>
 			)
 		}
 		return rendered;

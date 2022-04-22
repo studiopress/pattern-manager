@@ -10,24 +10,24 @@ import useStudioContext from '../../hooks/useStudioContext';
 export default function DuotoneEditor( { properties, schemaPosition } ) {
 	const [ popover1Open, setPopover1Open ] = useState( false );
 	const [ popover2Open, setPopover2Open ] = useState( false );
-	const { currentThemeJsonFile } = useStudioContext();
+	const { currentTheme } = useStudioContext();
 
-	const nameValue = currentThemeJsonFile.getValue(
+	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.name',
 		properties.name.type
 	);
-	const slugValue = currentThemeJsonFile.getValue(
+	const slugValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.slug',
 		properties.slug.type
 	);
-	const color1Value = currentThemeJsonFile.getValue(
+	const color1Value = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.colors.0',
 		'string'
 	);
-	const color2Value = currentThemeJsonFile.getValue(
+	const color2Value = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.colors.1',
 		'string'
@@ -46,7 +46,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 							type="text"
 							value={ nameValue }
 							onChange={ ( event ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.name',
 									event.target.value
@@ -63,7 +63,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 							type="text"
 							value={ slugValue }
 							onChange={ ( event ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.slug',
 									event.target.value
@@ -103,7 +103,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 										color={ color1Value }
 										// @ts-ignore The declaration file is wrong.
 										onChange={ ( newValue ) => {
-											currentThemeJsonFile.setValue(
+											currentTheme.setThemeJsonValue(
 												'settings',
 												schemaPosition + '.colors.0',
 												newValue
@@ -145,7 +145,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 										color={ color2Value }
 										// @ts-ignore The declaration file is wrong.
 										onChange={ ( newValue ) => {
-											currentThemeJsonFile.setValue(
+											currentTheme.setThemeJsonValue(
 												'settings',
 												schemaPosition + '.colors.1',
 												newValue
@@ -175,7 +175,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 							)
 							/* eslint-enable */
 						) {
-							currentThemeJsonFile.setValue(
+							currentTheme.setThemeJsonValue(
 								'settings',
 								schemaPosition
 							);

@@ -7,7 +7,6 @@
 // WP Dependencies.
 import {
 	createInterpolateElement,
-	useEffect,
 	useRef,
 	useState,
 } from '@wordpress/element';
@@ -33,22 +32,16 @@ import ThemeTemplatePicker from '../ThemeTemplatePicker';
 // Utils
 import classNames from '../../utils/classNames';
 
+// Globals
+import { fsestudio } from '../../globals';
+
 /** @param {{visible: boolean}} props */
 export default function ThemeManager( { visible } ) {
 	const {
 		themes,
 		currentThemeId,
-		currentTheme,
-		currentThemeJsonFileId,
+		currentTheme
 	} = useStudioContext();
-
-	useEffect( () => {
-		if ( currentTheme.data?.theme_json_file ) {
-			currentThemeJsonFileId.set( currentTheme.data?.theme_json_file );
-		} else {
-			currentThemeJsonFileId.set( '' );
-		}
-	}, [ currentTheme ] );
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
@@ -151,7 +144,7 @@ export default function ThemeManager( { visible } ) {
 										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
-										theme_json_file: 'default',
+										theme_json_file: fsestudio.themeJsonFiles.default.content,
 										included_patterns: [],
 										template_files: {
 											index: 'homepage',
@@ -676,7 +669,6 @@ function ThemePatterns( { isVisible } ) {
 	const {
 		patterns,
 		currentTheme,
-		currentThemeJsonFile,
 		currentView,
 	} = useStudioContext();
 
@@ -757,9 +749,7 @@ function ThemePatterns( { isVisible } ) {
 															patternName
 														]
 													}
-													themeJsonData={
-														currentThemeJsonFile.data
-													}
+													
 													scale={ 0.2 }
 												/>
 											</div>
@@ -792,7 +782,7 @@ function ThemePatterns( { isVisible } ) {
 				>
 					<PatternPicker
 						patterns={ patterns.patterns }
-						themeJsonData={ currentThemeJsonFile.data }
+						
 						selectedPatterns={ currentTheme.data.included_patterns }
 						onClickPattern={ ( clickedPatternName ) => {
 							if (

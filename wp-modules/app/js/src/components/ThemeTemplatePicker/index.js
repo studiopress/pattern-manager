@@ -15,7 +15,7 @@ import { useState } from '@wordpress/element';
  * }} props The component props.
  */
 export default function ThemeTemplatePicker( { templateName } ) {
-	const { patterns, currentTheme, currentThemeJsonFile } = useStudioContext();
+	const { patterns, currentTheme } = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(
@@ -110,7 +110,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 									]
 								]
 							}
-							themeJsonData={ currentThemeJsonFile.data }
+							
 							scale={ 0.2 }
 						/>
 					</div>
@@ -128,7 +128,7 @@ export default function ThemeTemplatePicker( { templateName } ) {
 				>
 					<PatternPicker
 						patterns={ patterns.patterns }
-						themeJsonData={ currentThemeJsonFile.data }
+					
 						onClickPattern={ ( clickedPatternName ) => {
 							setModalOpen( false );
 							currentTheme.set( {

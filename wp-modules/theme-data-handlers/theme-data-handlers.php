@@ -59,6 +59,7 @@ function get_the_themes() {
 		'text_domain'       => '',
 		'included_patterns' => [],
 		'template_files'    => [],
+		'theme_json_file'   => [],
 	];
 
 	foreach ( $wpthemes as $theme_slug => $theme ) {
@@ -69,6 +70,8 @@ function get_the_themes() {
 			$theme_data = wp_parse_args( $theme_data, $default_theme_data );
 
 			$formatted_theme_data[ $theme_slug ] = $theme_data;
+
+			$formatted_theme_data[ $theme_slug ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
 		}
 	}
 
@@ -150,6 +153,19 @@ function update_theme( $theme ) {
 	// Fix strings in the functions.php file.
 	$strings_fixed = \FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
 
+	// Put the contents of the theme.json file into the theme.
+	$wp_filesystem->put_contents(
+		$new_theme_dir . '/theme.json',
+		wp_json_encode(
+			$theme['theme_json_file'],
+			JSON_PRETTY_PRINT
+		),
+		FS_CHMOD_FILE
+	);
+
+	// Remove the theme json data from the theme array because it's already saved to theme.json.
+	unset( $theme['theme_json_file'] );
+
 	// Create the theme's fsestudio-data.json file.
 	$success = $wp_filesystem->put_contents(
 		$new_theme_dir . 'fsestudio-data.json',
@@ -157,14 +173,6 @@ function update_theme( $theme ) {
 			$theme,
 			JSON_PRETTY_PRINT
 		),
-		FS_CHMOD_FILE
-	);
-
-	// Copy the theme's selected theme.json file into the theme from its source location.
-	$wp_filesystem->copy(
-		$wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/theme-json-data-handlers/theme-json-files/' . $theme['theme_json_file'] . '.json',
-		$new_theme_dir . 'theme.json',
-		true,
 		FS_CHMOD_FILE
 	);
 
@@ -189,13 +197,15 @@ function update_theme( $theme ) {
 	$wp_filesystem->mkdir( $new_theme_dir . '/theme-patterns' );
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		$file_to_copy         = '';
+		$file_to_copy = '';
+
+		// Copy default patterns included in the theme. THIS MIGHT BE REMOVED. We may requirea theme to only include patterns that are unique to that theme.
 		$default_pattern_path = $wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php';
 		if ( $wp_filesystem->exists( $default_pattern_path ) ) {
 			$file_to_copy = $default_pattern_path;
 		}
 
-		$custom_pattern_path = $wp_filesystem->wp_content_dir() . 'fsestudio-custom-patterns/' . $included_pattern . '.php';
+		$custom_pattern_path = $wp_filesystem->wp_content_dir() . 'fsestudio-custom-assets/patterns/' . $included_pattern . '.php';
 
 		if ( $wp_filesystem->exists( $custom_pattern_path ) ) {
 			$file_to_copy = $custom_pattern_path;

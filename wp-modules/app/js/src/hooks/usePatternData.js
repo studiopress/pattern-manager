@@ -12,13 +12,11 @@ import useSnackbarContext from './useSnackbarContext';
 /**
  * @param {string}                                           patternId
  * @param {typeof import('../globals').fsestudio.patterns}   patterns
- * @param {ReturnType<import('./useThemeJsonFile').default>} currentThemeJsonFile
  * @param {ReturnType<import('./useThemeData').default>}     currentTheme
  */
 export default function usePatternData(
 	patternId,
 	patterns,
-	currentThemeJsonFile,
 	currentTheme
 ) {
 	const snackBar = useSnackbarContext();
@@ -81,7 +79,6 @@ export default function usePatternData(
 						setPatternData( patterns.patterns[ patternId ] );
 					} else {
 						setPatternData( response );
-						currentThemeJsonFile.get();
 					}
 					resolve( response );
 				} );
@@ -107,8 +104,6 @@ export default function usePatternData(
 					} else {
 						// Whenever the user saved a pattern, save their theme as well, just in case this pattern is part of this theme.
 						currentTheme.save();
-						// Get the updated themejson file, which includes global styled CSS for all patterns.
-						currentThemeJsonFile.get();
 						// We only show the snackbar message if save initiated after initial creation.
 						snackBar.setValue( data.message );
 					}

@@ -9,19 +9,19 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 export default function PaletteEditor( { properties, schemaPosition } ) {
 	const [ popoverOpen, setPopoverOpen ] = useState( false );
-	const { currentThemeJsonFile } = useStudioContext();
+	const { currentTheme } = useStudioContext();
 
-	const nameValue = currentThemeJsonFile.getValue(
+	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.name',
 		properties.name.type
 	);
-	const slugValue = currentThemeJsonFile.getValue(
+	const slugValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.slug',
 		properties.slug.type
 	);
-	const colorValue = currentThemeJsonFile.getValue(
+	const colorValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.color',
 		properties.color.type
@@ -40,7 +40,7 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 							type="text"
 							value={ nameValue }
 							onChange={ ( event ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.name',
 									event.target.value
@@ -57,7 +57,7 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 							type="text"
 							value={ slugValue }
 							onChange={ ( event ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.slug',
 									event.target.value
@@ -98,7 +98,7 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 											color={ colorValue }
 											// @ts-ignore The declaration file is wrong.
 											onChange={ ( newValue ) => {
-												currentThemeJsonFile.setValue(
+												currentTheme.setThemeJsonValue(
 													'settings',
 													schemaPosition + '.color',
 													newValue
@@ -129,7 +129,7 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 							)
 							/* eslint-enable */
 						) {
-							currentThemeJsonFile.setValue(
+							currentTheme.setThemeJsonValue(
 								'settings',
 								schemaPosition
 							);

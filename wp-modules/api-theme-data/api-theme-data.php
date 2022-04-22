@@ -261,8 +261,8 @@ function save_request_args() {
 		),
 		'theme_json_file'   => array(
 			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fse-studio' ),
+			'type'              => 'object',
+			'description'       => __( 'The contents of the theme.json file', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'included_patterns' => array(

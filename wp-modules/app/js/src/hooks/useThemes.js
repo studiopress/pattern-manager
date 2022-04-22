@@ -5,17 +5,12 @@ import { useState, useEffect } from '@wordpress/element';
 
 /**
  * @param {{
- *  themes: typeof import('../globals').fsestudio.themes,
- *  currentThemeJsonFile: ReturnType<import('./useThemeJsonFile').default>
+ *  themes: typeof import('../globals').fsestudio.themes
  * }} The themes.
  */
-export default function useThemes( { themes, currentThemeJsonFile } ) {
+export default function useThemes( { themes } ) {
 	/** @type {[typeof import('../globals').fsestudio.themes, React.Dispatch<React.SetStateAction<typeof import('../globals').fsestudio.themes>>]} */
 	const [ theThemes, setTheThemes ] = useState( themes );
-
-	useEffect( () => {
-		currentThemeJsonFile.get();
-	}, [ theThemes ] );
 
 	return {
 		themes: theThemes,
