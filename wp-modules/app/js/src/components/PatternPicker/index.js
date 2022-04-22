@@ -60,58 +60,64 @@ export default function PatternPicker( {
 					</div>
 				</div>
 				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-10">
-					{ filteredPatterns.map( ( pattern, index ) => {
-						const isChecked = selectedPatterns.includes(
-							pattern.name
-						);
+					{ filteredPatterns.length > 0
+						? filteredPatterns.map( ( pattern, index ) => {
+								const isChecked = selectedPatterns.includes(
+									pattern.name
+								);
 
-						if ( index <= numberToRender ) {
-							return (
-								<button
-									key={ pattern.name }
-									tabIndex={ 0 }
-									role="checkbox"
-									aria-checked={ isChecked }
-									className={
-										isChecked
-											? 'min-h-[300px] bg-gray-100 flex flex-col justify-between border-2 border-blue-500 rounded relative group'
-											: 'min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group'
-									}
-									onClick={ () => {
-										onClickPattern( pattern.name );
-									} }
-									onKeyDown={ ( event ) => {
-										if ( 'Enter' === event.code ) {
-											onClickPattern( pattern.name );
-										}
-									} }
-								>
-									<div className="p-3 flex flex-grow items-center w-full">
-										<PatternPreview
+								if ( index <= numberToRender ) {
+									return (
+										<button
 											key={ pattern.name }
-											blockPatternData={ pattern }
-											themeJsonData={ themeJsonData }
-											scale={ 0.3 }
-											onLoad={ () => {
-												if ( isMounted() ) {
-													setNumberToRender(
-														index + 1
+											tabIndex={ 0 }
+											role="checkbox"
+											aria-checked={ isChecked }
+											className={
+												isChecked
+													? 'min-h-[300px] bg-gray-100 flex flex-col justify-between border-2 border-blue-500 rounded relative group'
+													: 'min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group'
+											}
+											onClick={ () => {
+												onClickPattern( pattern.name );
+											} }
+											onKeyDown={ ( event ) => {
+												if ( 'Enter' === event.code ) {
+													onClickPattern(
+														pattern.name
 													);
 												}
 											} }
-										/>
-									</div>
-									<div className="w-full">
-										<h3 className="text-sm bg-white p-4 rounded-b w-full">
-											{ pattern.title }
-										</h3>
-									</div>
-								</button>
-							);
-						}
+										>
+											<div className="p-3 flex flex-grow items-center w-full">
+												<PatternPreview
+													key={ pattern.name }
+													blockPatternData={ pattern }
+													themeJsonData={
+														themeJsonData
+													}
+													scale={ 0.3 }
+													onLoad={ () => {
+														if ( isMounted() ) {
+															setNumberToRender(
+																index + 1
+															);
+														}
+													} }
+												/>
+											</div>
+											<div className="w-full">
+												<h3 className="text-sm bg-white p-4 rounded-b w-full">
+													{ pattern.title }
+												</h3>
+											</div>
+										</button>
+									);
+								}
 
-						return null;
-					} ) }
+								return null;
+						  } )
+						: __( 'No patterns found', 'fse-studio' ) }
 				</div>
 			</div>
 		</div>

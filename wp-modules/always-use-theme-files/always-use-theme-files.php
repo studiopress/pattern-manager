@@ -17,13 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Rename all strings in a theme's functions.php file.
+ * Hook into the posts query to make sure we never use an FSE post type, and thus always pull from files directly.
  *
  * @param WP_Post[]|int[]|null $posts Return an array of post data to short-circuit WP's query,
  *                                    or null to allow WP to run its normal queries.
  * @param WP_Query             $query The WP_Query instance (passed by reference).
  */
 function always_use_theme_files( $posts, $query ) {
+	if ( ! isset( $query->query['post_type'] ) ) {
+		return $posts;
+	}
+
 	if (
 		'wp_global_styles' === $query->query['post_type'] ||
 		'wp_template' === $query->query['post_type'] ||

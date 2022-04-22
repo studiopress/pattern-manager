@@ -136,28 +136,10 @@ add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
  * @return string
  */
 function modify_terms( string $translation, string $text, string $domain ) {
-	if ( 'Tags' === $translation ) {	
-		echo $translation;
-		die();
+	if ( 'Tags' === $translation ) {
 		return 'Pattern Categories';
 	}
 
 	return $translation;
 }
 add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
-
-/**
- * Modify certain words when editing a pattern.
- *
- * @param string $translation The translated or modified string.
- * @param string $text The original text we'll change.
- * @param string $domain The text domain of the string in question.
- * @return string
- */
-function sgsdgsdg( $labels ) {
-	$labels->singular_name = 'Pattern Categories';
-	
-	return $labels;
-	
-}
-add_filter( 'taxonomy_labels_post_tag', __NAMESPACE__ . '\sgsdgsdg' );
