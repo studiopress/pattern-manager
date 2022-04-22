@@ -61,7 +61,6 @@ export default function ThemeJsonEditor( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
-		console.log( currentThemeJsonFile );
 		if ( ! currentThemeJsonFile.data ) {
 			return <Spinner />;
 		}
