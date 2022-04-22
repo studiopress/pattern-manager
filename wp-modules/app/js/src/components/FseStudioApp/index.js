@@ -126,21 +126,21 @@ function FseStudio() {
 
 	const navigation = [
 		{
-			name: __( 'Theme Manager', 'fse-studio' ),
+			name: __( 'Theme Setup', 'fse-studio' ),
 			slug: 'theme_manager',
 			icon: file,
 			available: true,
 		},
 		{
-			name: __( 'Pattern Editor', 'fse-studio' ),
-			slug: 'pattern_editor',
-			icon: layout,
+			name: __( 'Settings & Styles', 'fse-studio' ),
+			slug: 'themejson_editor',
+			icon: globe,
 			available: currentTheme.existsOnDisk,
 		},
 		{
-			name: __( 'Theme.json Editor', 'fse-studio' ),
-			slug: 'themejson_editor',
-			icon: globe,
+			name: __( 'Pattern Editor', 'fse-studio' ),
+			slug: 'pattern_editor',
+			icon: layout,
 			available: currentTheme.existsOnDisk,
 		},
 		{
