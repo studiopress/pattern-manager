@@ -62,7 +62,7 @@ function get_patterns() {
 	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	$wp_content_dir = $wp_filesystem->wp_content_dir();
 
-	$pattern_file_paths = glob( $wp_content_dir . '/fsestudio-custom-patterns/*.php' );
+	$pattern_file_paths = glob( $wp_content_dir . '/fsestudio-custom-assets/patterns/*.php' );
 
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern_data                          = require $path;
@@ -90,8 +90,11 @@ function update_pattern( $pattern ) {
 	if ( ! isset( $pattern['type'] ) || 'default' === $pattern['type'] ) {
 		$patterns_dir = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
 	} else {
-		$patterns_dir = $wp_content_dir . 'fsestudio-custom-patterns/';
-		// Create the new theme directory.
+		$assets_dir = $wp_content_dir . 'fsestudio-custom-assets/';
+		if ( ! $wp_filesystem->exists( $assets_dir ) ) {
+			$wp_filesystem->mkdir( $assets_dir );
+		}
+		$patterns_dir = $wp_content_dir . 'fsestudio-custom-assets/patterns/';
 		if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
 			$wp_filesystem->mkdir( $patterns_dir );
 		}

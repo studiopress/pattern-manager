@@ -54,7 +54,7 @@
                 {
                     "name": "Black",
                     "slug": "black",
-                    "color": "#2c502f"
+                    "color": "#681ee7"
                 },
                 {
                     "name": "Primary",
@@ -81,7 +81,8 @@
                     "slug": "white",
                     "color": "#fff"
                 }
-            ]
+            ],
+            "background": false
         },
         "custom": {
             "fontWeight": {

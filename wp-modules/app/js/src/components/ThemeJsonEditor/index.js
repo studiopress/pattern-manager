@@ -74,7 +74,7 @@ export default function ThemeJsonEditor( { visible } ) {
 					{ __( 'Theme.json Manager', 'fse-studio' ) }
 				</h1>
 				<div className="px-4 sm:px-6 md:px-8 bg-[#F8F8F8] py-8 flex sm:flex-row flex-col items-end">
-					{/*
+					
 					<div>
 						<label
 							htmlFor="location"
@@ -87,8 +87,8 @@ export default function ThemeJsonEditor( { visible } ) {
 					<div className="flex flex-col mx-6 my-2.5">
 						{ __( 'or', 'fse-studio' ) }
 					</div>
-					*/
-					}
+					
+					
 					<div className="flex flex-col gap-2">
 						<button
 							type="button"
@@ -109,16 +109,6 @@ export default function ThemeJsonEditor( { visible } ) {
 								'Create a new theme JSON file',
 								'fse-studio'
 							) }
-						</button>
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								currentThemeJsonFile.save();
-								currentTheme.save();
-							} }
-						>
-							{ __( 'Save Theme and Theme Configuration File', 'fse-studio' ) }
 						</button>
 					</div>
 				</div>
