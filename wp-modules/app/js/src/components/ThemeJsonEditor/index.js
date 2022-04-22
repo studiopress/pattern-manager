@@ -4,6 +4,7 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, check } from '@wordpress/icons';
+import { Spinner } from '@wordpress/components';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -60,10 +61,15 @@ export default function ThemeJsonEditor( { visible } ) {
 	}
 
 	function renderThemeEditorWhenReady() {
+		console.log( currentThemeJsonFile );
 		if ( ! currentThemeJsonFile.data ) {
-			return null;
+			return <Spinner />;
 		}
-
+		
+		if ( 'themejson_file_not_found' === currentThemeJsonFile.data?.error ) {
+			return __( 'No theme.json file found with the name ' + currentThemeJsonFileId.value );
+		}
+	
 		return <ThemeJsonDataEditor themeJsonFile={ currentThemeJsonFile } theme={ currentTheme } />;
 	}
 

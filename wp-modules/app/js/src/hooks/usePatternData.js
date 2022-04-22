@@ -31,7 +31,7 @@ export default function usePatternData(
 	useEffect( () => {
 		// If the patternId passed in changes, get the new pattern data related to it.
 		getPatternData();
-	}, [] );
+	}, [ patternId ] );
 
 	useEffect( () => {
 		if ( creatingNewPattern ) {

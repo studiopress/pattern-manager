@@ -24,6 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param WP_Query             $query The WP_Query instance (passed by reference).
  */
 function always_use_theme_files( $posts, $query ) {
+	if ( ! isset( $query->query['post_type'] ) ) {
+		return $posts;
+	}
+
 	if (
 		'wp_global_styles' === $query->query['post_type'] ||
 		'wp_template' === $query->query['post_type'] ||
