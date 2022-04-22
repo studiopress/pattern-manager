@@ -49,35 +49,21 @@ function get_all_theme_json_files() {
 	$theme_json_files = array();
 
 	foreach ( $theme_json_file_paths as $path ) {
-		$theme_json_content   = json_decode( $wp_filesystem->get_contents( $path ), true );
-		$theme_json_file_data = array(
-			'name'                 => basename( $path, '.json' ),
-			'type'                 => 'default',
-			'content'              => $theme_json_content,
-			'renderedGlobalStyles' => ( new \WP_Theme_JSON( $theme_json_content, 'custom' ) )->get_stylesheet(),
-			'patternPreviewParts'  => $wp_head_and_wp_footer,
-		);
-
-		$theme_json_files[ $theme_json_file_data['name'] ] = $theme_json_file_data;
+		$theme_json_files[ basename( $path, '.json' ) ] = json_decode( $wp_filesystem->get_contents( $path ), true );
 	}
 
 	/**
-	 * Scan wp-content/fsestudio-custom-assets/themejson-files to get all of the custom theme.json files.
+	 * Scan each theme to get all theme.json files.
 	 */
-	$wp_content_dir        = $wp_filesystem->wp_content_dir();
-	$theme_json_file_paths = glob( $wp_content_dir . '/fsestudio-custom-assets/themejson-files/*.json' );
+	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
 
-	foreach ( $theme_json_file_paths as $path ) {
-		$theme_json_content   = json_decode( $wp_filesystem->get_contents( $path ), true );
-		$theme_json_file_data = array(
-			'name'                 => basename( $path, '.json' ),
-			'type'                 => 'custom',
-			'content'              => $theme_json_content,
-			'renderedGlobalStyles' => ( new \WP_Theme_JSON( $theme_json_content, 'custom' ) )->get_stylesheet(),
-			'patternPreviewParts'  => $wp_head_and_wp_footer,
-		);
+	$themes = glob( $wp_themes_dir . '*' );
 
-		$theme_json_files[ $theme_json_file_data['name'] ] = $theme_json_file_data;
+	foreach ( $themes as $theme ) {
+		if ( $wp_filesystem->exists( $theme . '/theme.json' ) ) {
+			$theme_json_files[ basename( $theme ) ] = json_decode( $wp_filesystem->get_contents( $theme . '/theme.json' ), true );
+		}
 	}
 
 	return $theme_json_files;

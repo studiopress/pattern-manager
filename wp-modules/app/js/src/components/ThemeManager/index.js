@@ -144,7 +144,7 @@ export default function ThemeManager( { visible } ) {
 										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
-										theme_json_file: fsestudio.themeJsonFiles.default.content,
+										theme_json_file: fsestudio.themeJsonFiles.default,
 										included_patterns: [],
 										template_files: {
 											index: 'homepage',
