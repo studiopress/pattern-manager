@@ -10,6 +10,7 @@
 import { deburr, differenceWith, words } from 'lodash';
 
 // Default search helpers
+const defaultGetType = ( item ) => item.type || '';
 const defaultGetName = ( item ) => item.name || '';
 const defaultGetTitle = ( item ) => item.title;
 const defaultGetDescription = ( item ) => item.description || '';
@@ -99,6 +100,7 @@ export default function searchItems(
  */
 function getItemSearchRank( item, searchTerm, config = {} ) {
 	const {
+		getType = defaultGetType,
 		getName = defaultGetName,
 		getTitle = defaultGetTitle,
 		getDescription = defaultGetDescription,
@@ -107,6 +109,7 @@ function getItemSearchRank( item, searchTerm, config = {} ) {
 		getCollection = defaultGetCollection,
 	} = config;
 
+	const type = getType( item );
 	const name = getName( item );
 	const title = getTitle( item );
 	const description = getDescription( item );
@@ -128,6 +131,7 @@ function getItemSearchRank( item, searchTerm, config = {} ) {
 		rank += 20;
 	} else {
 		const terms = [
+			type,
 			name,
 			title,
 			description,

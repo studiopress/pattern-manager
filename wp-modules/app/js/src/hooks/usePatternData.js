@@ -22,6 +22,7 @@ export default function usePatternData(
 	currentTheme
 ) {
 	const snackBar = useSnackbarContext();
+	const [ creatingNewPattern, setCreatingNewPattern ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 
 	/** @type {[import('../components/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker').Pattern>>]} */
@@ -29,12 +30,26 @@ export default function usePatternData(
 
 	useEffect( () => {
 		// If the patternId passed in changes, get the new pattern data related to it.
-		getPatternData( patternId );
+		getPatternData();
 	}, [ patternId ] );
 
-	function getPatternData( thisPatternId ) {
+	useEffect( () => {
+		if ( creatingNewPattern ) {
+			savePatternData();
+		}
+
+		if ( patternData?.name ) {
+			// Hoist the current pattern data up to the object containing all patterns.
+			patterns.setPatterns( {
+				...patterns.patterns,
+				[ patternData.name ]: patternData,
+			} );
+		}
+	}, [ patternData ] );
+
+	function getPatternData() {
 		return new Promise( ( resolve ) => {
-			if ( ! thisPatternId || fetchInProgress ) {
+			if ( ! patternId || fetchInProgress ) {
 				resolve();
 				return;
 			}
@@ -43,7 +58,7 @@ export default function usePatternData(
 			fetch(
 				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getPatternEndpoint, {
-					patternId: thisPatternId,
+					patternId,
 				} ),
 				{
 					method: 'GET',
@@ -56,14 +71,15 @@ export default function usePatternData(
 			)
 				.then( ( response ) => response.json() )
 				.then( ( response ) => {
+					setFetchInProgress( false );
 					if (
 						response.error &&
 						'pattern-not-found' === response.error
 					) {
+						setCreatingNewPattern( true );
 						// Get pattern data from the current patterns array, and set it for this pattern.
-						setPatternData( patterns.patterns[ thisPatternId ] );
+						setPatternData( patterns.patterns[ patternId ] );
 					} else {
-						setFetchInProgress( false );
 						setPatternData( response );
 						currentThemeJsonFile.get();
 					}
@@ -85,9 +101,17 @@ export default function usePatternData(
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					currentTheme.save();
-					currentThemeJsonFile.get();
-					snackBar.setValue( JSON.stringify( data ) );
+					if ( creatingNewPattern ) {
+						setCreatingNewPattern( false );
+						setPatternData( data.patternData );
+					} else {
+						// Whenever the user saved a pattern, save their theme as well, just in case this pattern is part of this theme.
+						currentTheme.save();
+						// Get the updated themejson file, which includes global styled CSS for all patterns.
+						currentThemeJsonFile.get();
+						// We only show the snackbar message if save initiated after initial creation.
+						snackBar.setValue( data.message );
+					}
 					resolve( data );
 				} );
 		} );
@@ -95,6 +119,7 @@ export default function usePatternData(
 
 	return {
 		data: patternData,
+		get: getPatternData,
 		set: setPatternData,
 		save: savePatternData,
 	};

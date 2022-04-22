@@ -1,0 +1,16 @@
+{
+  "name": "fsestudio-pattern-post-type",
+  "version": "1.0.0",
+  "description": "Javascript that gets loaded with editing an fse-pattern post type.",
+  "main": "js/build/index.js",
+  "scripts": {
+    "build": "wp-scripts build js/src/index.js --output-path=js/build/",
+    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+  },
+  "author": "",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/i18n": "^4.3.1",
+    "@wordpress/scripts": "^20.0.2"
+  }
+}

@@ -89,7 +89,15 @@ function save_pattern( $request ) {
 	if ( ! $result ) {
 		return new \WP_REST_Response( $result, 400 );
 	} else {
-		return new \WP_REST_Response( $result, 200 );
+		$pattern_data = \FseStudio\PatternDataHandlers\get_pattern( $pattern_data['name'] );
+		return new \WP_REST_Response(
+			array(
+				'success'     => true,
+				'message'     => __( 'Pattern saved', 'fse-studio' ),
+				'patternData' => $pattern_data,
+			),
+			200
+		);
 	}
 }
 

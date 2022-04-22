@@ -1,32 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies
-/* eslint-disable */
-import {
-	BlockEditorProvider,
-	BlockList,
-	BlockTools,
-	WritingFlow,
-	ObserveTyping,
-	BlockInspector,
-	BlockBreadcrumb,
-	MediaUpload,
-	MediaUploadCheck,
-	MediaPlaceholder,
-	MediaReplaceFlow,
-	__unstableUseTypingObserver as useTypingObserver,
-} from '@wordpress/block-editor';
-/* eslint-enable */
+
 // @ts-check
-import ResizableEditor from './ResizableEditor';
-import { useMergeRefs } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 import { Icon, layout } from '@wordpress/icons';
-import { serialize, parse } from '@wordpress/blocks';
-import { SlotFillProvider, Popover, Modal } from '@wordpress/components';
-import { registerCoreBlocks } from '@wordpress/block-library';
-registerCoreBlocks();
-import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
+import { Modal, Spinner } from '@wordpress/components';
 import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Hooks
@@ -35,6 +14,9 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
 import PatternPicker from '../PatternPicker';
+
+// Utils
+import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
@@ -46,77 +28,8 @@ export default function PatternEditor( { visible } ) {
 		currentThemeJsonFile,
 		currentTheme
 	);
-	const initialErrors = { errors: {}, success: false };
 
-	const [ errors, setErrors ] = useState( initialErrors );
-	const [ errorModalOpen, setErrorModalOpen ] = useState( false );
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
-	const [ patternModalMode, setPatternModalMode ] = useState( '' );
-
-	function renderPatternEditorWhenReady() {
-		return pattern.data ? (
-			<BlockEditor
-				pattern={ pattern }
-				removeErrors={ () => {
-					setErrors( initialErrors );
-				} }
-			/>
-		) : null;
-	}
-
-	function formatErrorMessage( testResult ) {
-		const output = [];
-		let counter = 0;
-		for ( const error in testResult.errors ) {
-			counter++;
-			const errorTitle = testResult.errors[ error ].errorTitle;
-			const errorMessage = testResult.errors[ error ].errorMessage;
-			const block = testResult.errors[ error ].block;
-			const invalidValue =
-				'Invalid Value: ' + testResult.errors[ error ].invalidValue;
-			output.push(
-				<div key={ counter }>
-					<h2>Error: { errorTitle }</h2>
-					<h2>{ errorMessage }</h2>
-					<h4>Pattern: { testResult.pattern }</h4>
-					<p>Block: { block.name }</p>
-					<p>{ invalidValue }</p>
-				</div>
-			);
-		}
-
-		return output;
-	}
-
-	function maybeRenderErrors() {
-		const numberOfErrors = Object.keys( errors?.errors ).length;
-
-		if ( numberOfErrors && ! errors?.success ) {
-			console.log( errors ); // eslint-disable-line
-			return (
-				<div>
-					<span>Errors </span>
-					<button
-						onClick={ () => {
-							setErrorModalOpen( true );
-						} }
-					>
-						{ numberOfErrors }
-					</button>
-					{ errorModalOpen ? (
-						<Modal
-							title={ __( 'Errors in pattern', 'fse-studio' ) }
-							onRequestClose={ () => setErrorModalOpen( false ) }
-						>
-							{ formatErrorMessage( errors ) }
-						</Modal>
-					) : null }
-				</div>
-			);
-		}
-
-		return null;
-	}
 
 	function renderBrowsePatternsButton() {
 		return (
@@ -124,7 +37,6 @@ export default function PatternEditor( { visible } ) {
 				type="button"
 				className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 				onClick={ () => {
-					setPatternModalMode( 'choose' );
 					setIsPatternModalOpen( true );
 				} }
 			>
@@ -148,42 +60,27 @@ export default function PatternEditor( { visible } ) {
 							type="button"
 							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
-								setPatternModalMode( 'create' );
-								setIsPatternModalOpen( true );
+								const newPatternId = uuidv4();
+
+								const newPatternData = {
+									type: 'custom',
+									title: 'My New Pattern',
+									name: newPatternId,
+									categories: [],
+									viewportWidth: '',
+									content: '',
+								};
+
+								patterns
+									.createNewPattern( newPatternData )
+									.then( () => {
+										// Switch to the newly created theme.
+										setCurrentPatternId( newPatternId );
+									} );
 							} }
 						>
 							{ __( 'Create a new pattern', 'fse-studio' ) }
 						</button>
-						{ pattern?.data ? (
-							<input
-								className="flex-grow"
-								value={ pattern?.data?.title }
-								onChange={ ( event ) => {
-									pattern.set( {
-										...pattern.data,
-										title: event.target.value,
-									} );
-								} }
-								type="text"
-								placeholder={ __(
-									'Name of Pattern',
-									'fse-studio'
-								) }
-							/>
-						) : null }
-						<button
-							type="button"
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => {
-								pattern.save();
-							} }
-						>
-							{ __(
-								'Save pattern to disk (wp-content/fsestudio-custom-patterns)',
-								'fse-studio'
-							) }
-						</button>
-						{ maybeRenderErrors() }
 					</div>
 				</div>
 			</div>
@@ -207,361 +104,128 @@ export default function PatternEditor( { visible } ) {
 			) }
 			{ isPatternModalOpen ? (
 				<Modal
-					title={
-						patternModalMode === 'choose'
-							? __( 'Pick the patterns to edit', 'fse-studio' )
-							: __(
-									'Choose a starting point for your new pattern',
-									'fse-studio'
-							  )
-					}
+					title={ __(
+						'Edit one of your existing patterns',
+						'fse-studio'
+					) }
 					onRequestClose={ () => {
 						setIsPatternModalOpen( false );
 					} }
 				>
-					{ patternModalMode === 'choose' ? (
-						<PatternPicker
-							patterns={ patterns.patterns }
-							themeJsonData={ currentThemeJsonFile.data }
-							onClickPattern={
-								/** @param {string} clickedPatternId */
-								( clickedPatternId ) => {
-									setCurrentPatternId( clickedPatternId );
-									setIsPatternModalOpen( false );
-								}
-							}
-						/>
-					) : null }
-					{ patternModalMode === 'create' ? (
-						<PatternPicker
-							patterns={ patterns.patterns }
-							themeJsonData={ currentThemeJsonFile.data }
-							onClickPattern={ ( clickedPatternId ) => {
-								const newPatternId = uuidv4();
-
-								const newPatternData = {
-									type: 'custom',
-									title: 'My New Pattern',
-									name: newPatternId,
-									categories: [],
-									viewportWidth: '',
-									content:
-										patterns.patterns[ clickedPatternId ]
-											.content,
-								};
-
-								patterns.setPatterns( {
-									...patterns.patterns,
-									[ newPatternId ]: newPatternData,
-								} );
-
-								// Switch to the newly created theme.
-								setCurrentPatternId( newPatternId );
+					<PatternPicker
+						patterns={ searchItems(
+							Object.values( patterns.patterns ),
+							'custom'
+						) }
+						themeJsonData={ currentThemeJsonFile.data }
+						onClickPattern={
+							/** @param {string} clickedPatternId */
+							( clickedPatternId ) => {
+								setCurrentPatternId( clickedPatternId );
 								setIsPatternModalOpen( false );
-							} }
-						/>
-					) : null }
+							}
+						}
+					/>
 				</Modal>
 			) : null }
 
-			{ renderPatternEditorWhenReady() }
+			{ pattern.data ? <BlockEditor pattern={ pattern } /> : null }
 		</div>
 	);
 }
 
-export function BlockEditor( props ) {
-	const contentRef = useRef();
-	const mergedRefs = useMergeRefs( [ contentRef, useTypingObserver() ] );
-
-	const { blockEditorSettings, currentThemeJsonFile } = useStudioContext();
-	const pattern = props.pattern;
-
-	const [ blocks, updateBlocks ] = useState( [
-		parseBlocks(
-			pattern?.data?.content
-				? pattern?.data?.content
-				: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
-		),
-	] );
-
-	const [ serializedBlocks, updateSerializedBlocks ] = useState( '' );
-
-	const [ currentView, setCurrentView ] = useState( 'blockEditor' ); //Other option is "frontend"
-	const [ editorWidth, setEditorWidth ] = useState( '100%' );
-
+export function BlockEditor( { pattern } ) {
+	const { currentThemeJsonFile } = useStudioContext();
+	const [ currentPatternName, setCurrentPatternName ] = useState();
+	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
+	const iframeRef = useRef();
 	useEffect( () => {
-		// If the pattern prop changes to a new pattern, reset the blocks in the editor to be that pattern's blocks.
-		updateBlocks(
-			parse(
-				pattern?.data?.content
-					? pattern?.data?.content
-					: '<!-- wp:paragraph --><p></p><!-- /wp:paragraph -->'
-			)
+		saveAndRefreshPatternIframe();
+	}, [ currentThemeJsonFile.hasSaved ] );
+
+	function saveAndRefreshPatternIframe() {
+		setBlockEditorLoaded( false );
+		// Send a message to the iframe, telling it to save and refresh.
+		iframeRef.current.contentWindow.postMessage(
+			// It might be better to try updating the editor settings, but this apears to be broken.
+			// See: https://github.com/WordPress/gutenberg/issues/15993
+			JSON.stringify( {
+				message: 'fsestudio_save_and_refresh',
+			} )
 		);
-		props.removeErrors();
-	}, [ pattern?.data?.name ] );
-
-	// When blocks are changed in the block editor, update them in their corresponding files as well.
-	useEffect( () => {
-		// Tests temporarily disabled. Will re-enable in another dedicated effort.
-		// props.removeErrors( testPatternForErrors( blocks ) );
-
-		pattern.set( {
-			...pattern.data,
-			content: blocks[ 0 ]?.clientId ? serialize( blocks ) : '',
-		} );
-	}, [ blocks ] );
-
-	function getEditorSettings() {
-		const editorSettings = JSON.parse(
-			JSON.stringify( blockEditorSettings )
-		);
-
-		// Make media library work.
-		editorSettings.mediaUploadCheck = MediaUploadCheck;
-		editorSettings.mediaUpload = MediaUpload;
-		editorSettings.mediaPlaceholder = MediaPlaceholder;
-		editorSettings.mediaReplaceFlow = MediaReplaceFlow;
-
-		// Inject the current styles rendered by the current themeJsonFileData.
-		if ( currentThemeJsonFile?.data?.renderedGlobalStyles ) {
-			editorSettings.styles.push( {
-				css: currentThemeJsonFile.data.renderedGlobalStyles,
-			} );
-		}
-
-		return editorSettings;
 	}
-	/* eslint-disable */
-	function renderPortalCssStyles() {
-		const renderedStyles = [
-			<div
-				key="inline-style-from-block-editor"
-				dangerouslySetInnerHTML={ {
-					__html: blockEditorSettings.__unstableResolvedAssets.styles,
-				} }
-			/>,
-		];
 
-		for ( const style in blockEditorSettings.styles ) {
-			renderedStyles.push(
-				<style key={ style }>
-					{ blockEditorSettings.styles[ style ].css }
-				</style>
-			);
-		}
+	useEffect( () => {
+		// The iframed block editor will send a message to let us know when it is ready.
+		window.addEventListener(
+			'message',
+			( event ) => {
+				switch ( event.data ) {
+					case 'fsestudio_pattern_editor_loaded':
+						setBlockEditorLoaded( true );
+				}
+			},
+			false
+		);
 
-		// @ts-ignore
-		if ( currentThemeJsonFile.data?.value?.renderedGlobalStyles ) {
-			renderedStyles.push(
-				<style key={ 'renderedGlobalStyles' }>
-					{
-						// @ts-ignore
-						currentThemeJsonFile.data.value.renderedGlobalStyles 
+		// The iframes block editor will send a message whenever the pattern is saved.
+		window.addEventListener(
+			'message',
+			( event ) => {
+				try {
+					const response = JSON.parse( event.data );
+					if ( response.message === 'fsestudio_pattern_saved' ) {
+						// When a pattern is saved, push its new data into our pattern state so that it is up to date in thumbnails, etc.
+						pattern.set( {
+							...pattern.data,
+							title: response.blockPatternData.title,
+							content: response.blockPatternData.content,
+							type: response.blockPatternData.type,
+						} );
 					}
-				</style>
-			);
-		}
-
-		return renderedStyles;
-	}
-	/* eslint-enable */
-	if ( ! pattern.data ) {
-		return (
-			<span>
-				{ __( 'Select a pattern to edit it here', 'fse-studio' ) }
-			</span>
+				} catch ( e ) {
+					// Message posted was not JSON, so do nothing.
+				}
+			},
+			false
 		);
-	}
 
-	function getViewToggleClassName( toggleInQuestion ) {
-		if ( currentView === toggleInQuestion ) {
-			return ' fsestudio-active-tab';
+		// As a fallback, if 5 seconds have passed, hide the spinner.
+		setTimeout( () => {
+			setBlockEditorLoaded( true );
+		}, 5000 );
+	}, [] );
+
+	useEffect( () => {
+		if ( pattern.data.name !== currentPatternName ) {
+			setBlockEditorLoaded( false );
 		}
-
-		return null;
-	}
+		setCurrentPatternName( pattern.data.name );
+	}, [ pattern ] );
 
 	return (
 		<div className="fsestudio-pattern-editor">
-			<div
-				style={ { display: 'none' } }
-				className="fsestudio-editor-header"
-			>
-				<div className="fsestudio-pattern-image"></div>
-				<div className="fsestudio-pattern-name">
-					<h2>{ pattern.data.name }</h2>
-				</div>
-				<div className="fsestudio-pattern-tabs">
-					<button
-						className={
-							'fsestudio-tab' +
-							getViewToggleClassName( 'blockEditor' )
-						}
-						onClick={ () => {
-							setCurrentView( 'blockEditor' );
-						} }
-					>
-						Block Editor
-					</button>
-					<button
-						className={
-							'fsestudio-tab' +
-							getViewToggleClassName( 'codeEditor' )
-						}
-						onClick={ () => {
-							setCurrentView( 'codeEditor' );
-						} }
-					>
-						Code Editor
-					</button>
-					<button
-						className={
-							'fsestudio-tab' +
-							getViewToggleClassName( 'frontend' )
-						}
-						onClick={ () => {
-							setCurrentView( 'frontend' );
-						} }
-					>
-						{ __( 'Frontend Preview', 'fse-studio' ) }
-					</button>
-					<select
-						onChange={ ( event ) => {
-							setEditorWidth( event.target.value );
-						} }
-						value={ editorWidth }
-					>
-						<option value="100%">Desktop</option>
-						<option value="320px">320px (iPhone 5/SE)</option>
-						<option value="375px">375px (iPhone X)</option>
-						<option value="768px">768px (iPad)</option>
-						<option value="1024px">1024px (iPad Pro)</option>
-					</select>
-				</div>
-			</div>
 			<div className="fsestudio-pattern-editor-body">
-				<div
-					className="fsestudio-pattern-editor-view"
-					style={ {
-						display:
-							currentView === 'codeEditor' ? 'block' : 'none',
-					} }
-				>
-					<button
-						className="button"
-						onClick={ () => {
-							try {
-								parse( serializedBlocks );
-							} catch ( error ) {
-								/* eslint-disable */
-								alert(
-									__(
-										'Invalid block content. Please check your code to make sure it is valid.',
-										'fse-studio'
-									)
-								);
-								/* eslint-enable */
-								return;
-							}
-
-							updateBlocks( parse( serializedBlocks ) );
-						} }
-					>
-						{ __( 'Done Editing', 'fse-studio' ) }
-					</button>
-					<textarea
+				<div className="fsestudio-pattern-editor-view">
+					{ ! blockEditorLoaded ? (
+						<div>
+							<Spinner />
+							Getting the latest version of this Pattern into the
+							block Editor...
+						</div>
+					) : null }
+					<iframe
+						title={ __( 'Pattern Editor', 'fse-studio' ) }
+						ref={ iframeRef }
+						hidden={ ! blockEditorLoaded }
 						style={ {
 							width: '100%',
-							height: '90%',
+							height: 'calc( 100vh - 64px )',
 						} }
-						value={ serializedBlocks }
-						onChange={ ( event ) => {
-							updateSerializedBlocks( event.target.value );
-						} }
+						src={ pattern.data.block_editor_url }
 					/>
-				</div>
-
-				<div
-					className="fsestudio-pattern-editor-view"
-					style={ {
-						display:
-							currentView === 'blockEditor' ? 'block' : 'none',
-					} }
-				>
-					<ShortcutProvider>
-						<BlockEditorProvider
-							value={ blocks }
-							onChange={ updateBlocks }
-							onInput={ updateBlocks }
-							settings={ getEditorSettings() }
-						>
-							<SlotFillProvider>
-								<Popover.Slot />
-								<BlockTools>
-									<WritingFlow>
-										<ObserveTyping>
-											<div className="fsestudio-pattern-editor-columns">
-												<div className={ 'column' }>
-													<div className="edit-post-visual-editor editor-styles-wrapper">
-														<ResizableEditor
-															// Reinitialize the editor and reset the states when the template changes.
-															key={
-																pattern?.data
-																	?.name
-															}
-															enableResizing={
-																false
-															}
-															settings={ getEditorSettings() }
-															contentRef={
-																mergedRefs
-															}
-														>
-															<BlockList />
-														</ResizableEditor>
-													</div>
-
-													<div
-														style={ {
-															position: 'fixed',
-															bottom: '0px',
-															width: '100%',
-															backgroundColor:
-																'#fff',
-															padding: '4px',
-															zIndex: '999',
-														} }
-													>
-														<BlockBreadcrumb />
-													</div>
-												</div>
-												<div className={ 'column' }>
-													<BlockInspector />
-												</div>
-											</div>
-										</ObserveTyping>
-									</WritingFlow>
-								</BlockTools>
-							</SlotFillProvider>
-						</BlockEditorProvider>
-					</ShortcutProvider>
 				</div>
 			</div>
 		</div>
 	);
-}
-
-function parseBlocks( blocksToParse ) {
-	if ( parse( blocksToParse ) ) {
-		return parse( blocksToParse );
-	}
-	/* eslint-disable */
-	console.log(
-		'Invalid block content. Unable to parse.',
-		blocksToParse,
-		parse( blocksToParse )
-	);
-	/* eslint-enable */
-	return parse( blocksToParse );
 }
