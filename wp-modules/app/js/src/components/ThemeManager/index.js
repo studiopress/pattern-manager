@@ -4,6 +4,8 @@
  * Fse Studio
  */
 
+import { v4 as uuidv4 } from 'uuid';
+
 // WP Dependencies.
 import {
 	createInterpolateElement,
@@ -20,6 +22,7 @@ import {
 	check,
 	download,
 	close,
+	edit,
 } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
@@ -191,8 +194,8 @@ function ThemeDataEditor() {
 			available: true,
 		},
 		{
-			name: __( 'Add Patterns', 'fse-studio' ),
-			slug: 'add_patterns',
+			name: __( 'Patterns in theme', 'fse-studio' ),
+			slug: 'patterns_in_theme',
 			icon: layout,
 			available: currentTheme.existsOnDisk,
 		},
@@ -244,7 +247,7 @@ function ThemeDataEditor() {
 					isVisible={ themeEditorCurrentTab === 'theme_setup' }
 				/>
 				<ThemePatterns
-					isVisible={ themeEditorCurrentTab === 'add_patterns' }
+					isVisible={ themeEditorCurrentTab === 'patterns_in_theme' }
 				/>
 				<ThemeCustomizeStyles />
 				<ThemeTemplateFiles
@@ -670,6 +673,7 @@ function ThemePatterns( { isVisible } ) {
 		patterns,
 		currentTheme,
 		currentView,
+		currentPatternId,
 	} = useStudioContext();
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
@@ -677,46 +681,39 @@ function ThemePatterns( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="w-full flex flex-col">
-				<div className="w-full text-center bg-gray-100 p-7 self-start">
-					<h2 className="block text-lg font-medium text-gray-700 sm:col-span-1">
-						{ __( 'Add patterns to your theme', 'fse-studio' ) }
-					</h2>
-					<p className="mt-2">
-						{ createInterpolateElement(
-							__(
-								'<span>You can also create patterns in the</span> <button>Pattern Editor</button>',
-								'fse-studio'
-							),
-							{
-								span: <span />,
-								button: (
-									<button
-										className="mt-2 text-blue-400"
-										onClick={ () => {
-											currentView.set( 'pattern_editor' );
-										} }
-									/>
-								),
-							}
+				<div className="flex">
+					<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
+						{ __(
+							'Patterns included in this theme:',
+							'fse-studio'
 						) }
-					</p>
-					<p className="mt-5">
-						<button
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-							onClick={ () => setModalOpen( true ) }
-						>
-							{ __( 'Browse Patterns', 'fse-studio' ) }
-						</button>
-					</p>
+					</h3>
+					<button
+						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+						onClick={() => {
+							const newPatternId = uuidv4();
+
+							const newPatternData = {
+								type: 'custom',
+								title: 'My New Pattern',
+								name: newPatternId,
+								categories: [],
+								viewportWidth: '',
+								content: '',
+							};
+
+							patterns
+								.createNewPattern( newPatternData )
+								.then( () => {
+									// Switch to the newly created theme.
+									currentPatternId.set( newPatternId );
+									currentView.set('pattern_editor');
+								} );
+							}}
+					>Create New Pattern</button>
 				</div>
 				{ currentTheme?.data?.included_patterns?.length ? (
 					<>
-						<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
-							{ __(
-								'Patterns included in this theme:',
-								'fse-studio'
-							) }
-						</h3>
 						<div className="grid w-full grid-cols-3 gap-5">
 							{ currentTheme.data.included_patterns.map(
 								( patternName, index ) => {
@@ -733,6 +730,20 @@ function ThemePatterns( { isVisible } ) {
 												<Icon
 													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
 													icon={ close }
+													size={ 30 }
+												/>
+											</button>
+											<button
+												type="button"
+												className="absolute top-2 left-2"
+												 onClick={() => {
+													currentPatternId.set( patternName );
+													currentView.set( 'pattern_editor' );
+												 }}
+											>
+												<Icon
+													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+													icon={ edit }
 													size={ 30 }
 												/>
 											</button>

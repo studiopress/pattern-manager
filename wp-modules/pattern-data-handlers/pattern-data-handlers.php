@@ -80,6 +80,60 @@ function get_patterns() {
 }
 
 /**
+ * Get the data for all patterns in a theme.
+ *
+ * @param string $theme_path The path to the theme.
+ * @return array
+ */
+function get_theme_patterns( $theme_path = false ) {
+
+	if ( ! $theme_path ) {
+		$theme_path = get_template_directory();
+	}
+
+	$module_dir_path = module_dir_path( __FILE__ );
+
+	// Grab all of the patterns in this theme.
+	$pattern_file_paths = glob( $theme_path . '/theme-patterns/*.php' );
+
+	foreach ( $pattern_file_paths as $path ) {
+		$pattern_data                          = require $path;
+		$pattern_data['name']                  = basename( $path, '.php' );
+		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
+	}
+
+	return $patterns;
+}
+
+/**
+ * Get the unique name for each pattern in a theme.
+ *
+ * @param string $theme_path The path to the theme.
+ * @return array
+ */
+function get_theme_pattern_names( $theme_path = false ) {
+
+	if ( ! $theme_path ) {
+		$theme_path = get_template_directory();
+	}
+
+	$module_dir_path = module_dir_path( __FILE__ );
+
+	// Grab all of the patterns in this theme.
+	$pattern_file_paths = glob( $theme_path . '/theme-patterns/*.php' );
+
+	$pattern_names = array();
+
+	foreach ( $pattern_file_paths as $path ) {
+		$pattern_data         = require $path;
+		$pattern_data['name'] = basename( $path, '.php' );
+		$pattern_names[]      = $pattern_data['name'];
+	}
+
+	return $pattern_names;
+}
+
+/**
  * Update a single pattern.
  *
  * @param array $pattern Data about the pattern.

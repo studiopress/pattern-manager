@@ -20,22 +20,18 @@ export default function usePatternData(
 	currentTheme
 ) {
 	const snackBar = useSnackbarContext();
-	const [ creatingNewPattern, setCreatingNewPattern ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 
 	/** @type {[import('../components/PatternPicker').Pattern, React.Dispatch<React.SetStateAction<import('../components/PatternPicker').Pattern>>]} */
 	const [ patternData, setPatternData ] = useState();
 
 	useEffect( () => {
+		console.log( 'Pattern ID Changed', patternId );
 		// If the patternId passed in changes, get the new pattern data related to it.
 		getPatternData();
 	}, [ patternId ] );
 
 	useEffect( () => {
-		if ( creatingNewPattern ) {
-			savePatternData();
-		}
-
 		if ( patternData?.name ) {
 			// Hoist the current pattern data up to the object containing all patterns.
 			patterns.setPatterns( {
@@ -74,9 +70,7 @@ export default function usePatternData(
 						response.error &&
 						'pattern-not-found' === response.error
 					) {
-						setCreatingNewPattern( true );
-						// Get pattern data from the current patterns array, and set it for this pattern.
-						setPatternData( patterns.patterns[ patternId ] );
+						console.log(response.error);
 					} else {
 						setPatternData( response );
 					}
@@ -98,15 +92,7 @@ export default function usePatternData(
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					if ( creatingNewPattern ) {
-						setCreatingNewPattern( false );
-						setPatternData( data.patternData );
-					} else {
-						// Whenever the user saved a pattern, save their theme as well, just in case this pattern is part of this theme.
-						currentTheme.save();
-						// We only show the snackbar message if save initiated after initial creation.
-						snackBar.setValue( data.message );
-					}
+					snackBar.setValue( data.message );
 					resolve( data );
 				} );
 		} );

@@ -71,7 +71,11 @@ function get_the_themes() {
 
 			$formatted_theme_data[ $theme_slug ] = $theme_data;
 
+			// Add the theme.json file data to the theme data.
 			$formatted_theme_data[ $theme_slug ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
+
+			// Add the included Pattern names for the current theme.
+			$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_pattern_names( get_template_directory() );
 		}
 	}
 
@@ -191,10 +195,6 @@ function update_theme( $theme ) {
 			);
 		}
 	}
-
-	// Delete the current patterns directory in the theme if it exists.
-	$wp_filesystem->delete( $new_theme_dir . '/theme-patterns', true );
-	$wp_filesystem->mkdir( $new_theme_dir . '/theme-patterns' );
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		$file_to_copy = '';
