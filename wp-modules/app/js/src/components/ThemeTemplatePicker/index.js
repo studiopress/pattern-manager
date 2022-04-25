@@ -9,6 +9,12 @@ import useStudioContext from '../../hooks/useStudioContext';
 // WP Dependencies.
 import { useState } from '@wordpress/element';
 
+import {
+	Icon,
+	close,
+	edit,
+} from '@wordpress/icons';
+
 /**
  * @param {{
  *  templateName: string
@@ -85,34 +91,52 @@ export default function ThemeTemplatePicker( { templateName } ) {
 								'fse-studio'
 							) }
 					</span>
-					<button
-						className="mt-4 items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#586b70] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue block"
-						onClick={ () => {
-							setFocusedTemplateFileName( templateName );
-							setModalOpen( true );
-						} }
-					>
-						{ ( currentTheme.data?.template_files?.[
-							templateName
-						] &&
-							__( 'Change Pattern', 'fse-studio' ) ) ||
-							__( 'Set Pattern', 'fse-studio' ) }
-					</button>
 				</div>
 				<div className="mt-1 sm:mt-0 sm:col-span-1">
-					<div className="min-h-[30px] bg-white border border-[#F0F0F0]">
-						<PatternPreview
-							key={ templateName }
-							blockPatternData={
-								patterns?.patterns[
-									currentTheme.data?.template_files?.[
-										templateName
+					<div
+						
+						className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
+					>
+						<button
+							type="button"
+							className="absolute top-2 right-2"
+							// onClick={ }
+						>
+							<Icon
+								className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300"
+								icon={ close }
+								size={ 30 }
+							/>
+						</button>
+						<button
+							type="button"
+							className="absolute top-2 left-2"
+							 onClick={() => {
+								currentPatternId.set( patternName );
+								currentView.set( 'pattern_editor' );
+							 }}
+						>
+							<Icon
+								className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300"
+								icon={ edit }
+								size={ 30 }
+							/>
+						</button>
+
+						<div className="p-3 flex flex-grow items-center">
+							<PatternPreview
+								key={ templateName }
+								blockPatternData={
+									patterns?.patterns[
+										currentTheme.data?.template_files?.[
+											templateName
+										]
 									]
-								]
-							}
-							
-							scale={ 0.2 }
-						/>
+								}
+								
+								scale={ 0.2 }
+							/>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -76,6 +76,9 @@ function get_the_themes() {
 
 			// Add the included Pattern names for the current theme.
 			$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_pattern_names( get_template_directory() );
+
+			// Add the template files that exist in the theme.
+			//$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_pattern_names( get_template_directory() );
 		}
 	}
 

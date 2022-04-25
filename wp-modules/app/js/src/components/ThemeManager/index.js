@@ -200,12 +200,6 @@ function ThemeDataEditor() {
 			available: currentTheme.existsOnDisk,
 		},
 		{
-			name: __( 'Customize Styles', 'fse-studio' ),
-			slug: 'customize_styles',
-			icon: globe,
-			available: false, // @todo: change back to currentTheme.existsOnDisk or delete this object.
-		},
-		{
 			name: __( 'Theme Template Files', 'fse-studio' ),
 			slug: 'theme_template_files',
 			icon: globe,
@@ -249,7 +243,6 @@ function ThemeDataEditor() {
 				<ThemePatterns
 					isVisible={ themeEditorCurrentTab === 'patterns_in_theme' }
 				/>
-				<ThemeCustomizeStyles />
 				<ThemeTemplateFiles
 					isVisible={
 						themeEditorCurrentTab === 'theme_template_files'
@@ -847,6 +840,3 @@ function ThemeTemplateFiles( { isVisible } ) {
 	);
 }
 
-function ThemeCustomizeStyles() {
-	return null;
-}
