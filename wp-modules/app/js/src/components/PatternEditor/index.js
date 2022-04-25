@@ -199,6 +199,10 @@ export function BlockEditor( { pattern } ) {
 	useEffect( () => {
 		if ( pattern.data.name !== currentPatternName ) {
 			setBlockEditorLoaded( false );
+			// As a fallback, if 5 seconds have passed, hide the spinner.
+			setTimeout( () => {
+				setBlockEditorLoaded( true );
+			}, 5000 );
 		}
 		setCurrentPatternName( pattern.data.name );
 	}, [ pattern ] );
