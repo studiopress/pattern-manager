@@ -2,7 +2,7 @@
 /**
  * Module Name: Pattern Post Type
  * Description: This module registers a post type to be used when editing block patterns, and sets up how things work in the block editor.
- * Namespace: StringFixer
+ * Namespace: PatternPostType
  *
  * @package fse-studio
  */
@@ -72,6 +72,22 @@ function pattern_post_type() {
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 
 /**
+ * If URL contains fsestudio_pattern_post, create a fse_pattern post and redirect to it.
+ */
+function generate_pattern_post_type() {
+	if ( ! isset( $_GET['fsestudio_pattern_post'] ) ) { //phpcs:ignore
+		return;
+	}
+
+	$pattern_data = json_decode( urldecode( untrailingslashit( wp_unslash( $_GET['fsestudio_pattern_post'] ) ) ), true );
+	$the_post_id  = \FseStudio\PatternDataHandlers\generate_pattern_post( $pattern_data );
+
+	wp_safe_redirect( admin_url( 'post.php?post=' . $the_post_id . '&action=edit' ) );
+	exit;
+}
+add_action( 'init', __NAMESPACE__ . '\generate_pattern_post_type' );
+
+/**
  * Add style and metaboxes to fse_pattern posts when editing.
  */
 function enqueue_meta_fields_in_editor() {
@@ -107,6 +123,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
  * @return void
  */
 function register_block_patterns() {
+
 	$current_screen = get_current_screen();
 
 	if ( 'fsestudio_pattern' !== $current_screen->post_type ) {
@@ -124,6 +141,7 @@ function register_block_patterns() {
 			$pattern,
 		);
 	}
+
 }
 add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
 

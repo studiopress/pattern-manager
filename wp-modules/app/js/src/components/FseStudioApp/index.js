@@ -31,10 +31,7 @@ import FseStudioSnackbarContext from '../../contexts/FseStudioSnackbarContext';
 // Hooks
 import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
-import useMounted from '../../hooks/useMounted';
 import useThemeData from '../../hooks/useThemeData';
-import usePatterns from '../../hooks/usePatterns';
-import usePatternData from '../../hooks/usePatternData';
 import useCurrentView from '../../hooks/useCurrentView';
 import useStudioContext from '../../hooks/useStudioContext';
 import useSnackbarContext from '../../hooks/useSnackbarContext';
@@ -52,9 +49,7 @@ import classNames from '../../utils/classNames';
 /**
  * @typedef {{
  *  currentView: ReturnType<import('../../hooks/useCurrentView').default>,
- *  patterns: ReturnType<import('../../hooks/usePatterns').default>,
  *  currentPatternId: ReturnType<import('../../hooks/useCurrentId').default>,
- *  currentPattern: ReturnType<import('../../hooks/usePatternData').default>,
  *  themes: ReturnType<import('../../hooks/useThemes').default>,
  *  currentThemeId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentTheme: ReturnType<import('../../hooks/useThemeData').default>,
@@ -84,14 +79,8 @@ function FseStudioContextHydrator() {
 		currentThemeId.value,
 		themes,
 	);
-	
-	const patterns = usePatterns( fsestudio.patterns );
+
 	const currentPatternId = useCurrentId('');
-	const currentPattern   = usePatternData(
-		currentPatternId.value,
-		patterns,
-		currentTheme
-	);
 	
 	useEffect( () => {
 		getUpdatedAppState();
@@ -109,7 +98,6 @@ function FseStudioContextHydrator() {
 		} )
 			.then( ( response ) => response.json() )
 			.then( ( data ) => {
-				patterns.setPatterns( {...data.patterns} );
 				themes.setThemes( {...data.themes } );
 				currentTheme.set( {...data.themes[currentThemeId.value] } );
 			} );
@@ -118,9 +106,8 @@ function FseStudioContextHydrator() {
 	/** @type {InitialContext} */
 	const providerValue = {
 		currentView,
-		patterns,
 		currentPatternId,
-		currentPattern,
+		currentPattern: currentTheme?.data?.included_patterns[currentPatternId.value],
 		themes,
 		currentThemeId,
 		currentTheme,

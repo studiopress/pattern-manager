@@ -74,11 +74,11 @@ function get_the_themes() {
 			// Add the theme.json file data to the theme data.
 			$formatted_theme_data[ $theme_slug ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
 
-			// Add the included Pattern names for the current theme.
-			$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_pattern_names( get_template_directory() );
+			// Add the included Patterns for the current theme.
+			$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 
 			// Add the template files that exist in the theme.
-			//$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_pattern_names( get_template_directory() );
+			$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_template_names( get_template_directory() );
 		}
 	}
 
@@ -200,28 +200,11 @@ function update_theme( $theme ) {
 	}
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		$file_to_copy = '';
+		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
+	}
 
-		// Copy default patterns included in the theme. THIS MIGHT BE REMOVED. We may requirea theme to only include patterns that are unique to that theme.
-		$default_pattern_path = $wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/pattern-data-handlers/pattern-files/' . $included_pattern . '.php';
-		if ( $wp_filesystem->exists( $default_pattern_path ) ) {
-			$file_to_copy = $default_pattern_path;
-		}
-
-		$custom_pattern_path = $wp_filesystem->wp_content_dir() . 'fsestudio-custom-assets/patterns/' . $included_pattern . '.php';
-
-		if ( $wp_filesystem->exists( $custom_pattern_path ) ) {
-			$file_to_copy = $custom_pattern_path;
-		}
-
-		if ( ! empty( $file_to_copy ) ) {
-			$wp_filesystem->copy(
-				$file_to_copy,
-				$new_theme_dir . 'theme-patterns/' . $included_pattern . '.php',
-				true,
-				FS_CHMOD_FILE
-			);
-		}
+	foreach ( $theme['template_files'] as $included_pattern ) {
+		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
 
 	// Activate this theme.

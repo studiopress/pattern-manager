@@ -725,12 +725,29 @@ export default function useThemeData( themeId, themes ) {
 		// Return the default value for this from the schema.
 		return defaultValue;
 	}
+	
+	function createPattern( patternData ) {
+		return new Promise( ( resolve ) => {
+			setThemeData( {
+				...themeData,
+				included_patterns: {
+					...themeData.included_patterns,
+					[patternData.name]: patternData,
+				}
+			} );
+			
+			saveThemeData().then( () => {
+				resolve();
+			});
+		} );
+	}
 
 	return {
 		data: themeData,
 		set: setThemeData,
 		getThemeJsonValue,
 		setThemeJsonValue,
+		createPattern,
 		save: saveThemeData,
 		export: exportThemeData,
 		existsOnDisk,

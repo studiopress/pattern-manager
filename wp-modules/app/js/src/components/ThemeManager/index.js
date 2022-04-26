@@ -8,11 +8,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies.
 import {
-	createInterpolateElement,
 	useRef,
 	useState,
 } from '@wordpress/element';
-import { Modal } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import {
 	Icon,
@@ -23,13 +21,13 @@ import {
 	download,
 	close,
 	edit,
+	plus,
 } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
 import PatternPreview from '../PatternPreview';
-import PatternPicker from '../PatternPicker';
 import ThemeTemplatePicker from '../ThemeTemplatePicker';
 
 // Utils
@@ -663,7 +661,7 @@ function ThemeSetup( { isVisible } ) {
 /** @param {{isVisible: boolean}} props */
 function ThemePatterns( { isVisible } ) {
 	const {
-		patterns,
+		themes,
 		currentTheme,
 		currentView,
 		currentPatternId,
@@ -695,24 +693,24 @@ function ThemePatterns( { isVisible } ) {
 								content: '',
 							};
 
-							patterns
-								.createNewPattern( newPatternData )
+							currentTheme
+								.createPattern( newPatternData )
 								.then( () => {
 									// Switch to the newly created theme.
 									currentPatternId.set( newPatternId );
 									currentView.set('pattern_editor');
 								} );
 							}}
-					>Create New Pattern</button>
+					>{ __( 'Create New Pattern', 'fse-studio' ) }</button>
 				</div>
-				{ currentTheme?.data?.included_patterns?.length ? (
+				
 					<>
 						<div className="grid w-full grid-cols-3 gap-5">
-							{ currentTheme.data.included_patterns.map(
-								( patternName, index ) => {
+							{ Object.entries( currentTheme.data.included_patterns ).map(
+								( [patternName, patternData] ) => {
 									return (
 										<div
-											key={ index }
+											key={ patternName }
 											className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
 										>
 											<button
@@ -740,29 +738,32 @@ function ThemePatterns( { isVisible } ) {
 													size={ 30 }
 												/>
 											</button>
+											<button
+												type="button"
+												className="absolute bottom-16 left-2"
+												 onClick={() => {
+													currentPatternId.set( patternName );
+													currentView.set( 'pattern_editor' );
+												 }}
+											>
+												<Icon
+													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+													icon={ plus }
+													size={ 30 }
+												/>
+											</button>
 
 											<div className="p-3 flex flex-grow items-center">
 												<PatternPreview
-													key={
-														patterns.patterns[
-															patternName
-														].name
-													}
-													blockPatternData={
-														patterns.patterns[
-															patternName
-														]
-													}
-													
+													key={ patternName }
+													blockPatternData={patternData}
 													scale={ 0.2 }
 												/>
 											</div>
 											<div>
 												<h3 className="text-sm bg-white p-4 rounded-b">
 													{
-														patterns.patterns[
-															patternName
-														]?.title
+														patternData.title
 													}
 												</h3>
 											</div>
@@ -772,48 +773,8 @@ function ThemePatterns( { isVisible } ) {
 							) }
 						</div>
 					</>
-				) : null }
+				
 			</div>
-			{ isModalOpen ? (
-				<Modal
-					title={ __(
-						'Pick the patterns to include in this theme',
-						'fse-studio'
-					) }
-					onRequestClose={ () => {
-						setModalOpen( false );
-					} }
-				>
-					<PatternPicker
-						patterns={ patterns.patterns }
-						
-						selectedPatterns={ currentTheme.data.included_patterns }
-						onClickPattern={ ( clickedPatternName ) => {
-							if (
-								currentTheme.data.included_patterns.includes(
-									clickedPatternName
-								)
-							) {
-								currentTheme.set( {
-									...currentTheme.data,
-									included_patterns: currentTheme.data.included_patterns.filter(
-										( pattern ) =>
-											pattern !== clickedPatternName
-									),
-								} );
-							} else {
-								currentTheme.set( {
-									...currentTheme.data,
-									included_patterns: [
-										...currentTheme.data.included_patterns,
-										clickedPatternName,
-									],
-								} );
-							}
-						} }
-					/>
-				</Modal>
-			) : null }
 		</div>
 	);
 }
@@ -825,12 +786,14 @@ function ThemeTemplateFiles( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="divide-y divide-gray-200">
-				{ Object.keys( currentTheme.data?.template_files ?? {} ).map(
-					( templateName ) => {
+				{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
+					( [templateName, templateContent] ) => {
+						console.log( templateName );
 						return (
 							<ThemeTemplatePicker
 								key={ templateName }
 								templateName={ templateName }
+								templateContent={ templateContent }
 							/>
 						);
 					}

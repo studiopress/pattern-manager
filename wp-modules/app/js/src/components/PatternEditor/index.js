@@ -4,12 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 // @ts-check
 import { __ } from '@wordpress/i18n';
-import { Icon, layout } from '@wordpress/icons';
 import { Modal, Spinner } from '@wordpress/components';
 import { useState, useEffect, useRef } from '@wordpress/element';
 
 // Hooks
-import usePatternData from '../../hooks/usePatternData';
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
@@ -20,7 +18,7 @@ import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
-	const { currentView, patterns, currentTheme, currentPatternId, currentPattern } = useStudioContext();
+	const { currentTheme, currentPatternId } = useStudioContext();
 	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
 
 	return (
@@ -37,7 +35,7 @@ export default function PatternEditor( { visible } ) {
 				>
 					<PatternPicker
 						patterns={ searchItems(
-							Object.values( patterns.patterns ),
+							Object.values( currentTheme.data.included_patterns ),
 							'custom'
 						) }
 						onClickPattern={
@@ -51,7 +49,7 @@ export default function PatternEditor( { visible } ) {
 				</Modal>
 			) : null }
 
-			{ currentPattern.data ? <BlockEditor /> : null }
+			{ currentPatternId.value ? <BlockEditor /> : null }
 		</div>
 	);
 }
@@ -66,6 +64,7 @@ export function BlockEditor() {
 	}, [ currentTheme.hasSaved ] );
 
 	function saveAndRefreshPatternIframe() {
+		return;
 		setBlockEditorLoaded( false );
 		// Send a message to the iframe, telling it to save and refresh.
 		iframeRef.current.contentWindow.postMessage(
@@ -98,12 +97,7 @@ export function BlockEditor() {
 					const response = JSON.parse( event.data );
 					if ( response.message === 'fsestudio_pattern_saved' ) {
 						// When a pattern is saved, push its new data into our pattern state so that it is up to date in thumbnails, etc.
-						currentPattern.set( {
-							...currentPattern.data,
-							title: response.blockPatternData.title,
-							content: response.blockPatternData.content,
-							type: response.blockPatternData.type,
-						} );
+						
 					}
 				} catch ( e ) {
 					// Message posted was not JSON, so do nothing.
@@ -119,10 +113,10 @@ export function BlockEditor() {
 	}, [] );
 
 	useEffect( () => {
-		if ( currentPattern.data.name !== currentPatternName ) {
+		if ( currentPattern?.name !== currentPatternName ) {
 			setBlockEditorLoaded( false );
 		}
-		setCurrentPatternName( currentPattern.data.name );
+		setCurrentPatternName( currentPattern?.name );
 	}, [ currentPattern ] );
 
 	return (
@@ -139,12 +133,12 @@ export function BlockEditor() {
 					<iframe
 						title={ __( 'Pattern Editor', 'fse-studio' ) }
 						ref={ iframeRef }
-						hidden={ ! blockEditorLoaded }
+						
 						style={ {
 							width: '100%',
 							height: 'calc( 100vh - 64px )',
 						} }
-						src={ currentPattern.data.block_editor_url }
+						src={ fsestudio.siteUrl + '?fsestudio_pattern_post=' + encodeURIComponent( JSON.stringify( currentPattern ) ) }
 					/>
 				</div>
 			</div>

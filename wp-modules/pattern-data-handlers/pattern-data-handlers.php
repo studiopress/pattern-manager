@@ -30,10 +30,6 @@ function get_pattern( $pattern_id ) {
 
 	$pattern_data = $patterns_data[ $pattern_id ];
 
-	// Temporarily generate a WP post with this pattern.
-	$the_post_id                      = generate_pattern_post( $pattern_data );
-	$pattern_data['block_editor_url'] = admin_url( 'post.php?post=' . $the_post_id . '&action=edit' );
-
 	return $pattern_data;
 }
 
@@ -80,7 +76,7 @@ function get_patterns() {
 }
 
 /**
- * Get the data for all patterns in a theme.
+ * Get the unique name for each pattern in a theme.
  *
  * @param string $theme_path The path to the theme.
  * @return array
@@ -96,9 +92,11 @@ function get_theme_patterns( $theme_path = false ) {
 	// Grab all of the patterns in this theme.
 	$pattern_file_paths = glob( $theme_path . '/theme-patterns/*.php' );
 
+	$patterns = array();
+
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data                          = require $path;
-		$pattern_data['name']                  = basename( $path, '.php' );
+		$pattern_data         = require $path;
+		$pattern_data['name'] = basename( $path, '.php' );
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 
@@ -106,12 +104,14 @@ function get_theme_patterns( $theme_path = false ) {
 }
 
 /**
- * Get the unique name for each pattern in a theme.
+ * Get the data for all templates in a theme.
  *
  * @param string $theme_path The path to the theme.
  * @return array
  */
-function get_theme_pattern_names( $theme_path = false ) {
+function get_theme_template_names( $theme_path = false ) {
+
+	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
@@ -119,18 +119,17 @@ function get_theme_pattern_names( $theme_path = false ) {
 
 	$module_dir_path = module_dir_path( __FILE__ );
 
-	// Grab all of the patterns in this theme.
-	$pattern_file_paths = glob( $theme_path . '/theme-patterns/*.php' );
+	// Grab all of the templates in this theme.
+	$pattern_file_paths = glob( $theme_path . '/templates/*.html' );
 
-	$pattern_names = array();
+	$patterns = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data         = require $path;
-		$pattern_data['name'] = basename( $path, '.php' );
-		$pattern_names[]      = $pattern_data['name'];
+		$pattern_data                          = $wp_filesystem->get_contents( $path );
+		$patterns[ basename( $path, '.html' ) ] = $pattern_data;
 	}
 
-	return $pattern_names;
+	return $patterns;
 }
 
 /**
@@ -144,21 +143,19 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	$wp_theme_dir = get_template_directory();
-	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
+	$wp_theme_dir  = get_template_directory();
+	$plugin_dir    = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
+	$patterns_dir  = $wp_theme_dir . '/theme-patterns/';
+	$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
 
-	if ( ! isset( $pattern['type'] ) || 'default' === $pattern['type'] ) {
-		$patterns_dir = $plugin_dir . 'wp-modules/pattern-data-handlers/pattern-files/';
-	} else {
-
-		$patterns_dir = $wp_theme_dir . '/theme-patterns/';
-
-		if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
-			$wp_filesystem->mkdir( $patterns_dir );
-		}
+	if ( 'template' === $pattern['type'] ) {
+		$patterns_dir  = $wp_theme_dir . '/templates/';
+		$file_contents = contruct_template_php_file_contents( $pattern, 'fse-studio' );
 	}
 
-	$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
+	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
+		$wp_filesystem->mkdir( $patterns_dir );
+	}
 
 	// Convert the collection array into a file, and place it.
 	$pattern_file_created = $wp_filesystem->put_contents(
@@ -196,6 +193,17 @@ return array(
 );
 ";
 	return $file_contents;
+}
+
+/**
+ * Returns a string containing the code for a template file.
+ *
+ * @param array  $pattern Data about the pattern.
+ * @param string $text_domain The text domain to use for any localization required.
+ * @return bool
+ */
+function contruct_template_php_file_contents( $pattern, $text_domain ) {
+	return $pattern['content'];
 }
 
 /**
@@ -240,6 +248,7 @@ function delete_all_pattern_post_types() {
 		array(
 			'post_type'   => 'fsestudio_pattern',
 			'numberposts' => -1,
+			'post_status' => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' ),
 		)
 	);
 
