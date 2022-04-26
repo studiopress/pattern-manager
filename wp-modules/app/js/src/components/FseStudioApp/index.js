@@ -152,69 +152,50 @@ function FseStudio() {
 					{ snackBar.value }
 				</Snackbar>
 			) : null }
-			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
+			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-wp-black shadow">
 				<div className="flex-1 flex">
-					<div className="flex w-full p-3 gap-5">
+					<div className="flex w-full gap-8 max-w-7xl mx-auto">
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
 								currentView.set( 'theme_manager' );
 							} }
 						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={ layout }
-								size={ 26 }
-							/>{ ' ' }
 							{ __( 'Theme Setup', 'fse-studio' ) }
 						</button>
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
 								currentView.set( 'themejson_editor' );
 							} }
 						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={ layout }
-								size={ 26 }
-							/>{ ' ' }
 							{ __( 'Styles and Settings', 'fse-studio' ) }
 						</button>
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
 								currentView.set( 'theme_manager' );
 							} }
 						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={ layout }
-								size={ 26 }
-							/>{ ' ' }
 							{ __( 'Template Files', 'fse-studio' ) }
 						</button>
 						<button
 							type="button"
-							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
 								currentView.set( 'pattern_editor' );
 							} }
 						>
-							<Icon
-								className="text-white fill-current mr-2"
-								icon={ layout }
-								size={ 26 }
-							/>{ ' ' }
 							{ __( 'Patterns in Theme', 'fse-studio' ) }
 						</button>
 						
 					</div>
 				</div>
 			</div>
+			
 			<ThemeManager
 				visible={ 'theme_manager' === currentView.currentView }
 			/>
