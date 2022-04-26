@@ -67,6 +67,8 @@ export default function useThemeData( themeId, themes ) {
 	const [ themeData, setThemeData ] = useState();
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
+	
+	const [autoSaveTheme, setAutoSaveTheme] = useState( false );
 
 	useEffect( () => {
 		setHasSaved( false );
@@ -75,6 +77,10 @@ export default function useThemeData( themeId, themes ) {
 			setThemeNameIsDefault( true );
 		} else {
 			setThemeNameIsDefault( false );
+		}
+		
+		if ( themeData && autoSaveTheme ) {
+			saveThemeData();
 		}
 	}, [ themeData ] );
 
@@ -161,7 +167,12 @@ export default function useThemeData( themeId, themes ) {
 				.then( ( data ) => {
 					setExistsOnDisk( true );
 					setHasSaved( true );
-					snackBar.setValue( data );
+					if ( autoSaveTheme ) {
+						setAutoSaveTheme( false );
+					}
+					if ( ! autoSaveTheme ) {
+						snackBar.setValue( data );
+					}
 					resolve( data );
 				} )
 				.catch( ( errorMessage ) => {
@@ -725,20 +736,21 @@ export default function useThemeData( themeId, themes ) {
 		// Return the default value for this from the schema.
 		return defaultValue;
 	}
-	
+
 	function createPattern( patternData ) {
+		setAutoSaveTheme( true );
+
 		return new Promise( ( resolve ) => {
-			setThemeData( {
+			const newThemeData = {
 				...themeData,
 				included_patterns: {
 					...themeData.included_patterns,
 					[patternData.name]: patternData,
 				}
-			} );
+			};
+			setThemeData( newThemeData );
 			
-			saveThemeData().then( () => {
-				resolve();
-			});
+			resolve( newThemeData );
 		} );
 	}
 

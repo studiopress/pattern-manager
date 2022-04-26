@@ -267,7 +267,7 @@ function save_request_args() {
 		),
 		'included_patterns' => array(
 			'required'          => false,
-			'type'              => 'array',
+			'type'              => 'object',
 			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
