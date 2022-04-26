@@ -38,7 +38,9 @@ import useSnackbarContext from '../../hooks/useSnackbarContext';
 import useSnackbar from '../../hooks/useSnackbar';
 
 // Components
-import ThemeManager from '../ThemeManager';
+import ThemeSetup from '../ThemeSetup';
+import ThemePatterns from '../ThemePatterns';
+import ThemeTemplateFiles from '../ThemeTemplateFiles';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
@@ -70,7 +72,7 @@ export default function FseStudioApp() {
 }
 
 function FseStudioContextHydrator() {
-	const currentView = useCurrentView( 'theme_manager' );
+	const currentView = useCurrentView( 'theme_setup' );
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
@@ -146,7 +148,7 @@ function FseStudio() {
 							type="button"
 							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
-								currentView.set( 'theme_manager' );
+								currentView.set( 'theme_setup' );
 							} }
 						>
 							{ __( 'Theme Setup', 'fse-studio' ) }
@@ -164,7 +166,7 @@ function FseStudio() {
 							type="button"
 							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
-								currentView.set( 'theme_manager' );
+								currentView.set( 'theme_template_files' );
 							} }
 						>
 							{ __( 'Template Files', 'fse-studio' ) }
@@ -173,7 +175,7 @@ function FseStudio() {
 							type="button"
 							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 							onClick={ () => {
-								currentView.set( 'pattern_editor' );
+								currentView.set( 'patterns_in_theme' );
 							} }
 						>
 							{ __( 'Patterns in Theme', 'fse-studio' ) }
@@ -183,8 +185,14 @@ function FseStudio() {
 				</div>
 			</div>
 			
-			<ThemeManager
-				visible={ 'theme_manager' === currentView.currentView }
+			<ThemeSetup
+				isVisible={ 'theme_setup' === currentView.currentView }
+			/>
+			<ThemePatterns
+				isVisible={ 'patterns_in_theme' === currentView.currentView }
+			/>
+			<ThemeTemplateFiles
+				isVisible={ 'theme_template_files' === currentView.currentView }
 			/>
 			<PatternEditor
 				visible={ 'pattern_editor' === currentView.currentView }
