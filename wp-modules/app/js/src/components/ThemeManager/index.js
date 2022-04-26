@@ -94,7 +94,7 @@ export default function ThemeManager( { visible } ) {
 			<div hidden={ ! visible } className="fsestudio-theme-manager">
 				<div className="bg-fses-gray mx-auto p-12 w-full">
 					<div className="max-w-7xl mx-auto">
-						<h2 className="text-4xl mb-3">{ __( 'Theme Manager', 'fse-studio' ) }</h2>
+						<h1 className="text-4xl mb-3">{ __( 'Theme Manager', 'fse-studio' ) }</h1>
 						<p className="text-lg max-w-2xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
 					</div>
 				</div>
