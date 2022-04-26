@@ -125,8 +125,45 @@ function FseStudioContextHydrator() {
 
 function FseStudio() {
 	// @ts-ignore
-	const { currentView, currentTheme } = useStudioContext();
+	const { currentView, currentTheme, themes, currentThemeId } = useStudioContext();
 	const snackBar = useSnackbarContext();
+
+	function renderThemeSelector() {
+		const renderedThemes = [];
+
+		renderedThemes.push(
+			<option key={ 1 }>{ __( 'Choose a theme', 'fse-studio' ) }</option>
+		);
+
+		let counter = 3;
+
+		for ( const thisTheme in themes.themes ) {
+			const themeInQuestion = themes.themes[ thisTheme ];
+			renderedThemes.push(
+				<option key={ counter } value={ themeInQuestion.dirname }>
+					{ thisTheme === currentThemeId.value
+						? currentTheme.data?.name
+						: themeInQuestion?.name }
+				</option>
+			);
+			counter++;
+		}
+
+		return (
+			<>
+				<select
+					className="block w-60 h-full pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
+					id="themes"
+					value={ currentThemeId.value }
+					onChange={ ( event ) => {
+						currentThemeId.set( event.target.value );
+					} }
+				>
+					{ renderedThemes }
+				</select>
+			</>
+		);
+	}
 
 	return (
 		<>
@@ -141,44 +178,117 @@ function FseStudio() {
 			) : null }
 			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-wp-black shadow">
 				<div className="flex-1 flex">
-					<div className="flex w-full gap-8 max-w-7xl mx-auto">
-						<button
-							type="button"
-							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-							onClick={ () => {
-								currentView.set( 'theme_manager' );
-							} }
-						>
-							{ __( 'Theme Setup', 'fse-studio' ) }
-						</button>
-						<button
-							type="button"
-							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-							onClick={ () => {
-								currentView.set( 'themejson_editor' );
-							} }
-						>
-							{ __( 'Styles and Settings', 'fse-studio' ) }
-						</button>
-						<button
-							type="button"
-							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-							onClick={ () => {
-								currentView.set( 'theme_manager' );
-							} }
-						>
-							{ __( 'Template Files', 'fse-studio' ) }
-						</button>
-						<button
-							type="button"
-							className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-							onClick={ () => {
-								currentView.set( 'pattern_editor' );
-							} }
-						>
-							{ __( 'Patterns in Theme', 'fse-studio' ) }
-						</button>
+					<div className="flex w-full gap-8 max-w-7xl mx-auto justify-between items-center">
+						<div className="flex gap-8">
+							<button
+								type="button"
+								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+								onClick={ () => {
+									currentView.set( 'theme_manager' );
+								} }
+							>
+								{ __( 'Theme Setup', 'fse-studio' ) }
+							</button>
+							<button
+								type="button"
+								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+								onClick={ () => {
+									currentView.set( 'themejson_editor' );
+								} }
+							>
+								{ __( 'Styles and Settings', 'fse-studio' ) }
+							</button>
+							<button
+								type="button"
+								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+								onClick={ () => {
+									currentView.set( 'theme_manager' );
+								} }
+							>
+								{ __( 'Template Files', 'fse-studio' ) }
+							</button>
+							<button
+								type="button"
+								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+								onClick={ () => {
+									currentView.set( 'pattern_editor' );
+								} }
+							>
+								{ __( 'Patterns in Theme', 'fse-studio' ) }
+							</button>
+						</div>
 						
+						<div className="flex sm:flex-row flex-col gap-2">
+							{
+								// In order to render the selector…
+								// There should be at least 1 theme other than the currently selected theme.
+								// Or the current theme should have been saved to disk.
+								Object.keys( themes.themes ).some(
+									( themeName ) =>
+										themeName !== currentThemeId.value ||
+										currentTheme.existsOnDisk
+								) ? (
+									<>
+										<div>
+											<label
+												htmlFor="themes"
+												className="block text-sm font-medium text-gray-700 visuallyhidden"
+											>
+												{ __(
+													'Choose a theme',
+													'fse-studio'
+												) }
+											</label>
+											{ renderThemeSelector() }
+										</div>
+									</>
+								) : null
+							}
+							<div className="flex flex-col">
+								<button
+									type="button"
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									onClick={ () => {
+										/** @type {import('../../hooks/useThemeData').Theme} */
+										const newThemeData = {
+											name: 'My New Theme',
+											dirname: 'my-new-theme',
+											namespace: 'MyNewTheme',
+											uri: 'mysite.com',
+											author: 'Me',
+											author_uri: 'mysite.com',
+											description: 'My new FSE Theme',
+											tags: '',
+											tested_up_to: '5.9',
+											requires_wp: '5.9',
+											requires_php: '7.3',
+											version: '1.0.0',
+											text_domain: 'my-new-theme',
+											theme_json_file: fsestudio.themeJsonFiles.default,
+											included_patterns: [],
+											template_files: {
+												index: 'homepage',
+												404: null,
+												archive: null,
+												single: null,
+												page: null,
+												search: null,
+											},
+										};
+
+										themes.setThemes( {
+											...themes.themes,
+											'my-new-theme': newThemeData,
+										} );
+
+										// Switch to the newly created theme.
+										currentThemeId.set( 'my-new-theme' );
+									} }
+								>
+									{ __( 'Create New', 'fse-studio' ) }
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
