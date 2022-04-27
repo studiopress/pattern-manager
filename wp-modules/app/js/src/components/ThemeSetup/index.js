@@ -20,16 +20,6 @@ import {
 
 import useStudioContext from '../../hooks/useStudioContext';
 
-// Components
-import PatternPreview from '../PatternPreview';
-import ThemeTemplatePicker from '../ThemeTemplatePicker';
-
-// Utils
-import classNames from '../../utils/classNames';
-
-// Globals
-import { fsestudio } from '../../globals';
-
 /** @param {{isVisible: boolean}} props */
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();

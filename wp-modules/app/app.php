@@ -42,8 +42,6 @@ function get_app_state() {
 		'apiNonce'            => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints'        => array(
 			'getAppState'               => get_rest_url( false, 'fsestudio/v1/get-app-state/' ),
-			'getPatternEndpoint'        => get_rest_url( false, 'fsestudio/v1/get-pattern/' ),
-			'savePatternEndpoint'       => get_rest_url( false, 'fsestudio/v1/save-pattern/' ),
 			'getThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
 			'saveThemeEndpoint'         => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
 			'exportThemeEndpoint'       => get_rest_url( false, 'fsestudio/v1/export-theme/' ),

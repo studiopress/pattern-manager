@@ -56,13 +56,13 @@ registerPlugin( 'fsestudio-postmeta-for-patterns', {
 // Change the word "Publish" to "Save Pattern"
 function changePublishToSavePattern( translation, text ) {
 	if ( text === 'Publish' ) {
-		return 'Save pattern to file';
+		return 'Save pattern to theme';
 	}
 	if ( text === 'Saved' ) {
 		return 'Saved to your theme directory';
 	}
 	if ( text === 'Post published.' || text === 'Post updated.' ) {
-		return 'Pattern saved to disk';
+		return 'Pattern saved to theme';
 	}
 	if ( text === 'Update' || text === 'Post updated.' ) {
 		return 'Update Pattern';
