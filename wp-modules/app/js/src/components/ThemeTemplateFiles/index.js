@@ -93,7 +93,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			</div>
 
 			<div className="mx-auto p-12">
-				<div className="divide-y divide-gray-200 max-w-7xl mx-auto flex justify-between gap-20">
+				<div className="divide-y divide-gray-200 max-w-7xl mx-auto flex flex-col justify-between ">
 					{ Object.entries( standardTemplates ?? {} ).map(
 						( [templateName, templateHelpInfo] ) => {
 							return (
