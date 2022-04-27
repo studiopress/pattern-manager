@@ -54,7 +54,7 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 							<label
 								htmlFor="theme-name"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Theme Name', 'fse-studio' ) }
 							</label>
@@ -65,7 +65,7 @@ export default function ThemeSetup( { isVisible } ) {
 										currentTheme.existsOnDisk &&
 										! currentTheme.themeNameIsDefault
 									}
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="theme-name"
 									value={ currentTheme?.data?.name ?? '' }
@@ -100,13 +100,13 @@ export default function ThemeSetup( { isVisible } ) {
 						>
 							<label
 								htmlFor="directory-name"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Directory Name', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="directory-name"
 									value={ currentTheme?.data?.dirname ?? '' }
@@ -121,13 +121,13 @@ export default function ThemeSetup( { isVisible } ) {
 						>
 							<label
 								htmlFor="namespace"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Namespace', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="namespace"
 									value={ currentTheme?.data?.namespace ?? '' }
@@ -139,13 +139,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="uri"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Theme URI', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="uri"
 									value={
@@ -166,13 +166,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="author"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Author', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="author"
 									value={
@@ -193,13 +193,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="author-uri"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Author URI', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="author-uri"
 									value={ currentTheme?.data?.author_uri ?? '' }
@@ -216,13 +216,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="description"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Description', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="description"
 									value={
@@ -243,13 +243,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="tags"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Tags (comma separated)', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="tags"
 									value={
@@ -270,13 +270,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="tested"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Tested up to (WP Version)', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="tested"
 									value={
@@ -297,13 +297,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="minimum-wp"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Minimum WP Version', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="minimum-wp"
 									value={
@@ -324,13 +324,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="minimum-php"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Minimum PHP Version', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="minimum-php"
 									value={
@@ -351,13 +351,13 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 							<label
 								htmlFor="version"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Version', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="version"
 									value={
@@ -381,13 +381,13 @@ export default function ThemeSetup( { isVisible } ) {
 						>
 							<label
 								htmlFor="text-domain"
-								className="block text-sm font-medium text-gray-700 sm:col-span-1"
+								className="block font-medium text-gray-700 sm:col-span-1"
 							>
 								{ __( 'Text Domain', 'fse-studio' ) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue sm:text-sm !border-gray-300 !rounded-md !h-10"
+									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="text-domain"
 									value={ currentTheme?.data?.text_domain ?? '' }
