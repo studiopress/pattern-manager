@@ -116,6 +116,7 @@ export default function ThemePatterns( { isVisible } ) {
 													size={ 30 }
 												/>
 											</button>
+											
 											<button
 												type="button"
 												className="absolute bottom-16 left-2"
@@ -124,64 +125,30 @@ export default function ThemePatterns( { isVisible } ) {
 													currentView.set( 'pattern_editor' );
 												}}
 											>
-												<button
-													type="button"
-													className="absolute top-2 right-2"
-													// onClick={ }
-												>
-													<Icon
-														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={ close }
-														size={ 30 }
-													/>
-												</button>
-												<button
-													type="button"
-													className="absolute top-2 left-2"
-													onClick={() => {
-														currentPatternId.set( patternName );
-														currentView.set( 'pattern_editor' );
-													}}
-												>
-													<Icon
-														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={ edit }
-														size={ 30 }
-													/>
-												</button>
-												<button
-													type="button"
-													className="absolute bottom-16 left-2"
-													onClick={() => {
-														currentPatternId.set( patternName );
-														currentView.set( 'pattern_editor' );
-													}}
-												>
-													<Icon
-														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={ plus }
-														size={ 30 }
-													/>
-												</button>
-
-												<div className="p-3 flex flex-grow items-center">
-													<PatternPreview
-														key={ patternName }
-														blockPatternData={patternData}
-														scale={ 0.2 }
-													/>
-												</div>
-												<div>
-													<h3 className="text-sm bg-white p-4 rounded-b">
-														{
-															patternData.title
-														}
-													</h3>
-												</div>
-											</div>
-										);
-									}
-								) }
+												<Icon
+													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+													icon={ plus }
+													size={ 30 }
+												/>
+											</button>
+										
+										<div className="p-3 flex flex-grow items-center">
+											<PatternPreview
+												key={ patternName }
+												blockPatternData={patternData}
+												scale={ 0.2 }
+											/>
+										</div>
+										<div>
+											<h3 className="text-sm bg-white p-4 rounded-b">
+												{
+													patternData.title
+												}
+											</h3>
+										</div>
+									</div>
+									)
+								})}
 							</div>
 						</>
 					</div>
