@@ -30,9 +30,9 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 
 	return (
 		<>
-			<div className="sm:grid sm:grid-cols-2 py-10 sm:items-center w-full">
+			<div className="sm:grid sm:grid-cols-2 py-10 sm:items-center w-full first:pt-0 gap-4">
 				<div>
-					<h2 className="block text-lg mb-1 font-medium text-gray-700 sm:col-span-1">
+					<h2 className="block mb-1 font-medium text-gray-700 sm:col-span-1">
 						{ standardTemplates[ templateName ]?.title ||
 							__(
 								'Template: this template is not recognized',

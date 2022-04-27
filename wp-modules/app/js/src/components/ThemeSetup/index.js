@@ -39,8 +39,8 @@ export default function ThemeSetup( { isVisible } ) {
 			</div>
 
 			<div className="mx-auto p-12">
-				<form className="divide-y divide-gray-200 max-w-7xl mx-auto flex justify-between gap-20">
-					<div className="w-[70%]">
+				<form className="max-w-7xl mx-auto flex justify-between gap-20">
+					<div className="w-[65%]">
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 							<label
 								htmlFor="theme-name"
@@ -388,9 +388,19 @@ export default function ThemeSetup( { isVisible } ) {
 					</div>
 
 					<div className="flex-1 text-base">
-						<div className="bg-fses-gray p-12">
-							<strong>Working with Theme.json</strong>
-							<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+							<div>
+								<h4 className="mb-2 font-medium">Setting up your theme</h4>
+								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+							</div>
+							<div>
+								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
+								<ul>
+									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
+									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
+									<li><a className="text-wp-blue" href="#">Something Else</a></li>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</form>

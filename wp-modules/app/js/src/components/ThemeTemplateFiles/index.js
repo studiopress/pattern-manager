@@ -93,36 +93,57 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			</div>
 
 			<div className="mx-auto p-12">
-				<div className="divide-y divide-gray-200 max-w-7xl mx-auto flex flex-col justify-between ">
-					{ Object.entries( standardTemplates ?? {} ).map(
-						( [templateName, templateHelpInfo] ) => {
-							return (
-								<ThemeTemplatePicker
-									key={ templateName }
-									templateName={ templateName }
-									templateData={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
-									standardTemplates={standardTemplates}
-								/>
-							);
-						}
-					) }
-					{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
-						( [templateName, templateData] ) => {
-							// Skip any we've already rendered above (standardTemplates).
-							if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
-									
+				<div className="mx-auto max-w-7xl flex justify-between gap-20">
+					<div className="w-[65%]">
+						<div className="divide-y divide-gray-200 flex flex-col justify-between">
+						{ Object.entries( standardTemplates ?? {} ).map(
+							( [templateName, templateHelpInfo] ) => {
 								return (
 									<ThemeTemplatePicker
 										key={ templateName }
 										templateName={ templateName }
-										templateData={ templateData }
+										templateData={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
 										standardTemplates={standardTemplates}
 									/>
 								);
 							}
-						}
-					) }
+						) }
+						{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
+							( [templateName, templateContent] ) => {
+								// Skip any we've already rendered above (standardTemplates).
+								if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
+										
+									return (
+										<ThemeTemplatePicker
+											key={ templateName }
+											templateName={ templateName }
+											templateContent={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
+											standardTemplates={standardTemplates}
+										/>
+									);
+								}
+							}
+						) }
 
+					</div>
+					</div>
+
+					<div className="flex-1 text-base">
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+							<div>
+								<h4 className="mb-2 font-medium">Setting up templates</h4>
+								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+							</div>
+							<div>
+								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
+								<ul>
+									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
+									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
+									<li><a className="text-wp-blue" href="#">Something Else</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -123,17 +123,6 @@ input[type="checkbox"]:checked::before {
 
 /* Settings UI */
 
-.fses-duotone,
-.fses-gradients,
-.fses-palette {
-	.fses-property {
-		@apply col-span-full;
-	}
-	.fses-label {
-		@apply col-span-full;
-	}
-}
-
 .fses-type-boolean,
 .fses-type-string {
 	&> div {
@@ -193,6 +182,17 @@ input[type="checkbox"]:checked::before {
 	}
 	&> div > div .grid {
 		@apply gap-2 py-4;
+	}
+}
+
+.fses-duotone,
+.fses-gradients,
+.fses-palette {
+	.fses-property {
+		@apply col-span-full;
+	}
+	.fses-label {
+		@apply col-span-full;
 	}
 }
 
