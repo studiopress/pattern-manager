@@ -35,8 +35,53 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
 	
 	if ( ! currentTheme.data ) {
-		return 'no theme loaded';
+		return '';
 	}
+	
+	const standardTemplates = {
+		index: {
+			title: __( 'Template: index.html', 'fse-studio' ),
+			description: __(
+				'This template is used to show any post or page if no other template makes sense.',
+				'fse-studio'
+			),
+		},
+		404: {
+			title: __( 'Template: 404.html', 'fse-studio' ),
+			description: __(
+				'This template is used when the URL does not match anything on the website.',
+				'fse-studio'
+			),
+		},
+		archive: {
+			title: __( 'Template: archive.html', 'fse-studio' ),
+			description: __(
+				'This template is used when viewing a whole page of posts.',
+				'fse-studio'
+			),
+		},
+		single: {
+			title: __( 'Template: single.html', 'fse-studio' ),
+			description: __(
+				'This template is used when viewing a single post.',
+				'fse-studio'
+			),
+		},
+		page: {
+			title: __( 'Template: page.html', 'fse-studio' ),
+			description: __(
+				'This template is used when viewing a single page.',
+				'fse-studio'
+			),
+		},
+		search: {
+			title: __( 'Template: search.html', 'fse-studio' ),
+			description: __(
+				'This template is used to show search results when the viewer performs a search in your WordPress site.',
+				'fse-studio'
+			),
+		},
+	};
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -49,18 +94,35 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 
 			<div className="mx-auto p-12">
 				<div className="divide-y divide-gray-200 max-w-7xl mx-auto flex justify-between gap-20">
-					{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
-						( [templateName, templateContent] ) => {
-							console.log( templateName );
+					{ Object.entries( standardTemplates ?? {} ).map(
+						( [templateName, templateHelpInfo] ) => {
 							return (
 								<ThemeTemplatePicker
 									key={ templateName }
 									templateName={ templateName }
-									templateContent={ templateContent }
+									templateContent={ currentTheme.data?.template_files[templateName] }
+									standardTemplates={standardTemplates}
 								/>
 							);
 						}
 					) }
+					{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
+						( [templateName, templateContent] ) => {
+							// Skip any we've already rendered above (standardTemplates).
+							if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
+									
+								return (
+									<ThemeTemplatePicker
+										key={ templateName }
+										templateName={ templateName }
+										templateContent={ templateContent }
+										standardTemplates={standardTemplates}
+									/>
+								);
+							}
+						}
+					) }
+
 				</div>
 			</div>
 		</div>
