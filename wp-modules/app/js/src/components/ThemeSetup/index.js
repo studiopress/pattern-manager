@@ -40,7 +40,7 @@ export default function ThemeSetup( { isVisible } ) {
 
 			<div className="mx-auto p-12">
 				<form className="max-w-7xl mx-auto flex justify-between gap-20">
-					<div className="w-[70%]">
+					<div className="w-[65%]">
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 							<label
 								htmlFor="theme-name"
@@ -388,9 +388,9 @@ export default function ThemeSetup( { isVisible } ) {
 					</div>
 
 					<div className="flex-1 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col">
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
-								<h4 className="mb-2 font-medium">Working with Theme.json</h4>
+								<h4 className="mb-2 font-medium">Setting up your theme</h4>
 								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
 							</div>
 							<div>

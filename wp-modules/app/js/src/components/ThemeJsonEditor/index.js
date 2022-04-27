@@ -37,39 +37,56 @@ export default function ThemeJsonEditor( { visible } ) {
 			</div>
 
 			<div className="mx-auto p-12">
-				<div className="max-w-7xl mx-auto">
-					<div>
+				<div className="max-w-7xl mx-auto flex justify-between gap-20">
+					<div className="w-[65%]">
 						<div className="flex flex-row">
 							<SettingsView isVisible={ true } />
 						</div>
-					</div>
-					<div className="p-5 text-xl border-t border-gray-200 px-4 sm:px-6 md:px-8 flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
-						<div className="flex items-center justify-between w-full">
-							<div className="flex items-center">
-								<p className="text-sm m-0">{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }</p>
+						<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
+							<div className="flex items-center justify-between w-full">
+								<div className="flex items-center">
+									<p className="text-sm m-0">{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }</p>
+								</div>
+								<div className="flex items-center">
+									{ currentTheme.hasSaved ?
+										(
+											<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+												<Icon
+													className="fill-current"
+													icon={ check }
+													size={ 26 }
+												/>{ ' ' }
+												{ __( 'Settings Saved!', 'fse-studio' ) }
+											</span>
+										) : null
+									}
+									<button
+										type="button"
+										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={ () => {
+											currentTheme.save();
+										} }
+									>
+										{ __( 'Save Settings & Styles', 'fse-studio' ) }
+									</button>
+								</div>
 							</div>
-							<div className="flex items-center">
-								{ currentTheme.hasSaved ?
-									(
-										<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-											<Icon
-												className="fill-current"
-												icon={ check }
-												size={ 26 }
-											/>{ ' ' }
-											{ __( 'Settings Saved!', 'fse-studio' ) }
-										</span>
-									) : null
-								}
-								<button
-									type="button"
-									className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										currentTheme.save();
-									} }
-								>
-									{ __( 'Save Settings & Styles', 'fse-studio' ) }
-								</button>
+						</div>
+					</div>
+
+					<div className="flex-1 text-base">
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+							<div>
+								<h4 className="mb-2 font-medium">Working with Theme.json</h4>
+								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+							</div>
+							<div>
+								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
+								<ul>
+									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
+									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
+									<li><a className="text-wp-blue" href="#">Something Else</a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
