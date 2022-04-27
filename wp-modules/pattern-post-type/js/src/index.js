@@ -83,19 +83,26 @@ wp.hooks.addFilter(
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
 let fsestudioPatternSavedDeBounce = null;
+let fsestudioPatternIsSaved = true; // Start in a checked state.
 
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
+	
+	// When the post is saved.
+	if (  wp.data.select( 'core/editor' ).isSavingPost() ) {
+		fsestudioPatternIsSaved = false;
+	} else {
+		if ( ! fsestudioPatternIsSaved ) {
+			fsestudioPatternIsSaved = true;
+			
+			const postMeta = wp.data
+				.select( 'core/editor' )
+				.getEditedPostAttribute( 'meta' );
 
-	if ( wp.data.select( 'core/editor' ).isSavingPost() ) {
-		const postMeta = wp.data
-			.select( 'core/editor' )
-			.getEditedPostAttribute( 'meta' );
-		clearTimeout( fsestudioPatternSavedDeBounce );
-		fsestudioPatternSavedDeBounce = setTimeout( () => {
+			// Send a message to the parent when the pattern is saved.
 			window.parent.postMessage(
 				JSON.stringify( {
 					message: 'fsestudio_pattern_saved',
@@ -114,7 +121,8 @@ wp.data.subscribe( () => {
 					},
 				} )
 			);
-		}, 1000 );
+			
+		}
 	}
 } );
 

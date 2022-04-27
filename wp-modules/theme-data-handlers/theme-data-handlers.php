@@ -78,7 +78,7 @@ function get_the_themes() {
 			$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 
 			// Add the template files that exist in the theme.
-			$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_template_names( get_template_directory() );
+			$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
 		}
 	}
 
@@ -203,12 +203,18 @@ function update_theme( $theme ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
 
-	foreach ( $theme['template_files'] as $included_pattern ) {
-		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
+	foreach ( $theme['template_files'] as $template_name => $template_content ) {
+		\FseStudio\PatternDataHandlers\update_pattern(
+			array(
+				'name'    => $template_name,
+				'content' => $template_content,
+				'type'    => 'template',
+			)
+		);
 	}
 
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
 
-	return true;
+	return \FseStudio\ThemeDataHandlers\get_theme( $theme['dirname'] );
 }

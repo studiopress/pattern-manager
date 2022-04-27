@@ -76,7 +76,7 @@ function get_patterns() {
 }
 
 /**
- * Get the unique name for each pattern in a theme.
+ * Get the pattern data for all patterns in a theme.
  *
  * @param string $theme_path The path to the theme.
  * @return array
@@ -97,6 +97,7 @@ function get_theme_patterns( $theme_path = false ) {
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern_data         = require $path;
 		$pattern_data['name'] = basename( $path, '.php' );
+		$pattern_data['type'] = 'pattern';
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 
@@ -109,7 +110,7 @@ function get_theme_patterns( $theme_path = false ) {
  * @param string $theme_path The path to the theme.
  * @return array
  */
-function get_theme_template_names( $theme_path = false ) {
+function get_theme_templates( $theme_path = false ) {
 
 	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
@@ -122,14 +123,18 @@ function get_theme_template_names( $theme_path = false ) {
 	// Grab all of the templates in this theme.
 	$pattern_file_paths = glob( $theme_path . '/templates/*.html' );
 
-	$patterns = array();
+	$templates = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data                          = $wp_filesystem->get_contents( $path );
-		$patterns[ basename( $path, '.html' ) ] = $pattern_data;
+		$block_pattern_html                      = $wp_filesystem->get_contents( $path );
+		$templates[ basename( $path, '.html' ) ] = array(
+			'type' => 'template',
+			'name' => basename( $path, '.html' ),
+			'content' => $block_pattern_html,
+		);
 	}
 
-	return $patterns;
+	return $templates;
 }
 
 /**
@@ -145,12 +150,17 @@ function update_pattern( $pattern ) {
 
 	$wp_theme_dir  = get_template_directory();
 	$plugin_dir    = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
-	$patterns_dir  = $wp_theme_dir . '/theme-patterns/';
-	$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
+
+	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
+		$patterns_dir  = $wp_theme_dir . '/theme-patterns/';
+		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
+		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
+	}
 
 	if ( 'template' === $pattern['type'] ) {
 		$patterns_dir  = $wp_theme_dir . '/templates/';
 		$file_contents = contruct_template_php_file_contents( $pattern, 'fse-studio' );
+		$file_name     = sanitize_title( $pattern['name'] ) . '.html';
 	}
 
 	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
@@ -159,7 +169,7 @@ function update_pattern( $pattern ) {
 
 	// Convert the collection array into a file, and place it.
 	$pattern_file_created = $wp_filesystem->put_contents(
-		$patterns_dir . sanitize_title( $pattern['name'] ) . '.php',
+		$patterns_dir . $file_name,
 		$file_contents,
 		FS_CHMOD_FILE
 	);

@@ -52,6 +52,7 @@ import classNames from '../../utils/classNames';
  * @typedef {{
  *  currentView: ReturnType<import('../../hooks/useCurrentView').default>,
  *  currentPatternId: ReturnType<import('../../hooks/useCurrentId').default>,
+ *  currentPattern: ReturnType<import('../../hooks/useThemes').default>,
  *  themes: ReturnType<import('../../hooks/useThemes').default>,
  *  currentThemeId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentTheme: ReturnType<import('../../hooks/useThemeData').default>,
@@ -83,33 +84,24 @@ function FseStudioContextHydrator() {
 	);
 
 	const currentPatternId = useCurrentId('');
+	let currentPattern = null;
 	
-	useEffect( () => {
-		getUpdatedAppState();
-	}, [currentView.currentView] );
-
-	function getUpdatedAppState() {
-		fetch( fsestudio.apiEndpoints.getAppState, {
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				'X-WP-Nonce': fsestudio.apiNonce,
-			},
-			
-		} )
-			.then( ( response ) => response.json() )
-			.then( ( data ) => {
-				themes.setThemes( {...data.themes } );
-				currentTheme.set( {...data.themes[currentThemeId.value] } );
-			} );
+	if ( currentPatternId?.value ) {
+		// If the pattern name is found in the theme's included_patterns object.
+		if ( currentTheme?.data?.included_patterns?.hasOwnProperty( currentPatternId?.value ) ) {
+			currentPattern = currentTheme.data.included_patterns[currentPatternId?.value];
+		}
+		// If the pattern name is found in the theme's template_files object.
+		if ( currentTheme?.data?.template_files?.hasOwnProperty( currentPatternId?.value ) ) {
+			currentPattern = currentTheme.data.template_files[currentPatternId?.value];
+		}
 	}
 
 	/** @type {InitialContext} */
 	const providerValue = {
 		currentView,
 		currentPatternId,
-		currentPattern: currentTheme?.data?.included_patterns[currentPatternId.value],
+		currentPattern,
 		themes,
 		currentThemeId,
 		currentTheme,
@@ -129,6 +121,11 @@ function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme, themes, currentThemeId } = useStudioContext();
 	const snackBar = useSnackbarContext();
+	
+	useEffect( () => {
+		// Update the theme data from the disk whenever the currentview changes.
+		currentTheme.get();
+	}, [currentView] );
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
@@ -192,6 +189,7 @@ function FseStudio() {
 								{ __( 'Theme Setup', 'fse-studio' ) }
 							</button>
 							<button
+								disabled={currentTheme.data ? false : true}
 								type="button"
 								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 								onClick={ () => {
@@ -201,6 +199,7 @@ function FseStudio() {
 								{ __( 'Styles and Settings', 'fse-studio' ) }
 							</button>
 							<button
+								disabled={currentTheme.data ? false : true}
 								type="button"
 								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 								onClick={ () => {
@@ -210,6 +209,7 @@ function FseStudio() {
 								{ __( 'Theme Templates', 'fse-studio' ) }
 							</button>
 							<button
+								disabled={currentTheme.data ? false : true}
 								type="button"
 								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 								onClick={ () => {
@@ -290,29 +290,48 @@ function FseStudio() {
 									{ __( 'Create New', 'fse-studio' ) }
 								</button>
 							</div>
+							{ currentTheme?.data ? (
+								<button
+									type="button"
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									onClick={() => {
+										currentTheme.save();
+									}}
+								>
+									{ __( 'Save Theme', 'fse-studio' ) }
+								</button>
+							) : null }
 						</div>
 					</div>
 				</div>
 			</div>
 			
-			<ThemeSetup
-				isVisible={ 'theme_setup' === currentView.currentView }
-			/>
-			<ThemePatterns
-				isVisible={ 'patterns_in_theme' === currentView.currentView }
-			/>
-			<ThemeTemplateFiles
-				isVisible={ 'theme_template_files' === currentView.currentView }
-			/>
-			<PatternEditor
-				visible={ 'pattern_editor' === currentView.currentView }
-			/>
-			<ThemeJsonEditor
-				visible={ 'themejson_editor' === currentView.currentView }
-			/>
-			<FseStudioHelp
-				visible={ 'fse_studio_help' === currentView.currentView }
-			/>
+			{ currentTheme?.data ? (
+				<>
+					<ThemeSetup
+						isVisible={ 'theme_setup' === currentView.currentView }
+					/>
+					<ThemePatterns
+						isVisible={ 'patterns_in_theme' === currentView.currentView }
+					/>
+					<ThemeTemplateFiles
+						isVisible={ 'theme_template_files' === currentView.currentView }
+					/>
+					<PatternEditor
+						visible={ 'pattern_editor' === currentView.currentView }
+					/>
+					<ThemeJsonEditor
+						visible={ 'themejson_editor' === currentView.currentView }
+					/>
+					<FseStudioHelp
+						visible={ 'fse_studio_help' === currentView.currentView }
+					/>
+				</>
+			) : (
+				<div>
+					No theme selected. We can change this to something more helpful.
+				</div>
+			) }
 		</>
 	);
 }

@@ -64,7 +64,7 @@ export default function useThemeData( themeId, themes ) {
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
-	const [ themeData, setThemeData ] = useState();
+	const [ themeData, setThemeData ] = useState( false );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	
@@ -86,7 +86,9 @@ export default function useThemeData( themeId, themes ) {
 
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
-		getThemeData( themeId );
+		if ( themeId ) {
+			getThemeData();
+		}
 
 		setThemeNameIsDefault( false );
 	}, [ themeId ] );
@@ -102,9 +104,9 @@ export default function useThemeData( themeId, themes ) {
 		}
 	}, [ themeData?.name ] );
 
-	function getThemeData( thisThemeId ) {
+	function getThemeData() {
 		return new Promise( ( resolve ) => {
-			if ( ! thisThemeId || fetchInProgress ) {
+			if ( ! themeId || fetchInProgress ) {
 				resolve();
 				return;
 			}
@@ -112,7 +114,7 @@ export default function useThemeData( themeId, themes ) {
 			fetch(
 				// @ts-ignore fetch allows a string argument.
 				assembleUrl( fsestudio.apiEndpoints.getThemeEndpoint, {
-					themeId: thisThemeId,
+					themeId: themeId,
 				} ),
 				{
 					method: 'GET',
@@ -130,7 +132,7 @@ export default function useThemeData( themeId, themes ) {
 						response.error &&
 						response.error === 'theme_not_found'
 					) {
-						setThemeData( themes.themes[ thisThemeId ] );
+						setThemeData( themes.themes[ themeId ] );
 						setExistsOnDisk( false );
 					} else {
 						setExistsOnDisk( true );
@@ -171,8 +173,9 @@ export default function useThemeData( themeId, themes ) {
 						setAutoSaveTheme( false );
 					}
 					if ( ! autoSaveTheme ) {
-						snackBar.setValue( data );
+						snackBar.setValue( data.message );
 					}
+						setThemeData( data.themeData );
 					resolve( data );
 				} )
 				.catch( ( errorMessage ) => {
@@ -741,15 +744,26 @@ export default function useThemeData( themeId, themes ) {
 		setAutoSaveTheme( true );
 
 		return new Promise( ( resolve ) => {
-			const newThemeData = {
-				...themeData,
-				included_patterns: {
-					...themeData.included_patterns,
-					[patternData.name]: patternData,
+			let newThemeData = {};
+			if ( patternData.type === 'pattern' ) {
+				newThemeData = {
+					...themeData,
+					included_patterns: {
+						...themeData.included_patterns,
+						[patternData.name]: patternData,
+					}
 				}
-			};
+			}
+			if ( patternData.type === 'template' ) {
+				newThemeData = {
+					...themeData,
+					template_files: {
+						...themeData.template_files,
+						[patternData.name]: patternData,
+					}
+				}
+			}
 			setThemeData( newThemeData );
-			
 			resolve( newThemeData );
 		} );
 	}
@@ -760,6 +774,7 @@ export default function useThemeData( themeId, themes ) {
 		getThemeJsonValue,
 		setThemeJsonValue,
 		createPattern,
+		get: getThemeData,
 		save: saveThemeData,
 		export: exportThemeData,
 		existsOnDisk,

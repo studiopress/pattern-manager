@@ -100,14 +100,14 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 								<ThemeTemplatePicker
 									key={ templateName }
 									templateName={ templateName }
-									templateContent={ currentTheme.data?.template_files[templateName] }
+									templateData={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
 									standardTemplates={standardTemplates}
 								/>
 							);
 						}
 					) }
 					{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
-						( [templateName, templateContent] ) => {
+						( [templateName, templateData] ) => {
 							// Skip any we've already rendered above (standardTemplates).
 							if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
 									
@@ -115,7 +115,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 									<ThemeTemplatePicker
 										key={ templateName }
 										templateName={ templateName }
-										templateContent={ templateContent }
+										templateData={ templateData }
 										standardTemplates={standardTemplates}
 									/>
 								);

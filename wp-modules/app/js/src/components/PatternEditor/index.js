@@ -64,7 +64,6 @@ export function BlockEditor() {
 	}, [ currentTheme.hasSaved ] );
 
 	function saveAndRefreshPatternIframe() {
-		return;
 		setBlockEditorLoaded( false );
 		// Send a message to the iframe, telling it to save and refresh.
 		iframeRef.current.contentWindow.postMessage(
@@ -96,8 +95,9 @@ export function BlockEditor() {
 				try {
 					const response = JSON.parse( event.data );
 					if ( response.message === 'fsestudio_pattern_saved' ) {
-						// When a pattern is saved, push its new data into our pattern state so that it is up to date in thumbnails, etc.
-						
+						// Fighting a race condition here, where the post hasn't actually finished saving yet, despite wp.data telling us it has.
+						// When a pattern is saved, ping the server to get the updated theme state.
+						currentTheme.get();
 					}
 				} catch ( e ) {
 					// Message posted was not JSON, so do nothing.

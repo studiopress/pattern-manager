@@ -110,7 +110,13 @@ function save_theme( $request ) {
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
 	} else {
-		return new \WP_REST_Response( __( 'Theme successfully saved to disk', 'fse-studio' ), 200 );
+		return new \WP_REST_Response(
+			array(
+				'message'   => __( 'Theme successfully saved to disk', 'fse-studio' ),
+				'themeData' => $result,
+			),
+			200
+		);
 	}
 }
 

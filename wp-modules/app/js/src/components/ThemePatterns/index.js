@@ -63,7 +63,7 @@ export default function ThemePatterns( { isVisible } ) {
 								const newPatternId = uuidv4();
 
 								const newPatternData = {
-									type: 'custom',
+									type: 'pattern',
 									title: 'My New Pattern',
 									name: newPatternId,
 									categories: [],
@@ -84,7 +84,7 @@ export default function ThemePatterns( { isVisible } ) {
 					
 					<>
 						<div className="grid w-full grid-cols-3 gap-5">
-							{ Object.entries( currentTheme?.data?.included_patterns ).map(
+							{ Object.entries( currentTheme?.data?.included_patterns ?? {} ).map(
 								( [patternName, patternData] ) => {
 									return (
 										<div

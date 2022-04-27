@@ -81,6 +81,11 @@ function generate_pattern_post_type() {
 	}
 
 	$pattern_data = json_decode( urldecode( untrailingslashit( wp_unslash( $_GET['fsestudio_pattern_post'] ) ) ), true );
+
+	if ( empty( $pattern_data ) ) {
+		wp_die( esc_html( __( 'Something went wrong. Click "Theme Patterns" above and try again.', 'fse-studio' ) ) );
+	}
+
 	$the_post_id  = \FseStudio\PatternDataHandlers\generate_pattern_post( $pattern_data );
 
 	wp_safe_redirect( admin_url( 'post.php?post=' . $the_post_id . '&action=edit' ) );
