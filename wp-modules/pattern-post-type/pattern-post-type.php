@@ -34,7 +34,8 @@ function pattern_post_type() {
 				'custom-fields',
 			),
 			'labels'       => array(
-				'name' => __( 'Pattern', 'fse-studio' ),
+				'name' => __( 'Patterns', 'fse-studio' ),
+				'singular_name' => __( 'Pattern', 'fse-studio' ),
 			),
 		)
 	);
