@@ -178,7 +178,7 @@ function FseStudio() {
 					{ snackBar.value }
 				</Snackbar>
 			) : null }
-			<div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-wp-black shadow">
+			<div className="sticky top-0 z-10 flex-shrink-0 flex h-20 bg-wp-black shadow">
 				<div className="flex-1 flex">
 					<div className="flex w-full gap-8 max-w-7xl mx-auto justify-between items-center">
 						<div className="flex gap-8">
@@ -207,7 +207,7 @@ function FseStudio() {
 									currentView.set( 'theme_template_files' );
 								} }
 							>
-								{ __( 'Template Files', 'fse-studio' ) }
+								{ __( 'Theme Templates', 'fse-studio' ) }
 							</button>
 							<button
 								type="button"
@@ -216,7 +216,7 @@ function FseStudio() {
 									currentView.set( 'patterns_in_theme' );
 								} }
 							>
-								{ __( 'Patterns in Theme', 'fse-studio' ) }
+								{ __( 'Theme Patterns', 'fse-studio' ) }
 							</button>
 						</div>
 						

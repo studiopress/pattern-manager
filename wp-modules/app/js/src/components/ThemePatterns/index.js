@@ -40,39 +40,48 @@ export default function ThemePatterns( { isVisible } ) {
 
 	return (
 		<div hidden={ ! isVisible } className="w-full">
-			<div className="w-full flex flex-col">
-				<div className="flex">
-					<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
-						{ __(
-							'Patterns included in this theme:',
-							'fse-studio'
-						) }
-					</h3>
-					<button
-						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-						onClick={() => {
-							const newPatternId = uuidv4();
-
-							const newPatternData = {
-								type: 'custom',
-								title: 'My New Pattern',
-								name: newPatternId,
-								categories: [],
-								viewportWidth: '',
-								content: '',
-							};
-
-							currentTheme
-								.createPattern( newPatternData )
-								.then( () => {
-									// Switch to the newly created theme.
-									currentPatternId.set( newPatternId );
-									currentView.set('pattern_editor');
-								} );
-							}}
-					>{ __( 'Create New Pattern', 'fse-studio' ) }</button>
+			<div className="bg-fses-gray mx-auto p-12 w-full">
+				<div className="max-w-7xl mx-auto">
+					<h1 className="text-4xl mb-3">{ __( 'Theme Patterns', 'fse-studio' ) }</h1>
+					<p className="text-lg max-w-2xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
 				</div>
-				
+			</div>
+
+			
+			<div className="mx-auto p-12">
+				<div className="mx-auto max-w-7xl">
+					<div className="flex">
+						<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
+							{ __(
+								'Patterns included in this theme:',
+								'fse-studio'
+							) }
+						</h3>
+						<button
+							className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+							onClick={() => {
+								const newPatternId = uuidv4();
+
+								const newPatternData = {
+									type: 'custom',
+									title: 'My New Pattern',
+									name: newPatternId,
+									categories: [],
+									viewportWidth: '',
+									content: '',
+								};
+
+								currentTheme
+									.createPattern( newPatternData )
+									.then( () => {
+										// Switch to the newly created theme.
+										currentPatternId.set( newPatternId );
+										currentView.set('pattern_editor');
+									} );
+								}}
+						>{ __( 'Create New Pattern', 'fse-studio' ) }</button>
+					</div>
+					
 					<>
 						<div className="grid w-full grid-cols-3 gap-5">
 							{ Object.entries( currentTheme?.data?.included_patterns ).map(
@@ -96,10 +105,10 @@ export default function ThemePatterns( { isVisible } ) {
 											<button
 												type="button"
 												className="absolute top-2 left-2"
-												 onClick={() => {
+												onClick={() => {
 													currentPatternId.set( patternName );
 													currentView.set( 'pattern_editor' );
-												 }}
+												}}
 											>
 												<Icon
 													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
@@ -110,10 +119,10 @@ export default function ThemePatterns( { isVisible } ) {
 											<button
 												type="button"
 												className="absolute bottom-16 left-2"
-												 onClick={() => {
+												onClick={() => {
 													currentPatternId.set( patternName );
 													currentView.set( 'pattern_editor' );
-												 }}
+												}}
 											>
 												<Icon
 													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
@@ -142,7 +151,7 @@ export default function ThemePatterns( { isVisible } ) {
 							) }
 						</div>
 					</>
-				
+				</div>
 			</div>
 		</div>
 	);
