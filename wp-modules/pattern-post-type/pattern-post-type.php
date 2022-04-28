@@ -20,6 +20,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Create a custom post type to be used for our default post.
  */
 function pattern_post_type() {
+	if ( isset( $_GET['post'] ) ) {
+		$post_id      = absint( $_GET['post'] );
+		$post_type    = get_post_type( $post_id );
+		$pattern_type = get_post_meta( $post_id, 'type', true );
+	} else {
+		$pattern_type = 'pattern';
+	}
+
+	if ( 'pattern' === $pattern_type ) {
+		$labels = array(
+			'name' => __( 'Patterns', 'fse-studio' ),
+			'singular_name' => __( 'Pattern', 'fse-studio' ),
+		);
+	}
+
+	if ( 'template' === $pattern_type ) {
+		$labels = array(
+			'name' => __( 'Templates', 'fse-studio' ),
+			'singular_name' => __( 'Template', 'fse-studio' ),
+		);
+	}
+
 	register_post_type(
 		'fsestudio_pattern',
 		array(
@@ -33,10 +55,7 @@ function pattern_post_type() {
 				'editor',
 				'custom-fields',
 			),
-			'labels'       => array(
-				'name' => __( 'Patterns', 'fse-studio' ),
-				'singular_name' => __( 'Pattern', 'fse-studio' ),
-			),
+			'labels'       => $labels,
 		)
 	);
 
@@ -160,6 +179,7 @@ add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
  * @return string
  */
 function modify_terms( string $translation, string $text, string $domain ) {
+
 	if ( 'Tags' === $translation ) {
 		return 'Pattern Categories';
 	}

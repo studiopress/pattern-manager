@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 // @ts-check
 import { __ } from '@wordpress/i18n';
 import { Modal, Spinner } from '@wordpress/components';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef, createInterpolateElement } from '@wordpress/element';
 
 // Hooks
 import useStudioContext from '../../hooks/useStudioContext';
@@ -55,7 +55,7 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor() {
-	const { currentTheme, currentPattern } = useStudioContext();
+	const { currentTheme, currentPattern, currentPatternId } = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const iframeRef = useRef();
@@ -113,11 +113,11 @@ export function BlockEditor() {
 	}, [] );
 
 	useEffect( () => {
-		if ( currentPattern?.name !== currentPatternName ) {
+		if ( currentPatternId !== currentPatternName ) {
 			setBlockEditorLoaded( false );
 		}
-		setCurrentPatternName( currentPattern?.name );
-	}, [ currentPattern ] );
+		setCurrentPatternName( currentPatternId );
+	}, [ currentPatternId ] );
 
 	return (
 		<div className="fsestudio-pattern-editor">
@@ -126,14 +126,21 @@ export function BlockEditor() {
 					{ ! blockEditorLoaded ? (
 						<div>
 							<Spinner />
-							Getting the latest version of this Pattern into the
-							block Editor...
+							{ createInterpolateElement(
+							__(
+								'Loading blocks for <span></span> into block editor...',
+								'fse-studio'
+							),
+							{
+								span: <span>{currentPattern.title}</span>
+							}
+							)}
 						</div>
 					) : null }
 					<iframe
 						title={ __( 'Pattern Editor', 'fse-studio' ) }
 						ref={ iframeRef }
-						
+						hidden={ ! blockEditorLoaded }
 						style={ {
 							width: '100%',
 							height: 'calc( 100vh - 64px )',

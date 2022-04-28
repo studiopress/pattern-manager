@@ -129,6 +129,8 @@ function get_theme_templates( $theme_path = false ) {
 		$block_pattern_html                      = $wp_filesystem->get_contents( $path );
 		$templates[ basename( $path, '.html' ) ] = array(
 			'type' => 'template',
+			// Translators: The name of the theme template in question.
+			'title' => sprintf( __( '%s Template', 'fse-studio' ), ucfirst( basename( $path, '.html' ) ) ),
 			'name' => basename( $path, '.html' ),
 			'content' => $block_pattern_html,
 		);
@@ -233,17 +235,19 @@ function prepare_content( $pattern_html, $text_domain ) {
  * @param array $block_pattern The data for the block pattern.
  */
 function generate_pattern_post( $block_pattern ) {
+	$title = isset( $block_pattern['title'] ) ? $block_pattern['title'] : $block_pattern['name'];
+
 	$new_post_details = array(
-		'post_title'   => $block_pattern['title'],
+		'post_title'   => $title,
 		'post_content' => $block_pattern['content'],
 		'post_type'    => 'fsestudio_pattern',
-		'tags_input'   => $block_pattern['categories'],
+		'tags_input'   => isset( $block_pattern['categories'] ) ? $block_pattern['categories'] : false,
 	);
 
 	// Insert the post into the database.
 	$post_id = wp_insert_post( $new_post_details );
 
-	update_post_meta( $post_id, 'title', $block_pattern['title'] );
+	update_post_meta( $post_id, 'title', $title );
 	update_post_meta( $post_id, 'name', $block_pattern['name'] );
 	update_post_meta( $post_id, 'type', $block_pattern['type'] );
 

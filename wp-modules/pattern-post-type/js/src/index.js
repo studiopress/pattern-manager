@@ -17,17 +17,31 @@ const FseStudioMetaControls = () => {
 	if (
 		'fsestudio_pattern' !==
 		wp.data.select( 'core/editor' ).getCurrentPostType()
-	)
-		return null; // Will only render component for post type 'post'
+	) {
+		return null; // Will only render component for post type 'fsestudio_pattern'
+	}
 
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
+	
+	if ( postMeta?.type === 'template' ) {
+		return <div id={ coreLastUpdate }>
+			<PluginDocumentSettingPanel
+				title={ __( 'Template Details', 'fse-studio' ) }
+				icon="edit"
+			>
+				<PanelRow>
+					{ __( 'Template:', 'fse-studio' ) + ' ' + postMeta.title }
+				</PanelRow>
+			</PluginDocumentSettingPanel>
+		</div>;
+	}
 
 	return (
 		<div id={ coreLastUpdate }>
 			<PluginDocumentSettingPanel
-				title={ __( 'Pattern Settings', 'fse-studio' ) }
+				title={  __( 'Pattern Settings', 'fse-studio' ) }
 				icon="edit"
 			>
 				<PanelRow>
@@ -54,21 +68,48 @@ registerPlugin( 'fsestudio-postmeta-for-patterns', {
 } );
 
 // Change the word "Publish" to "Save Pattern"
-function changePublishToSavePattern( translation, text ) {
-	if ( text === 'Publish' ) {
-		return 'Save pattern to theme';
+function changeWords( translation, text ) {
+	const postMeta = wp.data
+	.select( 'core/editor' )
+	.getEditedPostAttribute( 'meta' );
+
+	if ( postMeta?.type === 'pattern' ) {
+		if ( text === 'Publish' ) {
+			return 'Save pattern to theme';
+		}
+		if ( text === 'Post published.' || text === 'Post updated.' ) {
+			return 'Pattern saved to theme';
+		}
+		if ( text === 'Update' || text === 'Post updated.' ) {
+			return 'Update Pattern';
+		}
+		if ( text === 'Add New Tag' ) {
+			return 'Pattern Categories';
+		}
+		if ( text === 'Saved' ) {
+			return 'Saved to your theme directory';
+		}
 	}
-	if ( text === 'Saved' ) {
-		return 'Saved to your theme directory';
-	}
-	if ( text === 'Post published.' || text === 'Post updated.' ) {
-		return 'Pattern saved to theme';
-	}
-	if ( text === 'Update' || text === 'Post updated.' ) {
-		return 'Update Pattern';
-	}
-	if ( text === 'Add New Tag' ) {
-		return 'Pattern Categories';
+
+	if ( postMeta?.type === 'template' ) {
+		if ( text === 'Pattern' ) {
+			return 'Template';
+		}
+		if ( text === 'Publish' ) {
+			return 'Save template to theme';
+		}
+		if ( text === 'Post published.' || text === 'Post updated.' ) {
+			return 'Template saved to theme';
+		}
+		if ( text === 'Update' || text === 'Post updated.' ) {
+			return 'Update Template';
+		}
+		if ( text === 'Add New Tag' ) {
+			return 'Pattern Categories';
+		}
+		if ( text === 'Saved' ) {
+			return 'Saved to your theme directory';
+		}
 	}
 
 	return translation;
@@ -76,14 +117,13 @@ function changePublishToSavePattern( translation, text ) {
 
 wp.hooks.addFilter(
 	'i18n.gettext',
-	'fse-studio/change-publish-to-save-pattern',
-	changePublishToSavePattern
+	'fse-studio/changeWords',
+	changeWords
 );
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
-let fsestudioPatternSavedDeBounce = null;
-let fsestudioPatternIsSaved = true; // Start in a checked state.
+let fsestudioPatternIsSaved = true;
 
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
