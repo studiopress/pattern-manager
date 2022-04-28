@@ -111,18 +111,18 @@ export default function useThemeData( themeId, themes ) {
 				return;
 			}
 			setFetchInProgress( true );
-			fetch(
-				// @ts-ignore fetch allows a string argument.
-				assembleUrl( fsestudio.apiEndpoints.getThemeEndpoint, {
-					themeId: themeId,
-				} ),
+			fetch( fsestudio.apiEndpoints.getThemeEndpoint,
 				{
-					method: 'GET',
+					method: 'POST',
 					headers: {
 						Accept: 'application/json',
 						'Content-Type': 'application/json',
 						'X-WP-Nonce': fsestudio.apiNonce,
 					},
+					body: JSON.stringify( {
+						themeId,
+						preExistingTheme: themeData
+					}),
 				}
 			)
 				.then( ( response ) => response.json() )

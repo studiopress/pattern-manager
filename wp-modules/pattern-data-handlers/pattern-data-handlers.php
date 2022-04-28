@@ -86,9 +86,10 @@ function get_patterns() {
  * Get the pattern data for all patterns in a theme.
  *
  * @param string $theme_path The path to the theme.
+ * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_patterns( $theme_path = false ) {
+function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() ) {
 
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
@@ -106,12 +107,16 @@ function get_theme_patterns( $theme_path = false ) {
 		$pattern_data['name'] = basename( $path, '.php' );
 		$pattern_data['type'] = 'pattern';
 
-		// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-		$the_post_id = generate_pattern_post( $pattern_data );
+		// If a post_id already exists for this pattern, use it instead of creating one.
+		if ( isset( $pre_existing_theme['included_patterns'][ $pattern_data['name'] ] ) ) {
+			$the_post_id = $pre_existing_theme['included_patterns'][ $pattern_data['name'] ]['post_id'];
+		} else {
+			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
+			$the_post_id = generate_pattern_post( $pattern_data );
+		}
 
 		// Add the post_id to the pattern data so it can be used.
-		$pattern_data['post_id']   = $the_post_id;
-		$pattern_data['permalink'] = get_permalink( $the_post_id );
+		$pattern_data['post_id'] = $the_post_id;
 
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
@@ -123,9 +128,10 @@ function get_theme_patterns( $theme_path = false ) {
  * Get the data for all templates in a theme.
  *
  * @param string $theme_path The path to the theme.
+ * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_templates( $theme_path = false ) {
+function get_theme_templates( $theme_path = false, $pre_existing_theme = array() ) {
 
 	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
@@ -151,10 +157,15 @@ function get_theme_templates( $theme_path = false ) {
 			'content' => $block_pattern_html,
 		);
 
-		// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-		$the_post_id                = generate_pattern_post( $template_data );
-		$template_data['post_id']   = $the_post_id;
-		$template_data['permalink'] = get_permalink( $the_post_id );
+		// If a post_id already exists for this pattern, use it instead of creating one.
+		if ( isset( $pre_existing_theme['template_files'][ $template_data['name'] ] ) ) {
+			$the_post_id = $pre_existing_theme['template_files'][ $template_data['name'] ]['post_id'];
+		} else {
+			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
+			$the_post_id = generate_pattern_post( $template_data );
+		}
+
+		$template_data['post_id'] = $the_post_id;
 
 		$templates[ basename( $path, '.html' ) ] = $template_data;
 	}

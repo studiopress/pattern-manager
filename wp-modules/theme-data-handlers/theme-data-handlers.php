@@ -24,8 +24,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $theme_id The directory name of the theme in question.
  * @return array
  */
-function get_theme( $theme_id ) {
-	$themes_data = get_the_themes();
+function get_theme( $theme_id, $pre_existing_theme = array() ) {
+	$themes_data = get_the_themes( $pre_existing_theme );
 
 	return $themes_data[ $theme_id ];
 }
@@ -35,7 +35,7 @@ function get_theme( $theme_id ) {
  *
  * @return array
  */
-function get_the_themes() {
+function get_the_themes( $pre_existing_theme = array() ) {
 	$wpthemes = wp_get_themes();
 
 	// Spin up the filesystem api.
@@ -75,10 +75,17 @@ function get_the_themes() {
 			$formatted_theme_data[ $theme_slug ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
 
 			// Add the included Patterns for the current theme.
-			$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+			if ( ! empty( $pre_existing_theme ) ) {
+				$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory(), $pre_existing_theme );
 
-			// Add the template files that exist in the theme.
-			$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
+				// Add the template files that exist in the theme.
+				$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory(), $pre_existing_theme );
+			} else {
+				$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+
+				// Add the template files that exist in the theme.
+				$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
+			}
 		}
 	}
 
@@ -204,5 +211,5 @@ function update_theme( $theme ) {
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
 
-	return \FseStudio\ThemeDataHandlers\get_theme( $theme['dirname'] );
+	return \FseStudio\ThemeDataHandlers\get_theme( $theme['dirname'], $theme );
 }

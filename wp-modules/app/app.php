@@ -67,6 +67,9 @@ function fse_studio_app() {
 	} else {
 		return;
 	}
+	
+	// When loading the app fresh, do garbage clean up for pattern post types created on previous loads.
+	\FseStudio\PatternDataHandlers\delete_all_pattern_post_types();
 
 	// Include the app.
 	$js_url = $module_dir_url . 'js/build/index.js';
@@ -86,8 +89,6 @@ function fse_studio_app() {
 
 	echo '<div id="fsestudioapp"></div>';
 
-	// When loading the app fresh, do garbage clean up for pattern post types created on previous loads.
-	\FseStudio\PatternDataHandlers\delete_all_pattern_post_types();
 }
 
 /**

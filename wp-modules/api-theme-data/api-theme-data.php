@@ -27,7 +27,7 @@ function register_routes() {
 		'/get-theme',
 		array(
 			array(
-				'methods'             => 'GET',
+				'methods'             => 'POST',
 				'callback'            => __NAMESPACE__ . '\get_theme',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => get_request_args(),
@@ -72,7 +72,8 @@ function register_routes() {
 function get_theme( $request ) {
 	$params = $request->get_params();
 
-	$theme_id = $params['themeId'];
+	$theme_id           = $params['themeId'];
+	$pre_existing_theme = $params['preExistingTheme'];
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
@@ -82,7 +83,7 @@ function get_theme( $request ) {
 		switch_theme( $theme_id );
 	}
 
-	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
+	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id, $pre_existing_theme );
 
 	if ( ! $theme_data ) {
 		return new \WP_REST_Response(

@@ -34,7 +34,7 @@ export default function ThemePatterns( { isVisible } ) {
 
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	
-	if ( ! currentTheme.data ) {
+	if ( ! currentTheme.data || ! isVisible ) {
 		return '';
 	}
 
