@@ -113,10 +113,10 @@ export function BlockEditor() {
 	}, [] );
 
 	useEffect( () => {
-		if ( currentPatternId !== currentPatternName ) {
+		if ( currentPatternId.value !== currentPatternName ) {
 			setBlockEditorLoaded( false );
 		}
-		setCurrentPatternName( currentPatternId );
+		setCurrentPatternName( currentPatternId.value );
 	}, [ currentPatternId ] );
 
 	return (
