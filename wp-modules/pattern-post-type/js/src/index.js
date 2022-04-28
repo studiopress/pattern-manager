@@ -28,6 +28,7 @@ const FseStudioMetaControls = () => {
 	if ( postMeta?.type === 'template' ) {
 		return <div id={ coreLastUpdate }>
 			<PluginDocumentSettingPanel
+				className='fsestudio-template-details'
 				title={ __( 'Template Details', 'fse-studio' ) }
 				icon="edit"
 			>

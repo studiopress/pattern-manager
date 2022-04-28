@@ -4,3 +4,7 @@
 .edit-post-fullscreen-mode-close {
 	display: none !important;
 }
+/* Hide tags for templates */
+.fsestudio-template-details ~ * {
+	display:none!important;
+}
