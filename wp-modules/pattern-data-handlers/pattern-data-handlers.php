@@ -68,6 +68,13 @@ function get_patterns() {
 		foreach ( $pattern_file_paths as $path ) {
 			$pattern_data                          = require $path;
 			$pattern_data['name']                  = basename( $path, '.php' );
+
+			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
+			$the_post_id = generate_pattern_post( $pattern_data );
+
+			// Add the post_id to the pattern data so it can be used.
+			$pattern_data['post_id'] = $the_post_id;
+
 			$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 		}
 	}
@@ -98,6 +105,14 @@ function get_theme_patterns( $theme_path = false ) {
 		$pattern_data         = require $path;
 		$pattern_data['name'] = basename( $path, '.php' );
 		$pattern_data['type'] = 'pattern';
+
+		// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
+		$the_post_id = generate_pattern_post( $pattern_data );
+
+		// Add the post_id to the pattern data so it can be used.
+		$pattern_data['post_id']   = $the_post_id;
+		$pattern_data['permalink'] = get_permalink( $the_post_id );
+
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 
@@ -127,13 +142,21 @@ function get_theme_templates( $theme_path = false ) {
 
 	foreach ( $pattern_file_paths as $path ) {
 		$block_pattern_html                      = $wp_filesystem->get_contents( $path );
-		$templates[ basename( $path, '.html' ) ] = array(
+
+		$template_data = array(
 			'type' => 'template',
 			// Translators: The name of the theme template in question.
 			'title' => sprintf( __( '%s Template', 'fse-studio' ), ucfirst( basename( $path, '.html' ) ) ),
 			'name' => basename( $path, '.html' ),
 			'content' => $block_pattern_html,
 		);
+
+		// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
+		$the_post_id                = generate_pattern_post( $template_data );
+		$template_data['post_id']   = $the_post_id;
+		$template_data['permalink'] = get_permalink( $the_post_id );
+
+		$templates[ basename( $path, '.html' ) ] = $template_data;
 	}
 
 	return $templates;

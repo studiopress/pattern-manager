@@ -28,6 +28,11 @@ function pattern_post_type() {
 		$pattern_type = 'pattern';
 	}
 
+	$labels = array(
+		'name' => __( 'Patterns', 'fse-studio' ),
+		'singular_name' => __( 'Pattern', 'fse-studio' ),
+	);
+
 	if ( 'pattern' === $pattern_type ) {
 		$labels = array(
 			'name' => __( 'Patterns', 'fse-studio' ),
@@ -92,25 +97,51 @@ function pattern_post_type() {
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 
 /**
- * If URL contains fsestudio_pattern_post, create a fse_pattern post and redirect to it.
+ * Recieve blocks in the URL and display them. Useful for previews and thumbnails.
  */
-function generate_pattern_post_type() {
-	if ( ! isset( $_GET['fsestudio_pattern_post'] ) ) { //phpcs:ignore
+function display_block_pattern_preview() {
+	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { //phpcs:ignore
 		return;
 	}
 
-	$pattern_data = json_decode( urldecode( untrailingslashit( wp_unslash( $_GET['fsestudio_pattern_post'] ) ) ), true );
+	$post_id = absint( $_GET['fsestudio_pattern_preview'] );
 
-	if ( empty( $pattern_data ) ) {
-		wp_die( esc_html( __( 'Something went wrong. Click "Theme Patterns" above and try again.', 'fse-studio' ) ) );
-	}
+	$post    = get_post( $post_id );
 
-	$the_post_id  = \FseStudio\PatternDataHandlers\generate_pattern_post( $pattern_data );
+	$the_content = do_the_content_things( $post->post_content );
 
-	wp_safe_redirect( admin_url( 'post.php?post=' . $the_post_id . '&action=edit' ) );
+	wp_head();
+
+	echo $the_content;
+
+	wp_footer();
+
 	exit;
 }
-add_action( 'init', __NAMESPACE__ . '\generate_pattern_post_type' );
+add_action( 'init', __NAMESPACE__ . '\display_block_pattern_preview' );
+
+/**
+ * Run a string of HTML through the_content filters. This makes it so everything needed will be rendered in wp_footer.
+ *
+ * @param string $content The html content to run through the filters.
+ * @return bool
+ */
+function do_the_content_things( $content ) {
+
+	// Run through the actions that are typically taken on the_content.
+	$content = do_blocks( $content );
+	$content = wptexturize( $content );
+	$content = convert_smilies( $content );
+	$content = shortcode_unautop( $content );
+	$content = wp_filter_content_tags( $content );
+	$content = do_shortcode( $content );
+
+	// Handle embeds for block template parts.
+	global $wp_embed;
+	$content = $wp_embed->autoembed( $content );
+
+	return $content;
+}
 
 /**
  * Add style and metaboxes to fse_pattern posts when editing.

@@ -93,7 +93,7 @@ export default function ThemePatterns( { isVisible } ) {
 										>
 											<button
 												type="button"
-												className="absolute top-2 right-2"
+												className="absolute top-2 right-2 z-50"
 												// onClick={ }
 											>
 												<Icon
@@ -104,7 +104,7 @@ export default function ThemePatterns( { isVisible } ) {
 											</button>
 											<button
 												type="button"
-												className="absolute top-2 left-2"
+												className="absolute top-2 left-2 z-50"
 												onClick={() => {
 													currentPatternId.set( patternName );
 													currentView.set( 'pattern_editor' );
@@ -119,7 +119,7 @@ export default function ThemePatterns( { isVisible } ) {
 											
 											<button
 												type="button"
-												className="absolute bottom-16 left-2"
+												className="absolute bottom-16 left-2 z-50"
 												onClick={() => {
 													currentPatternId.set( patternName );
 													currentView.set( 'pattern_editor' );
@@ -132,21 +132,21 @@ export default function ThemePatterns( { isVisible } ) {
 												/>
 											</button>
 										
-										<div className="p-3 flex flex-grow items-center">
-											<PatternPreview
-												key={ patternName }
-												blockPatternData={patternData}
-												scale={ 0.2 }
-											/>
+											<div className="p-3 flex flex-grow items-center z-0">
+												<PatternPreview
+													key={ patternName }
+													url={ fsestudio.siteUrl + '?fsestudio_pattern_preview=' + patternData.post_id }
+													scale={ 0.2 }
+												/>
+											</div>
+											<div>
+												<h3 className="text-sm bg-white p-4 rounded-b">
+													{
+														patternData.title
+													}
+												</h3>
+											</div>
 										</div>
-										<div>
-											<h3 className="text-sm bg-white p-4 rounded-b">
-												{
-													patternData.title
-												}
-											</h3>
-										</div>
-									</div>
 									)
 								})}
 							</div>

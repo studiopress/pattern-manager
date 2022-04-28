@@ -131,40 +131,6 @@ wp.data.subscribe( () => {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
-	
-	// When the post is saved.
-	if (  wp.data.select( 'core/editor' ).isSavingPost() ) {
-		fsestudioPatternIsSaved = false;
-	} else {
-		if ( ! fsestudioPatternIsSaved ) {
-			fsestudioPatternIsSaved = true;
-			
-			const postMeta = wp.data
-				.select( 'core/editor' )
-				.getEditedPostAttribute( 'meta' );
-
-			// Send a message to the parent when the pattern is saved.
-			window.parent.postMessage(
-				JSON.stringify( {
-					message: 'fsestudio_pattern_saved',
-					blockPatternData: {
-						title: postMeta.title,
-						name: postMeta.name,
-
-						content: wp.data
-							.select( 'core/editor' )
-							.getEditedPostAttribute( 'content' ),
-						type: postMeta.type,
-
-						categories: wp.data
-							.select( 'core/editor' )
-							.getEditedPostAttribute( 'tags' ),
-					},
-				} )
-			);
-			
-		}
-	}
 } );
 
 let fsestudioSaveAndRefreshDebounce = null;

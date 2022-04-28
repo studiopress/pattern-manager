@@ -101,6 +101,7 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 							<PatternPreview
 								key={ templateName }
 								scale={ 0.2 }
+								url={ templateData?.url }
 							/>
 						</div>
 					</div>

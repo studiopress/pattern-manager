@@ -88,24 +88,6 @@ export function BlockEditor() {
 			false
 		);
 
-		// The iframes block editor will send a message whenever the pattern is saved.
-		window.addEventListener(
-			'message',
-			( event ) => {
-				try {
-					const response = JSON.parse( event.data );
-					if ( response.message === 'fsestudio_pattern_saved' ) {
-						// Fighting a race condition here, where the post hasn't actually finished saving yet, despite wp.data telling us it has.
-						// When a pattern is saved, ping the server to get the updated theme state.
-						currentTheme.get();
-					}
-				} catch ( e ) {
-					// Message posted was not JSON, so do nothing.
-				}
-			},
-			false
-		);
-
 		// As a fallback, if 5 seconds have passed, hide the spinner.
 		setTimeout( () => {
 			setBlockEditorLoaded( true );
@@ -145,7 +127,7 @@ export function BlockEditor() {
 							width: '100%',
 							height: 'calc( 100vh - 64px )',
 						} }
-						src={ fsestudio.siteUrl + '?fsestudio_pattern_post=' + encodeURIComponent( JSON.stringify( currentPattern ) ) }
+						src={ fsestudio.siteUrl + '/wp-admin/post.php?post=' + currentPattern.post_id + '&action=edit' }
 					/>
 				</div>
 			</div>

@@ -39,10 +39,17 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 	}
 	
 	const standardTemplates = {
+		'front-page': {
+			title: __( 'Template: front-page.html', 'fse-studio' ),
+			description: __(
+				'This template is used when someone goes to the exact URL of your site.',
+				'fse-studio'
+			),
+		},
 		index: {
 			title: __( 'Template: index.html', 'fse-studio' ),
 			description: __(
-				'This template is used to show any post or page if no other template makes sense.',
+				'This template is used as a fallback to show anything if no other template applies.',
 				'fse-studio'
 			),
 		},
@@ -139,7 +146,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 								<ul>
 									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
 									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
-									<li><a className="text-wp-blue" href="#">Something Else</a></li>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/themes/basics/template-hierarchy/">{ __( 'Theme Template Hierarchy', 'fse-studio' ) }</a></li>
 								</ul>
 							</div>
 						</div>
