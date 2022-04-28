@@ -187,27 +187,15 @@ function update_theme( $theme ) {
 	$wp_filesystem->delete( $new_theme_dir . '/templates', true );
 	$wp_filesystem->mkdir( $new_theme_dir . '/templates' );
 
-	// Add each theme template file to the theme.
-	foreach ( $theme['template_files'] as $template_file_name => $pattern_name ) {
-		$pattern = \FseStudio\PatternDataHandlers\get_pattern( $pattern_name );
-		if ( $pattern ) {
-			$wp_filesystem->put_contents(
-				$new_theme_dir . '/templates/' . $template_file_name . '.html',
-				$pattern['content'],
-				FS_CHMOD_FILE
-			);
-		}
-	}
-
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
 
-	foreach ( $theme['template_files'] as $template_name => $template_content ) {
+	foreach ( $theme['template_files'] as $template_name => $template_data ) {
 		\FseStudio\PatternDataHandlers\update_pattern(
 			array(
 				'name'    => $template_name,
-				'content' => $template_content,
+				'content' => $template_data['content'],
 				'type'    => 'template',
 			)
 		);
