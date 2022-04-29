@@ -31,10 +31,10 @@ export default function ThemePatterns( { isVisible } ) {
 		currentPatternId,
 	} = useStudioContext();
 	
-	if ( ! currentTheme.data || ! isVisible ) {
+	if ( ! currentTheme.data ) {
 		return '';
 	}
-
+	
 	return (
 		<div hidden={ ! isVisible } className="w-full">
 			<div className="bg-fses-gray mx-auto p-12 w-full">

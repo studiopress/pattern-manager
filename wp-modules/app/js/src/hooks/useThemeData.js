@@ -53,7 +53,7 @@ import useSnackbarContext from './useSnackbarContext';
 export default function useThemeData( themeId, themes, patternEditorIframe, currentView ) {
 	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [ hasSaved, setHasSaved ] = useState( false );
+	const [ saveCompleted, setSaveCompleted ] = useState( true );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState();
@@ -63,8 +63,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 	const [autoSaveTheme, setAutoSaveTheme] = useState( false );
 
 	useEffect( () => {
-		setHasSaved( false );
-
 		if ( themeData?.name === 'My New Theme' ) {
 			setThemeNameIsDefault( true );
 		} else {
@@ -140,7 +138,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 			setThemeNameIsDefault( true );
 			return;
 		}
-		setHasSaved( false );
+		setSaveCompleted( false );
 
 		return new Promise( ( resolve ) => {
 			setThemeNameIsDefault( false );
@@ -161,7 +159,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 				} )
 				.then( ( data ) => {
 					setExistsOnDisk( true );
-					setHasSaved( true );
+					setSaveCompleted( true );
 					if ( autoSaveTheme ) {
 						setAutoSaveTheme( false );
 					}
@@ -789,7 +787,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 		save: saveThemeData,
 		export: exportThemeData,
 		existsOnDisk,
-		hasSaved,
+		saveCompleted,
 		themeNameIsDefault,
 	};
 }
