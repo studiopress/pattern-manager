@@ -110,6 +110,9 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 		// If a post_id already exists for this pattern, use it instead of creating one.
 		if ( isset( $pre_existing_theme['included_patterns'][ $pattern_data['name'] ] ) ) {
 			$the_post_id = $pre_existing_theme['included_patterns'][ $pattern_data['name'] ]['post_id'];
+			if ( ! $the_post_id ) {
+				$the_post_id = generate_pattern_post( $pattern_data );
+			}
 		} else {
 			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
 			$the_post_id = generate_pattern_post( $pattern_data );
@@ -160,6 +163,9 @@ function get_theme_templates( $theme_path = false, $pre_existing_theme = array()
 		// If a post_id already exists for this pattern, use it instead of creating one.
 		if ( isset( $pre_existing_theme['template_files'][ $template_data['name'] ] ) ) {
 			$the_post_id = $pre_existing_theme['template_files'][ $template_data['name'] ]['post_id'];
+			if ( ! $the_post_id ) {
+				$the_post_id = generate_pattern_post( $template_data );
+			}
 		} else {
 			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
 			$the_post_id = generate_pattern_post( $template_data );
