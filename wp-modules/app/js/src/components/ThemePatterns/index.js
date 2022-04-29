@@ -26,13 +26,10 @@ import PatternPreview from '../PatternPreview';
 /** @param {{isVisible: boolean}} props */
 export default function ThemePatterns( { isVisible } ) {
 	const {
-		themes,
 		currentTheme,
 		currentView,
 		currentPatternId,
 	} = useStudioContext();
-
-	const [ isModalOpen, setModalOpen ] = useState( false );
 	
 	if ( ! currentTheme.data || ! isVisible ) {
 		return '';

@@ -7,7 +7,7 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useRef } from '@wordpress/element';
 import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
@@ -74,6 +74,8 @@ export default function FseStudioApp() {
 
 function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
+	const patternEditorIframe = useRef();
+	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
@@ -81,6 +83,7 @@ function FseStudioContextHydrator() {
 	const currentTheme   = useThemeData(
 		currentThemeId.value,
 		themes,
+		patternEditorIframe,
 	);
 
 	const currentPatternId = useCurrentId('');
@@ -108,6 +111,9 @@ function FseStudioContextHydrator() {
 		siteUrl: fsestudio.siteUrl,
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,
+		patternEditorIframe,
+		blockEditorLoaded,
+		setBlockEditorLoaded,
 	};
 
 	return (
@@ -119,7 +125,7 @@ function FseStudioContextHydrator() {
 
 function FseStudio() {
 	// @ts-ignore
-	const { currentView, currentTheme, themes, currentThemeId } = useStudioContext();
+	const { currentView, currentTheme, themes, currentThemeId, setBlockEditorLoaded } = useStudioContext();
 	const snackBar = useSnackbarContext();
 	
 	useEffect( () => {
@@ -204,7 +210,7 @@ function FseStudio() {
 								type="button"
 								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 								onClick={ () => {
-									currentView.set( 'theme_template_files' );
+									currentView.set( 'theme_templates' );
 								} }
 							>
 								{ __( 'Theme Templates', 'fse-studio' ) }
@@ -214,7 +220,7 @@ function FseStudio() {
 								type="button"
 								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
 								onClick={ () => {
-									currentView.set( 'patterns_in_theme' );
+									currentView.set( 'theme_patterns' );
 								} }
 							>
 								{ __( 'Theme Patterns', 'fse-studio' ) }
@@ -293,13 +299,10 @@ function FseStudio() {
 							</div>
 							{ currentTheme?.data ? (
 								<button
-									style={{
-										display: currentView.currentView === 'pattern_editor' ? 'none' : ''
-									}}
-									disabled={ currentView.currentView === 'pattern_editor' }
 									type="button"
 									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 									onClick={() => {
+										setBlockEditorLoaded( false );
 										currentTheme.save();
 									}}
 								>
@@ -317,10 +320,10 @@ function FseStudio() {
 						isVisible={ 'theme_setup' === currentView.currentView }
 					/>
 					<ThemePatterns
-						isVisible={ 'patterns_in_theme' === currentView.currentView }
+						isVisible={ 'theme_patterns' === currentView.currentView }
 					/>
 					<ThemeTemplateFiles
-						isVisible={ 'theme_template_files' === currentView.currentView }
+						isVisible={ 'theme_templates' === currentView.currentView }
 					/>
 					<PatternEditor
 						visible={ 'pattern_editor' === currentView.currentView }

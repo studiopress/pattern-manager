@@ -55,25 +55,8 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor() {
-	const { currentTheme, currentPattern, currentPatternId } = useStudioContext();
+	const { currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
-	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
-	const iframeRef = useRef();
-	useEffect( () => {
-		saveAndRefreshPatternIframe();
-	}, [ currentTheme.hasSaved ] );
-
-	function saveAndRefreshPatternIframe() {
-		setBlockEditorLoaded( false );
-		// Send a message to the iframe, telling it to save and refresh.
-		iframeRef.current.contentWindow.postMessage(
-			// It might be better to try updating the editor settings, but this apears to be broken.
-			// See: https://github.com/WordPress/gutenberg/issues/15993
-			JSON.stringify( {
-				message: 'fsestudio_save_and_refresh',
-			} )
-		);
-	}
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
@@ -121,7 +104,7 @@ export function BlockEditor() {
 					) : null }
 					<iframe
 						title={ __( 'Pattern Editor', 'fse-studio' ) }
-						ref={ iframeRef }
+						ref={ patternEditorIframe }
 						hidden={ ! blockEditorLoaded }
 						style={ {
 							width: '100%',

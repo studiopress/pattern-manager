@@ -58,7 +58,7 @@ import useSnackbarContext from './useSnackbarContext';
  * @param {string}                                           themeId
  * @param {ReturnType<import('./useThemes').default>}        themes
  */
-export default function useThemeData( themeId, themes ) {
+export default function useThemeData( themeId, themes, patternEditorIframe ) {
 	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
@@ -149,6 +149,7 @@ export default function useThemeData( themeId, themes ) {
 			return;
 		}
 		setHasSaved( false );
+
 		return new Promise( ( resolve ) => {
 			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
@@ -175,7 +176,17 @@ export default function useThemeData( themeId, themes ) {
 					if ( ! autoSaveTheme ) {
 						snackBar.setValue( data.message );
 					}
-						setThemeData( data.themeData );
+					setThemeData( data.themeData );
+
+					// Send a message to the iframe, telling it to save and refresh.
+					if ( patternEditorIframe.current ) {
+						patternEditorIframe.current.contentWindow.postMessage(
+							JSON.stringify( {
+								message: 'fsestudio_save_and_refresh',
+							} )
+						);
+					}
+
 					resolve( data );
 				} )
 				.catch( ( errorMessage ) => {
