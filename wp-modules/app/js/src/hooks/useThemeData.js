@@ -47,24 +47,16 @@ import useSnackbarContext from './useSnackbarContext';
  */
 
 /**
- * @typedef {{
- *  wp_head: string,
- *  wp_footer: string,
- *  renderedPatterns: string
- * }} PatternPreviewParts
- */
-
-/**
  * @param {string}                                           themeId
  * @param {ReturnType<import('./useThemes').default>}        themes
  */
-export default function useThemeData( themeId, themes, patternEditorIframe ) {
+export default function useThemeData( themeId, themes, patternEditorIframe, currentView ) {
 	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ hasSaved, setHasSaved ] = useState( false );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
-	const [ themeData, setThemeData ] = useState( false );
+	const [ themeData, setThemeData ] = useState();
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	
@@ -180,11 +172,19 @@ export default function useThemeData( themeId, themes, patternEditorIframe ) {
 
 					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
-						patternEditorIframe.current.contentWindow.postMessage(
-							JSON.stringify( {
-								message: 'fsestudio_save_and_refresh',
-							} )
-						);
+						if ( currentView.currentView === 'pattern_editor' ) {
+							patternEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'fsestudio_save',
+								} )
+							);
+						} else {
+							patternEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'fsestudio_save_and_refresh',
+								} )
+							);
+						}
 					}
 
 					resolve( data );

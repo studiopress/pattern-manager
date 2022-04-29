@@ -151,8 +151,19 @@ window.addEventListener(
 						.then( () => {
 							window.location.reload();
 						} );
-				}, 2000 );
+				}, 100 );
 			}
+			
+			if ( response.message === 'fsestudio_save' ) {
+				// If the FSE Studio apps tells us to save the current post, do it:
+				clearTimeout( fsestudioSaveAndRefreshDebounce );
+				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
+					wp.data
+						.dispatch( 'core/editor' )
+						.savePost();
+				}, 200 );
+			}
+
 		} catch ( e ) {
 			// Message posted was not JSON, so do nothing.
 		}

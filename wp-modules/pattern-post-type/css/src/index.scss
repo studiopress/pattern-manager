@@ -8,3 +8,7 @@
 .fsestudio-template-details ~ * {
 	display:none!important;
 }
+/* Hide the publish/save button in the pattern editor, as the save theme button handles it. */
+.editor-post-publish-panel__toggle {
+	display:none!important;
+}
