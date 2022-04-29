@@ -154,7 +154,7 @@ function update_theme( $theme ) {
 	$themes_dir       = $wp_filesystem->wp_themes_dir();
 	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
 
-	// Create the new theme directory.
+	// Create the new theme directory, if it does not already exist.
 	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
 		$wp_filesystem->mkdir( $new_theme_dir );
 		// Copy the boiler theme into it.
