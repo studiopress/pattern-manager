@@ -29,20 +29,20 @@ function pattern_post_type() {
 	}
 
 	$labels = array(
-		'name' => __( 'Patterns', 'fse-studio' ),
+		'name'          => __( 'Patterns', 'fse-studio' ),
 		'singular_name' => __( 'Pattern', 'fse-studio' ),
 	);
 
 	if ( 'pattern' === $pattern_type ) {
 		$labels = array(
-			'name' => __( 'Patterns', 'fse-studio' ),
+			'name'          => __( 'Patterns', 'fse-studio' ),
 			'singular_name' => __( 'Pattern', 'fse-studio' ),
 		);
 	}
 
 	if ( 'template' === $pattern_type ) {
 		$labels = array(
-			'name' => __( 'Templates', 'fse-studio' ),
+			'name'          => __( 'Templates', 'fse-studio' ),
 			'singular_name' => __( 'Template', 'fse-studio' ),
 		);
 	}
@@ -106,7 +106,7 @@ function display_block_pattern_preview() {
 
 	$post_id = absint( $_GET['fsestudio_pattern_preview'] );
 
-	$post    = get_post( $post_id );
+	$post = get_post( $post_id );
 
 	$the_content = do_the_content_things( $post->post_content );
 
@@ -179,7 +179,6 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
  * @return void
  */
 function register_block_patterns() {
-
 	$current_screen = get_current_screen();
 
 	if ( 'fsestudio_pattern' !== $current_screen->post_type ) {
@@ -197,7 +196,6 @@ function register_block_patterns() {
 			$pattern,
 		);
 	}
-
 }
 add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
 
@@ -210,7 +208,6 @@ add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
  * @return string
  */
 function modify_terms( string $translation, string $text, string $domain ) {
-
 	if ( 'Tags' === $translation ) {
 		return 'Pattern Categories';
 	}

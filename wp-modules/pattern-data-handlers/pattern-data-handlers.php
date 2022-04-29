@@ -55,7 +55,7 @@ function get_patterns() {
 	}
 
 	// Get the custom patterns (ones created by the user, not included in the plugin).
-	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
 
 	$themes = glob( $wp_themes_dir . '*' );
@@ -66,8 +66,8 @@ function get_patterns() {
 		$pattern_file_paths = glob( $theme . '/theme-patterns/*.php' );
 
 		foreach ( $pattern_file_paths as $path ) {
-			$pattern_data                          = require $path;
-			$pattern_data['name']                  = basename( $path, '.php' );
+			$pattern_data         = require $path;
+			$pattern_data['name'] = basename( $path, '.php' );
 
 			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
 			$the_post_id = generate_pattern_post( $pattern_data );
@@ -90,7 +90,6 @@ function get_patterns() {
  * @return array
  */
 function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() ) {
-
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
 	}
@@ -135,8 +134,7 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
  * @return array
  */
 function get_theme_templates( $theme_path = false, $pre_existing_theme = array() ) {
-
-	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
@@ -150,13 +148,13 @@ function get_theme_templates( $theme_path = false, $pre_existing_theme = array()
 	$templates = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$block_pattern_html                      = $wp_filesystem->get_contents( $path );
+		$block_pattern_html = $wp_filesystem->get_contents( $path );
 
 		$template_data = array(
-			'type' => 'template',
+			'type'    => 'template',
 			// Translators: The name of the theme template in question.
-			'title' => sprintf( __( '%s Template', 'fse-studio' ), ucfirst( basename( $path, '.html' ) ) ),
-			'name' => basename( $path, '.html' ),
+			'title'   => sprintf( __( '%s Template', 'fse-studio' ), ucfirst( basename( $path, '.html' ) ) ),
+			'name'    => basename( $path, '.html' ),
 			'content' => $block_pattern_html,
 		);
 
@@ -190,8 +188,8 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	$wp_theme_dir  = get_template_directory();
-	$plugin_dir    = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
+	$wp_theme_dir = get_template_directory();
+	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
 		$patterns_dir  = $wp_theme_dir . '/theme-patterns/';

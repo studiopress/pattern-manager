@@ -31,16 +31,16 @@ function get_app_state() {
 	}
 
 	return array(
-		'patterns'            => \FseStudio\PatternDataHandlers\get_patterns(),
-		'initialTheme'        => $current_theme_dir,
-		'themes'              => \FseStudio\ThemeDataHandlers\get_the_themes(),
-		'themeJsonFiles'      => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
-		'schemas'             => array(
+		'patterns'           => \FseStudio\PatternDataHandlers\get_patterns(),
+		'initialTheme'       => $current_theme_dir,
+		'themes'             => \FseStudio\ThemeDataHandlers\get_the_themes(),
+		'themeJsonFiles'     => \FseStudio\ThemeJsonDataHandlers\get_all_theme_json_files(),
+		'schemas'            => array(
 			'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/schemas/json/theme.json' ),
 		),
-		'frontendPreviewUrl'  => null,
-		'apiNonce'            => wp_create_nonce( 'wp_rest' ),
-		'apiEndpoints'        => array(
+		'frontendPreviewUrl' => null,
+		'apiNonce'           => wp_create_nonce( 'wp_rest' ),
+		'apiEndpoints'       => array(
 			'getAppState'               => get_rest_url( false, 'fsestudio/v1/get-app-state/' ),
 			'getThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
 			'saveThemeEndpoint'         => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
@@ -48,8 +48,8 @@ function get_app_state() {
 			'getThemeJsonFileEndpoint'  => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
 			'saveThemeJsonFileEndpoint' => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
 		),
-		'siteUrl'             => get_bloginfo( 'url' ),
-		'defaultPostId'       => null,
+		'siteUrl'            => get_bloginfo( 'url' ),
+		'defaultPostId'      => null,
 	);
 }
 
@@ -57,7 +57,6 @@ function get_app_state() {
  * Render and enqueue the output required for the the app.
  */
 function fse_studio_app() {
-
 	$module_dir_path = module_dir_path( __FILE__ );
 	$module_dir_url  = module_dir_url( __FILE__ );
 
@@ -67,7 +66,7 @@ function fse_studio_app() {
 	} else {
 		return;
 	}
-	
+
 	// When loading the app fresh, do garbage clean up for pattern post types created on previous loads.
 	\FseStudio\PatternDataHandlers\delete_all_pattern_post_types();
 
@@ -88,7 +87,6 @@ function fse_studio_app() {
 	);
 
 	echo '<div id="fsestudioapp"></div>';
-
 }
 
 /**

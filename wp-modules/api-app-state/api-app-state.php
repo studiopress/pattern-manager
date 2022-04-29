@@ -43,7 +43,6 @@ function register_routes() {
  * @return WP_Error|WP_REST_Request
  */
 function get_app_state( $request ) {
-
 	$app_state = \FseStudio\App\get_app_state();
 
 	if ( ! $app_state ) {

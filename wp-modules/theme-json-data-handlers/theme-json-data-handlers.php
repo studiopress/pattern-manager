@@ -55,7 +55,7 @@ function get_all_theme_json_files() {
 	/**
 	 * Scan each theme to get all theme.json files.
 	 */
-	$wp_filesystem  = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
 
 	$themes = glob( $wp_themes_dir . '*' );
