@@ -90,9 +90,16 @@ function register_block_patterns() {
 	$pattern_file_paths = glob( dirname( __FILE__ ) . '/theme-patterns/*.php' );
 
 	foreach ( $pattern_file_paths as $path ) {
+		$pattern = require $path;
+
+		foreach ( $pattern['categories'] as $category ) {
+			if ( ! empty( $category ) ) {
+				register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
+			}
+		}
 		register_block_pattern(
 			sanitize_title( __NAMESPACE__ ) . '/' . basename( $path, '.php' ),
-			require $path
+			$pattern,
 		);
 	}
 }
