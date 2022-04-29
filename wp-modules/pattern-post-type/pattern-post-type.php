@@ -179,11 +179,6 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
  * @return void
  */
 function register_block_patterns() {
-	$current_screen = get_current_screen();
-
-	if ( 'fsestudio_pattern' !== $current_screen->post_type ) {
-		return;
-	}
 
 	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
 
@@ -197,7 +192,7 @@ function register_block_patterns() {
 		);
 	}
 }
-add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
+add_action( 'init', __NAMESPACE__ . '\register_block_patterns', 9 );
 
 /**
  * Modify certain words when editing a pattern.
