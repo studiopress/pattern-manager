@@ -18,6 +18,8 @@ import DuotoneEditor from './DuotoneEditor';
 import MultiCheckbox from './MultiCheckbox';
 import convertToCssClass from '../../utils/convertToCssClass';
 
+import convertToUpperCase from '../../utils/convertToUpperCase';
+
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
@@ -161,7 +163,7 @@ function SettingsView({ isVisible }) {
 		}
 
 		tabs.push({
-			name: setting,
+			name: convertToUpperCase( setting ),
 			slug: setting,
 		});
 	}
@@ -204,7 +206,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 						htmlFor={propertyName}
 						className="block font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]"
 					>
-						<h2>{ propertyName }</h2>
+						<h2>{ convertToUpperCase( propertyName ) }</h2>
 						<p className="font-normal text-base">{properties[propertyName].description}</p>
 					</label>
 					<div className={`mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
