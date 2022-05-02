@@ -95,7 +95,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">{ __( 'Theme Templates', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<p className="text-lg max-w-2xl">Here, you can set up the various default pages that make up your theme. Not all pages are required, and some pages can act as a fallback for all pages.</p>
 				</div>
 			</div>
 

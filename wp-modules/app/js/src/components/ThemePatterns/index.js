@@ -40,7 +40,7 @@ export default function ThemePatterns( { isVisible } ) {
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">{ __( 'Theme Patterns', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<p className="text-lg max-w-2xl">Add patterns to your theme. You can create patterns from scratch using the Create New Pattern button, and you can also duplicate Studio patterns as a start.</p>
 				</div>
 			</div>
 			

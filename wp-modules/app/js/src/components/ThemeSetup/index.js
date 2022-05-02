@@ -34,7 +34,7 @@ export default function ThemeSetup( { isVisible } ) {
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">{ __( 'Theme Setup', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<p className="text-lg max-w-2xl">This is where you'll set up the technical details of your theme that appear in readme.txt, which are helpful for end users to understand the theme's capabilities.</p>
 				</div>
 			</div>
 
