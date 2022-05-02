@@ -44,6 +44,7 @@ import ThemeTemplateFiles from '../ThemeTemplateFiles';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
+import GettingStarted from '../GettingStarted';
 
 // Utils
 import classNames from '../../utils/classNames';
@@ -337,9 +338,7 @@ function FseStudio() {
 					/>
 				</>
 			) : (
-				<div>
-					No theme selected. We can change this to something more helpful.
-				</div>
+				<GettingStarted />
 			) }
 		</>
 	);
