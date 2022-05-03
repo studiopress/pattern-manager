@@ -10,6 +10,7 @@ import '../../../../css/src/tailwind.css';
 import { useEffect, useState, useRef } from '@wordpress/element';
 import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import logo from '../../../../img/logo.svg';
 
 // Icons
 import {
@@ -193,46 +194,49 @@ function FseStudio() {
 			<div className="sticky top-0 z-10 flex-shrink-0 flex h-20 bg-wp-black shadow">
 				<div className="flex-1 flex">
 					<div className="flex w-full gap-8 mx-auto justify-between items-center px-10">
-						<div className="flex gap-8">
-							<button
-								type="button"
-								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-								onClick={ () => {
-									currentView.set( 'theme_setup' );
-								} }
-							>
-								{ __( 'Theme Setup', 'fse-studio' ) }
-							</button>
-							<button
-								disabled={currentTheme.data ? false : true}
-								type="button"
-								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-								onClick={ () => {
-									currentView.set( 'themejson_editor' );
-								} }
-							>
-								{ __( 'Styles and Settings', 'fse-studio' ) }
-							</button>
-							<button
-								disabled={currentTheme.data ? false : true}
-								type="button"
-								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-								onClick={ () => {
-									currentView.set( 'theme_templates' );
-								} }
-							>
-								{ __( 'Theme Templates', 'fse-studio' ) }
-							</button>
-							<button
-								disabled={currentTheme.data ? false : true}
-								type="button"
-								className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
-								onClick={ () => {
-									currentView.set( 'theme_patterns' );
-								} }
-							>
-								{ __( 'Theme Patterns', 'fse-studio' ) }
-							</button>
+						<div className="flex items-center gap-12">
+							<img className="w-[120px]" src={ logo } />
+							<div className="flex gap-8">
+								<button
+									type="button"
+									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									onClick={ () => {
+										currentView.set( 'theme_setup' );
+									} }
+								>
+									{ __( 'Theme Setup', 'fse-studio' ) }
+								</button>
+								<button
+									disabled={currentTheme.data ? false : true}
+									type="button"
+									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									onClick={ () => {
+										currentView.set( 'themejson_editor' );
+									} }
+								>
+									{ __( 'Styles and Settings', 'fse-studio' ) }
+								</button>
+								<button
+									disabled={currentTheme.data ? false : true}
+									type="button"
+									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									onClick={ () => {
+										currentView.set( 'theme_templates' );
+									} }
+								>
+									{ __( 'Theme Templates', 'fse-studio' ) }
+								</button>
+								<button
+									disabled={currentTheme.data ? false : true}
+									type="button"
+									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									onClick={ () => {
+										currentView.set( 'theme_patterns' );
+									} }
+								>
+									{ __( 'Theme Patterns', 'fse-studio' ) }
+								</button>
+							</div>
 						</div>
 						
 						<div className="flex sm:flex-row flex-col gap-2">
@@ -308,7 +312,7 @@ function FseStudio() {
 							{ currentTheme?.data ? (
 								<button
 									type="button"
-									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 									onClick={() => {
 									
 										currentTheme.save();
