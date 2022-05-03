@@ -30,14 +30,8 @@ import useSnackbarContext from './useSnackbarContext';
  *   requires_wp: string,
  *   rest_route?: string,
  *   tags: string,
- *   template_files: Partial<{
- *    index: string,
- *    '404': string,
- *    archive: string,
- *    single: string,
- *    page: string,
- *    search: string,
- *   }>,
+ *   template_files: string[],
+ *   template_parts: string[],
  *   tested_up_to: string,
  *   text_domain: string,
  *   theme_json_file: string[],
@@ -768,6 +762,15 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 					...themeData,
 					template_files: {
 						...themeData.template_files,
+						[patternData.name]: patternData,
+					}
+				}
+			}
+			if ( patternData.type === 'template_part' ) {
+				newThemeData = {
+					...themeData,
+					template_parts: {
+						...themeData.template_parts,
 						[patternData.name]: patternData,
 					}
 				}
