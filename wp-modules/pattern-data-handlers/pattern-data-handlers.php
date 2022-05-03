@@ -322,7 +322,8 @@ function contruct_template_php_file_contents( $pattern, $text_domain ) {
  */
 function prepare_content( $pattern_html, $text_domain ) {
 	$pattern_html = addcslashes( $pattern_html, '\'' );
-	//$pattern_html = move_block_assets_to_theme( $pattern_html );
+	// phpcs:ignore
+	// $pattern_html = move_block_assets_to_theme( $pattern_html );
 	return $pattern_html;
 }
 
@@ -403,7 +404,6 @@ function move_block_assets_to_theme( $pattern_html ) {
 	}
 
 	return $pattern_html;
-
 }
 
 
@@ -486,7 +486,6 @@ add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_patt
  * @param bool            $creating True when creating a post, false when updating.
  */
 function handle_wp_template_save( $post, $request, $creating ) {
-
 	if ( ! $request->get_param( 'id' ) ) {
 		return;
 	}

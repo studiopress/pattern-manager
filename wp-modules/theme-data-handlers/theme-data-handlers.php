@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Get data for a single themes in the format used by FSE Theme Manager.
  *
  * @param string $theme_id The directory name of the theme in question.
+ * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
 function get_theme( $theme_id, $pre_existing_theme = array() ) {
@@ -33,6 +34,7 @@ function get_theme( $theme_id, $pre_existing_theme = array() ) {
 /**
  * Get data for all of the installed themes in the format used by FSE Theme Manager.
  *
+ * @param array $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
 function get_the_themes( $pre_existing_theme = array() ) {
