@@ -176,14 +176,16 @@ function update_theme( $theme ) {
 	$strings_fixed = \FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
 
 	// Put the contents of the theme.json file into the theme.
-	$wp_filesystem->put_contents(
-		$new_theme_dir . '/theme.json',
-		wp_json_encode(
-			$theme['theme_json_file'],
-			JSON_PRETTY_PRINT
-		),
-		FS_CHMOD_FILE
-	);
+	if ( isset( $theme['theme_json_file'] ) && ! empty( $theme['theme_json_file'] ) ) {
+		$wp_filesystem->put_contents(
+			$new_theme_dir . '/theme.json',
+			wp_json_encode(
+				$theme['theme_json_file'],
+				JSON_PRETTY_PRINT
+			),
+			FS_CHMOD_FILE
+		);
+	}
 
 	// Remove the theme json data from the theme array because it's already saved to theme.json.
 	unset( $theme['theme_json_file'] );
@@ -197,10 +199,6 @@ function update_theme( $theme ) {
 		),
 		FS_CHMOD_FILE
 	);
-
-	// Delete the current templates directory if it exists.
-	$wp_filesystem->delete( $new_theme_dir . '/templates', true );
-	$wp_filesystem->mkdir( $new_theme_dir . '/templates' );
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );

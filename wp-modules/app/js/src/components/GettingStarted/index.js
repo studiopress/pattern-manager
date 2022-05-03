@@ -3,6 +3,7 @@ import { __ } from '@wordpress/i18n';
 import image from '../../../../img/video-placeholder.jpg';
 import FseStudioContext from '../../contexts/FseStudioContext';
 import useStudioContext from '../../hooks/useStudioContext';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function GettingStarted() {
 
@@ -49,25 +50,16 @@ export default function GettingStarted() {
 										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
-										theme_json_file: fsestudio.themeJsonFiles.default,
-										included_patterns: [],
-										template_files: {
-											index: 'homepage',
-											404: null,
-											archive: null,
-											single: null,
-											page: null,
-											search: null,
-										},
 									};
-
+									
+									const themeId = uuidv4();
 									themes.setThemes( {
 										...themes.themes,
-										'my-new-theme': newThemeData,
+										[themeId]: newThemeData,
 									} );
 
 									// Switch to the newly created theme.
-									currentThemeId.set( 'my-new-theme' );
+									currentThemeId.set( themeId );
 								} }
 							>
 								{ __( 'Start Creating Your Theme', 'fse-studio' ) } &rarr;
