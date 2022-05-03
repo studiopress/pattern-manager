@@ -71,6 +71,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
 		if ( themeId ) {
+			console.log( 'theme id just changed' );
 			getThemeData();
 		}
 
@@ -85,12 +86,22 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 				namespace: convertToPascalCase( themeData?.name ),
 				text_domain: convertToSlug( themeData?.name ),
 			} );
+			
+			convertToSlug( themeData?.name )
 		}
 	}, [ themeData?.name ] );
 
 	function getThemeData() {
 		return new Promise( ( resolve ) => {
 			if ( ! themeId || fetchInProgress ) {
+				resolve();
+				return;
+			}
+			if ( ! themeData?.dirname ) {
+				console.log( themes.themes, themeId );
+				
+				setThemeData( themes.themes[ themeId ] );
+				setExistsOnDisk( false );
 				resolve();
 				return;
 			}
@@ -104,7 +115,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 						'X-WP-Nonce': fsestudio.apiNonce,
 					},
 					body: JSON.stringify( {
-						themeId,
+						themeId: themeData.dirname,
 						preExistingTheme: themeData
 					}),
 				}
