@@ -193,7 +193,7 @@ function FseStudio() {
 			) : null }
 			<div className="sticky top-0 z-10 flex-shrink-0 flex h-20 bg-wp-black shadow">
 				<div className="flex-1 flex">
-					<div className="flex w-full gap-8 max-w-7xl mx-auto justify-between items-center">
+					<div className="flex w-full gap-8 mx-auto justify-between items-center px-10">
 						<div className="flex gap-8">
 							<button
 								type="button"
