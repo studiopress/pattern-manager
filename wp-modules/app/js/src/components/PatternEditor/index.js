@@ -91,17 +91,19 @@ export function BlockEditor() {
 			<div className="fsestudio-pattern-editor-body">
 				<div className="fsestudio-pattern-editor-view">
 					{ ! blockEditorLoaded ? (
-						<div>
-							<Spinner />
-							{ createInterpolateElement(
-							__(
-								'Loading blocks for <span></span> into block editor...',
-								'fse-studio'
-							),
-							{
-								span: <span>{currentPattern?.title}</span>
-							}
-							)}
+						<div className="h-screen min-h-full w-screen items-center justify-center">
+							<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
+								<Spinner />
+								{ createInterpolateElement(
+								__(
+									'Loading blocks for <span></span> into block editor...',
+									'fse-studio'
+								),
+								{
+									span: <span className="px-1 font-semibold">{currentPattern.title}</span>
+								}
+								)}
+							</div>
 						</div>
 					) : null }
 					<iframe
