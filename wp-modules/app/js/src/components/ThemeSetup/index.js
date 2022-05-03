@@ -72,7 +72,7 @@ export default function ThemeSetup( { isVisible } ) {
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">{ __( 'Theme Setup', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">This is where you'll set up the technical details of your theme that appear in readme.txt, which are helpful for end users to understand the theme's capabilities.</p>
+					<p className="text-lg max-w-2xl">Start by adding technical details of your theme that appear in readme.txt, which is helpful for users to understand the theme's capabilities.</p>
 				</div>
 			</div>
 
@@ -462,7 +462,7 @@ export default function ThemeSetup( { isVisible } ) {
 									}
 									<button
 										type="button"
-										className=" w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ () => {
 											/** @type {import('../../hooks/useThemeData').Theme} */
 											const newThemeData = {
