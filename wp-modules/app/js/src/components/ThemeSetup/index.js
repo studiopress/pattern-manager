@@ -513,10 +513,6 @@ export default function ThemeSetup( { isVisible } ) {
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
-								<h4 className="mb-2 font-medium">Setting up your theme</h4>
-								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo.</p>
-							</div>
-							<div>
 								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
 								<ul>
 									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
