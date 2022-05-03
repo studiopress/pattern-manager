@@ -71,7 +71,7 @@ export default function ThemeSetup( { isVisible } ) {
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">{ __( 'Theme Setup', 'fse-studio' ) }</h1>
+					<h1 className="text-4xl mb-3">{ __( 'Theme Details', 'fse-studio' ) }</h1>
 					<p className="text-lg max-w-2xl">Start by adding technical details of your theme that appear in readme.txt, which is helpful for users to understand the theme's capabilities.</p>
 				</div>
 			</div>
@@ -497,10 +497,24 @@ export default function ThemeSetup( { isVisible } ) {
 							</div>
 						</div>
 
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
+							<div>
+								<h4 className="mb-2 font-medium">Export theme to .zip</h4>
+								<p className="text-base mb-5">Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.</p>
+								<button
+										type="button"
+										className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={ () => { } }
+									>
+										{ __( 'Export Theme', 'fse-studio' ) }
+									</button>
+							</div>
+						</div>
+
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h4 className="mb-2 font-medium">Setting up your theme</h4>
-								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo.</p>
 							</div>
 							<div>
 								<h4 className="mb-2 font-medium">Helpful Documentation</h4>

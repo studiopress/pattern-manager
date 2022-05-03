@@ -167,7 +167,7 @@ function FseStudio() {
 										currentView.set( 'theme_setup' );
 									} }
 								>
-									{ __( 'Theme Setup', 'fse-studio' ) }
+									{ __( 'Theme Details', 'fse-studio' ) }
 								</button>
 								<button
 									disabled={currentTheme.data ? false : true}
