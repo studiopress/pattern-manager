@@ -84,7 +84,7 @@ function FseStudioContextHydrator() {
 	} );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const currentTheme   = useThemeData(
-		uuidv4(),
+		currentThemeId.value,
 		themes,
 		patternEditorIframe,
 		currentView

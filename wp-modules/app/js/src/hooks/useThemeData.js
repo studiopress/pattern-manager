@@ -98,7 +98,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 				return;
 			}
 			if ( ! themeData?.dirname ) {
-				console.log(  themeId );
+				console.log( themes.themes, themeId );
 				
 				setThemeData( themes.themes[ themeId ] );
 				setExistsOnDisk( false );
