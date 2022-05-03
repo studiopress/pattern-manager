@@ -143,44 +143,6 @@ function FseStudio() {
 		currentTheme.get();
 	}, [currentView.currentView] );
 
-	function renderThemeSelector() {
-		const renderedThemes = [];
-
-		renderedThemes.push(
-			<option key={ 1 }>{ __( 'Choose a theme', 'fse-studio' ) }</option>
-		);
-
-		let counter = 3;
-		console.log( currentTheme );
-		
-		for ( const thisTheme in themes.themes ) {
-			const themeInQuestion = themes.themes[ thisTheme ];
-			renderedThemes.push(
-				<option key={ counter } value={ thisTheme }>
-					{ thisTheme === currentThemeId.value
-						? currentTheme.data?.name
-						: themeInQuestion?.name }
-				</option>
-			);
-			counter++;
-		}
-
-		return (
-			<>
-				<select
-					className="block w-60 h-full pl-3 pr-10 py-2 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
-					id="themes"
-					value={ currentThemeId.value }
-					onChange={ ( event ) => {
-						currentThemeId.set( event.target.value );
-					} }
-				>
-					{ renderedThemes }
-				</select>
-			</>
-		);
-	}
-
 	return (
 		<>
 			{ snackBar.value ? (
@@ -241,76 +203,16 @@ function FseStudio() {
 						</div>
 						
 						<div className="flex sm:flex-row flex-col gap-2">
-							{
-								// In order to render the selector…
-								// There should be at least 1 theme other than the currently selected theme.
-								// Or the current theme should have been saved to disk.
-								Object.keys( themes.themes ).some(
-									( themeName ) =>
-										themeName !== currentThemeId.value ||
-										currentTheme.existsOnDisk
-								) ? (
-									<>
-										<div>
-											<label
-												htmlFor="themes"
-												className="block text-sm font-medium text-gray-700 visuallyhidden"
-											>
-												{ __(
-													'Choose a theme',
-													'fse-studio'
-												) }
-											</label>
-											{ renderThemeSelector() }
-										</div>
-									</>
-								) : null
-							}
-							<div className="flex flex-col">
-								<button
-									type="button"
-									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										/** @type {import('../../hooks/useThemeData').Theme} */
-										const newThemeData = {
-											name: 'My New Theme',
-											dirname: 'my-new-theme',
-											namespace: 'MyNewTheme',
-											uri: 'mysite.com',
-											author: 'Me',
-											author_uri: 'mysite.com',
-											description: 'My new FSE Theme',
-											tags: '',
-											tested_up_to: '5.9',
-											requires_wp: '5.9',
-											requires_php: '7.3',
-											version: '1.0.0',
-											text_domain: 'my-new-theme',
-										};
-
-										const themeId = uuidv4();
-										themes.setThemes( {
-											...themes.themes,
-											[themeId]: newThemeData,
-										} );
-	
-										// Switch to the newly created theme.
-										currentThemeId.set( themeId );
-									} }
-								>
-									{ __( 'Create New', 'fse-studio' ) }
-								</button>
-							</div>
 							{ currentTheme?.data ? (
 								<button
 									type="button"
-									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 									onClick={() => {
 									
 										currentTheme.save();
 									}}
 								>
-									{ __( 'Save Theme', 'fse-studio' ) }
+									{ __( 'Save Your Theme', 'fse-studio' ) }
 								</button>
 							) : null }
 						</div>

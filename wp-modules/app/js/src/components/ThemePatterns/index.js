@@ -47,36 +47,40 @@ export default function ThemePatterns( { isVisible } ) {
 			<div className="mx-auto p-12">
 				<div className="mx-auto max-w-7xl flex justify-between gap-20">
 					<div className="w-[65%]">
-						<div className="flex">
-							<h3 className="my-6 block text-base font-medium text-gray-700 sm:col-span-1">
-								{ __(
-									'Patterns included in this theme:',
-									'fse-studio'
-								) }
-							</h3>
-							<button
-								className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-								onClick={() => {
-									const newPatternId = uuidv4();
+						<div className="grid grid-cols-2 gap-5">
+							<div>
+								<h3 className="my-6 block text-base text-gray-700 sm:col-span-1">
+									{ __(
+										'Create new patterns for your theme using the button to the right. Patterns will appear below as you create them.',
+										'fse-studio'
+									) }
+								</h3>
+							</div>
+							<div className="justify-end flex items-center">
+								<button
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									onClick={() => {
+										const newPatternId = uuidv4();
 
-								const newPatternData = {
-									type: 'pattern',
-									title: 'My New Pattern',
-									name: newPatternId,
-									categories: [],
-									viewportWidth: '',
-									content: '',
-								};
+									const newPatternData = {
+										type: 'pattern',
+										title: 'My New Pattern',
+										name: newPatternId,
+										categories: [],
+										viewportWidth: '',
+										content: '',
+									};
 
-								currentTheme
-									.createPattern( newPatternData )
-									.then( () => {
-										// Switch to the newly created theme.
-										currentPatternId.set( newPatternId );
-										currentView.set('pattern_editor');
-									} );
-								}}
-						>{ __( 'Create New Pattern', 'fse-studio' ) }</button>
+									currentTheme
+										.createPattern( newPatternData )
+										.then( () => {
+											// Switch to the newly created theme.
+											currentPatternId.set( newPatternId );
+											currentView.set('pattern_editor');
+										} );
+									}}
+								>{ __( 'Create New Pattern', 'fse-studio' ) }</button>
+							</div>
 					</div>
 					
 					<>
