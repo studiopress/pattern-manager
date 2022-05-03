@@ -115,11 +115,15 @@ function changeWords( translation, text ) {
 
 	return translation;
 }
-
 wp.hooks.addFilter(
 	'i18n.gettext',
 	'fse-studio/changeWords',
 	changeWords
+);
+
+wp.hooks.removeFilter(
+	'blockEditor.__unstableCanInsertBlockType',
+	'removeTemplatePartsFromInserter',
 );
 
 // Tell the parent page (fse studio) that we are loaded.

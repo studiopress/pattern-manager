@@ -17,45 +17,25 @@ import PatternPicker from '../PatternPicker';
 import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
-export default function PatternEditor( { visible } ) {
+export default function SiteEditor( { visible } ) {
 	const { currentTheme, currentPatternId } = useStudioContext();
-	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
 
 	return (
-		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			{ isPatternModalOpen ? (
-				<Modal
-					title={ __(
-						'Edit one of your existing patterns',
-						'fse-studio'
-					) }
-					onRequestClose={ () => {
-						setIsPatternModalOpen( false );
-					} }
-				>
-					<PatternPicker
-						patterns={ searchItems(
-							Object.values( currentTheme.data.included_patterns ),
-							'custom'
-						) }
-						onClickPattern={
-							/** @param {string} clickedPatternId */
-							( clickedPatternId ) => {
-								currentPatternId.set( clickedPatternId );
-								setIsPatternModalOpen( false );
-							}
-						}
-					/>
-				</Modal>
-			) : null }
-
-			{ currentPatternId.value ? <BlockEditor /> : null }
-		</div>
+		<iframe
+			title={ __( 'Pattern Editor', 'fse-studio' ) }
+			
+		
+			style={ {
+				width: '100%',
+				height: 'calc(100vh - 80px)',
+			} }
+			src={ fsestudio.siteUrl + '/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template' }
+		/>
 	);
 }
 
 export function BlockEditor() {
-	const { currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
+	const { currentPattern, currentPatternId, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
 	console.log( currentPattern );
 	
 	const [ currentPatternName, setCurrentPatternName ] = useState();
@@ -106,7 +86,7 @@ export function BlockEditor() {
 					) : null }
 					<iframe
 						title={ __( 'Pattern Editor', 'fse-studio' ) }
-						ref={ patternEditorIframe }
+					
 						hidden={ ! blockEditorLoaded }
 						style={ {
 							width: '100%',

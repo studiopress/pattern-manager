@@ -20,8 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Create a custom post type to be used for our default post.
  */
 function pattern_post_type() {
-	if ( isset( $_GET['post'] ) ) {
-		$post_id      = absint( $_GET['post'] );
+	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_id      = absint( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$post_type    = get_post_type( $post_id );
 		$pattern_type = get_post_meta( $post_id, 'type', true );
 	} else {
@@ -97,14 +97,14 @@ function pattern_post_type() {
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 
 /**
- * Recieve blocks in the URL and display them. Useful for previews and thumbnails.
+ * Recieve post_id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
-	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { //phpcs:ignore
+	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
-	$post_id = absint( $_GET['fsestudio_pattern_preview'] );
+	$post_id = absint( $_GET['fsestudio_pattern_preview'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	$post = get_post( $post_id );
 
@@ -112,7 +112,7 @@ function display_block_pattern_preview() {
 
 	wp_head();
 
-	echo $the_content;
+	echo $the_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 	wp_footer();
 
@@ -179,7 +179,6 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
  * @return void
  */
 function register_block_patterns() {
-
 	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
 
 	foreach ( $patterns as $pattern ) {

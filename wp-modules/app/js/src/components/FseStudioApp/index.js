@@ -41,6 +41,7 @@ import useSnackbar from '../../hooks/useSnackbar';
 import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
 import ThemeTemplateFiles from '../ThemeTemplateFiles';
+import SiteEditor from '../SiteEditor';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
@@ -99,6 +100,11 @@ function FseStudioContextHydrator() {
 		// If the pattern name is found in the theme's template_files object.
 		if ( currentTheme?.data?.template_files?.hasOwnProperty( currentPatternId?.value ) ) {
 			currentPattern = currentTheme.data.template_files[currentPatternId?.value];
+		}
+		// If the pattern name is found in the theme's template_parts object.
+		if ( currentTheme?.data?.template_parts?.hasOwnProperty( currentPatternId?.value ) ) {
+			currentPattern = currentTheme.data.template_parts[currentPatternId?.value];
+			console.log( currentPattern );
 		}
 	}
 
@@ -324,9 +330,11 @@ function FseStudio() {
 					<ThemePatterns
 						isVisible={ 'theme_patterns' === currentView.currentView }
 					/>
-					<ThemeTemplateFiles
-						isVisible={ 'theme_templates' === currentView.currentView }
-					/>
+					<div
+						hidden={ 'theme_templates' !== currentView.currentView }
+					>
+						<SiteEditor />
+					</div>
 					<PatternEditor
 						visible={ 'pattern_editor' === currentView.currentView }
 					/>

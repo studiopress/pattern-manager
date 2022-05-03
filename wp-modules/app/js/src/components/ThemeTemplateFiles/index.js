@@ -33,6 +33,7 @@ import { fsestudio } from '../../globals';
 /** @param {{isVisible: boolean}} props */
 export default function ThemeTemplateFiles( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
+	const [currentTab, setCurrentTab] = useState( 'templates' );
 	
 	if ( ! currentTheme.data ) {
 		return '';
@@ -89,6 +90,34 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			),
 		},
 	};
+	
+	const standardTemplateParts = {
+		'header': {
+			title: __( 'Template Part: header.html', 'fse-studio' ),
+			description: __(
+				'This template is used for the header.',
+				'fse-studio'
+			),
+		},
+		'footer': {
+			title: __( 'Template Part: footer.html', 'fse-studio' ),
+			description: __(
+				'This template is used for the footer.',
+				'fse-studio'
+			),
+		},
+	};
+	
+	const tabs = [
+		{
+			name: __( 'Template Parts', 'fse-studio' ),
+			slug: 'template-parts',
+		},
+		{
+			name: __( 'Templates', 'fse-studio' ),
+			slug: 'templates',
+		}
+	];
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
@@ -102,37 +131,100 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			<div className="mx-auto p-12">
 				<div className="mx-auto max-w-7xl flex justify-between gap-20">
 					<div className="w-[65%]">
-						<div className="divide-y divide-gray-200 flex flex-col justify-between">
-						{ Object.entries( standardTemplates ?? {} ).map(
-							( [templateName, templateHelpInfo] ) => {
-								return (
-									<ThemeTemplatePicker
-										key={ templateName }
-										templateName={ templateName }
-										templateData={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
-										standardTemplates={standardTemplates}
-									/>
-								);
-							}
-						) }
-						{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
-							( [templateName, templateContent] ) => {
-								// Skip any we've already rendered above (standardTemplates).
-								if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
-										
+						<div className="flex flex-col gap-14">
+							<ul className="w-full inline-flex text-base fses-json-nav">
+								{ tabs.map( ( item ) => (
+									<li key={ item.name }>
+										<button
+											className={
+												'w-full text-left p-5 font-medium rounded-sm' +
+												( currentTab === item.slug
+													? ' bg-gray-100'
+													: ' hover:bg-gray-100' )
+											}
+											key={ item.name }
+											onClick={ () => {
+												setCurrentTab( item.slug );
+											} }
+										>
+											{ item.name }
+										</button>
+									</li>
+								) ) }
+							</ul>
+						</div>
+						{ currentTab === 'templates' ? (
+							<div className="divide-y divide-gray-200 flex flex-col justify-between">
+								{ Object.entries( standardTemplates ?? {} ).map(
+									( [templateName, templateHelpInfo] ) => {
+										return (
+											<ThemeTemplatePicker
+												key={ templateName }
+												templateName={ templateName }
+												templateData={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
+												standardTemplates={standardTemplates}
+												existsInTheme={ currentTheme.data?.template_files.hasOwnProperty( templateName ) }
+												type={ 'template' }
+											/>
+										);
+									}
+								) }
+								{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
+									( [templateName, templateContent] ) => {
+										// Skip any we've already rendered above (standardTemplates).
+										if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
+												
+											return (
+												<ThemeTemplatePicker
+													key={ templateName }
+													templateName={ templateName }
+													templateContent={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
+													standardTemplates={standardTemplates}
+													existsInTheme={ currentTheme.data?.template_files.hasOwnProperty( templateName ) }
+													type={ 'template' }
+												/>
+											);
+										}
+									}
+								) }
+							</div>
+						) : null }
+						{ currentTab === 'template-parts' ? (
+							<div className="divide-y divide-gray-200 flex flex-col justify-between">
+							{ Object.entries( standardTemplateParts ?? {} ).map(
+								( [templateName, templateHelpInfo] ) => {
 									return (
 										<ThemeTemplatePicker
 											key={ templateName }
 											templateName={ templateName }
-											templateContent={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
-											standardTemplates={standardTemplates}
+											templateData={ currentTheme.data?.template_parts ? currentTheme.data?.template_parts[templateName] : '' }
+											standardTemplates={standardTemplateParts}
+											existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty( templateName ) }
+											type={ 'template_part' }
 										/>
 									);
 								}
-							}
-						) }
-
-					</div>
+							) }
+							{ Object.entries( currentTheme.data?.template_parts ?? {} ).map(
+								( [templateName, templateContent] ) => {
+									// Skip any we've already rendered above (standardTemplateParts).
+									if ( ! standardTemplateParts.hasOwnProperty( templateName ) ) {
+											
+										return (
+											<ThemeTemplatePicker
+												key={ templateName }
+												templateName={ templateName }
+												templateContent={ currentTheme.data?.template_parts ? currentTheme.data?.template_parts[templateName] : '' }
+												standardTemplates={standardTemplateParts}
+												existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty( templateName ) }
+												type={ 'template_part' }
+											/>
+										);
+									}
+								}
+							) }
+						</div>
+						) : null }
 					</div>
 
 					<div className="flex-1 text-base">

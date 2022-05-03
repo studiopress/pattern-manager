@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Get data for a single themes in the format used by FSE Theme Manager.
  *
  * @param string $theme_id The directory name of the theme in question.
+ * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
 function get_theme( $theme_id, $pre_existing_theme = array() ) {
@@ -33,6 +34,7 @@ function get_theme( $theme_id, $pre_existing_theme = array() ) {
 /**
  * Get data for all of the installed themes in the format used by FSE Theme Manager.
  *
+ * @param array $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
 function get_the_themes( $pre_existing_theme = array() ) {
@@ -80,11 +82,17 @@ function get_the_themes( $pre_existing_theme = array() ) {
 
 				// Add the template files that exist in the theme.
 				$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory(), $pre_existing_theme );
+
+				// Add the template part files that exist in the theme.
+				$formatted_theme_data[ $theme_slug ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory(), $pre_existing_theme );
 			} else {
 				$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 
 				// Add the template files that exist in the theme.
 				$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
+
+				// Add the template part files that exist in the theme.
+				$formatted_theme_data[ $theme_slug ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
 			}
 		}
 	}
@@ -204,6 +212,16 @@ function update_theme( $theme ) {
 				'name'    => $template_name,
 				'content' => $template_data['content'],
 				'type'    => 'template',
+			)
+		);
+	}
+
+	foreach ( $theme['template_parts'] as $template_name => $template_data ) {
+		\FseStudio\PatternDataHandlers\update_pattern(
+			array(
+				'name'    => $template_name,
+				'content' => $template_data['content'],
+				'type'    => 'template_part',
 			)
 		);
 	}

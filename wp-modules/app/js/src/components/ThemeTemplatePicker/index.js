@@ -13,6 +13,7 @@ import {
 	Icon,
 	close,
 	edit,
+	plus
 } from '@wordpress/icons';
 
 /**
@@ -20,13 +21,8 @@ import {
  *  templateName: string
  * }} props The component props.
  */
-export default function ThemeTemplatePicker( { templateName, templateData, standardTemplates } ) {
+export default function ThemeTemplatePicker( { templateName, templateData, standardTemplates, existsInTheme, type } ) {
 	const { currentView, currentTheme, currentPatternId } = useStudioContext();
-
-	const [ isModalOpen, setModalOpen ] = useState( false );
-	const [ focusedTemplateFileName, setFocusedTemplateFileName ] = useState(
-		''
-	);
 
 	return (
 		<>
@@ -50,27 +46,17 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 				<div className="mt-1 sm:mt-0 sm:col-span-1">
 					<div
 						
-						className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
+						className="flex justify-between border border-gray-200 rounded relative group"
 					>
 						<button
+							className="flex"
 							type="button"
-							className="absolute top-2 right-2"
-							// onClick={ }
-						>
-							<Icon
-								className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300"
-								icon={ close }
-								size={ 30 }
-							/>
-						</button>
-						<button
-							type="button"
-							className="absolute top-2 left-2"
+							
 							 onClick={() => {
 								// If this template doesn't exist in this theme yet, create it first, then go to the block editor.
-								if ( ! currentTheme.data?.template_files?.hasOwnProperty( templateName ) ) {
+								if ( ! existsInTheme ) {
 									const newPatternData = {
-										type: 'template',
+										type: type,
 										title: templateName,
 										name: templateName,
 										content: '',
@@ -90,9 +76,24 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 								}
 							 }}
 						>
+							<div className="flex text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300">
+								<Icon
+									className="flex"
+									icon={ existsInTheme ? edit : plus }
+									size={ 30 }
+								/>
+								{ ! existsInTheme ? __( 'Add to theme', 'fse-studio' ) : null }
+							</div>
+						</button>
+						<button
+							className="flex"
+							type="button"
+							
+							// onClick={ }
+						>
 							<Icon
 								className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300"
-								icon={ edit }
+								icon={ close }
 								size={ 30 }
 							/>
 						</button>
@@ -107,32 +108,6 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 					</div>
 				</div>
 			</div>
-			{ isModalOpen ? (
-				<Modal
-					title={ __(
-						'Pick the pattern to use for this template file',
-						'fse-studio'
-					) }
-					onRequestClose={ () => {
-						setModalOpen( false );
-					} }
-				>
-					<PatternPicker
-						patterns={ patterns.patterns }
-					
-						onClickPattern={ ( clickedPatternName ) => {
-							setModalOpen( false );
-							currentTheme.set( {
-								...currentTheme.data,
-								template_files: {
-									...currentTheme.data.template_files,
-									[ focusedTemplateFileName ]: clickedPatternName,
-								},
-							} );
-						} }
-					/>
-				</Modal>
-			) : null }
 		</>
 	);
 }
