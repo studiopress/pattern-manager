@@ -50,7 +50,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
-	const [ themeData, setThemeData ] = useState();
+	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	
@@ -71,7 +71,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 	useEffect( () => {
 		// If the themeId passed in changes, get the new theme data related to it.
 		if ( themeId ) {
-			console.log( 'theme id just changed' );
+			console.log( 'theme id just changed to', themeId );
 			getThemeData();
 		}
 
@@ -97,14 +97,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 				resolve();
 				return;
 			}
-			if ( ! themeData?.dirname ) {
-				console.log( themes.themes, themeId );
-				
-				setThemeData( themes.themes[ themeId ] );
-				setExistsOnDisk( false );
-				resolve();
-				return;
-			}
 			setFetchInProgress( true );
 			fetch( fsestudio.apiEndpoints.getThemeEndpoint,
 				{
@@ -115,7 +107,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 						'X-WP-Nonce': fsestudio.apiNonce,
 					},
 					body: JSON.stringify( {
-						themeId: themeData.dirname,
+						themeId,
 						preExistingTheme: themeData
 					}),
 				}

@@ -71,28 +71,28 @@ function get_the_themes( $pre_existing_theme = array() ) {
 			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
 			$theme_data = wp_parse_args( $theme_data, $default_theme_data );
 
-			$formatted_theme_data[ $theme_slug ] = $theme_data;
+			$formatted_theme_data[ $theme_data['id'] ] = $theme_data;
 
 			// Add the theme.json file data to the theme data.
-			$formatted_theme_data[ $theme_slug ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
+			$formatted_theme_data[ $theme_data['id'] ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
 
 			// Add the included Patterns for the current theme.
 			if ( ! empty( $pre_existing_theme ) ) {
-				$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory(), $pre_existing_theme );
+				$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory(), $pre_existing_theme );
 
 				// Add the template files that exist in the theme.
-				$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory(), $pre_existing_theme );
+				$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory(), $pre_existing_theme );
 
 				// Add the template part files that exist in the theme.
-				$formatted_theme_data[ $theme_slug ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory(), $pre_existing_theme );
+				$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory(), $pre_existing_theme );
 			} else {
-				$formatted_theme_data[ $theme_slug ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+				$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 
 				// Add the template files that exist in the theme.
-				$formatted_theme_data[ $theme_slug ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
+				$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
 
 				// Add the template part files that exist in the theme.
-				$formatted_theme_data[ $theme_slug ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
+				$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
 			}
 		}
 	}
@@ -190,6 +190,11 @@ function update_theme( $theme ) {
 	// Remove the theme json data from the theme array because it's already saved to theme.json.
 	unset( $theme['theme_json_file'] );
 
+	// Assign a unique ID to this theme if it doesn't already have one.
+	if ( ! $theme['id'] ) {
+		$theme['id'] = wp_generate_uuid4();
+	}
+
 	// Create the theme's fsestudio-data.json file.
 	$success = $wp_filesystem->put_contents(
 		$new_theme_dir . 'fsestudio-data.json',
@@ -227,5 +232,5 @@ function update_theme( $theme ) {
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
 
-	return \FseStudio\ThemeDataHandlers\get_theme( $theme['dirname'], $theme );
+	return \FseStudio\ThemeDataHandlers\get_theme( $theme['id'], $theme );
 }

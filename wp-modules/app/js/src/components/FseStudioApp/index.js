@@ -150,15 +150,12 @@ function FseStudio() {
 		);
 
 		let counter = 3;
-		console.log( currentTheme );
-		
+
 		for ( const thisTheme in themes.themes ) {
 			const themeInQuestion = themes.themes[ thisTheme ];
 			renderedThemes.push(
 				<option key={ counter } value={ thisTheme }>
-					{ thisTheme === currentThemeId.value
-						? currentTheme.data?.name
-						: themeInQuestion?.name }
+					{ themeInQuestion?.name }
 				</option>
 			);
 			counter++;
@@ -179,7 +176,6 @@ function FseStudio() {
 			</>
 		);
 	}
-
 	return (
 		<>
 			{ snackBar.value ? (

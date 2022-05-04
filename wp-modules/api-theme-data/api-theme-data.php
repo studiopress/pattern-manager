@@ -75,15 +75,11 @@ function get_theme( $request ) {
 	$theme_id           = $params['themeId'];
 	$pre_existing_theme = $params['preExistingTheme'];
 
-	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-
-	if ( $wp_filesystem->exists( $wp_filesystem->wp_themes_dir() . $theme_id . '/fsestudio-data.json' ) ) {
-		// Activate the theme being requested. This makes it so that previews match the currently chosen theme.
-		switch_theme( $theme_id );
-	}
-
 	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id, $pre_existing_theme );
+
+	if ( $theme_data['dirname'] ) {
+		switch_theme( $theme_data['dirname'] );
+	}
 
 	if ( ! $theme_data ) {
 		return new \WP_REST_Response(

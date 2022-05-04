@@ -25,16 +25,17 @@ function get_app_state() {
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
+	$current_theme_data = null;
+
 	// Make sure the theme WP thinks is active actually exists.
-	if ( ! $wp_filesystem->exists( $wp_filesystem->wp_themes_dir() . $current_theme_dir . '/fsestudio-data.json' ) ) {
-		$current_theme_dir = false;
+	if ( $wp_filesystem->exists( $wp_filesystem->wp_themes_dir() . $current_theme_dir . '/fsestudio-data.json' ) ) {
+		$current_theme_data = json_decode( $wp_filesystem->get_contents( $wp_filesystem->wp_themes_dir() . $current_theme_dir . '/fsestudio-data.json' ), true );
 	}
 
 	return array(
 		'patterns'           => \FseStudio\PatternDataHandlers\get_patterns(),
-		'initialTheme'       => $current_theme_dir,
+		'initialTheme'       => isset( $current_theme_data['id'] ) ? $current_theme_data['id'] : null,
 		'themes'             => \FseStudio\ThemeDataHandlers\get_the_themes(),
-		
 		'schemas'            => array(
 			'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/schemas/json/theme.json' ),
 		),
