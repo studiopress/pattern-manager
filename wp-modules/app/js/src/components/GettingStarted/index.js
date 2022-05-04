@@ -1,9 +1,8 @@
 // @ts-check
 import { __ } from '@wordpress/i18n';
 import image from '../../../../img/video-placeholder.jpg';
-import FseStudioContext from '../../contexts/FseStudioContext';
 import useStudioContext from '../../hooks/useStudioContext';
-import { v4 as uuidv4 } from 'uuid';
+import createNewTheme from '../../utils/createNewTheme';
 
 export default function GettingStarted() {
 
@@ -35,31 +34,7 @@ export default function GettingStarted() {
 								type="button"
 								className="inline-flex items-center px-4 py-2 border-4 border-transparent text-lg font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
-									/** @type {import('../../hooks/useThemeData').Theme} */
-									const newThemeData = {
-										name: 'My New Theme',
-										dirname: 'my-new-theme',
-										namespace: 'MyNewTheme',
-										uri: 'mysite.com',
-										author: 'Me',
-										author_uri: 'mysite.com',
-										description: 'My new FSE Theme',
-										tags: '',
-										tested_up_to: '5.9',
-										requires_wp: '5.9',
-										requires_php: '7.3',
-										version: '1.0.0',
-										text_domain: 'my-new-theme',
-									};
-									
-									const themeId = uuidv4();
-									themes.setThemes( {
-										...themes.themes,
-										[themeId]: newThemeData,
-									} );
-
-									// Switch to the newly created theme.
-									currentThemeId.set( themeId );
+									createNewTheme( themes, currentThemeId );
 								} }
 							>
 								{ __( 'Start Creating Your Theme', 'fse-studio' ) } &rarr;

@@ -13,6 +13,7 @@ import useSnackbarContext from './useSnackbarContext';
 
 /**
  * @typedef {Partial<{
+ *   id: string,
  *   name: string,
  *   namespace: string,
  *   'index.html'?: string,

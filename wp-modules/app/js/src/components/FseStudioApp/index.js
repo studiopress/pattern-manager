@@ -170,7 +170,7 @@ function FseStudio() {
 									{ __( 'Theme Details', 'fse-studio' ) }
 								</button>
 								<button
-									disabled={currentTheme.data ? false : true}
+									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
 									type="button"
 									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'themejson_editor' ? ' underline' : '' ) }
 									onClick={ () => {
@@ -180,8 +180,8 @@ function FseStudio() {
 									{ __( 'Styles and Settings', 'fse-studio' ) }
 								</button>
 								<button
-									style={{display:'none'}}
-									disabled={currentTheme.data ? false : true}
+									style={{display: window.location.href.includes( 'tryTemplates' ) ? '' : 'none'}}
+									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
 									type="button"
 									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_templates' ? ' underline' : '' ) }
 									onClick={ () => {
@@ -191,7 +191,7 @@ function FseStudio() {
 									{ __( 'Theme Templates', 'fse-studio' ) }
 								</button>
 								<button
-									disabled={currentTheme.data ? false : true}
+									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
 									type="button"
 									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_patterns' ? ' underline' : '' ) }
 									onClick={ () => {
