@@ -162,7 +162,7 @@ function FseStudio() {
 							<div className="flex gap-8">
 								<button
 									type="button"
-									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									className={"inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_setup' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'theme_setup' );
 									} }
@@ -172,7 +172,7 @@ function FseStudio() {
 								<button
 									disabled={currentTheme.data ? false : true}
 									type="button"
-									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'themejson_editor' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'themejson_editor' );
 									} }
@@ -180,9 +180,10 @@ function FseStudio() {
 									{ __( 'Styles and Settings', 'fse-studio' ) }
 								</button>
 								<button
+									style={{display:'none'}}
 									disabled={currentTheme.data ? false : true}
 									type="button"
-									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_templates' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'theme_templates' );
 									} }
@@ -192,7 +193,7 @@ function FseStudio() {
 								<button
 									disabled={currentTheme.data ? false : true}
 									type="button"
-									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue"
+									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_patterns' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'theme_patterns' );
 									} }
