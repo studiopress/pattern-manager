@@ -88,7 +88,8 @@ export default function ThemeSetup( { isVisible } ) {
 								<input
 									ref={ themeNameInput }
 									disabled={
-										currentTheme.existsOnDisk
+										currentTheme.existsOnDisk &&
+										! currentTheme.themeNameIsDefault
 									}
 									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
@@ -101,6 +102,21 @@ export default function ThemeSetup( { isVisible } ) {
 										} );
 									} }
 								/>
+								{ currentTheme.themeNameIsDefault ? (
+									<div className="text-sm text-green-700 flex flex-row items-center mr-6">
+										<Icon
+											className="fill-current"
+											icon={ check }
+											size={ 26 }
+										/>{ ' ' }
+										<span role="dialog" aria-label="Theme Saved">
+											{ __(
+												'Get started by giving your theme a unique name!',
+												'fse-studio'
+											) }
+										</span>
+									</div>
+								) : null }
 							</div>
 						</div>
 

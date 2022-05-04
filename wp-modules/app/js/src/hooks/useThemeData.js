@@ -52,10 +52,17 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
+	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	
 	const [autoSaveTheme, setAutoSaveTheme] = useState( false );
 
-	useEffect( () => {		
+	useEffect( () => {
+		if ( themeData?.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+		} else {
+			setThemeNameIsDefault( false );
+		}
+		
 		if ( themeData && autoSaveTheme ) {
 			saveThemeData();
 		}
@@ -66,6 +73,8 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 		if ( themeId ) {
 			getThemeData();
 		}
+
+		setThemeNameIsDefault( false );
 	}, [ themeId ] );
 
 	useEffect( () => {
@@ -121,9 +130,14 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 	}
 
 	function saveThemeData() {
+		if ( themeData.name === 'My New Theme' ) {
+			setThemeNameIsDefault( true );
+			return;
+		}
 		setSaveCompleted( false );
 
 		return new Promise( ( resolve ) => {
+			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: {
@@ -779,5 +793,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 		export: exportThemeData,
 		existsOnDisk,
 		saveCompleted,
+		themeNameIsDefault,
 	};
 }
