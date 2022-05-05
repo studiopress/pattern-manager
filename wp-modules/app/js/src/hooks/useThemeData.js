@@ -45,7 +45,7 @@ import useSnackbarContext from './useSnackbarContext';
  * @param {string}                                           themeId
  * @param {ReturnType<import('./useThemes').default>}        themes
  */
-export default function useThemeData( themeId, themes, patternEditorIframe, currentView ) {
+export default function useThemeData( themeId, themes, patternEditorIframe, siteEditorIframe, currentView ) {
 	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
@@ -180,6 +180,14 @@ export default function useThemeData( themeId, themes, patternEditorIframe, curr
 								} )
 							);
 						}
+					}
+					
+					if ( siteEditorIframe.current ) {
+						siteEditorIframe.current.contentWindow.postMessage(
+							JSON.stringify( {
+								message: 'fsestudio_save',
+							} )
+						);
 					}
 
 					resolve( data );

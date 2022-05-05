@@ -79,6 +79,7 @@ export default function FseStudioApp() {
 function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
 	const patternEditorIframe = useRef();
+	const siteEditorIframe = useRef();
 	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
 	const themes = useThemes( {
 		themes: fsestudio.themes,
@@ -88,6 +89,7 @@ function FseStudioContextHydrator() {
 		currentThemeId.value,
 		themes,
 		patternEditorIframe,
+		siteEditorIframe,
 		currentView
 	);
 
@@ -121,6 +123,7 @@ function FseStudioContextHydrator() {
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,
 		patternEditorIframe,
+		siteEditorIframe,
 		blockEditorLoaded,
 		setBlockEditorLoaded,
 	};
