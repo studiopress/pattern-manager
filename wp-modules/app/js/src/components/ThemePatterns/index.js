@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
 	useRef,
 	useState,
+	createInterpolateElement,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
@@ -50,7 +51,17 @@ export default function ThemePatterns( { isVisible } ) {
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
 							{ Object.entries( currentTheme?.data?.included_patterns ?? {} ).length === 0 ? (
-								<div>{ __( 'No Patterns Yet', 'fse-studio' ) } </div>
+								<div className="bg-fses-gray p-10 text-center w-full col-span-2 rounded">
+									{ createInterpolateElement(
+									__(
+										'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
+										'fse-studio'
+									),
+									{
+										span: <strong>{__('Create A New Pattern', 'fse-studio')}</strong>
+									}
+									)}
+									</div>
 							 ) : null }
 							{ Object.entries( currentTheme?.data?.included_patterns ?? {} ).map(
 								( [patternName, patternData] ) => {
