@@ -129,12 +129,22 @@ wp.hooks.removeFilter(
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
 let fsestudioPatternIsSaved = true;
-
+let fsestudioBlockPatternEditorIsSaving;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
+	// If saving just started, set a flag.
+	
+	if ( wp.data.select( 'core/editor' ).isSavingPost() && ! fsestudioBlockPatternEditorIsSaving) {
+		fsestudioBlockPatternEditorIsSaving = true;
+	}
+	if ( ! wp.data.select( 'core/editor' ).isSavingPost() && fsestudioBlockPatternEditorIsSaving ) {
+		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
+		fsestudioBlockPatternEditorIsSaving = false;
+	}
+
 } );
 
 let fsestudioSaveAndRefreshDebounce = null;

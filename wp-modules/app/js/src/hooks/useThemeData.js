@@ -802,6 +802,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, site
 		export: exportThemeData,
 		existsOnDisk,
 		saveCompleted,
+		fetchInProgress,
 		themeNameIsDefault,
 	};
 }

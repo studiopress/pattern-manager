@@ -24,13 +24,13 @@ export default function PatternPreview( {
 	const scaleMultiplier = 10 / ( scale * 10 );
 	
 	useEffect( () => {
-		if ( ! currentTheme.saveCompleted ) {
+		if ( currentTheme.fetchInProgress ) {
 			setCurrentUrl( '' );
 		}
-		if ( currentTheme.saveCompleted ) {
+		if ( ! currentTheme.fetchInProgress ) {
 			setCurrentUrl( url );
 		}
-	}, [ currentTheme.saveCompleted ] );
+	}, [ currentTheme.fetchInProgress ] );
 	
 	useEffect( () => {
 		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {

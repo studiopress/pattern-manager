@@ -47,7 +47,7 @@ export default function ThemePatterns( { isVisible } ) {
 			
 			<div className="mx-auto p-12">
 				<div className="mx-auto max-w-7xl flex justify-between gap-20">
-					<div className="w-[65%]">					
+					<div className="w-[65%]">
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
 							{ Object.entries( currentTheme?.data?.included_patterns ?? {} ).length === 0 ? (

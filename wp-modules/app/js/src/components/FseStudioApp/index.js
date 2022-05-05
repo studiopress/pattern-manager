@@ -139,12 +139,6 @@ function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme, themes, currentThemeId, setBlockEditorLoaded } = useStudioContext();
 	const snackBar = useSnackbarContext();
-	
-	useEffect( () => {
-		console.log( 'The current view just changed', currentView );
-		// Update the theme data from the disk whenever the currentview changes.
-		currentTheme.get();
-	}, [currentView.currentView] );
 
 	return (
 		<>

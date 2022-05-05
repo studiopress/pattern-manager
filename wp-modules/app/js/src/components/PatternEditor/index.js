@@ -55,7 +55,7 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor() {
-	const { currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
+	const { currentTheme, currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
 	console.log( currentPattern );
 	
 	const [ currentPatternName, setCurrentPatternName ] = useState();
@@ -72,6 +72,21 @@ export function BlockEditor() {
 			},
 			false
 		);
+		
+		// When a pattern is saved, resave the theme.
+		window.addEventListener(
+			'message',
+			( event ) => {
+				switch ( event.data ) {
+					case 'fsestudio_pattern_editor_save_complete':
+						console.log( 'pattern saved' );
+						currentTheme.get();
+				}
+			},
+			false
+		);
+		
+		console.log( 'save complete' );
 
 		// As a fallback, if 5 seconds have passed, hide the spinner.
 		setTimeout( () => {
