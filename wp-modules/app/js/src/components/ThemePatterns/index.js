@@ -49,7 +49,7 @@ export default function ThemePatterns( { isVisible } ) {
 					<div className="w-[65%]">					
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
-							{ Object.entries( currentTheme?.data?.included_patterns ).length === 0 ? (
+							{ Object.entries( currentTheme?.data?.included_patterns ?? {} ).length === 0 ? (
 								<div>{ __( 'No Patterns Yet', 'fse-studio' ) } </div>
 							 ) : null }
 							{ Object.entries( currentTheme?.data?.included_patterns ?? {} ).map(
