@@ -12,3 +12,7 @@
 .editor-post-publish-panel__toggle {
 	display:none!important;
 }
+/* Hide the snackbar on the pattern editor, as the fse-studio app has its own snackbar. */
+.components-snackbar{
+	display:none!important;
+}

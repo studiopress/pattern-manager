@@ -56,8 +56,7 @@ export default function PatternEditor( { visible } ) {
 
 export function BlockEditor() {
 	const { currentTheme, currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
-	console.log( currentPattern );
-	
+	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
 	const [ currentPatternName, setCurrentPatternName ] = useState();
 
 	useEffect( () => {
@@ -80,7 +79,7 @@ export function BlockEditor() {
 				switch ( event.data ) {
 					case 'fsestudio_pattern_editor_save_complete':
 						console.log( 'pattern saved' );
-						currentTheme.get();
+						setRequestThemeRefresh( true );
 				}
 			},
 			false
@@ -93,6 +92,13 @@ export function BlockEditor() {
 			setBlockEditorLoaded( true );
 		}, 5000 );
 	}, [] );
+	
+	useEffect( () => {
+		if ( requestThemeRefresh ) {
+			setRequestThemeRefresh( false );
+			currentTheme.get();
+		}
+	}, [requestThemeRefresh] );
 
 	useEffect( () => {
 		if ( currentPatternId.value !== currentPatternName ) {
