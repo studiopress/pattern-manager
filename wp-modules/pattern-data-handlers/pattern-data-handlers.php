@@ -39,6 +39,17 @@ function get_pattern( $pattern_id ) {
  * @return array
  */
 function get_patterns() {
+	$default_headers = array(
+		'title'         => 'Title',
+		'slug'          => 'Slug',
+		'description'   => 'Description',
+		'viewportWidth' => 'Viewport Width',
+		'categories'    => 'Categories',
+		'keywords'      => 'Keywords',
+		'blockTypes'    => 'Block Types',
+		'inserter'      => 'Inserter',
+	);
+
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	/**
@@ -49,7 +60,10 @@ function get_patterns() {
 	$patterns = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data                          = require $path;
+		$pattern_data                          = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+		if ( ! $pattern_data ) {
+			continue;
+		}
 		$pattern_data['name']                  = basename( $path, '.php' );
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
@@ -63,23 +77,124 @@ function get_patterns() {
 	foreach ( $themes as $theme ) {
 
 		// Grab all of the pattrns in this theme.
-		$pattern_file_paths = glob( $theme . '/theme-patterns/*.php' );
+		$pattern_file_paths = glob( $theme . '/patterns/*.php' );
 
 		foreach ( $pattern_file_paths as $path ) {
-			$pattern_data         = require $path;
+			$pattern_data         = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+			if ( ! $pattern_data ) {
+				continue;
+			}
 			$pattern_data['name'] = basename( $path, '.php' );
-
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $pattern_data );
-
-			// Add the post_id to the pattern data so it can be used.
-			$pattern_data['post_id'] = $the_post_id;
+			$pattern_data['type'] = 'pattern';
 
 			$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 		}
 	}
 
 	return $patterns;
+}
+
+function format_pattern_data( $pattern_data, $file ) {
+	if ( empty( $pattern_data['slug'] ) ) {
+		_doing_it_wrong(
+			'_register_theme_block_patterns',
+			sprintf(
+				/* translators: %s: file name. */
+				__( 'Could not register file "%s" as a block pattern ("Slug" field missing)', 'gutenberg' ),
+				$file
+			),
+			'6.0.0'
+		);
+		return false;
+	}
+
+	if ( ! preg_match( '/^[A-z0-9\/_-]+$/', $pattern_data['slug'] ) ) {
+		_doing_it_wrong(
+			'_register_theme_block_patterns',
+			sprintf(
+				/* translators: %1s: file name; %2s: slug value found. */
+				__( 'Could not register file "%1$s" as a block pattern (invalid slug "%2$s")', 'gutenberg' ),
+				$file,
+				$pattern_data['slug']
+			),
+			'6.0.0'
+		);
+	}
+
+	//if ( WP_Block_Patterns_Registry::get_instance()->is_registered( $pattern_data['slug'] ) ) {
+	//	return false;
+	//}
+
+	// Title is a required property.
+	if ( ! $pattern_data['title'] ) {
+		_doing_it_wrong(
+			'_register_theme_block_patterns',
+			sprintf(
+				/* translators: %1s: file name; %2s: slug value found. */
+				__( 'Could not register file "%s" as a block pattern ("Title" field missing)', 'gutenberg' ),
+				$file
+			),
+			'6.0.0'
+		);
+		return false;
+	}
+
+	// For properties of type array, parse data as comma-separated.
+	foreach ( array( 'categories', 'keywords', 'blockTypes' ) as $property ) {
+		if ( ! empty( $pattern_data[ $property ] ) ) {
+			$pattern_data[ $property ] = array_filter(
+				preg_split(
+					'/[\s,]+/',
+					(string) $pattern_data[ $property ]
+				)
+			);
+		} else {
+			unset( $pattern_data[ $property ] );
+		}
+	}
+
+	// Parse properties of type int.
+	foreach ( array( 'viewportWidth' ) as $property ) {
+		if ( ! empty( $pattern_data[ $property ] ) ) {
+			$pattern_data[ $property ] = (int) $pattern_data[ $property ];
+		} else {
+			unset( $pattern_data[ $property ] );
+		}
+	}
+
+	// Parse properties of type bool.
+	foreach ( array( 'inserter' ) as $property ) {
+		if ( ! empty( $pattern_data[ $property ] ) ) {
+			$pattern_data[ $property ] = in_array(
+				strtolower( $pattern_data[ $property ] ),
+				array( 'yes', 'true' ),
+				true
+			);
+		} else {
+			unset( $pattern_data[ $property ] );
+		}
+	}
+
+	$theme = wp_get_theme();
+
+	// Translate the pattern metadata.
+	$text_domain = $theme->get( 'TextDomain' );
+	//phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.WP.I18n.NonSingularStringLiteralContext, WordPress.WP.I18n.NonSingularStringLiteralDomain, WordPress.WP.I18n.LowLevelTranslationFunction
+	$pattern_data['title'] = translate_with_gettext_context( $pattern_data['title'], 'Pattern title', $text_domain );
+	if ( ! empty( $pattern_data['description'] ) ) {
+		//phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.WP.I18n.NonSingularStringLiteralContext, WordPress.WP.I18n.NonSingularStringLiteralDomain, WordPress.WP.I18n.LowLevelTranslationFunction
+		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
+	}
+
+	// The actual pattern content is the output of the file.
+	ob_start();
+	include $file;
+	$pattern_data['content'] = ob_get_clean();
+	if ( ! $pattern_data['content'] ) {
+		return false;
+	}
+
+	return $pattern_data;
 }
 
 /**
@@ -90,6 +205,17 @@ function get_patterns() {
  * @return array
  */
 function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() ) {
+	$default_headers = array(
+		'title'         => 'Title',
+		'slug'          => 'Slug',
+		'description'   => 'Description',
+		'viewportWidth' => 'Viewport Width',
+		'categories'    => 'Categories',
+		'keywords'      => 'Keywords',
+		'blockTypes'    => 'Block Types',
+		'inserter'      => 'Inserter',
+	);
+
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
 	}
@@ -97,12 +223,15 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	// Grab all of the patterns in this theme.
-	$pattern_file_paths = glob( $theme_path . '/theme-patterns/*.php' );
+	$pattern_file_paths = glob( $theme_path . '/patterns/*.php' );
 
 	$patterns = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data         = require $path;
+		$pattern_data         = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+		if ( ! $pattern_data ) {
+			continue;
+		}
 		$pattern_data['name'] = basename( $path, '.php' );
 		$pattern_data['type'] = 'pattern';
 
@@ -243,7 +372,7 @@ function update_pattern( $pattern ) {
 	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
-		$patterns_dir  = $wp_theme_dir . '/theme-patterns/';
+		$patterns_dir  = $wp_theme_dir . '/patterns/';
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
 		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 	}
@@ -285,20 +414,15 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 	// phpcs:ignore
 	$file_contents = "<?php
 /**
- * Pattern: " . $pattern['title'] . "
- *
- * @package fse-studio
+ * Title: " . addcslashes( $pattern['title'], '\'' ) . '
+ * Slug: ' . $pattern['name'] . '
+ * Categories: ' . ( isset( $pattern['categories'] ) ? implode( ', ', $pattern['categories'] ) : '' ) . '
+ * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
  */
 
-return array(
-	'type'          => '" . $pattern['type'] . "',
-	'title'         => __( '" . addcslashes( $pattern['title'], '\'' ) . "', '" . $text_domain . "' ),
-	'name'          => '" . $pattern['name'] . "',
-	'categories'    => array( '" . implode( '\', \'', $pattern['categories'] ) . "' ),
-	'viewportWidth' => " . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . ",
-	'content'       => '" . prepare_content( $pattern['content'], $text_domain ) . "',
-);
-";
+?>
+' . prepare_content( $pattern['content'], $text_domain ) . '
+';
 	return $file_contents;
 }
 

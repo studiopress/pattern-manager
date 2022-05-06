@@ -182,8 +182,10 @@ function register_block_patterns() {
 	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
 
 	foreach ( $patterns as $pattern ) {
-		foreach ( $pattern['categories'] as $category ) {
-			register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
+		if ( isset( $pattern['categories'] ) ) {
+			foreach ( $pattern['categories'] as $category ) {
+				register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
+			}
 		}
 		register_block_pattern(
 			$pattern['name'],
