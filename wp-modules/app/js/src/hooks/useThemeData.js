@@ -131,13 +131,16 @@ export default function useThemeData( themeId, themes, patternEditorIframe, site
 	}
 
 	function saveThemeData() {
-		if ( themeData.name === 'My New Theme' ) {
-			setThemeNameIsDefault( true );
-			return;
-		}
-		setSaveCompleted( false );
-
 		return new Promise( ( resolve ) => {
+			if ( themeData.name === 'My New Theme' ) {
+				alert( 'You need to change your theme name before saving' );
+				setThemeNameIsDefault( true );
+				resolve();
+				return;
+			}
+			setSaveCompleted( false );
+	
+
 			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
