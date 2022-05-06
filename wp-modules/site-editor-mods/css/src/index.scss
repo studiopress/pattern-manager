@@ -5,3 +5,8 @@
 .edit-site-header{
 	padding-left:0px!important;
 }
+/* Hide the second column when displaying the list of templates. */
+.edit-site-list-table-head .edit-site-list-table-column:nth-child(2),
+.edit-site-list-table-row  .edit-site-list-table-column:nth-child(2){
+	display:none;
+}
