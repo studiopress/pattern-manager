@@ -96,6 +96,7 @@ export function BlockEditor() {
 	useEffect( () => {
 		if ( requestThemeRefresh ) {
 			setRequestThemeRefresh( false );
+			// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
 			currentTheme.get();
 		}
 	}, [requestThemeRefresh] );
