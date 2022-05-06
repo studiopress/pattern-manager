@@ -97,7 +97,9 @@ export function BlockEditor() {
 		if ( requestThemeRefresh ) {
 			setRequestThemeRefresh( false );
 			// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
-			currentTheme.get();
+			setTimeout( () => {
+				currentTheme.get();
+			}, 2000 );
 		}
 	}, [requestThemeRefresh] );
 
@@ -107,6 +109,14 @@ export function BlockEditor() {
 		}
 		setCurrentPatternName( currentPatternId.value );
 	}, [ currentPatternId ] );
+	
+	if ( ! currentPattern?.post_id ) {
+		return <div className="h-screen min-h-full w-screen items-center justify-center">
+			<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
+				<Spinner />
+			</div>
+		</div>
+	}
 
 	return (
 		<div className="fsestudio-pattern-editor">
