@@ -18,7 +18,12 @@ import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
 export default function SiteEditor( { visible } ) {
-	const { siteEditorIframe } = useStudioContext();
+	const { siteEditorIframe, currentTheme } = useStudioContext();
+	console.log( currentTheme?.existsOnDisk );
+	
+	if ( ! currentTheme?.existsOnDisk ) {
+		return '';
+	}
 
 	return (
 		<iframe

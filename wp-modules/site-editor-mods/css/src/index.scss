@@ -14,3 +14,7 @@
 .edit-site-save-button__button, .entities-saved-states__panel {
 	display:none!important;
 }
+/* Hide the snackbar on the site editor, as the fse-studio app has its own snackbar. */
+.components-snackbar{
+	display:none!important;
+}
