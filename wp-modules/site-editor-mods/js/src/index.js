@@ -92,7 +92,7 @@ window.addEventListener(
 						.then( () => {
 							window.location.reload();
 						} );
-				}, 100 );
+				}, 200 );
 			}
 			
 			if ( response.message === 'fsestudio_save' ) {
@@ -100,14 +100,20 @@ window.addEventListener(
 				clearTimeout( fsestudioSaveAndRefreshDebounce );
 				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
 					console.log( 'lets try a save' );
-					window.dispatchEvent(
-						new KeyboardEvent("keydown", {
-							key: "s",
-							ctrlKey: true,
-							bubbles: true,
-							metaKey: true   
-						})
-					 );
+					// Trigger a click event on the "Save" button in the site editor.
+					const element = document.getElementsByClassName("edit-site-save-button__button");
+					
+					if ( element.item(0) ) {
+						element.item(0).click();
+					}
+					
+					setTimeout(() => {
+						const saveEntitiesElement = document.getElementsByClassName("editor-entities-saved-states__save-button");
+						if ( saveEntitiesElement.item(0) ) {
+							saveEntitiesElement.item(0).click();
+						}
+					}, 100 );
+					
 				}, 200 );
 			}
 
@@ -118,10 +124,10 @@ window.addEventListener(
 	false
 );
 
-window.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', (e) => {
 
-	if(e.ctrlKey && e.key === 's'){
-	    console.log('CTRL + s');
+	if(e.metaKey && e.key === 's'){
+	    console.log('CTRL/META + s');
 	}
 	
  });

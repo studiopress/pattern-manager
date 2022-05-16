@@ -10,3 +10,7 @@
 .edit-site-list-table-row  .edit-site-list-table-column:nth-child(2){
 	display:none;
 }
+/* Hide the save button, and the save pop-put panel */
+.edit-site-save-button__button, .entities-saved-states__panel {
+	display:none!important;
+}
