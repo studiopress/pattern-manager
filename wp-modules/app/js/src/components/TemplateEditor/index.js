@@ -17,7 +17,7 @@ import PatternPicker from '../PatternPicker';
 import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
-export default function SiteEditor( { visible } ) {
+export default function TemplateEditor( { visible } ) {
 	const { siteEditorIframe, currentTheme } = useStudioContext();
 	console.log( currentTheme?.existsOnDisk );
 	

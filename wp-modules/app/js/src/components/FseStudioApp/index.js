@@ -43,7 +43,8 @@ import useSnackbar from '../../hooks/useSnackbar';
 import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
 import ThemeTemplateFiles from '../ThemeTemplateFiles';
-import SiteEditor from '../SiteEditor';
+import TemplateEditor from '../TemplateEditor';
+import TemplatePartEditor from '../TemplatePartEditor';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
@@ -188,6 +189,17 @@ function FseStudio() {
 									{ __( 'Theme Templates', 'fse-studio' ) }
 								</button>
 								<button
+									style={{display: window.location.href.includes( 'tryTemplates' ) ? '' : 'none'}}
+									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
+									type="button"
+									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_templates' ? ' underline' : '' ) }
+									onClick={ () => {
+										currentView.set( 'template_parts' );
+									} }
+								>
+									{ __( 'Template Parts', 'fse-studio' ) }
+								</button>
+								<button
 									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
 									type="button"
 									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_patterns' ? ' underline' : '' ) }
@@ -229,7 +241,12 @@ function FseStudio() {
 					<div
 						hidden={ 'theme_templates' !== currentView.currentView }
 					>
-						<SiteEditor />
+						<TemplateEditor />
+					</div>
+					<div
+						hidden={ 'template_parts' !== currentView.currentView }
+					>
+						<TemplatePartEditor />
 					</div>
 					<PatternEditor
 						visible={ 'pattern_editor' === currentView.currentView }
