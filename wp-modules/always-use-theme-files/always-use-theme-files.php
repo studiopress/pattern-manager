@@ -90,7 +90,7 @@ function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 add_filter( 'get_block_template', __NAMESPACE__ . '\pull_wp_templates_from_disk', 10, 3 );
 
 /**
- * When creating a new template, we need to return a mocked version.
+ * When creating a new template, we need to return a mocked version, as though it exists on the disk.
  *
  * @param WP_Block_Template[] $query_result Array of found block templates.
  * @param array               $query {

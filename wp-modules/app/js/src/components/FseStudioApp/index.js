@@ -42,7 +42,7 @@ import useSnackbar from '../../hooks/useSnackbar';
 // Components
 import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
-import ThemeTemplateFiles from '../ThemeTemplateFiles';
+import ThemePreview from '../ThemePreview';
 import TemplateEditor from '../TemplateEditor';
 import TemplatePartEditor from '../TemplatePartEditor';
 import PatternEditor from '../PatternEditor';
@@ -192,7 +192,7 @@ function FseStudio() {
 									style={{display: window.location.href.includes( 'tryTemplates' ) ? '' : 'none'}}
 									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
 									type="button"
-									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_templates' ? ' underline' : '' ) }
+									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'template_parts' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'template_parts' );
 									} }
@@ -214,16 +214,29 @@ function FseStudio() {
 						
 						<div className="flex sm:flex-row flex-col gap-2">
 							{ currentTheme?.data ? (
-								<button
-									type="button"
-									className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={() => {
-									
-										currentTheme.save();
-									}}
-								>
-									{ __( 'Save Your Theme', 'fse-studio' ) }
-								</button>
+								<>
+									<button
+										style={{display: window.location.href.includes( 'tryPreview' ) ? '' : 'none'}}
+										type="button"
+										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={() => {
+										
+											currentView.set( 'theme_preview' );
+										}}
+									>
+										{ __( 'Preview Theme', 'fse-studio' ) }
+									</button>
+									<button
+										type="button"
+										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={() => {
+										
+											currentTheme.save();
+										}}
+									>
+										{ __( 'Save Your Theme', 'fse-studio' ) }
+									</button>
+								</>
 							) : null }
 						</div>
 					</div>
@@ -234,6 +247,9 @@ function FseStudio() {
 				<>
 					<ThemeSetup
 						isVisible={ 'theme_setup' === currentView.currentView }
+					/>
+					<ThemePreview
+						isVisible={ 'theme_preview' === currentView.currentView }
 					/>
 					<ThemePatterns
 						isVisible={ 'theme_patterns' === currentView.currentView }

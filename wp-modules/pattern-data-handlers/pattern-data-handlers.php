@@ -393,7 +393,6 @@ function update_pattern( $pattern ) {
 		$wp_filesystem->mkdir( $patterns_dir );
 	}
 
-	// Convert the collection array into a file, and place it.
 	$pattern_file_created = $wp_filesystem->put_contents(
 		$patterns_dir . $file_name,
 		$file_contents,
@@ -404,6 +403,20 @@ function update_pattern( $pattern ) {
 }
 
 /**
+ * WordPress's templart part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
+ * This function removes that attribute from any template part blocks in a pattern's content.
+ *
+ * @param string $pattern_content The HTML content for a pattern..
+ * @return string
+ */
+function remove_theme_name_from_template_parts( $pattern_content ) {
+
+	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
+	return preg_replace( '/,"theme":"[A-Za-z-]*"/', '', $pattern_content );
+
+}
+
+/**
  * Returns a string containing the code for a pattern file.
  *
  * @param array  $pattern Data about the pattern.
@@ -411,6 +424,8 @@ function update_pattern( $pattern ) {
  * @return bool
  */
 function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
+	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
+
 	// phpcs:ignore
 	$file_contents = "<?php
 /**
@@ -434,6 +449,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  * @return bool
  */
 function contruct_template_php_file_contents( $pattern, $text_domain ) {
+	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	return $pattern['content'];
 }
 

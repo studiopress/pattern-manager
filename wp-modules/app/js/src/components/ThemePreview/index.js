@@ -1,0 +1,84 @@
+import { v4 as uuidv4 } from 'uuid';
+
+// WP Dependencies
+
+// @ts-check
+import { __ } from '@wordpress/i18n';
+import { Modal, Spinner } from '@wordpress/components';
+import { useState, useEffect, useRef, createInterpolateElement } from '@wordpress/element';
+
+// Hooks
+import useStudioContext from '../../hooks/useStudioContext';
+
+// Components
+import PatternPicker from '../PatternPicker';
+
+// Utils
+import searchItems from '../../utils/searchItems';
+
+/** @param {{visible: boolean}} props */
+export default function ThemePreview( { isVisible } ) {
+	const { currentView, currentTheme } = useStudioContext();
+	const [currentUrl, setCurrentUrl] = useState( fsestudio.siteUrl );
+	
+	useEffect( () => {
+		setCurrentUrl('');
+	}, [currentTheme.data] );
+	
+	useEffect( () => {
+		if ( fsestudio.siteUrl !== currentUrl ) {
+			setCurrentUrl( fsestudio.siteUrl );
+		}
+	}, [currentUrl] );
+
+	if ( ! currentTheme?.existsOnDisk ) {
+		return '';
+	}
+
+	return (
+		<div
+			style={ {
+				display: ! isVisible ? 'none' : 'block',
+				position:'absolute',
+				top:'0',
+				bottom:'0',
+				right:'0',
+				left:'0',
+				width: '100vw',
+				height: '100vh',
+				zIndex: '9999',
+				backgroundColor:'#ffffff',
+			} }
+		>
+			<button
+				onClick={ () => {
+					currentView.set( 'theme_setup' );
+				}}
+				style={ {
+					display: ! isVisible ? 'none' : 'block',
+					position:'absolute',
+					top:'0',
+					right:'0',
+					width: '100vw',
+					height: '50px',
+					backgroundColor: '#e5e5f7',
+					backgroundImage: "linear-gradient(#f7bf45 2px, transparent 2px), linear-gradient(90deg, #f7bf45 2px, transparent 2px), linear-gradient(#f7bf45 1px, transparent 1px), linear-gradient(90deg, #f7bf45 1px, #e5e5f7 1px)",
+					backgroundSize: '50px 50px, 50px 50px, 10px 10px, 10px 10px',
+					backgroundPosition: '-2px -2px, -2px -2px, -1px -1px, -1px -1px',
+					zIndex: '9999',
+				} }
+			>
+				Theme Preview ❌
+			</button>
+			<iframe
+				title={ __( 'Theme Preview', 'fse-studio' ) }
+				style={ {
+					marginTop:'18px',
+					width: '100vw',
+					height: '100vh',
+				} }
+				src={ currentUrl }
+			/>
+		</div>
+	);
+}
