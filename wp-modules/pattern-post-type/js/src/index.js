@@ -147,7 +147,9 @@ wp.data.subscribe( () => {
 
 } );
 
+let fsestudioSaveDebounce = null;
 let fsestudioSaveAndRefreshDebounce = null;
+let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
 	'message',
@@ -170,11 +172,35 @@ window.addEventListener(
 			
 			if ( response.message === 'fsestudio_save' ) {
 				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveAndRefreshDebounce );
-				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
+				clearTimeout( fsestudioSaveDebounce );
+				fsestudioSaveDebounce = setTimeout( () => {
 					wp.data
 						.dispatch( 'core/editor' )
 						.savePost();
+				}, 200 );
+			}
+			
+			
+			if ( response.message === 'fsestudio_themejson_changed' ) {
+				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+				clearTimeout( fsestudioThemeJsonChangeDebounce );
+				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
+
+					wp.data.dispatch( 'core/notices' ).createNotice(
+						'warning', // Can be one of: success, info, warning, error.
+						'FSE Studio: The values in this theme\'s theme.json file have changed. To experience them accurately, you will need to refresh this editor.', // Text string to display.
+						{
+						    isDismissible: false, // Whether the user can dismiss the notice.
+						    // Any actions the user can perform.
+						    actions: [
+							   {
+								  url: '',
+								  label: 'Refresh Editor',
+							   },
+						    ],
+						}
+					 );
+					
 				}, 200 );
 			}
 

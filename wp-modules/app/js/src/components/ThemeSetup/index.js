@@ -36,7 +36,6 @@ export default function ThemeSetup( { isVisible } ) {
 		);
 
 		let counter = 3;
-		console.log( currentTheme );
 		
 		for ( const thisTheme in themes.themes ) {
 			const themeInQuestion = themes.themes[ thisTheme ];

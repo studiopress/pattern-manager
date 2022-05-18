@@ -8,8 +8,8 @@ export default function useSnackbar() {
 	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
 	const [ snackBarValue, setSnackbarValue ] = useState();
 	const { isMounted } = useMounted();
-
-	useEffect( () => {
+	
+	function removeSnackbarAfterDelay() {
 		if ( ! snackBarValue ) {
 			return;
 		}
@@ -17,7 +17,11 @@ export default function useSnackbar() {
 			if ( isMounted() ) {
 				setSnackbarValue( null );
 			}
-		}, 5000 );
+		}, 10000 );
+	}
+
+	useEffect( () => {
+		removeSnackbarAfterDelay();
 	}, [ snackBarValue ] );
 
 	return {

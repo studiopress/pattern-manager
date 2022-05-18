@@ -45,7 +45,7 @@ import useSnackbarContext from './useSnackbarContext';
  * @param {string}                                           themeId
  * @param {ReturnType<import('./useThemes').default>}        themes
  */
-export default function useThemeData( themeId, themes, patternEditorIframe, siteEditorIframe, currentView ) {
+export default function useThemeData( themeId, themes, patternEditorIframe, templateEditorIframe, templatePartEditorIframe, currentView ) {
 	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
@@ -139,7 +139,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, site
 				return;
 			}
 			setSaveCompleted( false );
-	
+			setFetchInProgress( true );
 
 			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
@@ -153,45 +153,83 @@ export default function useThemeData( themeId, themes, patternEditorIframe, site
 			} )
 				.then( ( response ) => {
 					if ( ! response.ok ) {
+						console.log( response.statusText );
 						throw response.statusText;
 					}
 					return response.json();
 				} )
 				.then( ( data ) => {
+					
+	
 					setExistsOnDisk( true );
 					setSaveCompleted( true );
+					setFetchInProgress( false );
+
 					if ( autoSaveTheme ) {
 						setAutoSaveTheme( false );
 					}
 					if ( ! autoSaveTheme ) {
-						snackBar.setValue( data.message );
+						snackBar.setValue(
+							<div>
+								{data.message}
+								<p>Actions taken:</p>
+								<p>✅ All pattern files generated, formatted, and written to theme's "patterns" directory.</p>
+								<p>✅ All Template files written to theme's "templates" directory.</p>
+								<p>✅ All Template Parts files written to theme's "parts" directory.</p>
+								<p>✅ Strings in Patterns localized (set to be translateable)</p>
+								<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
+							</div>
+						);
 					}
-					setThemeData( data.themeData );
 
 					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
-						if ( currentView.currentView === 'pattern_editor' ) {
+						patternEditorIframe.current.contentWindow.postMessage(
+							JSON.stringify( {
+								message: 'fsestudio_save',
+							} )
+						);
+
+						if ( data.themeJsonModified ) {
 							patternEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
-									message: 'fsestudio_save',
-								} )
-							);
-						} else {
-							patternEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify( {
-									message: 'fsestudio_save_and_refresh',
+									message: 'fsestudio_themejson_changed',
 								} )
 							);
 						}
 					}
 					
-					if ( siteEditorIframe.current ) {
-						siteEditorIframe.current.contentWindow.postMessage(
+					if ( templateEditorIframe.current ) {
+						templateEditorIframe.current.contentWindow.postMessage(
 							JSON.stringify( {
 								message: 'fsestudio_save',
 							} )
 						);
+						if ( data.themeJsonModified ) {
+							templateEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'fsestudio_themejson_changed',
+								} )
+							);
+						}
 					}
+					
+					if ( templatePartEditorIframe.current ) {
+						templatePartEditorIframe.current.contentWindow.postMessage(
+							JSON.stringify( {
+								message: 'fsestudio_save',
+							} )
+						);
+						if ( data.themeJsonModified ) {
+							templatePartEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'fsestudio_themejson_changed',
+								} )
+							);
+						}
+					}
+
+					setThemeData( data.themeData );
 
 					resolve( data );
 				} )

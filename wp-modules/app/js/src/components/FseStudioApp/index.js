@@ -44,7 +44,6 @@ import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
 import ThemePreview from '../ThemePreview';
 import TemplateEditor from '../TemplateEditor';
-import TemplatePartEditor from '../TemplatePartEditor';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
@@ -80,7 +79,7 @@ export default function FseStudioApp() {
 function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
 	const patternEditorIframe = useRef();
-	const siteEditorIframe = useRef();
+	const templateEditorIframe = useRef();
 	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
 	const themes = useThemes( {
 		themes: fsestudio.themes,
@@ -90,7 +89,7 @@ function FseStudioContextHydrator() {
 		currentThemeId.value,
 		themes,
 		patternEditorIframe,
-		siteEditorIframe,
+		templateEditorIframe,
 		currentView
 	);
 
@@ -124,7 +123,7 @@ function FseStudioContextHydrator() {
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,
 		patternEditorIframe,
-		siteEditorIframe,
+		templateEditorIframe,
 		blockEditorLoaded,
 		setBlockEditorLoaded,
 	};
@@ -138,7 +137,7 @@ function FseStudioContextHydrator() {
 
 function FseStudio() {
 	// @ts-ignore
-	const { currentView, currentTheme, themes, currentThemeId, setBlockEditorLoaded } = useStudioContext();
+	const { currentView, currentTheme, templateEditorIframe, themes, currentThemeId, setBlockEditorLoaded } = useStudioContext();
 	const snackBar = useSnackbarContext();
 
 	return (
@@ -184,6 +183,13 @@ function FseStudio() {
 									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_templates' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'theme_templates' );
+										if ( templateEditorIframe.current ) {
+											templateEditorIframe.current.contentWindow.postMessage(
+												JSON.stringify( {
+													message: 'fsestudio_click_templates',
+												} )
+											);
+										}
 									} }
 								>
 									{ __( 'Theme Templates', 'fse-studio' ) }
@@ -195,6 +201,13 @@ function FseStudio() {
 									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'template_parts' ? ' underline' : '' ) }
 									onClick={ () => {
 										currentView.set( 'template_parts' );
+										if ( templateEditorIframe.current ) {
+											templateEditorIframe.current.contentWindow.postMessage(
+												JSON.stringify( {
+													message: 'fsestudio_click_template_parts',
+												} )
+											);
+										}
 									} }
 								>
 									{ __( 'Template Parts', 'fse-studio' ) }
@@ -255,14 +268,9 @@ function FseStudio() {
 						isVisible={ 'theme_patterns' === currentView.currentView }
 					/>
 					<div
-						hidden={ 'theme_templates' !== currentView.currentView }
+						hidden={ 'theme_templates' !== currentView.currentView && 'template_parts' !== currentView.currentView }
 					>
 						<TemplateEditor />
-					</div>
-					<div
-						hidden={ 'template_parts' !== currentView.currentView }
-					>
-						<TemplatePartEditor />
 					</div>
 					<PatternEditor
 						visible={ 'pattern_editor' === currentView.currentView }

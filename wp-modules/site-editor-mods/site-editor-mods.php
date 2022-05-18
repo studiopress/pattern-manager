@@ -27,6 +27,11 @@ function enqueue() {
 		return;
 	}
 
+	// Only enqueue if inside the fse studio app.
+	if ( ! isset( $_GET['fsestudio_app'] ) ) { //phpcs:ignore
+		return;
+	}
+
 	$module_dir_path = module_dir_path( __FILE__ );
 	$module_dir_url  = module_dir_url( __FILE__ );
 
@@ -40,6 +45,13 @@ function enqueue() {
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
 	wp_enqueue_script( 'fsestudio_site_editor_style', $js_url, $dependencies, $js_ver, true );
+	wp_localize_script(
+		'fsestudio_site_editor_style',
+		'fsestudio',
+		array(
+			'siteUrl' => get_bloginfo( 'url' ),
+		)
+	);
 
 	$css_url = $module_dir_url . 'js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );

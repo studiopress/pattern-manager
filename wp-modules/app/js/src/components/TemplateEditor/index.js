@@ -18,8 +18,7 @@ import searchItems from '../../utils/searchItems';
 
 /** @param {{visible: boolean}} props */
 export default function TemplateEditor( { visible } ) {
-	const { siteEditorIframe, currentTheme } = useStudioContext();
-	console.log( currentTheme?.existsOnDisk );
+	const { templateEditorIframe, currentTheme } = useStudioContext();
 	
 	if ( ! currentTheme?.existsOnDisk ) {
 		return '';
@@ -29,12 +28,12 @@ export default function TemplateEditor( { visible } ) {
 		<iframe
 			title={ __( 'Pattern Editor', 'fse-studio' ) }
 			
-			ref={siteEditorIframe}
+			ref={templateEditorIframe}
 			style={ {
 				width: '100%',
 				height: 'calc(100vh - 80px)',
 			} }
-			src={ fsestudio.siteUrl + '/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template' }
+			src={ fsestudio.siteUrl + '/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1' }
 		/>
 	);
 }

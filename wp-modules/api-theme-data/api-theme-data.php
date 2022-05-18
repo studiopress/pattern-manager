@@ -100,7 +100,8 @@ function get_theme( $request ) {
  * @return WP_Error|WP_REST_Request
  */
 function save_theme( $request ) {
-	$theme_data = $request->get_params();
+	$theme_data       = $request->get_params();
+	$prior_theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_data['id'] );
 
 	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data );
 
@@ -109,8 +110,9 @@ function save_theme( $request ) {
 	} else {
 		return new \WP_REST_Response(
 			array(
-				'message'   => __( 'Theme successfully saved to disk', 'fse-studio' ),
-				'themeData' => $result,
+				'message'           => __( 'Theme successfully saved to disk', 'fse-studio' ),
+				'themeData'         => $result,
+				'themeJsonModified' => $result['theme_json_file'] !== $prior_theme_data['theme_json_file'],
 			),
 			200
 		);

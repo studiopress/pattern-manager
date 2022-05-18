@@ -12,5 +12,8 @@
   "devDependencies": {
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/scripts": "^20.0.2"
+  },
+  "dependencies": {
+    "@testing-library/dom": "^8.13.0"
   }
 }
