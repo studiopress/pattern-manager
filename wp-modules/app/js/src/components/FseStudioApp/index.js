@@ -8,7 +8,7 @@ import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
 import { useEffect, useState, useRef } from '@wordpress/element';
-import { Snackbar } from '@wordpress/components';
+import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import logo from '../../../../img/logo.svg';
 import { v4 as uuidv4 } from 'uuid';
@@ -69,6 +69,12 @@ import classNames from '../../utils/classNames';
 export default function FseStudioApp() {
 	/** @type {ReturnType<import('../../hooks/useSnackbar').default>} */
 	const providerValue = useSnackbar();
+	
+	setInterval( () => {
+		// Could move this into iframe to test if any fetch requests are pending.
+		//console.log( window.performance.getEntriesByType("resource").length );
+	}, 1 );
+
 	return (
 		<FseStudioSnackbarContext.Provider value={ providerValue }>
 			<FseStudioContextHydrator />
@@ -177,6 +183,16 @@ function FseStudio() {
 									{ __( 'Styles and Settings', 'fse-studio' ) }
 								</button>
 								<button
+									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
+									type="button"
+									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_patterns' ? ' underline' : '' ) }
+									onClick={ () => {
+										currentView.set( 'theme_patterns' );
+									} }
+								>
+									{ __( 'Theme Patterns', 'fse-studio' ) }
+								</button>
+								<button
 									style={{display: window.location.href.includes( 'tryTemplates' ) ? '' : 'none'}}
 									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
 									type="button"
@@ -212,16 +228,6 @@ function FseStudio() {
 								>
 									{ __( 'Template Parts', 'fse-studio' ) }
 								</button>
-								<button
-									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
-									type="button"
-									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_patterns' ? ' underline' : '' ) }
-									onClick={ () => {
-										currentView.set( 'theme_patterns' );
-									} }
-								>
-									{ __( 'Theme Patterns', 'fse-studio' ) }
-								</button>
 							</div>
 						</div>
 						
@@ -241,13 +247,22 @@ function FseStudio() {
 									</button>
 									<button
 										type="button"
+										disabled={ currentTheme.fetchInProgress }
 										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={() => {
 										
 											currentTheme.save();
 										}}
 									>
-										{ __( 'Save Your Theme', 'fse-studio' ) }
+										{ currentTheme.fetchInProgress ? (
+											<>
+											<Spinner />
+											{ __( 'Saving Your Theme', 'fse-studio' ) }
+											</>
+										) : (
+											__( 'Save Your Theme', 'fse-studio' )
+										) }
+										
 									</button>
 								</>
 							) : null }

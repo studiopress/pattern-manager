@@ -69,7 +69,7 @@ export default function ThemeJsonEditor( { visible } ) {
 											currentTheme.save();
 										} }
 									>
-										{ __( 'Save Settings & Styles', 'fse-studio' ) }
+										{ __( 'Save Your Theme', 'fse-studio' ) }
 									</button>
 								</div>
 							</div>

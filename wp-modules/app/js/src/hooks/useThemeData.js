@@ -159,28 +159,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					return response.json();
 				} )
 				.then( ( data ) => {
-					
-	
-					setExistsOnDisk( true );
-					setSaveCompleted( true );
-					setFetchInProgress( false );
-
-					if ( autoSaveTheme ) {
-						setAutoSaveTheme( false );
-					}
-					if ( ! autoSaveTheme ) {
-						snackBar.setValue(
-							<div>
-								{data.message}
-								<p>Actions taken:</p>
-								<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
-								<p>✅ All Template files written to theme's "templates" directory.</p>
-								<p>✅ All Template Parts files written to theme's "parts" directory.</p>
-								<p>✅ Strings in Patterns localized (set to be translateable)</p>
-								<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
-							</div>
-						);
-					}
 
 					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
@@ -215,8 +193,35 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					}
 
 					setThemeData( data.themeData );
+					
+					setTimeout( () => {
+						// In 5 seconds, re-fetch the theme data because the iframe'd editors ill have completed their save events.
+						getThemeData();
+						
+						if ( autoSaveTheme ) {
+							setAutoSaveTheme( false );
+						}
+						if ( ! autoSaveTheme ) {
+							snackBar.setValue(
+								<div>
+									{data.message}
+									<p>Actions taken:</p>
+									<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
+									<p>✅ All Template files written to theme's "templates" directory.</p>
+									<p>✅ All Template Parts files written to theme's "parts" directory.</p>
+									<p>✅ Strings in Patterns localized (set to be translateable)</p>
+									<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
+								</div>
+							);
+						}
+						
+						setExistsOnDisk( true );
+						setSaveCompleted( true );
+						setFetchInProgress( false );
+						resolve( data );
+					
+					}, 5000 );
 
-					resolve( data );
 				} )
 				.catch( ( errorMessage ) => {
 					snackBar.setValue( JSON.stringify( errorMessage ) );
