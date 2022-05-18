@@ -187,9 +187,6 @@ function update_theme( $theme ) {
 		);
 	}
 
-	// Remove the theme json data from the theme array because it's already saved to theme.json.
-	unset( $theme['theme_json_file'] );
-
 	// Assign a unique ID to this theme if it doesn't already have one.
 	if ( ! $theme['id'] ) {
 		$theme['id'] = wp_generate_uuid4();
@@ -205,8 +202,19 @@ function update_theme( $theme ) {
 		FS_CHMOD_FILE
 	);
 
+	// Activate this theme.
+	switch_theme( $theme['dirname'] );
+
+	if ( ! $theme['included_patterns'] ) {
+		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+	}
+
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
+	}
+
+	if ( ! $theme['template_files'] ) {
+		$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
 	}
 
 	foreach ( $theme['template_files'] as $template_name => $template_data ) {
@@ -219,6 +227,10 @@ function update_theme( $theme ) {
 		);
 	}
 
+	if ( ! isset( $theme['template_parts'] ) ) {
+		$theme['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
+	}
+
 	foreach ( $theme['template_parts'] as $template_name => $template_data ) {
 		\FseStudio\PatternDataHandlers\update_pattern(
 			array(
@@ -229,8 +241,5 @@ function update_theme( $theme ) {
 		);
 	}
 
-	// Activate this theme.
-	switch_theme( $theme['dirname'] );
-
-	return \FseStudio\ThemeDataHandlers\get_theme( $theme['id'], $theme );
+	return $theme;
 }
