@@ -412,7 +412,7 @@ function update_pattern( $pattern ) {
 function remove_theme_name_from_template_parts( $pattern_content ) {
 
 	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
-	return preg_replace( '/,"theme":"[A-Za-z-]*"/', '', $pattern_content );
+	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
 
 }
 

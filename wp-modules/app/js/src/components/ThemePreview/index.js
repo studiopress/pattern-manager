@@ -20,16 +20,15 @@ import searchItems from '../../utils/searchItems';
 export default function ThemePreview( { isVisible } ) {
 	const { currentView, currentTheme } = useStudioContext();
 	const [currentUrl, setCurrentUrl] = useState( fsestudio.siteUrl );
-	
+		
 	useEffect( () => {
-		setCurrentUrl('');
-	}, [currentTheme.data] );
-	
-	useEffect( () => {
-		if ( fsestudio.siteUrl !== currentUrl ) {
-			setCurrentUrl( fsestudio.siteUrl );
+		if ( currentTheme.fetchInProgress ) {
+			setCurrentUrl( '' );
 		}
-	}, [currentUrl] );
+		if ( ! currentTheme.fetchInProgress ) {
+			setCurrentUrl( fsestudio.siteUrl + '/?timestamp=' + Date.now() );
+		}
+	}, [ currentTheme.fetchInProgress ] );
 
 	if ( ! currentTheme?.existsOnDisk ) {
 		return '';
@@ -70,15 +69,17 @@ export default function ThemePreview( { isVisible } ) {
 			>
 				Theme Preview ❌
 			</button>
-			<iframe
-				title={ __( 'Theme Preview', 'fse-studio' ) }
-				style={ {
-					marginTop:'18px',
-					width: '100vw',
-					height: '100vh',
-				} }
-				src={ currentUrl }
-			/>
+			{ currentUrl ? (
+				<iframe
+					title={ __( 'Theme Preview', 'fse-studio' ) }
+					style={ {
+						marginTop:'18px',
+						width: '100vw',
+						height: '100vh',
+					} }
+					src={ currentUrl }
+				/>
+			) : null }
 		</div>
 	);
 }

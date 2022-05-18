@@ -63,15 +63,22 @@ wp.hooks.removeFilter(
 	'removeTemplatePartsFromInserter',
 );
 
-// Tell the parent page (fse studio) that we are loaded.
-let fsestudioPatternEditorLoaded = false;
-let fsestudioPatternIsSaved = true;
-
+let fsestudioBlockPatternEditorIsSaving = false;
 wp.data.subscribe( () => {
 	// Force the sidebar navigation to remain closed.
 	if ( wp.data.select( 'core/edit-site' ).isNavigationOpened() ) {
 		wp.data.dispatch( 'core/edit-site' ).setIsNavigationPanelOpened( false );
 	}
+	
+	// If saving just started, set a flag.
+	if ( wp.data.select( 'core/editor' ).isSavingPost() && ! fsestudioBlockPatternEditorIsSaving) {
+		fsestudioBlockPatternEditorIsSaving = true;
+	}
+	if ( ! wp.data.select( 'core/editor' ).isSavingPost() && fsestudioBlockPatternEditorIsSaving ) {
+		window.parent.postMessage( 'fsestudio_site_editor_save_complete' );
+		fsestudioBlockPatternEditorIsSaving = false;
+	}
+
 } );
 
 let fsestudioSaveDebounce = null;
@@ -179,11 +186,3 @@ window.addEventListener(
 	},
 	false
 );
-
-document.addEventListener('keydown', (e) => {
-
-	if(e.metaKey && e.key === 's'){
-	    console.log('CTRL/META + s');
-	}
-	
- });

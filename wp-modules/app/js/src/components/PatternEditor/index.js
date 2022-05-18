@@ -71,21 +71,18 @@ export function BlockEditor() {
 			},
 			false
 		);
-		
-		// When a pattern is saved, resave the theme.
+
+		// When a pattern is saved, refresh the theme data.
 		window.addEventListener(
 			'message',
 			( event ) => {
 				switch ( event.data ) {
 					case 'fsestudio_pattern_editor_save_complete':
-						console.log( 'pattern saved' );
 						setRequestThemeRefresh( true );
 				}
 			},
 			false
 		);
-		
-		console.log( 'save complete' );
 
 		// As a fallback, if 5 seconds have passed, hide the spinner.
 		setTimeout( () => {

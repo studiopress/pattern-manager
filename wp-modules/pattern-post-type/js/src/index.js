@@ -128,15 +128,14 @@ wp.hooks.removeFilter(
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
-let fsestudioPatternIsSaved = true;
-let fsestudioBlockPatternEditorIsSaving;
+let fsestudioBlockPatternEditorIsSaving = false;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
+
 	// If saving just started, set a flag.
-	
 	if ( wp.data.select( 'core/editor' ).isSavingPost() && ! fsestudioBlockPatternEditorIsSaving) {
 		fsestudioBlockPatternEditorIsSaving = true;
 	}

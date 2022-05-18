@@ -52,7 +52,7 @@ add_filter( 'posts_pre_query', __NAMESPACE__ . '\ignore_db_queries', 10, 2 );
 function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 	$theme_template_files = \FseStudio\PatternDataHandlers\get_theme_templates();
 	$theme_template_name  = explode( '//', $id )[1];
-	$theme_template_file  = $theme_template_files[ $id ];
+	$theme_template_file  = $theme_template_files[ $theme_template_name ];
 	$theme                = wp_get_theme()->get_stylesheet();
 
 	// If this file exists on the disk in the theme already.

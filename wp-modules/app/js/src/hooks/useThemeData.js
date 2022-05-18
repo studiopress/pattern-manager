@@ -45,7 +45,7 @@ import useSnackbarContext from './useSnackbarContext';
  * @param {string}                                           themeId
  * @param {ReturnType<import('./useThemes').default>}        themes
  */
-export default function useThemeData( themeId, themes, patternEditorIframe, templateEditorIframe, templatePartEditorIframe, currentView ) {
+export default function useThemeData( themeId, themes, patternEditorIframe, templateEditorIframe, currentView ) {
 	const snackBar = useSnackbarContext();
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
@@ -173,7 +173,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 							<div>
 								{data.message}
 								<p>Actions taken:</p>
-								<p>✅ All pattern files generated, formatted, and written to theme's "patterns" directory.</p>
+								<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
 								<p>✅ All Template files written to theme's "templates" directory.</p>
 								<p>✅ All Template Parts files written to theme's "parts" directory.</p>
 								<p>✅ Strings in Patterns localized (set to be translateable)</p>
@@ -207,21 +207,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 						);
 						if ( data.themeJsonModified ) {
 							templateEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify( {
-									message: 'fsestudio_themejson_changed',
-								} )
-							);
-						}
-					}
-					
-					if ( templatePartEditorIframe.current ) {
-						templatePartEditorIframe.current.contentWindow.postMessage(
-							JSON.stringify( {
-								message: 'fsestudio_save',
-							} )
-						);
-						if ( data.themeJsonModified ) {
-							templatePartEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
 								} )
