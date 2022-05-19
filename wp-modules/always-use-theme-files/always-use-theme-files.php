@@ -51,6 +51,9 @@ add_filter( 'posts_pre_query', __NAMESPACE__ . '\ignore_db_queries', 10, 2 );
  */
 function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 	$theme_template_files = \FseStudio\PatternDataHandlers\get_theme_templates();
+	if ( 'wp_template_part' === $template_type ) {
+		$theme_template_files = \FseStudio\PatternDataHandlers\get_theme_template_parts();
+	}
 	$theme_template_name  = explode( '//', $id )[1];
 	$theme_template_file  = $theme_template_files[ $theme_template_name ];
 	$theme                = wp_get_theme()->get_stylesheet();
@@ -63,11 +66,16 @@ function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 		$template->content        = $theme_template_file['content'];
 		$template->slug           = $id;
 		$template->source         = 'theme';
-		$template->type           = 'wp_template';
-		$template->title          = $theme_template_file['title'];
+		$template->type           = $template_type;
+		$template->title          = ucfirst( $theme_template_file['title'] );
 		$template->status         = 'publish';
 		$template->has_theme_file = true;
 		$template->is_custom      = true;
+
+		if ( 'wp_template_part' === $template_type ) {
+			$template->area = 'header'; // Will likely need to revisit this to apply proper area once theme.json issues are fixed.
+		}
+
 		return $template;
 	}
 
@@ -78,13 +86,20 @@ function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 	$template->content = '';
 	$template->slug    = $id;
 	$template->source  = 'theme';
-	$template->type    = 'wp_template';
+	$template->type    = $template_type;
+
+	// Find the area from the rest request.
+	if ( 'wp_template_part' === $type ) {
+		$request_params = $fsestudio_global_rest_request->get_params();
+		$template->area = $request_params['area'];
+	}
 
 	// Translators: The human readable name of the wp_template.
-	$template->title          = sprintf( __( '%s Template', 'fse-studio' ), ucfirst( $theme_template_name ) );
+	$template->title          = ucfirst( $theme_template_name );
 	$template->status         = 'publish';
 	$template->has_theme_file = true;
 	$template->is_custom      = true;
+
 	return $template;
 }
 add_filter( 'get_block_template', __NAMESPACE__ . '\pull_wp_templates_from_disk', 10, 3 );

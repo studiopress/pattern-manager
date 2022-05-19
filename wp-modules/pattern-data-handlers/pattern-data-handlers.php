@@ -655,7 +655,11 @@ add_action( 'rest_after_insert_wp_template', __NAMESPACE__ . '\handle_wp_templat
  * @param bool            $creating True when creating a post, false when updating.
  */
 function handle_wp_template_part_save( $post, $request, $creating ) {
-	$template_name    = explode( '//', $request->get_param( 'id' ) )[1];
+	if ( $request->get_param( 'id' ) ) {
+		$template_name = explode( '//', $request->get_param( 'id' ) )[1];
+	} else {
+		$template_name = $request->get_param( 'title' );
+	}
 	$template_content = $request->get_param( 'content' );
 
 	$block_pattern_data = array(
