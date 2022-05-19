@@ -47,15 +47,67 @@ import useSnackbarContext from './useSnackbarContext';
  */
 export default function useThemeData( themeId, themes, patternEditorIframe, templateEditorIframe, currentView ) {
 	const snackBar = useSnackbarContext();
+	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 
-	/** @type {[Theme, React.Dispatch<React.SetStateAction<Theme>>]} */
 	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	
+	const [siteEditorDirty, setSiteEditorDirty] = useState(false);
+	const [patternEditorDirty, setPatternEditorDirty] = useState(false);
+	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
+	
 	const [autoSaveTheme, setAutoSaveTheme] = useState( false );
+	
+	useEffect( () => {
+		window.addEventListener(
+			'message',
+			( event ) => {
+				if ( event.data === 'fsestudio_site_editor_dirty' ) {
+						setSiteEditorDirty( true );
+				}
+				if ( event.data === 'fsestudio_pattern_editor_dirty' ) {
+						setPatternEditorDirty( true );
+				}
+			},
+			false
+		);
+		// When a pattern or site editor is saved, refresh the theme data.
+		window.addEventListener(
+			'message',
+			( event ) => {
+				if ( event.data === 'fsestudio_pattern_editor_save_complete' ) {
+					console.log( 'fsestudio_pattern_editor_save_complete' );
+					setPatternEditorDirty( false );
+					setRequestThemeRefresh( true );
+				}
+				if ( event.data === 'fsestudio_site_editor_save_complete' ) {
+					console.log( 'fsestudio_site_editor_save_complete' );
+					setSiteEditorDirty( false );
+					setRequestThemeRefresh( true );
+				}
+			},
+			false
+		);
+
+	}, [] );
+	
+	useEffect( () => {
+		if ( requestThemeRefresh ) {
+			// If something is still dirty, don't do anything yet.
+			if ( siteEditorDirty || patternEditorDirty ) {
+				setRequestThemeRefresh( false );
+			} else {
+				setRequestThemeRefresh( false );
+				// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
+				uponSuccessfulSave();
+				getThemeData();
+			}
+			
+		}
+	}, [requestThemeRefresh] );
 
 	useEffect( () => {
 		if ( themeData?.name === 'My New Theme' ) {
@@ -138,6 +190,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				resolve();
 				return;
 			}
+			setIsSaving( true );
 			setSaveCompleted( false );
 			setFetchInProgress( true );
 
@@ -193,40 +246,42 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					}
 
 					setThemeData( data.themeData );
-					
-					setTimeout( () => {
-						// In 5 seconds, re-fetch the theme data because the iframe'd editors ill have completed their save events.
-						getThemeData();
 						
-						if ( autoSaveTheme ) {
-							setAutoSaveTheme( false );
-						}
-						if ( ! autoSaveTheme ) {
-							snackBar.setValue(
-								<div>
-									{data.message}
-									<p>Actions taken:</p>
-									<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
-									<p>✅ All Template files written to theme's "templates" directory.</p>
-									<p>✅ All Template Parts files written to theme's "parts" directory.</p>
-									<p>✅ Strings in Patterns localized (set to be translateable)</p>
-									<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
-								</div>
-							);
-						}
-						
-						setExistsOnDisk( true );
-						setSaveCompleted( true );
-						setFetchInProgress( false );
-						resolve( data );
-					
-					}, 5000 );
+					if ( ! patternEditorDirty && ! siteEditorDirty ) {
+						uponSuccessfulSave();
+					} else {
+						console.log( 'skipping save notice until iframes complete', siteEditorDirty, patternEditorDirty );
+					}
 
-				} )
-				.catch( ( errorMessage ) => {
-					snackBar.setValue( JSON.stringify( errorMessage ) );
+					resolve( data );
+
 				} );
 		} );
+	}
+	
+	function uponSuccessfulSave() {
+		if ( autoSaveTheme ) {
+			setAutoSaveTheme( false );
+		}
+		if ( ! autoSaveTheme ) {
+			snackBar.setValue(
+				<div>
+					Theme successfuly saved.
+					<p>Actions taken:</p>
+					<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
+					<p>✅ All Template files written to theme's "templates" directory.</p>
+					<p>✅ All Template Parts files written to theme's "parts" directory.</p>
+					<p>✅ Strings in Patterns localized (set to be translateable)</p>
+					<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
+				</div>
+			);
+		}
+		setPatternEditorDirty( false );
+		setSiteEditorDirty( false );
+		setExistsOnDisk( true );
+		setSaveCompleted( true );
+		setIsSaving( false );
+		setFetchInProgress( false );
 	}
 
 	function exportThemeData() {
@@ -833,6 +888,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 		export: exportThemeData,
 		existsOnDisk,
 		saveCompleted,
+		isSaving,
 		fetchInProgress,
 		themeNameIsDefault,
 	};

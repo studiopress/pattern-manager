@@ -63,22 +63,26 @@ wp.hooks.removeFilter(
 	'removeTemplatePartsFromInserter',
 );
 
-let fsestudioBlockPatternEditorIsSaving = false;
+let fsestudioSiteEditorIsUnsaved = false;
 wp.data.subscribe( () => {
 	// Force the sidebar navigation to remain closed.
 	if ( wp.data.select( 'core/edit-site' ).isNavigationOpened() ) {
 		wp.data.dispatch( 'core/edit-site' ).setIsNavigationPanelOpened( false );
 	}
-	
-	// If saving just started, set a flag.
-	if ( wp.data.select( 'core/editor' ).isSavingPost() && ! fsestudioBlockPatternEditorIsSaving) {
-		fsestudioBlockPatternEditorIsSaving = true;
-	}
-	if ( ! wp.data.select( 'core/editor' ).isSavingPost() && fsestudioBlockPatternEditorIsSaving ) {
-		window.parent.postMessage( 'fsestudio_site_editor_save_complete' );
-		fsestudioBlockPatternEditorIsSaving = false;
-	}
 
+	// If the editor is dirty and needs saving, set a flag.
+	if ( wp.data.select( 'core' ).__experimentalGetDirtyEntityRecords().length > 0 ) {
+		window.parent.postMessage( 'fsestudio_site_editor_dirty' );
+		fsestudioSiteEditorIsUnsaved = true;
+	}
+	
+	// If saving was just completed, trigger message to fsestudio app.
+	if ( wp.data.select( 'core' ).__experimentalGetDirtyEntityRecords().length === 0 && fsestudioSiteEditorIsUnsaved ) {
+		// If a successful save was just completed, send a message to the fsestudio app in the parent iframe.
+		fsestudioSiteEditorIsUnsaved = false;
+		window.parent.postMessage( 'fsestudio_site_editor_save_complete' );
+	}
+	
 } );
 
 let fsestudioSaveDebounce = null;
@@ -129,6 +133,7 @@ window.addEventListener(
 						element.item(0).click();
 					}
 					
+					// Once the panel has been opened, click on the save button in the "are you sure" pop out panel.
 					setTimeout(() => {
 						const saveEntitiesElement = document.getElementsByClassName("editor-entities-saved-states__save-button");
 						if ( saveEntitiesElement.item(0) ) {

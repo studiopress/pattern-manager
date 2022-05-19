@@ -134,6 +134,10 @@ wp.data.subscribe( () => {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
+	
+	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
+		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
+	}
 
 	// If saving just started, set a flag.
 	if ( wp.data.select( 'core/editor' ).isSavingPost() && ! fsestudioBlockPatternEditorIsSaving) {

@@ -55,8 +55,7 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor() {
-	const { currentTheme, currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
-	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
+	const { currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
 
 	useEffect( () => {
@@ -72,33 +71,11 @@ export function BlockEditor() {
 			false
 		);
 
-		// When a pattern is saved, refresh the theme data.
-		window.addEventListener(
-			'message',
-			( event ) => {
-				switch ( event.data ) {
-					case 'fsestudio_pattern_editor_save_complete':
-						setRequestThemeRefresh( true );
-				}
-			},
-			false
-		);
-
 		// As a fallback, if 5 seconds have passed, hide the spinner.
 		setTimeout( () => {
 			setBlockEditorLoaded( true );
 		}, 5000 );
 	}, [] );
-	
-	useEffect( () => {
-		if ( requestThemeRefresh ) {
-			setRequestThemeRefresh( false );
-			// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
-			setTimeout( () => {
-				currentTheme.get();
-			}, 2000 );
-		}
-	}, [requestThemeRefresh] );
 
 	useEffect( () => {
 		if ( currentPatternId.value !== currentPatternName ) {

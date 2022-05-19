@@ -69,11 +69,6 @@ import classNames from '../../utils/classNames';
 export default function FseStudioApp() {
 	/** @type {ReturnType<import('../../hooks/useSnackbar').default>} */
 	const providerValue = useSnackbar();
-	
-	setInterval( () => {
-		// Could move this into iframe to test if any fetch requests are pending.
-		//console.log( window.performance.getEntriesByType("resource").length );
-	}, 1 );
 
 	return (
 		<FseStudioSnackbarContext.Provider value={ providerValue }>
@@ -254,7 +249,7 @@ function FseStudio() {
 											currentTheme.save();
 										}}
 									>
-										{ currentTheme.fetchInProgress ? (
+										{ currentTheme.isSaving ? (
 											<>
 											<Spinner />
 											{ __( 'Saving Your Theme', 'fse-studio' ) }

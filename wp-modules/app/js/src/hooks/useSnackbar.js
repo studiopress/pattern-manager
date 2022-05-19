@@ -17,7 +17,7 @@ export default function useSnackbar() {
 			if ( isMounted() ) {
 				setSnackbarValue( null );
 			}
-		}, 10000 );
+		}, 2000 );
 	}
 
 	useEffect( () => {

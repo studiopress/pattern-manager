@@ -21,32 +21,6 @@ export default function TemplateEditor( { visible } ) {
 	const { templateEditorIframe, currentTheme } = useStudioContext();
 	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
 
-	useEffect( () => {
-		// When the site editor is saved, refresh the theme data.
-		window.addEventListener(
-			'message',
-			( event ) => {
-				switch ( event.data ) {
-					case 'fsestudio_site_editor_save_complete':
-						console.log( 'site saved' );
-						setRequestThemeRefresh( true );
-				}
-			},
-			false
-		);
-
-	}, [] );
-	
-	useEffect( () => {
-		if ( requestThemeRefresh ) {
-			setRequestThemeRefresh( false );
-			// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
-			setTimeout( () => {
-				currentTheme.get();
-			}, 2000 );
-		}
-	}, [requestThemeRefresh] );
-
 	if ( ! currentTheme?.existsOnDisk ) {
 		return '';
 	}
