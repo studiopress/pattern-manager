@@ -192,7 +192,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			}
 			setIsSaving( true );
 			setSaveCompleted( false );
-			setFetchInProgress( true );
 
 			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
@@ -260,28 +259,32 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 	}
 	
 	function uponSuccessfulSave() {
-		if ( autoSaveTheme ) {
-			setAutoSaveTheme( false );
-		}
-		if ( ! autoSaveTheme ) {
-			snackBar.setValue(
-				<div>
-					Theme successfuly saved.
-					<p>Actions taken:</p>
-					<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
-					<p>✅ All Template files written to theme's "templates" directory.</p>
-					<p>✅ All Template Parts files written to theme's "parts" directory.</p>
-					<p>✅ Strings in Patterns localized (set to be translateable)</p>
-					<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
-				</div>
-			);
-		}
-		setPatternEditorDirty( false );
-		setSiteEditorDirty( false );
-		setExistsOnDisk( true );
-		setSaveCompleted( true );
-		setIsSaving( false );
-		setFetchInProgress( false );
+		
+		getThemeData().then( () => {
+			if ( autoSaveTheme ) {
+				setAutoSaveTheme( false );
+			}
+			if ( ! autoSaveTheme ) {
+				snackBar.setValue(
+					<div>
+						Theme successfuly saved.
+						<p>Actions taken:</p>
+						<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
+						<p>✅ All Template files written to theme's "templates" directory.</p>
+						<p>✅ All Template Parts files written to theme's "parts" directory.</p>
+						<p>✅ Strings in Patterns localized (set to be translateable)</p>
+						<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
+					</div>
+				);
+			}
+
+			setPatternEditorDirty( false );
+			setSiteEditorDirty( false );
+			setExistsOnDisk( true );
+			setSaveCompleted( true );
+			setIsSaving( false );
+			
+		} );
 	}
 
 	function exportThemeData() {
