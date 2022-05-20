@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
-
+import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
@@ -50,15 +50,12 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
-
 	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
-	
 	const [siteEditorDirty, setSiteEditorDirty] = useState(false);
 	const [patternEditorDirty, setPatternEditorDirty] = useState(false);
 	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
-	
 	const [autoSaveTheme, setAutoSaveTheme] = useState( false );
 	
 	useEffect( () => {
@@ -266,15 +263,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			}
 			if ( ! autoSaveTheme ) {
 				snackBar.setValue(
-					<div>
-						Theme successfuly saved.
-						<p>Actions taken:</p>
-						<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
-						<p>✅ All Template files written to theme's "templates" directory.</p>
-						<p>✅ All Template Parts files written to theme's "parts" directory.</p>
-						<p>✅ Strings in Patterns localized (set to be translateable)</p>
-						<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
-					</div>
+					__( 'Theme successfully saved and all files written to theme directory', 'fsestudio' )
 				);
 			}
 
@@ -895,4 +884,43 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 		fetchInProgress,
 		themeNameIsDefault,
 	};
+}
+
+function SnackbarSuccessSave( {showDetails, setShowDetails } ) {
+	const initial = localStorage.getItem( 'fseStudioSnackbarShowDetails' );
+	const [snackbarShowDetails, setSnackbarShowDetails] = useState( initial === 'true' ? true : false );
+
+	return (
+		<div>
+			Theme successfuly saved.
+			<div hidden={ ! snackbarShowDetails }>
+				<p>Actions taken:</p>
+				<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
+				<p>✅ All Template files written to theme's "templates" directory.</p>
+				<p>✅ All Template Parts files written to theme's "parts" directory.</p>
+				<p>✅ Strings in Patterns localized (set to be translateable)</p>
+				<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
+			</div>
+			<button
+				style={{
+					display: localStorage.getItem( 'fseStudioSnackbarShowDetails' ) === 'true' ? 'block' : 'none'
+				}}
+				onClick={() => {
+					localStorage.setItem( 'fseStudioSnackbarShowDetails', 'false' );
+				}}
+			>
+				{ __( 'Hide Details', 'fsestudio' ) }
+			</button>
+			<button
+				style={{
+					display: localStorage.getItem( 'fseStudioSnackbarShowDetails' ) === 'true' ? 'none' : 'block'
+				}}
+				onClick={() => {
+					localStorage.setItem( 'fseStudioSnackbarShowDetails', 'true' );
+				}}
+			>
+				{ __( 'Show Details', 'fsestudio' ) }
+			</button>
+		</div>
+	)
 }
