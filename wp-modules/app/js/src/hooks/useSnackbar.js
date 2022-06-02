@@ -8,7 +8,7 @@ export default function useSnackbar() {
 	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
 	const [ snackBarValue, setSnackbarValue ] = useState();
 	const { isMounted } = useMounted();
-	
+
 	function removeSnackbarAfterDelay() {
 		if ( ! snackBarValue ) {
 			return;

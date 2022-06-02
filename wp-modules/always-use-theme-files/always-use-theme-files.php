@@ -54,9 +54,9 @@ function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 	if ( 'wp_template_part' === $template_type ) {
 		$theme_template_files = \FseStudio\PatternDataHandlers\get_theme_template_parts();
 	}
-	$theme_template_name  = explode( '//', $id )[1];
-	$theme_template_file  = $theme_template_files[ $theme_template_name ];
-	$theme                = wp_get_theme()->get_stylesheet();
+	$theme_template_name = explode( '//', $id )[1];
+	$theme_template_file = $theme_template_files[ $theme_template_name ];
+	$theme               = wp_get_theme()->get_stylesheet();
 
 	// If this file exists on the disk in the theme already.
 	if ( ! empty( $theme_template_file ) ) {

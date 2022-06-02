@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies.
-import {
-	useRef,
-	useState,
-} from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	Icon,
@@ -33,12 +30,12 @@ import { fsestudio } from '../../globals';
 /** @param {{isVisible: boolean}} props */
 export default function ThemeTemplateFiles( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
-	const [currentTab, setCurrentTab] = useState( 'templates' );
-	
+	const [ currentTab, setCurrentTab ] = useState( 'templates' );
+
 	if ( ! currentTheme.data ) {
 		return '';
 	}
-	
+
 	const standardTemplates = {
 		'front-page': {
 			title: __( 'Template: front-page.html', 'fse-studio' ),
@@ -90,16 +87,16 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			),
 		},
 	};
-	
+
 	const standardTemplateParts = {
-		'header': {
+		header: {
 			title: __( 'Template Part: header.html', 'fse-studio' ),
 			description: __(
 				'This template is used for the header.',
 				'fse-studio'
 			),
 		},
-		'footer': {
+		footer: {
 			title: __( 'Template Part: footer.html', 'fse-studio' ),
 			description: __(
 				'This template is used for the footer.',
@@ -107,7 +104,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			),
 		},
 	};
-	
+
 	const tabs = [
 		{
 			name: __( 'Template Parts', 'fse-studio' ),
@@ -116,15 +113,21 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 		{
 			name: __( 'Templates', 'fse-studio' ),
 			slug: 'templates',
-		}
+		},
 	];
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">{ __( 'Theme Templates', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">Here, you can set up the various default pages that make up your theme. Not all pages are required, and some pages can act as a fallback for all pages.</p>
+					<h1 className="text-4xl mb-3">
+						{ __( 'Theme Templates', 'fse-studio' ) }
+					</h1>
+					<p className="text-lg max-w-2xl">
+						Here, you can set up the various default pages that make
+						up your theme. Not all pages are required, and some
+						pages can act as a fallback for all pages.
+					</p>
 				</div>
 			</div>
 
@@ -156,31 +159,62 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 						{ currentTab === 'templates' ? (
 							<div className="divide-y divide-gray-200 flex flex-col justify-between">
 								{ Object.entries( standardTemplates ?? {} ).map(
-									( [templateName, templateHelpInfo] ) => {
+									( [ templateName, templateHelpInfo ] ) => {
 										return (
 											<ThemeTemplatePicker
 												key={ templateName }
 												templateName={ templateName }
-												templateData={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
-												standardTemplates={standardTemplates}
-												existsInTheme={ currentTheme.data?.template_files.hasOwnProperty( templateName ) }
+												templateData={
+													currentTheme.data
+														?.template_files
+														? currentTheme.data
+																?.template_files[
+																templateName
+														  ]
+														: ''
+												}
+												standardTemplates={
+													standardTemplates
+												}
+												existsInTheme={ currentTheme.data?.template_files.hasOwnProperty(
+													templateName
+												) }
 												type={ 'template' }
 											/>
 										);
 									}
 								) }
-								{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
-									( [templateName, templateContent] ) => {
+								{ Object.entries(
+									currentTheme.data?.template_files ?? {}
+								).map(
+									( [ templateName, templateContent ] ) => {
 										// Skip any we've already rendered above (standardTemplates).
-										if ( ! standardTemplates.hasOwnProperty( templateName ) ) {
-												
+										if (
+											! standardTemplates.hasOwnProperty(
+												templateName
+											)
+										) {
 											return (
 												<ThemeTemplatePicker
 													key={ templateName }
-													templateName={ templateName }
-													templateContent={ currentTheme.data?.template_files ? currentTheme.data?.template_files[templateName] : '' }
-													standardTemplates={standardTemplates}
-													existsInTheme={ currentTheme.data?.template_files.hasOwnProperty( templateName ) }
+													templateName={
+														templateName
+													}
+													templateContent={
+														currentTheme.data
+															?.template_files
+															? currentTheme.data
+																	?.template_files[
+																	templateName
+															  ]
+															: ''
+													}
+													standardTemplates={
+														standardTemplates
+													}
+													existsInTheme={ currentTheme.data?.template_files.hasOwnProperty(
+														templateName
+													) }
 													type={ 'template' }
 												/>
 											);
@@ -191,54 +225,116 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 						) : null }
 						{ currentTab === 'template-parts' ? (
 							<div className="divide-y divide-gray-200 flex flex-col justify-between">
-							{ Object.entries( standardTemplateParts ?? {} ).map(
-								( [templateName, templateHelpInfo] ) => {
-									return (
-										<ThemeTemplatePicker
-											key={ templateName }
-											templateName={ templateName }
-											templateData={ currentTheme.data?.template_parts ? currentTheme.data?.template_parts[templateName] : '' }
-											standardTemplates={standardTemplateParts}
-											existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty( templateName ) }
-											type={ 'template_part' }
-										/>
-									);
-								}
-							) }
-							{ Object.entries( currentTheme.data?.template_parts ?? {} ).map(
-								( [templateName, templateContent] ) => {
-									// Skip any we've already rendered above (standardTemplateParts).
-									if ( ! standardTemplateParts.hasOwnProperty( templateName ) ) {
-											
+								{ Object.entries(
+									standardTemplateParts ?? {}
+								).map(
+									( [ templateName, templateHelpInfo ] ) => {
 										return (
 											<ThemeTemplatePicker
 												key={ templateName }
 												templateName={ templateName }
-												templateContent={ currentTheme.data?.template_parts ? currentTheme.data?.template_parts[templateName] : '' }
-												standardTemplates={standardTemplateParts}
-												existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty( templateName ) }
+												templateData={
+													currentTheme.data
+														?.template_parts
+														? currentTheme.data
+																?.template_parts[
+																templateName
+														  ]
+														: ''
+												}
+												standardTemplates={
+													standardTemplateParts
+												}
+												existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty(
+													templateName
+												) }
 												type={ 'template_part' }
 											/>
 										);
 									}
-								}
-							) }
-						</div>
+								) }
+								{ Object.entries(
+									currentTheme.data?.template_parts ?? {}
+								).map(
+									( [ templateName, templateContent ] ) => {
+										// Skip any we've already rendered above (standardTemplateParts).
+										if (
+											! standardTemplateParts.hasOwnProperty(
+												templateName
+											)
+										) {
+											return (
+												<ThemeTemplatePicker
+													key={ templateName }
+													templateName={
+														templateName
+													}
+													templateContent={
+														currentTheme.data
+															?.template_parts
+															? currentTheme.data
+																	?.template_parts[
+																	templateName
+															  ]
+															: ''
+													}
+													standardTemplates={
+														standardTemplateParts
+													}
+													existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty(
+														templateName
+													) }
+													type={ 'template_part' }
+												/>
+											);
+										}
+									}
+								) }
+							</div>
 						) : null }
 					</div>
 
 					<div className="flex-1 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
-								<h4 className="mb-2 font-medium">Setting up templates</h4>
-								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+								<h4 className="mb-2 font-medium">
+									Setting up templates
+								</h4>
+								<p className="text-base">
+									Lorem ipsum dolor sit amet, consectetur
+									adipiscing elit, sed do eiusmod tempor
+									incididunt ut labore et dolore magna aliqua.
+									Ut enim ad minim veniam, quis nostrud
+									exercitation ullamco laboris nisi ut aliquip
+									ex ea commodo consequat.{ ' ' }
+								</p>
 							</div>
 							<div>
-								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
+								<h4 className="mb-2 font-medium">
+									Helpful Documentation
+								</h4>
 								<ul>
-									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
-									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/themes/basics/template-hierarchy/">{ __( 'Theme Template Hierarchy', 'fse-studio' ) }</a></li>
+									<li>
+										<a className="text-wp-blue" href="#">
+											Full Site Editing Documentation
+										</a>
+									</li>
+									<li>
+										<a className="text-wp-blue" href="#">
+											About Full Site Editing Themes
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue"
+											href="https://developer.wordpress.org/themes/basics/template-hierarchy/"
+										>
+											{ __(
+												'Theme Template Hierarchy',
+												'fse-studio'
+											) }
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>
@@ -248,4 +344,3 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 		</div>
 	);
 }
-

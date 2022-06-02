@@ -45,7 +45,6 @@
 		}
 	],
 	"settings": {
-		"appearanceTools": true,
 		"color": {
 			"custom": true,
 			"customDuotone": true,

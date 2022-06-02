@@ -7,7 +7,7 @@ module.exports = {
 				'wp-blue': '#007bba',
 				'wp-blue-hover': '#006ba1',
 				'wp-gray': '#5d7179',
-				'fses-gray': '#F1F1F1'
+				'fses-gray': '#F1F1F1',
 			},
 		},
 	},

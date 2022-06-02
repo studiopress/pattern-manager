@@ -1,8 +1,5 @@
 // WP Dependencies.
-import {
-	useRef,
-	useState,
-} from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	Icon,
@@ -23,7 +20,7 @@ import createNewTheme from '../../utils/createNewTheme';
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme, themes, currentThemeId } = useStudioContext();
 	const themeNameInput = useRef( null );
-	
+
 	if ( ! currentTheme.data ) {
 		return '';
 	}
@@ -36,7 +33,7 @@ export default function ThemeSetup( { isVisible } ) {
 		);
 
 		let counter = 3;
-		
+
 		for ( const thisTheme in themes.themes ) {
 			const themeInQuestion = themes.themes[ thisTheme ];
 			renderedThemes.push(
@@ -67,8 +64,14 @@ export default function ThemeSetup( { isVisible } ) {
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">{ __( 'Theme Details', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">Start by adding technical details of your theme that appear in readme.txt, which is helpful for users to understand the theme's capabilities.</p>
+					<h1 className="text-4xl mb-3">
+						{ __( 'Theme Details', 'fse-studio' ) }
+					</h1>
+					<p className="text-lg max-w-2xl">
+						Start by adding technical details of your theme that
+						appear in readme.txt, which is helpful for users to
+						understand the theme's capabilities.
+					</p>
 				</div>
 			</div>
 
@@ -107,7 +110,10 @@ export default function ThemeSetup( { isVisible } ) {
 											icon={ check }
 											size={ 26 }
 										/>{ ' ' }
-										<span role="dialog" aria-label="Theme Saved">
+										<span
+											role="dialog"
+											aria-label="Theme Saved"
+										>
 											{ __(
 												'Get started by giving your theme a unique name!',
 												'fse-studio'
@@ -154,7 +160,9 @@ export default function ThemeSetup( { isVisible } ) {
 									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="namespace"
-									value={ currentTheme?.data?.namespace ?? '' }
+									value={
+										currentTheme?.data?.namespace ?? ''
+									}
 									disabled
 								/>
 							</div>
@@ -226,7 +234,9 @@ export default function ThemeSetup( { isVisible } ) {
 									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="author-uri"
-									value={ currentTheme?.data?.author_uri ?? '' }
+									value={
+										currentTheme?.data?.author_uri ?? ''
+									}
 									onChange={ ( event ) => {
 										currentTheme.set( {
 											...currentTheme.data,
@@ -296,7 +306,10 @@ export default function ThemeSetup( { isVisible } ) {
 								htmlFor="tested"
 								className="block font-medium text-gray-700 sm:col-span-1"
 							>
-								{ __( 'Tested up to (WP Version)', 'fse-studio' ) }
+								{ __(
+									'Tested up to (WP Version)',
+									'fse-studio'
+								) }
 							</label>
 							<div className="mt-1 sm:mt-0 sm:col-span-2">
 								<input
@@ -414,7 +427,9 @@ export default function ThemeSetup( { isVisible } ) {
 									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 									type="text"
 									id="text-domain"
-									value={ currentTheme?.data?.text_domain ?? '' }
+									value={
+										currentTheme?.data?.text_domain ?? ''
+									}
 									disabled
 								/>
 							</div>
@@ -422,18 +437,19 @@ export default function ThemeSetup( { isVisible } ) {
 						<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 							<div className="flex items-center justify-between w-full">
 								<div className="flex items-center">
-									{ currentTheme.hasSaved ?
-										(
-											<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-												<Icon
-													className="fill-current"
-													icon={ check }
-													size={ 26 }
-												/>{ ' ' }
-												{ __( 'Settings Saved!', 'fse-studio' ) }
-											</span>
-										) : null
-									}
+									{ currentTheme.hasSaved ? (
+										<span className="text-sm text-green-600 flex flex-row items-center mr-6">
+											<Icon
+												className="fill-current"
+												icon={ check }
+												size={ 26 }
+											/>{ ' ' }
+											{ __(
+												'Settings Saved!',
+												'fse-studio'
+											) }
+										</span>
+									) : null }
 									<button
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -441,7 +457,10 @@ export default function ThemeSetup( { isVisible } ) {
 											currentTheme.save();
 										} }
 									>
-										{ __( 'Save Your Theme', 'fse-studio' ) }
+										{ __(
+											'Save Your Theme',
+											'fse-studio'
+										) }
 									</button>
 								</div>
 							</div>
@@ -453,8 +472,14 @@ export default function ThemeSetup( { isVisible } ) {
 							<div>
 								<div className="flex flex-col gap-5">
 									<div>
-										<h4 className="mb-2 font-medium">Theme Actions</h4>
-										<p className="text-base">Use the selector below to load a theme to work on, or create a new theme with the Create button.</p>
+										<h4 className="mb-2 font-medium">
+											Theme Actions
+										</h4>
+										<p className="text-base">
+											Use the selector below to load a
+											theme to work on, or create a new
+											theme with the Create button.
+										</p>
 									</div>
 									{
 										// In order to render the selector…
@@ -462,7 +487,8 @@ export default function ThemeSetup( { isVisible } ) {
 										// Or the current theme should have been saved to disk.
 										Object.keys( themes.themes ).some(
 											( themeName ) =>
-												themeName !== currentThemeId.value ||
+												themeName !==
+													currentThemeId.value ||
 												currentTheme.existsOnDisk
 										) ? (
 											<>
@@ -487,10 +513,16 @@ export default function ThemeSetup( { isVisible } ) {
 										type="button"
 										className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ () => {
-											createNewTheme( themes, currentThemeId );
+											createNewTheme(
+												themes,
+												currentThemeId
+											);
 										} }
 									>
-										{ __( 'Create A New Theme', 'fse-studio' ) }
+										{ __(
+											'Create A New Theme',
+											'fse-studio'
+										) }
 									</button>
 								</div>
 							</div>
@@ -498,25 +530,45 @@ export default function ThemeSetup( { isVisible } ) {
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
-								<h4 className="mb-2 font-medium">Export theme to .zip</h4>
-								<p className="text-base mb-5">Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.</p>
+								<h4 className="mb-2 font-medium">
+									Export theme to .zip
+								</h4>
+								<p className="text-base mb-5">
+									Click the button below to export your theme
+									to a zip file. We'll include your patterns,
+									templates, styles, and theme.json file.
+								</p>
 								<button
-										type="button"
-										className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => { } }
-									>
-										{ __( 'Export Theme', 'fse-studio' ) }
-									</button>
+									type="button"
+									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									onClick={ () => {} }
+								>
+									{ __( 'Export Theme', 'fse-studio' ) }
+								</button>
 							</div>
 						</div>
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
-								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
+								<h4 className="mb-2 font-medium">
+									Helpful Documentation
+								</h4>
 								<ul>
-									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
-									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
-									<li><a className="text-wp-blue" href="#">Something Else</a></li>
+									<li>
+										<a className="text-wp-blue" href="#">
+											Full Site Editing Documentation
+										</a>
+									</li>
+									<li>
+										<a className="text-wp-blue" href="#">
+											About Full Site Editing Themes
+										</a>
+									</li>
+									<li>
+										<a className="text-wp-blue" href="#">
+											Something Else
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>

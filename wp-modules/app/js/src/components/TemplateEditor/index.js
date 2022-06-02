@@ -5,7 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 // @ts-check
 import { __ } from '@wordpress/i18n';
 import { Modal, Spinner } from '@wordpress/components';
-import { useState, useEffect, useRef, createInterpolateElement } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	useRef,
+	createInterpolateElement,
+} from '@wordpress/element';
 
 // Hooks
 import useStudioContext from '../../hooks/useStudioContext';
@@ -19,7 +24,7 @@ import searchItems from '../../utils/searchItems';
 /** @param {{visible: boolean}} props */
 export default function TemplateEditor( { visible } ) {
 	const { templateEditorIframe, currentTheme } = useStudioContext();
-	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
+	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 
 	if ( ! currentTheme?.existsOnDisk ) {
 		return '';
@@ -28,13 +33,15 @@ export default function TemplateEditor( { visible } ) {
 	return (
 		<iframe
 			title={ __( 'Pattern Editor', 'fse-studio' ) }
-			
-			ref={templateEditorIframe}
+			ref={ templateEditorIframe }
 			style={ {
 				width: '100%',
 				height: 'calc(100vh - 80px)',
 			} }
-			src={ fsestudio.siteUrl + '/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1' }
+			src={
+				fsestudio.siteUrl +
+				'/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1'
+			}
 		/>
 	);
 }

@@ -60,7 +60,7 @@ function get_patterns() {
 	$patterns = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data                          = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+		$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
 		if ( ! $pattern_data ) {
 			continue;
 		}
@@ -80,7 +80,7 @@ function get_patterns() {
 		$pattern_file_paths = glob( $theme . '/patterns/*.php' );
 
 		foreach ( $pattern_file_paths as $path ) {
-			$pattern_data         = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+			$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
 			if ( ! $pattern_data ) {
 				continue;
 			}
@@ -121,9 +121,9 @@ function format_pattern_data( $pattern_data, $file ) {
 		);
 	}
 
-	//if ( WP_Block_Patterns_Registry::get_instance()->is_registered( $pattern_data['slug'] ) ) {
-	//	return false;
-	//}
+	// if ( WP_Block_Patterns_Registry::get_instance()->is_registered( $pattern_data['slug'] ) ) {
+	// return false;
+	// }
 
 	// Title is a required property.
 	if ( ! $pattern_data['title'] ) {
@@ -228,7 +228,7 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 	$patterns = array();
 
 	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data         = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+		$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
 		if ( ! $pattern_data ) {
 			continue;
 		}
@@ -413,7 +413,6 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
 
 	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
 	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
-
 }
 
 /**

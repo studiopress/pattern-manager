@@ -81,12 +81,12 @@ function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
 	const patternEditorIframe = useRef();
 	const templateEditorIframe = useRef();
-	const [blockEditorLoaded, setBlockEditorLoaded] = useState( false );
+	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
-	const currentTheme   = useThemeData(
+	const currentTheme = useThemeData(
 		currentThemeId.value,
 		themes,
 		patternEditorIframe,
@@ -94,21 +94,36 @@ function FseStudioContextHydrator() {
 		currentView
 	);
 
-	const currentPatternId = useCurrentId('');
+	const currentPatternId = useCurrentId( '' );
 	let currentPattern = null;
-	
+
 	if ( currentPatternId?.value ) {
 		// If the pattern name is found in the theme's included_patterns object.
-		if ( currentTheme?.data?.included_patterns?.hasOwnProperty( currentPatternId?.value ) ) {
-			currentPattern = currentTheme.data.included_patterns[currentPatternId?.value];
+		if (
+			currentTheme?.data?.included_patterns?.hasOwnProperty(
+				currentPatternId?.value
+			)
+		) {
+			currentPattern =
+				currentTheme.data.included_patterns[ currentPatternId?.value ];
 		}
 		// If the pattern name is found in the theme's template_files object.
-		if ( currentTheme?.data?.template_files?.hasOwnProperty( currentPatternId?.value ) ) {
-			currentPattern = currentTheme.data.template_files[currentPatternId?.value];
+		if (
+			currentTheme?.data?.template_files?.hasOwnProperty(
+				currentPatternId?.value
+			)
+		) {
+			currentPattern =
+				currentTheme.data.template_files[ currentPatternId?.value ];
 		}
 		// If the pattern name is found in the theme's template_parts object.
-		if ( currentTheme?.data?.template_parts?.hasOwnProperty( currentPatternId?.value ) ) {
-			currentPattern = currentTheme.data.template_parts[currentPatternId?.value];
+		if (
+			currentTheme?.data?.template_parts?.hasOwnProperty(
+				currentPatternId?.value
+			)
+		) {
+			currentPattern =
+				currentTheme.data.template_parts[ currentPatternId?.value ];
 		}
 	}
 
@@ -138,7 +153,14 @@ function FseStudioContextHydrator() {
 
 function FseStudio() {
 	// @ts-ignore
-	const { currentView, currentTheme, templateEditorIframe, themes, currentThemeId, setBlockEditorLoaded } = useStudioContext();
+	const {
+		currentView,
+		currentTheme,
+		templateEditorIframe,
+		themes,
+		currentThemeId,
+		setBlockEditorLoaded,
+	} = useStudioContext();
 	const snackBar = useSnackbarContext();
 
 	return (
@@ -160,7 +182,13 @@ function FseStudio() {
 							<div className="flex gap-8">
 								<button
 									type="button"
-									className={"inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_setup' ? ' underline' : '' ) }
+									className={
+										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+										( currentView.currentView ===
+										'theme_setup'
+											? ' underline'
+											: '' )
+									}
 									onClick={ () => {
 										currentView.set( 'theme_setup' );
 									} }
@@ -168,19 +196,44 @@ function FseStudio() {
 									{ __( 'Theme Details', 'fse-studio' ) }
 								</button>
 								<button
-									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
+									disabled={
+										currentTheme.data &&
+										currentTheme.existsOnDisk
+											? false
+											: true
+									}
 									type="button"
-									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'themejson_editor' ? ' underline' : '' ) }
+									className={
+										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+										( currentView.currentView ===
+										'themejson_editor'
+											? ' underline'
+											: '' )
+									}
 									onClick={ () => {
 										currentView.set( 'themejson_editor' );
 									} }
 								>
-									{ __( 'Styles and Settings', 'fse-studio' ) }
+									{ __(
+										'Styles and Settings',
+										'fse-studio'
+									) }
 								</button>
 								<button
-									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
+									disabled={
+										currentTheme.data &&
+										currentTheme.existsOnDisk
+											? false
+											: true
+									}
 									type="button"
-									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_patterns' ? ' underline' : '' ) }
+									className={
+										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+										( currentView.currentView ===
+										'theme_patterns'
+											? ' underline'
+											: '' )
+									}
 									onClick={ () => {
 										currentView.set( 'theme_patterns' );
 									} }
@@ -188,16 +241,27 @@ function FseStudio() {
 									{ __( 'Theme Patterns', 'fse-studio' ) }
 								</button>
 								<button
-									style={{display: window.location.href.includes( 'tryTemplates' ) ? '' : 'none'}}
-									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
+									disabled={
+										currentTheme.data &&
+										currentTheme.existsOnDisk
+											? false
+											: true
+									}
 									type="button"
-									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'theme_templates' ? ' underline' : '' ) }
+									className={
+										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+										( currentView.currentView ===
+										'theme_templates'
+											? ' underline'
+											: '' )
+									}
 									onClick={ () => {
 										currentView.set( 'theme_templates' );
 										if ( templateEditorIframe.current ) {
 											templateEditorIframe.current.contentWindow.postMessage(
 												JSON.stringify( {
-													message: 'fsestudio_click_templates',
+													message:
+														'fsestudio_click_templates',
 												} )
 											);
 										}
@@ -206,16 +270,27 @@ function FseStudio() {
 									{ __( 'Theme Templates', 'fse-studio' ) }
 								</button>
 								<button
-									style={{display: window.location.href.includes( 'tryTemplates' ) ? '' : 'none'}}
-									disabled={currentTheme.data && currentTheme.existsOnDisk ? false : true}
+									disabled={
+										currentTheme.data &&
+										currentTheme.existsOnDisk
+											? false
+											: true
+									}
 									type="button"
-									className={ "inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue" + ( currentView.currentView === 'template_parts' ? ' underline' : '' ) }
+									className={
+										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+										( currentView.currentView ===
+										'template_parts'
+											? ' underline'
+											: '' )
+									}
 									onClick={ () => {
 										currentView.set( 'template_parts' );
 										if ( templateEditorIframe.current ) {
 											templateEditorIframe.current.contentWindow.postMessage(
 												JSON.stringify( {
-													message: 'fsestudio_click_template_parts',
+													message:
+														'fsestudio_click_template_parts',
 												} )
 											);
 										}
@@ -225,39 +300,43 @@ function FseStudio() {
 								</button>
 							</div>
 						</div>
-						
+
 						<div className="flex sm:flex-row flex-col gap-2">
 							{ currentTheme?.data ? (
 								<>
 									<button
-										style={{display: window.location.href.includes( 'tryPreview' ) ? '' : 'none'}}
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={() => {
-										
+										onClick={ () => {
 											currentView.set( 'theme_preview' );
-										}}
+										} }
 									>
 										{ __( 'Preview Theme', 'fse-studio' ) }
 									</button>
 									<button
 										type="button"
-										disabled={ currentTheme.fetchInProgress }
+										disabled={
+											currentTheme.fetchInProgress
+										}
 										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={() => {
-										
+										onClick={ () => {
 											currentTheme.save();
-										}}
+										} }
 									>
 										{ currentTheme.isSaving ? (
 											<>
-											<Spinner />
-											{ __( 'Saving Your Theme', 'fse-studio' ) }
+												<Spinner />
+												{ __(
+													'Saving Your Theme',
+													'fse-studio'
+												) }
 											</>
 										) : (
-											__( 'Save Your Theme', 'fse-studio' )
+											__(
+												'Save Your Theme',
+												'fse-studio'
+											)
 										) }
-										
 									</button>
 								</>
 							) : null }
@@ -265,20 +344,27 @@ function FseStudio() {
 					</div>
 				</div>
 			</div>
-			
+
 			{ currentTheme?.data ? (
 				<>
 					<ThemeSetup
 						isVisible={ 'theme_setup' === currentView.currentView }
 					/>
 					<ThemePreview
-						isVisible={ 'theme_preview' === currentView.currentView }
+						isVisible={
+							'theme_preview' === currentView.currentView
+						}
 					/>
 					<ThemePatterns
-						isVisible={ 'theme_patterns' === currentView.currentView }
+						isVisible={
+							'theme_patterns' === currentView.currentView
+						}
 					/>
 					<div
-						hidden={ 'theme_templates' !== currentView.currentView && 'template_parts' !== currentView.currentView }
+						hidden={
+							'theme_templates' !== currentView.currentView &&
+							'template_parts' !== currentView.currentView
+						}
 					>
 						<TemplateEditor />
 					</div>
@@ -286,10 +372,14 @@ function FseStudio() {
 						visible={ 'pattern_editor' === currentView.currentView }
 					/>
 					<ThemeJsonEditor
-						visible={ 'themejson_editor' === currentView.currentView }
+						visible={
+							'themejson_editor' === currentView.currentView
+						}
 					/>
 					<FseStudioHelp
-						visible={ 'fse_studio_help' === currentView.currentView }
+						visible={
+							'fse_studio_help' === currentView.currentView
+						}
 					/>
 				</>
 			) : (

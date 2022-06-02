@@ -7,10 +7,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies.
-import {
-	useRef,
-	useState,
-} from '@wordpress/element';
+import { useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import {
 	Icon,
@@ -38,11 +35,7 @@ import { fsestudio } from '../../globals';
 
 /** @param {{visible: boolean}} props */
 export default function ThemeManager( { visible } ) {
-	const {
-		themes,
-		currentThemeId,
-		currentTheme
-	} = useStudioContext();
+	const { themes, currentThemeId, currentTheme } = useStudioContext();
 
 	function renderThemeSelector() {
 		const renderedThemes = [];
@@ -94,8 +87,14 @@ export default function ThemeManager( { visible } ) {
 			<div hidden={ ! visible } className="fsestudio-theme-manager">
 				<div className="bg-fses-gray mx-auto p-12 w-full">
 					<div className="max-w-7xl mx-auto">
-						<h1 className="text-4xl mb-3">{ __( 'Theme Manager', 'fse-studio' ) }</h1>
-						<p className="text-lg max-w-2xl">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+						<h1 className="text-4xl mb-3">
+							{ __( 'Theme Manager', 'fse-studio' ) }
+						</h1>
+						<p className="text-lg max-w-2xl">
+							Lorem ipsum dolor sit amet, consectetur adipiscing
+							elit, sed do eiusmod tempor incididunt ut labore et
+							dolore magna aliqua. Ut enim ad minim veniam.
+						</p>
 					</div>
 				</div>
 
@@ -152,7 +151,8 @@ export default function ThemeManager( { visible } ) {
 										requires_php: '7.3',
 										version: '1.0.0',
 										text_domain: 'my-new-theme',
-										theme_json_file: fsestudio.themeJsonFiles.default,
+										theme_json_file:
+											fsestudio.themeJsonFiles.default,
 										included_patterns: [],
 										template_files: {
 											index: 'homepage',
@@ -665,7 +665,6 @@ function ThemeSetup( { isVisible } ) {
 	);
 }
 
-
 /** @param {{isVisible: boolean}} props */
 function ThemeTemplateFiles( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
@@ -674,7 +673,7 @@ function ThemeTemplateFiles( { isVisible } ) {
 		<div hidden={ ! isVisible } className="flex-1">
 			<div className="divide-y divide-gray-200">
 				{ Object.entries( currentTheme.data?.template_files ?? {} ).map(
-					( [templateName, templateContent] ) => {
+					( [ templateName, templateContent ] ) => {
 						console.log( templateName );
 						return (
 							<ThemeTemplatePicker
@@ -689,4 +688,3 @@ function ThemeTemplateFiles( { isVisible } ) {
 		</div>
 	);
 }
-

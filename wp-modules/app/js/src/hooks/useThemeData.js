@@ -42,10 +42,19 @@ import useSnackbarContext from './useSnackbarContext';
  */
 
 /**
- * @param {string}                                           themeId
- * @param {ReturnType<import('./useThemes').default>}        themes
+ * @param {string}                                    themeId
+ * @param {ReturnType<import('./useThemes').default>} themes
+ * @param                                             patternEditorIframe
+ * @param                                             templateEditorIframe
+ * @param                                             currentView
  */
-export default function useThemeData( themeId, themes, patternEditorIframe, templateEditorIframe, currentView ) {
+export default function useThemeData(
+	themeId,
+	themes,
+	patternEditorIframe,
+	templateEditorIframe,
+	currentView
+) {
 	const snackBar = useSnackbarContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
@@ -53,20 +62,20 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
-	const [siteEditorDirty, setSiteEditorDirty] = useState(false);
-	const [patternEditorDirty, setPatternEditorDirty] = useState(false);
-	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
-	const [autoSaveTheme, setAutoSaveTheme] = useState( false );
-	
+	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
+	const [ patternEditorDirty, setPatternEditorDirty ] = useState( false );
+	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
+	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
+
 	useEffect( () => {
 		window.addEventListener(
 			'message',
 			( event ) => {
 				if ( event.data === 'fsestudio_site_editor_dirty' ) {
-						setSiteEditorDirty( true );
+					setSiteEditorDirty( true );
 				}
 				if ( event.data === 'fsestudio_pattern_editor_dirty' ) {
-						setPatternEditorDirty( true );
+					setPatternEditorDirty( true );
 				}
 			},
 			false
@@ -88,9 +97,8 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			},
 			false
 		);
-
 	}, [] );
-	
+
 	useEffect( () => {
 		if ( requestThemeRefresh ) {
 			// If something is still dirty, don't do anything yet.
@@ -102,9 +110,8 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				uponSuccessfulSave();
 				getThemeData();
 			}
-			
 		}
-	}, [requestThemeRefresh] );
+	}, [ requestThemeRefresh ] );
 
 	useEffect( () => {
 		if ( themeData?.name === 'My New Theme' ) {
@@ -112,7 +119,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 		} else {
 			setThemeNameIsDefault( false );
 		}
-		
+
 		if ( themeData && autoSaveTheme ) {
 			saveThemeData();
 		}
@@ -135,8 +142,8 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				namespace: convertToPascalCase( themeData?.name ),
 				text_domain: convertToSlug( themeData?.name ),
 			} );
-			
-			convertToSlug( themeData?.name )
+
+			convertToSlug( themeData?.name );
 		}
 	}, [ themeData?.name ] );
 
@@ -147,20 +154,18 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				return;
 			}
 			setFetchInProgress( true );
-			fetch( fsestudio.apiEndpoints.getThemeEndpoint,
-				{
-					method: 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': fsestudio.apiNonce,
-					},
-					body: JSON.stringify( {
-						themeId,
-						preExistingTheme: themeData
-					}),
-				}
-			)
+			fetch( fsestudio.apiEndpoints.getThemeEndpoint, {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': fsestudio.apiNonce,
+				},
+				body: JSON.stringify( {
+					themeId,
+					preExistingTheme: themeData,
+				} ),
+			} )
 				.then( ( response ) => response.json() )
 				.then( ( response ) => {
 					setFetchInProgress( false );
@@ -208,7 +213,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					return response.json();
 				} )
 				.then( ( data ) => {
-
 					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
 						patternEditorIframe.current.contentWindow.postMessage(
@@ -225,7 +229,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 							);
 						}
 					}
-					
+
 					if ( templateEditorIframe.current ) {
 						templateEditorIframe.current.contentWindow.postMessage(
 							JSON.stringify( {
@@ -242,28 +246,33 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					}
 
 					setThemeData( data.themeData );
-						
+
 					if ( ! patternEditorDirty && ! siteEditorDirty ) {
 						uponSuccessfulSave();
 					} else {
-						console.log( 'skipping save notice until iframes complete', siteEditorDirty, patternEditorDirty );
+						console.log(
+							'skipping save notice until iframes complete',
+							siteEditorDirty,
+							patternEditorDirty
+						);
 					}
 
 					resolve( data );
-
 				} );
 		} );
 	}
-	
+
 	function uponSuccessfulSave() {
-		
 		getThemeData().then( () => {
 			if ( autoSaveTheme ) {
 				setAutoSaveTheme( false );
 			}
 			if ( ! autoSaveTheme ) {
 				snackBar.setValue(
-					__( 'Theme successfully saved and all files written to theme directory', 'fsestudio' )
+					__(
+						'Theme successfully saved and all files written to theme directory',
+						'fsestudio'
+					)
 				);
 			}
 
@@ -272,7 +281,6 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			setExistsOnDisk( true );
 			setSaveCompleted( true );
 			setIsSaving( false );
-			
 		} );
 	}
 
@@ -294,7 +302,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				} );
 		} );
 	}
-	
+
 	function setThemeJsonValue(
 		topLevelSection = 'settings',
 		selectorString,
@@ -365,9 +373,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				);
 			}
 			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				] = value;
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = value;
 			}
 			// If we are deleting or setting this value back to its default from the schema.
 			if (
@@ -375,26 +381,21 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				null === value
 			) {
 				if (
-					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ]
-					)
+					Array.isArray( modifiedData[ topLevelSection ][ keyOne ] )
 				) {
 					modifiedData[ topLevelSection ][ keyOne ].splice(
 						keyTwo,
 						1
 					);
 				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][
-						keyTwo
-					];
+					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 				}
 			}
 
 			// Clean up the parent if there's no more children.
 			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ]
-				).length === 0
+				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
+					.length === 0
 			) {
 				delete modifiedData[ topLevelSection ][ keyOne ];
 			}
@@ -412,17 +413,15 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
 				modifiedData[ topLevelSection ][ keyOne ] = {};
 			}
-			if (
-				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-			) {
-				modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				] = {};
+			if ( ! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) {
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
 			}
 			if ( mode === 'insert' ) {
-				modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				].splice( parseInt( keyThree ) + 1, 0, value );
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ].splice(
+					parseInt( keyThree ) + 1,
+					0,
+					value
+				);
 			}
 			if ( mode === 'overwrite' ) {
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
@@ -435,18 +434,17 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			) {
 				if (
 					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][
-							keyTwo
-						]
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
 					)
 				) {
-					modifiedData[ topLevelSection ][ keyOne ][
-						keyTwo
-					].splice( keyThree, 1 );
+					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ].splice(
+						keyThree,
+						1
+					);
 				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][
-						keyTwo
-					][ keyThree ];
+					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					];
 				}
 			}
 
@@ -456,14 +454,11 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
 				).length === 0
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				];
+				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 			}
 			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ]
-				).length === 0
+				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
+					.length === 0
 			) {
 				delete modifiedData[ topLevelSection ][ keyOne ];
 			}
@@ -482,12 +477,8 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
 				modifiedData[ topLevelSection ][ keyOne ] = {};
 			}
-			if (
-				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-			) {
-				modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				] = {};
+			if ( ! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) {
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
 			}
 			if (
 				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
@@ -504,9 +495,9 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 				].splice( parseInt( keyFour ) + 1, 0, value );
 			}
 			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				][ keyFour ] = value;
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
+					keyFour
+				] = value;
 			}
 			if (
 				( defaultValue !== null && defaultValue === value ) ||
@@ -514,18 +505,18 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			) {
 				if (
 					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][
-							keyTwo
-						][ keyThree ]
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+							keyThree
+						]
 					)
 				) {
 					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
 						keyThree
 					].splice( keyFour, 1 );
 				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][
-						keyTwo
-					][ keyThree ][ keyFour ];
+					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					][ keyFour ];
 				}
 			}
 
@@ -537,23 +528,18 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					]
 				).length === 0
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				];
+				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 			}
 			if (
 				Object.entries(
 					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
 				).length === 0
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				];
+				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 			}
 			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ]
-				).length === 0
+				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
+					.length === 0
 			) {
 				delete modifiedData[ topLevelSection ][ keyOne ];
 			}
@@ -574,12 +560,8 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
 				modifiedData[ topLevelSection ][ keyOne ] = {};
 			}
-			if (
-				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-			) {
-				modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				] = {};
+			if ( ! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) {
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
 			}
 			if (
 				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
@@ -595,19 +577,19 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					keyThree
 				][ keyFour ]
 			) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				][ keyFour ] = {};
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
+					keyFour
+				] = {};
 			}
 			if ( mode === 'insert' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				][ keyFour ].splice( parseInt( keyFive ) + 1, 0, value );
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
+					keyFour
+				].splice( parseInt( keyFive ) + 1, 0, value );
 			}
 			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				][ keyFour ][ keyFive ] = value;
+				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
+					keyFour
+				][ keyFive ] = value;
 			}
 			if (
 				( defaultValue !== null && defaultValue === value ) ||
@@ -615,18 +597,18 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 			) {
 				if (
 					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][
-							keyTwo
-						][ keyThree ][ keyFour ]
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+							keyThree
+						][ keyFour ]
 					)
 				) {
 					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
 						keyThree
 					][ keyFour ].splice( keyFive, 1 );
 				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][
-						keyTwo
-					][ keyThree ][ keyFour ][ keyFive ];
+					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					][ keyFour ][ keyFive ];
 				}
 			}
 
@@ -638,9 +620,7 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					][ keyFour ]
 				).length === 0
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				];
+				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 			}
 			if (
 				Object.entries(
@@ -649,23 +629,18 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					]
 				).length === 0
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				];
+				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 			}
 			if (
 				Object.entries(
 					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
 				).length === 0
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][
-					keyTwo
-				];
+				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
 			}
 			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ]
-				).length === 0
+				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
+					.length === 0
 			) {
 				delete modifiedData[ topLevelSection ][ keyOne ];
 			}
@@ -716,9 +691,9 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 						keyOne
 					].hasOwnProperty( keyTwo )
 				) {
-					return themeData.theme_json_file[ topLevelSection ][ keyOne ][
-						keyTwo
-					];
+					return themeData.theme_json_file[ topLevelSection ][
+						keyOne
+					][ keyTwo ];
 				}
 			}
 		}
@@ -771,9 +746,9 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 						].hasOwnProperty( keyThree )
 					) {
 						if (
-							themeData.theme_json_file[ topLevelSection ][ keyOne ][
-								keyTwo
-							][ keyThree ].hasOwnProperty( keyFour )
+							themeData.theme_json_file[ topLevelSection ][
+								keyOne
+							][ keyTwo ][ keyThree ].hasOwnProperty( keyFour )
 						) {
 							return themeData.theme_json_file[ topLevelSection ][
 								keyOne
@@ -807,9 +782,9 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 						].hasOwnProperty( keyThree )
 					) {
 						if (
-							themeData.theme_json_file[ topLevelSection ][ keyOne ][
-								keyTwo
-							][ keyThree ].hasOwnProperty( keyFour )
+							themeData.theme_json_file[ topLevelSection ][
+								keyOne
+							][ keyTwo ][ keyThree ].hasOwnProperty( keyFour )
 						) {
 							if (
 								themeData.theme_json_file[ topLevelSection ][
@@ -818,9 +793,11 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 									keyFour
 								].hasOwnProperty( keyFive )
 							) {
-								return themeData.theme_json_file[ topLevelSection ][
-									keyOne
-								][ keyTwo ][ keyThree ][ keyFour ][ keyFive ];
+								return themeData.theme_json_file[
+									topLevelSection
+								][ keyOne ][ keyTwo ][ keyThree ][ keyFour ][
+									keyFive
+								];
 							}
 						}
 					}
@@ -842,27 +819,27 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 					...themeData,
 					included_patterns: {
 						...themeData.included_patterns,
-						[patternData.name]: patternData,
-					}
-				}
+						[ patternData.name ]: patternData,
+					},
+				};
 			}
 			if ( patternData.type === 'template' ) {
 				newThemeData = {
 					...themeData,
 					template_files: {
 						...themeData.template_files,
-						[patternData.name]: patternData,
-					}
-				}
+						[ patternData.name ]: patternData,
+					},
+				};
 			}
 			if ( patternData.type === 'template_part' ) {
 				newThemeData = {
 					...themeData,
 					template_parts: {
 						...themeData.template_parts,
-						[patternData.name]: patternData,
-					}
-				}
+						[ patternData.name ]: patternData,
+					},
+				};
 			}
 			setThemeData( newThemeData );
 			resolve( newThemeData );
@@ -884,43 +861,4 @@ export default function useThemeData( themeId, themes, patternEditorIframe, temp
 		fetchInProgress,
 		themeNameIsDefault,
 	};
-}
-
-function SnackbarSuccessSave( {showDetails, setShowDetails } ) {
-	const initial = localStorage.getItem( 'fseStudioSnackbarShowDetails' );
-	const [snackbarShowDetails, setSnackbarShowDetails] = useState( initial === 'true' ? true : false );
-
-	return (
-		<div>
-			Theme successfuly saved.
-			<div hidden={ ! snackbarShowDetails }>
-				<p>Actions taken:</p>
-				<p>✅ All pattern files re-generated, formatted, and written to theme's "patterns" directory.</p>
-				<p>✅ All Template files written to theme's "templates" directory.</p>
-				<p>✅ All Template Parts files written to theme's "parts" directory.</p>
-				<p>✅ Strings in Patterns localized (set to be translateable)</p>
-				<p>✅ Changes to Settings and Styles formatted into JSON and written to theme.json file in theme. </p>
-			</div>
-			<button
-				style={{
-					display: localStorage.getItem( 'fseStudioSnackbarShowDetails' ) === 'true' ? 'block' : 'none'
-				}}
-				onClick={() => {
-					localStorage.setItem( 'fseStudioSnackbarShowDetails', 'false' );
-				}}
-			>
-				{ __( 'Hide Details', 'fsestudio' ) }
-			</button>
-			<button
-				style={{
-					display: localStorage.getItem( 'fseStudioSnackbarShowDetails' ) === 'true' ? 'none' : 'block'
-				}}
-				onClick={() => {
-					localStorage.setItem( 'fseStudioSnackbarShowDetails', 'true' );
-				}}
-			>
-				{ __( 'Show Details', 'fsestudio' ) }
-			</button>
-		</div>
-	)
 }

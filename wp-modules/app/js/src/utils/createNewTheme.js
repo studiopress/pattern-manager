@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function createNewTheme( themes, currentThemeId ) {
 	const themeId = uuidv4();
-	
+
 	/** @type {import('../hooks/useThemeData').Theme} */
 	const newThemeData = {
 		id: themeId,
@@ -25,12 +25,12 @@ export default function createNewTheme( themes, currentThemeId ) {
 		version: '1.0.0',
 		text_domain: 'my-new-theme',
 	};
-	
+
 	themes.setThemes( {
 		...themes.themes,
-		[themeId]: newThemeData,
+		[ themeId ]: newThemeData,
 	} );
-	
+
 	// Switch to the newly created theme.
 	currentThemeId.set( themeId );
 }

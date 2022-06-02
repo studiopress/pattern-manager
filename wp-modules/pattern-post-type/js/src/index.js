@@ -24,25 +24,29 @@ const FseStudioMetaControls = () => {
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
-	
+
 	if ( postMeta?.type === 'template' ) {
-		return <div id={ coreLastUpdate }>
-			<PluginDocumentSettingPanel
-				className='fsestudio-template-details'
-				title={ __( 'Template Details', 'fse-studio' ) }
-				icon="edit"
-			>
-				<PanelRow>
-					{ __( 'Template:', 'fse-studio' ) + ' ' + postMeta.title }
-				</PanelRow>
-			</PluginDocumentSettingPanel>
-		</div>;
+		return (
+			<div id={ coreLastUpdate }>
+				<PluginDocumentSettingPanel
+					className="fsestudio-template-details"
+					title={ __( 'Template Details', 'fse-studio' ) }
+					icon="edit"
+				>
+					<PanelRow>
+						{ __( 'Template:', 'fse-studio' ) +
+							' ' +
+							postMeta.title }
+					</PanelRow>
+				</PluginDocumentSettingPanel>
+			</div>
+		);
 	}
 
 	return (
 		<div id={ coreLastUpdate }>
 			<PluginDocumentSettingPanel
-				title={  __( 'Pattern Settings', 'fse-studio' ) }
+				title={ __( 'Pattern Settings', 'fse-studio' ) }
 				icon="edit"
 			>
 				<PanelRow>
@@ -71,8 +75,8 @@ registerPlugin( 'fsestudio-postmeta-for-patterns', {
 // Change the word "Publish" to "Save Pattern"
 function changeWords( translation, text ) {
 	const postMeta = wp.data
-	.select( 'core/editor' )
-	.getEditedPostAttribute( 'meta' );
+		.select( 'core/editor' )
+		.getEditedPostAttribute( 'meta' );
 
 	if ( postMeta?.type === 'pattern' ) {
 		if ( text === 'Publish' ) {
@@ -115,15 +119,11 @@ function changeWords( translation, text ) {
 
 	return translation;
 }
-wp.hooks.addFilter(
-	'i18n.gettext',
-	'fse-studio/changeWords',
-	changeWords
-);
+wp.hooks.addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
 
 wp.hooks.removeFilter(
 	'blockEditor.__unstableCanInsertBlockType',
-	'removeTemplatePartsFromInserter',
+	'removeTemplatePartsFromInserter'
 );
 
 // Tell the parent page (fse studio) that we are loaded.
@@ -134,20 +134,25 @@ wp.data.subscribe( () => {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
-	
+
 	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
 	}
 
 	// If saving just started, set a flag.
-	if ( wp.data.select( 'core/editor' ).isSavingPost() && ! fsestudioBlockPatternEditorIsSaving) {
+	if (
+		wp.data.select( 'core/editor' ).isSavingPost() &&
+		! fsestudioBlockPatternEditorIsSaving
+	) {
 		fsestudioBlockPatternEditorIsSaving = true;
 	}
-	if ( ! wp.data.select( 'core/editor' ).isSavingPost() && fsestudioBlockPatternEditorIsSaving ) {
+	if (
+		! wp.data.select( 'core/editor' ).isSavingPost() &&
+		fsestudioBlockPatternEditorIsSaving
+	) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
 		fsestudioBlockPatternEditorIsSaving = false;
 	}
-
 } );
 
 let fsestudioSaveDebounce = null;
@@ -172,41 +177,35 @@ window.addEventListener(
 						} );
 				}, 100 );
 			}
-			
+
 			if ( response.message === 'fsestudio_save' ) {
 				// If the FSE Studio apps tells us to save the current post, do it:
 				clearTimeout( fsestudioSaveDebounce );
 				fsestudioSaveDebounce = setTimeout( () => {
-					wp.data
-						.dispatch( 'core/editor' )
-						.savePost();
+					wp.data.dispatch( 'core/editor' ).savePost();
 				}, 200 );
 			}
-			
-			
+
 			if ( response.message === 'fsestudio_themejson_changed' ) {
 				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
 				clearTimeout( fsestudioThemeJsonChangeDebounce );
 				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
-
 					wp.data.dispatch( 'core/notices' ).createNotice(
 						'warning', // Can be one of: success, info, warning, error.
-						'FSE Studio: The values in this theme\'s theme.json file have changed. To experience them accurately, you will need to refresh this editor.', // Text string to display.
+						"FSE Studio: The values in this theme's theme.json file have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 						{
-						    isDismissible: false, // Whether the user can dismiss the notice.
-						    // Any actions the user can perform.
-						    actions: [
-							   {
-								  url: '',
-								  label: 'Refresh Editor',
-							   },
-						    ],
+							isDismissible: false, // Whether the user can dismiss the notice.
+							// Any actions the user can perform.
+							actions: [
+								{
+									url: '',
+									label: 'Refresh Editor',
+								},
+							],
 						}
-					 );
-					
+					);
 				}, 200 );
 			}
-
 		} catch ( e ) {
 			// Message posted was not JSON, so do nothing.
 		}

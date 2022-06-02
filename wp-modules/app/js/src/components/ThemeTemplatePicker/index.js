@@ -9,19 +9,20 @@ import useStudioContext from '../../hooks/useStudioContext';
 // WP Dependencies.
 import { useState } from '@wordpress/element';
 
-import {
-	Icon,
-	close,
-	edit,
-	plus
-} from '@wordpress/icons';
+import { Icon, close, edit, plus } from '@wordpress/icons';
 
 /**
  * @param {{
  *  templateName: string
  * }} props The component props.
  */
-export default function ThemeTemplatePicker( { templateName, templateData, standardTemplates, existsInTheme, type } ) {
+export default function ThemeTemplatePicker( {
+	templateName,
+	templateData,
+	standardTemplates,
+	existsInTheme,
+	type,
+} ) {
 	const { currentView, currentTheme, currentPatternId } = useStudioContext();
 
 	return (
@@ -44,37 +45,35 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 					</span>
 				</div>
 				<div className="mt-1 sm:mt-0 sm:col-span-1">
-					<div
-						
-						className="flex justify-between border border-gray-200 rounded relative group"
-					>
+					<div className="flex justify-between border border-gray-200 rounded relative group">
 						<button
 							className="flex"
 							type="button"
-							
-							 onClick={() => {
+							onClick={ () => {
 								// If this template doesn't exist in this theme yet, create it first, then go to the block editor.
 								if ( ! existsInTheme ) {
 									const newPatternData = {
-										type: type,
+										type,
 										title: templateName,
 										name: templateName,
 										content: '',
 									};
 
-									currentTheme.createPattern( newPatternData )
-									.then( (newPatternData) => {
-										console.log( newPatternData );
-										// Switch to the newly created theme.
-										currentPatternId.set( templateName );
-										currentView.set('pattern_editor');
-									} );
-								
+									currentTheme
+										.createPattern( newPatternData )
+										.then( ( newPatternData ) => {
+											console.log( newPatternData );
+											// Switch to the newly created theme.
+											currentPatternId.set(
+												templateName
+											);
+											currentView.set( 'pattern_editor' );
+										} );
 								} else {
 									currentPatternId.set( templateName );
 									currentView.set( 'pattern_editor' );
 								}
-							 }}
+							} }
 						>
 							<div className="flex text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300">
 								<Icon
@@ -82,13 +81,15 @@ export default function ThemeTemplatePicker( { templateName, templateData, stand
 									icon={ existsInTheme ? edit : plus }
 									size={ 30 }
 								/>
-								{ ! existsInTheme ? __( 'Add to theme', 'fse-studio' ) : null }
+								{ ! existsInTheme
+									? __( 'Add to theme', 'fse-studio' )
+									: null }
 							</div>
 						</button>
 						<button
 							className="flex"
 							type="button"
-							
+
 							// onClick={ }
 						>
 							<Icon

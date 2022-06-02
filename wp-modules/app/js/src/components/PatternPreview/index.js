@@ -10,11 +10,8 @@ import useStudioContext from '../../hooks/useStudioContext';
  *  scale: number,
  * }} props
  */
-export default function PatternPreview( {
-	url,
-	scale,
-} ) {
-	const [currentUrl, setCurrentUrl] = useState( url );
+export default function PatternPreview( { url, scale } ) {
+	const [ currentUrl, setCurrentUrl ] = useState( url );
 	const { currentTheme, currentView } = useStudioContext();
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
@@ -22,7 +19,7 @@ export default function PatternPreview( {
 	);
 
 	const scaleMultiplier = 10 / ( scale * 10 );
-	
+
 	useEffect( () => {
 		if ( currentTheme.fetchInProgress ) {
 			setCurrentUrl( '' );
@@ -31,14 +28,16 @@ export default function PatternPreview( {
 			setCurrentUrl( url );
 		}
 	}, [ currentTheme.fetchInProgress ] );
-	
+
 	useEffect( () => {
 		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
 			if ( iframeRef.contentWindow.document.body.scrollHeight > 0 ) {
-				setIframeInnerContentHeight( iframeRef?.contentWindow.document.body.scrollHeight );
+				setIframeInnerContentHeight(
+					iframeRef?.contentWindow.document.body.scrollHeight
+				);
 			}
 		}
-	}, [currentView.currentView] );
+	}, [ currentView.currentView ] );
 
 	return (
 		<div
@@ -50,15 +49,23 @@ export default function PatternPreview( {
 			} }
 		>
 			<iframe
-				src={currentUrl}
+				src={ currentUrl }
 				title={ __( 'Pattern Preview', 'fse-studio' ) }
 				role={ 'img' }
 				// @ts-ignore
 				ref={ setRef }
 				onLoad={ () => {
-					if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
-						if ( iframeRef.contentWindow.document.body.scrollHeight > 0 ) {
-							setIframeInnerContentHeight( iframeRef.contentWindow.document.body.scrollHeight );
+					if (
+						iframeRef?.contentWindow?.document?.body?.scrollHeight
+					) {
+						if (
+							iframeRef.contentWindow.document.body.scrollHeight >
+							0
+						) {
+							setIframeInnerContentHeight(
+								iframeRef.contentWindow.document.body
+									.scrollHeight
+							);
 						}
 					}
 				} }

@@ -2,7 +2,7 @@
 /**
  * Title: Home Page Option A
  * Slug: 256c30de-8997-4788-b344-e7d1648a1a17
- * Categories: 
+ * Categories:
  * Viewport Width: 1280
  */
 

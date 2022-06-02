@@ -5,15 +5,20 @@ import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
 
 export default function GettingStarted() {
-
 	const { themes, currentThemeId } = useStudioContext();
 
 	return (
 		<>
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">{ __( 'Welcome to FSE Studio', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">Build your full site editing themes faster and easier with FSE Studio! Check out the video below to learn how to get started.</p>
+					<h1 className="text-4xl mb-3">
+						{ __( 'Welcome to FSE Studio', 'fse-studio' ) }
+					</h1>
+					<p className="text-lg max-w-2xl">
+						Build your full site editing themes faster and easier
+						with FSE Studio! Check out the video below to learn how
+						to get started.
+					</p>
 				</div>
 			</div>
 
@@ -22,12 +27,23 @@ export default function GettingStarted() {
 					<div className="w-full">
 						<img className="rounded-md" src={ image } />
 					</div>
-					
+
 					<div className="grid grid-cols-2 gap-10">
 						<div>
-							<h2 className="text-4xl mb-3">Create your first theme</h2>
-							<p className="text-lg mb-3">Donec ac leo condimentum, feugiat lacus in, euismod magna. Curabitur in gravida justo. Vestibulum cursus, elit in rutrum hendrerit, dui nunc.</p>
-							<p className="text-lg mb-3">Donec ac leo condimentum, feugiat lacus in, euismod magna. Curabitur in gravida justo. Vestibulum cursus, elit in rutrum hendrerit.</p>
+							<h2 className="text-4xl mb-3">
+								Create your first theme
+							</h2>
+							<p className="text-lg mb-3">
+								Donec ac leo condimentum, feugiat lacus in,
+								euismod magna. Curabitur in gravida justo.
+								Vestibulum cursus, elit in rutrum hendrerit, dui
+								nunc.
+							</p>
+							<p className="text-lg mb-3">
+								Donec ac leo condimentum, feugiat lacus in,
+								euismod magna. Curabitur in gravida justo.
+								Vestibulum cursus, elit in rutrum hendrerit.
+							</p>
 						</div>
 						<div className="bg-fses-gray p-20 items-center justify-center flex flex-col rounded">
 							<button
@@ -37,7 +53,11 @@ export default function GettingStarted() {
 									createNewTheme( themes, currentThemeId );
 								} }
 							>
-								{ __( 'Start Creating Your Theme', 'fse-studio' ) } &rarr;
+								{ __(
+									'Start Creating Your Theme',
+									'fse-studio'
+								) }{ ' ' }
+								&rarr;
 							</button>
 						</div>
 					</div>

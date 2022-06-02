@@ -5,7 +5,12 @@ import { v4 as uuidv4 } from 'uuid';
 // @ts-check
 import { __ } from '@wordpress/i18n';
 import { Modal, Spinner } from '@wordpress/components';
-import { useState, useEffect, useRef, createInterpolateElement } from '@wordpress/element';
+import {
+	useState,
+	useEffect,
+	useRef,
+	createInterpolateElement,
+} from '@wordpress/element';
 
 // Hooks
 import useStudioContext from '../../hooks/useStudioContext';
@@ -35,7 +40,9 @@ export default function PatternEditor( { visible } ) {
 				>
 					<PatternPicker
 						patterns={ searchItems(
-							Object.values( currentTheme.data.included_patterns ),
+							Object.values(
+								currentTheme.data.included_patterns
+							),
 							'custom'
 						) }
 						onClickPattern={
@@ -55,7 +62,13 @@ export default function PatternEditor( { visible } ) {
 }
 
 export function BlockEditor() {
-	const { currentPattern, currentPatternId, patternEditorIframe, blockEditorLoaded, setBlockEditorLoaded } = useStudioContext();
+	const {
+		currentPattern,
+		currentPatternId,
+		patternEditorIframe,
+		blockEditorLoaded,
+		setBlockEditorLoaded,
+	} = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
 
 	useEffect( () => {
@@ -83,13 +96,15 @@ export function BlockEditor() {
 		}
 		setCurrentPatternName( currentPatternId.value );
 	}, [ currentPatternId ] );
-	
+
 	if ( ! currentPattern?.post_id ) {
-		return <div className="h-screen min-h-full w-screen items-center justify-center">
-			<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
-				<Spinner />
+		return (
+			<div className="h-screen min-h-full w-screen items-center justify-center">
+				<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
+					<Spinner />
+				</div>
 			</div>
-		</div>
+		);
 	}
 
 	return (
@@ -101,14 +116,18 @@ export function BlockEditor() {
 							<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
 								<Spinner />
 								{ createInterpolateElement(
-								__(
-									'Loading blocks for <span></span> into block editor...',
-									'fse-studio'
-								),
-								{
-									span: <span className="px-1 font-semibold">{currentPattern.title}</span>
-								}
-								)}
+									__(
+										'Loading blocks for <span></span> into block editor…',
+										'fse-studio'
+									),
+									{
+										span: (
+											<span className="px-1 font-semibold">
+												{ currentPattern.title }
+											</span>
+										),
+									}
+								) }
 							</div>
 						</div>
 					) : null }
@@ -120,7 +139,12 @@ export function BlockEditor() {
 							width: '100%',
 							height: 'calc( 100vh - 64px )',
 						} }
-						src={ fsestudio.siteUrl + '/wp-admin/post.php?post=' + currentPattern?.post_id + '&action=edit' }
+						src={
+							fsestudio.siteUrl +
+							'/wp-admin/post.php?post=' +
+							currentPattern?.post_id +
+							'&action=edit'
+						}
 					/>
 				</div>
 			</div>
