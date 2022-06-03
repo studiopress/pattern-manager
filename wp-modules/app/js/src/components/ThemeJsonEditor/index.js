@@ -4,7 +4,6 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, check } from '@wordpress/icons';
-import { Spinner } from '@wordpress/components';
 
 import useStudioContext from '../../hooks/useStudioContext';
 

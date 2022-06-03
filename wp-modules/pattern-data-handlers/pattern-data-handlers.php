@@ -94,14 +94,21 @@ function get_patterns() {
 	return $patterns;
 }
 
+/**
+ * This function validates and standardizes the data retrieved from a theme pattern file's php header.
+ * It is taken/modified from Gutenberg's https://github.com/WordPress/gutenberg/blob/b3cac2c86e3a364a8c52970c25db5f00ed3e9fb6/lib/compat/wordpress-6.0/block-patterns.php#L77
+ *
+ * @param array  $pattern_data The data retrieved from get_file_data.
+ * @param string $file The path to the theme pattern file.
+ */
 function format_pattern_data( $pattern_data, $file ) {
 	if ( empty( $pattern_data['slug'] ) ) {
 		_doing_it_wrong(
 			'_register_theme_block_patterns',
 			sprintf(
 				/* translators: %s: file name. */
-				__( 'Could not register file "%s" as a block pattern ("Slug" field missing)', 'gutenberg' ),
-				$file
+				esc_html( __( 'Could not register file "%s" as a block pattern ("Slug" field missing)', 'fse-studio' ) ),
+				esc_html( $file )
 			),
 			'6.0.0'
 		);
@@ -113,17 +120,13 @@ function format_pattern_data( $pattern_data, $file ) {
 			'_register_theme_block_patterns',
 			sprintf(
 				/* translators: %1s: file name; %2s: slug value found. */
-				__( 'Could not register file "%1$s" as a block pattern (invalid slug "%2$s")', 'gutenberg' ),
-				$file,
-				$pattern_data['slug']
+				esc_html( __( 'Could not register file "%1$s" as a block pattern (invalid slug "%2$s")', 'fse-studio' ) ),
+				esc_html( $file ),
+				esc_html( $pattern_data['slug'] )
 			),
 			'6.0.0'
 		);
 	}
-
-	// if ( WP_Block_Patterns_Registry::get_instance()->is_registered( $pattern_data['slug'] ) ) {
-	// return false;
-	// }
 
 	// Title is a required property.
 	if ( ! $pattern_data['title'] ) {
@@ -131,8 +134,8 @@ function format_pattern_data( $pattern_data, $file ) {
 			'_register_theme_block_patterns',
 			sprintf(
 				/* translators: %1s: file name; %2s: slug value found. */
-				__( 'Could not register file "%s" as a block pattern ("Title" field missing)', 'gutenberg' ),
-				$file
+				esc_html( __( 'Could not register file "%s" as a block pattern ("Title" field missing)', 'fse-studio' ) ),
+				esc_html( $file )
 			),
 			'6.0.0'
 		);

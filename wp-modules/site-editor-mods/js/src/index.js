@@ -1,9 +1,5 @@
+/* global fsestudio */
 import '../../css/src/index.scss';
-import { registerPlugin } from '@wordpress/plugins';
-import { __ } from '@wordpress/i18n';
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
-import { PanelRow, TextControl } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
 
 // Change the word "Publish" to "Save Pattern"
 function changeWords( translation, text ) {

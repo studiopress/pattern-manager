@@ -7,23 +7,10 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
-import { useEffect, useState, useRef } from '@wordpress/element';
+import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import logo from '../../../../img/logo.svg';
-import { v4 as uuidv4 } from 'uuid';
-
-// Icons
-import {
-	Icon,
-	wordpress,
-	layout,
-	file,
-	globe,
-	info,
-	close,
-	chevronLeft,
-} from '@wordpress/icons';
 
 import { fsestudio } from '../../globals';
 
@@ -48,9 +35,6 @@ import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
 import GettingStarted from '../GettingStarted';
-
-// Utils
-import classNames from '../../utils/classNames';
 
 /**
  * @typedef {{
@@ -157,9 +141,6 @@ function FseStudio() {
 		currentView,
 		currentTheme,
 		templateEditorIframe,
-		themes,
-		currentThemeId,
-		setBlockEditorLoaded,
 	} = useStudioContext();
 	const snackBar = useSnackbarContext();
 
@@ -178,7 +159,11 @@ function FseStudio() {
 				<div className="flex-1 flex">
 					<div className="flex w-full gap-8 mx-auto justify-between items-center px-10">
 						<div className="flex items-center gap-12">
-							<img className="w-[120px]" src={ logo } />
+							<img
+								className="w-[120px]"
+								src={ logo }
+								alt={ 'fsestudio-logo' }
+							/>
 							<div className="flex gap-8">
 								<button
 									type="button"

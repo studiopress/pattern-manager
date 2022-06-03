@@ -14,7 +14,7 @@
 <!-- wp:column {"verticalAlignment":"center","width":"75%"} -->
 <div class="wp-block-column is-vertically-aligned-center" style="flex-basis:75%">
 <!-- wp:paragraph {"style":{"typography":{"lineHeight":"1.25"}},"fontSize":"max-48"} -->
-<p class="has-max-48-font-size" id="design-with-courage" style="line-height:1.25"><?php echo esc_html__( 'Design with courage.', 'frost' ); ?></p>
+<p class="has-max-48-font-size" id="design-with-courage" style="line-height:1.25"><?php echo esc_html__( 'Design with courage.', 'fse-studio' ); ?></p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:column -->
@@ -27,13 +27,13 @@
 <!-- wp:group {"style":{"spacing":{"blockGap":"0px"}}} -->
 <div class="wp-block-group">
 <!-- wp:paragraph -->
-<p><a href="#"><?php echo esc_html__( 'Start Here', 'frost' ); ?></a></p>
+<p><a href="#"><?php echo esc_html__( 'Start Here', 'fse-studio' ); ?></a></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p><a href="#"><?php echo esc_html__( 'Our Services', 'frost' ); ?></a></p>
+<p><a href="#"><?php echo esc_html__( 'Our Services', 'fse-studio' ); ?></a></p>
 <!-- /wp:paragraph -->
 <!-- wp:paragraph -->
-<p><a href="#"><?php echo esc_html__( 'Contact Us', 'frost' ); ?></a></p>
+<p><a href="#"><?php echo esc_html__( 'Contact Us', 'fse-studio' ); ?></a></p>
 <!-- /wp:paragraph -->
 </div>
 <!-- /wp:group -->

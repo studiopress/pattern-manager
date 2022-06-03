@@ -1,11 +1,9 @@
 /* global fetch */
 // @ts-check
 
-import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
-import assembleUrl from '../utils/assembleUrl';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
@@ -44,16 +42,14 @@ import useSnackbarContext from './useSnackbarContext';
 /**
  * @param {string}                                    themeId
  * @param {ReturnType<import('./useThemes').default>} themes
- * @param                                             patternEditorIframe
- * @param                                             templateEditorIframe
- * @param                                             currentView
+ * @param {Object}                                    patternEditorIframe
+ * @param {Object}                                    templateEditorIframe
  */
 export default function useThemeData(
 	themeId,
 	themes,
 	patternEditorIframe,
-	templateEditorIframe,
-	currentView
+	templateEditorIframe
 ) {
 	const snackBar = useSnackbarContext();
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -85,12 +81,10 @@ export default function useThemeData(
 			'message',
 			( event ) => {
 				if ( event.data === 'fsestudio_pattern_editor_save_complete' ) {
-					console.log( 'fsestudio_pattern_editor_save_complete' );
 					setPatternEditorDirty( false );
 					setRequestThemeRefresh( true );
 				}
 				if ( event.data === 'fsestudio_site_editor_save_complete' ) {
-					console.log( 'fsestudio_site_editor_save_complete' );
 					setSiteEditorDirty( false );
 					setRequestThemeRefresh( true );
 				}
@@ -187,7 +181,9 @@ export default function useThemeData(
 	function saveThemeData() {
 		return new Promise( ( resolve ) => {
 			if ( themeData.name === 'My New Theme' ) {
+				/* eslint-disable */
 				alert( 'You need to change your theme name before saving' );
+				/* eslint-enable */
 				setThemeNameIsDefault( true );
 				resolve();
 				return;
@@ -207,7 +203,6 @@ export default function useThemeData(
 			} )
 				.then( ( response ) => {
 					if ( ! response.ok ) {
-						console.log( response.statusText );
 						throw response.statusText;
 					}
 					return response.json();
@@ -249,12 +244,6 @@ export default function useThemeData(
 
 					if ( ! patternEditorDirty && ! siteEditorDirty ) {
 						uponSuccessfulSave();
-					} else {
-						console.log(
-							'skipping save notice until iframes complete',
-							siteEditorDirty,
-							patternEditorDirty
-						);
 					}
 
 					resolve( data );

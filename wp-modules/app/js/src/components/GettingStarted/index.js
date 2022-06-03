@@ -25,7 +25,11 @@ export default function GettingStarted() {
 			<div className="mx-auto p-14 pb-20">
 				<div className="mx-auto max-w-7xl flex flex-col justify-between gap-20">
 					<div className="w-full">
-						<img className="rounded-md" src={ image } />
+						<img
+							alt={ 'video-placeholder' }
+							className="rounded-md"
+							src={ image }
+						/>
 					</div>
 
 					<div className="grid grid-cols-2 gap-10">

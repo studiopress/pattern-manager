@@ -1,13 +1,8 @@
 import { __ } from '@wordpress/i18n';
-import { Modal } from '@wordpress/components';
 
 import PatternPreview from '../PatternPreview';
-import PatternPicker from '../PatternPicker';
 
 import useStudioContext from '../../hooks/useStudioContext';
-
-// WP Dependencies.
-import { useState } from '@wordpress/element';
 
 import { Icon, close, edit, plus } from '@wordpress/icons';
 
@@ -61,8 +56,7 @@ export default function ThemeTemplatePicker( {
 
 									currentTheme
 										.createPattern( newPatternData )
-										.then( ( newPatternData ) => {
-											console.log( newPatternData );
+										.then( () => {
 											// Switch to the newly created theme.
 											currentPatternId.set(
 												templateName

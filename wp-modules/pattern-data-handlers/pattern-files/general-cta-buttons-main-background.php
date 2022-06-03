@@ -26,10 +26,10 @@
 <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"right","orientation":"horizontal"},"style":{"spacing":{"blockGap":"10px"}}} -->
 <div class="wp-block-buttons">
 <!-- wp:button {"style":{"border":{"radius":0}},"className":"large is-style-fill-base"} -->
-<div class="wp-block-button large is-style-fill-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Get Started', 'frost' ); ?> →</a></div>
+<div class="wp-block-button large is-style-fill-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Get Started', 'fse-studio' ); ?> →</a></div>
 <!-- /wp:button -->
 <!-- wp:button {"style":{"border":{"radius":0}},"className":"large is-style-outline-base"} -->
-<div class="wp-block-button large is-style-outline-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'frost' ); ?></a></div>
+<div class="wp-block-button large is-style-outline-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'fse-studio' ); ?></a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

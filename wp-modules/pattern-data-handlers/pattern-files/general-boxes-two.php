@@ -17,7 +17,7 @@
 <!-- wp:column {"style":{"spacing":{"padding":{"top":"60px","right":"60px","bottom":"60px","left":"60px"}}},"backgroundColor":"main"} -->
 <div class="wp-block-column has-main-background-color has-background" style="padding-top:60px;padding-right:60px;padding-bottom:60px;padding-left:60px">
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
-<h3 class="has-large-font-size" id="sample-heading-1"><?php echo esc_html__( 'Sample Heading', 'frost' ); ?></h3>
+<h3 class="has-large-font-size" id="sample-heading-1"><?php echo esc_html__( 'Sample Heading', 'fse-studio' ); ?></h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing vestibulum. Fringilla nec accumsan eget, facilisis mi justo, luctus pellentesque vitae gravida non diam accumsan posuere, venenatis at mi turpis.</p>
@@ -25,7 +25,7 @@
 <!-- wp:buttons -->
 <div class="wp-block-buttons">
 <!-- wp:button {"style":{"border":{"radius":0}},"className":"is-style-fill-base"} -->
-<div class="wp-block-button is-style-fill-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'frost' ); ?></a></div>
+<div class="wp-block-button is-style-fill-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'fse-studio' ); ?></a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->
@@ -34,7 +34,7 @@
 <!-- wp:column {"style":{"spacing":{"padding":{"top":"60px","right":"60px","bottom":"60px","left":"60px"}}},"backgroundColor":"main"} -->
 <div class="wp-block-column has-main-background-color has-background" style="padding-top:60px;padding-right:60px;padding-bottom:60px;padding-left:60px">
 <!-- wp:heading {"level":3,"fontSize":"large"} -->
-<h3 class="has-large-font-size" id="sample-heading-2"><?php echo esc_html__( 'Sample Heading', 'frost' ); ?></h3>
+<h3 class="has-large-font-size" id="sample-heading-2"><?php echo esc_html__( 'Sample Heading', 'fse-studio' ); ?></h3>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing vestibulum. Fringilla nec accumsan eget, facilisis mi justo, luctus pellentesque vitae gravida non diam accumsan posuere, venenatis at mi turpis.</p>
@@ -42,7 +42,7 @@
 <!-- wp:buttons -->
 <div class="wp-block-buttons">
 <!-- wp:button {"style":{"border":{"radius":0}},"className":"is-style-fill-base"} -->
-<div class="wp-block-button is-style-fill-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'frost' ); ?></a></div>
+<div class="wp-block-button is-style-fill-base"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'fse-studio' ); ?></a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

@@ -1,17 +1,7 @@
 // WP Dependencies.
-import { useRef, useState } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import {
-	Icon,
-	layout,
-	file,
-	globe,
-	check,
-	download,
-	close,
-	edit,
-	plus,
-} from '@wordpress/icons';
+import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
@@ -68,9 +58,10 @@ export default function ThemeSetup( { isVisible } ) {
 						{ __( 'Theme Details', 'fse-studio' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
-						Start by adding technical details of your theme that
-						appear in readme.txt, which is helpful for users to
-						understand the theme's capabilities.
+						{ __(
+							"Start by adding technical details of your theme that appear in readme.txt, which is helpful for users to understand the theme's capabilities.",
+							'fsestudio'
+						) }
 					</p>
 				</div>
 			</div>
@@ -534,9 +525,10 @@ export default function ThemeSetup( { isVisible } ) {
 									Export theme to .zip
 								</h4>
 								<p className="text-base mb-5">
-									Click the button below to export your theme
-									to a zip file. We'll include your patterns,
-									templates, styles, and theme.json file.
+									{ __(
+										"Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.",
+										'fsestudio'
+									) }
 								</p>
 								<button
 									type="button"
@@ -555,17 +547,17 @@ export default function ThemeSetup( { isVisible } ) {
 								</h4>
 								<ul>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											Full Site Editing Documentation
 										</a>
 									</li>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											About Full Site Editing Themes
 										</a>
 									</li>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											Something Else
 										</a>
 									</li>

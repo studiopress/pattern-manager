@@ -1,25 +1,14 @@
-import { v4 as uuidv4 } from 'uuid';
-
 // WP Dependencies
 
 // @ts-check
 import { __ } from '@wordpress/i18n';
-import { Modal, Spinner } from '@wordpress/components';
-import {
-	useState,
-	useEffect,
-	useRef,
-	createInterpolateElement,
-} from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 
 // Hooks
 import useStudioContext from '../../hooks/useStudioContext';
 
-// Components
-import PatternPicker from '../PatternPicker';
-
-// Utils
-import searchItems from '../../utils/searchItems';
+// Globals
+import { fsestudio } from '../../globals';
 
 /** @param {{visible: boolean}} props */
 export default function ThemePreview( { isVisible } ) {

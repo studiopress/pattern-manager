@@ -26,7 +26,7 @@
 <!-- wp:column {"verticalAlignment":"center","width":"50%","style":{"spacing":{"padding":{"right":"5%","left":"5%","top":"5%","bottom":"5%"}}}} -->
 <div class="wp-block-column is-vertically-aligned-center" style="padding-top:5%;padding-right:5%;padding-bottom:5%;padding-left:5%;flex-basis:50%">
 <!-- wp:heading {"fontSize":"x-large"} -->
-<h2 class="has-x-large-font-size" id="text-on-left-image-on-right"><?php echo esc_html__( 'Cover on left, text on right.', 'frost' ); ?></h2>
+<h2 class="has-x-large-font-size" id="text-on-left-image-on-right"><?php echo esc_html__( 'Cover on left, text on right.', 'fse-studio' ); ?></h2>
 <!-- /wp:heading -->
 <!-- wp:paragraph -->
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing vestibulum. Fringilla nec accumsan eget, facilisis mi justo, luctus pellentesque gravida vitae non diam accumsan posuere, venenatis mi turpis.</p>
@@ -34,10 +34,10 @@
 <!-- wp:buttons {"style":{"spacing":{"blockGap":"10px"}}} -->
 <div class="wp-block-buttons">
 <!-- wp:button {"style":{"border":{"radius":0}},"className":"is-style-fill"} -->
-<div class="wp-block-button is-style-fill"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Get Started', 'frost' ); ?></a></div>
+<div class="wp-block-button is-style-fill"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Get Started', 'fse-studio' ); ?></a></div>
 <!-- /wp:button -->
 <!-- wp:button {"style":{"border":{"radius":0}},"className":"is-style-outline"} -->
-<div class="wp-block-button is-style-outline"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'frost' ); ?></a></div>
+<div class="wp-block-button is-style-outline"><a class="wp-block-button__link no-border-radius"><?php echo esc_html__( 'Learn More', 'fse-studio' ); ?></a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->

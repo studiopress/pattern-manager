@@ -1,7 +1,7 @@
 // @ts-check
 
 import * as React from 'react';
-import { useState, useEffect } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 
 /**
  * @param {{

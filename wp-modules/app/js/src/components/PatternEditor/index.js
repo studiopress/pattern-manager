@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 // WP Dependencies
 
 // @ts-check
@@ -8,12 +6,14 @@ import { Modal, Spinner } from '@wordpress/components';
 import {
 	useState,
 	useEffect,
-	useRef,
 	createInterpolateElement,
 } from '@wordpress/element';
 
 // Hooks
 import useStudioContext from '../../hooks/useStudioContext';
+
+// Globals
+import { fsestudio } from '../../globals';
 
 // Components
 import PatternPicker from '../PatternPicker';

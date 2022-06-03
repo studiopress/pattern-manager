@@ -1,31 +1,11 @@
-import { v4 as uuidv4 } from 'uuid';
-
 // WP Dependencies.
-import { useRef, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import {
-	Icon,
-	layout,
-	file,
-	globe,
-	check,
-	download,
-	close,
-	edit,
-	plus,
-} from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
-import PatternPreview from '../PatternPreview';
 import ThemeTemplatePicker from '../ThemeTemplatePicker';
-
-// Utils
-import classNames from '../../utils/classNames';
-
-// Globals
-import { fsestudio } from '../../globals';
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemeTemplateFiles( { isVisible } ) {
@@ -159,7 +139,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 						{ currentTab === 'templates' ? (
 							<div className="divide-y divide-gray-200 flex flex-col justify-between">
 								{ Object.entries( standardTemplates ?? {} ).map(
-									( [ templateName, templateHelpInfo ] ) => {
+									( [ templateName ] ) => {
 										return (
 											<ThemeTemplatePicker
 												key={ templateName }
@@ -186,54 +166,83 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 								) }
 								{ Object.entries(
 									currentTheme.data?.template_files ?? {}
-								).map(
-									( [ templateName, templateContent ] ) => {
-										// Skip any we've already rendered above (standardTemplates).
-										if (
-											! standardTemplates.hasOwnProperty(
-												templateName
-											)
-										) {
-											return (
-												<ThemeTemplatePicker
-													key={ templateName }
-													templateName={
-														templateName
-													}
-													templateContent={
-														currentTheme.data
-															?.template_files
-															? currentTheme.data
-																	?.template_files[
-																	templateName
-															  ]
-															: ''
-													}
-													standardTemplates={
-														standardTemplates
-													}
-													existsInTheme={ currentTheme.data?.template_files.hasOwnProperty(
-														templateName
-													) }
-													type={ 'template' }
-												/>
-											);
-										}
+								).map( ( [ templateName ] ) => {
+									// Skip any we've already rendered above (standardTemplates).
+									if (
+										! standardTemplates.hasOwnProperty(
+											templateName
+										)
+									) {
+										return (
+											<ThemeTemplatePicker
+												key={ templateName }
+												templateName={ templateName }
+												templateContent={
+													currentTheme.data
+														?.template_files
+														? currentTheme.data
+																?.template_files[
+																templateName
+														  ]
+														: ''
+												}
+												standardTemplates={
+													standardTemplates
+												}
+												existsInTheme={ currentTheme.data?.template_files.hasOwnProperty(
+													templateName
+												) }
+												type={ 'template' }
+											/>
+										);
 									}
-								) }
+
+									return '';
+								} ) }
 							</div>
 						) : null }
 						{ currentTab === 'template-parts' ? (
 							<div className="divide-y divide-gray-200 flex flex-col justify-between">
 								{ Object.entries(
 									standardTemplateParts ?? {}
-								).map(
-									( [ templateName, templateHelpInfo ] ) => {
+								).map( ( [ templateName ] ) => {
+									return (
+										<ThemeTemplatePicker
+											key={ templateName }
+											templateName={ templateName }
+											templateData={
+												currentTheme.data
+													?.template_parts
+													? currentTheme.data
+															?.template_parts[
+															templateName
+													  ]
+													: ''
+											}
+											standardTemplates={
+												standardTemplateParts
+											}
+											existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty(
+												templateName
+											) }
+											type={ 'template_part' }
+										/>
+									);
+								} ) }
+								{ Object.entries(
+									currentTheme.data?.template_parts ?? {}
+								).map( ( [ templateName ] ) => {
+									// Skip any we've already rendered above (standardTemplateParts).
+									if (
+										! standardTemplateParts.hasOwnProperty(
+											templateName
+										)
+									) {
 										return (
 											<ThemeTemplatePicker
 												key={ templateName }
 												templateName={ templateName }
-												templateData={
+												templateContent={
 													currentTheme.data
 														?.template_parts
 														? currentTheme.data
@@ -252,44 +261,9 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 											/>
 										);
 									}
-								) }
-								{ Object.entries(
-									currentTheme.data?.template_parts ?? {}
-								).map(
-									( [ templateName, templateContent ] ) => {
-										// Skip any we've already rendered above (standardTemplateParts).
-										if (
-											! standardTemplateParts.hasOwnProperty(
-												templateName
-											)
-										) {
-											return (
-												<ThemeTemplatePicker
-													key={ templateName }
-													templateName={
-														templateName
-													}
-													templateContent={
-														currentTheme.data
-															?.template_parts
-															? currentTheme.data
-																	?.template_parts[
-																	templateName
-															  ]
-															: ''
-													}
-													standardTemplates={
-														standardTemplateParts
-													}
-													existsInTheme={ currentTheme.data?.template_parts?.hasOwnProperty(
-														templateName
-													) }
-													type={ 'template_part' }
-												/>
-											);
-										}
-									}
-								) }
+
+									return '';
+								} ) }
 							</div>
 						) : null }
 					</div>
@@ -315,12 +289,12 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 								</h4>
 								<ul>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											Full Site Editing Documentation
 										</a>
 									</li>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											About Full Site Editing Themes
 										</a>
 									</li>

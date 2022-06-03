@@ -1,24 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
 
 // WP Dependencies.
-import { useRef, useState, createInterpolateElement } from '@wordpress/element';
+import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import {
-	Icon,
-	layout,
-	file,
-	globe,
-	check,
-	download,
-	close,
-	edit,
-	plus,
-} from '@wordpress/icons';
+import { Icon, close, edit, plus } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Components
 import PatternPreview from '../PatternPreview';
+
+// Globals
+import { fsestudio } from '../../globals';
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemePatterns( { isVisible } ) {
@@ -216,17 +209,17 @@ export default function ThemePatterns( { isVisible } ) {
 								</h4>
 								<ul>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											Full Site Editing Documentation
 										</a>
 									</li>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											About Full Site Editing Themes
 										</a>
 									</li>
 									<li>
-										<a className="text-wp-blue" href="#">
+										<a className="text-wp-blue" href="/">
 											Something Else
 										</a>
 									</li>

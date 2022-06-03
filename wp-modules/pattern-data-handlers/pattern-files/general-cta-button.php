@@ -26,7 +26,7 @@
 <!-- wp:buttons {"layout":{"type":"flex","justifyContent":"right","orientation":"horizontal"}} -->
 <div class="wp-block-buttons">
 <!-- wp:button {"style":{"spacing":{"padding":{"top":"15px","right":"25px","bottom":"15px","left":"25px"}},"border":{"radius":"0px"}},"className":"is-style-fill"} -->
-<div class="wp-block-button is-style-fill"><a class="wp-block-button__link" style="border-radius:0px;padding-top:15px;padding-right:25px;padding-bottom:15px;padding-left:25px"><?php echo esc_html__( 'Let’s Get Started', 'frost' ); ?> →</a></div>
+<div class="wp-block-button is-style-fill"><a class="wp-block-button__link" style="border-radius:0px;padding-top:15px;padding-right:25px;padding-bottom:15px;padding-left:25px"><?php echo esc_html__( 'Let’s Get Started', 'fse-studio' ); ?> →</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->
