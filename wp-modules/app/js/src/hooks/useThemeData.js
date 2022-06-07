@@ -1,4 +1,3 @@
-/* global fetch */
 // @ts-check
 
 import { useState, useEffect } from '@wordpress/element';
