@@ -39,51 +39,34 @@ function get_all_theme_json_files() {
 
 	$module_dir_path = module_dir_path( __FILE__ );
 
+	$wp_head_and_wp_footer = get_wp_head_and_wp_footer();
+
 	/**
-	 * Scan theme-json-files directory and get all the theme.json files.
+	 * Scan theme-json-files directory and get all the default theme.json files.
 	 */
 	$theme_json_file_paths = glob( $module_dir_path . '/theme-json-files/*.json' );
 
 	$theme_json_files = array();
 
-	$wp_head_and_wp_footer = get_wp_head_and_wp_footer();
-
 	foreach ( $theme_json_file_paths as $path ) {
-		$theme_json_content   = json_decode( $wp_filesystem->get_contents( $path ), true );
-		$theme_json_file_data = array(
-			'name'                 => basename( $path, '.json' ),
-			'content'              => $theme_json_content,
-			'renderedGlobalStyles' => ( new \WP_Theme_JSON( $theme_json_content, 'custom' ) )->get_stylesheet(),
-			'patternPreviewParts'  => $wp_head_and_wp_footer,
-		);
+		$theme_json_files[ basename( $path, '.json' ) ] = json_decode( $wp_filesystem->get_contents( $path ), true );
+	}
 
-		$theme_json_files[ $theme_json_file_data['name'] ] = $theme_json_file_data;
+	/**
+	 * Scan each theme to get all theme.json files.
+	 */
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
+
+	$themes = glob( $wp_themes_dir . '*' );
+
+	foreach ( $themes as $theme ) {
+		if ( $wp_filesystem->exists( $theme . '/theme.json' ) ) {
+			$theme_json_files[ basename( $theme ) ] = json_decode( $wp_filesystem->get_contents( $theme . '/theme.json' ), true );
+		}
 	}
 
 	return $theme_json_files;
-}
-
-/**
- * Update a single theme json file.
- *
- * @param array $theme_json_file_data Data about the theme json file.
- * @return bool
- */
-function update_theme_json_file( $theme_json_file_data ) {
-
-	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-
-	$module_dir_path = module_dir_path( __FILE__ );
-
-	// Create the index.html block template file.
-	$success = $wp_filesystem->put_contents(
-		$module_dir_path . '/theme-json-files/' . $theme_json_file_data['name'] . '.json',
-		wp_json_encode( $theme_json_file_data['content'], JSON_PRETTY_PRINT ),
-		FS_CHMOD_FILE
-	);
-
-	return $success;
 }
 
 /**
@@ -121,7 +104,6 @@ function get_wp_head_and_wp_footer() {
 		return;
 	}
 
-	// Should probably just activate the current theme beiing worked on right here so all fonts/assets/other are also rendered on the frontend properly.
 	$all_patterns = \FseStudio\PatternDataHandlers\get_patterns();
 
 	$rendered_patterns = array();

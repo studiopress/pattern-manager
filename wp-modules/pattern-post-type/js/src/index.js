@@ -17,12 +17,31 @@ const FseStudioMetaControls = () => {
 	if (
 		'fsestudio_pattern' !==
 		wp.data.select( 'core/editor' ).getCurrentPostType()
-	)
-		return null; // Will only render component for post type 'post'
+	) {
+		return null; // Will only render component for post type 'fsestudio_pattern'
+	}
 
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
+
+	if ( postMeta?.type === 'template' ) {
+		return (
+			<div id={ coreLastUpdate }>
+				<PluginDocumentSettingPanel
+					className="fsestudio-template-details"
+					title={ __( 'Template Details', 'fse-studio' ) }
+					icon="edit"
+				>
+					<PanelRow>
+						{ __( 'Template:', 'fse-studio' ) +
+							' ' +
+							postMeta.title }
+					</PanelRow>
+				</PluginDocumentSettingPanel>
+			</div>
+		);
+	}
 
 	return (
 		<div id={ coreLastUpdate }>
@@ -54,71 +73,91 @@ registerPlugin( 'fsestudio-postmeta-for-patterns', {
 } );
 
 // Change the word "Publish" to "Save Pattern"
-function changePublishToSavePattern( translation, text ) {
-	if ( text === 'Publish' ) {
-		return 'Save pattern to file';
+function changeWords( translation, text ) {
+	const postMeta = wp.data
+		.select( 'core/editor' )
+		.getEditedPostAttribute( 'meta' );
+
+	if ( postMeta?.type === 'pattern' ) {
+		if ( text === 'Publish' ) {
+			return 'Save pattern to theme';
+		}
+		if ( text === 'Post published.' || text === 'Post updated.' ) {
+			return 'Pattern saved to theme';
+		}
+		if ( text === 'Update' || text === 'Post updated.' ) {
+			return 'Update Pattern';
+		}
+		if ( text === 'Add New Tag' ) {
+			return 'Pattern Categories';
+		}
+		if ( text === 'Saved' ) {
+			return 'Saved to your theme directory';
+		}
 	}
-	if ( text === 'Saved' ) {
-		return 'Saved to your wp-content/fsestudio-custom-patterns/ directory';
-	}
-	if ( text === 'Post published.' || text === 'Post updated.' ) {
-		return 'Pattern saved to disk';
-	}
-	if ( text === 'Update' || text === 'Post updated.' ) {
-		return 'Update Pattern';
-	}
-	if ( text === 'Add New Tag' ) {
-		return 'Pattern Categories';
+
+	if ( postMeta?.type === 'template' ) {
+		if ( text === 'Pattern' ) {
+			return 'Template';
+		}
+		if ( text === 'Publish' ) {
+			return 'Save template to theme';
+		}
+		if ( text === 'Post published.' || text === 'Post updated.' ) {
+			return 'Template saved to theme';
+		}
+		if ( text === 'Update' || text === 'Post updated.' ) {
+			return 'Update Template';
+		}
+		if ( text === 'Add New Tag' ) {
+			return 'Pattern Categories';
+		}
+		if ( text === 'Saved' ) {
+			return 'Saved to your theme directory';
+		}
 	}
 
 	return translation;
 }
+wp.hooks.addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
 
-wp.hooks.addFilter(
-	'i18n.gettext',
-	'fse-studio/change-publish-to-save-pattern',
-	changePublishToSavePattern
+wp.hooks.removeFilter(
+	'blockEditor.__unstableCanInsertBlockType',
+	'removeTemplatePartsFromInserter'
 );
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
-let fsestudioPatternSavedDeBounce = null;
-
+let fsestudioBlockPatternEditorIsSaving = false;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
 
-	if ( wp.data.select( 'core/editor' ).isSavingPost() ) {
-		const postMeta = wp.data
-			.select( 'core/editor' )
-			.getEditedPostAttribute( 'meta' );
-		clearTimeout( fsestudioPatternSavedDeBounce );
-		fsestudioPatternSavedDeBounce = setTimeout( () => {
-			window.parent.postMessage(
-				JSON.stringify( {
-					message: 'fsestudio_pattern_saved',
-					blockPatternData: {
-						title: postMeta.title,
-						name: postMeta.name,
+	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
+		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
+	}
 
-						content: wp.data
-							.select( 'core/editor' )
-							.getEditedPostAttribute( 'content' ),
-						type: postMeta.type,
-
-						categories: wp.data
-							.select( 'core/editor' )
-							.getEditedPostAttribute( 'tags' ),
-					},
-				} )
-			);
-		}, 1000 );
+	// If saving just started, set a flag.
+	if (
+		wp.data.select( 'core/editor' ).isSavingPost() &&
+		! fsestudioBlockPatternEditorIsSaving
+	) {
+		fsestudioBlockPatternEditorIsSaving = true;
+	}
+	if (
+		! wp.data.select( 'core/editor' ).isSavingPost() &&
+		fsestudioBlockPatternEditorIsSaving
+	) {
+		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
+		fsestudioBlockPatternEditorIsSaving = false;
 	}
 } );
 
+let fsestudioSaveDebounce = null;
 let fsestudioSaveAndRefreshDebounce = null;
+let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
 	'message',
@@ -136,7 +175,36 @@ window.addEventListener(
 						.then( () => {
 							window.location.reload();
 						} );
-				}, 2000 );
+				}, 100 );
+			}
+
+			if ( response.message === 'fsestudio_save' ) {
+				// If the FSE Studio apps tells us to save the current post, do it:
+				clearTimeout( fsestudioSaveDebounce );
+				fsestudioSaveDebounce = setTimeout( () => {
+					wp.data.dispatch( 'core/editor' ).savePost();
+				}, 200 );
+			}
+
+			if ( response.message === 'fsestudio_themejson_changed' ) {
+				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+				clearTimeout( fsestudioThemeJsonChangeDebounce );
+				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
+					wp.data.dispatch( 'core/notices' ).createNotice(
+						'warning', // Can be one of: success, info, warning, error.
+						"FSE Studio: The values in this theme's theme.json file have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
+						{
+							isDismissible: false, // Whether the user can dismiss the notice.
+							// Any actions the user can perform.
+							actions: [
+								{
+									url: '',
+									label: 'Refresh Editor',
+								},
+							],
+						}
+					);
+				}, 200 );
 			}
 		} catch ( e ) {
 			// Message posted was not JSON, so do nothing.

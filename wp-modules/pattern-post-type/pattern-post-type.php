@@ -2,7 +2,7 @@
 /**
  * Module Name: Pattern Post Type
  * Description: This module registers a post type to be used when editing block patterns, and sets up how things work in the block editor.
- * Namespace: StringFixer
+ * Namespace: PatternPostType
  *
  * @package fse-studio
  */
@@ -20,6 +20,33 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Create a custom post type to be used for our default post.
  */
 function pattern_post_type() {
+	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_id      = absint( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$post_type    = get_post_type( $post_id );
+		$pattern_type = get_post_meta( $post_id, 'type', true );
+	} else {
+		$pattern_type = 'pattern';
+	}
+
+	$labels = array(
+		'name'          => __( 'Patterns', 'fse-studio' ),
+		'singular_name' => __( 'Pattern', 'fse-studio' ),
+	);
+
+	if ( 'pattern' === $pattern_type ) {
+		$labels = array(
+			'name'          => __( 'Patterns', 'fse-studio' ),
+			'singular_name' => __( 'Pattern', 'fse-studio' ),
+		);
+	}
+
+	if ( 'template' === $pattern_type ) {
+		$labels = array(
+			'name'          => __( 'Templates', 'fse-studio' ),
+			'singular_name' => __( 'Template', 'fse-studio' ),
+		);
+	}
+
 	register_post_type(
 		'fsestudio_pattern',
 		array(
@@ -33,9 +60,7 @@ function pattern_post_type() {
 				'editor',
 				'custom-fields',
 			),
-			'labels'       => array(
-				'name' => __( 'Pattern', 'fse-studio' ),
-			),
+			'labels'       => $labels,
 		)
 	);
 
@@ -70,6 +95,53 @@ function pattern_post_type() {
 	);
 }
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
+
+/**
+ * Recieve post_id in the URL and display its content. Useful for pattern previews and thumbnails.
+ */
+function display_block_pattern_preview() {
+	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+
+	$post_id = absint( $_GET['fsestudio_pattern_preview'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+	$post = get_post( $post_id );
+
+	$the_content = do_the_content_things( $post->post_content );
+
+	wp_head();
+
+	echo $the_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+	wp_footer();
+
+	exit;
+}
+add_action( 'init', __NAMESPACE__ . '\display_block_pattern_preview' );
+
+/**
+ * Run a string of HTML through the_content filters. This makes it so everything needed will be rendered in wp_footer.
+ *
+ * @param string $content The html content to run through the filters.
+ * @return bool
+ */
+function do_the_content_things( $content ) {
+
+	// Run through the actions that are typically taken on the_content.
+	$content = do_blocks( $content );
+	$content = wptexturize( $content );
+	$content = convert_smilies( $content );
+	$content = shortcode_unautop( $content );
+	$content = wp_filter_content_tags( $content );
+	$content = do_shortcode( $content );
+
+	// Handle embeds for block template parts.
+	global $wp_embed;
+	$content = $wp_embed->autoembed( $content );
+
+	return $content;
+}
 
 /**
  * Add style and metaboxes to fse_pattern posts when editing.
@@ -116,8 +188,10 @@ function register_block_patterns() {
 	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
 
 	foreach ( $patterns as $pattern ) {
-		foreach ( $pattern['categories'] as $category ) {
-			register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
+		if ( isset( $pattern['categories'] ) ) {
+			foreach ( $pattern['categories'] as $category ) {
+				register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
+			}
 		}
 		register_block_pattern(
 			$pattern['name'],

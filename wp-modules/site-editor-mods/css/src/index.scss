@@ -1,0 +1,20 @@
+/* stylelint-disable */
+.edit-site-navigation-toggle {
+	display: none !important;
+}
+.edit-site-header{
+	padding-left:0px!important;
+}
+/* Hide the second column when displaying the list of templates. */
+.edit-site-list-table-head .edit-site-list-table-column:nth-child(2),
+.edit-site-list-table-row  .edit-site-list-table-column:nth-child(2){
+	display:none;
+}
+/* Hide the save button, and the save pop-put panel */
+.edit-site-save-button__button, .entities-saved-states__panel {
+	display:none!important;
+}
+/* Hide the snackbar on the site editor, as the fse-studio app has its own snackbar. */
+.components-snackbar{
+	display:none!important;
+}

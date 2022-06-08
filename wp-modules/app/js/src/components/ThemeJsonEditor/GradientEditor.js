@@ -7,19 +7,19 @@ import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 
 export default function GradientEditor( { properties, schemaPosition } ) {
-	const { currentThemeJsonFile } = useStudioContext();
+	const { currentTheme } = useStudioContext();
 
-	const nameValue = currentThemeJsonFile.getValue(
+	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.name',
 		properties.name.type
 	);
-	const slugValue = currentThemeJsonFile.getValue(
+	const slugValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.slug',
 		properties.slug.type
 	);
-	const gradientValue = currentThemeJsonFile.getValue(
+	const gradientValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.gradient',
 		properties.gradient.type
@@ -38,7 +38,7 @@ export default function GradientEditor( { properties, schemaPosition } ) {
 							type="text"
 							value={ nameValue }
 							onChange={ ( event ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.name',
 									event.target.value
@@ -55,7 +55,7 @@ export default function GradientEditor( { properties, schemaPosition } ) {
 							type="text"
 							value={ slugValue }
 							onChange={ ( event ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.slug',
 									event.target.value
@@ -69,7 +69,7 @@ export default function GradientEditor( { properties, schemaPosition } ) {
 						<CustomGradientPicker
 							value={ gradientValue }
 							onChange={ ( newValue ) => {
-								currentThemeJsonFile.setValue(
+								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.gradient',
 									newValue
@@ -94,7 +94,7 @@ export default function GradientEditor( { properties, schemaPosition } ) {
 							)
 							/* eslint-enable */
 						) {
-							currentThemeJsonFile.setValue(
+							currentTheme.setThemeJsonValue(
 								'settings',
 								schemaPosition
 							);

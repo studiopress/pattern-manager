@@ -2,6 +2,7 @@
  * @typedef {{
  *  apiNonce: string,
  *  apiEndpoints: {
+ *   getAppState: string,
  *   getPatternEndpoint: string,
  *   getThemeEndpoint: string,
  *   getThemeJsonFileEndpoint: string,

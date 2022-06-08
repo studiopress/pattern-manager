@@ -27,7 +27,7 @@ function register_routes() {
 		'/get-theme',
 		array(
 			array(
-				'methods'             => 'GET',
+				'methods'             => 'POST',
 				'callback'            => __NAMESPACE__ . '\get_theme',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => get_request_args(),
@@ -72,17 +72,14 @@ function register_routes() {
 function get_theme( $request ) {
 	$params = $request->get_params();
 
-	$theme_id = $params['themeId'];
+	$theme_id           = $params['themeId'];
+	$pre_existing_theme = $params['preExistingTheme'];
 
-	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id, $pre_existing_theme );
 
-	if ( $wp_filesystem->exists( $wp_filesystem->wp_themes_dir() . $theme_id . '/fsestudio-data.json' ) ) {
-		// Activate the theme being requested. This makes it so that previews match the currently chosen theme.
-		switch_theme( $theme_id );
+	if ( $theme_data['dirname'] ) {
+		switch_theme( $theme_data['dirname'] );
 	}
-
-	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 
 	if ( ! $theme_data ) {
 		return new \WP_REST_Response(
@@ -103,14 +100,22 @@ function get_theme( $request ) {
  * @return WP_Error|WP_REST_Request
  */
 function save_theme( $request ) {
-	$theme_data = $request->get_params();
+	$theme_data       = $request->get_params();
+	$prior_theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_data['id'] );
 
 	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
 	} else {
-		return new \WP_REST_Response( __( 'Theme successfully saved to disk', 'fse-studio' ), 200 );
+		return new \WP_REST_Response(
+			array(
+				'message'           => __( 'Theme successfully saved to disk', 'fse-studio' ),
+				'themeData'         => $result,
+				'themeJsonModified' => $result['theme_json_file'] !== $prior_theme_data['theme_json_file'],
+			),
+			200
+		);
 	}
 }
 
@@ -261,13 +266,13 @@ function save_request_args() {
 		),
 		'theme_json_file'   => array(
 			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'fse-studio' ),
+			'type'              => 'object',
+			'description'       => __( 'The contents of the theme.json file', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 		'included_patterns' => array(
 			'required'          => false,
-			'type'              => 'array',
+			'type'              => 'object',
 			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),

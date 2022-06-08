@@ -1,86 +1,43 @@
 // @ts-check
 
 import * as React from 'react';
-import { useState, useEffect, createPortal } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import useMounted from '../../hooks/useMounted';
-
+import useStudioContext from '../../hooks/useStudioContext';
 /**
  * @param {{
- *  blockPatternData: import('../PatternPicker').Pattern,
- *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
+ *  url: string,
  *  scale: number,
- *  onLoad?: Function
  * }} props
  */
-export default function PatternPreview( {
-	blockPatternData,
-	themeJsonData,
-	scale,
-	onLoad = () => {},
-} ) {
-	return (
-		<Portal scale={ scale } onLoad={ onLoad }>
-			<div
-				className="wp-head"
-				dangerouslySetInnerHTML={ {
-					__html: themeJsonData?.patternPreviewParts?.wp_head,
-				} }
-			/>
-			<div
-				dangerouslySetInnerHTML={ {
-					__html:
-						themeJsonData?.patternPreviewParts?.renderedPatterns[
-							blockPatternData?.name
-						],
-				} }
-			/>
-			<div
-				className="wp-footer"
-				dangerouslySetInnerHTML={ {
-					__html: themeJsonData?.patternPreviewParts?.wp_footer,
-				} }
-			/>
-		</Portal>
-	);
-}
-
-/**
- * @param {{
- *  onLoad: Function,
- *  children: React.ReactElement[],
- *  scale: number
- * }} props
- */
-function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
+export default function PatternPreview( { url, scale } ) {
+	const [ currentUrl, setCurrentUrl ] = useState( url );
+	const { currentTheme, currentView } = useStudioContext();
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
-		0
+		10
 	);
-	const { isMounted } = useMounted();
-
-	// @ts-ignore
-	const container = iframeRef?.contentWindow?.document?.body;
 
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	useEffect( () => {
-		// Call the onLoad 1ms after this component is mounted. This helps to space out the rendering of previews if desired.
-		setTimeout( () => {
-			onLoad();
-		}, 1 );
-	}, [] );
+		if ( currentTheme.fetchInProgress ) {
+			setCurrentUrl( '' );
+		}
+		if ( ! currentTheme.fetchInProgress ) {
+			setCurrentUrl( url );
+		}
+	}, [ currentTheme.fetchInProgress ] );
 
 	useEffect( () => {
-		if ( iframeRef ) {
-			// 100ms after any change, check the height of the iframe and make its container match its height.
-			setTimeout( () => {
-				if ( isMounted() ) {
-					setIframeInnerContentHeight( container.scrollHeight );
-				}
-			}, 500 );
+		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
+			if ( iframeRef.contentWindow.document.body.scrollHeight > 0 ) {
+				setIframeInnerContentHeight(
+					iframeRef?.contentWindow.document.body.scrollHeight
+				);
+			}
 		}
-	} );
+	}, [ currentView.currentView ] );
 
 	return (
 		<div
@@ -92,10 +49,26 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 			} }
 		>
 			<iframe
+				src={ currentUrl }
 				title={ __( 'Pattern Preview', 'fse-studio' ) }
 				role={ 'img' }
 				// @ts-ignore
 				ref={ setRef }
+				onLoad={ () => {
+					if (
+						iframeRef?.contentWindow?.document?.body?.scrollHeight
+					) {
+						if (
+							iframeRef.contentWindow.document.body.scrollHeight >
+							0
+						) {
+							setIframeInnerContentHeight(
+								iframeRef.contentWindow.document.body
+									.scrollHeight
+							);
+						}
+					}
+				} }
 				style={ {
 					position: 'absolute',
 					top: '0',
@@ -108,9 +81,7 @@ function Portal( { onLoad = () => {}, children, scale = 0.05 } ) {
 					overflow: 'hidden',
 					pointerEvents: 'none',
 				} }
-			>
-				{ container && createPortal( children, container ) }
-			</iframe>
+			/>
 		</div>
 	);
 }
