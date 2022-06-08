@@ -10,7 +10,7 @@ import '../../../../css/src/tailwind.css';
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import logo from '../../../../img/logo.svg';
+import logo from '../../../../img/logo';
 
 import { fsestudio } from '../../globals';
 
