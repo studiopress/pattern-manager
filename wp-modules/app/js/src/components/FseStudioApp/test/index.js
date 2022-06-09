@@ -74,15 +74,15 @@ test( 'FseStudioApp', async () => {
 		);
 
 		user.click(
-			screen.getByRole( 'button', {
+			screen.getAllByRole( 'button', {
 				name: /save your theme/i,
-			} )
+			} )[ 0 ]
 		);
 	} );
 
 	screen.getByText( themeSavedMessage );
 
-	// The Add Patterns tab should now be present.
+	// There should be a tab to edit the patterns.
 	expect(
 		screen.getByRole( 'button', {
 			name: /theme patterns/i,
