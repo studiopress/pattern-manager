@@ -8,7 +8,7 @@ import FseStudioApp from '../';
 const getThemeEndpoint = 'https://example.com/get-theme';
 const saveThemeEndpoint = 'https://example.com/save-theme';
 const getThemeJsonFileEndpoint = 'https://example.com/get-themejson-file';
-const themeSavedMessage = 'Theme successfully saved to disk';
+const themeSavedMessage = 'Theme successfully saved';
 
 jest.mock( '../../../globals', () => {
 	return {
@@ -75,17 +75,17 @@ test( 'FseStudioApp', async () => {
 
 		user.click(
 			screen.getByRole( 'button', {
-				name: /save theme settings/i,
+				name: /save your theme/i,
 			} )
 		);
 	} );
 
-	screen.getAllByText( themeSavedMessage );
+	screen.getByText( themeSavedMessage );
 
 	// The Add Patterns tab should now be present.
 	expect(
 		screen.getByRole( 'button', {
-			name: /add patterns/i,
+			name: /theme patterns/i,
 		} )
 	).toBeInTheDocument();
 } );
