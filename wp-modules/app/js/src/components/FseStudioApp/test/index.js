@@ -8,7 +8,6 @@ import FseStudioApp from '../';
 const getThemeEndpoint = 'https://example.com/get-theme';
 const saveThemeEndpoint = 'https://example.com/save-theme';
 const getThemeJsonFileEndpoint = 'https://example.com/get-themejson-file';
-const themeSavedMessage = 'Theme successfully saved';
 
 jest.mock( '../../../globals', () => {
 	return {
@@ -80,7 +79,10 @@ test( 'FseStudioApp', async () => {
 		);
 	} );
 
-	screen.getByText( themeSavedMessage );
+	screen.getByText( /saving your theme/i );
+
+	// You should be able to choose a theme, now that one exists.
+	expect( screen.queryByText( /choose a theme/i ) ).toBeInTheDocument();
 
 	// There should be a tab to edit the patterns.
 	expect(
