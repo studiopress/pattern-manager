@@ -8,6 +8,7 @@ import FseStudioApp from '../';
 const getThemeEndpoint = 'https://example.com/get-theme';
 const saveThemeEndpoint = 'https://example.com/save-theme';
 const getThemeJsonFileEndpoint = 'https://example.com/get-themejson-file';
+const themeSavedMessage = 'Theme successfully saved and all files written to theme directory';
 
 jest.mock( '../../../globals', () => {
 	return {
@@ -49,7 +50,7 @@ test( 'FseStudioApp', async () => {
 	render( <FseStudioApp /> );
 
 	// When there is no theme saved, you shouldn't be able to choose a theme.
-	expect( screen.queryByText( /choose a theme/i ) ).not.toBeInTheDocument();
+	expect( screen.queryByLabelText( /choose a theme/i ) ).not.toBeInTheDocument();
 
 	// The Add Patterns tab shouldn't be present, as there's no theme saved.
 	expect(
@@ -79,10 +80,10 @@ test( 'FseStudioApp', async () => {
 		);
 	} );
 
-	screen.getByText( /saving your theme/i );
+	screen.getByText( themeSavedMessage );
 
 	// You should be able to choose a theme, now that one exists.
-	expect( screen.queryByText( /choose a theme/i ) ).toBeInTheDocument();
+	expect( screen.getByLabelText( /choose a theme/i ) ).toBeInTheDocument();
 
 	// There should be a tab to edit the patterns.
 	expect(
