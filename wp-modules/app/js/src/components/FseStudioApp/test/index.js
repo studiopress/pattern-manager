@@ -81,7 +81,7 @@ test( 'FseStudioApp', async () => {
 		);
 	} );
 
-	screen.getByText( /theme successfully saved/i );
+	screen.getAllByText( /theme successfully saved and all files written to theme directory/i );
 
 	// You should be able to choose a theme, now that one exists.
 	expect( screen.getByLabelText( /choose a theme/i ) ).toBeInTheDocument();
