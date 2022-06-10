@@ -35,10 +35,7 @@ global.fetch = jest.fn( ( request ) => {
 			}
 
 			if ( request.toString().includes( saveThemeEndpoint ) ) {
-				return Promise.resolve( {
-					ok: true,
-					json: Promise.resolve( {} )
-				} );
+				return Promise.resolve( {} );
 			}
 		},
 	} );
