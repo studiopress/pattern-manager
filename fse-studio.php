@@ -45,7 +45,7 @@ if ( ! preg_match( '/\.local\/?$/', get_site_url() ) && ! preg_match( '/(local|d
 }
 
 /**
- * Automatically include wp modules, which sit in the "wp-modules" directory.
+ * Automatically include wp modules, which are in the "wp-modules" directory.
  *
  * @return void
  */
