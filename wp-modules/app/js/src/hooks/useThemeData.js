@@ -212,14 +212,16 @@ export default function useThemeData(
 						patternEditorIframe.current.contentWindow.postMessage(
 							JSON.stringify( {
 								message: 'fsestudio_save',
-							} )
+							} ),
+							'*'
 						);
 
 						if ( data.themeJsonModified ) {
 							patternEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
-								} )
+								} ),
+								'*'
 							);
 						}
 					}
@@ -228,13 +230,15 @@ export default function useThemeData(
 						templateEditorIframe.current.contentWindow.postMessage(
 							JSON.stringify( {
 								message: 'fsestudio_save',
-							} )
+							} ),
+							'*'
 						);
 						if ( data.themeJsonModified ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
-								} )
+								} ),
+								'*'
 							);
 						}
 					}
