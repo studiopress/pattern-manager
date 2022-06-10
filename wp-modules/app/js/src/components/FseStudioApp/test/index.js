@@ -33,6 +33,13 @@ global.fetch = jest.fn( ( request ) => {
 					content: {},
 				} );
 			}
+
+			if ( request.toString().includes( saveThemeEndpoint ) ) {
+				return Promise.resolve( {
+					ok: true,
+					json: Promise.resolve( {} )
+				} );
+			}
 		},
 	} );
 } );
