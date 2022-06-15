@@ -17,9 +17,9 @@ export default function GettingStarted() {
 								{ __( 'Welcome to FSE Studio', 'fse-studio' ) }
 							</h1>
 							<p className="text-lg max-w-2xl">
-								Build your full site editing themes faster and easier
-								with FSE Studio! Check out the video below to learn how
-								to get started.
+								Build your full site editing themes faster and
+								easier with FSE Studio! Check out the video
+								below to learn how to get started.
 							</p>
 						</div>
 						<div className="flex">
