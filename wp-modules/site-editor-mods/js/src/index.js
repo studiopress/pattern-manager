@@ -140,9 +140,10 @@ window.addEventListener(
 
 					// Once the panel has been opened, click on the save button in the "are you sure" pop out panel.
 					setTimeout( () => {
-						const saveEntitiesElement = document.getElementsByClassName(
-							'editor-entities-saved-states__save-button'
-						);
+						const saveEntitiesElement =
+							document.getElementsByClassName(
+								'editor-entities-saved-states__save-button'
+							);
 						if ( saveEntitiesElement.item( 0 ) ) {
 							saveEntitiesElement.item( 0 ).click();
 						}
