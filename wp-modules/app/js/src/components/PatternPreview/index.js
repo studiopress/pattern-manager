@@ -15,9 +15,7 @@ export default function PatternPreview( { url, scale } ) {
 	const { currentTheme, currentView } = useStudioContext();
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
-		useState(
-			10
-		);
+		useState( 10 );
 
 	const scaleMultiplier = 10 / ( scale * 10 );
 
