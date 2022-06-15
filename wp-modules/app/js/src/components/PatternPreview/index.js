@@ -14,7 +14,8 @@ export default function PatternPreview( { url, scale } ) {
 	const [ currentUrl, setCurrentUrl ] = useState( url );
 	const { currentTheme, currentView } = useStudioContext();
 	const [ iframeRef, setRef ] = useState();
-	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] = useState(
+	const [ iframeInnerContentHeight, setIframeInnerContentHeight ]
+		= useState(
 		10
 	);
 

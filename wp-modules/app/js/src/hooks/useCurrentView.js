@@ -5,12 +5,8 @@ import { useState } from '@wordpress/element';
 /** @param {string} initialView */
 export default function useCurrentView( initialView ) {
 	const [ currentView, setCurrentView ] = useState( initialView );
-	const [ currentPatternsView, setCurrentPatternsView ] = useState(
-		'theme_patterns'
-	);
-	const [ currentTemplatesView, setCurrentTemplatesView ] = useState(
-		'theme_templates'
-	);
+	const [ currentPatternsView, setCurrentPatternsView ] = useState( 'theme_patterns' );
+	const [ currentTemplatesView, setCurrentTemplatesView ] = useState( 'theme_templates' );
 
 	function setCurrentViewConditions( newView ) {
 		// When going from theme_patterns to pattern_editor, remember that theme_patterns is currently showing the pattern_editor.

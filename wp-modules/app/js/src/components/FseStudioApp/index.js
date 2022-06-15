@@ -137,11 +137,8 @@ function FseStudioContextHydrator() {
 
 function FseStudio() {
 	// @ts-ignore
-	const {
-		currentView,
-		currentTheme,
-		templateEditorIframe,
-	} = useStudioContext();
+	const { currentView, currentTheme, templateEditorIframe } =
+		useStudioContext();
 	const snackBar = useSnackbarContext();
 
 	return (
