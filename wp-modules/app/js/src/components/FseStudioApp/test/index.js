@@ -62,9 +62,9 @@ test( 'FseStudioApp', async () => {
 
 	await act( async () => {
 		user.click(
-			screen.getByRole( 'button', {
+			screen.getAllByRole( 'button', {
 				name: /start creating your theme/i,
-			} )
+			} )[ 0 ]
 		);
 
 		user.type(
