@@ -15,7 +15,7 @@
  * Network:
  * Update URI:
  * Namespace: FseStudio
- *
+ * 
  * @package fse-studio
  */
 
