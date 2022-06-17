@@ -23,7 +23,7 @@ function enqueue() {
 	$current_screen = get_current_screen();
 
 	// Only enqueue on the site editor.
-	if ( strpos( $current_screen->base, 'edit-site' ) === false ) {
+	if ( strpos( $current_screen->base, 'edit-site' ) === false && 'site-editor' !== $current_screen->base ) {
 		return;
 	}
 

@@ -176,7 +176,8 @@ window.addEventListener(
 				const element = document.querySelectorAll(
 					"a[href='" +
 						fsestudio.siteUrl +
-						"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template_part&fsestudio_app=1']"
+						"/wp-admin/site-editor.php?postType=wp_template_part&fsestudio_app=1']"
+					//"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template_part&fsestudio_app=1']"
 				);
 
 				if ( element.item( 0 ) ) {
@@ -188,7 +189,8 @@ window.addEventListener(
 				const element = document.querySelectorAll(
 					"a[href='" +
 						fsestudio.siteUrl +
-						"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1']"
+						"/wp-admin/site-editor.php?postType=wp_template&fsestudio_app=1']"
+					//"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1']"
 				);
 
 				if ( element.item( 0 ) ) {
