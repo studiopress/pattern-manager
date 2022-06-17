@@ -361,7 +361,9 @@ export default function useThemeData(
 				modifiedData[ topLevelSection ][ keyOne ] = {};
 			}
 			if ( mode === 'insert' ) {
-				if ( ! Array.isArray( modifiedData[ topLevelSection ][ keyOne ] ) ) {
+				if (
+					! Array.isArray( modifiedData[ topLevelSection ][ keyOne ] )
+				) {
 					modifiedData[ topLevelSection ][ keyOne ] = [];
 				}
 				modifiedData[ topLevelSection ][ keyOne ].splice(
@@ -415,7 +417,11 @@ export default function useThemeData(
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
 			}
 			if ( mode === 'insert' ) {
-				if ( ! Array.isArray( modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) ) {
+				if (
+					! Array.isArray(
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
+					)
+				) {
 					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = [];
 				}
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ].splice(
@@ -491,8 +497,16 @@ export default function useThemeData(
 				] = {};
 			}
 			if ( mode === 'insert' ) {
-				if ( ! Array.isArray( modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ] ) ) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ] = [];
+				if (
+					! Array.isArray(
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+							keyThree
+						]
+					)
+				) {
+					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					] = [];
 				}
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
 					keyThree
@@ -586,8 +600,16 @@ export default function useThemeData(
 				] = {};
 			}
 			if ( mode === 'insert' ) {
-				if ( ! Array.isArray( modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][keyFour] ) ) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][keyFour] = [];
+				if (
+					! Array.isArray(
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+							keyThree
+						][ keyFour ]
+					)
+				) {
+					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					][ keyFour ] = [];
 				}
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
 					keyFour
