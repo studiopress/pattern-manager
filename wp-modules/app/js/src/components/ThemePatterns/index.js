@@ -195,7 +195,11 @@ export default function ThemePatterns( { isVisible } ) {
 									Working with patterns
 								</h4>
 								<p className="text-base">
-									Block patterns are predefined block layouts that make up your website. A pattern can be something as small as a feature box, or it can be the header of your site. Patterns help you quickly build out your website.
+									Block patterns are predefined block layouts
+									that make up your website. A pattern can be
+									something as small as a feature box, or it
+									can be the header of your site. Patterns
+									help you quickly build out your website.
 								</p>
 							</div>
 							<div>
@@ -203,10 +207,38 @@ export default function ThemePatterns( { isVisible } ) {
 									Helpful Documentation
 								</h4>
 								<ul>
-									<li><a className="text-wp-blue" href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/">Exploring Block Patterns Video</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/">Block Theme Overview</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/">Block Editor Handbook</a></li>
-									<li><a className="text-wp-blue" href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/">Block Builder Basics Video</a></li>
+									<li>
+										<a
+											className="text-wp-blue"
+											href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/"
+										>
+											Exploring Block Patterns Video
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue"
+											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
+										>
+											Block Theme Overview
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue"
+											href="https://developer.wordpress.org/block-editor/"
+										>
+											Block Editor Handbook
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue"
+											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
+										>
+											Block Builder Basics Video
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>
