@@ -289,7 +289,7 @@ export default function useThemeData(
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					snackBar.setValue( JSON.stringify( data ) );
+					window.location.replace( data );
 					resolve( data );
 				} );
 		} );
