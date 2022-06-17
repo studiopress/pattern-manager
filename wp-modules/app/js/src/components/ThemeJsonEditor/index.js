@@ -285,7 +285,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 		// If this setting does not exist in the current theme.json file.
 		if ( ! currentValue ) {
-			return<button 
+			return <button 
 				key={'addAnother'}
 				onClick={() => {
 					console.log(  schemaPosition + '.0', getBlankArrayFromSchema(propertySchema.items) );
