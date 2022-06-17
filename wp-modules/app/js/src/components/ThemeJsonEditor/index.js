@@ -282,7 +282,16 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 		// If this setting does not exist in the current theme.json file.
 		if ( ! currentValue ) {
-			return 'Nothing yet!';
+			return<button 
+				key={'addAnother'}
+				onClick={() => {
+					console.log(  schemaPosition + '.0', getBlankArrayFromSchema(propertySchema.items) );
+					currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.0', getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+				}}
+				className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+			>
+				{ __( 'Add One', 'fse-studio' ) }
+			</button>
 		} else {
 			// Loop through each saved item in the theme.json file for this array.
 			for ( const arrIndex in currentValue ) {
@@ -316,13 +325,27 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					} else {
 						// Render the properties in the schema, using the current loop's values for the properties
 						rendered.push(
-							<RenderProperties
-								key={schemaPosition + '.' + arrIndex}
-								isVisible={isVisible}
-								properties={propertySchema.items.properties}
-								schemaPosition={schemaPosition + '.' + arrIndex}
-								topLevelSettingName={topLevelSettingName}
-							/>
+							<div className="relative">
+								<RenderProperties
+									key={schemaPosition + '.' + arrIndex}
+									isVisible={isVisible}
+									properties={propertySchema.items.properties}
+									schemaPosition={schemaPosition + '.' + arrIndex}
+									topLevelSettingName={topLevelSettingName}
+								/>
+								<button
+									key={'delete'}
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+									onClick={(e) => {
+										e.preventDefault();
+										if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
+											currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + arrIndex );
+										}
+									}}
+								>
+									{ __( 'Delete', 'fse-studio' ) }
+								</button>
+							</div>
 						)
 					}
 				} else {
@@ -349,23 +372,13 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					<button 
 						key={'addAnother'}
 						onClick={() => {
+							console.log(  schemaPosition + '.' + Object.keys(currentValue).length );
+							
 							currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
 						}}
 						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
 					>
 						{ __( 'Add Another', 'fse-studio' ) }
-					</button>
-					<button
-						key={'delete'}
-						className="text-red-500 hover:text-red-700 hidden"
-						onClick={(e) => {
-							e.preventDefault();
-							if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-								currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length );
-							}
-						}}
-					>
-						{ __( 'Delete', 'fse-studio' ) }
 					</button>
 				</div>
 			)
