@@ -78,9 +78,7 @@
                     "color": "#00cccc"
                 }
             ],
-            "background": false,
-            "defaultDuotone": false,
-            "text": false
+            "defaultDuotone": false
         },
         "custom": {
             "fontWeight": {
