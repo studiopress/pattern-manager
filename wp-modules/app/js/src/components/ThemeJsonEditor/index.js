@@ -138,6 +138,9 @@ function SettingsView({ isVisible }) {
 	const settings = getSettingsFromThemeJsonSchema();
 	
 	for ( const setting in settings ) {
+		if ( setting === 'custom' || setting === 'appearanceTools' ) {
+			continue;
+		}
 		for ( const propertyName in settings[setting].properties ) {
 			if ( settings[setting].properties[propertyName].type === 'object' ) {
 				rendered.push(
