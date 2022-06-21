@@ -1,6 +1,5 @@
 // @ts-check
 import { __ } from '@wordpress/i18n';
-import image from '../../../../img/video-placeholder.jpg';
 import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
 
@@ -44,10 +43,14 @@ export default function GettingStarted() {
 			<div className="mx-auto p-14 pb-20">
 				<div className="mx-auto max-w-7xl flex flex-col justify-between gap-20">
 					<div className="w-full">
-						<img
-							alt={ 'video-placeholder' }
-							className="rounded-md"
-							src={ image }
+						<iframe
+							width="1280"
+							height="720"
+							src="https://www.youtube.com/embed/LmvPkQkjq9I"
+							title="YouTube video player"
+							frameBorder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowFullScreen
 						/>
 					</div>
 				</div>
