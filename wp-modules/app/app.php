@@ -112,7 +112,7 @@ add_action( 'admin_menu', __NAMESPACE__ . '\fsestudio_adminmenu_page' );
  * @return void
  */
 function hide_admin_notices() {
-	if ( 'fse-studio' === filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
+	if ( 'fse-studio' === filter_input( INPUT_GET, 'page' ) ) {
 		remove_all_actions( 'admin_notices' );
 	}
 }
