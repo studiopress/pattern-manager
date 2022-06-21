@@ -26,7 +26,8 @@ export default function TemplateEditor() {
 			} }
 			src={
 				fsestudio.siteUrl +
-				'/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1'
+				'/wp-admin/site-editor.php?postType=wp_template&fsestudio_app=1'
+				//'/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1'
 			}
 		/>
 	);
