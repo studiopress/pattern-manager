@@ -54,17 +54,13 @@ export default function ThemePreview( { isVisible } ) {
 					right: '0',
 					width: '100vw',
 					height: '50px',
-					backgroundColor: '#e5e5f7',
-					backgroundImage:
-						'linear-gradient(#f7bf45 2px, transparent 2px), linear-gradient(90deg, #f7bf45 2px, transparent 2px), linear-gradient(#f7bf45 1px, transparent 1px), linear-gradient(90deg, #f7bf45 1px, #e5e5f7 1px)',
-					backgroundSize:
-						'50px 50px, 50px 50px, 10px 10px, 10px 10px',
-					backgroundPosition:
-						'-2px -2px, -2px -2px, -1px -1px, -1px -1px',
+					backgroundColor: '#007BBA',
+					color: '#fff',
 					zIndex: '9999',
+					fontWeight: 'bold',
 				} }
 			>
-				Theme Preview ❌
+				Close Preview&nbsp;&nbsp;✖︎
 			</button>
 			{ currentUrl ? (
 				<iframe
