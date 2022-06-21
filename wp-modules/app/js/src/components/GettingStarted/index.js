@@ -44,11 +44,15 @@ export default function GettingStarted() {
 			<div className="mx-auto p-14 pb-20">
 				<div className="mx-auto max-w-7xl flex flex-col justify-between gap-20">
 					<div className="w-full">
-						<img
-							alt={ 'video-placeholder' }
-							className="rounded-md"
-							src={ image }
-						/>
+						<iframe 
+							width="1280" 
+							height="720" 
+							src="https://www.youtube.com/embed/LmvPkQkjq9I" 
+							title="YouTube video player" 
+							frameborder="0" 
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+							allowfullscreen>
+						</iframe>
 					</div>
 
 					<div className="grid grid-cols-2 gap-10">
