@@ -211,7 +211,7 @@ input[type="checkbox"]:checked::before {
 	li {
 		order: 10;
 	}
-	li:nth-child(3) {
+	li:nth-child(2) {
 		order: 1;
 	}
 	li:nth-child(6) {
@@ -223,7 +223,8 @@ input[type="checkbox"]:checked::before {
 	li:nth-child(5) {
 		order: 4;
 	}
-	li:nth-child(1) {
-		order: 11;
-	}
+}
+
+.fses-nav button:disabled {
+	opacity: .6;
 }

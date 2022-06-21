@@ -12,8 +12,8 @@ function capitalize( name ) {
 export default function convertToUpperCase( toConvert = '' ) {
 	return capitalize(
 		toConvert.replace(
-			/(?<=[a-z])[A-Z1-9](?=[a-z]+)/g,
-			( match ) => ` ${ capitalize( match ) }`
+			/([a-z])([A-Z1-9])/g,
+			( match ) => `${ match[ 0 ] } ${ match[ 1 ] }`
 		)
 	);
 }

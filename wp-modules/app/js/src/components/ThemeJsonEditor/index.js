@@ -78,15 +78,17 @@ export default function ThemeJsonEditor( { visible } ) {
 					<div className="flex-1 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
-								<h4 className="mb-2 font-medium">Working with Theme.json</h4>
-								<p className="text-base">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+								<h4 className="mb-2 font-medium">Working with theme.json</h4>
+								<p className="text-base mb-3">Theme.json is a configuration file for your theme that allows you to control colors, customization options, font sizes, presets, and more. </p>
+								<p className="text-base">This interface let's you visually see and change all of the settings and customizations available via theme.json.</p>
 							</div>
 							<div>
 								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
 								<ul>
-									<li><a className="text-wp-blue" href="#">Full Site Editing Documentation</a></li>
-									<li><a className="text-wp-blue" href="#">About Full Site Editing Themes</a></li>
-									<li><a className="text-wp-blue" href="#">Something Else</a></li>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/">Working with theme.json</a></li>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/">Block Theme Overview</a></li>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/">Block Editor Handbook</a></li>
+									<li><a className="text-wp-blue" href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/">Block Builder Basics Video</a></li>
 								</ul>
 							</div>
 						</div>
@@ -136,6 +138,9 @@ function SettingsView({ isVisible }) {
 	const settings = getSettingsFromThemeJsonSchema();
 	
 	for ( const setting in settings ) {
+		if ( setting === 'custom' || setting === 'appearanceTools' ) {
+			continue;
+		}
 		for ( const propertyName in settings[setting].properties ) {
 			if ( settings[setting].properties[propertyName].type === 'object' ) {
 				rendered.push(
@@ -280,7 +285,15 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 		// If this setting does not exist in the current theme.json file.
 		if ( ! currentValue ) {
-			return 'Nothing yet!';
+			return <button 
+				key={'addAnother'}
+				onClick={() => {
+					currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.0', getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
+				}}
+				className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+			>
+				{ __( 'Add One', 'fse-studio' ) }
+			</button>
 		} else {
 			// Loop through each saved item in the theme.json file for this array.
 			for ( const arrIndex in currentValue ) {
@@ -314,13 +327,27 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					} else {
 						// Render the properties in the schema, using the current loop's values for the properties
 						rendered.push(
-							<RenderProperties
-								key={schemaPosition + '.' + arrIndex}
-								isVisible={isVisible}
-								properties={propertySchema.items.properties}
-								schemaPosition={schemaPosition + '.' + arrIndex}
-								topLevelSettingName={topLevelSettingName}
-							/>
+							<div className="relative">
+								<RenderProperties
+									key={schemaPosition + '.' + arrIndex}
+									isVisible={isVisible}
+									properties={propertySchema.items.properties}
+									schemaPosition={schemaPosition + '.' + arrIndex}
+									topLevelSettingName={topLevelSettingName}
+								/>
+								<button
+									key={'delete'}
+									className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
+									onClick={(e) => {
+										e.preventDefault();
+										if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
+											currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + arrIndex );
+										}
+									}}
+								>
+									{ __( 'Delete', 'fse-studio' ) }
+								</button>
+							</div>
 						)
 					}
 				} else {
@@ -347,23 +374,13 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 					<button 
 						key={'addAnother'}
 						onClick={() => {
+							console.log(  schemaPosition + '.' + Object.keys(currentValue).length );
+							
 							currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null, 'insert' );
 						}}
 						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
 					>
 						{ __( 'Add Another', 'fse-studio' ) }
-					</button>
-					<button
-						key={'delete'}
-						className="text-red-500 hover:text-red-700 hidden"
-						onClick={(e) => {
-							e.preventDefault();
-							if ( window.confirm( __( 'Are you sure you want to delete this item?', 'fse-studio' ) ) ) {
-								currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length );
-							}
-						}}
-					>
-						{ __( 'Delete', 'fse-studio' ) }
 					</button>
 				</div>
 			)

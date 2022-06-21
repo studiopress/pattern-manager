@@ -533,7 +533,9 @@ export default function ThemeSetup( { isVisible } ) {
 								<button
 									type="button"
 									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {} }
+									onClick={ () => {
+										currentTheme.export();
+									} }
 								>
 									{ __( 'Export Theme', 'fse-studio' ) }
 								</button>

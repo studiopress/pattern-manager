@@ -8,7 +8,6 @@ import FseStudioApp from '../';
 const getThemeEndpoint = 'https://example.com/get-theme';
 const saveThemeEndpoint = 'https://example.com/save-theme';
 const getThemeJsonFileEndpoint = 'https://example.com/get-themejson-file';
-const themeSavedMessage = 'Theme successfully saved to disk';
 
 jest.mock( '../../../globals', () => {
 	return {
@@ -35,8 +34,8 @@ global.fetch = jest.fn( ( request ) => {
 				} );
 			}
 
-			if ( request.includes( saveThemeEndpoint ) ) {
-				return Promise.resolve( themeSavedMessage );
+			if ( request.toString().includes( saveThemeEndpoint ) ) {
+				return Promise.resolve( {} );
 			}
 		},
 	} );
@@ -50,7 +49,9 @@ test( 'FseStudioApp', async () => {
 	render( <FseStudioApp /> );
 
 	// When there is no theme saved, you shouldn't be able to choose a theme.
-	expect( screen.queryByText( /choose a theme/i ) ).not.toBeInTheDocument();
+	expect(
+		screen.queryByLabelText( /choose a theme/i )
+	).not.toBeInTheDocument();
 
 	// The Add Patterns tab shouldn't be present, as there's no theme saved.
 	expect(
@@ -61,9 +62,9 @@ test( 'FseStudioApp', async () => {
 
 	await act( async () => {
 		user.click(
-			screen.getByRole( 'button', {
-				name: /create a new theme/i,
-			} )
+			screen.getAllByRole( 'button', {
+				name: /start creating your theme/i,
+			} )[ 0 ]
 		);
 
 		user.type(
@@ -74,18 +75,23 @@ test( 'FseStudioApp', async () => {
 		);
 
 		user.click(
-			screen.getByRole( 'button', {
-				name: /save theme settings/i,
-			} )
+			screen.getAllByRole( 'button', {
+				name: /save your theme/i,
+			} )[ 0 ]
 		);
 	} );
 
-	screen.getAllByText( themeSavedMessage );
+	screen.getAllByText(
+		/theme successfully saved and all files written to theme directory/i
+	);
 
-	// The Add Patterns tab should now be present.
+	// You should be able to choose a theme, now that one exists.
+	expect( screen.getByLabelText( /choose a theme/i ) ).toBeInTheDocument();
+
+	// There should be a tab to edit the patterns.
 	expect(
 		screen.getByRole( 'button', {
-			name: /add patterns/i,
+			name: /theme patterns/i,
 		} )
 	).toBeInTheDocument();
 } );

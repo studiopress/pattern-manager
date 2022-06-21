@@ -212,14 +212,16 @@ export default function useThemeData(
 						patternEditorIframe.current.contentWindow.postMessage(
 							JSON.stringify( {
 								message: 'fsestudio_save',
-							} )
+							} ),
+							'*'
 						);
 
 						if ( data.themeJsonModified ) {
 							patternEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
-								} )
+								} ),
+								'*'
 							);
 						}
 					}
@@ -228,13 +230,15 @@ export default function useThemeData(
 						templateEditorIframe.current.contentWindow.postMessage(
 							JSON.stringify( {
 								message: 'fsestudio_save',
-							} )
+							} ),
+							'*'
 						);
 						if ( data.themeJsonModified ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
-								} )
+								} ),
+								'*'
 							);
 						}
 					}
@@ -285,7 +289,7 @@ export default function useThemeData(
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( data ) => {
-					snackBar.setValue( JSON.stringify( data ) );
+					window.location.replace( data );
 					resolve( data );
 				} );
 		} );
@@ -325,6 +329,9 @@ export default function useThemeData(
 				modifiedData[ topLevelSection ] = {};
 			}
 			if ( mode === 'insert' ) {
+				if ( ! Array.isArray( modifiedData[ topLevelSection ] ) ) {
+					modifiedData[ topLevelSection ] = [];
+				}
 				modifiedData[ topLevelSection ].splice(
 					parseInt( keyOne ) + 1,
 					0,
@@ -354,6 +361,11 @@ export default function useThemeData(
 				modifiedData[ topLevelSection ][ keyOne ] = {};
 			}
 			if ( mode === 'insert' ) {
+				if (
+					! Array.isArray( modifiedData[ topLevelSection ][ keyOne ] )
+				) {
+					modifiedData[ topLevelSection ][ keyOne ] = [];
+				}
 				modifiedData[ topLevelSection ][ keyOne ].splice(
 					parseInt( keyTwo ) + 1,
 					0,
@@ -405,6 +417,13 @@ export default function useThemeData(
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
 			}
 			if ( mode === 'insert' ) {
+				if (
+					! Array.isArray(
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
+					)
+				) {
+					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = [];
+				}
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ].splice(
 					parseInt( keyThree ) + 1,
 					0,
@@ -478,6 +497,17 @@ export default function useThemeData(
 				] = {};
 			}
 			if ( mode === 'insert' ) {
+				if (
+					! Array.isArray(
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+							keyThree
+						]
+					)
+				) {
+					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					] = [];
+				}
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
 					keyThree
 				].splice( parseInt( keyFour ) + 1, 0, value );
@@ -570,6 +600,17 @@ export default function useThemeData(
 				] = {};
 			}
 			if ( mode === 'insert' ) {
+				if (
+					! Array.isArray(
+						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+							keyThree
+						][ keyFour ]
+					)
+				) {
+					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
+						keyThree
+					][ keyFour ] = [];
+				}
 				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
 					keyFour
 				].splice( parseInt( keyFive ) + 1, 0, value );
