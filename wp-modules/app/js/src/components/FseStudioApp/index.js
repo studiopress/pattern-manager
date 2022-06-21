@@ -10,7 +10,6 @@ import '../../../../css/src/tailwind.css';
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import logo from '../../../../img/logo.svg';
 
 import { fsestudio } from '../../globals';
 
@@ -156,11 +155,7 @@ function FseStudio() {
 				<div className="flex-1 flex">
 					<div className="flex w-full gap-8 mx-auto justify-between items-center px-10">
 						<div className="flex items-center gap-12">
-							<img
-								className="w-[120px]"
-								src={ logo }
-								alt={ 'fsestudio-logo' }
-							/>
+							<h1 className="text-white font-bold">FSE Studio</h1>
 							<div className="flex gap-8 fses-nav">
 								<button
 									type="button"
