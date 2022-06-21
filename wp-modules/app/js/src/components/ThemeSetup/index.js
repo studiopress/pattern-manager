@@ -539,31 +539,6 @@ export default function ThemeSetup( { isVisible } ) {
 								</button>
 							</div>
 						</div>
-
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
-							<div>
-								<h4 className="mb-2 font-medium">
-									Helpful Documentation
-								</h4>
-								<ul>
-									<li>
-										<a className="text-wp-blue" href="/">
-											Full Site Editing Documentation
-										</a>
-									</li>
-									<li>
-										<a className="text-wp-blue" href="/">
-											About Full Site Editing Themes
-										</a>
-									</li>
-									<li>
-										<a className="text-wp-blue" href="/">
-											Something Else
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
 					</div>
 				</form>
 			</div>
