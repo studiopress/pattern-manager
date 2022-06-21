@@ -161,7 +161,7 @@ function FseStudio() {
 								src={ logo }
 								alt={ 'fsestudio-logo' }
 							/>
-							<div className="flex gap-8">
+							<div className="flex gap-8 fses-nav">
 								<button
 									type="button"
 									className={

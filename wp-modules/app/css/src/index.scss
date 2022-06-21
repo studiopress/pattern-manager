@@ -224,3 +224,7 @@ input[type="checkbox"]:checked::before {
 		order: 4;
 	}
 }
+
+.fses-nav button:disabled {
+	opacity: .6;
+}
