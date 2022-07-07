@@ -9,9 +9,9 @@
 	display:none!important;
 }
 /* Hide the publish/save button in the pattern editor, as the save theme button handles it. */
-.editor-post-publish-panel__toggle {
-	display:none!important;
-}
+button.components-button.editor-post-save-draft.is-tertiary{
+	display: none;
+} 
 /* Hide the snackbar on the pattern editor, as the fse-studio app has its own snackbar. */
 .components-snackbar{
 	display:none!important;
