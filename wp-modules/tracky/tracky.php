@@ -30,8 +30,7 @@ function send_event( $event_data ) {
 
 	// Send an event to WP Engine.
 	$result = wp_remote_post(
-		//'https://tracky.wpengine.com/wp-json/tracky/v1/log-event',
-		'http://frost.local/wp-json/tracky/v1/log-event',
+		'https://tracky.wpengine.com/wp-json/tracky/v1/log-event',
 		array(
 			'method'  => 'POST',
 			'headers' => array(),
