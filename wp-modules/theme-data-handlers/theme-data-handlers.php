@@ -143,6 +143,13 @@ function export_theme( $theme ) {
 
 	$zip_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $zip_name );
 
+	\FseStudio\Tracky\send_event(
+		array(
+			'action'    => 'zip_created',
+			'themeName' => $theme['dirname'],
+		)
+	);
+
 	return $zip_url;
 }
 
@@ -240,6 +247,13 @@ function update_theme( $theme ) {
 			)
 		);
 	}
+
+	\FseStudio\Tracky\send_event(
+		array(
+			'action'    => 'theme_saved',
+			'themeName' => $theme['dirname'],
+		)
+	);
 
 	return $theme;
 }
