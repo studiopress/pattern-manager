@@ -37,7 +37,7 @@ function send_event( $event_data ) {
 			'method'  => 'POST',
 			'headers' => array(),
 			'body'    => array(
-				'event_data' => json_encode(
+				'event_data' => wp_json_encode(
 					array_merge(
 						array(
 							'userId'          => $anonymous_user_id,
@@ -49,5 +49,4 @@ function send_event( $event_data ) {
 			),
 		),
 	);
-
 }
