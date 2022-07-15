@@ -27,7 +27,7 @@ function send_event( $event_data ) {
 		return;
 	}
 
-	// Create a hash that is anonymous t use as the ID.
+	// Create a hash that is anonymous to use as the ID.
 	$anonymous_user_id = wp_hash( get_bloginfo( 'url' ) . get_current_user_id() );
 
 	// Send an event to WP Engine.
