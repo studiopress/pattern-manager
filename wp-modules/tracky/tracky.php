@@ -18,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Function that sends event data to WP Engine.
+ *
+ * @param array $event_data The data to send to be logged.
  */
 function send_event( $event_data ) {
 	// If this user should not be tracked, do nothing.
