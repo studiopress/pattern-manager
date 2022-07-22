@@ -1,5 +1,8 @@
 // @ts-check
 
+// Import to satisfy ts checking
+import React from 'react';
+
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -26,6 +29,29 @@ export default function ThemeJsonEditor( { visible } ) {
 	
 	if ( ! currentTheme?.data?.theme_json_file ) {
 		return ''
+	}
+
+	function renderStyleSelector() {
+		const renderedStyles = [];
+
+		renderedStyles.push(
+			<option key={ 1 }>{ __( 'Choose a style variation', 'fse-studio' ) }</option>
+		);
+
+		return (
+			<>
+				<select
+					className="block w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
+					id="style-variations"
+					value={ /* currentStyle.id */ '' }
+					onChange={ ( event ) => {
+						// currentStyle.set( id: event.target.value );
+					} }
+				>
+					{ renderedStyles }
+				</select>
+			</>
+		);
 	}
 	
 	return (
@@ -76,20 +102,82 @@ export default function ThemeJsonEditor( { visible } ) {
 					</div>
 
 					<div className="flex-1 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
-								<h4 className="mb-2 font-medium">Working with theme.json</h4>
-								<p className="text-base mb-3">Theme.json is a configuration file for your theme that allows you to control colors, customization options, font sizes, presets, and more. </p>
-								<p className="text-base">This interface let's you visually see and change all of the settings and customizations available via theme.json.</p>
+								<div className="flex flex-col gap-5">
+									<div>
+										<h4 className="mb-2 font-medium">
+											Current Style Variation
+										</h4>
+										<p className="text-base">
+											Select the style varation you would like to work on.
+										</p>
+									</div>
+									{
+										<>
+											<div className="flex flex-col gap-2">
+												<div>
+													<label
+														htmlFor="themes"
+														className="block text-sm font-medium text-gray-700 visuallyhidden"
+													>
+														{ __(
+															'Choose a style variation',
+															'fse-studio'
+														) }
+													</label>
+													{ renderStyleSelector() }
+												</div>
+											</div>
+										</>
+									}
+								</div>
 							</div>
-							<div>
-								<h4 className="mb-2 font-medium">Helpful Documentation</h4>
-								<ul>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/">Working with theme.json</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/">Block Theme Overview</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/">Block Editor Handbook</a></li>
-									<li><a className="text-wp-blue" href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/">Block Builder Basics Video</a></li>
-								</ul>
+						</div>
+
+						<div className="flex-1 text-base">
+							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
+								<div>
+									<div className="flex flex-col gap-5">
+										<div>
+											<h4 className="mb-2 font-medium">
+											Create a style variation
+											</h4>
+											<p className="text-base">
+												Style variations are alternate design variations for a theme,
+												enabling you to quickly apply a new look and feel to your site. 
+											</p>
+											<br />
+											<p className="text-base">
+												Create a new variation by adding a variation name and clicking Save.
+												Once saved, you can use the select menu to choose which variation
+												you're working on.
+											</p>
+										</div>
+										<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap space-x-6">
+											<input
+												className="w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
+												type="text"
+												id="style-variation-name"
+												placeholder="Variation Name"
+												value={ /* styleVariationName */ '' }
+											/>
+											<button
+												type="button"
+												className="w-3/12 items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+												onClick={ () => {
+													/* setStyleVariationName */
+													/* save */
+												} }
+											>
+												{ __(
+													'Save',
+													'fse-studio'
+												) }
+											</button>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
