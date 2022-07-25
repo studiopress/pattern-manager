@@ -97,19 +97,6 @@ export default function useThemeData(
 		};
 	}, [] );
 
-	/**
-	 * Warns the user if there are unsaved changes before leaving.
-	 *
-	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
-	 *
-	 * @param {Event} event The beforeunload event.
-	 */
-	function warnIfUnsavedChanges( event ) {
-		if ( patternEditorDirty || siteEditorDirty ) {
-			event.preventDefault();
-		}
-	}
-
 	useEffect( () => {
 		if ( requestThemeRefresh ) {
 			// If something is still dirty, don't do anything yet.
@@ -157,6 +144,19 @@ export default function useThemeData(
 			convertToSlug( themeData?.name );
 		}
 	}, [ themeData?.name ] );
+
+	/**
+	 * Warns the user if there are unsaved changes before leaving.
+	 *
+	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
+	 *
+	 * @param {Event} event The beforeunload event.
+	 */
+	function warnIfUnsavedChanges( event ) {
+		if ( patternEditorDirty || siteEditorDirty ) {
+			event.preventDefault();
+		}
+	}
 
 	function getThemeData() {
 		return new Promise( ( resolve ) => {
