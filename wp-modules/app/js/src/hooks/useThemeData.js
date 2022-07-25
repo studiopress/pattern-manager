@@ -90,7 +90,25 @@ export default function useThemeData(
 			},
 			false
 		);
+
+		window.addEventListener( 'beforeunload', warnIfUnsavedChanges );
+		return () => {
+			window.removeEventListener( 'beforeunload', warnIfUnsavedChanges );
+		};
 	}, [] );
+
+	/**
+	 * Warns the user if there are unsaved changes before leaving.
+	 *
+	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
+	 *
+	 * @param {Event} event The beforeunload event.
+	 */
+	function warnIfUnsavedChanges( event ) {
+		if ( patternEditorDirty || siteEditorDirty ) {
+			event.preventDefault();
+		}
+	}
 
 	useEffect( () => {
 		if ( requestThemeRefresh ) {
