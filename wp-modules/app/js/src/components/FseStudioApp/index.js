@@ -276,7 +276,7 @@ function FseStudio() {
 									{ __( 'Template Parts', 'fse-studio' ) }
 								</button>
 								<a
-									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1"
+									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:ring-1"
 									href={ fsestudio.adminUrl }
 								>
 									{ sprintf(
