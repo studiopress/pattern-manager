@@ -275,20 +275,20 @@ function FseStudio() {
 								>
 									{ __( 'Template Parts', 'fse-studio' ) }
 								</button>
-								<a
-									className="inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 hover:text-gray-300 focus:text-gray-300 focus:outline-none focus:ring-1"
-									href={ fsestudio.adminUrl }
-								>
-									{ sprintf(
-										/* translators: %s: a left arrow */
-										__( 'Exit %s', 'fse-studio' ),
-										'←'
-									) }
-								</a>
 							</div>
 						</div>
 
 						<div className="flex sm:flex-row flex-col gap-2">
+							<a
+								className="inline-flex items-center mr-4 text-base font-medium rounded-sm shadow-sm text-white hover:text-white focus:text-white focus:outline-none focus:ring-1"
+								href={ fsestudio.adminUrl }
+							>
+								{ sprintf(
+									/* translators: %s: a left arrow */
+									__( '%s Exit', 'fse-studio' ),
+									'←'
+								) }
+							</a>
 							{ currentTheme?.data ? (
 								<>
 									<button
