@@ -13,6 +13,7 @@ export default function useStyleVariations() {
 
 	const [ newStyleId, setNewStyleId ] = useState( '' );
 	const [ newStyleName, setNewStyleName ] = useState( '' );
+	const [ updateCurrentStyle, setUpdateCurrentStyle ] = useState( false );
 
 	/**
 	 * This key is referenced by `Object.keys( defaultStyle )[0]` in most places the hook is used.
@@ -33,11 +34,13 @@ export default function useStyleVariations() {
 	/**
 	 * Set the currentStyleVariationId, then trigger a save.
 	 *
-	 * Initially tried currentTheme?.data for dependency, but currentTheme?.data.styles
-	 * seems tohave fewer side-effects.
+	 * Able to use currentTheme?.data for wider coverage as long as updateCurrentStyle is present.
+	 * Otherwise, upon save with 'default style' selected after creating a new style, the selecttion
+	 * unintentionally switches from default to the new style.
 	 */
 	useEffect( () => {
 		if (
+			updateCurrentStyle &&
 			currentTheme?.data.styles.hasOwnProperty( newStyleId ) &&
 			currentStyleVariationId?.value !== newStyleId
 		) {
@@ -47,8 +50,10 @@ export default function useStyleVariations() {
 
 			// Save the theme.
 			currentTheme?.save();
+
+			setUpdateCurrentStyle( false );
 		}
-	}, [ currentTheme?.data.styles ] );
+	}, [ currentTheme?.data ] );
 
 	/**
 	 * Handle setting up a new style object.
@@ -80,11 +85,12 @@ export default function useStyleVariations() {
 		// Udpate local style name state to clear input.
 		setNewStyleName( '' );
 
+		// Update local style id and 'update style' states for the useEffect hook.
+		setNewStyleId( id );
+		setUpdateCurrentStyle( true );
+
 		// Set the new style.
 		addStyleToTheme( newStyle, id );
-
-		// Update state for the style id context.
-		setNewStyleId( id );
 	};
 
 	/**
