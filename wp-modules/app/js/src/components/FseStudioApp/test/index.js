@@ -91,7 +91,7 @@ test( 'FseStudioApp', async () => {
 	// There should be a tab to edit the patterns.
 	expect(
 		screen.getByRole( 'button', {
-			name: /theme patterns/i,
+			name: /patterns/i,
 		} )
 	).toBeInTheDocument();
 } );

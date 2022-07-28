@@ -23,10 +23,10 @@ export default function ThemePatterns( { isVisible } ) {
 
 	return (
 		<div hidden={ ! isVisible } className="w-full">
-			<div className="bg-fses-gray mx-auto p-12 w-full">
+			<div className="bg-fses-gray p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
-						{ __( 'Theme Patterns', 'fse-studio' ) }
+						{ __( 'Patterns', 'fse-studio' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						Add patterns to your theme. You can create patterns from
@@ -36,9 +36,9 @@ export default function ThemePatterns( { isVisible } ) {
 				</div>
 			</div>
 
-			<div className="mx-auto p-12">
-				<div className="mx-auto max-w-7xl flex justify-between gap-20">
-					<div className="w-[65%]">
+			<div className="mx-auto p-8 lg:p-12">
+				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
+					<div className="flex-initial w-full md:w-2/3">
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
 								{ Object.entries(
@@ -143,7 +143,7 @@ export default function ThemePatterns( { isVisible } ) {
 						</>
 					</div>
 
-					<div className="flex-1 text-base">
+					<div className="flex-1 w-full md:w-1/3 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
 								<h4 className="mb-2 font-medium">

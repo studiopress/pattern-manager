@@ -30,16 +30,16 @@ export default function ThemeJsonEditor( { visible } ) {
 	
 	return (
 		<div hidden={ ! visible } className="fsestudio-theme-manager">
-			<div className="bg-fses-gray mx-auto p-12 w-full">
+			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">{ __( 'Styles and Settings', 'fse-studio' ) }</h1>
 					<p className="text-lg max-w-2xl">All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.</p>
 				</div>
 			</div>
 
-			<div className="mx-auto p-12">
-				<div className="max-w-7xl mx-auto flex justify-between gap-20">
-					<div className="w-[65%]">
+			<div className="mx-auto p-8 lg:p-12">
+				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
+					<div className="flex-initial w-full md:w-2/3">
 						<div className="flex flex-row">
 							<SettingsView isVisible={ true } />
 						</div>
@@ -75,7 +75,7 @@ export default function ThemeJsonEditor( { visible } ) {
 						</div>
 					</div>
 
-					<div className="flex-1 text-base">
+					<div className="flex-1 w-full md:w-1/3 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h4 className="mb-2 font-medium">Working with theme.json</h4>
@@ -174,7 +174,7 @@ function SettingsView({ isVisible }) {
 
 	return <div hidden={!isVisible}>
 		<div className="flex flex-col gap-14">
-			<ul className="w-full inline-flex text-base fses-json-nav">
+			<ul className="w-full inline-flex flex-wrap text-base fses-json-nav">
 				{ tabs.map( ( item ) => (
 					<li key={ item.name }>
 						<button
