@@ -95,16 +95,16 @@ export default function ThemeJsonEditor( { visible } ) {
 	
 	return (
 		<div hidden={ ! visible } className="fsestudio-theme-manager">
-			<div className="bg-fses-gray mx-auto p-12 w-full">
+			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">{ __( 'Styles and Settings', 'fse-studio' ) }</h1>
 					<p className="text-lg max-w-2xl">All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.</p>
 				</div>
 			</div>
 
-			<div className="mx-auto p-12">
-				<div className="max-w-7xl mx-auto flex justify-between gap-20">
-					<div className="w-[65%]">
+			<div className="mx-auto p-8 lg:p-12">
+				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
+					<div className="flex-initial w-full md:w-2/3">
 						<div className="flex flex-row">
 							<SettingsView isVisible={ true } />
 						</div>
@@ -140,8 +140,8 @@ export default function ThemeJsonEditor( { visible } ) {
 						</div>
 					</div>
 
-					<div className="flex-1 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
+					<div className="flex-1 w-full md:w-1/3 text-base">
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<div className="flex flex-col gap-5">
 									<div>
@@ -149,7 +149,7 @@ export default function ThemeJsonEditor( { visible } ) {
 											Current Style Variation
 										</h4>
 										<p className="text-base">
-											Select the style varation you would like to work on.
+											Select the style variation you would like to work on.
 										</p>
 									</div>
 									{
@@ -174,8 +174,8 @@ export default function ThemeJsonEditor( { visible } ) {
 							</div>
 						</div>
 
-						<div className="flex-1 text-base">
-							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
+						<div className="flex-1 w-full text-base">
+							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 								<div>
 									<div className="flex flex-col gap-5">
 										<div>
@@ -193,9 +193,9 @@ export default function ThemeJsonEditor( { visible } ) {
 												you're working on.
 											</p>
 										</div>
-										<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap space-x-6">
+										<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap">
 											<input
-												className="w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
+												className="w-full xl:w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
 												type="text"
 												id="style-variation-name"
 												placeholder="Variation Name"
@@ -207,7 +207,7 @@ export default function ThemeJsonEditor( { visible } ) {
 											/>
 											<button
 												type="button"
-												className="w-3/12 items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+												className="w-full xl:w-3/12 ml-auto mr-0 mt-2 xl:mt-0 px-4 xl:px-0 py-2 xl:py-0 items-center border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 												onClick={ () => {
 													if ( newStyleName === '' ) {
 														// Need to add class and/or display a message here.
