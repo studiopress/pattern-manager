@@ -23,9 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return bool
  */
 function update_theme_style( $style ) {
-
 	$style_default = [
-		'id'	=> '',
+		'id'    => '',
 		'title' => '',
 		'body'  => [],
 	];
@@ -66,7 +65,7 @@ function get_json_formatted_style( $style ) {
 	$style_json = [];
 
 	// Store the id and title to the new array.
-	$style_json['id'] 	 = $style['id'];
+	$style_json['id']    = $style['id'];
 	$style_json['title'] = $style['title'];
 
 	// Use array_merge so the body is saved on top-level.
@@ -75,7 +74,7 @@ function get_json_formatted_style( $style ) {
 	// Format style variation as site-editor prefers.
 	$style_json = unset_style_body_options( $style_json );
 
-	return json_encode( $style_json, JSON_PRETTY_PRINT );
+	return wp_json_encode( $style_json, JSON_PRETTY_PRINT );
 }
 
 /**

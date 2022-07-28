@@ -62,7 +62,7 @@ function get_the_themes( $pre_existing_theme = array() ) {
 		'included_patterns' => [],
 		'template_files'    => [],
 		'theme_json_file'   => [],
-		'styles'			=> [],
+		'styles'            => [],
 	];
 
 	foreach ( $wpthemes as $theme_slug => $theme ) {
@@ -220,7 +220,7 @@ function update_theme( $theme ) {
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
-	
+
 	foreach ( $theme['styles'] as $style ) {
 		\FseStudio\ThemeJsonDataHandlers\update_theme_style( $style );
 	}
