@@ -79,7 +79,7 @@ function FseStudioContextHydrator() {
 		templateEditorIframe,
 		currentStyleVariationId
 	);
-	
+
 	const currentPatternId = useCurrentId( '' );
 	let currentPattern = null;
 

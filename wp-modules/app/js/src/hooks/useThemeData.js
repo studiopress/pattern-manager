@@ -28,7 +28,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
- * 	 styles: object,
+ * 	 styles: {Object},
  *   tags: string,
  *   template_files: string[],
  *   template_parts: string[],
@@ -45,6 +45,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  * @param {ReturnType<import('./useThemes').default>} themes
  * @param {Object}                                    patternEditorIframe
  * @param {Object}                                    templateEditorIframe
+ * @param {Object}                                    currentStyleVariationId
  */
 export default function useThemeData(
 	themeId,
@@ -66,7 +67,7 @@ export default function useThemeData(
 	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
 	const { defaultStyle } = useStyleVariations();
-	const defaultStyleName = Object.keys( defaultStyle )[0];
+	const defaultStyleName = Object.keys( defaultStyle )[ 0 ];
 
 	useEffect( () => {
 		window.addEventListener(
@@ -308,12 +309,15 @@ export default function useThemeData(
 		defaultValue = null,
 		mode = 'overwrite'
 	) {
+		const currentStyleValue = currentStyleVariationId?.value ?? '';
+
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
-		const modifiedData = ( currentStyleVariationId.value === defaultStyleName )
-			? themeData.theme_json_file
-			: themeData.styles[ currentStyleVariationId.value ]?.body
-		
+		const modifiedData =
+			currentStyleValue === defaultStyleName
+				? themeData.theme_json_file
+				: themeData.styles[ currentStyleValue ]?.body;
+
 		// Remove any leading commas that might exist.
 		if ( selectorString[ 0 ] === '.' ) {
 			selectorString = selectorString.substring( 1 );
@@ -720,14 +724,17 @@ export default function useThemeData(
 		selectorString,
 		defaultValue = undefined
 	) {
+		const currentStyleValue = currentStyleVariationId?.value ?? '';
+
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
-		const currentStyleVariation = ( currentStyleVariationId.value === defaultStyleName )
-			? themeData.theme_json_file
-			: themeData?.styles[ currentStyleVariationId.value ]?.body
-				// Edge case fallback: intermittent crash on switching themes.
-				// Recreate by quoting out fallback, selecting a style variation, then switching themes.
-				?? themeData.theme_json_file
+		const currentStyleVariation =
+			currentStyleValue === defaultStyleName
+				? themeData.theme_json_file
+				: themeData?.styles[ currentStyleValue ]?.body ??
+				  // Edge case fallback: intermittent crash on switching themes.
+				  // Recreate by quoting out fallback, selecting a style variation, then switching themes.
+				  themeData.theme_json_file;
 
 		// Remove any leading commas that might exist.
 		if ( selectorString[ 0 ] === '.' ) {
@@ -742,7 +749,7 @@ export default function useThemeData(
 		if ( numberOfKeys === 1 ) {
 			const keyOne = [ keys[ 0 ] ];
 			if (
-					currentStyleVariation[ topLevelSection ].hasOwnProperty(
+				currentStyleVariation[ topLevelSection ].hasOwnProperty(
 					keyOne
 				)
 			) {

@@ -28,7 +28,7 @@ export default function useStyleVariations() {
 		},
 	};
 
-	const defaultStyleName = Object.keys( defaultStyle )[0];
+	const defaultStyleName = Object.keys( defaultStyle )[ 0 ];
 
 	/**
 	 * Set the currentStyleVariationId, then trigger a save.
@@ -56,16 +56,18 @@ export default function useStyleVariations() {
 	 * A new style object is used to set internal state for styleVariations.
 	 * The object is then used to set state for the currentTheme context.
 	 *
-	 * @see    useThemeData
+	 * @see useThemeData
 	 * @return {void}
 	 */
 	const handleNewStyle = () => {
 		const id = `${ convertToSlug( newStyleName ) }-${ uuidv4() }`;
+		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
-		const currentStyleBody = ( currentStyleVariationId?.value === defaultStyleName )
-			? defaultStyle[ defaultStyleName ].body
-			: currentTheme?.data.styles[ currentStyleVariationId.value ]?.body
-				?? defaultStyle[ defaultStyleName ].body
+		const currentStyleBody =
+			currentStyleVariationId?.value === defaultStyleName
+				? defaultStyle[ defaultStyleName ].body
+				: currentTheme?.data.styles[ currentStyleValue ]?.body ??
+				  defaultStyle[ defaultStyleName ].body;
 
 		const newStyle = {
 			[ id ]: {
@@ -83,18 +85,18 @@ export default function useStyleVariations() {
 
 		// Update state for the style id context.
 		setNewStyleId( id );
-	}
+	};
 
 	/**
 	 * Update state for the theme context.
 	 *
 	 * Triggers useEffect via update of currentTheme.data.styles.
 	 *
-	 * @param  {object}  style
-	 * @param  {string}  styleId
+	 * @param {Object} style
+	 * @param {string} styleId
 	 * @return {void}
 	 */
-	 const addStyleToTheme = ( style, styleId ) => {
+	const addStyleToTheme = ( style, styleId ) => {
 		currentTheme?.set( {
 			...currentTheme.data,
 			styles: {
@@ -102,7 +104,7 @@ export default function useStyleVariations() {
 				[ styleId ]: style[ styleId ],
 			},
 		} );
-	}
+	};
 
 	return {
 		defaultStyle,
