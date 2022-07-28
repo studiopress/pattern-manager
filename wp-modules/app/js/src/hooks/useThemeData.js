@@ -700,7 +700,7 @@ export default function useThemeData(
 			}
 		}
 
-		setThemeData( {
+		editTheme( {
 			...themeData,
 			theme_json_file: modifiedData,
 		} );
