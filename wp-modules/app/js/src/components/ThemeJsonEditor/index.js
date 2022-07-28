@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
+import useStyleVariations from '../../hooks/useStyleVariations';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
 
@@ -25,30 +26,68 @@ import convertToUpperCase from '../../utils/convertToUpperCase';
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
-	const { currentTheme } = useStudioContext();
+	const { currentTheme, currentStyleVariationId } = useStudioContext();
 	
 	if ( ! currentTheme?.data?.theme_json_file ) {
 		return ''
 	}
 
-	function renderStyleSelector() {
+	const {
+		defaultStyle,
+		newStyleName,
+		setNewStyleName,
+		handleNewStyle,
+	} = useStyleVariations();
+
+	// Setup the style variations object for populating the dropdown.
+	const styleVariations = {
+		...defaultStyle,
+		...currentTheme?.data?.styles,
+	};
+
+	/**
+	 * Populate options to render in the style variations dropdown.
+	 *
+	 * @return {array} The array of rendered styles.
+	 */
+	function styleSelectorOptions() {
 		const renderedStyles = [];
 
-		renderedStyles.push(
-			<option key={ 1 }>{ __( 'Choose a style variation', 'fse-studio' ) }</option>
-		);
+		let counter = 1;
 
+		Object.keys( styleVariations ).map( ( id ) => {
+			renderedStyles.push(
+				<option key={ counter } value={ id }>
+					{ styleVariations[ id ]?.title }
+				</option>
+			);
+			counter++;
+		} );
+
+		return renderedStyles;
+	}
+
+	/**
+	 * Render the style variations dropdown menu.
+	 *
+	 * @return <select>
+	 */
+	function renderStyleSelector() {
 		return (
 			<>
 				<select
 					className="block w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
 					id="style-variations"
-					value={ /* currentStyle.id */ '' }
+					value={ currentStyleVariationId?.value ?? '' }
 					onChange={ ( event ) => {
-						// currentStyle.set( id: event.target.value );
+						const selectedStyle = Object.keys( styleVariations )?.filter( ( id ) => {
+							return ( id === event.target.value );
+						} );
+
+						currentStyleVariationId?.set( selectedStyle[0] );
 					} }
 				>
-					{ renderedStyles }
+					{ styleSelectorOptions() }
 				</select>
 			</>
 		);
@@ -160,14 +199,23 @@ export default function ThemeJsonEditor( { visible } ) {
 												type="text"
 												id="style-variation-name"
 												placeholder="Variation Name"
-												value={ /* styleVariationName */ '' }
+												value={ newStyleName ?? '' }
+												onChange={ ( event ) => {
+													const newValue = event?.target?.value ?? '';
+													setNewStyleName( newValue );
+												} }
 											/>
 											<button
 												type="button"
 												className="w-3/12 items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 												onClick={ () => {
-													/* setStyleVariationName */
-													/* save */
+													if ( newStyleName === '' ) {
+														// Need to add class and/or display a message here.
+														console.log( 'Enter a new name!' );
+														return;
+													}
+
+													handleNewStyle();
 												} }
 											>
 												{ __(
