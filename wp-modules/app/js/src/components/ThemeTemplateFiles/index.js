@@ -101,7 +101,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 			<div className="bg-fses-gray mx-auto p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
-						{ __( 'Theme Templates', 'fse-studio' ) }
+						{ __( 'Templates', 'fse-studio' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						Here, you can set up the various default pages that make
@@ -111,9 +111,9 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 				</div>
 			</div>
 
-			<div className="mx-auto p-12">
-				<div className="mx-auto max-w-7xl flex justify-between gap-20">
-					<div className="w-[65%]">
+			<div className="mx-auto p-8 lg:p-12">
+				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
+					<div className="flex-initial w-full md:w-2/3">
 						<div className="flex flex-col gap-14">
 							<ul className="w-full inline-flex text-base fses-json-nav">
 								{ tabs.map( ( item ) => (
@@ -268,7 +268,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 						) : null }
 					</div>
 
-					<div className="flex-1 text-base">
+					<div className="flex-1 w-full md:w-1/3 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h4 className="mb-2 font-medium">

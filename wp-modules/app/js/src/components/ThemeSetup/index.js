@@ -52,7 +52,7 @@ export default function ThemeSetup( { isVisible } ) {
 
 	return (
 		<div hidden={ ! isVisible } className="flex-1">
-			<div className="bg-fses-gray mx-auto p-12 w-full">
+			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
 						{ __( 'Theme Details', 'fse-studio' ) }
@@ -66,9 +66,9 @@ export default function ThemeSetup( { isVisible } ) {
 				</div>
 			</div>
 
-			<div className="mx-auto p-12">
-				<form className="max-w-7xl mx-auto flex justify-between gap-20">
-					<div className="w-[65%]">
+			<div className="mx-auto p-8 lg:p-12">
+				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
+					<div className="flex-initial w-full md:w-2/3">
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
 							<label
 								htmlFor="theme-name"
@@ -458,7 +458,7 @@ export default function ThemeSetup( { isVisible } ) {
 						</div>
 					</div>
 
-					<div className="flex-1 text-base">
+					<div className="flex-1 w-full md:w-1/3 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
 								<div className="flex flex-col gap-5">
