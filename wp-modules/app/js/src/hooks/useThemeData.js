@@ -770,9 +770,9 @@ export default function useThemeData(
 						keyOne
 					].hasOwnProperty( keyTwo )
 				) {
-					return currentStyleVariation[ topLevelSection ][
-						keyOne
-					][ keyTwo ];
+					return currentStyleVariation[ topLevelSection ][ keyOne ][
+						keyTwo
+					];
 				}
 			}
 		}
@@ -825,9 +825,9 @@ export default function useThemeData(
 						].hasOwnProperty( keyThree )
 					) {
 						if (
-							currentStyleVariation[ topLevelSection ][
-								keyOne
-							][ keyTwo ][ keyThree ].hasOwnProperty( keyFour )
+							currentStyleVariation[ topLevelSection ][ keyOne ][
+								keyTwo
+							][ keyThree ].hasOwnProperty( keyFour )
 						) {
 							return currentStyleVariation[ topLevelSection ][
 								keyOne
@@ -861,9 +861,9 @@ export default function useThemeData(
 						].hasOwnProperty( keyThree )
 					) {
 						if (
-							currentStyleVariation[ topLevelSection ][
-								keyOne
-							][ keyTwo ][ keyThree ].hasOwnProperty( keyFour )
+							currentStyleVariation[ topLevelSection ][ keyOne ][
+								keyTwo
+							][ keyThree ].hasOwnProperty( keyFour )
 						) {
 							if (
 								currentStyleVariation[ topLevelSection ][
@@ -872,11 +872,9 @@ export default function useThemeData(
 									keyFour
 								].hasOwnProperty( keyFive )
 							) {
-								return currentStyleVariation[
-									topLevelSection
-								][ keyOne ][ keyTwo ][ keyThree ][ keyFour ][
-									keyFive
-								];
+								return currentStyleVariation[ topLevelSection ][
+									keyOne
+								][ keyTwo ][ keyThree ][ keyFour ][ keyFive ];
 							}
 						}
 					}
