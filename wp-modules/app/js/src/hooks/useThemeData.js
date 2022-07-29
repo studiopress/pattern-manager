@@ -1,6 +1,6 @@
 // @ts-check
 
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
@@ -61,6 +61,7 @@ export default function useThemeData(
 	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
 	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
+	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ patternEditorDirty, setPatternEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
@@ -97,6 +98,11 @@ export default function useThemeData(
 			},
 			false
 		);
+
+		window.addEventListener( 'beforeunload', warnIfUnsavedChanges );
+		return () => {
+			window.removeEventListener( 'beforeunload', warnIfUnsavedChanges );
+		};
 	}, [] );
 
 	useEffect( () => {
@@ -146,6 +152,24 @@ export default function useThemeData(
 			convertToSlug( themeData?.name );
 		}
 	}, [ themeData?.name ] );
+
+	/**
+	 * Warns the user if there are unsaved changes before leaving.
+	 *
+	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
+	 *
+	 * @param {Event} event The beforeunload event.
+	 */
+	function warnIfUnsavedChanges( event ) {
+		if ( editorDirty.current || patternEditorDirty || siteEditorDirty ) {
+			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
+			event.returnValue = __(
+				'Are you sure you want to leave the editor? There are unsaved changes.',
+				'fse-studio'
+			);
+			event.preventDefault();
+		}
+	}
 
 	function getThemeData() {
 		return new Promise( ( resolve ) => {
@@ -275,6 +299,7 @@ export default function useThemeData(
 				);
 			}
 
+			editorDirty.current = false;
 			setPatternEditorDirty( false );
 			setSiteEditorDirty( false );
 			setExistsOnDisk( true );
@@ -923,9 +948,22 @@ export default function useThemeData(
 		} );
 	}
 
+	/**
+	 * Allows the user to edit the theme.
+	 *
+	 * A separate function from setThemeData(), as this sets the 'dirty'
+	 * state of the editor.
+	 *
+	 * @param {Theme} newThemeData
+	 */
+	function editTheme( newThemeData ) {
+		editorDirty.current = true;
+		setThemeData( newThemeData );
+	}
+
 	return {
 		data: themeData,
-		set: setThemeData,
+		set: editTheme,
 		getThemeJsonValue,
 		setThemeJsonValue,
 		createPattern,

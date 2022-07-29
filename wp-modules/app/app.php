@@ -50,6 +50,7 @@ function get_app_state() {
 			'saveThemeJsonFileEndpoint' => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
 		),
 		'siteUrl'            => get_bloginfo( 'url' ),
+		'adminUrl'           => admin_url(),
 		'defaultPostId'      => null,
 	);
 }

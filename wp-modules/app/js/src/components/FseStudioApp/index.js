@@ -9,7 +9,7 @@ import '../../../../css/src/tailwind.css';
 
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 import { fsestudio } from '../../globals';
 
@@ -155,12 +155,12 @@ function FseStudio() {
 					{ snackBar.value }
 				</Snackbar>
 			) : null }
-			<div className="sticky top-0 z-10 flex-shrink-0 flex h-20 bg-wp-black shadow">
+			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
 				<div className="flex-1 flex">
-					<div className="flex w-full gap-8 mx-auto justify-between items-center px-10">
-						<div className="flex items-center gap-12">
+					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
+						<div className="flex lg:flex-row flex-col gap-4 lg:gap-12">
 							<h1 className="text-white font-bold">FSE Studio</h1>
-							<div className="flex gap-8 fses-nav">
+							<div className="flex flex-wrap gap-4 md:gap-x-8 fses-nav">
 								<button
 									type="button"
 									className={
@@ -219,7 +219,7 @@ function FseStudio() {
 										currentView.set( 'theme_patterns' );
 									} }
 								>
-									{ __( 'Theme Patterns', 'fse-studio' ) }
+									{ __( 'Patterns', 'fse-studio' ) }
 								</button>
 								<button
 									disabled={
@@ -248,7 +248,7 @@ function FseStudio() {
 										}
 									} }
 								>
-									{ __( 'Theme Templates', 'fse-studio' ) }
+									{ __( 'Templates', 'fse-studio' ) }
 								</button>
 								<button
 									disabled={
@@ -281,13 +281,22 @@ function FseStudio() {
 								</button>
 							</div>
 						</div>
-
-						<div className="flex sm:flex-row flex-col gap-2">
+						<div className="flex flex-wrap gap-2">
+							<a
+								className="inline-flex items-center mr-4 text-base font-medium rounded-sm shadow-sm text-white hover:text-white focus:text-white focus:outline-none focus:ring-1"
+								href={ fsestudio.adminUrl }
+							>
+								{ sprintf(
+									/* translators: %s: a left arrow */
+									__( '%s Exit', 'fse-studio' ),
+									'←'
+								) }
+							</a>
 							{ currentTheme?.data ? (
 								<>
 									<button
 										type="button"
-										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ () => {
 											currentView.set( 'theme_preview' );
 										} }
@@ -299,7 +308,7 @@ function FseStudio() {
 										disabled={
 											currentTheme.fetchInProgress
 										}
-										className="inline-flex items-center px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ () => {
 											currentTheme.save();
 										} }

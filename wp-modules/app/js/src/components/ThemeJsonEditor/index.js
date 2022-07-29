@@ -313,7 +313,7 @@ function SettingsView({ isVisible }) {
 
 	return <div hidden={!isVisible}>
 		<div className="flex flex-col gap-14">
-			<ul className="w-full inline-flex text-base fses-json-nav">
+			<ul className="w-full inline-flex flex-wrap text-base fses-json-nav">
 				{ tabs.map( ( item ) => (
 					<li key={ item.name }>
 						<button
