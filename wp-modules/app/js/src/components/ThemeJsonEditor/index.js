@@ -210,8 +210,11 @@ export default function ThemeJsonEditor( { visible } ) {
 												className="w-full xl:w-3/12 ml-auto mr-0 mt-2 xl:mt-0 px-4 xl:px-0 py-2 xl:py-0 items-center border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 												onClick={ () => {
 													if ( newStyleName === '' ) {
-														// Need to add class and/or display a message here.
-														console.log( 'Enter a new name!' );
+														alert( 'Please enter a new name.' );
+														return;
+													} else if ( newStyleName.match( /default/i ) ) {
+														alert( 'The style name should not include the word "default".' );
+														setNewStyleName( '' );
 														return;
 													}
 
