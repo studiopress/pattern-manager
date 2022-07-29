@@ -29,7 +29,7 @@ function ignore_db_queries( $posts, $query ) {
 	}
 
 	if (
-		'wp_global_styles' === $query->query['post_type'] ||
+		// We are intentionally not blocking global styles from using the db. 'wp_global_styles' === $query->query['post_type'] ||.
 		'wp_template' === $query->query['post_type'] ||
 		'wp_template_part' === $query->query['post_type']
 	) {
