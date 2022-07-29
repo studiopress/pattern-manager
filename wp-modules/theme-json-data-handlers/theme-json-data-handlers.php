@@ -87,27 +87,39 @@ function get_json_formatted_style( $style ) {
  * @return array
  */
 function unset_style_body_options( $style ) {
-	// Top level items.
-	unset( $style['customTemplates'] );
-	unset( $style['templateParts'] );
+	$items_to_unset = [
+		'customTemplates',
+		'templateParts',
+		'color' => [
+			'background',
+			'custom',
+			'customDuotone',
+			'customGradient',
+			'defaultGradients',
+			'defaultPalette',
+			'defaultDuotone',
+			'link',
+		],
+		'typography' => [
+			'customFontSize',
+			'dropCap',
+			'fontStyle',
+			'fontWeight',
+			'letterSpacing',
+			'textDecoration',
+			'textTransform',
+		],
+	];
 
-	// Settings items.
-	unset( $style['settings']['color']['background'] );
-	unset( $style['settings']['color']['custom'] );
-	unset( $style['settings']['color']['customDuotone'] );
-	unset( $style['settings']['color']['customGradient'] );
-	unset( $style['settings']['color']['defaultGradients'] );
-	unset( $style['settings']['color']['defaultPalette'] );
-	unset( $style['settings']['color']['defaultDuotone'] );
-	unset( $style['settings']['color']['link'] );
-
-	unset( $style['settings']['typography']['customFontSize'] );
-	unset( $style['settings']['typography']['dropCap'] );
-	unset( $style['settings']['typography']['fontStyle'] );
-	unset( $style['settings']['typography']['fontWeight'] );
-	unset( $style['settings']['typography']['letterSpacing'] );
-	unset( $style['settings']['typography']['textDecoration'] );
-	unset( $style['settings']['typography']['textTransform'] );
+	foreach ( $items_to_unset as $key => $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $inner_value ) {
+				unset( $style['settings'][ $key ][ $inner_value ] );
+			}
+		} else {
+			unset( $style[ $value ] );
+		}
+	}
 
 	return $style;
 }
