@@ -90,7 +90,7 @@ function unset_style_body_options( $style ) {
 	$items_to_unset = [
 		'customTemplates',
 		'templateParts',
-		'color' => [
+		'color'      => [
 			'background',
 			'custom',
 			'customDuotone',
