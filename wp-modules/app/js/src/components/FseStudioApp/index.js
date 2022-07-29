@@ -9,7 +9,7 @@ import '../../../../css/src/tailwind.css';
 
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 
 import { fsestudio } from '../../globals';
 
@@ -277,8 +277,17 @@ function FseStudio() {
 								</button>
 							</div>
 						</div>
-
 						<div className="flex flex-wrap gap-2">
+							<a
+								className="inline-flex items-center mr-4 text-base font-medium rounded-sm shadow-sm text-white hover:text-white focus:text-white focus:outline-none focus:ring-1"
+								href={ fsestudio.adminUrl }
+							>
+								{ sprintf(
+									/* translators: %s: a left arrow */
+									__( '%s Exit', 'fse-studio' ),
+									'←'
+								) }
+							</a>
 							{ currentTheme?.data ? (
 								<>
 									<button

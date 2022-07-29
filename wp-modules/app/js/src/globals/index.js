@@ -18,6 +18,7 @@
  *  initialTheme: string,
  *  patterns: Record<string, import('../PatternPicker').Pattern>,
  *  siteUrl: string,
+ *  adminUrl: string,
  *  themeJsonFiles: Record<string, {
  *   content: string,
  *   name: string,
