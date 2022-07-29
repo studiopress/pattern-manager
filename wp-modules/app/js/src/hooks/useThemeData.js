@@ -716,7 +716,7 @@ export default function useThemeData(
 			};
 		}
 
-		setThemeData( dataToSave );
+		editTheme( dataToSave );
 	}
 
 	function getThemeJsonValue(
