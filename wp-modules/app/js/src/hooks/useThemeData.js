@@ -28,7 +28,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
- * 	 styles: {Object},
+ *   styles: {Object},
  *   tags: string,
  *   template_files: string[],
  *   template_parts: string[],
