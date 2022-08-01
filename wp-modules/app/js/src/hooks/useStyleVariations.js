@@ -1,7 +1,7 @@
 // @ts-check
 
 // WP Dependencies
-import { useState, useEffect } from '@wordpress/element';
+import { useRef, useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import useStudioContext from './useStudioContext';
@@ -11,9 +11,12 @@ import { v4 as uuidv4 } from 'uuid';
 export default function useStyleVariations() {
 	const { currentTheme, currentStyleVariationId } = useStudioContext();
 
-	const [ newStyleId, setNewStyleId ] = useState( '' );
+	const newStyleId = useRef( '' );
+
 	const [ newStyleName, setNewStyleName ] = useState( '' );
 	const [ updateCurrentStyle, setUpdateCurrentStyle ] = useState( false );
+
+	const defaultStyleName = 'default-style';
 
 	/**
 	 * This key is referenced by `Object.keys( defaultStyle )[0]` in most places the hook is used.
@@ -23,13 +26,11 @@ export default function useStyleVariations() {
 	 * @see useCurrentId currentStyleVariationId
 	 */
 	const defaultStyle = {
-		'default-style': {
+		[ defaultStyleName ]: {
 			title: __( 'Default Style', 'fse-studio' ),
-			body: currentTheme?.data.theme_json_file ?? {},
+			body: currentTheme?.data?.theme_json_file ?? {},
 		},
 	};
-
-	const defaultStyleName = Object.keys( defaultStyle )[ 0 ];
 
 	/**
 	 * Set the currentStyleVariationId, then trigger a save.
@@ -41,12 +42,12 @@ export default function useStyleVariations() {
 	useEffect( () => {
 		if (
 			updateCurrentStyle &&
-			currentTheme?.data.styles.hasOwnProperty( newStyleId ) &&
-			currentStyleVariationId?.value !== newStyleId
+			currentTheme?.data.styles.hasOwnProperty( newStyleId.current ) &&
+			currentStyleVariationId?.value !== newStyleId.current
 		) {
 			// Set the current style id.
 			// Updates dropdown selection.
-			currentStyleVariationId?.set( newStyleId );
+			currentStyleVariationId?.set( newStyleId.current );
 
 			// Save the theme.
 			currentTheme?.save();
@@ -62,7 +63,6 @@ export default function useStyleVariations() {
 	 * The object is then used to set state for the currentTheme context.
 	 *
 	 * @see useThemeData
-	 * @return {void}
 	 */
 	const handleNewStyle = () => {
 		const id = `${ convertToSlug( newStyleName ) }-${ uuidv4() }`;
@@ -82,11 +82,13 @@ export default function useStyleVariations() {
 			},
 		};
 
+		// Mutate the style id ref.
+		newStyleId.current = id;
+
 		// Udpate local style name state to clear input.
 		setNewStyleName( '' );
 
-		// Update local style id and 'update style' states for the useEffect hook.
-		setNewStyleId( id );
+		// Update the 'update style' state for the useEffect hook.
 		setUpdateCurrentStyle( true );
 
 		// Set the new style.
@@ -113,6 +115,7 @@ export default function useStyleVariations() {
 	};
 
 	return {
+		defaultStyleName,
 		defaultStyle,
 		newStyleName,
 		setNewStyleName,

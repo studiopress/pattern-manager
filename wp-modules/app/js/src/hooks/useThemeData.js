@@ -67,8 +67,7 @@ export default function useThemeData(
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
-	const { defaultStyle } = useStyleVariations();
-	const defaultStyleName = Object.keys( defaultStyle )[ 0 ];
+	const { defaultStyleName } = useStyleVariations();
 
 	useEffect( () => {
 		window.addEventListener(
@@ -334,7 +333,7 @@ export default function useThemeData(
 		defaultValue = null,
 		mode = 'overwrite'
 	) {
-		const currentStyleValue = currentStyleVariationId?.value ?? '';
+		const currentStyleValue = currentStyleVariationId?.value;
 
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
@@ -714,32 +713,30 @@ export default function useThemeData(
 			}
 		}
 
-		// Setup empty object for save data.
-		let dataToSave = {};
-
 		/**
-		 * Check that currently selected style is not default.
-		 *
 		 * If the current style is not default, save the variation data to the styles array.
 		 * Otherwise, save the modifiedData to theme.json.
+		 *
+		 * Also, I hate the way prettier wants to format this ternary!
 		 */
-		if ( currentStyleVariationId.value !== defaultStyleName ) {
-			dataToSave = {
-				...themeData,
-				styles: {
-					...themeData.styles,
-					[ currentStyleVariationId.value ]: {
-						...themeData.styles[ currentStyleVariationId.value ],
-						body: modifiedData,
-					},
-				},
-			};
-		} else {
-			dataToSave = {
-				...themeData,
-				theme_json_file: modifiedData,
-			};
-		}
+		const dataToSave =
+			currentStyleVariationId.value !== defaultStyleName
+				? {
+						...themeData,
+						styles: {
+							...themeData.styles,
+							[ currentStyleVariationId.value ]: {
+								...themeData.styles[
+									currentStyleVariationId.value
+								],
+								body: modifiedData,
+							},
+						},
+				  }
+				: {
+						...themeData,
+						theme_json_file: modifiedData,
+				  };
 
 		editTheme( dataToSave );
 	}

@@ -68,28 +68,24 @@ export default function ThemeJsonEditor( { visible } ) {
 	}
 
 	/**
-	 * Render the style variations dropdown menu.
-	 *
-	 * @return <select>
+	 * Component to render the style variations dropdown menu.
 	 */
-	function renderStyleSelector() {
+	function StyleSelector() {
 		return (
-			<>
-				<select
-					className="block w-full !max-w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
-					id="style-variations"
-					value={ currentStyleVariationId?.value ?? '' }
-					onChange={ ( event ) => {
-						const selectedStyle = Object.keys( styleVariations )?.filter( ( id ) => {
-							return ( id === event.target.value );
-						} );
+			<select
+				className="block w-full !max-w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
+				id="style-variations"
+				value={ currentStyleVariationId?.value ?? '' }
+				onChange={ ( event ) => {
+					const selectedStyle = Object.keys( styleVariations ).find( ( id ) => {
+						return id === event.target.value;
+					} );
 
-						currentStyleVariationId?.set( selectedStyle[0] );
-					} }
-				>
-					{ styleSelectorOptions() }
-				</select>
-			</>
+					currentStyleVariationId?.set( selectedStyle );
+				} }
+			>
+				{ styleSelectorOptions() }
+			</select>
 		);
 	}
 	
@@ -97,8 +93,15 @@ export default function ThemeJsonEditor( { visible } ) {
 		<div hidden={ ! visible } className="fsestudio-theme-manager">
 			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">{ __( 'Styles and Settings', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.</p>
+					<h1 className="text-4xl mb-3">
+						{ __( 'Styles and Settings', 'fse-studio' ) }
+					</h1>
+					<p className="text-lg max-w-2xl">
+						{ __(
+							"All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.",
+							'fse-studio'
+						) }
+					</p>
 				</div>
 			</div>
 
@@ -111,7 +114,9 @@ export default function ThemeJsonEditor( { visible } ) {
 						<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 							<div className="flex items-center justify-between w-full">
 								<div className="flex items-center">
-									<p className="text-sm m-0">{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }</p>
+									<p className="text-sm m-0">
+										{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }
+									</p>
 								</div>
 								<div className="flex items-center">
 									{ currentTheme.hasSaved ?
@@ -146,10 +151,10 @@ export default function ThemeJsonEditor( { visible } ) {
 								<div className="flex flex-col gap-5">
 									<div>
 										<h4 className="mb-2 font-medium">
-											Current Style Variation
+											{ __( 'Current Style Variation', 'fse-studio' ) }
 										</h4>
 										<p className="text-base">
-											Select the style variation you would like to work on.
+											{ __( 'Select the style variation you would like to work on.', 'fse-studio' ) }
 										</p>
 									</div>
 									{
@@ -160,12 +165,9 @@ export default function ThemeJsonEditor( { visible } ) {
 														htmlFor="themes"
 														className="block text-sm font-medium text-gray-700 visuallyhidden"
 													>
-														{ __(
-															'Choose a style variation',
-															'fse-studio'
-														) }
+														{ __( 'Choose a style variation', 'fse-studio' ) }
 													</label>
-													{ renderStyleSelector() }
+													{ <StyleSelector /> }
 												</div>
 											</div>
 										</>
@@ -180,17 +182,20 @@ export default function ThemeJsonEditor( { visible } ) {
 									<div className="flex flex-col gap-5">
 										<div>
 											<h4 className="mb-2 font-medium">
-											Create a style variation
+												{ __( 'Create a style variation', 'fse-studio' ) }
 											</h4>
 											<p className="text-base">
-												Style variations are alternate design variations for a theme,
-												enabling you to quickly apply a new look and feel to your site. 
+												{ __(
+													'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
+													'fse-studio'
+												) }
 											</p>
 											<br />
 											<p className="text-base">
-												Create a new variation by adding a variation name and clicking Save.
-												Once saved, you can use the select menu to choose which variation
-												you're working on.
+												{ __(
+													"Create a new variation by adding a variation name and clicking Save. Once saved, you can use the select menu to choose which variation you're working on.",
+													'fse-studio'
+												) }
 											</p>
 										</div>
 										<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap">
@@ -210,10 +215,14 @@ export default function ThemeJsonEditor( { visible } ) {
 												className="w-3/12 md:w-full xl:w-3/12 ml-auto mr-0 mt-0 md:mt-2 xl:mt-0 px-4 xl:px-0 py-2 xl:py-0 items-center border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 												onClick={ () => {
 													if ( newStyleName === '' ) {
-														alert( 'Please enter a new name.' );
+														alert(
+															__( 'Please enter a new name.', 'fse-studio' )
+														);
 														return;
 													} else if ( newStyleName.match( /default/i ) ) {
-														alert( 'The style name should not include the word "default".' );
+														alert(
+															__( 'The style name should not include the word "default".',  'fse-studio' )
+														);
 														setNewStyleName( '' );
 														return;
 													}
@@ -221,10 +230,7 @@ export default function ThemeJsonEditor( { visible } ) {
 													handleNewStyle();
 												} }
 											>
-												{ __(
-													'Save',
-													'fse-studio'
-												) }
+												{ __( 'Save', 'fse-studio' ) }
 											</button>
 										</div>
 									</div>
