@@ -263,10 +263,18 @@ export default function useThemeData(
 							} ),
 							'*'
 						);
+
 						if ( data.themeJsonModified ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
+								} ),
+								'*'
+							);
+						} else if ( data.styleJsonModified ) {
+							templateEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'fsestudio_stylejson_changed',
 								} ),
 								'*'
 							);
