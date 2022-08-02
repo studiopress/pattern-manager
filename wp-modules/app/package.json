@@ -1,6 +1,5 @@
 {
   "name": "fsestudio-app",
-  "version": "1.0.0",
   "description": "The frontend react app for FSE Studio",
   "main": "js/build/index.js",
   "scripts": {
