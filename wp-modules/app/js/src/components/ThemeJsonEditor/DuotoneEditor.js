@@ -35,8 +35,8 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 
 	return (
 		<div className="bg-gray-100 p-5 rounded">
-			<div className="flex flex-wrap justify-between items-center gap-2 md:gap-12">
-				<div className="flex flex-col gap-5 w-full">
+			<div className="flex flex-wrap lg:flex-nowrap items-end gap-8 lg:gap-12">
+				<div className="flex flex-col gap-5 w-full lg:w-1/2">
 					<div className="name flex flex-col space-y-1">
 						<div className="font-semibold">
 							{ __( 'Name', 'fse-studio' ) }
@@ -72,7 +72,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 						/>
 					</div>
 				</div>
-				<div className="gradient mt-8 flex flex-col gap-3 w-full">
+				<div className="duotone flex flex-col gap-6 w-full lg:w-1/2">
 					<button
 						onClick={ () => {
 							setPopover1Open( true );
