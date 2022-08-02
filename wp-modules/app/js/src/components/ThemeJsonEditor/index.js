@@ -53,15 +53,12 @@ export default function ThemeJsonEditor( { visible } ) {
 	function styleSelectorOptions() {
 		const renderedStyles = [];
 
-		let counter = 1;
-
-		Object.keys( styleVariations ).map( ( id ) => {
+		Object.keys( styleVariations ).forEach( ( id, index ) => {
 			renderedStyles.push(
-				<option key={ counter } value={ id }>
+				<option key={ index } value={ id }>
 					{ styleVariations[ id ]?.title }
 				</option>
 			);
-			counter++;
 		} );
 
 		return renderedStyles;
