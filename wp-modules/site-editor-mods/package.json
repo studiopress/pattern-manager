@@ -1,6 +1,5 @@
 {
   "name": "fsestudio-site-editor-mods",
-  "version": "1.0.0",
   "description": "Javascript that gets loaded withthe site editor page in WP core.",
   "main": "js/build/index.js",
   "scripts": {
