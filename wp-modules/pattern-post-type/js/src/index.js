@@ -186,13 +186,16 @@ window.addEventListener(
 				}, 200 );
 			}
 
-			if ( response.message === 'fsestudio_themejson_changed' ) {
+			if (
+				response.message === 'fsestudio_themejson_changed' ||
+				response.message === 'fsestudio_stylejson_changed'
+			) {
 				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
 				clearTimeout( fsestudioThemeJsonChangeDebounce );
 				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
 					wp.data.dispatch( 'core/notices' ).createNotice(
 						'warning', // Can be one of: success, info, warning, error.
-						"FSE Studio: The values in this theme's theme.json file have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
+						"FSE Studio: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 						{
 							isDismissible: false, // Whether the user can dismiss the notice.
 							// Any actions the user can perform.
