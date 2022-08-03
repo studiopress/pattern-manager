@@ -159,6 +159,7 @@ window.addEventListener(
 						'warning', // Can be one of: success, info, warning, error.
 						"FSE Studio: The values in this theme's theme.json file have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 						{
+							id: 'fse-studio-refresh-site-editor-theme-json-notice',
 							isDismissible: false, // Whether the user can dismiss the notice.
 							// Any actions the user can perform.
 							actions: [
