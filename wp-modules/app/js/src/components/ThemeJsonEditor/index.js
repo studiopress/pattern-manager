@@ -142,95 +142,99 @@ export default function ThemeJsonEditor( { visible } ) {
 						</div>
 					</div>
 
-					<div className="flex-1 w-full md:w-1/3 -m-8 mb-2 md:m-0 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
-							<div>
-								<div className="flex flex-col gap-5">
+					<div className="flex-1 w-full md:w-1/3 -mx-8 md:m-0 text-base">
+						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
+							<div className="flex flex-col gap-5">
+								<div>
+									<h4 className="mb-2 font-medium">
+										{ __( 'Current Style Variation', 'fse-studio' ) }
+									</h4>
+									<p className="text-base">
+										{ __( 'Select the style variation you would like to work on.', 'fse-studio' ) }
+									</p>
+								</div>
+
+								<div className="flex flex-col gap-2">
 									<div>
-										<h4 className="mb-2 font-medium">
-											{ __( 'Current Style Variation', 'fse-studio' ) }
-										</h4>
-										<p className="text-base">
-											{ __( 'Select the style variation you would like to work on.', 'fse-studio' ) }
-										</p>
+										<label
+											htmlFor="themes"
+											className="block text-sm font-medium text-gray-700 visuallyhidden"
+										>
+											{ __( 'Choose a style variation', 'fse-studio' ) }
+										</label>
+										{ <StyleSelector /> }
 									</div>
-									{
-										<>
-											<div className="flex flex-col gap-2">
-												<div>
-													<label
-														htmlFor="themes"
-														className="block text-sm font-medium text-gray-700 visuallyhidden"
-													>
-														{ __( 'Choose a style variation', 'fse-studio' ) }
-													</label>
-													{ <StyleSelector /> }
-												</div>
-											</div>
-										</>
-									}
+								</div>
+							</div>
+						</div>
+
+						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
+							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+								<div className="flex flex-col gap-5">
+									<h4 className="mb-2 font-medium">
+										{ __( 'Create a style variation', 'fse-studio' ) }
+									</h4>
+									<p className="text-base">
+										{ __(
+											'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
+											'fse-studio'
+										) }
+									</p>
+									<p className="text-base">
+										{ __(
+											"Create a new variation by adding a variation name and clicking Save. Once saved, you can use the select menu to choose which variation you're working on.",
+											'fse-studio'
+										) }
+									</p>
+								</div>
+
+								<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap">
+									<input
+										className="w-8/12 md:w-full xl:w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
+										type="text"
+										id="style-variation-name"
+										placeholder="Variation Name"
+										value={ newStyleName ?? '' }
+										onChange={ ( event ) => {
+											const newValue = event?.target?.value ?? '';
+											setNewStyleName( newValue );
+										} }
+									/>
+									<button
+										type="button"
+										className="w-3/12 md:w-full xl:w-3/12 ml-auto mr-0 mt-0 md:mt-2 xl:mt-0 px-4 xl:px-0 py-2 xl:py-0 items-center border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={ () => {
+											if ( newStyleName === '' ) {
+												alert(
+													__( 'Please enter a new name.', 'fse-studio' )
+												);
+												return;
+											} else if ( newStyleName.match( /default/i ) ) {
+												alert(
+													__( 'The style name should not include the word "default".',  'fse-studio' )
+												);
+												setNewStyleName( '' );
+												return;
+											}
+
+											handleNewStyle();
+										} }
+									>
+										{ __( 'Save', 'fse-studio' ) }
+									</button>
 								</div>
 							</div>
 						</div>
 
 						<div className="flex-1 w-full text-base">
-							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
-								<div>
-									<div className="flex flex-col gap-5">
-										<div>
-											<h4 className="mb-2 font-medium">
-												{ __( 'Create a style variation', 'fse-studio' ) }
-											</h4>
-											<p className="text-base">
-												{ __(
-													'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
-													'fse-studio'
-												) }
-											</p>
-											<br />
-											<p className="text-base">
-												{ __(
-													"Create a new variation by adding a variation name and clicking Save. Once saved, you can use the select menu to choose which variation you're working on.",
-													'fse-studio'
-												) }
-											</p>
-										</div>
-										<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap">
-											<input
-												className="w-8/12 md:w-full xl:w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
-												type="text"
-												id="style-variation-name"
-												placeholder="Variation Name"
-												value={ newStyleName ?? '' }
-												onChange={ ( event ) => {
-													const newValue = event?.target?.value ?? '';
-													setNewStyleName( newValue );
-												} }
-											/>
-											<button
-												type="button"
-												className="w-3/12 md:w-full xl:w-3/12 ml-auto mr-0 mt-0 md:mt-2 xl:mt-0 px-4 xl:px-0 py-2 xl:py-0 items-center border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-												onClick={ () => {
-													if ( newStyleName === '' ) {
-														alert(
-															__( 'Please enter a new name.', 'fse-studio' )
-														);
-														return;
-													} else if ( newStyleName.match( /default/i ) ) {
-														alert(
-															__( 'The style name should not include the word "default".',  'fse-studio' )
-														);
-														setNewStyleName( '' );
-														return;
-													}
-
-													handleNewStyle();
-												} }
-											>
-												{ __( 'Save', 'fse-studio' ) }
-											</button>
-										</div>
-									</div>
+							<div className="bg-fses-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded" role="alert">
+								<div className="flex flex-col gap-5">
+									<p className="text-base">
+										{ __(
+											'Style variations are an experimental Gutenberg feature, and some settings may not behave as expected.',
+											'fse-studio'
+										) }
+									</p>
 								</div>
 							</div>
 						</div>
