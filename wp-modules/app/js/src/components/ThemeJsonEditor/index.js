@@ -142,7 +142,7 @@ export default function ThemeJsonEditor( { visible } ) {
 						</div>
 					</div>
 
-					<div className="flex-1 w-full md:w-1/3 -mx-8 md:m-0 text-base">
+					<div className="flex-1 w-full md:w-1/3 text-base">
 						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
 							<div className="flex flex-col gap-5">
 								<div>
