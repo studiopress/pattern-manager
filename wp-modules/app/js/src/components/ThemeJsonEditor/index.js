@@ -66,10 +66,14 @@ export default function ThemeJsonEditor( { visible } ) {
 
 	/**
 	 * Component to render the style variations dropdown menu.
+	 *
+	 * The options are populated from styleSelectorOptions().
+	 * The select is disabled if no style variations have been created for the current theme.
 	 */
 	function StyleSelector() {
 		return (
 			<select
+				disabled={ ! Object.keys( currentTheme?.data?.styles ?? {} ).length }
 				className="block w-full !max-w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
 				id="style-variations"
 				value={ currentStyleVariationId?.value ?? '' }
