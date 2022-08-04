@@ -2,6 +2,7 @@
 
 // WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
+import { useInstanceId } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
@@ -11,6 +12,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 	const [ popover1Open, setPopover1Open ] = useState( false );
 	const [ popover2Open, setPopover2Open ] = useState( false );
 	const { currentTheme } = useStudioContext();
+	const inputId = useInstanceId( DuotoneEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
@@ -38,12 +40,16 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 			<div className="flex flex-wrap lg:flex-nowrap items-end gap-8 lg:gap-12">
 				<div className="flex flex-col gap-5 w-full lg:w-1/2">
 					<div className="name flex flex-col space-y-1">
-						<div className="font-semibold">
+						<label
+							htmlFor={ `duotone-name-${ inputId }` }
+							className="font-semibold"
+						>
 							{ __( 'Name', 'fse-studio' ) }
-						</div>
-						<div>{ properties.name.description }</div>
+						</label>
+						<span>{ properties.name.description }</span>
 						<input
 							type="text"
+							id={ `duotone-name-${ inputId }` }
 							value={ nameValue }
 							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
@@ -55,12 +61,16 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 						/>
 					</div>
 					<div className="slug flex flex-col space-y-1">
-						<div className="font-semibold">
+						<label
+							htmlFor={ `duotone-slug-${ inputId }` }
+							className="font-semibold"
+						>
 							{ __( 'Slug', 'fse-studio' ) }
-						</div>
-						<div>{ properties.slug.description }</div>
+						</label>
+						<span>{ properties.slug.description }</span>
 						<input
 							type="text"
+							id={ `duotone-slug-${ inputId }` }
 							value={ slugValue }
 							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
@@ -162,7 +172,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 			</div>
 			<div className="text-right border-t border-dotted border-gray-300 pt-3 mt-5">
 				<button
-					className="text-red-500 hover:text-red-700"
+					className="text-red-700 hover:text-red-800"
 					onClick={ ( e ) => {
 						e.preventDefault();
 						if (

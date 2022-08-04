@@ -463,9 +463,9 @@ export default function ThemeSetup( { isVisible } ) {
 							<div>
 								<div className="flex flex-col gap-5">
 									<div>
-										<h4 className="mb-2 font-medium">
+										<h2 className="mb-2 font-medium">
 											Theme Actions
-										</h4>
+										</h2>
 										<p className="text-base">
 											Use the selector below to load a
 											theme to work on, or create a new
@@ -521,9 +521,9 @@ export default function ThemeSetup( { isVisible } ) {
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
-								<h4 className="mb-2 font-medium">
+								<h2 className="mb-2 font-medium">
 									Export theme to .zip
-								</h4>
+								</h2>
 								<p className="text-base mb-5">
 									{ __(
 										"Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.",
