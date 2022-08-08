@@ -2,11 +2,42 @@ import '../../css/src/index.scss';
 import { registerPlugin } from '@wordpress/plugins';
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
-import { PanelRow, TextControl } from '@wordpress/components';
+import { PanelRow, TextControl, ToggleControl } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
+
+	const postMeta = wp.data
+		.select( 'core/editor' )
+		.getEditedPostAttribute( 'meta' );
+
+	/**
+	 * Setup some dummy post types.
+	 *
+	 * 'core/post-content' is the only working blockTypes attribute.
+	 * Can get all post types with wp.data.select( 'core').getPostTypes( { per_page: -1 }).
+	 * However, no namespaced block category like 'core/post-content' is returned.
+	 *
+	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
+	 */
+	const postTypes = [
+		{
+			slug: 'page',
+			name: 'Pages',
+			blockType: 'core/post-content',
+		},
+		{
+			slug: 'post',
+			name: 'Posts',
+			blockType: 'does-not-work',
+		},
+		{
+			slug: 'fsestudio_pattern',
+			name: 'Patterns',
+			blockType: 'FseStudio/fsestudio_pattern',
+		},
+	];
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
@@ -14,16 +45,27 @@ const FseStudioMetaControls = () => {
 		} );
 	}, [] );
 
+	// Assign an empty array if blockTypes is nulll or undefined.
+	useEffect( () => {
+		if (
+			postMeta?.blockTypes === undefined ||
+			postMeta?.blockTypes === null
+		) {
+			wp.data.dispatch( 'core/editor' ).editPost( {
+				meta: {
+					...postMeta,
+					blockTypes: [],
+				},
+			} );
+		}
+	}, [ postMeta ] );
+
 	if (
 		'fsestudio_pattern' !==
 		wp.data.select( 'core/editor' ).getCurrentPostType()
 	) {
 		return null; // Will only render component for post type 'fsestudio_pattern'
 	}
-
-	const postMeta = wp.data
-		.select( 'core/editor' )
-		.getEditedPostAttribute( 'meta' );
 
 	if ( postMeta?.type === 'template' ) {
 		return (
@@ -55,11 +97,71 @@ const FseStudioMetaControls = () => {
 						value={ postMeta.title }
 						onChange={ ( value ) => {
 							wp.data.dispatch( 'core/editor' ).editPost( {
-								meta: { ...postMeta, title: value },
+								meta: {
+									...postMeta,
+									title: value,
+								},
 							} );
 						} }
 					/>
 				</PanelRow>
+			</PluginDocumentSettingPanel>
+
+			<PluginDocumentSettingPanel
+				title={ __( 'Modal Visibility', 'fse-studio' ) }
+				icon="edit"
+			>
+				{ postTypes.map( ( postType ) => {
+					return (
+						<PanelRow
+							key={ `fse-pattern-visibility-${ postType.name }` }
+						>
+							<ToggleControl
+								label={ postType.name }
+								checked={ postMeta.blockTypes?.includes(
+									postType.blockType
+								) }
+								onChange={ ( event ) => {
+									let updatedBlockTypes = [];
+
+									if ( event ) {
+										updatedBlockTypes =
+											! postMeta.blockTypes?.includes(
+												postType.blockType
+											)
+												? postMeta.blockTypes?.concat( [
+														postType.blockType,
+												  ] )
+												: postMeta.blockTypes;
+									} else {
+										updatedBlockTypes =
+											postMeta.blockTypes?.includes(
+												postType.blockType
+											)
+												? postMeta.blockTypes?.filter(
+														( item ) => {
+															return (
+																item !==
+																postType.blockType
+															);
+														}
+												  )
+												: postMeta.blockTypes;
+									}
+
+									wp.data
+										.dispatch( 'core/editor' )
+										.editPost( {
+											meta: {
+												...postMeta,
+												blockTypes: updatedBlockTypes,
+											},
+										} );
+								} }
+							/>
+						</PanelRow>
+					);
+				} ) }
 			</PluginDocumentSettingPanel>
 		</div>
 	);
@@ -186,15 +288,17 @@ window.addEventListener(
 				}, 200 );
 			}
 
-			if ( response.message === 'fsestudio_themejson_changed' ) {
+			if (
+				response.message === 'fsestudio_themejson_changed' ||
+				response.message === 'fsestudio_stylejson_changed'
+			) {
 				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
 				clearTimeout( fsestudioThemeJsonChangeDebounce );
 				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
 					wp.data.dispatch( 'core/notices' ).createNotice(
 						'warning', // Can be one of: success, info, warning, error.
-						"FSE Studio: The values in this theme's theme.json file have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
+						"FSE Studio: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 						{
-							id: 'fse-studio-refresh-pattern-editor-theme-json-notice',
 							isDismissible: false, // Whether the user can dismiss the notice.
 							// Any actions the user can perform.
 							actions: [
