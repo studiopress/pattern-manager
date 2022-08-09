@@ -161,7 +161,7 @@ export default function ThemeJsonEditor( { visible } ) {
 								<div className="flex flex-col gap-2">
 									<div>
 										<label
-											htmlFor="themes"
+											htmlFor="style-variations"
 											className="block text-sm font-medium text-gray-700 visuallyhidden"
 										>
 											{ __( 'Choose a style variation', 'fse-studio' ) }
