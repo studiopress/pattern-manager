@@ -230,7 +230,7 @@ export default function ThemeJsonEditor( { visible } ) {
 							</div>
 						</div>
 
-						<div className="flex-1 w-full text-base">
+						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
 							<div className="bg-fses-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded" role="alert">
 								<div className="flex flex-col gap-5">
 									<p className="text-base">
@@ -240,6 +240,23 @@ export default function ThemeJsonEditor( { visible } ) {
 										) }
 									</p>
 								</div>
+							</div>
+						</div>
+
+						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+							<div>
+								<h3 className="mb-2 font-medium">Working with theme.json</h3>
+								<p className="text-base mb-3">Theme.json is a configuration file for your theme that allows you to control colors, customization options, font sizes, presets, and more. </p>
+								<p className="text-base">This interface let's you visually see and change all of the settings and customizations available via theme.json.</p>
+							</div>
+							<div>
+								<h3 className="mb-2 font-medium">Helpful Documentation</h3>
+								<ul>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/">Working with theme.json</a></li>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/">Block Theme Overview</a></li>
+									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/">Block Editor Handbook</a></li>
+									<li><a className="text-wp-blue" href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/">Block Builder Basics Video</a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
