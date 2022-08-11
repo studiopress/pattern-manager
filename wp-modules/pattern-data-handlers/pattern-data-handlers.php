@@ -210,15 +210,15 @@ function format_pattern_data( $pattern_data, $file ) {
  */
 function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() ) {
 	$default_headers = array(
-		'title'           => 'Title',
-		'slug'            => 'Slug',
-		'description'     => 'Description',
-		'viewportWidth'   => 'Viewport Width',
-		'categories'      => 'Categories',
-		'keywords'        => 'Keywords',
-		'blockTypes'      => 'Block Types',
-		'postTypes'       => 'Post Types',
-		'inserter'        => 'Inserter',
+		'title'         => 'Title',
+		'slug'          => 'Slug',
+		'description'   => 'Description',
+		'viewportWidth' => 'Viewport Width',
+		'categories'    => 'Categories',
+		'keywords'      => 'Keywords',
+		'blockTypes'    => 'Block Types',
+		'postTypes'     => 'Post Types',
+		'inserter'      => 'Inserter',
 	);
 
 	if ( ! $theme_path ) {

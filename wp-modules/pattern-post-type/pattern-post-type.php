@@ -96,7 +96,7 @@ function pattern_post_type() {
 
 	/**
 	 * Add blockTypes array post meta.
-	 * 
+	 *
 	 * Must define schema for 'show_in_rest' array.
 	 * @see https://make.wordpress.org/core/2019/10/03/wp-5-3-supports-object-and-array-meta-types-in-the-rest-api/
 	 */
