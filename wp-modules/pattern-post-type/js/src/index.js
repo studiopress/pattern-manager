@@ -20,12 +20,13 @@ const FseStudioMetaControls = () => {
 		.getEditedPostAttribute( 'meta' );
 
 	/**
-	 * Get all post types.
-	 * This should probably be wrapped in a useEffect so it calls only once.
+	 * Get all of the post types for filtering.
+	 * Wrapping call in useSelect to prevent async null return on initial load.
 	 */
-	const getPostTypes = wp.data
-		.select( 'core' )
-		.getPostTypes( { per_page: -1 } );
+	const getPostTypes = wp.data.useSelect(
+		( select ) => select( 'core' ).getPostTypes( { per_page: -1 } ),
+		[]
+	);
 
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
@@ -36,6 +37,12 @@ const FseStudioMetaControls = () => {
 	)
 		? true
 		: false;
+
+	useEffect( () => {
+		wp.data.subscribe( () => {
+			setCoreLastUpdate( Date.now() );
+		} );
+	}, [] );
 
 	/**
 	 * Filter and setup postTypes for mapping.
@@ -48,6 +55,7 @@ const FseStudioMetaControls = () => {
 			return;
 		}
 
+		// Core post types to filter.
 		const corePostTypesToFilter = [
 			'attachment', // Media
 			'nav_menu_item',
@@ -57,27 +65,22 @@ const FseStudioMetaControls = () => {
 			'wp_navigation',
 		];
 
-		setPostTypes(
-			getPostTypes.filter( ( postType ) => {
+		const filteredPostTypes = getPostTypes
+			.filter( ( postType ) => {
+				// Since core/post-content always shows for 'page', add blockType value for that index.
 				if ( postType.slug === 'page' ) {
 					postType.blockType = blockTypePostContent;
 				}
-
+				// Filter out the unapplicable core post types.
 				return ! corePostTypesToFilter.includes( postType.slug );
 			} )
-		);
-	}, [ getPostTypes ] );
-
-	/**
-	 * Wipe out any current 'Post Types' settings if primary toggle value is false.
-	 */
-	useEffect( () => {
-		if ( ! blockModalVisible && postMeta.postTypes?.length ) {
-			postMeta.postTypes.forEach( ( slug ) => {
-				handleToggleChange( false, 'postTypes', slug );
+			.sort( ( a, b ) => {
+				// Sort the array by post type name.
+				return a.name > b.name ? 1 : -1;
 			} );
-		}
-	}, [ postMeta ] );
+
+		setPostTypes( filteredPostTypes );
+	}, [ getPostTypes ] );
 
 	/**
 	 * Edge case for postType 'page' if it was not selected before modal visibility is checked.
@@ -88,12 +91,6 @@ const FseStudioMetaControls = () => {
 			handleToggleChange( true, 'postTypes', 'page' );
 		}
 	}, [ postMeta ] );
-
-	useEffect( () => {
-		wp.data.subscribe( () => {
-			setCoreLastUpdate( Date.now() );
-		} );
-	}, [] );
 
 	/**
 	 * Handler for ToggleControl component changes.
@@ -264,7 +261,7 @@ const FseStudioMetaControls = () => {
 
 			<PluginDocumentSettingPanel
 				title={ __( 'Post Type Modal', 'fse-studio' ) }
-				icon="edit"
+				icon="admin-post"
 			>
 				<ModalToggle />
 
