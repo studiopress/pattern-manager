@@ -116,6 +116,26 @@ function pattern_post_type() {
 			'type'         => 'array',
 		)
 	);
+
+	/**
+	 * Add postTypes array post meta.
+	 */
+	register_post_meta(
+		'fsestudio_pattern',
+		'postTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
 }
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 

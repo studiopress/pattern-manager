@@ -47,6 +47,7 @@ function get_patterns() {
 		'categories'    => 'Categories',
 		'keywords'      => 'Keywords',
 		'blockTypes'    => 'Block Types',
+		'postTypes'     => 'Post Types',
 		'inserter'      => 'Inserter',
 	);
 
@@ -143,7 +144,7 @@ function format_pattern_data( $pattern_data, $file ) {
 	}
 
 	// For properties of type array, parse data as comma-separated.
-	foreach ( array( 'categories', 'keywords', 'blockTypes' ) as $property ) {
+	foreach ( array( 'categories', 'keywords', 'blockTypes', 'postTypes' ) as $property ) {
 		if ( ! empty( $pattern_data[ $property ] ) ) {
 			$pattern_data[ $property ] = array_filter(
 				preg_split(
@@ -216,6 +217,7 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 		'categories'      => 'Categories',
 		'keywords'        => 'Keywords',
 		'blockTypes'      => 'Block Types',
+		'postTypes'       => 'Post Types',
 		'inserter'        => 'Inserter',
 	);
 
@@ -436,6 +438,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Categories: ' . ( isset( $pattern['categories'] ) ? implode( ', ', $pattern['categories'] ) : '' ) . '
  * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
  * Block Types: ' . ( isset( $pattern['blockTypes'] ) ? implode( ', ', $pattern['blockTypes'] ) : '' ) . '
+ * Post Types: ' . ( isset( $pattern['postTypes'] ) ? implode( ', ', $pattern['postTypes'] ) : '' ) . '
  */
 
 ?>
@@ -572,6 +575,7 @@ function generate_pattern_post( $block_pattern ) {
 	update_post_meta( $post_id, 'name', $block_pattern['name'] );
 	update_post_meta( $post_id, 'type', $block_pattern['type'] );
 	update_post_meta( $post_id, 'blockTypes', $block_pattern['blockTypes'] ?? array() );
+	update_post_meta( $post_id, 'postTypes', $block_pattern['postTypes'] ?? array() );
 
 	return $post_id;
 }
@@ -614,6 +618,7 @@ function handle_pattern_post_save( $post ) {
 		'title'         => get_post_meta( $post_id, 'title', true ),
 		'name'          => get_post_meta( $post_id, 'name', true ),
 		'blockTypes'    => get_post_meta( $post_id, 'blockTypes', true ),
+		'postTypes'     => get_post_meta( $post_id, 'postTypes', true ),
 		'categories'    => $tag_slugs,
 		'viewportWidth' => 1280,
 		'content'       => $post->post_content,
@@ -644,6 +649,7 @@ function handle_wp_template_save( $post, $request, $creating ) {
 		'name'          => $template_name,
 		'categories'    => array(),
 		'blockTypes'    => array(),
+		'postTypes'     => array(),
 		'viewportWidth' => 1280,
 		'content'       => $template_content,
 	);

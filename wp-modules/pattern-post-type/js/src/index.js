@@ -2,42 +2,92 @@ import '../../css/src/index.scss';
 import { registerPlugin } from '@wordpress/plugins';
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
-import { PanelRow, TextControl, ToggleControl } from '@wordpress/components';
+import {
+	PanelHeader,
+	PanelRow,
+	Spinner,
+	TextControl,
+	ToggleControl,
+} from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
+	const [ postTypes, setPostTypes ] = useState( null );
 
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
 
 	/**
-	 * Setup some dummy post types.
-	 *
-	 * 'core/post-content' is the only working blockTypes attribute.
-	 * Can get all post types with wp.data.select( 'core').getPostTypes( { per_page: -1 }).
-	 * However, no namespaced block category like 'core/post-content' is returned.
+	 * Get all post types.
+	 * This should probably be wrapped in a useEffect so it calls only once.
+	 */
+	const getPostTypes = wp.data
+		.select( 'core' )
+		.getPostTypes( { per_page: -1 } );
+
+	// Current sole block type needed to display modal.
+	const blockTypePostContent = 'core/post-content';
+
+	// Simple bool to match primary toggle for 'Post Type Modal' section.
+	const blockModalVisible = postMeta.blockTypes?.includes(
+		blockTypePostContent
+	)
+		? true
+		: false;
+
+	/**
+	 * Filter and setup postTypes for mapping.
+	 * 'core/post-content' in 'Block Types' header always displays for 'page' post type.
 	 *
 	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
 	 */
-	const postTypes = [
-		{
-			slug: 'page',
-			name: 'Pages',
-			blockType: 'core/post-content',
-		},
-		{
-			slug: 'post',
-			name: 'Posts',
-			blockType: 'does-not-work',
-		},
-		{
-			slug: 'fsestudio_pattern',
-			name: 'Patterns',
-			blockType: 'FseStudio/fsestudio_pattern',
-		},
-	];
+	useEffect( () => {
+		if ( getPostTypes === null ) {
+			return;
+		}
+
+		const corePostTypesToFilter = [
+			'attachment', // Media
+			'nav_menu_item',
+			'wp_block',
+			'wp_template',
+			'wp_template_part',
+			'wp_navigation',
+		];
+
+		setPostTypes(
+			getPostTypes.filter( ( postType ) => {
+				if ( postType.slug === 'page' ) {
+					postType.blockType = blockTypePostContent;
+				}
+
+				return ! corePostTypesToFilter.includes( postType.slug );
+			} )
+		);
+	}, [ getPostTypes ] );
+
+	/**
+	 * Wipe out any current 'Post Types' settings if primary toggle value is false.
+	 */
+	useEffect( () => {
+		if ( ! blockModalVisible && postMeta.postTypes?.length ) {
+			postMeta.postTypes.forEach( ( slug ) => {
+				handleToggleChange( false, 'postTypes', slug );
+			} );
+		}
+	}, [ postMeta ] );
+
+	/**
+	 * Edge case for postType 'page' if it was not selected before modal visibility is checked.
+	 * Without this block, 'page' would not be stored to 'Post Types' in the pattern file.
+	 */
+	useEffect( () => {
+		if ( blockModalVisible && ! postMeta?.postTypes?.includes( 'page' ) ) {
+			handleToggleChange( true, 'postTypes', 'page' );
+		}
+	}, [ postMeta ] );
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
@@ -45,20 +95,125 @@ const FseStudioMetaControls = () => {
 		} );
 	}, [] );
 
-	// Assign an empty array if blockTypes is nulll or undefined.
-	useEffect( () => {
-		if (
-			postMeta?.blockTypes === undefined ||
-			postMeta?.blockTypes === null
-		) {
-			wp.data.dispatch( 'core/editor' ).editPost( {
-				meta: {
-					...postMeta,
-					blockTypes: [],
-				},
-			} );
+	/**
+	 * Handler for ToggleControl component changes.
+	 * Updates postMeta via wp.data.dispatch.
+	 *
+	 * @param {boolean} event The toggle event.
+	 * @param {string}  key   The object key to reference in postMeta.
+	 * @param {string}  value The value to update or remove from postMeta.
+	 */
+	function handleToggleChange( event, key, value ) {
+		let updatedValues = [];
+
+		if ( event ) {
+			updatedValues = ! postMeta[ key ]?.includes( value )
+				? postMeta[ key ]?.concat( [ value ] )
+				: postMeta[ key ];
+		} else {
+			updatedValues = postMeta[ key ]?.includes( value )
+				? postMeta[ key ]?.filter( ( item ) => {
+						return item !== value;
+				  } )
+				: postMeta[ key ];
 		}
-	}, [ postMeta ] );
+
+		wp.data.dispatch( 'core/editor' ).editPost( {
+			meta: {
+				...postMeta,
+				[ key ]: updatedValues,
+			},
+		} );
+	}
+
+	/**
+	 * Primary toggle component.
+	 * The value of this toggle hides or shows the 'Post Types' section.
+	 */
+	function ModalToggle() {
+		return (
+			<PanelRow key={ `fse-pattern-visibility-block-content` }>
+				<ToggleControl
+					label={ __( 'Modal Visibility', 'fse-studio' ) }
+					checked={
+						postMeta.blockTypes?.includes( blockTypePostContent )
+							? true
+							: false
+					}
+					help={
+						postMeta.blockTypes?.includes( blockTypePostContent )
+							? 'Enabled for selected post types.'
+							: 'Disabled for all post types.'
+					}
+					onChange={ ( event ) => {
+						handleToggleChange(
+							event,
+							'blockTypes',
+							blockTypePostContent
+						);
+					} }
+				/>
+			</PanelRow>
+		);
+	}
+
+	/**
+	 * Heading component for 'Post Types' section.
+	 */
+	function PostTypeHeading() {
+		return <PanelHeader>{ __( 'Post Types', 'fse-studio' ) }</PanelHeader>;
+	}
+
+	/**
+	 * Toggle component for postType. Intended to be iterated over.
+	 * Toggle is disabled and checked if postType is associated with blockTypePostContent.
+	 *
+	 * @param {Object} postType
+	 * @param {Object} postType.postType
+	 */
+	function PostTypeToggle( { postType } ) {
+		const { name, blockType, slug } = postType;
+
+		return (
+			<PanelRow key={ `fse-pattern-visibility-post-type-${ name }` }>
+				<ToggleControl
+					label={ name }
+					disabled={
+						/* prettier-ignore */
+						blockType === blockTypePostContent &&
+						blockModalVisible ||
+						! postMeta.blockTypes?.includes(
+							blockTypePostContent
+						)
+							? true
+							: false
+					}
+					checked={
+						/* prettier-ignore */
+						blockType === blockTypePostContent &&
+						blockModalVisible ||
+						postMeta.postTypes?.includes(
+							slug
+						)
+							? true
+							: postMeta.postTypes?.includes(
+									slug
+								)
+					}
+					help={
+						/* prettier-ignore */
+						blockType === blockTypePostContent &&
+						blockModalVisible
+							? 'Enabled by default for modal visibility.'
+							: ''
+					}
+					onChange={ ( event ) => {
+						handleToggleChange( event, 'postTypes', slug );
+					} }
+				/>
+			</PanelRow>
+		);
+	}
 
 	if (
 		'fsestudio_pattern' !==
@@ -108,60 +263,24 @@ const FseStudioMetaControls = () => {
 			</PluginDocumentSettingPanel>
 
 			<PluginDocumentSettingPanel
-				title={ __( 'Modal Visibility', 'fse-studio' ) }
+				title={ __( 'Post Type Modal', 'fse-studio' ) }
 				icon="edit"
 			>
-				{ postTypes.map( ( postType ) => {
-					return (
-						<PanelRow
-							key={ `fse-pattern-visibility-${ postType.name }` }
-						>
-							<ToggleControl
-								label={ postType.name }
-								checked={ postMeta.blockTypes?.includes(
-									postType.blockType
-								) }
-								onChange={ ( event ) => {
-									let updatedBlockTypes = [];
+				<ModalToggle />
 
-									if ( event ) {
-										updatedBlockTypes =
-											! postMeta.blockTypes?.includes(
-												postType.blockType
-											)
-												? postMeta.blockTypes?.concat( [
-														postType.blockType,
-												  ] )
-												: postMeta.blockTypes;
-									} else {
-										updatedBlockTypes =
-											postMeta.blockTypes?.includes(
-												postType.blockType
-											)
-												? postMeta.blockTypes?.filter(
-														( item ) => {
-															return (
-																item !==
-																postType.blockType
-															);
-														}
-												  )
-												: postMeta.blockTypes;
-									}
+				{ blockModalVisible && <PostTypeHeading /> }
 
-									wp.data
-										.dispatch( 'core/editor' )
-										.editPost( {
-											meta: {
-												...postMeta,
-												blockTypes: updatedBlockTypes,
-											},
-										} );
-								} }
-							/>
-						</PanelRow>
-					);
-				} ) }
+				{ postTypes && postTypes !== null
+					? blockModalVisible &&
+					  postTypes.map( ( postType ) => {
+							return (
+								<PostTypeToggle
+									key={ postType.slug }
+									postType={ postType }
+								/>
+							);
+					  } )
+					: blockModalVisible && <Spinner /> }
 			</PluginDocumentSettingPanel>
 		</div>
 	);
