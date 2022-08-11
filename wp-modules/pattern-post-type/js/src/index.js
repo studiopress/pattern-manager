@@ -74,7 +74,14 @@ const FseStudioMetaControls = () => {
 			return ! corePostTypesToFilter.includes( postType.slug );
 		} );
 
-		setPostTypes( filteredPostTypes );
+		setPostTypes(
+			sortAlphabetically(
+				filteredPostTypes,
+				'name',
+				'blockType',
+				blockTypePostContent
+			)
+		);
 	}, [ getPostTypes ] );
 
 	/**
@@ -86,6 +93,31 @@ const FseStudioMetaControls = () => {
 			handleToggleChange( true, 'postTypes', 'page' );
 		}
 	}, [ postMeta ] );
+
+	/**
+	 * Sort an array of objects alphabetically by key.
+	 * Optionally, include a key and string to place items on top of the sorted array.
+	 *
+	 * @param {Array}  arr         The array for sorting.
+	 * @param {string} key         The key to use for sorting.
+	 * @param {string} extraKey    The extra key to check for pushing items to the top.
+	 * @param {string} extraString The extra string to match for pushing items to the top.
+	 */
+	function sortAlphabetically( arr, key, extraKey = null, extraString = '' ) {
+		// Sort the objects alphabetically by given key.
+		arr.sort( ( a, b ) => {
+			return a[ key ] > b[ key ] ? 1 : -1;
+		} );
+
+		// Check the extra key and string for pushing items to top.
+		if ( extraKey && extraKey !== null ) {
+			arr.sort( ( a ) => {
+				return a[ extraKey ] === extraString ? -1 : 0;
+			} );
+		}
+
+		return arr;
+	}
 
 	/**
 	 * Handler for ToggleControl component changes.
