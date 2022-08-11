@@ -156,28 +156,34 @@ const FseStudioMetaControls = () => {
 	 */
 	function ModalToggle() {
 		return (
-			<PanelRow key={ `fse-pattern-visibility-block-content` }>
-				<ToggleControl
-					label={ __( 'Modal Visibility', 'fse-studio' ) }
-					checked={
-						postMeta.blockTypes?.includes( blockTypePostContent )
-							? true
-							: false
-					}
-					help={
-						postMeta.blockTypes?.includes( blockTypePostContent )
-							? 'Enabled for selected post types.'
-							: 'Disabled for all post types.'
-					}
-					onChange={ ( event ) => {
-						handleToggleChange(
-							event,
-							'blockTypes',
-							blockTypePostContent
-						);
-					} }
-				/>
-			</PanelRow>
+			<div className="fsestudio-post-type-modal-toggle">
+				<PanelRow key={ `fse-pattern-visibility-block-content` }>
+					<ToggleControl
+						label={ __( 'Modal Visibility', 'fse-studio' ) }
+						checked={
+							postMeta.blockTypes?.includes(
+								blockTypePostContent
+							)
+								? true
+								: false
+						}
+						help={
+							postMeta.blockTypes?.includes(
+								blockTypePostContent
+							)
+								? 'Enabled for selected post types.'
+								: 'Disabled for all post types.'
+						}
+						onChange={ ( event ) => {
+							handleToggleChange(
+								event,
+								'blockTypes',
+								blockTypePostContent
+							);
+						} }
+					/>
+				</PanelRow>
+			</div>
 		);
 	}
 
@@ -185,7 +191,11 @@ const FseStudioMetaControls = () => {
 	 * Heading component for 'Post Types' section.
 	 */
 	function PostTypeHeading() {
-		return <PanelHeader>{ __( 'Post Types', 'fse-studio' ) }</PanelHeader>;
+		return (
+			<div className="fsestudio-post-type-heading">
+				<PanelHeader>{ __( 'Post Types', 'fse-studio' ) }</PanelHeader>
+			</div>
+		);
 	}
 
 	/**
@@ -199,43 +209,45 @@ const FseStudioMetaControls = () => {
 		const { name, blockType, slug } = postType;
 
 		return (
-			<PanelRow key={ `fse-pattern-visibility-post-type-${ name }` }>
-				<ToggleControl
-					label={ name }
-					disabled={
-						/* prettier-ignore */
-						blockType === blockTypePostContent &&
-						blockModalVisible ||
-						! postMeta.blockTypes?.includes(
-							blockTypePostContent
-						)
-							? true
-							: false
-					}
-					checked={
-						/* prettier-ignore */
-						blockType === blockTypePostContent &&
-						blockModalVisible ||
-						postMeta.postTypes?.includes(
-							slug
-						)
-							? true
-							: postMeta.postTypes?.includes(
-									slug
-								)
-					}
-					help={
-						/* prettier-ignore */
-						blockType === blockTypePostContent &&
-						blockModalVisible
-							? 'Enabled by default for modal visibility.'
-							: ''
-					}
-					onChange={ ( event ) => {
-						handleToggleChange( event, 'postTypes', slug );
-					} }
-				/>
-			</PanelRow>
+			<div className="fsestudio-post-type-toggle">
+				<PanelRow key={ `fse-pattern-visibility-post-type-${ name }` }>
+					<ToggleControl
+						label={ name }
+						disabled={
+							/* prettier-ignore */
+							blockType === blockTypePostContent &&
+							blockModalVisible ||
+							! postMeta.blockTypes?.includes(
+								blockTypePostContent
+							)
+								? true
+								: false
+						}
+						checked={
+							/* prettier-ignore */
+							blockType === blockTypePostContent &&
+							blockModalVisible ||
+							postMeta.postTypes?.includes(
+								slug
+							)
+								? true
+								: postMeta.postTypes?.includes(
+										slug
+									)
+						}
+						help={
+							/* prettier-ignore */
+							blockType === blockTypePostContent &&
+							blockModalVisible
+								? 'Enabled by default for modal visibility.'
+								: ''
+						}
+						onChange={ ( event ) => {
+							handleToggleChange( event, 'postTypes', slug );
+						} }
+					/>
+				</PanelRow>
+			</div>
 		);
 	}
 
