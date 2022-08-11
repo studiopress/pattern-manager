@@ -65,19 +65,14 @@ const FseStudioMetaControls = () => {
 			'wp_navigation',
 		];
 
-		const filteredPostTypes = getPostTypes
-			.filter( ( postType ) => {
-				// Since core/post-content always shows for 'page', add blockType value for that index.
-				if ( postType.slug === 'page' ) {
-					postType.blockType = blockTypePostContent;
-				}
-				// Filter out the unapplicable core post types.
-				return ! corePostTypesToFilter.includes( postType.slug );
-			} )
-			.sort( ( a, b ) => {
-				// Sort the array by post type name.
-				return a.name > b.name ? 1 : -1;
-			} );
+		const filteredPostTypes = getPostTypes.filter( ( postType ) => {
+			// Since core/post-content always shows for 'page', add blockType value for that index.
+			if ( postType.slug === 'page' ) {
+				postType.blockType = blockTypePostContent;
+			}
+			// Filter out the unapplicable core post types.
+			return ! corePostTypesToFilter.includes( postType.slug );
+		} );
 
 		setPostTypes( filteredPostTypes );
 	}, [ getPostTypes ] );
