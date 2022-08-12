@@ -36,6 +36,7 @@ const FseStudioMetaControls = () => {
 		'wp_template',
 		'wp_template_part',
 		'wp_navigation',
+		'fsestudio_pattern',
 	];
 
 	// Current sole block type needed to display modal.
@@ -106,13 +107,10 @@ const FseStudioMetaControls = () => {
 	 */
 	useEffect( () => {
 		if ( postTypes && postTypes !== null ) {
-			const filteredPostTypeSlugs = [];
-
-			postTypes?.forEach( ( postType ) => {
-				if ( postMeta?.postTypes?.includes( postType.slug ) ) {
-					filteredPostTypeSlugs.push( postType.slug );
-				}
-			} );
+			/* prettier-ignore */
+			const filteredPostTypeSlugs = postTypes?.map( ( postType ) => {
+					return postType?.slug;
+				} ).filter( ( slug ) => !! slug );
 
 			if (
 				! flatUnorderedEquals(
