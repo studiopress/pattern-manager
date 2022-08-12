@@ -43,6 +43,7 @@ import GettingStarted from '../GettingStarted';
  *  themes: ReturnType<import('../../hooks/useThemes').default>,
  *  currentThemeId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentTheme: ReturnType<import('../../hooks/useThemeData').default>,
+ *  currentStyleVariationId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
  *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
  *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings
@@ -68,13 +69,15 @@ function FseStudioContextHydrator() {
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
+
+	const currentStyleVariationId = useCurrentId( 'default-style' );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const currentTheme = useThemeData(
 		currentThemeId.value,
 		themes,
 		patternEditorIframe,
 		templateEditorIframe,
-		currentView
+		currentStyleVariationId
 	);
 
 	const currentPatternId = useCurrentId( '' );
@@ -118,6 +121,7 @@ function FseStudioContextHydrator() {
 		themes,
 		currentThemeId,
 		currentTheme,
+		currentStyleVariationId,
 		siteUrl: fsestudio.siteUrl,
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,

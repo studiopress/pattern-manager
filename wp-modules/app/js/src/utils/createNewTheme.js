@@ -24,6 +24,7 @@ export default function createNewTheme( themes, currentThemeId ) {
 		requires_php: '7.3',
 		version: '1.0.0',
 		text_domain: 'my-new-theme',
+		styles: {},
 	};
 
 	themes.setThemes( {

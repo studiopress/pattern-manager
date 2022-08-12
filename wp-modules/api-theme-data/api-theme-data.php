@@ -113,6 +113,7 @@ function save_theme( $request ) {
 				'message'           => __( 'Theme successfully saved to disk', 'fse-studio' ),
 				'themeData'         => $result,
 				'themeJsonModified' => $result['theme_json_file'] !== $prior_theme_data['theme_json_file'],
+				'styleJsonModified' => $result['styles'] !== $prior_theme_data['styles'],
 			),
 			200
 		);

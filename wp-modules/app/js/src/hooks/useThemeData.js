@@ -7,6 +7,7 @@ import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
 import useSnackbarContext from './useSnackbarContext';
+import useStyleVariations from '../hooks/useStyleVariations';
 
 /**
  * @typedef {Partial<{
@@ -27,6 +28,7 @@ import useSnackbarContext from './useSnackbarContext';
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
+ *   styles: {Object},
  *   tags: string,
  *   template_files: string[],
  *   template_parts: string[],
@@ -43,12 +45,14 @@ import useSnackbarContext from './useSnackbarContext';
  * @param {ReturnType<import('./useThemes').default>} themes
  * @param {Object}                                    patternEditorIframe
  * @param {Object}                                    templateEditorIframe
+ * @param {Object}                                    currentStyleVariationId
  */
 export default function useThemeData(
 	themeId,
 	themes,
 	patternEditorIframe,
-	templateEditorIframe
+	templateEditorIframe,
+	currentStyleVariationId
 ) {
 	const snackBar = useSnackbarContext();
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -62,6 +66,8 @@ export default function useThemeData(
 	const [ patternEditorDirty, setPatternEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
+
+	const { defaultStyleName } = useStyleVariations();
 
 	useEffect( () => {
 		window.addEventListener(
@@ -257,10 +263,18 @@ export default function useThemeData(
 							} ),
 							'*'
 						);
+
 						if ( data.themeJsonModified ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
 									message: 'fsestudio_themejson_changed',
+								} ),
+								'*'
+							);
+						} else if ( data.styleJsonModified ) {
+							templateEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'fsestudio_stylejson_changed',
 								} ),
 								'*'
 							);
@@ -327,7 +341,14 @@ export default function useThemeData(
 		defaultValue = null,
 		mode = 'overwrite'
 	) {
-		const modifiedData = { ...themeData.theme_json_file };
+		const currentStyleValue = currentStyleVariationId?.value;
+
+		// Use theme_json_file if current style variation is default.
+		// Otherwise, use the current style variation body.
+		const modifiedData =
+			currentStyleValue === defaultStyleName
+				? themeData.theme_json_file
+				: themeData.styles[ currentStyleValue ]?.body;
 
 		// Remove any leading commas that might exist.
 		if ( selectorString[ 0 ] === '.' ) {
@@ -700,10 +721,32 @@ export default function useThemeData(
 			}
 		}
 
-		editTheme( {
-			...themeData,
-			theme_json_file: modifiedData,
-		} );
+		/**
+		 * If the current style is not default, save the variation data to the styles array.
+		 * Otherwise, save the modifiedData to theme.json.
+		 *
+		 * Also, I hate the way prettier wants to format this ternary!
+		 */
+		const dataToSave =
+			currentStyleVariationId.value !== defaultStyleName
+				? {
+						...themeData,
+						styles: {
+							...themeData.styles,
+							[ currentStyleVariationId.value ]: {
+								...themeData.styles[
+									currentStyleVariationId.value
+								],
+								body: modifiedData,
+							},
+						},
+				  }
+				: {
+						...themeData,
+						theme_json_file: modifiedData,
+				  };
+
+		editTheme( dataToSave );
 	}
 
 	function getThemeJsonValue(
@@ -711,6 +754,18 @@ export default function useThemeData(
 		selectorString,
 		defaultValue = undefined
 	) {
+		const currentStyleValue = currentStyleVariationId?.value ?? '';
+
+		// Use theme_json_file if current style variation is default.
+		// Otherwise, use the current style variation body.
+		const currentStyleVariation =
+			currentStyleValue === defaultStyleName
+				? themeData.theme_json_file
+				: themeData?.styles[ currentStyleValue ]?.body ??
+				  // Edge case fallback: intermittent crash on switching themes.
+				  // Recreate by quoting out fallback, selecting a style variation, then switching themes.
+				  themeData.theme_json_file;
+
 		// Remove any leading commas that might exist.
 		if ( selectorString[ 0 ] === '.' ) {
 			selectorString = selectorString.substring( 1 );
@@ -724,11 +779,11 @@ export default function useThemeData(
 		if ( numberOfKeys === 1 ) {
 			const keyOne = [ keys[ 0 ] ];
 			if (
-				themeData.theme_json_file[ topLevelSection ].hasOwnProperty(
+				currentStyleVariation[ topLevelSection ].hasOwnProperty(
 					keyOne
 				)
 			) {
-				return themeData.theme_json_file[ topLevelSection ][ keyOne ];
+				return currentStyleVariation[ topLevelSection ][ keyOne ];
 			}
 		}
 		if ( numberOfKeys === 2 ) {
@@ -736,18 +791,18 @@ export default function useThemeData(
 			const keyTwo = [ keys[ 1 ] ];
 
 			if (
-				themeData.theme_json_file[ topLevelSection ].hasOwnProperty(
+				currentStyleVariation[ topLevelSection ].hasOwnProperty(
 					keyOne
 				)
 			) {
 				if (
-					themeData.theme_json_file[ topLevelSection ][
+					currentStyleVariation[ topLevelSection ][
 						keyOne
 					].hasOwnProperty( keyTwo )
 				) {
-					return themeData.theme_json_file[ topLevelSection ][
-						keyOne
-					][ keyTwo ];
+					return currentStyleVariation[ topLevelSection ][ keyOne ][
+						keyTwo
+					];
 				}
 			}
 		}
@@ -757,21 +812,21 @@ export default function useThemeData(
 			const keyThree = [ keys[ 2 ] ];
 
 			if (
-				themeData.theme_json_file[ topLevelSection ].hasOwnProperty(
+				currentStyleVariation[ topLevelSection ].hasOwnProperty(
 					keyOne
 				)
 			) {
 				if (
-					themeData.theme_json_file[ topLevelSection ][
+					currentStyleVariation[ topLevelSection ][
 						keyOne
 					].hasOwnProperty( keyTwo )
 				) {
 					if (
-						themeData.theme_json_file[ topLevelSection ][ keyOne ][
+						currentStyleVariation[ topLevelSection ][ keyOne ][
 							keyTwo
 						].hasOwnProperty( keyThree )
 					) {
-						return themeData.theme_json_file[ topLevelSection ][
+						return currentStyleVariation[ topLevelSection ][
 							keyOne
 						][ keyTwo ][ keyThree ];
 					}
@@ -785,26 +840,26 @@ export default function useThemeData(
 			const keyFour = [ keys[ 3 ] ];
 
 			if (
-				themeData.theme_json_file[ topLevelSection ].hasOwnProperty(
+				currentStyleVariation[ topLevelSection ].hasOwnProperty(
 					keyOne
 				)
 			) {
 				if (
-					themeData.theme_json_file[ topLevelSection ][
+					currentStyleVariation[ topLevelSection ][
 						keyOne
 					].hasOwnProperty( keyTwo )
 				) {
 					if (
-						themeData.theme_json_file[ topLevelSection ][ keyOne ][
+						currentStyleVariation[ topLevelSection ][ keyOne ][
 							keyTwo
 						].hasOwnProperty( keyThree )
 					) {
 						if (
-							themeData.theme_json_file[ topLevelSection ][
-								keyOne
-							][ keyTwo ][ keyThree ].hasOwnProperty( keyFour )
+							currentStyleVariation[ topLevelSection ][ keyOne ][
+								keyTwo
+							][ keyThree ].hasOwnProperty( keyFour )
 						) {
-							return themeData.theme_json_file[ topLevelSection ][
+							return currentStyleVariation[ topLevelSection ][
 								keyOne
 							][ keyTwo ][ keyThree ][ keyFour ];
 						}
@@ -821,37 +876,35 @@ export default function useThemeData(
 			const keyFive = [ keys[ 4 ] ];
 
 			if (
-				themeData.theme_json_file[ topLevelSection ].hasOwnProperty(
+				currentStyleVariation[ topLevelSection ].hasOwnProperty(
 					keyOne
 				)
 			) {
 				if (
-					themeData.theme_json_file[ topLevelSection ][
+					currentStyleVariation[ topLevelSection ][
 						keyOne
 					].hasOwnProperty( keyTwo )
 				) {
 					if (
-						themeData.theme_json_file[ topLevelSection ][ keyOne ][
+						currentStyleVariation[ topLevelSection ][ keyOne ][
 							keyTwo
 						].hasOwnProperty( keyThree )
 					) {
 						if (
-							themeData.theme_json_file[ topLevelSection ][
-								keyOne
-							][ keyTwo ][ keyThree ].hasOwnProperty( keyFour )
+							currentStyleVariation[ topLevelSection ][ keyOne ][
+								keyTwo
+							][ keyThree ].hasOwnProperty( keyFour )
 						) {
 							if (
-								themeData.theme_json_file[ topLevelSection ][
+								currentStyleVariation[ topLevelSection ][
 									keyOne
 								][ keyTwo ][ keyThree ][
 									keyFour
 								].hasOwnProperty( keyFive )
 							) {
-								return themeData.theme_json_file[
-									topLevelSection
-								][ keyOne ][ keyTwo ][ keyThree ][ keyFour ][
-									keyFive
-								];
+								return currentStyleVariation[ topLevelSection ][
+									keyOne
+								][ keyTwo ][ keyThree ][ keyFour ][ keyFive ];
 							}
 						}
 					}
