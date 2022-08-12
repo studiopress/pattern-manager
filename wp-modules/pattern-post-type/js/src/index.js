@@ -109,8 +109,10 @@ const FseStudioMetaControls = () => {
 		if ( postTypes && postTypes !== null ) {
 			/* prettier-ignore */
 			const filteredPostTypeSlugs = postTypes?.map( ( postType ) => {
-					return postType?.slug;
-				} ).filter( ( slug ) => !! slug );
+				return postMeta?.postTypes?.includes( postType?.slug ) ?
+					postType?.slug :
+					'';
+			} ).filter( ( slug ) => !! slug );
 
 			if (
 				! flatUnorderedEquals(
@@ -152,22 +154,22 @@ const FseStudioMetaControls = () => {
 	 * Sort an array of objects alphabetically by key.
 	 * Optionally, include a key and string to place items on top of the sorted array.
 	 *
-	 * @param {Array}  arr         The array for sorting.
-	 * @param {string} key         The key to use for sorting.
-	 * @param {string} extraKey    The extra key to check for pushing items to the top.
-	 * @param {string} extraString The extra string to match for pushing items to the top.
+	 * @param {Array}  arr       The array for sorting.
+	 * @param {string} key       The key to use for sorting.
+	 * @param {string} topKey    The extra key to check for pushing items to the top.
+	 * @param {string} topString The extra string to match for pushing items to the top.
 	 * @return {Array}             The sorted array.
 	 */
-	function sortAlphabetically( arr, key, extraKey = null, extraString = '' ) {
+	function sortAlphabetically( arr, key, topKey = '', topString = '' ) {
 		// Sort the objects alphabetically by given key.
 		arr.sort( ( a, b ) => {
 			return a[ key ] > b[ key ] ? 1 : -1;
 		} );
 
 		// Check the extra key and string for pushing items to top.
-		if ( extraKey && extraKey !== null ) {
+		if ( topKey && topString ) {
 			arr.sort( ( a ) => {
-				return a[ extraKey ] === extraString ? -1 : 0;
+				return a[ topKey ] === topString ? -1 : 0;
 			} );
 		}
 
