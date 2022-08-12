@@ -28,6 +28,16 @@ const FseStudioMetaControls = () => {
 		[]
 	);
 
+	// Core post types that are inapplicable or not user accessible..
+	const corePostTypesToFilter = [
+		'attachment', // Media
+		'nav_menu_item',
+		// 'wp_block', // Reusable blocks are a user-accessible post type
+		'wp_template',
+		'wp_template_part',
+		'wp_navigation',
+	];
+
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
 
@@ -45,6 +55,16 @@ const FseStudioMetaControls = () => {
 	}, [] );
 
 	/**
+	 * Edge case: postType 'page' was not selected before modal visibility was checked.
+	 * Without this block, 'page' would not be stored to 'Post Types' in the pattern file.
+	 */
+	useEffect( () => {
+		if ( blockModalVisible && ! postMeta?.postTypes?.includes( 'page' ) ) {
+			handleToggleChange( true, 'postTypes', 'page' );
+		}
+	}, [ postMeta ] );
+
+	/**
 	 * Filter and setup postTypes for mapping.
 	 * 'core/post-content' in 'Block Types' header always displays for 'page' post type.
 	 *
@@ -55,21 +75,12 @@ const FseStudioMetaControls = () => {
 			return;
 		}
 
-		// Core post types to filter.
-		const corePostTypesToFilter = [
-			'attachment', // Media
-			'nav_menu_item',
-			'wp_block',
-			'wp_template',
-			'wp_template_part',
-			'wp_navigation',
-		];
-
 		const filteredPostTypes = getPostTypes.filter( ( postType ) => {
 			// Since core/post-content always shows for 'page', add blockType value for that index.
 			if ( postType.slug === 'page' ) {
 				postType.blockType = blockTypePostContent;
 			}
+
 			// Filter out the unapplicable core post types.
 			return ! corePostTypesToFilter.includes( postType.slug );
 		} );
@@ -85,14 +96,59 @@ const FseStudioMetaControls = () => {
 	}, [ getPostTypes ] );
 
 	/**
-	 * Edge case for postType 'page' if it was not selected before modal visibility is checked.
-	 * Without this block, 'page' would not be stored to 'Post Types' in the pattern file.
+	 * Edge case: a post type that was previously saved for modal visibility no longer exists.
+	 *
+	 * This will compare the post types found in post meta to currently allowed modal post types
+	 * and clean up both the post meta and pattern file.
+	 *
+	 * Admittedly, this might be needlessly destructive. The cleanup is not required for modal
+	 * visibility to work as expected, and this method only targets one pattern at a time.
 	 */
 	useEffect( () => {
-		if ( blockModalVisible && ! postMeta?.postTypes?.includes( 'page' ) ) {
-			handleToggleChange( true, 'postTypes', 'page' );
+		if ( postTypes && postTypes !== null ) {
+			const filteredPostTypeSlugs = [];
+
+			postTypes?.forEach( ( postType ) => {
+				if ( postMeta?.postTypes?.includes( postType.slug ) ) {
+					filteredPostTypeSlugs.push( postType.slug );
+				}
+			} );
+
+			if (
+				! flatUnorderedEquals(
+					postMeta.postTypes,
+					filteredPostTypeSlugs
+				)
+			) {
+				wp.data.dispatch( 'core/editor' ).editPost( {
+					meta: {
+						...postMeta,
+						postTypes: filteredPostTypeSlugs,
+					},
+				} );
+			}
 		}
-	}, [ postMeta ] );
+	}, [ postTypes ] );
+
+	/**
+	 * Check that two indexed arrays have the same elements.
+	 * Elements do not need to be in order as both arrays will be sorted.
+	 *
+	 * @param {*} arrayA
+	 * @param {*} arrayB
+	 * @return {boolean} True if the arrays are loosely equal.
+	 */
+	function flatUnorderedEquals( arrayA, arrayB ) {
+		arrayA.sort();
+		arrayB.sort();
+
+		return (
+			arrayA.length === arrayB.length &&
+			arrayA.every( ( value, index ) => {
+				return value === arrayB[ index ];
+			} )
+		);
+	}
 
 	/**
 	 * Sort an array of objects alphabetically by key.
@@ -102,6 +158,7 @@ const FseStudioMetaControls = () => {
 	 * @param {string} key         The key to use for sorting.
 	 * @param {string} extraKey    The extra key to check for pushing items to the top.
 	 * @param {string} extraString The extra string to match for pushing items to the top.
+	 * @return {Array}             The sorted array.
 	 */
 	function sortAlphabetically( arr, key, extraKey = null, extraString = '' ) {
 		// Sort the objects alphabetically by given key.
