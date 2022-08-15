@@ -23,7 +23,7 @@ import useSnackbarContext from './useSnackbarContext';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
- *   included_patterns: string[],
+ *   included_patterns: Record<string, import('../components/PatternPicker').Pattern>,
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
@@ -900,6 +900,19 @@ export default function useThemeData(
 		} );
 	}
 
+	/** @param {string} patternName */
+	function deletePattern( patternName ) {
+		const {
+			[ patternName ]: {},
+			...newIncludedPatterns
+		} = themeData.included_patterns;
+
+		setThemeData( {
+			...themeData,
+			included_patterns: newIncludedPatterns,
+		} );
+	}
+
 	/**
 	 * Allows the user to edit the theme.
 	 *
@@ -919,6 +932,7 @@ export default function useThemeData(
 		getThemeJsonValue,
 		setThemeJsonValue,
 		createPattern,
+		deletePattern,
 		get: getThemeData,
 		save: saveThemeData,
 		export: exportThemeData,
