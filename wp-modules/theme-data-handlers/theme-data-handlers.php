@@ -214,13 +214,13 @@ function update_theme( $theme ) {
 
 	if ( ! $theme['included_patterns'] ) {
 		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+	} else {
+		\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
 	}
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
-
-	\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
 
 	if ( ! $theme['template_files'] ) {
 		$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
