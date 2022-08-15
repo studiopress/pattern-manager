@@ -28,7 +28,7 @@ const FseStudioMetaControls = () => {
 		[]
 	);
 
-	// Core post types that are inapplicable or not user accessible..
+	// Core post types that are inapplicable or not user accessible.
 	const corePostTypesToFilter = [
 		'attachment', // Media
 		'nav_menu_item',
@@ -134,8 +134,8 @@ const FseStudioMetaControls = () => {
 	 * Check that two indexed arrays have the same elements.
 	 * Elements do not need to be in order as both arrays will be sorted.
 	 *
-	 * @param {*} arrayA
-	 * @param {*} arrayB
+	 * @param {Array} arrayA
+	 * @param {Array} arrayB
 	 * @return {boolean} True if the arrays are loosely equal.
 	 */
 	function flatUnorderedEquals( arrayA, arrayB ) {
@@ -158,7 +158,7 @@ const FseStudioMetaControls = () => {
 	 * @param {string} key       The key to use for sorting.
 	 * @param {string} topKey    The extra key to check for pushing items to the top.
 	 * @param {string} topString The extra string to match for pushing items to the top.
-	 * @return {Array}             The sorted array.
+	 * @return {Array}           The sorted array.
 	 */
 	function sortAlphabetically( arr, key, topKey = '', topString = '' ) {
 		// Sort the objects alphabetically by given key.
@@ -355,10 +355,13 @@ const FseStudioMetaControls = () => {
 				</PanelRow>
 			</PluginDocumentSettingPanel>
 
+			{ /* The panel section for controlling pattern post type modals. */ }
+			{ /* Custom post types (outside of inapplicable core types) are displayed as toggles. */ }
 			<PluginDocumentSettingPanel
 				title={ __( 'Post Type Modal', 'fse-studio' ) }
 				icon="admin-post"
 			>
+				{ /* `ModalToggle` will hide or display remaining components via `blockModalVisible`. */ }
 				<ModalToggle />
 
 				{ blockModalVisible && <PostTypeHeading /> }
