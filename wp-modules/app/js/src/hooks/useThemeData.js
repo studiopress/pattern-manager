@@ -907,7 +907,7 @@ export default function useThemeData(
 			...newIncludedPatterns
 		} = themeData.included_patterns;
 
-		setThemeData( {
+		editTheme( {
 			...themeData,
 			included_patterns: newIncludedPatterns,
 		} );
