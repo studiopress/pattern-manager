@@ -406,6 +406,16 @@ function update_pattern( $pattern ) {
 }
 
 /**
+ *
+ * @param {
+ *   patternName: Pattern
+ * } $patterns The patterns to not delete.
+ */
+function delete_patterns_not_present( $patterns ) {
+
+}
+
+/**
  * WordPress's templart part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
  * This function removes that attribute from any template part blocks in a pattern's content.
  *

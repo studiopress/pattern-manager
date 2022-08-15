@@ -220,6 +220,8 @@ function update_theme( $theme ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
 
+	\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
+
 	if ( ! $theme['template_files'] ) {
 		$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
 	}
