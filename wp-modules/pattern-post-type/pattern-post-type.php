@@ -93,6 +93,49 @@ function pattern_post_type() {
 			'type'         => 'string',
 		)
 	);
+
+	/**
+	 * Add blockTypes array post meta.
+	 *
+	 * Must define schema for 'show_in_rest' array.
+	 * @see https://make.wordpress.org/core/2019/10/03/wp-5-3-supports-object-and-array-meta-types-in-the-rest-api/
+	 */
+	register_post_meta(
+		'fsestudio_pattern',
+		'blockTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
+
+	/**
+	 * Add postTypes array post meta.
+	 */
+	register_post_meta(
+		'fsestudio_pattern',
+		'postTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
 }
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 
