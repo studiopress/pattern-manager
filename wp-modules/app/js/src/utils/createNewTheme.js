@@ -5,26 +5,36 @@
  */
 import { v4 as uuidv4 } from 'uuid';
 
-export default function createNewTheme( themes, currentThemeId ) {
+export default function createNewTheme(
+	themes,
+	currentThemeId,
+	newThemeData = {}
+) {
 	const themeId = uuidv4();
 
 	/** @type {import('../hooks/useThemeData').Theme} */
-	const newThemeData = {
+	const defaultNewThemeData = {
 		id: themeId,
-		name: 'My New Theme',
-		dirname: 'my-new-theme',
-		namespace: 'MyNewTheme',
-		uri: 'mysite.com',
-		author: 'Me',
-		author_uri: 'mysite.com',
-		description: 'My new FSE Theme',
+		name: '',
+		dirname: '',
+		namespace: '',
+		uri: '',
+		author: '',
+		author_uri: '',
+		description: '',
 		tags: '',
-		tested_up_to: '5.9',
+		tested_up_to: '',
 		requires_wp: '5.9',
 		requires_php: '7.3',
 		version: '1.0.0',
 		text_domain: 'my-new-theme',
 		styles: {},
+	};
+
+	// Merge the default themeData with the passed-in themeData.
+	newThemeData = {
+		...defaultNewThemeData,
+		...newThemeData,
 	};
 
 	themes.setThemes( {

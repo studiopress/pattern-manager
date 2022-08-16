@@ -59,7 +59,9 @@ export default function useThemeData(
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
-	const [ existsOnDisk, setExistsOnDisk ] = useState( false );
+	const [ existsOnDisk, setExistsOnDisk ] = useState(
+		themes.themes[ themeId ] ? true : false
+	);
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
@@ -119,7 +121,7 @@ export default function useThemeData(
 	}, [ requestThemeRefresh ] );
 
 	useEffect( () => {
-		if ( themeData?.name === 'My New Theme' ) {
+		if ( themeData?.name === '' ) {
 			setThemeNameIsDefault( true );
 		} else {
 			setThemeNameIsDefault( false );
@@ -127,6 +129,13 @@ export default function useThemeData(
 
 		if ( themeData && autoSaveTheme ) {
 			saveThemeData();
+		}
+
+		if ( themeId ) {
+			themes.setThemes( {
+				...themes.themes,
+				[ themeId ]: themeData,
+			} );
 		}
 	}, [ themeData ] );
 
@@ -209,7 +218,7 @@ export default function useThemeData(
 
 	function saveThemeData() {
 		return new Promise( ( resolve ) => {
-			if ( themeData.name === 'My New Theme' ) {
+			if ( themeData.name === '' ) {
 				/* eslint-disable */
 				alert( 'You need to change your theme name before saving' );
 				/* eslint-enable */
