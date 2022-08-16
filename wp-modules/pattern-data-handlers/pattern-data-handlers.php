@@ -406,7 +406,7 @@ function update_pattern( $pattern ) {
 }
 
 /**
- * Deletes any pattern not present in the passed patterns.
+ * Deletes any pattern file whose name isn't present in the passed patterns.
  *
  * @param array $patterns = [
  *     $patternName => []
@@ -422,7 +422,7 @@ function delete_patterns_not_present( $patterns ) {
 	$pattern_file_paths = glob( $theme_dir . '/patterns/*.php' );
 
 	foreach ( $pattern_file_paths as $pattern_file ) {
-		if ( empty( $patterns[ $pattern_file ] ) ) {
+		if ( ! isset( $patterns[ basename( $pattern_file, '.php' ) ] ) ) {
 			$wp_filesystem->delete( $pattern_file );
 		}
 	}
