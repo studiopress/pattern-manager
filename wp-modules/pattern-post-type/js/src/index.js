@@ -206,13 +206,9 @@ const FseStudioMetaControls = () => {
 				<PanelRow key={ `fse-pattern-visibility-block-content` }>
 					<ToggleControl
 						label={ __( 'Modal Visibility', 'fse-studio' ) }
-						checked={
-							postMeta.blockTypes?.includes(
-								blockTypePostContent
-							)
-								? true
-								: false
-						}
+						checked={ postMeta.blockTypes?.includes(
+							blockTypePostContent
+						) }
 						help={
 							postMeta.blockTypes?.includes(
 								blockTypePostContent
@@ -248,8 +244,8 @@ const FseStudioMetaControls = () => {
 	 * Toggle component for postType. Intended to be iterated over.
 	 * Toggle is disabled and checked if postType is associated with blockTypePostContent.
 	 *
-	 * @param {Object} postType
-	 * @param {Object} postType.postType
+	 * @param {Object} props
+	 * @param {Object} props.postType
 	 */
 	function PostTypeToggle( { postType } ) {
 		const { name, blockType, slug } = postType;
