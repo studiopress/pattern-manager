@@ -418,8 +418,7 @@ function delete_patterns_not_present( array $pattern_names ) {
 		return;
 	}
 
-	$theme_dir          = get_template_directory();
-	$pattern_file_paths = glob( $theme_dir . '/patterns/*.php' );
+	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
 	if ( ! $pattern_file_paths ) {
 		return;
 	}
