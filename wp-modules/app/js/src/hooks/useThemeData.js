@@ -9,7 +9,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
 import useSnackbarContext from './useSnackbarContext';
 
 /**
- * @typedef {Partial<{
+ * @typedef {{
  *   id: string,
  *   name: string,
  *   namespace: string,
@@ -35,7 +35,7 @@ import useSnackbarContext from './useSnackbarContext';
  *   theme_json_file: string[],
  *   uri: string,
  *   version: string
- * }>} Theme
+ * }} Theme
  */
 
 /**
