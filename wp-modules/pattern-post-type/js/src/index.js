@@ -13,41 +13,61 @@ import { useState, useEffect } from '@wordpress/element';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
-	const [ postTypes, setPostTypes ] = useState( null );
 
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
 
-	/**
-	 * Get all of the post types for filtering.
-	 * Wrapping call in useSelect to prevent async null return on initial load.
-	 */
-	const getPostTypes = wp.data.useSelect(
-		( select ) => select( 'core' ).getPostTypes( { per_page: -1 } ),
-		[]
-	);
-
-	// Core post types that are inapplicable or not user accessible.
-	const corePostTypesToFilter = [
-		'attachment', // Media
-		'nav_menu_item',
-		// 'wp_block', // Reusable blocks are a user-accessible post type
-		'wp_template',
-		'wp_template_part',
-		'wp_navigation',
-		'fsestudio_pattern',
-	];
-
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
 
 	// Simple bool to match primary toggle for 'Post Type Modal' section.
-	const blockModalVisible = postMeta.blockTypes?.includes(
-		blockTypePostContent
-	)
-		? true
-		: false;
+	const blockModalVisible =
+		postMeta.blockTypes?.includes( blockTypePostContent );
+
+	/**
+	 * Get, filter, and sort the custom post types.
+	 * Wrapping call in useSelect to prevent async null return on initial load.
+	 *
+	 * 'core/post-content' in 'Block Types' header always displays for 'page' post type.
+	 *
+	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
+	 */
+	const postTypes = wp.data.useSelect( ( select ) => {
+		const initialPostTypes = select( 'core' ).getPostTypes( {
+			per_page: 100,
+		} );
+
+		if ( initialPostTypes ) {
+			// Core post types that are inapplicable or not user accessible.
+			const corePostTypesToRemove = [
+				'attachment', // Media
+				'nav_menu_item',
+				// 'wp_block', // Reusable blocks are a user-accessible post type
+				'wp_template',
+				'wp_template_part',
+				'wp_navigation',
+				'fsestudio_pattern',
+			];
+
+			const filteredPostTypes = initialPostTypes.filter( ( postType ) => {
+				// Since core/post-content always shows for 'page', add blockType value for that index.
+				if ( postType.slug === 'page' ) {
+					postType.blockType = blockTypePostContent;
+				}
+
+				// Filter out the unapplicable core post types.
+				return ! corePostTypesToRemove.includes( postType.slug );
+			} );
+
+			return sortAlphabetically(
+				filteredPostTypes,
+				'name',
+				'blockType',
+				blockTypePostContent
+			);
+		}
+	}, [] );
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
@@ -66,37 +86,6 @@ const FseStudioMetaControls = () => {
 	}, [ postMeta ] );
 
 	/**
-	 * Filter and setup postTypes for mapping.
-	 * 'core/post-content' in 'Block Types' header always displays for 'page' post type.
-	 *
-	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
-	 */
-	useEffect( () => {
-		if ( getPostTypes === null ) {
-			return;
-		}
-
-		const filteredPostTypes = getPostTypes.filter( ( postType ) => {
-			// Since core/post-content always shows for 'page', add blockType value for that index.
-			if ( postType.slug === 'page' ) {
-				postType.blockType = blockTypePostContent;
-			}
-
-			// Filter out the unapplicable core post types.
-			return ! corePostTypesToFilter.includes( postType.slug );
-		} );
-
-		setPostTypes(
-			sortAlphabetically(
-				filteredPostTypes,
-				'name',
-				'blockType',
-				blockTypePostContent
-			)
-		);
-	}, [ getPostTypes ] );
-
-	/**
 	 * Edge case: a post type that was previously saved for modal visibility no longer exists.
 	 *
 	 * This will compare the post types found in post meta to currently allowed modal post types
@@ -106,13 +95,13 @@ const FseStudioMetaControls = () => {
 	 * visibility to work as expected, and this method only targets one pattern at a time.
 	 */
 	useEffect( () => {
-		if ( postTypes && postTypes !== null ) {
+		if ( postTypes ) {
 			/* prettier-ignore */
 			const filteredPostTypeSlugs = postTypes?.map( ( postType ) => {
 				return postMeta?.postTypes?.includes( postType?.slug ) ?
 					postType?.slug :
 					'';
-			} ).filter( ( slug ) => !! slug );
+			} ).filter( Boolean );
 
 			if (
 				! flatUnorderedEquals(
@@ -271,32 +260,24 @@ const FseStudioMetaControls = () => {
 					<ToggleControl
 						label={ name }
 						disabled={
-							/* prettier-ignore */
-							blockType === blockTypePostContent &&
-							blockModalVisible ||
+							( blockType === blockTypePostContent &&
+								blockModalVisible ) ||
 							! postMeta.blockTypes?.includes(
 								blockTypePostContent
 							)
-								? true
-								: false
 						}
 						checked={
-							/* prettier-ignore */
-							blockType === blockTypePostContent &&
-							blockModalVisible ||
-							postMeta.postTypes?.includes(
-								slug
-							)
-								? true
-								: postMeta.postTypes?.includes(
-										slug
-									)
+							( blockType === blockTypePostContent &&
+								blockModalVisible ) ||
+							postMeta.postTypes?.includes( slug )
 						}
 						help={
-							/* prettier-ignore */
 							blockType === blockTypePostContent &&
 							blockModalVisible
-								? 'Enabled by default for modal visibility.'
+								? __(
+										'Enabled by default for modal visibility.',
+										'fse-studio'
+								  )
 								: ''
 						}
 						onChange={ ( event ) => {
@@ -366,7 +347,7 @@ const FseStudioMetaControls = () => {
 
 				{ blockModalVisible && <PostTypeHeading /> }
 
-				{ postTypes && postTypes !== null
+				{ postTypes
 					? blockModalVisible &&
 					  postTypes.map( ( postType ) => {
 							return (
