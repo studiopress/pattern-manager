@@ -421,9 +421,9 @@ function delete_patterns_not_present( $patterns ) {
 	$theme_dir          = get_template_directory();
 	$pattern_file_paths = glob( $theme_dir . '/patterns/*.php' );
 
-	foreach ( $pattern_file_paths as $pattern_file_path ) {
-		if ( empty( $patterns[ $pattern_file_path ] ) ) {
-			$wp_filesystem->delete( $pattern_file_path );
+	foreach ( $pattern_file_paths as $pattern_file ) {
+		if ( empty( $patterns[ $pattern_file ] ) ) {
+			$wp_filesystem->delete( $pattern_file );
 		}
 	}
 }
