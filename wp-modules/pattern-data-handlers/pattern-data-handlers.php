@@ -408,13 +408,11 @@ function update_pattern( $pattern ) {
 }
 
 /**
- * Deletes any pattern file whose name isn't present in the passed patterns.
+ * Deletes any pattern file whose name isn't present in the passed pattern names.
  *
- * @param array $patterns = [
- *     $patternName => []
- * ] $patterns The patterns to not delete.
+ * @param string[] $pattern_names The pattern names to not delete.
  */
-function delete_patterns_not_present( array $patterns ) {
+function delete_patterns_not_present( array $pattern_names ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	if ( ! $wp_filesystem ) {
 		return;
@@ -427,7 +425,7 @@ function delete_patterns_not_present( array $patterns ) {
 	}
 
 	foreach ( $pattern_file_paths as $pattern_file ) {
-		if ( ! isset( $patterns[ basename( $pattern_file, '.php' ) ] ) ) {
+		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
 			$wp_filesystem->delete( $pattern_file );
 		}
 	}
