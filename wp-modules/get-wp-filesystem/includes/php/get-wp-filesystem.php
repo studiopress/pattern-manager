@@ -12,7 +12,6 @@ namespace FseStudio\GetWpFilesystem;
 use WP_Filesystem_Base;
 
 // Exit if accessed directly.
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
