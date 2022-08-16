@@ -212,7 +212,11 @@ function update_theme( $theme ) {
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
 
-	\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
+	if ( isset( $theme['included_patterns'] ) ) {
+		\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
+	} else {
+		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+	}
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );

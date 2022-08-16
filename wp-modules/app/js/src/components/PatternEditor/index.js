@@ -41,7 +41,7 @@ export default function PatternEditor( { visible } ) {
 					<PatternPicker
 						patterns={ searchItems(
 							Object.values(
-								currentTheme.data.included_patterns
+								currentTheme.data.included_patterns ?? {}
 							),
 							'custom'
 						) }

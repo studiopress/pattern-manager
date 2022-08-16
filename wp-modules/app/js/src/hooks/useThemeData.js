@@ -23,7 +23,7 @@ import useSnackbarContext from './useSnackbarContext';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
- *   included_patterns: Record<string, import('../components/PatternPicker').Pattern>,
+ *   included_patterns?: Record<string, import('../components/PatternPicker').Pattern>,
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
@@ -905,7 +905,7 @@ export default function useThemeData(
 		const {
 			[ patternName ]: {},
 			...newIncludedPatterns
-		} = themeData.included_patterns;
+		} = themeData.included_patterns ?? {};
 
 		editTheme( {
 			...themeData,
