@@ -157,7 +157,7 @@ function export_theme( $theme ) {
  * Update a single theme.
  *
  * @param array $theme Data about the theme.
- * @return bool
+ * @return array
  */
 function update_theme( $theme ) {
 
@@ -200,7 +200,7 @@ function update_theme( $theme ) {
 	}
 
 	// Create the theme's fsestudio-data.json file.
-	$success = $wp_filesystem->put_contents(
+	$wp_filesystem->put_contents(
 		$new_theme_dir . 'fsestudio-data.json',
 		wp_json_encode(
 			$theme,
@@ -212,11 +212,7 @@ function update_theme( $theme ) {
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
 
-	if ( ! $theme['included_patterns'] ) {
-		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
-	} else {
-		\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
-	}
+	\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
 
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );

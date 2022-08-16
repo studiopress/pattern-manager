@@ -406,13 +406,26 @@ function update_pattern( $pattern ) {
 }
 
 /**
+ * Deletes any pattern not present in the passed patterns.
  *
- * @param {
- *   patternName: Pattern
- * } $patterns The patterns to not delete.
+ * @param array $patterns = [
+ *     $patternName => []
+ * ] $patterns The patterns to not delete.
  */
 function delete_patterns_not_present( $patterns ) {
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	if ( ! $wp_filesystem ) {
+		return;
+	}
 
+	$theme_dir          = get_template_directory();
+	$pattern_file_paths = glob( $theme_dir . '/patterns/*.php' );
+
+	foreach ( $pattern_file_paths as $pattern_file_path ) {
+		if ( empty( $patterns[ $pattern_file_path ] ) ) {
+			$wp_filesystem->delete( $pattern_file_path );
+		}
+	}
 }
 
 /**
