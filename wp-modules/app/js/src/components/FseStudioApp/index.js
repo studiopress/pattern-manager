@@ -43,6 +43,7 @@ import GettingStarted from '../GettingStarted';
  *  themes: ReturnType<import('../../hooks/useThemes').default>,
  *  currentThemeId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  currentTheme: ReturnType<import('../../hooks/useThemeData').default>,
+ *  currentStyleVariationId: ReturnType<import('../../hooks/useCurrentId').default>,
  *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
  *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
  *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings
@@ -68,13 +69,15 @@ function FseStudioContextHydrator() {
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
+
+	const currentStyleVariationId = useCurrentId( 'default-style' );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const currentTheme = useThemeData(
 		currentThemeId.value,
 		themes,
 		patternEditorIframe,
 		templateEditorIframe,
-		currentView
+		currentStyleVariationId
 	);
 
 	const currentPatternId = useCurrentId( '' );
@@ -118,6 +121,7 @@ function FseStudioContextHydrator() {
 		themes,
 		currentThemeId,
 		currentTheme,
+		currentStyleVariationId,
 		siteUrl: fsestudio.siteUrl,
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,
@@ -156,127 +160,138 @@ function FseStudio() {
 					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
 						<div className="flex lg:flex-row flex-col gap-4 lg:gap-12">
 							<h1 className="text-white font-bold">FSE Studio</h1>
-							<div className="flex flex-wrap gap-4 md:gap-x-8 fses-nav">
-								<button
-									type="button"
-									className={
-										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-										( currentView.currentView ===
-										'theme_setup'
-											? ' underline'
-											: '' )
-									}
-									onClick={ () => {
-										currentView.set( 'theme_setup' );
-									} }
-								>
-									{ __( 'Theme Details', 'fse-studio' ) }
-								</button>
-								<button
-									disabled={
-										currentTheme.data &&
-										currentTheme.existsOnDisk
-											? false
-											: true
-									}
-									type="button"
-									className={
-										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-										( currentView.currentView ===
-										'themejson_editor'
-											? ' underline'
-											: '' )
-									}
-									onClick={ () => {
-										currentView.set( 'themejson_editor' );
-									} }
-								>
-									{ __(
-										'Styles and Settings',
-										'fse-studio'
-									) }
-								</button>
-								<button
-									disabled={
-										currentTheme.data &&
-										currentTheme.existsOnDisk
-											? false
-											: true
-									}
-									type="button"
-									className={
-										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-										( currentView.currentView ===
-										'theme_patterns'
-											? ' underline'
-											: '' )
-									}
-									onClick={ () => {
-										currentView.set( 'theme_patterns' );
-									} }
-								>
-									{ __( 'Patterns', 'fse-studio' ) }
-								</button>
-								<button
-									disabled={
-										currentTheme.data &&
-										currentTheme.existsOnDisk
-											? false
-											: true
-									}
-									type="button"
-									className={
-										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-										( currentView.currentView ===
-										'theme_templates'
-											? ' underline'
-											: '' )
-									}
-									onClick={ () => {
-										currentView.set( 'theme_templates' );
-										if ( templateEditorIframe.current ) {
-											templateEditorIframe.current.contentWindow.postMessage(
-												JSON.stringify( {
-													message:
-														'fsestudio_click_templates',
-												} )
-											);
+							{ currentTheme?.existsOnDisk ? (
+								<div className="flex flex-wrap gap-4 md:gap-x-8 fses-nav">
+									<button
+										type="button"
+										className={
+											'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+											( currentView.currentView ===
+											'theme_setup'
+												? ' underline'
+												: '' )
 										}
-									} }
-								>
-									{ __( 'Templates', 'fse-studio' ) }
-								</button>
-								<button
-									disabled={
-										currentTheme.data &&
-										currentTheme.existsOnDisk
-											? false
-											: true
-									}
-									type="button"
-									className={
-										'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-										( currentView.currentView ===
-										'template_parts'
-											? ' underline'
-											: '' )
-									}
-									onClick={ () => {
-										currentView.set( 'template_parts' );
-										if ( templateEditorIframe.current ) {
-											templateEditorIframe.current.contentWindow.postMessage(
-												JSON.stringify( {
-													message:
-														'fsestudio_click_template_parts',
-												} )
-											);
+										onClick={ () => {
+											currentView.set( 'theme_setup' );
+										} }
+									>
+										{ __( 'Theme Details', 'fse-studio' ) }
+									</button>
+									<button
+										disabled={
+											currentTheme.data &&
+											currentTheme.existsOnDisk
+												? false
+												: true
 										}
-									} }
-								>
-									{ __( 'Template Parts', 'fse-studio' ) }
-								</button>
-							</div>
+										type="button"
+										className={
+											'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+											( currentView.currentView ===
+											'themejson_editor'
+												? ' underline'
+												: '' )
+										}
+										onClick={ () => {
+											currentView.set(
+												'themejson_editor'
+											);
+										} }
+									>
+										{ __(
+											'Styles and Settings',
+											'fse-studio'
+										) }
+									</button>
+									<button
+										disabled={
+											currentTheme.data &&
+											currentTheme.existsOnDisk
+												? false
+												: true
+										}
+										type="button"
+										className={
+											'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+											( currentView.currentView ===
+											'theme_patterns'
+												? ' underline'
+												: '' )
+										}
+										onClick={ () => {
+											currentView.set( 'theme_patterns' );
+										} }
+									>
+										{ __( 'Patterns', 'fse-studio' ) }
+									</button>
+									<button
+										disabled={
+											currentTheme.data &&
+											currentTheme.existsOnDisk
+												? false
+												: true
+										}
+										type="button"
+										className={
+											'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+											( currentView.currentView ===
+											'theme_templates'
+												? ' underline'
+												: '' )
+										}
+										onClick={ () => {
+											currentView.set(
+												'theme_templates'
+											);
+											if (
+												templateEditorIframe.current
+											) {
+												templateEditorIframe.current.contentWindow.postMessage(
+													JSON.stringify( {
+														message:
+															'fsestudio_click_templates',
+													} )
+												);
+											}
+										} }
+									>
+										{ __( 'Templates', 'fse-studio' ) }
+									</button>
+									<button
+										disabled={
+											currentTheme.data &&
+											currentTheme.existsOnDisk
+												? false
+												: true
+										}
+										type="button"
+										className={
+											'inline-flex items-center text-base font-medium rounded-sm shadow-sm text-gray-300 focus:outline-none focus:ring-1 focus:ring-wp-blue' +
+											( currentView.currentView ===
+											'template_parts'
+												? ' underline'
+												: '' )
+										}
+										onClick={ () => {
+											currentView.set( 'template_parts' );
+											if (
+												templateEditorIframe.current
+											) {
+												templateEditorIframe.current.contentWindow.postMessage(
+													JSON.stringify( {
+														message:
+															'fsestudio_click_template_parts',
+													} )
+												);
+											}
+										} }
+									>
+										{ __( 'Template Parts', 'fse-studio' ) }
+									</button>
+								</div>
+							) : null }
 						</div>
+
 						<div className="flex flex-wrap gap-2">
 							<a
 								className="inline-flex items-center mr-4 text-base font-medium rounded-sm shadow-sm text-white hover:text-white focus:text-white focus:outline-none focus:ring-1"
@@ -288,7 +303,7 @@ function FseStudio() {
 									'←'
 								) }
 							</a>
-							{ currentTheme?.data ? (
+							{ currentTheme?.existsOnDisk ? (
 								<>
 									<button
 										type="button"

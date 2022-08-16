@@ -17,113 +17,109 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Get data for a single themes in the format used by FSE Theme Manager.
+ * Save theme style variation.
  *
- * @param string $id The directory name of the theme in question.
- * @return array
+ * @param  array  $style  The style variation to be saved.
+ * @return bool
  */
-function get_theme_json_file( $id ) {
-	$theme_json_files = get_all_theme_json_files();
-	return $theme_json_files[ $id ];
-}
+function update_theme_style( $style ) {
+	$style_default = [
+		'id'    => '',
+		'title' => '',
+		'body'  => [],
+	];
 
-/**
- * Get data for all of the installed themes in the format used by FSE Theme Manager.
- *
- * @return array
- */
-function get_all_theme_json_files() {
+	$style = wp_parse_args( $style, $style_default );
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	$module_dir_path = module_dir_path( __FILE__ );
+	$wp_theme_dir = get_template_directory();
 
-	$wp_head_and_wp_footer = get_wp_head_and_wp_footer();
+	$styles_dir = $wp_theme_dir . '/styles/';
+	$file_body  = get_json_formatted_style( $style );
+	$file_name  = sanitize_title( $style['id'] ) . '.json'; // Use style id as filename.
 
-	/**
-	 * Scan theme-json-files directory and get all the default theme.json files.
-	 */
-	$theme_json_file_paths = glob( $module_dir_path . '/theme-json-files/*.json' );
-
-	$theme_json_files = array();
-
-	foreach ( $theme_json_file_paths as $path ) {
-		$theme_json_files[ basename( $path, '.json' ) ] = json_decode( $wp_filesystem->get_contents( $path ), true );
+	// Add the styles dir if if does not exist.
+	if ( ! $wp_filesystem->exists( $styles_dir ) ) {
+		$wp_filesystem->mkdir( $styles_dir );
 	}
 
-	/**
-	 * Scan each theme to get all theme.json files.
-	 */
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
+	// Write the file to disk.
+	$style_file_created = $wp_filesystem->put_contents(
+		$styles_dir . $file_name,
+		$file_body,
+		FS_CHMOD_FILE
+	);
 
-	$themes = glob( $wp_themes_dir . '*' );
+	return $style_file_created;
+}
 
-	foreach ( $themes as $theme ) {
-		if ( $wp_filesystem->exists( $theme . '/theme.json' ) ) {
-			$theme_json_files[ basename( $theme ) ] = json_decode( $wp_filesystem->get_contents( $theme . '/theme.json' ), true );
+/**
+ * Format the theme style variation for saving to [file].json.
+ *
+ * @param  array  $style  The style variation to be formatted.
+ * @return string
+ */
+function get_json_formatted_style( $style ) {
+	$style_json = [];
+
+	// Store the id and title to the new array.
+	$style_json['id']    = $style['id'];
+	$style_json['title'] = $style['title'];
+
+	// Use array_merge so the body is saved on top-level.
+	$style_json = array_merge( $style_json, $style['body'] );
+
+	// Format style variation as site-editor prefers.
+	$style_json = unset_style_body_options( $style_json );
+
+	return wp_json_encode( $style_json, JSON_PRETTY_PRINT );
+}
+
+/**
+ * Unset options that expose a gutenberg bug.
+ *
+ * Certain options being present in the json file cause selected style to not
+ * maintain selected border around style variation item in editor.
+ *
+ * @param  array  $style  The style variation eith options to be unset.
+ * @return array
+ */
+function unset_style_body_options( $style ) {
+	$items_to_unset = [
+		'customTemplates',
+		'templateParts',
+		'color'      => [
+			'background',
+			'custom',
+			'customDuotone',
+			'customGradient',
+			'defaultGradients',
+			'defaultPalette',
+			'defaultDuotone',
+			'link',
+		],
+		'typography' => [
+			'customFontSize',
+			'dropCap',
+			'fontStyle',
+			'fontWeight',
+			'letterSpacing',
+			'textDecoration',
+			'textTransform',
+		],
+	];
+
+	foreach ( $items_to_unset as $key => $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $inner_value ) {
+				unset( $style['settings'][ $key ][ $inner_value ] );
+			}
+		} else {
+			unset( $style[ $value ] );
 		}
 	}
 
-	return $theme_json_files;
-}
-
-/**
- * Run a string of HTML through the_content filters. This makes it so everything needed will be rendered in wp_footer.
- *
- * @param string $content The html content to run through the filters.
- * @return bool
- */
-function do_the_content_things( $content ) {
-
-	// Run through the actions that are typically taken on the_content.
-	$content = do_blocks( $content );
-	$content = wptexturize( $content );
-	$content = convert_smilies( $content );
-	$content = shortcode_unautop( $content );
-	$content = wp_filter_content_tags( $content );
-	$content = do_shortcode( $content );
-
-	// Handle embeds for block template parts.
-	global $wp_embed;
-	$content = $wp_embed->autoembed( $content );
-
-	return $content;
-}
-
-/**
- * Run all pattern HTML through the_content filters, and return wp_head and wp_footer html.
- *
- * @return bool
- */
-function get_wp_head_and_wp_footer() {
-	global $fsestudio_api_get_theme_json_file;
-
-	if ( ! $fsestudio_api_get_theme_json_file ) {
-		return;
-	}
-
-	$all_patterns = \FseStudio\PatternDataHandlers\get_patterns();
-
-	$rendered_patterns = array();
-
-	// Get the PHP rendered version of each block.
-	foreach ( $all_patterns as $pattern ) {
-		$rendered_patterns[ $pattern['name'] ] = do_the_content_things( $pattern['content'] );
-	}
-
-	ob_start();
-	wp_head();
-	$wp_head = ob_get_clean();
-
-	ob_start();
-	wp_footer();
-	$wp_footer = ob_get_clean();
-
-	return array(
-		'wp_head'          => $wp_head,
-		'wp_footer'        => $wp_footer,
-		'renderedPatterns' => $rendered_patterns,
-	);
+	return $style;
 }

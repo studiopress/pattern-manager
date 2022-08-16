@@ -1,11 +1,15 @@
 // @ts-check
 
+// Import to satisfy ts checking
+import React from 'react';
+
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
+import useStyleVariations from '../../hooks/useStyleVariations';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
 
@@ -22,23 +26,88 @@ import convertToUpperCase from '../../utils/convertToUpperCase';
 /** @param {{visible: boolean}} props */
 export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
-	const { currentTheme } = useStudioContext();
+	const { currentTheme, currentStyleVariationId } = useStudioContext();
 	
 	if ( ! currentTheme?.data?.theme_json_file ) {
 		return ''
+	}
+
+	const {
+		defaultStyle,
+		newStyleName,
+		setNewStyleName,
+		handleNewStyle,
+	} = useStyleVariations();
+
+	// Setup the style variations object for populating the dropdown.
+	const styleVariations = {
+		...defaultStyle,
+		...currentTheme?.data?.styles,
+	};
+
+	/**
+	 * Populate options to render in the style variations dropdown.
+	 *
+	 * @return {array} The array of rendered styles.
+	 */
+	function styleSelectorOptions() {
+		const renderedStyles = [];
+
+		Object.keys( styleVariations ).forEach( ( id, index ) => {
+			renderedStyles.push(
+				<option key={ index } value={ id }>
+					{ styleVariations[ id ]?.title }
+				</option>
+			);
+		} );
+
+		return renderedStyles;
+	}
+
+	/**
+	 * Component to render the style variations dropdown menu.
+	 *
+	 * The options are populated from styleSelectorOptions().
+	 * The select is disabled if no style variations have been created for the current theme.
+	 */
+	function StyleSelector() {
+		return (
+			<select
+				disabled={ ! Object.keys( currentTheme?.data?.styles ?? {} ).length }
+				className="block w-full !max-w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
+				id="style-variations"
+				value={ currentStyleVariationId?.value ?? '' }
+				onChange={ ( event ) => {
+					const selectedStyle = Object.keys( styleVariations ).find( ( id ) => {
+						return id === event.target.value;
+					} );
+
+					currentStyleVariationId?.set( selectedStyle );
+				} }
+			>
+				{ styleSelectorOptions() }
+			</select>
+		);
 	}
 	
 	return (
 		<div hidden={ ! visible } className="fsestudio-theme-manager">
 			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">{ __( 'Styles and Settings', 'fse-studio' ) }</h1>
-					<p className="text-lg max-w-2xl">All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.</p>
+					<h1 className="text-4xl mb-3">
+						{ __( 'Styles and Settings', 'fse-studio' ) }
+					</h1>
+					<p className="text-lg max-w-2xl">
+						{ __(
+							"All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.",
+							'fse-studio'
+						) }
+					</p>
 				</div>
 			</div>
 
 			<div className="mx-auto p-8 lg:p-12">
-				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
+				<div className="max-w-7xl mx-auto flex flex-wrap-reverse justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
 						<div className="flex flex-row">
 							<SettingsView isVisible={ true } />
@@ -46,7 +115,9 @@ export default function ThemeJsonEditor( { visible } ) {
 						<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 							<div className="flex items-center justify-between w-full">
 								<div className="flex items-center">
-									<p className="text-sm m-0">{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }</p>
+									<p className="text-sm m-0">
+										{ __( 'This theme.json file can be found in your active theme.', 'fse-studio' ) }
+									</p>
 								</div>
 								<div className="flex items-center">
 									{ currentTheme.hasSaved ?
@@ -76,6 +147,102 @@ export default function ThemeJsonEditor( { visible } ) {
 					</div>
 
 					<div className="flex-1 w-full md:w-1/3 text-base">
+						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
+							<div className="flex flex-col gap-5">
+								<div>
+									<h4 className="mb-2 font-medium">
+										{ __( 'Current Style Variation', 'fse-studio' ) }
+									</h4>
+									<p className="text-base">
+										{ __( 'Select the style variation you would like to work on.', 'fse-studio' ) }
+									</p>
+								</div>
+
+								<div className="flex flex-col gap-2">
+									<div>
+										<label
+											htmlFor="style-variations"
+											className="block text-sm font-medium text-gray-700 visuallyhidden"
+										>
+											{ __( 'Choose a style variation', 'fse-studio' ) }
+										</label>
+										{ <StyleSelector /> }
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
+							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+								<div className="flex flex-col gap-5">
+									<h4 className="mb-2 font-medium">
+										{ __( 'Create a style variation', 'fse-studio' ) }
+									</h4>
+									<p className="text-base">
+										{ __(
+											'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
+											'fse-studio'
+										) }
+									</p>
+									<p className="text-base">
+										{ __(
+											"Create a new variation by adding a variation name and clicking Save. Once saved, you can use the select menu to choose which variation you're working on.",
+											'fse-studio'
+										) }
+									</p>
+								</div>
+
+								<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap">
+									<input
+										className="w-8/12 md:w-full xl:w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
+										type="text"
+										id="style-variation-name"
+										placeholder="Variation Name"
+										value={ newStyleName ?? '' }
+										onChange={ ( event ) => {
+											const newValue = event?.target?.value ?? '';
+											setNewStyleName( newValue );
+										} }
+									/>
+									<button
+										type="button"
+										className="w-3/12 md:w-full xl:w-3/12 ml-auto mr-0 mt-0 md:mt-2 xl:mt-0 px-4 xl:px-0 py-2 xl:py-0 items-center border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={ () => {
+											if ( newStyleName === '' ) {
+												alert(
+													__( 'Please enter a new name.', 'fse-studio' )
+												);
+												return;
+											} else if ( newStyleName.match( /default/i ) ) {
+												alert(
+													__( 'The style name should not include the word "default".',  'fse-studio' )
+												);
+												setNewStyleName( '' );
+												return;
+											}
+
+											handleNewStyle();
+										} }
+									>
+										{ __( 'Save', 'fse-studio' ) }
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
+							<div className="bg-fses-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded" role="alert">
+								<div className="flex flex-col gap-5">
+									<p className="text-base">
+										{ __(
+											'Style variations are an experimental Gutenberg feature, and some settings may not behave as expected.',
+											'fse-studio'
+										) }
+									</p>
+								</div>
+							</div>
+						</div>
+
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h3 className="mb-2 font-medium">Working with theme.json</h3>
