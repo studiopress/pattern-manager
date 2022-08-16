@@ -213,8 +213,14 @@ const FseStudioMetaControls = () => {
 							postMeta.blockTypes?.includes(
 								blockTypePostContent
 							)
-								? 'Enabled for selected post types.'
-								: 'Disabled for all post types.'
+								? __(
+										'Enabled for selected post types.',
+										'fse-studio'
+								  )
+								: __(
+										'Disabled for all post types.',
+										'fse-studio'
+								  )
 						}
 						onChange={ ( event ) => {
 							handleToggleChange(
