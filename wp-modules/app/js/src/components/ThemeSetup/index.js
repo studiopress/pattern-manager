@@ -1,5 +1,5 @@
 // WP Dependencies.
-import { useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, check } from '@wordpress/icons';
 
@@ -10,7 +10,14 @@ import createNewTheme from '../../utils/createNewTheme';
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme, themes, currentThemeId, currentView } =
 		useStudioContext();
+	const [ isSavedForFirstTime, setIsSavedForFirstTime ] = useState( false );
 	const themeNameInput = useRef( null );
+
+	useEffect( () => {
+		if ( currentView.currentView ) {
+			setIsSavedForFirstTime( false );
+		}
+	}, [ currentView.currentView ] )
 
 	if ( ! currentTheme.data ) {
 		return '';
@@ -77,7 +84,7 @@ export default function ThemeSetup( { isVisible } ) {
 			<div className="mx-auto p-8 lg:p-12">
 				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
-						{ currentTheme.existsOnDisk ? (
+						{ currentTheme.existsOnDisk && isSavedForFirstTime ? (
 							<div className="text-base flex flex-row items-center mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
 								<span className="text-[#008B24] px-8 text-xl fill-current">
 									<svg
@@ -511,8 +518,9 @@ export default function ThemeSetup( { isVisible } ) {
 									<button
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											currentTheme.save();
+										onClick={ async () => {
+											await currentTheme.save();
+											setIsSavedForFirstTime( true );
 										} }
 									>
 										{ __(
