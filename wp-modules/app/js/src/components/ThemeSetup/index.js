@@ -17,7 +17,7 @@ export default function ThemeSetup( { isVisible } ) {
 		if ( currentView.currentView ) {
 			setIsSavedForFirstTime( false );
 		}
-	}, [ currentView.currentView ] )
+	}, [ currentView.currentView ] );
 
 	if ( ! currentTheme.data ) {
 		return '';
@@ -111,7 +111,10 @@ export default function ThemeSetup( { isVisible } ) {
 								<span
 									className="p-6 bg-white rounded-r-md"
 									role="dialog"
-									aria-label="Theme Saved"
+									aria-label={ __(
+										'Theme Saved',
+										'fse-studio'
+									) }
 								>
 									<p className="font-bold text-base mb-2">
 										{ __(
@@ -140,6 +143,21 @@ export default function ThemeSetup( { isVisible } ) {
 										) }
 									</button>
 								</span>
+								<button
+									className="p-6 bg-white fill-current"
+									onClick={ () => {
+										setIsSavedForFirstTime( false );
+									} }
+								>
+									<svg
+										className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv"
+										focusable="false"
+										viewBox="0 0 24 24"
+										aria-label="close-icon"
+									>
+										<path d="M6.13663 4.43088C5.60673 3.90098 4.79533 3.85325 4.32431 4.32427C3.85329 4.79529 3.90102 5.60669 4.43091 6.13659L10.2943 12L4.43088 17.8634C3.90098 18.3933 3.85325 19.2047 4.32427 19.6757C4.79529 20.1467 5.60669 20.099 6.13659 19.5691L12 13.7057L17.8634 19.5691C18.3933 20.099 19.2047 20.1467 19.6757 19.6757C20.1467 19.2046 20.099 18.3932 19.5691 17.8634L13.7057 12L19.5691 6.13665C20.099 5.60675 20.1467 4.79535 19.6757 4.32433C19.2046 3.85331 18.3932 3.90104 17.8634 4.43094L12 10.2943L6.13663 4.43088Z"></path>
+									</svg>
+								</button>
 							</div>
 						) : null }
 						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
