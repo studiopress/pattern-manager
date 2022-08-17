@@ -964,12 +964,25 @@ export default function useThemeData(
 
 	/** @param {string} patternName */
 	function deletePattern( patternName ) {
+		if (
+			/* eslint-disable no-alert */
+			! window.confirm(
+				__(
+					'Are you sure you want to delete this pattern?',
+					'fse-studio'
+				)
+			)
+		) {
+			return;
+		}
+
 		const {
 			[ patternName ]: {},
 			...newIncludedPatterns
 		} = themeData.included_patterns ?? {};
 
-		editTheme( {
+		setAutoSaveTheme( true );
+		setThemeData( {
 			...themeData,
 			included_patterns: newIncludedPatterns,
 		} );
