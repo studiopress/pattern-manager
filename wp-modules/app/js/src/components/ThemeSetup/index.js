@@ -537,7 +537,9 @@ export default function ThemeSetup( { isVisible } ) {
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ async () => {
 											await currentTheme.save();
-											setIsSavedForFirstTime( true );
+											if ( ! currentTheme.existsOnDisk ) {
+												setIsSavedForFirstTime( true );
+											}
 										} }
 									>
 										{ __(
