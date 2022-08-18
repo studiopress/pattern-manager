@@ -148,7 +148,10 @@ export default function ThemeSetup( { isVisible } ) {
 								<span className="flex flex-col rounded-r-md p-3 bg-white">
 									<button
 										className="bg-white"
-										aria-label={ __( 'Dismiss the theme saved notice', 'fse-studio' ) }
+										aria-label={ __(
+											'Dismiss the theme saved notice',
+											'fse-studio'
+										) }
 										onClick={ () => {
 											setDisplayThemeCreatedNotice(
 												false
