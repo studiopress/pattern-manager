@@ -367,8 +367,6 @@ export default function useThemeData(
 		// Split the selector string at commas
 		const keys = selectorString.split( '.' );
 
-		const numberOfKeys = keys.length;
-
 		if (
 			! jsonDataBody[ topLevelSection ] ||
 			Array.isArray( jsonDataBody[ topLevelSection ] )
@@ -382,17 +380,31 @@ export default function useThemeData(
 			[ key, ...rest ] = [],
 			index = 0
 		) => {
+			// Clean up the array parent of child to be deleted.
+			if (
+				Array.isArray( object[ key ] ) &&
+				keys.length > 1 &&
+				index === keys.length - 2 &&
+				( null === value ||
+					( defaultValue !== null && defaultValue === value ) )
+			) {
+				object[ key ].splice( keys[ index + 1 ], 1 );
+			}
+
 			const newObject = Array.isArray( object )
 				? [ ...object ]
 				: { ...object };
 
 			if (
+				// This means we are at the end of the keys.
 				! rest.length &&
 				( null === value ||
 					( defaultValue !== null && defaultValue === value ) )
 			) {
-				// delete newObject[ key ];
+				// Delete the element.
+				delete newObject[ key ];
 			} else {
+				// Recurse if there are more keys, otherwise update the element.
 				newObject[ key ] = rest.length
 					? setDeepClone( object[ key ], rest, index + 1 )
 					: value;
@@ -408,189 +420,6 @@ export default function useThemeData(
 				keys
 			),
 		};
-
-		if ( numberOfKeys === 2 ) {
-			const keyOne = [ keys[ 0 ] ];
-			const keyTwo = [ keys[ 1 ] ];
-
-			// If we are deleting or setting this value back to its default from the schema.
-			if (
-				( defaultValue !== null && defaultValue === value ) ||
-				null === value
-			) {
-				if (
-					Array.isArray( modifiedData[ topLevelSection ][ keyOne ] )
-				) {
-					modifiedData[ topLevelSection ][ keyOne ].splice(
-						keyTwo,
-						1
-					);
-				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-				}
-			}
-
-			// Clean up the parent if there's no more children.
-			if (
-				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
-					.length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ];
-			}
-		}
-		if ( numberOfKeys === 3 ) {
-			const keyOne = [ keys[ 0 ] ];
-			const keyTwo = [ keys[ 1 ] ];
-			const keyThree = [ keys[ 2 ] ];
-
-			if (
-				( defaultValue !== null && defaultValue === value ) ||
-				null === value
-			) {
-				if (
-					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-					)
-				) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ].splice(
-						keyThree,
-						1
-					);
-				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					];
-				}
-			}
-
-			// Clean up the parents if there's no more children.
-			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-				).length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-			}
-			if (
-				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
-					.length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ];
-			}
-		}
-		if ( numberOfKeys === 4 ) {
-			const keyOne = [ keys[ 0 ] ];
-			const keyTwo = [ keys[ 1 ] ];
-			const keyThree = [ keys[ 2 ] ];
-			const keyFour = [ keys[ 3 ] ];
-
-			if (
-				( defaultValue !== null && defaultValue === value ) ||
-				null === value
-			) {
-				if (
-					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-							keyThree
-						]
-					)
-				) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					].splice( keyFour, 1 );
-				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					][ keyFour ];
-				}
-			}
-
-			// Clean up the parents if there's no more children.
-			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					]
-				).length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-			}
-			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-				).length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-			}
-			if (
-				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
-					.length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ];
-			}
-		}
-
-		if ( numberOfKeys === 5 ) {
-			const keyOne = [ keys[ 0 ] ];
-			const keyTwo = [ keys[ 1 ] ];
-			const keyThree = [ keys[ 2 ] ];
-			const keyFour = [ keys[ 3 ] ];
-			const keyFive = [ keys[ 4 ] ];
-
-			if (
-				( defaultValue !== null && defaultValue === value ) ||
-				null === value
-			) {
-				if (
-					Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-							keyThree
-						][ keyFour ]
-					)
-				) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					][ keyFour ].splice( keyFive, 1 );
-				} else {
-					delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					][ keyFour ][ keyFive ];
-				}
-			}
-
-			// Clean up the parents if there's no more children.
-			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					][ keyFour ]
-				).length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-			}
-			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					]
-				).length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-			}
-			if (
-				Object.entries(
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-				).length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ][ keyTwo ];
-			}
-			if (
-				Object.entries( modifiedData[ topLevelSection ][ keyOne ] )
-					.length === 0
-			) {
-				delete modifiedData[ topLevelSection ][ keyOne ];
-			}
-		}
 
 		/**
 		 * If the current style is not default, save the variation data to the styles array.
