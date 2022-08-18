@@ -74,7 +74,11 @@ export default function ThemePatterns( { isVisible } ) {
 											<button
 												type="button"
 												className="absolute top-2 right-2 z-50"
-												// onClick={ }
+												onClick={ () => {
+													currentTheme.deletePattern(
+														patternName
+													);
+												} }
 											>
 												<Icon
 													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
