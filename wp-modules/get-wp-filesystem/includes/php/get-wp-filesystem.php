@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace FseStudio\GetWpFilesystem;
 
+use WP_Filesystem_Base;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -17,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get the WP Filesystem API up and running.
  *
- * @return WP_Filesystem
+ * @return WP_Filesystem_Base|false
  */
 function get_wp_filesystem_api() {
 
@@ -35,7 +37,7 @@ function get_wp_filesystem_api() {
 
 	if ( ! WP_Filesystem( $creds ) ) {
 		request_filesystem_credentials( null, '', true, false, null );
-		return;
+		return false;
 	}
 
 	return $wp_filesystem;
