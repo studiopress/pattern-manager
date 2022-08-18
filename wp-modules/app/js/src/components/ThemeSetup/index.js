@@ -1,7 +1,7 @@
 // WP Dependencies.
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, check } from '@wordpress/icons';
+import { Icon, check, close } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
@@ -150,17 +150,11 @@ export default function ThemeSetup( { isVisible } ) {
 											setIsSavedForFirstTime( false );
 										} }
 									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											viewBox="0 0 24 24"
-											width="30"
-											height="30"
+										<Icon
 											className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 group-hover:opacity-100"
-											aria-hidden="true"
-											focusable="false"
-										>
-											<path d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path>
-										</svg>
+											icon={ close }
+											size={ 30 }
+										/>
 									</button>
 								</span>
 							</div>
