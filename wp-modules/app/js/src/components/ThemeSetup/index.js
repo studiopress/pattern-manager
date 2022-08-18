@@ -85,8 +85,8 @@ export default function ThemeSetup( { isVisible } ) {
 				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
 						{ currentTheme.existsOnDisk && isSavedForFirstTime ? (
-							<div className="text-base flex flex-row items-center mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
-								<span className="text-[#008B24] px-8 text-xl fill-current">
+							<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
+								<span className="text-[#008B24] self-center px-8 text-xl fill-current">
 									<svg
 										width="22"
 										height="22"
@@ -109,7 +109,7 @@ export default function ThemeSetup( { isVisible } ) {
 									</svg>
 								</span>
 								<span
-									className="p-6 bg-white rounded-r-md"
+									className="p-6 self-center bg-white rounded-r-md"
 									role="dialog"
 									aria-label={ __(
 										'Theme Saved',
@@ -143,15 +143,23 @@ export default function ThemeSetup( { isVisible } ) {
 										) }
 									</button>
 								</span>
-								<span className="flex flex-column bg-white">
+								<span className="flex flex-col rounded-r-md p-3 bg-white">
 									<button
-										className="p-6 bg-white"
+										className="bg-white"
 										onClick={ () => {
 											setIsSavedForFirstTime( false );
 										} }
 									>
-										<svg viewBox="0 0 24 24">
-											<path d="M6.13663 4.43088C5.60673 3.90098 4.79533 3.85325 4.32431 4.32427C3.85329 4.79529 3.90102 5.60669 4.43091 6.13659L10.2943 12L4.43088 17.8634C3.90098 18.3933 3.85325 19.2047 4.32427 19.6757C4.79529 20.1467 5.60669 20.099 6.13659 19.5691L12 13.7057L17.8634 19.5691C18.3933 20.099 19.2047 20.1467 19.6757 19.6757C20.1467 19.2046 20.099 18.3932 19.5691 17.8634L13.7057 12L19.5691 6.13665C20.099 5.60675 20.1467 4.79535 19.6757 4.32433C19.2046 3.85331 18.3932 3.90104 17.8634 4.43094L12 10.2943L6.13663 4.43088Z"></path>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											viewBox="0 0 24 24"
+											width="30"
+											height="30"
+											className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 group-hover:opacity-100"
+											aria-hidden="true"
+											focusable="false"
+										>
+											<path d="M13 11.8l6.1-6.3-1-1-6.1 6.2-6.1-6.2-1 1 6.1 6.3-6.5 6.7 1 1 6.5-6.6 6.5 6.6 1-1z"></path>
 										</svg>
 									</button>
 								</span>
