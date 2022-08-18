@@ -539,14 +539,14 @@ export default function ThemeSetup( { isVisible } ) {
 									<button
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ async () => {
+										onClick={ () => {
 											if ( ! currentTheme.existsOnDisk ) {
 												setDisplayThemeCreatedNotice(
 													true
 												);
 											}
 
-											await currentTheme.save();
+											currentTheme.save();
 										} }
 									>
 										{ __(
