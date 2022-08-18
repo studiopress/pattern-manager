@@ -10,12 +10,13 @@ import createNewTheme from '../../utils/createNewTheme';
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme, themes, currentThemeId, currentView } =
 		useStudioContext();
-	const [ isSavedForFirstTime, setIsSavedForFirstTime ] = useState( false );
+	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
+		useState( false );
 	const themeNameInput = useRef( null );
 
 	useEffect( () => {
 		if ( currentView?.currentView ) {
-			setIsSavedForFirstTime( false );
+			setDisplayThemeCreatedNotice( false );
 		}
 	}, [ currentView?.currentView ] );
 
@@ -84,7 +85,8 @@ export default function ThemeSetup( { isVisible } ) {
 			<div className="mx-auto p-8 lg:p-12">
 				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
-						{ currentTheme.existsOnDisk && isSavedForFirstTime ? (
+						{ currentTheme.existsOnDisk &&
+						displayThemeCreatedNotice ? (
 							<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
 								<span className="text-[#008B24] self-center px-8 text-xl fill-current">
 									<svg
@@ -147,7 +149,9 @@ export default function ThemeSetup( { isVisible } ) {
 									<button
 										className="bg-white"
 										onClick={ () => {
-											setIsSavedForFirstTime( false );
+											setDisplayThemeCreatedNotice(
+												false
+											);
 										} }
 									>
 										<Icon
@@ -536,10 +540,13 @@ export default function ThemeSetup( { isVisible } ) {
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ async () => {
-											await currentTheme.save();
 											if ( ! currentTheme.existsOnDisk ) {
-												setIsSavedForFirstTime( true );
+												setDisplayThemeCreatedNotice(
+													true
+												);
 											}
+
+											await currentTheme.save();
 										} }
 									>
 										{ __(
