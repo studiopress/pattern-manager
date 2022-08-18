@@ -149,7 +149,7 @@ export default function ThemeSetup( { isVisible } ) {
 									<button
 										className="bg-white"
 										aria-label={ __(
-											'Dismiss the theme saved notice',
+											'Dismiss the theme created notice',
 											'fse-studio'
 										) }
 										onClick={ () => {
