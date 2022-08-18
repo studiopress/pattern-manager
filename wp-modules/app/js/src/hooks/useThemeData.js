@@ -348,13 +348,13 @@ export default function useThemeData(
 		selectorString,
 		value = null,
 		defaultValue = null,
-		mode = 'overwrite'
+		_mode = 'overwrite' // eslint-disable-line
 	) {
 		const currentStyleValue = currentStyleVariationId?.value;
 
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
-		const modifiedData =
+		const jsonDataBody =
 			currentStyleValue === defaultStyleName
 				? themeData.theme_json_file
 				: themeData.styles[ currentStyleValue ]?.body;
@@ -370,66 +370,49 @@ export default function useThemeData(
 		const numberOfKeys = keys.length;
 
 		if (
-			! modifiedData[ topLevelSection ] ||
-			Array.isArray( modifiedData[ topLevelSection ] )
+			! jsonDataBody[ topLevelSection ] ||
+			Array.isArray( jsonDataBody[ topLevelSection ] )
 		) {
-			modifiedData[ topLevelSection ] = {};
+			jsonDataBody[ topLevelSection ] = {};
 		}
 
-		if ( numberOfKeys === 1 ) {
-			const keyOne = [ keys[ 0 ] ];
+		// Clone an object and updated a nested value recursively.
+		const setDeepClone = (
+			object = {},
+			[ key, ...rest ] = [],
+			index = 0
+		) => {
+			const newObject = Array.isArray( object )
+				? [ ...object ]
+				: { ...object };
 
-			// If keyone does not exist yet, set it first, then set keytwo after.
-			if ( ! modifiedData[ topLevelSection ] ) {
-				modifiedData[ topLevelSection ] = {};
-			}
-			if ( mode === 'insert' ) {
-				if ( ! Array.isArray( modifiedData[ topLevelSection ] ) ) {
-					modifiedData[ topLevelSection ] = [];
-				}
-				modifiedData[ topLevelSection ].splice(
-					parseInt( keyOne ) + 1,
-					0,
-					value
-				);
-			}
-			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ] = value;
-			}
 			if (
-				( defaultValue !== null && defaultValue === value ) ||
-				null === value
+				! rest.length &&
+				( null === value ||
+					( defaultValue !== null && defaultValue === value ) )
 			) {
-				delete modifiedData[ topLevelSection ][ keyOne ];
+				// delete newObject[ key ];
+			} else {
+				newObject[ key ] = rest.length
+					? setDeepClone( object[ key ], rest, index + 1 )
+					: value;
 			}
-		}
+
+			return newObject;
+		};
+
+		const modifiedData = {
+			...jsonDataBody,
+			[ topLevelSection ]: setDeepClone(
+				jsonDataBody[ topLevelSection ],
+				keys
+			),
+		};
+
 		if ( numberOfKeys === 2 ) {
 			const keyOne = [ keys[ 0 ] ];
 			const keyTwo = [ keys[ 1 ] ];
 
-			// If the top level section does not exist yet, set it first.
-			if ( ! modifiedData[ topLevelSection ] ) {
-				modifiedData[ topLevelSection ] = {};
-			}
-			// If keyone does not exist yet, set it first, then set keytwo after.
-			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
-				modifiedData[ topLevelSection ][ keyOne ] = {};
-			}
-			if ( mode === 'insert' ) {
-				if (
-					! Array.isArray( modifiedData[ topLevelSection ][ keyOne ] )
-				) {
-					modifiedData[ topLevelSection ][ keyOne ] = [];
-				}
-				modifiedData[ topLevelSection ][ keyOne ].splice(
-					parseInt( keyTwo ) + 1,
-					0,
-					value
-				);
-			}
-			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = value;
-			}
 			// If we are deleting or setting this value back to its default from the schema.
 			if (
 				( defaultValue !== null && defaultValue === value ) ||
@@ -460,36 +443,6 @@ export default function useThemeData(
 			const keyTwo = [ keys[ 1 ] ];
 			const keyThree = [ keys[ 2 ] ];
 
-			// If the top level section does not exist yet, set it first.
-			if ( ! modifiedData[ topLevelSection ] ) {
-				modifiedData[ topLevelSection ] = {};
-			}
-			// If keyone does not exist yet, set it first, then set keytwo after.
-			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
-				modifiedData[ topLevelSection ][ keyOne ] = {};
-			}
-			if ( ! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
-			}
-			if ( mode === 'insert' ) {
-				if (
-					! Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ]
-					)
-				) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = [];
-				}
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ].splice(
-					parseInt( keyThree ) + 1,
-					0,
-					value
-				);
-			}
-			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				] = value;
-			}
 			if (
 				( defaultValue !== null && defaultValue === value ) ||
 				null === value
@@ -531,47 +484,6 @@ export default function useThemeData(
 			const keyThree = [ keys[ 2 ] ];
 			const keyFour = [ keys[ 3 ] ];
 
-			// If the top level section does not exist yet, set it first.
-			if ( ! modifiedData[ topLevelSection ] ) {
-				modifiedData[ topLevelSection ] = {};
-			}
-			// If keyone does not exist yet, set it first, then set keytwo after.
-			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
-				modifiedData[ topLevelSection ][ keyOne ] = {};
-			}
-			if ( ! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
-			}
-			if (
-				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				]
-			) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				] = {};
-			}
-			if ( mode === 'insert' ) {
-				if (
-					! Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-							keyThree
-						]
-					)
-				) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					] = [];
-				}
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				].splice( parseInt( keyFour ) + 1, 0, value );
-			}
-			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
-					keyFour
-				] = value;
-			}
 			if (
 				( defaultValue !== null && defaultValue === value ) ||
 				null === value
@@ -625,56 +537,6 @@ export default function useThemeData(
 			const keyFour = [ keys[ 3 ] ];
 			const keyFive = [ keys[ 4 ] ];
 
-			// If the top level section does not exist yet, set it first.
-			if ( ! modifiedData[ topLevelSection ] ) {
-				modifiedData[ topLevelSection ] = {};
-			}
-			// If keyone does not exist yet, set it first, then set keytwo after.
-			if ( ! modifiedData[ topLevelSection ][ keyOne ] ) {
-				modifiedData[ topLevelSection ][ keyOne ] = {};
-			}
-			if ( ! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ] = {};
-			}
-			if (
-				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				]
-			) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				] = {};
-			}
-			if (
-				! modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-					keyThree
-				][ keyFour ]
-			) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
-					keyFour
-				] = {};
-			}
-			if ( mode === 'insert' ) {
-				if (
-					! Array.isArray(
-						modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-							keyThree
-						][ keyFour ]
-					)
-				) {
-					modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][
-						keyThree
-					][ keyFour ] = [];
-				}
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
-					keyFour
-				].splice( parseInt( keyFive ) + 1, 0, value );
-			}
-			if ( mode === 'overwrite' ) {
-				modifiedData[ topLevelSection ][ keyOne ][ keyTwo ][ keyThree ][
-					keyFour
-				][ keyFive ] = value;
-			}
 			if (
 				( defaultValue !== null && defaultValue === value ) ||
 				null === value
