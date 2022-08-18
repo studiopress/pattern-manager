@@ -15,9 +15,7 @@ export default function ThemeSetup( { isVisible } ) {
 	const themeNameInput = useRef( null );
 
 	useEffect( () => {
-		if ( currentView?.currentView ) {
-			setDisplayThemeCreatedNotice( false );
-		}
+		setDisplayThemeCreatedNotice( false );
 	}, [ currentView?.currentView ] );
 
 	if ( ! currentTheme.data ) {
