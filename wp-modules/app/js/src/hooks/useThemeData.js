@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
+import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
 import useSnackbarContext from './useSnackbarContext';
 import useStyleVariations from '../hooks/useStyleVariations';
@@ -359,6 +360,13 @@ export default function useThemeData(
 				? themeData.theme_json_file
 				: themeData.styles[ currentStyleValue ]?.body;
 
+		if (
+			! jsonDataBody[ topLevelSection ] ||
+			Array.isArray( jsonDataBody[ topLevelSection ] )
+		) {
+			jsonDataBody[ topLevelSection ] = {};
+		}
+
 		// Remove any leading commas that might exist.
 		if ( selectorString[ 0 ] === '.' ) {
 			selectorString = selectorString.substring( 1 );
@@ -367,59 +375,13 @@ export default function useThemeData(
 		// Split the selector string at commas
 		const keys = selectorString.split( '.' );
 
-		if (
-			! jsonDataBody[ topLevelSection ] ||
-			Array.isArray( jsonDataBody[ topLevelSection ] )
-		) {
-			jsonDataBody[ topLevelSection ] = {};
-		}
+		// Add top level key to the array of keys.
+		keys.unshift( topLevelSection );
 
-		// Clone an object and updated a nested value recursively.
-		const setDeepClone = (
-			object = {},
-			[ key, ...rest ] = [],
-			index = 0
-		) => {
-			// Clean up the array parent of child to be deleted.
-			if (
-				Array.isArray( object[ key ] ) &&
-				keys.length > 1 &&
-				index === keys.length - 2 &&
-				( null === value ||
-					( defaultValue !== null && defaultValue === value ) )
-			) {
-				object[ key ].splice( keys[ index + 1 ], 1 );
-			}
-
-			const newObject = Array.isArray( object )
-				? [ ...object ]
-				: { ...object };
-
-			if (
-				// This means we are at the end of the keys.
-				! rest.length &&
-				( null === value ||
-					( defaultValue !== null && defaultValue === value ) )
-			) {
-				// Delete the element.
-				delete newObject[ key ];
-			} else {
-				// Recurse if there are more keys, otherwise update the element.
-				newObject[ key ] = rest.length
-					? setDeepClone( object[ key ], rest, index + 1 )
-					: value;
-			}
-
-			return newObject;
-		};
-
-		const modifiedData = {
-			...jsonDataBody,
-			[ topLevelSection ]: setDeepClone(
-				jsonDataBody[ topLevelSection ],
-				keys
-			),
-		};
+		const modifiedData = setNestedObject( value, defaultValue )(
+			jsonDataBody,
+			keys
+		);
 
 		/**
 		 * If the current style is not default, save the variation data to the styles array.
@@ -475,10 +437,8 @@ export default function useThemeData(
 		const keys = selectorString.split( '.' );
 
 		return (
-			keys.reduce(
-				( acc, key ) => ( acc ? acc[ key ] : undefined ),
-				currentStyleVariation[ topLevelSection ]
-			) ?? defaultValue
+			getNestedValue( currentStyleVariation[ topLevelSection ], keys ) ??
+			defaultValue
 		);
 	}
 
