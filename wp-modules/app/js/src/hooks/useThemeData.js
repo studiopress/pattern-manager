@@ -375,12 +375,9 @@ export default function useThemeData(
 		// Split the selector string at commas
 		const keys = selectorString.split( '.' );
 
-		// Add top level key to the array of keys.
-		keys.unshift( topLevelSection );
-
 		const modifiedData = setNestedObject( value, defaultValue )(
 			jsonDataBody,
-			keys
+			[ topLevelSection, ...keys ] // Top level key with the array of keys.
 		);
 
 		/**
