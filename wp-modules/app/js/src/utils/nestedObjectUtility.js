@@ -8,7 +8,7 @@
  * @param {Array}  keys
  * @return {*} The nested value.
  */
-export function getNestedValue( object = {}, keys = [] ) {
+export function getNestedValue( object, keys ) {
 	return keys.reduce(
 		( acc, key ) => ( acc ? acc[ key ] : undefined ),
 		object
@@ -28,13 +28,13 @@ export function getNestedValue( object = {}, keys = [] ) {
  * @param {*} defaultValue
  * @return {Function} recursiveUpdate()
  */
-export function setNestedObject( value = null, defaultValue = null ) {
+export function setNestedObject( value, defaultValue ) {
 	/**
 	 * Recursively clone an object and update a nested value.
 	 *
-	 * @param {Object} object Object to recursively clone and update.
-	 * @param {Array}  keys   Array of keys on which to iterate.
-	 * @return {Object}       The new, updated object.
+	 * @param {Object} object
+	 * @param {Array}  keys
+	 * @return {Object} The new, updated object.
 	 */
 	return function recursiveUpdate( object, [ key, ...rest ] = [] ) {
 		const newObject = Array.isArray( object )
@@ -56,15 +56,11 @@ export function setNestedObject( value = null, defaultValue = null ) {
 				: value;
 		}
 
-		// Clean up parent arrays by filtering out falsy elements.
-		if (
-			Array.isArray( newObject ) &&
+		// Filter out deleted elements from parent arrays.
+		return Array.isArray( newObject ) &&
 			( null === value ||
 				( defaultValue !== null && defaultValue === value ) )
-		) {
-			return newObject.filter( ( element ) => element );
-		}
-
-		return newObject;
+			? newObject.filter( Boolean )
+			: newObject;
 	};
 }
