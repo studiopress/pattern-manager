@@ -577,6 +577,8 @@ export default function ThemeSetup( { isVisible } ) {
 														themes.themes
 													)[ 0 ]
 												);
+
+												setDisplayThemeCreatedNotice( false );
 											} }
 										>
 											{ __( 'Cancel', 'fse-studio' ) }
