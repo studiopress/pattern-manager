@@ -64,13 +64,13 @@ export default function ThemeSetup( { isVisible } ) {
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
 						{ currentTheme?.existsOnDisk
-							? __( 'Theme Details', 'fse-studio' )
+							? __( 'Theme: ', 'fse-studio' ) + currentTheme?.data?.name ?? ''
 							: __( 'Create Your Theme', 'fse-studio' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						{ currentTheme?.existsOnDisk
 							? __(
-									"Edit additional technical details of your theme that appear in readme.txt, which is helpful for users to understand the theme's capabilities.",
+									"Here you will find everything you need to customize your full-site editing theme. Visit the Edit Theme Details tab to see advanced options.",
 									'fsestudio'
 							  )
 							: __(
@@ -78,6 +78,45 @@ export default function ThemeSetup( { isVisible } ) {
 									'fsestudio'
 							  ) }
 					</p>
+				</div>
+			</div>
+			
+			<div className="bg-fses-gray">
+				<div className="mx-auto max-w-7xl">
+					<ul className="flex m-0 gap-2">
+						<li className="m-0">
+							<button
+								type="button"
+								className="bg-white font-medium py-3 px-5 rounded-t"
+								// onClick={ () => {
+								// 	currentView.set(
+								// 		'theme_templates'
+								// 	);
+								// } }
+							>
+								{ __(
+									'Theme Overview',
+									'fse-studio'
+								) }
+							</button>
+						</li>
+						<li className="m-0">
+							<button
+								type="button"
+								className="hover:bg-white font-medium py-3 px-5 rounded-t"
+								// onClick={ () => {
+								// 	currentView.set(
+								// 		'theme_templates'
+								// 	);
+								// } }
+							>
+								{ __(
+									'Edit Theme Details',
+									'fse-studio'
+								) }
+							</button>
+						</li>
+					</ul>
 				</div>
 			</div>
 
