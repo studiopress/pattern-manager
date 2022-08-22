@@ -64,13 +64,14 @@ export default function ThemeSetup( { isVisible } ) {
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
 						{ currentTheme?.existsOnDisk
-							? __( 'Theme: ', 'fse-studio' ) + currentTheme?.data?.name ?? ''
+							? __( 'Theme: ', 'fse-studio' ) +
+									currentTheme?.data?.name ?? ''
 							: __( 'Create Your Theme', 'fse-studio' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						{ currentTheme?.existsOnDisk
 							? __(
-									"Here you will find everything you need to customize your full-site editing theme. Visit the Edit Theme Details tab to see advanced options.",
+									'Here you will find everything you need to customize your full-site editing theme. Visit the Edit Theme Details tab to see advanced options.',
 									'fsestudio'
 							  )
 							: __(
@@ -80,7 +81,7 @@ export default function ThemeSetup( { isVisible } ) {
 					</p>
 				</div>
 			</div>
-			
+
 			<div className="bg-fses-gray">
 				<div className="mx-auto max-w-7xl">
 					<ul className="flex m-0 gap-2">
@@ -94,10 +95,7 @@ export default function ThemeSetup( { isVisible } ) {
 								// 	);
 								// } }
 							>
-								{ __(
-									'Theme Overview',
-									'fse-studio'
-								) }
+								{ __( 'Theme Overview', 'fse-studio' ) }
 							</button>
 						</li>
 						<li className="m-0">
@@ -110,10 +108,7 @@ export default function ThemeSetup( { isVisible } ) {
 								// 	);
 								// } }
 							>
-								{ __(
-									'Edit Theme Details',
-									'fse-studio'
-								) }
+								{ __( 'Edit Theme Details', 'fse-studio' ) }
 							</button>
 						</li>
 					</ul>
@@ -123,13 +118,16 @@ export default function ThemeSetup( { isVisible } ) {
 			<div className="mx-auto p-8 lg:p-12">
 				<div className="mb-48 mt-12 max-w-7xl mx-auto">
 					<div className="grid grid-cols-1 gap-y-10 gap-x-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-						
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 							<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
-								<img className="w-full" src={ imgThemeTemplate } />
+								<img
+									alt="Theme Templates"
+									className="w-full"
+									src={ imgThemeTemplate }
+								/>
 							</div>
 							<div className="flex justify-between p-10 text-center">
-								<div className='flex flex-col gap-5'>
+								<div className="flex flex-col gap-5">
 									<h3 className="text-2xl font-semibold">
 										{ __(
 											'Theme Templates',
@@ -158,20 +156,23 @@ export default function ThemeSetup( { isVisible } ) {
 									</button>
 								</div>
 							</div>
-							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">Your theme has no templates</div>
+							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+								Your theme has no templates
+							</div>
 						</div>
 
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 							<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
-								<img className="w-full" src={ imgThemeTemplateParts } />
+								<img
+									alt="Theme Template Parts"
+									className="w-full"
+									src={ imgThemeTemplateParts }
+								/>
 							</div>
 							<div className="flex justify-between p-10 text-center">
-								<div className='flex flex-col gap-5'>
+								<div className="flex flex-col gap-5">
 									<h3 className="text-2xl font-semibold">
-										{ __(
-											'Template Parts',
-											'fse-studio'
-										) }
+										{ __( 'Template Parts', 'fse-studio' ) }
 									</h3>
 									<p className="text-base">
 										{ __(
@@ -183,9 +184,7 @@ export default function ThemeSetup( { isVisible } ) {
 										type="button"
 										className="text-wp-blue hover:underline font-medium"
 										onClick={ () => {
-											currentView.set(
-												'template_parts'
-											);
+											currentView.set( 'template_parts' );
 										} }
 									>
 										{ __(
@@ -195,20 +194,23 @@ export default function ThemeSetup( { isVisible } ) {
 									</button>
 								</div>
 							</div>
-							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">Your theme has no template parts</div>
+							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+								Your theme has no template parts
+							</div>
 						</div>
 
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 							<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
-								<img className="w-full" src={ imgThemePatterns } />
+								<img
+									alt="Theme Patterns"
+									className="w-full"
+									src={ imgThemePatterns }
+								/>
 							</div>
 							<div className="flex justify-between p-10 text-center">
-								<div className='flex flex-col gap-5'>
+								<div className="flex flex-col gap-5">
 									<h3 className="text-2xl font-semibold">
-										{ __(
-											'Theme Patterns',
-											'fse-studio'
-										) }
+										{ __( 'Theme Patterns', 'fse-studio' ) }
 									</h3>
 									<p className="text-base">
 										{ __(
@@ -220,9 +222,7 @@ export default function ThemeSetup( { isVisible } ) {
 										type="button"
 										className="text-wp-blue hover:underline font-medium"
 										onClick={ () => {
-											currentView.set(
-												'theme_patterns'
-											);
+											currentView.set( 'theme_patterns' );
 										} }
 									>
 										{ __(
@@ -232,20 +232,23 @@ export default function ThemeSetup( { isVisible } ) {
 									</button>
 								</div>
 							</div>
-							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">Your theme has no patterns</div>
+							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+								Your theme has no patterns
+							</div>
 						</div>
 
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 							<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
-								<img className="w-full" src={ imgThemeJson } />
+								<img
+									alt="Theme.json"
+									className="w-full"
+									src={ imgThemeJson }
+								/>
 							</div>
 							<div className="flex justify-between p-10 text-center">
-								<div className='flex flex-col gap-5'>
+								<div className="flex flex-col gap-5">
 									<h3 className="text-2xl font-semibold">
-										{ __(
-											'Theme.json',
-											'fse-studio'
-										) }
+										{ __( 'Theme.json', 'fse-studio' ) }
 									</h3>
 									<p className="text-base">
 										{ __(
@@ -269,15 +272,21 @@ export default function ThemeSetup( { isVisible } ) {
 									</button>
 								</div>
 							</div>
-							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">Your theme.json file is unedited</div>
+							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+								Your theme.json file is unedited
+							</div>
 						</div>
 
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 							<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
-								<img className="w-full max-w-[260px] mx-auto" src={ imgThemeStyleVariations } />
+								<img
+									alt="Theme Style Variations"
+									className="w-full max-w-[260px] mx-auto"
+									src={ imgThemeStyleVariations }
+								/>
 							</div>
 							<div className="flex justify-between p-10 text-center">
-								<div className='flex flex-col gap-5'>
+								<div className="flex flex-col gap-5">
 									<h3 className="text-2xl font-semibold">
 										{ __(
 											'Style Variations',
@@ -306,15 +315,21 @@ export default function ThemeSetup( { isVisible } ) {
 									</button>
 								</div>
 							</div>
-							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">Your theme has no style variations</div>
+							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+								Your theme has no style variations
+							</div>
 						</div>
 
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 							<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
-								<img className="w-full max-w-[260px] mx-auto" src={ imgThemeExport } />
+								<img
+									alt="Export Theme"
+									className="w-full max-w-[260px] mx-auto"
+									src={ imgThemeExport }
+								/>
 							</div>
 							<div className="flex justify-between p-10 text-center">
-								<div className='flex flex-col gap-5'>
+								<div className="flex flex-col gap-5">
 									<h3 className="text-2xl font-semibold">
 										{ __(
 											'Download Theme Zip',
@@ -334,16 +349,14 @@ export default function ThemeSetup( { isVisible } ) {
 											currentTheme.export();
 										} }
 									>
-										{ __(
-											'Download Theme',
-											'fse-studio'
-										) }
+										{ __( 'Download Theme', 'fse-studio' ) }
 									</button>
 								</div>
 							</div>
-							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">You can also view your theme files</div>
+							<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+								You can also view your theme files
+							</div>
 						</div>
-
 					</div>
 				</div>
 
