@@ -81,41 +81,46 @@ export default function ThemeSetup( { isVisible } ) {
 					</p>
 				</div>
 			</div>
-
-			<div className="bg-fses-gray">
-				<div className="mx-auto max-w-7xl">
-					<ul className="flex m-0 gap-2">
-						<li className="m-0">
-							<button
-								type="button"
-								className="bg-white font-medium py-3 px-5 rounded-t"
-								// onClick={ () => {
-								// 	currentView.set(
-								// 		'theme_templates'
-								// 	);
-								// } }
-							>
-								{ __( 'Theme Overview', 'fse-studio' ) }
-							</button>
-						</li>
-						<li className="m-0">
-							<button
-								type="button"
-								className="hover:bg-white font-medium py-3 px-5 rounded-t"
-								// onClick={ () => {
-								// 	currentView.set(
-								// 		'theme_templates'
-								// 	);
-								// } }
-							>
-								{ __( 'Edit Theme Details', 'fse-studio' ) }
-							</button>
-						</li>
-					</ul>
+			
+			{ currentTheme.existsOnDisk &&
+				<div className="bg-fses-gray">
+					<div className="mx-auto max-w-7xl">
+						<ul className="flex m-0 gap-2">
+							<li className="m-0">
+								<button
+									type="button"
+									className="bg-white font-medium py-3 px-5 rounded-t"
+									// onClick={ () => {
+									// 	currentView.set(
+									// 		'theme_templates'
+									// 	);
+									// } }
+								>
+									{ __( 'Theme Overview', 'fse-studio' ) }
+								</button>
+							</li>
+							<li className="m-0">
+								<button
+									type="button"
+									className="hover:bg-white font-medium py-3 px-5 rounded-t"
+									// onClick={ () => {
+									// 	currentView.set(
+									// 		'theme_templates'
+									// 	);
+									// } }
+								>
+									{ __( 'Edit Theme Details', 'fse-studio' ) }
+								</button>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
+			}
 
 			<div className="mx-auto p-8 lg:p-12">
+
+			{ currentTheme?.existsOnDisk ?
+
 				<div className="mb-48 mt-12 max-w-7xl mx-auto">
 					<div className="grid grid-cols-1 gap-y-10 gap-x-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
 						<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
@@ -359,6 +364,8 @@ export default function ThemeSetup( { isVisible } ) {
 						</div>
 					</div>
 				</div>
+				
+				:
 
 				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
@@ -954,6 +961,9 @@ export default function ThemeSetup( { isVisible } ) {
 						) : null }
 					</div>
 				</form>
+
+				}
+				
 			</div>
 		</div>
 	);
