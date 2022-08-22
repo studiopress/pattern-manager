@@ -296,7 +296,7 @@ export default function ThemeSetup( { isVisible } ) {
 										} }
 									>
 										{ __(
-											'Download Theme →',
+											'Download Theme',
 											'fse-studio'
 										) }
 									</button>
