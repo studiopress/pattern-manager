@@ -32,7 +32,7 @@ export default function ThemeCreatedNotice( { onDismiss } ) {
 			<span
 				className="p-6 self-center bg-white rounded-r-md"
 				role="dialog"
-				aria-label="Theme Saved"
+				aria-label={ __( 'Theme Saved', 'fse-studio' ) }
 			>
 				<p className="font-bold text-base mb-2">
 					{ __( 'Theme successfully created!', 'fse-studio' ) }

@@ -7,7 +7,7 @@ import imgThemeStyleVariations from '../../../../img/theme-style-variations.svg'
 import imgThemeExport from '../../../../img/theme-export.svg';
 import useStudioContext from '../../hooks/useStudioContext';
 
-export default function ThsemeOverview() {
+export default function ThemeOverview() {
 	const { currentTheme, currentView } = useStudioContext();
 
 	return (
