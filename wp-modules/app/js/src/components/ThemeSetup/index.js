@@ -54,16 +54,7 @@ export default function ThemeSetup( { isVisible } ) {
 				</div>
 			</div>
 
-			{ ! currentTheme.existsOnDisk ? (
-				<CreateTheme>
-					<SaveTheme
-						displayCancelButton={ true }
-						setDisplayThemeCreatedNotice={
-							setDisplayThemeCreatedNotice
-						}
-					/>
-				</CreateTheme>
-			) : (
+			{ currentTheme.existsOnDisk ? (
 				<>
 					<div className="bg-fses-gray">
 						<div className="mx-auto max-w-7xl">
@@ -139,6 +130,15 @@ export default function ThemeSetup( { isVisible } ) {
 						) : null }
 					</div>
 				</>
+			) : (
+				<CreateTheme>
+					<SaveTheme
+						displayCancelButton={ true }
+						setDisplayThemeCreatedNotice={
+							setDisplayThemeCreatedNotice
+						}
+					/>
+				</CreateTheme>
 			) }
 		</div>
 	);
