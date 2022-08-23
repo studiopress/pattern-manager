@@ -5,11 +5,11 @@ import { __ } from '@wordpress/i18n';
 import React from 'react';
 
 // Context
-import useStudioContext from '../../hooks/useStudioContext';
+import useStudioContext from '../../../hooks/useStudioContext';
 
 // Images
 // @ts-ignore
-import dropMenuIconRight from '../../../../img/drop-arrow-right.svg';
+import dropMenuIconRight from '../../../../../img/drop-arrow-right.svg';
 
 export default function MenuOpenTheme() {
 	const { currentTheme, themes, currentThemeId } = useStudioContext();
