@@ -1,12 +1,10 @@
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
-import createNewTheme from '../../utils/createNewTheme';
 import ThemeDetails from './ThemeDetails';
 import SaveTheme from './SaveTheme';
 
 export default function CreateTheme() {
-	const { currentTheme, currentThemeId, currentView, themes } =
-		useStudioContext();
+	const { currentTheme, currentView } = useStudioContext();
 
 	return (
 		<div className="mx-auto p-8 lg:p-12">
@@ -94,7 +92,6 @@ export default function CreateTheme() {
 							/>
 						</div>
 					</div>
-
 					<details className="mb-2 rounded-sm">
 						<summary className="py-4 focus:outline-none border-b border-grey-300 w-full group">
 							<h3 className="cursor-pointer group-focus-visible:text-wp-blue inline">
@@ -105,148 +102,7 @@ export default function CreateTheme() {
 					</details>
 					<SaveTheme displayCancelButton={ true } />
 				</div>
-				<div className="flex-1 w-full md:w-1/3 text-base">
-					{ ! currentTheme.existsOnDisk ? (
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<div className="flex flex-col gap-5">
-									<div>
-										<h2 className="mb-2 font-medium">
-											Need some help with this tool?
-										</h2>
-										<p className="mb-2 font-medium">
-											Watch our demo video
-										</p>
-										<div className="w-full">
-											<iframe
-												width="100%"
-												height="150px"
-												src="https://www.youtube.com/embed/LmvPkQkjq9I"
-												title="YouTube video player"
-												frameBorder="0"
-												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-												allowFullScreen
-											/>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					) : null }
-					{ currentTheme.existsOnDisk ? (
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<div className="flex flex-col gap-5">
-									<div>
-										<h2 className="mb-2 font-medium">
-											Theme Actions
-										</h2>
-										<p className="text-base">
-											Use the selector below to load a
-											theme to work on, or create a new
-											theme with the Create button.
-										</p>
-									</div>
-									{
-										// In order to render the selector…
-										// There should be at least 1 theme other than the currently selected theme.
-										// Or the current theme should have been saved to disk.
-										Object.keys( themes.themes ).some(
-											( themeName ) =>
-												themeName !==
-													currentThemeId.value ||
-												currentTheme.existsOnDisk
-										) ? (
-											<>
-												<div className="flex flex-col gap-2">
-													<div>
-														<label
-															htmlFor="themes"
-															className="block text-sm font-medium text-gray-700 visuallyhidden"
-														>
-															{ __(
-																'Choose a theme',
-																'fse-studio'
-															) }
-														</label>
-														<ThemeSelector />
-													</div>
-												</div>
-											</>
-										) : null
-									}
-									{ currentTheme?.existsOnDisk ? (
-										<button
-											type="button"
-											className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-											onClick={ () => {
-												createNewTheme(
-													themes,
-													currentThemeId
-												);
-											} }
-										>
-											{ __(
-												'Create A New Theme',
-												'fse-studio'
-											) }
-										</button>
-									) : null }
-								</div>
-							</div>
-						</div>
-					) : null }
-
-					{ currentTheme?.existsOnDisk ? (
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<h2 className="mb-2 font-medium">
-									Export theme to .zip
-								</h2>
-								<p className="text-base mb-5">
-									{ __(
-										"Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.",
-										'fsestudio'
-									) }
-								</p>
-								<button
-									type="button"
-									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										currentTheme.export();
-									} }
-								>
-									{ __( 'Export Theme', 'fse-studio' ) }
-								</button>
-							</div>
-						</div>
-					) : null }
-				</div>
 			</form>
 		</div>
-	);
-}
-
-function ThemeSelector() {
-	const { currentThemeId, themes } = useStudioContext();
-
-	return (
-		<select
-			className="block w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
-			id="themes"
-			value={ currentThemeId.value }
-			onChange={ ( event ) => {
-				currentThemeId.set( event.target.value );
-			} }
-		>
-			<option key={ 1 }>{ __( 'Choose a theme', 'fse-studio' ) }</option>
-			{ Object.keys( themes.themes ).map( ( themeId ) => {
-				return (
-					<option key={ themeId } value={ themeId }>
-						{ themes.themes[ themeId ].name }
-					</option>
-				);
-			} ) }
-		</select>
 	);
 }
