@@ -1,8 +1,8 @@
-import { check, Icon } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
 import ThemeDetails from '../ThemeDetails';
+import SaveTheme from '../ThemeSetup/SaveTheme';
 
 export default function CreateTheme() {
 	const { currentTheme, currentThemeId, currentView, themes } =
@@ -103,60 +103,7 @@ export default function CreateTheme() {
 						</summary>
 						<ThemeDetails />
 					</details>
-					<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
-						<div className="flex items-center justify-between w-full">
-							<div className="flex items-center">
-								{ currentTheme.hasSaved ? (
-									<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-										<Icon
-											className="fill-current"
-											icon={ check }
-											size={ 26 }
-										/>{ ' ' }
-										{ __(
-											'Settings Saved!',
-											'fse-studio'
-										) }
-									</span>
-								) : null }
-								<button
-									type="button"
-									className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										currentTheme.save();
-									} }
-								>
-									{ __( 'Save Your Theme', 'fse-studio' ) }
-								</button>
-								{ ! currentTheme?.existsOnDisk &&
-								Object.keys( themes.themes ).length > 1 ? (
-									<button
-										type="button"
-										className="inline-flex items-center ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											const modifiedThemes = {
-												...themes.themes,
-											};
-											delete modifiedThemes[
-												currentThemeId.value
-											];
-											themes.setThemes( {
-												...modifiedThemes,
-											} );
-
-											currentThemeId.set(
-												Object.keys(
-													themes.themes
-												)[ 0 ]
-											);
-										} }
-									>
-										{ __( 'Cancel', 'fse-studio' ) }
-									</button>
-								) : null }
-							</div>
-						</div>
-					</div>
+					<SaveTheme displayCancelButton={ true } />
 				</div>
 				<div className="flex-1 w-full md:w-1/3 text-base">
 					{ ! currentTheme.existsOnDisk ? (
