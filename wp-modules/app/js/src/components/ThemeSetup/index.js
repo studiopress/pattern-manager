@@ -18,6 +18,12 @@ const Tabs = {
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
+	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
+		useState( false );
+
+	useEffect( () => {
+		setDisplayThemeCreatedNotice( false );
+	}, [ currentView?.currentView ] );
 
 	if ( ! currentTheme.data ) {
 		return null;
@@ -83,6 +89,14 @@ export default function ThemeSetup( { isVisible } ) {
 											setCurrentTab(
 												Tabs.EditThemeDetails
 											);
+
+											if ( ! currentTheme.existsOnDisk ) {
+												setDisplayThemeCreatedNotice(
+													true
+												);
+											}
+
+											currentTheme.save();
 										} }
 									>
 										{ __(
