@@ -1,5 +1,4 @@
 import { __ } from '@wordpress/i18n';
-import { check, Icon } from '@wordpress/icons';
 import useStudioContext from '../../hooks/useStudioContext';
 
 /** @param {{displayCancelButton: boolean, setDisplayThemeCreatedNotice: (boolean) => void}} props */
