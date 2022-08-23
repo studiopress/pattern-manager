@@ -1,11 +1,11 @@
 import { __ } from '@wordpress/i18n';
+import useStudioContext from '../../hooks/useStudioContext';
 import imgThemeTemplate from '../../../../img/theme-templates.svg';
 import imgThemeTemplateParts from '../../../../img/theme-template-parts.svg';
 import imgThemePatterns from '../../../../img/theme-patterns.svg';
 import imgThemeJson from '../../../../img/theme-themejson.svg';
 import imgThemeStyleVariations from '../../../../img/theme-style-variations.svg';
 import imgThemeExport from '../../../../img/theme-export.svg';
-import useStudioContext from '../../hooks/useStudioContext';
 
 export default function ThemeOverview() {
 	const { currentTheme, currentView } = useStudioContext();
