@@ -10,6 +10,7 @@ import '../../../../css/src/tailwind.css';
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import React from 'react';
 
 import { fsestudio } from '../../globals';
 
@@ -34,6 +35,7 @@ import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
 import FseStudioHelp from '../FseStudioHelp';
 import GettingStarted from '../GettingStarted';
+import ThemeMenuList from '../ThemeMenuList';
 
 // Images
 import dropMenuIcon from '../../../../img/drop-arrow.svg';
@@ -212,35 +214,9 @@ function FseStudio() {
 														}
 													/>
 												</button>
-												<ul
-													className="dropdown"
-													aria-label="submenu"
-												>
-													<li>
-														<button>
-															{ __(
-																'Coffee Theme',
-																'fse-studio'
-															) }
-														</button>
-													</li>
-													<li>
-														<button>
-															{ __(
-																'Pizza Theme',
-																'fse-studio'
-															) }
-														</button>
-													</li>
-													<li>
-														<button>
-															{ __(
-																'Engine Theme',
-																'fse-studio'
-															) }
-														</button>
-													</li>
-												</ul>
+
+												{ /* Render the list of theme names */ }
+												{ ThemeMenuList() }
 											</li>
 											<li>
 												<button
