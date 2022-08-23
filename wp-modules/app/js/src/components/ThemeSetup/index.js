@@ -27,14 +27,14 @@ export default function ThemeSetup( { isVisible } ) {
 		setDisplayThemeCreatedNotice( false );
 	}, [ currentTab, currentView?.currentView ] );
 
-	if ( ! currentTheme.data ) {
+	if ( ! currentTheme.data || ! isVisible ) {
 		return null;
 	}
 
 	return currentTheme.existsOnDisk ? (
 		<Container
-			isVisible={ isVisible }
 			heading={ sprintf(
+				/* translators: %1$s: The theme name */
 				__( 'Theme: %1$s', 'fse-studio' ),
 				currentTheme?.data?.name ?? ''
 			) }
