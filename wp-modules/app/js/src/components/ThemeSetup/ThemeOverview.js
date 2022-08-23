@@ -16,7 +16,7 @@ export default function ThemeOverview() {
 				<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 					<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 						<img
-							alt="Theme Templates"
+							alt={ __( 'Theme Templates', 'fse-studio' ) }
 							className="w-full"
 							src={ imgThemeTemplate }
 						/>
@@ -44,7 +44,7 @@ export default function ThemeOverview() {
 						</div>
 					</div>
 					<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
-						Your theme has no templates
+						{ __( 'Your theme has no templates', 'fse-studio' ) }
 					</div>
 				</div>
 
@@ -79,7 +79,10 @@ export default function ThemeOverview() {
 						</div>
 					</div>
 					<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
-						Your theme has no template parts
+						{ __(
+							'Your theme has no template parts',
+							'fse-studio'
+						) }
 					</div>
 				</div>
 
@@ -114,7 +117,7 @@ export default function ThemeOverview() {
 						</div>
 					</div>
 					<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
-						Your theme has no patterns
+						{ __( 'Your theme has no patterns', 'fse-studio' ) }
 					</div>
 				</div>
 
@@ -149,7 +152,10 @@ export default function ThemeOverview() {
 						</div>
 					</div>
 					<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
-						Your theme.json file is unedited
+						{ __(
+							'Your theme.json file is unedited',
+							'fse-studio'
+						) }
 					</div>
 				</div>
 
@@ -187,7 +193,10 @@ export default function ThemeOverview() {
 						</div>
 					</div>
 					<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
-						Your theme has no style variations
+						{ __(
+							'Your theme has no style variations',
+							'fse-studio'
+						) }
 					</div>
 				</div>
 
@@ -222,7 +231,10 @@ export default function ThemeOverview() {
 						</div>
 					</div>
 					<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
-						You can also view your theme files
+						{ __(
+							'You can also view your theme files',
+							'fse-studio'
+						) }
 					</div>
 				</div>
 			</div>

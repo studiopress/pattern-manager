@@ -38,7 +38,10 @@ export default function CreateTheme( { children } ) {
 					<details className="mb-2 rounded-sm">
 						<summary className="py-4 focus:outline-none border-b border-grey-300 w-full group">
 							<h3 className="cursor-pointer group-focus-visible:text-wp-blue inline">
-								__( 'Additional Theme Details', 'fse-studio' ) }
+								{ __(
+									'Additional Theme Details',
+									'fse-studio'
+								) }
 							</h3>
 						</summary>
 						<ThemeDetails />
