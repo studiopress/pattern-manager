@@ -15,7 +15,7 @@ export default function ThemeMenuList() {
 						currentThemeId?.set( key );
 					} }
 				>
-					{ items[ key ].name }
+					{ items[ key ]?.name }
 				</button>
 			</li>
 		) );
