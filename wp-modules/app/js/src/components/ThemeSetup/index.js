@@ -94,8 +94,6 @@ export default function ThemeSetup( { isVisible } ) {
 													true
 												);
 											}
-
-											currentTheme.save();
 										} }
 									>
 										{ __(
