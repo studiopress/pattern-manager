@@ -3,7 +3,7 @@ import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
-import ThemeDetails from '../ThemeDetails';
+import ThemeDetails from './ThemeDetails';
 import CreateTheme from './CreateTheme';
 import ThemeOverview from './ThemeOverview';
 import classNames from '../../utils/classNames';
