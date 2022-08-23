@@ -107,32 +107,6 @@ export default function ThemeSetup( { isVisible } ) {
 					</div>
 				</>
 			) }
-			<div className="flex-1 w-full md:w-1/3 text-base">
-				{ currentTheme?.existsOnDisk ? (
-					<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
-						<div>
-							<h2 className="mb-2 font-medium">
-								Export theme to .zip
-							</h2>
-							<p className="text-base mb-5">
-								{ __(
-									"Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.",
-									'fsestudio'
-								) }
-							</p>
-							<button
-								type="button"
-								className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-								onClick={ () => {
-									currentTheme.export();
-								} }
-							>
-								{ __( 'Export Theme', 'fse-studio' ) }
-							</button>
-						</div>
-					</div>
-				) : null }
-			</div>
 		</div>
 	);
 }
