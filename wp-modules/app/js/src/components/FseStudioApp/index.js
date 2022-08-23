@@ -49,8 +49,8 @@ import FseStudioNav from '../FseStudioNav';
  *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
  *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
  *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings,
- *  patternEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement>>,
- *  templateEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement>>
+ *  patternEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement|undefined>>,
+ *  templateEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement|undefined>>
  * }} InitialContext
  */
 
@@ -234,9 +234,7 @@ function FseStudio() {
 						<TemplateEditor />
 					</div>
 					<PatternEditor
-						visible={
-							'pattern_editor' === currentView.currentView
-						}
+						visible={ 'pattern_editor' === currentView.currentView }
 					/>
 					<ThemeJsonEditor
 						visible={
