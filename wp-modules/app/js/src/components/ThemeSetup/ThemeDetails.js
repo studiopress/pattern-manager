@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 
-export default function ThemeDetails( { displayThemeCreatedNotice } ) {
+export default function ThemeDetails() {
 	const { currentTheme } = useStudioContext();
 
 	return (

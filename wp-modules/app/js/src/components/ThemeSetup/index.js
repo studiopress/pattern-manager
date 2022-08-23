@@ -120,7 +120,13 @@ export default function ThemeSetup( { isVisible } ) {
 						{ currentTab === Tabs.ThemeOverview ? (
 							<>
 								{ displayThemeCreatedNotice ? (
-									<ThemeCreatedNotice />
+									<ThemeCreatedNotice
+										onDismiss={ () => {
+											setDisplayThemeCreatedNotice(
+												false
+											);
+										} }
+									/>
 								) : null }
 								<ThemeOverview />
 							</>

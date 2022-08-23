@@ -1,7 +1,10 @@
 import { Icon, close } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
+import useStudioContext from '../../hooks/useStudioContext';
 
-export default function ThemeCreatedNotice() {
+export default function ThemeCreatedNotice( { onDismiss } ) {
+	const { currentView } = useStudioContext();
+
 	return (
 		<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
 			<span className="text-[#008B24] self-center px-8 text-xl fill-current">
@@ -57,9 +60,7 @@ export default function ThemeCreatedNotice() {
 						'Dismiss the theme created notice',
 						'fse-studio'
 					) }
-					onClick={ () => {
-						setDisplayThemeCreatedNotice( false );
-					} }
+					onClick={ onDismiss }
 				>
 					<Icon
 						className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 group-hover:opacity-100"
