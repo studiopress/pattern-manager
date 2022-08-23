@@ -36,13 +36,11 @@ export default function SaveTheme( { displayCancelButton } ) {
 							type="button"
 							className="inline-flex items-center ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 							onClick={ () => {
-								const modifiedThemes = {
-									...themes.themes,
-								};
-								delete modifiedThemes[ currentThemeId.value ];
-								themes.setThemes( {
-									...modifiedThemes,
-								} );
+								const {
+									[ currentThemeId.value ]: {},
+									...modifiedThemes
+								} = themes.themes;
+								themes.setThemes( modifiedThemes );
 
 								currentThemeId.set(
 									Object.keys( themes.themes )[ 0 ]
