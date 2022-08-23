@@ -1,7 +1,7 @@
 // WP Dependencies.
-import { useRef } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, check } from '@wordpress/icons';
+import { Icon, check, close } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
@@ -10,7 +10,13 @@ import createNewTheme from '../../utils/createNewTheme';
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme, themes, currentThemeId, currentView } =
 		useStudioContext();
+	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
+		useState( false );
 	const themeNameInput = useRef( null );
+
+	useEffect( () => {
+		setDisplayThemeCreatedNotice( false );
+	}, [ currentView?.currentView ] );
 
 	if ( ! currentTheme.data ) {
 		return '';
@@ -77,9 +83,10 @@ export default function ThemeSetup( { isVisible } ) {
 			<div className="mx-auto p-8 lg:p-12">
 				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
-						{ currentTheme.existsOnDisk ? (
-							<div className="text-base flex flex-row items-center mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
-								<span className="text-[#008B24] px-8 text-xl fill-current">
+						{ currentTheme.existsOnDisk &&
+						displayThemeCreatedNotice ? (
+							<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
+								<span className="text-[#008B24] self-center px-8 text-xl fill-current">
 									<svg
 										width="22"
 										height="22"
@@ -102,9 +109,12 @@ export default function ThemeSetup( { isVisible } ) {
 									</svg>
 								</span>
 								<span
-									className="p-6 bg-white rounded-r-md"
+									className="p-6 self-center bg-white rounded-r-md"
 									role="dialog"
-									aria-label="Theme Saved"
+									aria-label={ __(
+										'Theme Saved',
+										'fse-studio'
+									) }
 								>
 									<p className="font-bold text-base mb-2">
 										{ __(
@@ -131,6 +141,26 @@ export default function ThemeSetup( { isVisible } ) {
 											'Go to Styles and Settings →',
 											'fse-studio'
 										) }
+									</button>
+								</span>
+								<span className="flex flex-col rounded-r-md p-3 bg-white">
+									<button
+										className="bg-white"
+										aria-label={ __(
+											'Dismiss the theme created notice',
+											'fse-studio'
+										) }
+										onClick={ () => {
+											setDisplayThemeCreatedNotice(
+												false
+											);
+										} }
+									>
+										<Icon
+											className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 group-hover:opacity-100"
+											icon={ close }
+											size={ 30 }
+										/>
 									</button>
 								</span>
 							</div>
@@ -512,6 +542,12 @@ export default function ThemeSetup( { isVisible } ) {
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 										onClick={ () => {
+											if ( ! currentTheme.existsOnDisk ) {
+												setDisplayThemeCreatedNotice(
+													true
+												);
+											}
+
 											currentTheme.save();
 										} }
 									>
@@ -540,6 +576,10 @@ export default function ThemeSetup( { isVisible } ) {
 													Object.keys(
 														themes.themes
 													)[ 0 ]
+												);
+
+												setDisplayThemeCreatedNotice(
+													false
 												);
 											} }
 										>
