@@ -1,13 +1,14 @@
 // WP Dependencies.
-import { useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
-import ThemeDetails from './ThemeDetails';
-import CreateTheme from './CreateTheme';
-import ThemeOverview from './ThemeOverview';
 import classNames from '../../utils/classNames';
+import CreateTheme from './CreateTheme';
 import SaveTheme from './SaveTheme';
+import ThemeCreatedNotice from './ThemeCreatedNotice';
+import ThemeDetails from './ThemeDetails';
+import ThemeOverview from './ThemeOverview';
 
 const Tabs = {
 	ThemeOverview: 0,
@@ -16,14 +17,14 @@ const Tabs = {
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemeSetup( { isVisible } ) {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme, currentView } = useStudioContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
 		useState( false );
 
 	useEffect( () => {
 		setDisplayThemeCreatedNotice( false );
-	}, [ currentView?.currentView ] );
+	}, [ currentTab, currentView?.currentView ] );
 
 	if ( ! currentTheme.data ) {
 		return null;
@@ -54,7 +55,14 @@ export default function ThemeSetup( { isVisible } ) {
 			</div>
 
 			{ ! currentTheme.existsOnDisk ? (
-				<CreateTheme />
+				<CreateTheme>
+					<SaveTheme
+						displayCancelButton={ true }
+						setDisplayThemeCreatedNotice={
+							setDisplayThemeCreatedNotice
+						}
+					/>
+				</CreateTheme>
 			) : (
 				<>
 					<div className="bg-fses-gray">
@@ -110,7 +118,12 @@ export default function ThemeSetup( { isVisible } ) {
 					</div>
 					<div className="mx-auto p-8 lg:p-12">
 						{ currentTab === Tabs.ThemeOverview ? (
-							<ThemeOverview />
+							<>
+								{ displayThemeCreatedNotice ? (
+									<ThemeCreatedNotice />
+								) : null }
+								<ThemeOverview />
+							</>
 						) : null }
 						{ currentTab === Tabs.EditThemeDetails ? (
 							<>

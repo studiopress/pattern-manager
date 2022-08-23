@@ -2,8 +2,11 @@ import { __ } from '@wordpress/i18n';
 import { check, Icon } from '@wordpress/icons';
 import useStudioContext from '../../hooks/useStudioContext';
 
-/** @param {{displayCancelButton: boolean}} props */
-export default function SaveTheme( { displayCancelButton } ) {
+/** @param {{displayCancelButton: boolean, setDisplayThemeCreatedNotice: (boolean) => void}} props */
+export default function SaveTheme( {
+	displayCancelButton,
+	setDisplayThemeCreatedNotice,
+} ) {
 	const { currentTheme, currentThemeId, themes } = useStudioContext();
 
 	return (
@@ -24,6 +27,10 @@ export default function SaveTheme( { displayCancelButton } ) {
 						type="button"
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
+							if ( ! currentTheme.existsOnDisk ) {
+								setDisplayThemeCreatedNotice( true );
+							}
+
 							currentTheme.save();
 						} }
 					>
@@ -45,6 +52,8 @@ export default function SaveTheme( { displayCancelButton } ) {
 								currentThemeId.set(
 									Object.keys( themes.themes )[ 0 ]
 								);
+
+								setDisplayThemeCreatedNotice( false );
 							} }
 						>
 							{ __( 'Cancel', 'fse-studio' ) }
