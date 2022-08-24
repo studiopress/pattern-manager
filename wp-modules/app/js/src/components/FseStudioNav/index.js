@@ -27,7 +27,7 @@ export default function FseStudioNav() {
 	} = useStudioContext();
 
 	/**
-	 * Post a window message incertain conditions.
+	 * Post a window message in certain conditions.
 	 *
 	 * Main purpose here is to throw notice for user to refresh editor.
 	 * Currently targets pattern and template editors.
