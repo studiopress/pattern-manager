@@ -27,7 +27,7 @@ export default function ThemeOverview() {
 						</h3>
 						<p className="text-base">
 							{ __(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+								'Use theme template files to affect the layout and design of different parts of your website, like pages and posts.',
 								'fse-studio'
 							) }
 						</p>
@@ -62,7 +62,7 @@ export default function ThemeOverview() {
 						</h3>
 						<p className="text-base">
 							{ __(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+								'Template parts, such as a site header and footer, can be used as common elements across templates.',
 								'fse-studio'
 							) }
 						</p>
@@ -97,7 +97,7 @@ export default function ThemeOverview() {
 						</h3>
 						<p className="text-base">
 							{ __(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+								'Create, edit, and manage patterns (pre-configured designs), to be used across your theme.',
 								'fse-studio'
 							) }
 						</p>
@@ -128,11 +128,11 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h3 className="text-2xl font-semibold">
-							{ __( 'Theme.json', 'fse-studio' ) }
+							{ __( 'Styles and Settings', 'fse-studio' ) }
 						</h3>
 						<p className="text-base">
 							{ __(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+								'Use this tool to configure the theme.json file and set your theme styles and block settings.',
 								'fse-studio'
 							) }
 						</p>
@@ -167,7 +167,7 @@ export default function ThemeOverview() {
 						</h3>
 						<p className="text-base">
 							{ __(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+								'Create, edit, and save a variety of swappable theme settings and styles in your theme.json file.',
 								'fse-studio'
 							) }
 						</p>
@@ -202,7 +202,7 @@ export default function ThemeOverview() {
 						</h3>
 						<p className="text-base">
 							{ __(
-								'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+								"Once you've finished editing your theme, you can export to a zip or use git to manage it.",
 								'fse-studio'
 							) }
 						</p>
