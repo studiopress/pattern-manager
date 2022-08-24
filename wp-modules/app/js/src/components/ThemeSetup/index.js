@@ -46,7 +46,7 @@ export default function ThemeSetup( { isVisible } ) {
 			<>
 				<div className="bg-fses-gray">
 					<div className="mx-auto max-w-7xl">
-						<ul className="flex m-0 gap-2">
+						<ul className="flex m-0 gap-2 px-8 xl:p-0">
 							<li className="m-0">
 								<button
 									type="button"
@@ -88,7 +88,7 @@ export default function ThemeSetup( { isVisible } ) {
 						</ul>
 					</div>
 				</div>
-				<div className="mx-auto p-8 lg:p-12">
+				<div className="mx-auto p-8 xl:p-0 max-w-7xl xl:mt-16 mt-8 mb-24">
 					{ currentTab === Tabs.ThemeOverview ? (
 						<>
 							{ displayThemeCreatedNotice ? (
