@@ -1,9 +1,15 @@
+import { useEffect, useRef } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 
 export default function ThemeCreatedNotice( { onDismiss } ) {
 	const { currentView } = useStudioContext();
+	const buttonRef = useRef();
+
+	useEffect( () => {
+		buttonRef.current.focus();
+	}, [] );
 
 	return (
 		<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
@@ -44,6 +50,7 @@ export default function ThemeCreatedNotice( { onDismiss } ) {
 					) }
 				</p>
 				<button
+					ref={ buttonRef }
 					type="button"
 					className="font-bold mt-2 inline-block hover:cursor-pointer hover:text-wp-black underline text-[#008B24]"
 					onClick={ () => {
