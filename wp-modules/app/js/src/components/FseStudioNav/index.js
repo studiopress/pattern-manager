@@ -25,6 +25,10 @@ export default function FseStudioNav() {
 		templateEditorIframe,
 	} = useStudioContext();
 
+	/**
+	 * Render a list of FSES themes for selection.
+	 * Hide if no themes are available.
+	 */
 	function MenuOpenTheme() {
 		const listMenuOptions = ( items ) => {
 			return Object.keys( items ).map( ( key ) => {
@@ -106,6 +110,7 @@ export default function FseStudioNav() {
 					</button>
 					<ul className="dropdown" aria-label="submenu">
 						<li>
+							{ /* Render the theme names */ }
 							<MenuOpenTheme />
 						</li>
 						<li>
