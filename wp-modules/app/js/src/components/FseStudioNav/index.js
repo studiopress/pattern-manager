@@ -22,8 +22,36 @@ export default function FseStudioNav() {
 		currentTheme,
 		themes,
 		currentThemeId,
+		patternEditorIframe,
 		templateEditorIframe,
 	} = useStudioContext();
+
+	/**
+	 * Post a window message incertain conditions.
+	 *
+	 * Main purpose here is to throw notice for user to refresh editor.
+	 * Currently targets pattern and template editors.
+	 *
+	 * @param {string} message
+	 */
+	function maybePostWindowMessage( message ) {
+		if ( patternEditorIframe?.current ) {
+			patternEditorIframe.current.contentWindow.postMessage(
+				JSON.stringify( {
+					message,
+				} ),
+				'*'
+			);
+		}
+
+		if ( templateEditorIframe?.current ) {
+			templateEditorIframe.current.contentWindow.postMessage(
+				JSON.stringify( {
+					message,
+				} )
+			);
+		}
+	}
 
 	/**
 	 * Render a list of FSES themes for selection.
@@ -43,6 +71,10 @@ export default function FseStudioNav() {
 							type="button"
 							onClick={ () => {
 								currentThemeId?.set( key );
+
+								maybePostWindowMessage(
+									'fsestudio_hotswapped_theme'
+								);
 							} }
 						>
 							{ name }
@@ -304,14 +336,10 @@ export default function FseStudioNav() {
 								}
 								onClick={ () => {
 									currentView?.set( 'theme_templates' );
-									if ( templateEditorIframe?.current ) {
-										templateEditorIframe.current.contentWindow.postMessage(
-											JSON.stringify( {
-												message:
-													'fsestudio_click_templates',
-											} )
-										);
-									}
+
+									maybePostWindowMessage(
+										'fsestudio_click_templates'
+									);
 								} }
 							>
 								{ __( 'Templates', 'fse-studio' ) }
@@ -335,14 +363,10 @@ export default function FseStudioNav() {
 								}
 								onClick={ () => {
 									currentView?.set( 'template_parts' );
-									if ( templateEditorIframe?.current ) {
-										templateEditorIframe.current.contentWindow.postMessage(
-											JSON.stringify( {
-												message:
-													'fsestudio_click_template_parts',
-											} )
-										);
-									}
+
+									maybePostWindowMessage(
+										'fsestudio_click_template_parts'
+									);
 								} }
 							>
 								{ __( 'Template Parts', 'fse-studio' ) }
