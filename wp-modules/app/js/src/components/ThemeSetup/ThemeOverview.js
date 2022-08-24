@@ -42,7 +42,7 @@ export default function ThemeOverview() {
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
 					{ __( 'Your theme has no templates', 'fse-studio' ) }
 				</div>
 			</div>
@@ -77,7 +77,7 @@ export default function ThemeOverview() {
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
 					{ __( 'Your theme has no template parts', 'fse-studio' ) }
 				</div>
 			</div>
@@ -112,7 +112,7 @@ export default function ThemeOverview() {
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
 					{ __( 'Your theme has no patterns', 'fse-studio' ) }
 				</div>
 			</div>
@@ -147,7 +147,7 @@ export default function ThemeOverview() {
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
 					{ __( 'Your theme.json file is unedited', 'fse-studio' ) }
 				</div>
 			</div>
@@ -182,7 +182,7 @@ export default function ThemeOverview() {
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
 					{ __( 'Your theme has no style variations', 'fse-studio' ) }
 				</div>
 			</div>
@@ -217,7 +217,7 @@ export default function ThemeOverview() {
 						</button>
 					</div>
 				</div>
-				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md">
+				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
 					{ __( 'You can also view your theme files', 'fse-studio' ) }
 				</div>
 			</div>
