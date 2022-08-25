@@ -100,6 +100,22 @@ export default function useThemeData(
 			false
 		);
 
+		window.addEventListener(
+			'message',
+			( event ) => {
+				if ( event.data === 'fsestudio_new_theme_created' ) {
+					setExistsOnDisk( false );
+
+					// Temporarily clear the name when creating a new theme.
+					setThemeData( {
+						...themeData,
+						name: '',
+					} );
+				}
+			},
+			false
+		);
+
 		window.addEventListener( 'beforeunload', warnIfUnsavedChanges );
 		return () => {
 			window.removeEventListener( 'beforeunload', warnIfUnsavedChanges );
