@@ -65,7 +65,7 @@ export default function FseStudioNav() {
 						? `${ items[ key ]?.name } (Active)`
 						: items[ key ]?.name;
 
-				return (
+				return items[ key ]?.name ? (
 					<li key={ key }>
 						<button
 							type="button"
@@ -80,7 +80,7 @@ export default function FseStudioNav() {
 							{ name }
 						</button>
 					</li>
-				);
+				) : null;
 			} );
 		};
 
