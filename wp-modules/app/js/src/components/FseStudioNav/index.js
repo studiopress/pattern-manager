@@ -75,6 +75,12 @@ export default function FseStudioNav() {
 								maybePostWindowMessage(
 									'fsestudio_hotswapped_theme'
 								);
+
+								if (
+									'create_theme' === currentView?.currentView
+								) {
+									currentView?.set( 'theme_setup' );
+								}
 							} }
 						>
 							{ name }
