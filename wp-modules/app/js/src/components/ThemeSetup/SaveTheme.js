@@ -1,4 +1,7 @@
 import { __ } from '@wordpress/i18n';
+import { Spinner } from '@wordpress/components';
+import { useEffect } from 'react';
+
 import useStudioContext from '../../hooks/useStudioContext';
 
 /** @param {{displayCancelButton: boolean, setDisplayThemeCreatedNotice: (boolean) => void}} props */
@@ -9,7 +12,17 @@ export default function SaveTheme( {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
 
-	return (
+	useEffect( () => {
+		if (
+			currentTheme.isSaving &&
+			'create_theme' === currentView.currentView
+		) {
+			currentView?.set( 'theme_setup' );
+		}
+	}, [ currentTheme.isSaving ] );
+
+	return 'create_theme' === currentView.currentView &&
+		! currentTheme.isSaving ? (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center">
@@ -22,8 +35,6 @@ export default function SaveTheme( {
 							}
 
 							currentTheme.save();
-
-							currentView?.set( 'theme_setup' );
 						} }
 					>
 						{ __( 'Save Your Theme', 'fse-studio' ) }
@@ -56,5 +67,7 @@ export default function SaveTheme( {
 				</div>
 			</div>
 		</div>
+	) : (
+		<Spinner className="mt-5 mx-0 h-10 w-10" />
 	);
 }
