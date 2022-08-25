@@ -213,7 +213,10 @@ function FseStudio() {
 			{ currentTheme?.data ? (
 				<>
 					<ThemeSetup
-						isVisible={ 'theme_setup' === currentView.currentView }
+						isVisible={
+							'theme_setup' === currentView.currentView ||
+							'create_theme' === currentView.currentView
+						}
 					/>
 					<ThemePreview
 						isVisible={
