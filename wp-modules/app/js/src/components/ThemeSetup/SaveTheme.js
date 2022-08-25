@@ -6,7 +6,8 @@ export default function SaveTheme( {
 	displayCancelButton,
 	setDisplayThemeCreatedNotice,
 } ) {
-	const { currentTheme, currentThemeId, themes } = useStudioContext();
+	const { currentTheme, currentThemeId, themes, currentView } =
+		useStudioContext();
 
 	return (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
@@ -21,6 +22,8 @@ export default function SaveTheme( {
 							}
 
 							currentTheme.save();
+
+							currentView?.set( 'theme_setup' );
 						} }
 					>
 						{ __( 'Save Your Theme', 'fse-studio' ) }
@@ -43,6 +46,8 @@ export default function SaveTheme( {
 								);
 
 								setDisplayThemeCreatedNotice( false );
+
+								currentView?.set( 'theme_setup' );
 							} }
 						>
 							{ __( 'Cancel', 'fse-studio' ) }
