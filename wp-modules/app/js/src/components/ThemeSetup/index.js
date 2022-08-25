@@ -31,7 +31,8 @@ export default function ThemeSetup( { isVisible } ) {
 		return null;
 	}
 
-	return currentTheme.existsOnDisk ? (
+	return currentTheme.existsOnDisk &&
+		'theme_setup' === currentView.currentView ? (
 		<Container
 			heading={ sprintf(
 				/* translators: %1$s: The theme name */
