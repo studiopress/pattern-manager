@@ -79,6 +79,7 @@ export default function FseStudioNav() {
 								if (
 									'create_theme' === currentView?.currentView
 								) {
+									currentTheme?.setExistsOnDisk( true );
 									currentView?.set( 'theme_setup' );
 								}
 							} }
