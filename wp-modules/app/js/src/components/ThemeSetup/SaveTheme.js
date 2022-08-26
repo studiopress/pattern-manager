@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
+import { useEffect } from 'react';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -10,6 +11,16 @@ export default function SaveTheme( {
 } ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
+
+	// Update the view after successful saving of new theme.
+	useEffect( () => {
+		if (
+			currentTheme?.existsOnDisk &&
+			'create_theme' === currentView?.currentView
+		) {
+			currentView?.set( 'theme_setup' );
+		}
+	}, [ currentTheme?.existsOnDisk ] );
 
 	return currentTheme.isSaving ? (
 		<Spinner className="mt-5 mx-0 h-10 w-10" />
