@@ -12,15 +12,6 @@ export default function SaveTheme( {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
 
-	useEffect( () => {
-		if (
-			currentTheme.isSaving &&
-			'create_theme' === currentView.currentView
-		) {
-			currentView?.set( 'theme_setup' );
-		}
-	}, [ currentTheme.isSaving ] );
-
 	return 'create_theme' === currentView.currentView &&
 		! currentTheme.isSaving ? (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">

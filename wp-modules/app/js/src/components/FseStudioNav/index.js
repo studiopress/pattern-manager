@@ -157,24 +157,7 @@ export default function FseStudioNav() {
 								type="button"
 								onClick={ () => {
 									createNewTheme( themes, currentThemeId );
-
-									/**
-									 * Sets `currentTheme.existsOnDisk` to false and temporarily clears theme name in useThemeData.
-									 * Otherwise the current theme name is initially displayed in the name field.
-									 * `existsOnDisk` update is also otherwise delayed as API fetch resolves.
-									 */
-									window.parent.postMessage(
-										'fsestudio_new_theme_created'
-									);
-
-									/**
-									 * Using `setTimeout` with value of 0 to bump the `currentView` update to async.
-									 * The idea is to buy a moment while data updates and DOM elements load.
-									 * Otherwise, the name and/or cancel button from `SaveTheme` might be momentarily stale.
-									 */
-									setTimeout( () => {
-										currentView?.set( 'create_theme' );
-									}, 0 );
+									currentView?.set( 'create_theme' );
 								} }
 							>
 								<svg
