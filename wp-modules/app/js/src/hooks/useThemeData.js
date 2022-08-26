@@ -140,15 +140,6 @@ export default function useThemeData(
 	}, [ themeData ] );
 
 	useEffect( () => {
-		// If the themeId passed in changes, get the new theme data related to it.
-		if ( themeId ) {
-			getThemeData();
-		}
-
-		setThemeNameIsDefault( false );
-	}, [ themeId ] );
-
-	useEffect( () => {
 		if ( themeData?.name ) {
 			setThemeData( {
 				...themeData,
