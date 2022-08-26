@@ -12,8 +12,8 @@ export default function SaveTheme( {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
 
-	return 'create_theme' === currentView.currentView &&
-		! currentTheme.isSaving ? (
+	return 'create_theme' === currentView.currentView
+		? (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center">
