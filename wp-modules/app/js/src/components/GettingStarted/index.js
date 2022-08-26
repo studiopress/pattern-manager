@@ -4,7 +4,8 @@ import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
 
 export default function GettingStarted() {
-	const { themes, currentThemeId, currentView } = useStudioContext();
+	const { themes, currentTheme, currentThemeId, currentView } =
+		useStudioContext();
 
 	return (
 		<>
@@ -27,7 +28,7 @@ export default function GettingStarted() {
 								className="inline-flex self-center items-center px-4 py-2 border-4 border-transparent text-lg font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
 									createNewTheme( themes, currentThemeId );
-
+									currentTheme?.setExistsOnDisk( false );
 									currentView?.set( 'create_theme' );
 								} }
 							>

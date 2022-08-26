@@ -1,6 +1,6 @@
 // @ts-check
 
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useEffect, useMemo, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
@@ -58,10 +58,20 @@ export default function useThemeData(
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
-	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
-	const [ existsOnDisk, setExistsOnDisk ] = useState(
-		themes.themes[ themeId ] ? true : false
-	);
+	const themeData = useMemo( () => {
+		return themes.themes[ themeId ];
+	}, [ themes.themes, themeId ] );
+
+	function setThemeData( newThemeData ) {
+		themes.setThemes( {
+			...themes.themes,
+			[ themeId ]: newThemeData,
+		} );
+	}
+
+	const [ existsOnDisk, setExistsOnDisk ] = useState( () => {
+		return !! themeData;
+	} );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
@@ -1003,6 +1013,7 @@ export default function useThemeData(
 		save: saveThemeData,
 		export: exportThemeData,
 		existsOnDisk,
+		setExistsOnDisk,
 		saveCompleted,
 		isSaving,
 		fetchInProgress,

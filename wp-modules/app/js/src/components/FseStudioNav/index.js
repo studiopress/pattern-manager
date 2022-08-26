@@ -157,6 +157,7 @@ export default function FseStudioNav() {
 								type="button"
 								onClick={ () => {
 									createNewTheme( themes, currentThemeId );
+									currentTheme?.setExistsOnDisk( false );
 									currentView?.set( 'create_theme' );
 								} }
 							>

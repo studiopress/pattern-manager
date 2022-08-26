@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
-import { useEffect } from 'react';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -12,8 +11,9 @@ export default function SaveTheme( {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
 
-	return 'create_theme' === currentView.currentView
-		? (
+	return currentTheme.isSaving ? (
+		<Spinner className="mt-5 mx-0 h-10 w-10" />
+	) : (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
 			<div className="flex items-center justify-between w-full">
 				<div className="flex items-center">
@@ -31,7 +31,6 @@ export default function SaveTheme( {
 						{ __( 'Save Your Theme', 'fse-studio' ) }
 					</button>
 					{ displayCancelButton &&
-					! currentTheme?.existsOnDisk &&
 					Object.keys( themes.themes ).length > 1 ? (
 						<button
 							type="button"
@@ -42,6 +41,7 @@ export default function SaveTheme( {
 									...modifiedThemes
 								} = themes.themes;
 								themes.setThemes( modifiedThemes );
+								currentTheme.setExistsOnDisk( true );
 
 								currentThemeId.set(
 									Object.keys( themes.themes )[ 0 ]
@@ -58,7 +58,5 @@ export default function SaveTheme( {
 				</div>
 			</div>
 		</div>
-	) : (
-		<Spinner className="mt-5 mx-0 h-10 w-10" />
 	);
 }
