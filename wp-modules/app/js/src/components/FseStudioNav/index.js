@@ -76,11 +76,28 @@ export default function FseStudioNav() {
 									'fsestudio_hotswapped_theme'
 								);
 
+								/**
+								 * Existing FSES theme was selected from nav in SaveTheme.
+								 * This action should effectively act as a cancel.
+								 */
 								if (
 									'create_theme' === currentView?.currentView
 								) {
 									currentTheme?.setExistsOnDisk( true );
 									currentView?.set( 'theme_setup' );
+								}
+
+								/**
+								 * Existing FSES theme was selected from nav in GettingStarted.
+								 * Usually you would not land here if there were existing FSES themes.
+								 * This catches if last selected theme was deleted from disk before page refresh.
+								 */
+								if (
+									'theme_setup' ===
+										currentView?.currentView &&
+									! currentTheme?.existsOnDisk
+								) {
+									currentTheme?.setExistsOnDisk( true );
 								}
 							} }
 						>
