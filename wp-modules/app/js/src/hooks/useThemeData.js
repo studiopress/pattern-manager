@@ -58,10 +58,7 @@ export default function useThemeData(
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
-	const themeData = useMemo( () => {
-		return themes.themes[ themeId ];
-	}, [ themes.themes, themeId ] );
-
+	const themeData = themes.themes[ themeId ];
 	function setThemeData( newThemeData ) {
 		themes.setThemes( {
 			...themes.themes,
@@ -69,9 +66,7 @@ export default function useThemeData(
 		} );
 	}
 
-	const [ existsOnDisk, setExistsOnDisk ] = useState( () => {
-		return !! themeData;
-	} );
+	const [ existsOnDisk, setExistsOnDisk ] = useState( () => !! themeData );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
