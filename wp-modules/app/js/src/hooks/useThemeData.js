@@ -66,7 +66,7 @@ export default function useThemeData(
 		} );
 	}
 
-	const [ existsOnDisk, setExistsOnDisk ] = useState( () => !! themeData );
+	const [ existsOnDisk, setExistsOnDisk ] = useState( !! themeData );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
