@@ -36,23 +36,26 @@ export function setNestedObject( value, defaultValue ) {
 	 * @param {Array}  keys
 	 * @return {Object} The new, updated object.
 	 */
-	return function recursiveUpdate( object, [ key, ...rest ] = [] ) {
+	return function recursiveUpdate(
+		object,
+		[ firstKey, ...theRestOfTheKeys ] = []
+	) {
 		const newObject = Array.isArray( object )
 			? [ ...object ]
 			: { ...object };
 
 		if (
 			// This means we are at the end of the keys.
-			! rest.length &&
+			! theRestOfTheKeys.length &&
 			( null === value ||
 				( defaultValue !== null && defaultValue === value ) )
 		) {
 			// Delete the element.
-			delete newObject[ key ];
+			delete newObject[ firstKey ];
 		} else {
 			// Recurse if there are more keys, otherwise update the element.
-			newObject[ key ] = rest.length
-				? recursiveUpdate( object[ key ], rest )
+			newObject[ firstKey ] = theRestOfTheKeys.length
+				? recursiveUpdate( object[ firstKey ], theRestOfTheKeys )
 				: value;
 		}
 
