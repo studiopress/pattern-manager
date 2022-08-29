@@ -1,6 +1,6 @@
 // @ts-check
 
-import { useState, useEffect, useMemo, useRef } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
