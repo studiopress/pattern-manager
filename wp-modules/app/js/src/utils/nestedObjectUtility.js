@@ -46,21 +46,33 @@ export function setNestedObject( value, defaultValue ) {
 			? [ ...object ]
 			: { ...object };
 
-		if (
-			// `! theRestOfTheKeys.length` means we are at the end of the keys.
-			// If `value` is null or equal to `defaultValue`, we need to delete the element.
+		// `! theRestOfTheKeys.length` means we are at the end of the keys.
+		// If `value` is null or equal to `defaultValue`, we need to delete the element.
+		const shouldDeleteValue =
 			! theRestOfTheKeys.length &&
 			( null === value ||
-				( defaultValue !== null && defaultValue === value ) )
-		) {
+				( defaultValue !== null && defaultValue === value ) );
+
+		if ( shouldDeleteValue ) {
 			delete newObject[ currentKey ];
-		} else {
+		}
+
+		if ( ! shouldDeleteValue ) {
 			// If there are keys left in `theRestOfTheKeys`, clone the next level of the object.
-			// If there are no keys left, we've reached the target level!
-			// Store the result of either condition on a new `currentKey` index.
-			newObject[ currentKey ] = theRestOfTheKeys.length
-				? recursiveUpdate( object[ currentKey ], theRestOfTheKeys )
-				: value;
+			if ( theRestOfTheKeys.length ) {
+				// Make sure the currentKey exists prior to attempting to update a value within it.
+				if ( ! object[ currentKey ] ) {
+					object[ currentKey ] = {};
+				}
+				newObject[ currentKey ] = recursiveUpdate(
+					object[ currentKey ],
+					theRestOfTheKeys
+				);
+			} else {
+				// If there are no keys left, we've reached the target level!
+				// Store the result on a new `currentKey` index.
+				newObject[ currentKey ] = value;
+			}
 		}
 
 		if (
