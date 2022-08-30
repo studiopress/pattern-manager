@@ -137,9 +137,12 @@ export default function ThemeJsonEditor( { visible } ) {
 						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
 							<div className="flex flex-col gap-5">
 								<div>
-									<h4 className="mb-2 font-medium">
+									<h2 className="sr-only">
+										{ __( 'Style Variations', 'fse-studio' ) }
+									</h2>
+									<h3 className="mb-2 font-medium">
 										{ __( 'Current Style Variation', 'fse-studio' ) }
-									</h4>
+									</h3>
 									<p className="text-base">
 										{ __( 'Select the style variation you would like to work on.', 'fse-studio' ) }
 									</p>
@@ -162,9 +165,9 @@ export default function ThemeJsonEditor( { visible } ) {
 						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
 							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 								<div className="flex flex-col gap-5">
-									<h4 className="mb-2 font-medium">
+									<h3 className="mb-2 font-medium">
 										{ __( 'Create a style variation', 'fse-studio' ) }
-									</h4>
+									</h3>
 									<p className="text-base">
 										{ __(
 											'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
@@ -232,6 +235,9 @@ export default function ThemeJsonEditor( { visible } ) {
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
+								<h2 className="sr-only">
+										{ __( 'Documentation', 'fse-studio' ) }
+								</h2>
 								<h3 className="mb-2 font-medium">Working with theme.json</h3>
 								<p className="text-base mb-3">Theme.json is a configuration file for your theme that allows you to control colors, customization options, font sizes, presets, and more. </p>
 								<p className="text-base">This interface let's you visually see and change all of the settings and customizations available via theme.json.</p>

@@ -100,6 +100,7 @@ export default function FseStudioNav() {
 					>
 						<span className="flex items-center gap-4">
 							<svg
+								aria-hidden="true"
 								width="13"
 								height="10"
 								viewBox="0 0 13 10"
@@ -114,6 +115,7 @@ export default function FseStudioNav() {
 							{ __( 'Open Theme', 'fse-studio' ) }
 						</span>
 						<img
+							aria-hidden="true"
 							alt="drop icon"
 							className="ml-2"
 							src={ dropMenuIconRight }
@@ -129,12 +131,13 @@ export default function FseStudioNav() {
 	}
 
 	return (
-		<nav role="navigation" className="fses-nav">
+		<nav className="fses-nav" aria-label="Main Menu">
 			<ul className="font-medium">
 				<li>
 					<button aria-haspopup="true" className="flex items-center">
 						{ __( 'FSE Studio', 'fse-studio' ) }{ ' ' }
 						<img
+							aria-hidden="true"
 							alt="drop icon"
 							className="ml-2"
 							src={ dropMenuIcon }
@@ -154,6 +157,7 @@ export default function FseStudioNav() {
 								} }
 							>
 								<svg
+									aria-hidden="true"
 									width="15"
 									height="14"
 									viewBox="0 0 15 14"
@@ -177,6 +181,7 @@ export default function FseStudioNav() {
 								} }
 							>
 								<svg
+									aria-hidden="true"
 									className="ml-[2px]"
 									width="14"
 									height="12"
@@ -211,6 +216,7 @@ export default function FseStudioNav() {
 							>
 								{ __( 'Current Theme', 'fse-studio' ) }{ ' ' }
 								<img
+									aria-hidden="true"
 									alt="drop icon"
 									className="ml-2"
 									src={ dropMenuIcon }
@@ -233,6 +239,7 @@ export default function FseStudioNav() {
 										} }
 									>
 										<svg
+											aria-hidden="true"
 											width="14"
 											height="12"
 											viewBox="0 0 14 12"
@@ -256,6 +263,7 @@ export default function FseStudioNav() {
 										} }
 									>
 										<svg
+											aria-hidden="true"
 											width="15"
 											height="14"
 											viewBox="0 0 15 14"
