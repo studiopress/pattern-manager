@@ -11,22 +11,12 @@ import useStudioContext from '../../hooks/useStudioContext';
  * }} props
  */
 export default function PatternPreview( { url, scale } ) {
-	const [ currentUrl, setCurrentUrl ] = useState( url );
-	const { currentTheme, currentView } = useStudioContext();
+	const { currentView } = useStudioContext();
 	const [ iframeRef, setRef ] = useState();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
 		useState( 10 );
 
 	const scaleMultiplier = 10 / ( scale * 10 );
-
-	useEffect( () => {
-		if ( currentTheme.fetchInProgress ) {
-			setCurrentUrl( '' );
-		}
-		if ( ! currentTheme.fetchInProgress ) {
-			setCurrentUrl( url );
-		}
-	}, [ currentTheme.fetchInProgress ] );
 
 	useEffect( () => {
 		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
@@ -48,7 +38,7 @@ export default function PatternPreview( { url, scale } ) {
 			} }
 		>
 			<iframe
-				src={ currentUrl }
+				src={ url }
 				title={ __( 'Pattern Preview', 'fse-studio' ) }
 				role={ 'img' }
 				// @ts-ignore
