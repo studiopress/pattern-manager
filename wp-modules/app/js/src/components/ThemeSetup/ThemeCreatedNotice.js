@@ -9,6 +9,11 @@ export default function ThemeCreatedNotice( { onDismiss } ) {
 
 	useEffect( () => {
 		buttonRef.current.focus();
+		return () => {
+			// Don't show the theme created notice if you
+			// go to a different menu item or tab and come back.
+			noticePresenter.setDisplayThemeCreatedNotice( false );
+		};
 	}, [] );
 
 	return (

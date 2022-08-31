@@ -1,5 +1,4 @@
 // WP Dependencies.
-import { useEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
@@ -7,20 +6,9 @@ import ViewContainer from '../Common/ViewContainer';
 import CreateThemeForm from '../Common/CreateThemeForm';
 import SaveTheme from '../Common/SaveTheme';
 
-const Tabs = {
-	ThemeOverview: 0,
-	EditThemeDetails: 1,
-};
-
 /** @param {{isVisible: boolean}} props */
 export default function CreateTheme( { isVisible } ) {
-	const { currentTheme, currentView } = useStudioContext();
-	const [ currentTab ] = useState( Tabs.ThemeOverview );
-	const [ setDisplayThemeCreatedNotice ] = useState( false );
-
-	useEffect( () => {
-		setDisplayThemeCreatedNotice( false );
-	}, [ currentTab, currentView?.currentView ] );
+	const { currentTheme } = useStudioContext();
 
 	if ( ! currentTheme.data || ! isVisible ) {
 		return null;
@@ -36,12 +24,7 @@ export default function CreateTheme( { isVisible } ) {
 			) }
 		>
 			<CreateThemeForm>
-				<SaveTheme
-					displayCancelButton={ true }
-					setDisplayThemeCreatedNotice={
-						setDisplayThemeCreatedNotice
-					}
-				/>
+				<SaveTheme displayCancelButton={ true } />
 			</CreateThemeForm>
 		</ViewContainer>
 	);

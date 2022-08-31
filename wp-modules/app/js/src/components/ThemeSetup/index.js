@@ -7,7 +7,7 @@ import classNames from '../../utils/classNames';
 import ViewContainer from '../Common/ViewContainer';
 import SaveTheme from '../Common/SaveTheme';
 import ThemeCreatedNotice from './ThemeCreatedNotice';
-import ThemeDetails from './ThemeDetails';
+import ThemeDetails from '../Common/ThemeDetails';
 import ThemeOverview from './ThemeOverview';
 
 const Tabs = {
@@ -19,8 +19,6 @@ const Tabs = {
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
-	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
-		useState( false );
 
 	if ( ! currentTheme.data || ! isVisible ) {
 		return null;
@@ -69,12 +67,6 @@ export default function ThemeSetup( { isVisible } ) {
 									) }
 									onClick={ () => {
 										setCurrentTab( Tabs.EditThemeDetails );
-
-										if ( ! currentTheme.existsOnDisk ) {
-											setDisplayThemeCreatedNotice(
-												true
-											);
-										}
 									} }
 								>
 									{ __( 'Edit Theme Details', 'fse-studio' ) }
@@ -86,12 +78,8 @@ export default function ThemeSetup( { isVisible } ) {
 				<div className="mx-auto p-8 xl:p-0 max-w-7xl xl:mt-16 mt-8 mb-24">
 					{ currentTab === Tabs.ThemeOverview ? (
 						<>
-							{ displayThemeCreatedNotice ? (
-								<ThemeCreatedNotice
-									onDismiss={ () => {
-										setDisplayThemeCreatedNotice( false );
-									} }
-								/>
+							{ noticePresenter.displayThemeCreatedNotice ? (
+								<ThemeCreatedNotice />
 							) : null }
 							<ThemeOverview />
 						</>
