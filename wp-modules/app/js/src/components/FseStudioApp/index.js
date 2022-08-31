@@ -214,8 +214,7 @@ function FseStudio() {
 				<>
 					<ThemeSetup
 						isVisible={
-							'theme_setup' === currentView.currentView ||
-							'create_theme' === currentView.currentView
+							'theme_setup' === currentView.currentView
 						}
 					/>
 					<ThemePreview

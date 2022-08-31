@@ -1,12 +1,11 @@
 // WP Dependencies.
-import { useEffect, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import classNames from '../../utils/classNames';
-import Container from './Container';
-import CreateTheme from './CreateTheme';
-import SaveTheme from './SaveTheme';
+import ViewContainer from '../Common/ViewContainer';
+import SaveTheme from '../Common/SaveTheme';
 import ThemeCreatedNotice from './ThemeCreatedNotice';
 import ThemeDetails from './ThemeDetails';
 import ThemeOverview from './ThemeOverview';
@@ -18,21 +17,17 @@ const Tabs = {
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemeSetup( { isVisible } ) {
-	const { currentTheme, currentView } = useStudioContext();
+	const { currentTheme } = useStudioContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
 		useState( false );
-
-	useEffect( () => {
-		setDisplayThemeCreatedNotice( false );
-	}, [ currentTab, currentView?.currentView ] );
 
 	if ( ! currentTheme.data || ! isVisible ) {
 		return null;
 	}
 
-	return 'theme_setup' === currentView.currentView ? (
-		<Container
+	return (
+		<ViewContainer
 			heading={ sprintf(
 				/* translators: %1$s: The theme name */
 				__( 'Theme: %1$s', 'fse-studio' ),
@@ -109,24 +104,6 @@ export default function ThemeSetup( { isVisible } ) {
 					) : null }
 				</div>
 			</>
-		</Container>
-	) : (
-		<Container
-			isVisible={ isVisible }
-			heading={ __( 'Create Your Theme', 'fse-studio' ) }
-			description={ __(
-				'To get started, enter a theme name and click Save Your Theme. Once your theme is created, you can move on to building and customizing your theme.',
-				'fsestudio'
-			) }
-		>
-			<CreateTheme>
-				<SaveTheme
-					displayCancelButton={ true }
-					setDisplayThemeCreatedNotice={
-						setDisplayThemeCreatedNotice
-					}
-				/>
-			</CreateTheme>
-		</Container>
+		</ViewContainer>
 	);
 }
