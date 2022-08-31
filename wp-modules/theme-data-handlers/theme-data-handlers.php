@@ -80,26 +80,16 @@ function get_the_themes( $pre_existing_theme = array() ) {
 			$formatted_theme_data[ $theme_data['id'] ] = $theme_data;
 
 			// Add the theme.json file data to the theme data.
-			$formatted_theme_data[ $theme_data['id'] ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( $theme->get_template_directory() . '/theme.json' ), true );
+			$formatted_theme_data[ $theme_data['id'] ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( "$theme_dir/theme.json" ), true );
 
 			// Add the included Patterns for the current theme.
-			if ( ! empty( $pre_existing_theme ) ) {
-				$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir, $pre_existing_theme );
+			$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir, $pre_existing_theme );
 
-				// Add the template files that exist in the theme.
-				$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir, $pre_existing_theme );
+			// Add the template files that exist in the theme.
+			$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir, $pre_existing_theme );
 
-				// Add the template part files that exist in the theme.
-				$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir, $pre_existing_theme );
-			} else {
-				$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir );
-
-				// Add the template files that exist in the theme.
-				$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir );
-
-				// Add the template part files that exist in the theme.
-				$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir );
-			}
+			// Add the template part files that exist in the theme.
+			$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir, $pre_existing_theme );
 		}
 	}
 
