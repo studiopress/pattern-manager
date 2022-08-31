@@ -3,13 +3,13 @@ import { Spinner } from '@wordpress/components';
 import { useEffect } from 'react';
 
 import useStudioContext from '../../hooks/useStudioContext';
-import useSnackbarContext from '../../hooks/useSnackbarContext';
+import useNoticeContext from '../../hooks/useNoticeContext';
 
 /** @param {{displayCancelButton: boolean}} props */
 export default function SaveTheme( { displayCancelButton } ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
-	const { setDisplayThemeCreatedNotice } = useSnackbarContext();
+	const { setDisplayThemeCreatedNotice } = useNoticeContext();
 
 	// Update the view after successful saving of new theme.
 	useEffect( () => {

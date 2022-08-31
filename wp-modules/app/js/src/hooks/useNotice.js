@@ -1,12 +1,12 @@
 // @ts-check
 
-import * as React from 'react';
 import { useState, useEffect } from '@wordpress/element';
 import useMounted from './useMounted';
 
-export default function useSnackbar() {
+export default function useNotice() {
 	const [ snackBarValue, setSnackBarValue ] = useState( '' );
-	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] = useState( false );
+	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] =
+		useState( false );
 	const { isMounted } = useMounted();
 
 	function removeSnackbarAfterDelay() {

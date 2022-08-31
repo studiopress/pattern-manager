@@ -6,7 +6,7 @@ import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
 
-import useSnackbarContext from './useSnackbarContext';
+import useNoticeContext from './useNoticeContext';
 import useStyleVariations from '../hooks/useStyleVariations';
 
 /**
@@ -54,7 +54,7 @@ export default function useThemeData(
 	templateEditorIframe,
 	currentStyleVariationId
 ) {
-	const snackBar = useSnackbarContext();
+	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
@@ -303,7 +303,7 @@ export default function useThemeData(
 				setAutoSaveTheme( false );
 			}
 			if ( ! autoSaveTheme ) {
-				snackBar.setSnackBarValue(
+				setSnackBarValue(
 					__(
 						'Theme successfully saved and all files written to theme directory',
 						'fsestudio'

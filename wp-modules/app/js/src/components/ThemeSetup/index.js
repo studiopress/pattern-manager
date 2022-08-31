@@ -3,7 +3,7 @@ import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
-import useSnackbarContext from '../../hooks/useSnackbarContext';
+import useNoticeContext from '../../hooks/useNoticeContext';
 import classNames from '../../utils/classNames';
 import ViewContainer from '../Common/ViewContainer';
 import SaveTheme from '../Common/SaveTheme';
@@ -19,7 +19,7 @@ const Tabs = {
 /** @param {{isVisible: boolean}} props */
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
-	const { displayThemeCreatedNotice } = useSnackbarContext();
+	const { displayThemeCreatedNotice } = useNoticeContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 
 	if ( ! currentTheme.data || ! isVisible ) {

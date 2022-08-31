@@ -7,7 +7,6 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
-import 'reflect-metadata';
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -16,7 +15,7 @@ import React from 'react';
 import { fsestudio } from '../../globals';
 
 import FseStudioContext from '../../contexts/FseStudioContext';
-import FseStudioSnackbarContext from '../../contexts/FseStudioSnackbarContext';
+import FseStudioSnackbarContext from '../../contexts/FseStudioNoticeContext';
 
 // Hooks
 import useThemes from '../../hooks/useThemes';
@@ -24,8 +23,8 @@ import useCurrentId from '../../hooks/useCurrentId';
 import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import useStudioContext from '../../hooks/useStudioContext';
-import useSnackbarContext from '../../hooks/useSnackbarContext';
-import useSnackbar from '../../hooks/useSnackbar';
+import useNoticeContext from '../../hooks/useNoticeContext';
+import useSnackbar from '../../hooks/useNotice';
 
 // Components
 import CreateTheme from '../CreateTheme';
@@ -57,7 +56,7 @@ import FseStudioNav from '../FseStudioNav';
  */
 
 export default function FseStudioApp() {
-	/** @type {ReturnType<import('../../hooks/useSnackbar').default>} */
+	/** @type {ReturnType<import('../../hooks/useNotice').default>} */
 	const providerValue = useSnackbar();
 	return (
 		<FseStudioSnackbarContext.Provider value={ providerValue }>
@@ -146,17 +145,17 @@ function FseStudioContextHydrator() {
 function FseStudio() {
 	// @ts-ignore
 	const { currentView, currentTheme } = useStudioContext();
-	const snackBar = useSnackbarContext();
+	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (
 		<>
-			{ snackBar.snackBarValue ? (
+			{ snackBarValue ? (
 				<Snackbar
 					onRemove={ () => {
-						snackBar.setSnackBarValue( null );
+						setSnackBarValue( null );
 					} }
 				>
-					{ snackBar.snackBarValue }
+					{ snackBarValue }
 				</Snackbar>
 			) : null }
 			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
@@ -219,9 +218,7 @@ function FseStudio() {
 						}
 					/>
 					<ThemeSetup
-						isVisible={
-							'theme_setup' === currentView.currentView
-						}
+						isVisible={ 'theme_setup' === currentView.currentView }
 					/>
 					<ThemePreview
 						isVisible={
