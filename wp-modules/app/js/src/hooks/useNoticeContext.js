@@ -3,7 +3,7 @@
 import { useContext } from '@wordpress/element';
 import NoticeContext from '../contexts/FseStudioNoticeContext';
 
-/** @return {ReturnType<import('./useNotice')>} The FSE Studio context. */
+/** @return {ReturnType<import('./useNotice')>} */
 export default function useNoticeContext() {
 	const context = useContext( NoticeContext );
 	if ( ! context ) {
