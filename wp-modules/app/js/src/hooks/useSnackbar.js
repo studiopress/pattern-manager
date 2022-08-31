@@ -5,8 +5,8 @@ import { useState, useEffect } from '@wordpress/element';
 import useMounted from './useMounted';
 
 export default function useSnackbar() {
-	/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */
-	const [ snackBarValue, setSnackbarValue ] = useState();
+	const [ snackBarValue, setSnackBarValue ] = useState( '' );
+	const [ displayThemeCreatedNotice, setDisplayThemeCreatedNotice ] = useState( false );
 	const { isMounted } = useMounted();
 
 	function removeSnackbarAfterDelay() {
@@ -15,7 +15,7 @@ export default function useSnackbar() {
 		}
 		setTimeout( () => {
 			if ( isMounted() ) {
-				setSnackbarValue( null );
+				setSnackBarValue( '' );
 			}
 		}, 7000 );
 	}
@@ -25,7 +25,9 @@ export default function useSnackbar() {
 	}, [ snackBarValue ] );
 
 	return {
-		value: snackBarValue,
-		setValue: setSnackbarValue,
+		snackBarValue,
+		setSnackBarValue,
+		displayThemeCreatedNotice,
+		setDisplayThemeCreatedNotice,
 	};
 }

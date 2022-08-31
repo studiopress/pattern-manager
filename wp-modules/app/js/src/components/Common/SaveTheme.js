@@ -3,11 +3,13 @@ import { Spinner } from '@wordpress/components';
 import { useEffect } from 'react';
 
 import useStudioContext from '../../hooks/useStudioContext';
+import useSnackbarContext from '../../hooks/useSnackbarContext';
 
 /** @param {{displayCancelButton: boolean}} props */
 export default function SaveTheme( { displayCancelButton } ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
+	const { setDisplayThemeCreatedNotice } = useSnackbarContext();
 
 	// Update the view after successful saving of new theme.
 	useEffect( () => {
@@ -29,6 +31,10 @@ export default function SaveTheme( { displayCancelButton } ) {
 						type="button"
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
+							if ( ! currentTheme.existsOnDisk ) {
+								setDisplayThemeCreatedNotice( true );
+							}
+
 							currentTheme.save();
 						} }
 					>
@@ -49,10 +55,6 @@ export default function SaveTheme( { displayCancelButton } ) {
 
 								currentThemeId.set(
 									Object.keys( themes.themes )[ 0 ]
-								);
-
-								noticePresenter.setDisplayThemeCreatedNotice(
-									false
 								);
 
 								currentView?.set( 'theme_setup' );

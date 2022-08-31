@@ -303,7 +303,7 @@ export default function useThemeData(
 				setAutoSaveTheme( false );
 			}
 			if ( ! autoSaveTheme ) {
-				snackBar.setValue(
+				snackBar.setSnackBarValue(
 					__(
 						'Theme successfully saved and all files written to theme directory',
 						'fsestudio'

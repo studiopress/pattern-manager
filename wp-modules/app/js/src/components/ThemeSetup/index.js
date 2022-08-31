@@ -3,6 +3,7 @@ import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
+import useSnackbarContext from '../../hooks/useSnackbarContext';
 import classNames from '../../utils/classNames';
 import ViewContainer from '../Common/ViewContainer';
 import SaveTheme from '../Common/SaveTheme';
@@ -18,6 +19,7 @@ const Tabs = {
 /** @param {{isVisible: boolean}} props */
 export default function ThemeSetup( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
+	const { displayThemeCreatedNotice } = useSnackbarContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 
 	if ( ! currentTheme.data || ! isVisible ) {
@@ -78,7 +80,7 @@ export default function ThemeSetup( { isVisible } ) {
 				<div className="mx-auto p-8 xl:p-0 max-w-7xl xl:mt-16 mt-8 mb-24">
 					{ currentTab === Tabs.ThemeOverview ? (
 						<>
-							{ noticePresenter.displayThemeCreatedNotice ? (
+							{ displayThemeCreatedNotice ? (
 								<ThemeCreatedNotice />
 							) : null }
 							<ThemeOverview />

@@ -7,6 +7,7 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
+import 'reflect-metadata';
 import { useState, useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -27,6 +28,7 @@ import useSnackbarContext from '../../hooks/useSnackbarContext';
 import useSnackbar from '../../hooks/useSnackbar';
 
 // Components
+import CreateTheme from '../CreateTheme';
 import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
 import ThemePreview from '../ThemePreview';
@@ -57,7 +59,6 @@ import FseStudioNav from '../FseStudioNav';
 export default function FseStudioApp() {
 	/** @type {ReturnType<import('../../hooks/useSnackbar').default>} */
 	const providerValue = useSnackbar();
-
 	return (
 		<FseStudioSnackbarContext.Provider value={ providerValue }>
 			<FseStudioContextHydrator />
@@ -149,13 +150,13 @@ function FseStudio() {
 
 	return (
 		<>
-			{ snackBar.value ? (
+			{ snackBar.snackBarValue ? (
 				<Snackbar
 					onRemove={ () => {
-						snackBar.setValue( null );
+						snackBar.setSnackBarValue( null );
 					} }
 				>
-					{ snackBar.value }
+					{ snackBar.snackBarValue }
 				</Snackbar>
 			) : null }
 			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
@@ -212,8 +213,15 @@ function FseStudio() {
 
 			{ currentTheme?.data ? (
 				<>
+					<CreateTheme
+						isVisible={
+							'create_theme' === currentView?.currentView
+						}
+					/>
 					<ThemeSetup
-						isVisible={ 'theme_setup' === currentView.currentView }
+						isVisible={
+							'theme_setup' === currentView.currentView
+						}
 					/>
 					<ThemePreview
 						isVisible={

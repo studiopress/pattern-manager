@@ -30,9 +30,6 @@ export default function GettingStarted() {
 									createNewTheme( themes, currentThemeId );
 									currentTheme?.setExistsOnDisk( false );
 									currentView?.set( 'create_theme' );
-									noticePresenter.setDisplayThemeCreatedNotice(
-										true
-									);
 								} }
 							>
 								{ __(
