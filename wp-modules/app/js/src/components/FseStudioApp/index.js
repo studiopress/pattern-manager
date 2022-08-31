@@ -58,6 +58,7 @@ import FseStudioNav from '../FseStudioNav';
 export default function FseStudioApp() {
 	/** @type {ReturnType<import('../../hooks/useNotice').default>} */
 	const providerValue = useSnackbar();
+
 	return (
 		<FseStudioSnackbarContext.Provider value={ providerValue }>
 			<FseStudioContextHydrator />

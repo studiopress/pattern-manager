@@ -10,7 +10,7 @@ import SaveTheme from '../Common/SaveTheme';
 export default function CreateTheme( { isVisible } ) {
 	const { currentTheme } = useStudioContext();
 
-	if ( ! currentTheme.data || ! isVisible ) {
+	if ( ! isVisible ) {
 		return null;
 	}
 
