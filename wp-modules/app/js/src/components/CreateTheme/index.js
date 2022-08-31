@@ -8,8 +8,6 @@ import SaveTheme from '../Common/SaveTheme';
 
 /** @param {{isVisible: boolean}} props */
 export default function CreateTheme( { isVisible } ) {
-	const { currentTheme } = useStudioContext();
-
 	if ( ! isVisible ) {
 		return null;
 	}
