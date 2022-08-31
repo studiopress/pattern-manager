@@ -1,7 +1,6 @@
 // WP Dependencies.
 import { __ } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
 import ViewContainer from '../Common/ViewContainer';
 import CreateThemeForm from '../Common/CreateThemeForm';
 import SaveTheme from '../Common/SaveTheme';
