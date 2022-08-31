@@ -24,22 +24,24 @@ export function getNestedValue( object, keys ) {
  * being passed immediately after. For example, the partial application could be called like this:
  *  - setNestedObject( value, defaultValue )( object, keys )
  *
- * @param {*} value        A `value` of null means the child element should be deleted.
- * @param {*} defaultValue Equality of `defaultValue` and `value` also specifies deletion.
+ * @param {*}     value        A `value` of null means the child element should be deleted.
+ * @param {*}     defaultValue Equality of `defaultValue` and `value` also specifies deletion.
+ * @param {Array} keys         The array of object keys.
  * @return {Function} recursiveUpdate()
  */
-export function setNestedObject( value, defaultValue ) {
+export function setNestedObject( value, defaultValue, keys = [] ) {
 	/**
 	 * Recursively clone an object and update a nested value.
 	 *
-	 * @param {Object} object
-	 * @param {Array}  keys
+	 * @param {Object} object The object to clone.
+	 * @param {Array}  keys   The destructured keys.
 	 * @return {Object} The new, updated object.
 	 */
-	return function recursiveUpdate( object, keys = [] ) {
-		// Destructure the keys.
-		const [ currentKey, ...theRestOfTheKeys ] = keys;
-
+	return function recursiveUpdate(
+		object,
+		[ currentKey, ...theRestOfTheKeys ] = keys,
+		index = 0
+	) {
 		// Create a new object to avoid mutating the original.
 		// Check if the current level is an array or object, then spread accordingly.
 		const newObject = Array.isArray( object )
@@ -60,17 +62,25 @@ export function setNestedObject( value, defaultValue ) {
 		if ( ! shouldDeleteValue ) {
 			// If there are keys left in `theRestOfTheKeys`, clone the next level of the object.
 			if ( theRestOfTheKeys.length ) {
-				// Make sure the currentKey exists prior to attempting to update a value within it.
+				// Make sure `currentKey` exists prior to attempting to update a value within it.
 				if ( ! object[ currentKey ] ) {
-					object[ currentKey ] = {};
+					// Mutate the next object level since it is undefined anyway.
+					object[ currentKey ] = ! isNaN(
+						Number( keys[ index + 1 ] )
+					)
+						? []
+						: {};
 				}
+
+				// Recursively clone the next object level.
 				newObject[ currentKey ] = recursiveUpdate(
 					object[ currentKey ],
-					theRestOfTheKeys
+					theRestOfTheKeys,
+					index + 1
 				);
 			} else {
 				// If there are no keys left, we've reached the target level!
-				// Store the result on a new `currentKey` index.
+				// Store the result on the `currentKey`.
 				newObject[ currentKey ] = value;
 			}
 		}
@@ -82,7 +92,7 @@ export function setNestedObject( value, defaultValue ) {
 			( null === value ||
 				( defaultValue !== null && defaultValue === value ) )
 		) {
-			newObject.filter( Boolean );
+			return newObject.filter( Boolean );
 		}
 
 		return newObject;

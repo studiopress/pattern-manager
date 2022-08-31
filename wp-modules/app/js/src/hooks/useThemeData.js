@@ -375,10 +375,11 @@ export default function useThemeData(
 		// Split the selector string at commas
 		const keys = selectorString.split( '.' );
 
-		const modifiedData = setNestedObject( value, defaultValue )(
-			jsonDataBody,
+		const modifiedData = setNestedObject(
+			value,
+			defaultValue,
 			[ topLevelSection, ...keys ] // Top level key with the array of keys.
-		);
+		)( jsonDataBody );
 
 		/**
 		 * If the current style is not default, save the variation data to the styles array.
