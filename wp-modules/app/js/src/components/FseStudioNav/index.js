@@ -23,6 +23,7 @@ export default function FseStudioNav() {
 		currentTheme,
 		themes,
 		currentThemeId,
+		patterns,
 		patternEditorIframe,
 		templateEditorIframe,
 	} = useStudioContext();
@@ -73,6 +74,7 @@ export default function FseStudioNav() {
 							onClick={ () => {
 								currentThemeId?.set( key );
 								switchThemeOnBackEnd( items[ key ]?.dirname );
+								patterns?.reloadPatternPreview();
 								maybePostWindowMessage(
 									'fsestudio_hotswapped_theme'
 								);

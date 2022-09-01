@@ -11,16 +11,21 @@ import useStudioContext from '../../hooks/useStudioContext';
  * }} props
  */
 export default function PatternPreview( { url, scale } ) {
-	const { currentView } = useStudioContext();
-	const [ iframeRef, setRef ] = useState();
+	const { currentView, patterns } = useStudioContext();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
 		useState( 10 );
+	const [ iframeRef, setIframeRef ] = useState();
+	patterns?.addRef( url, iframeRef );
 
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	useEffect( () => {
-		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
-			if ( iframeRef.contentWindow.document.body.scrollHeight > 0 ) {
+		if (
+			iframeRef?.contentWindow?.document?.body?.scrollHeight
+		) {
+			if (
+				iframeRef.contentWindow.document.body.scrollHeight > 0
+			) {
 				setIframeInnerContentHeight(
 					iframeRef?.contentWindow.document.body.scrollHeight
 				);
@@ -42,7 +47,7 @@ export default function PatternPreview( { url, scale } ) {
 				title={ __( 'Pattern Preview', 'fse-studio' ) }
 				role={ 'img' }
 				// @ts-ignore
-				ref={ setRef }
+				ref={ setIframeRef }
 				onLoad={ () => {
 					if (
 						iframeRef?.contentWindow?.document?.body?.scrollHeight

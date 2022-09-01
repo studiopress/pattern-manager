@@ -42,18 +42,20 @@ import useStyleVariations from '../hooks/useStyleVariations';
  */
 
 /**
- * @param {string}                                    themeId
- * @param {ReturnType<import('./useThemes').default>} themes
- * @param {Object}                                    patternEditorIframe
- * @param {Object}                                    templateEditorIframe
- * @param {Object}                                    currentStyleVariationId
+ * @param {string|undefined}                            themeId
+ * @param {ReturnType<import('./useThemes').default>}   themes
+ * @param {Object}                                      patternEditorIframe
+ * @param {Object}                                      templateEditorIframe
+ * @param {Object}                                      currentStyleVariationId
+ * @param {ReturnType<import('./usePatterns').default>} patterns
  */
 export default function useThemeData(
 	themeId,
 	themes,
 	patternEditorIframe,
 	templateEditorIframe,
-	currentStyleVariationId
+	currentStyleVariationId,
+	patterns
 ) {
 	const snackBar = useSnackbarContext();
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -235,6 +237,7 @@ export default function useThemeData(
 					return response.json();
 				} )
 				.then( ( data ) => {
+					patterns?.reloadPatternPreview();
 					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
 						patternEditorIframe.current.contentWindow.postMessage(
