@@ -74,7 +74,7 @@ export default function FseStudioNav() {
 							onClick={ () => {
 								currentThemeId?.set( key );
 								switchThemeOnBackEnd( items[ key ]?.dirname ).then( () => {
-									patterns?.reloadPatternPreview();
+									patterns?.reloadPatternPreviews();
 								} );
 								maybePostWindowMessage(
 									'fsestudio_hotswapped_theme'
