@@ -48,12 +48,13 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 			? [ ...object ]
 			: { ...object };
 
-		// `! theRestOfTheKeys.length` means we are at the end of the keys.
 		// If `value` is null or equal to `defaultValue`, we need to delete the element.
 		const shouldDeleteValue =
 			null === value ||
 			( defaultValue !== null && defaultValue === value );
 
+		// Delete the target value if flagged by `shouldDeleteValue`.
+		// `! theRestOfTheKeys.length` means we are at the end of the keys.
 		if ( ! theRestOfTheKeys.length && shouldDeleteValue ) {
 			delete newObject[ currentKey ];
 		}
@@ -63,6 +64,7 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 			// Recursively clone the next object level.
 			newObject[ currentKey ] = recursiveUpdate(
 				// Make sure `currentKey` exists prior to attempting to update a value within it.
+				// Validate shape by using key from the next index level.
 				_validateObjectLevel( object[ currentKey ], keys[ index + 1 ] ),
 				theRestOfTheKeys,
 				index + 1
@@ -73,13 +75,9 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 			newObject[ currentKey ] = value;
 		}
 
-		if (
-			// Filter out empty elements from parent arrays of deleted children.
-			// If the `value` is null or equal to `defaultValue`, we need to clean up the parent.
-			! theRestOfTheKeys.length &&
-			shouldDeleteValue &&
-			Array.isArray( newObject )
-		) {
+		// Filter out empty elements from parent arrays of deleted children.
+		// Return the filtered array.
+		if ( shouldDeleteValue && Array.isArray( newObject ) ) {
 			return newObject.filter( Boolean );
 		}
 
@@ -97,7 +95,7 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
  *
  * @param {*} object
  * @param {*} key
- * @return {*} An empty array, object, or the unaffected object.
+ * @return {*} An empty array or object, or the unaffected object.
  */
 function _validateObjectLevel( object, key ) {
 	if ( ! object || object.length === 0 ) {
