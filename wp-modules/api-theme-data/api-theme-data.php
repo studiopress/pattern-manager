@@ -83,18 +83,6 @@ function register_routes() {
 					),
 				),
 			),
-			'schema' => array(
-				'$schema'    => 'https://json-schema.org/draft-04/schema#',
-				'title'      => 'switch_theme',
-				'type'       => 'object',
-				'properties' => array(
-					'success' => array(
-						'description' => esc_html__( 'Whether the theme switch was a success', 'fse-studio' ),
-						'type'        => 'boolean',
-						'readonly'    => true,
-					),
-				),
-			),
 		)
 	);
 }
