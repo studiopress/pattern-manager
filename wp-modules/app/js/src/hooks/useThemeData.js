@@ -237,7 +237,6 @@ export default function useThemeData(
 					return response.json();
 				} )
 				.then( ( data ) => {
-					patterns?.reloadPatternPreviews();
 					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
 						patternEditorIframe.current.contentWindow.postMessage(
@@ -313,6 +312,7 @@ export default function useThemeData(
 			setExistsOnDisk( true );
 			setSaveCompleted( true );
 			setIsSaving( false );
+			patterns?.reloadPatternPreviews();
 		} );
 	}
 
