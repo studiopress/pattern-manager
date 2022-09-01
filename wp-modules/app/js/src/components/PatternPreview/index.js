@@ -11,23 +11,12 @@ import useStudioContext from '../../hooks/useStudioContext';
  * }} props
  */
 export default function PatternPreview( { url, scale } ) {
-	const { currentView, patterns } = useStudioContext();
+	const { patterns } = useStudioContext();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
 		useState( 10 );
 	const [ iframeRef, setIframeRef ] = useState();
 	patterns?.addRef( url, iframeRef );
-
 	const scaleMultiplier = 10 / ( scale * 10 );
-
-	useEffect( () => {
-		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
-			if ( iframeRef.contentWindow.document.body.scrollHeight > 0 ) {
-				setIframeInnerContentHeight(
-					iframeRef?.contentWindow.document.body.scrollHeight
-				);
-			}
-		}
-	}, [ currentView.currentView ] );
 
 	return (
 		<div
@@ -45,6 +34,7 @@ export default function PatternPreview( { url, scale } ) {
 				// @ts-ignore
 				ref={ setIframeRef }
 				onLoad={ () => {
+					console.log('loading')
 					if (
 						iframeRef?.contentWindow?.document?.body?.scrollHeight
 					) {
