@@ -1,7 +1,7 @@
 // @ts-check
 
 import * as React from 'react';
-import { useState, useEffect } from '@wordpress/element';
+import { useStatea } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 /**
@@ -34,7 +34,6 @@ export default function PatternPreview( { url, scale } ) {
 				// @ts-ignore
 				ref={ setIframeRef }
 				onLoad={ () => {
-					console.log('loading')
 					if (
 						iframeRef?.contentWindow?.document?.body?.scrollHeight
 					) {
