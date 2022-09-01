@@ -20,12 +20,8 @@ export default function PatternPreview( { url, scale } ) {
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	useEffect( () => {
-		if (
-			iframeRef?.contentWindow?.document?.body?.scrollHeight
-		) {
-			if (
-				iframeRef.contentWindow.document.body.scrollHeight > 0
-			) {
+		if ( iframeRef?.contentWindow?.document?.body?.scrollHeight ) {
+			if ( iframeRef.contentWindow.document.body.scrollHeight > 0 ) {
 				setIframeInnerContentHeight(
 					iframeRef?.contentWindow.document.body.scrollHeight
 				);

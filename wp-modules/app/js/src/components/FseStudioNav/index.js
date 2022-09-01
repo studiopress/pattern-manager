@@ -73,7 +73,9 @@ export default function FseStudioNav() {
 							type="button"
 							onClick={ () => {
 								currentThemeId?.set( key );
-								switchThemeOnBackEnd( items[ key ]?.dirname ).then( () => {
+								switchThemeOnBackEnd(
+									items[ key ]?.dirname
+								).then( () => {
 									patterns?.reloadPatternPreviews();
 								} );
 								maybePostWindowMessage(
