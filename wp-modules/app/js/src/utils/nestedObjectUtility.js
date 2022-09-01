@@ -93,9 +93,9 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
  *
  * Otherwise, return the unaffected object.
  *
- * @param {*} object
- * @param {*} key
- * @return {*} An empty array or object, or the unaffected object.
+ * @param {Object|Array}  object
+ * @param {string|number} key
+ * @return {Object|Array} An empty object/array, or the unaffected object.
  */
 function _validateObjectLevel( object, key ) {
 	if ( ! object || object.length === 0 ) {
