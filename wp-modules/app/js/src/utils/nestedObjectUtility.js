@@ -51,46 +51,47 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 		// `! theRestOfTheKeys.length` means we are at the end of the keys.
 		// If `value` is null or equal to `defaultValue`, we need to delete the element.
 		const shouldDeleteValue =
-			! theRestOfTheKeys.length &&
-			( null === value ||
-				( defaultValue !== null && defaultValue === value ) );
+			null === value ||
+			( defaultValue !== null && defaultValue === value );
 
-		if ( shouldDeleteValue ) {
+		if ( ! theRestOfTheKeys.length && shouldDeleteValue ) {
 			delete newObject[ currentKey ];
 		}
 
-		if ( ! shouldDeleteValue ) {
-			// If there are keys left in `theRestOfTheKeys`, clone the next level of the object.
-			if ( theRestOfTheKeys.length ) {
-				// Make sure `currentKey` exists prior to attempting to update a value within it.
-				if ( ! object[ currentKey ] ) {
-					// Mutate the next object level since it is undefined anyway.
-					object[ currentKey ] = ! isNaN(
-						Number( keys[ index + 1 ] )
-					)
-						? []
-						: {};
-				}
-
-				// Recursively clone the next object level.
-				newObject[ currentKey ] = recursiveUpdate(
-					object[ currentKey ],
-					theRestOfTheKeys,
-					index + 1
-				);
-			} else {
-				// If there are no keys left, we've reached the target level!
-				// Store the result on the `currentKey`.
-				newObject[ currentKey ] = value;
+		// If there are keys left in `theRestOfTheKeys`, clone the next level of the object.
+		if ( theRestOfTheKeys.length ) {
+			// Make sure `currentKey` exists prior to attempting to update a value within it.
+			if (
+				! shouldDeleteValue &&
+				( ! object[ currentKey ] || object[ currentKey ].length === 0 )
+			) {
+				// Mutate the next object level since it is undefined or empty.
+				// Check if the next key evaluates to a number or string (NaN).
+				// If it is a number, we need to create an empty array.
+				// Otherwise, create an empty object.
+				object[ currentKey ] = ! isNaN( Number( keys[ index + 1 ] ) )
+					? []
+					: {};
 			}
+
+			// Recursively clone the next object level.
+			newObject[ currentKey ] = recursiveUpdate(
+				object[ currentKey ],
+				theRestOfTheKeys,
+				index + 1
+			);
+		} else {
+			// If there are no keys left, we've reached the target level!
+			// Store the result on the `currentKey`.
+			newObject[ currentKey ] = value;
 		}
 
 		if (
 			// Filter out empty elements from parent arrays of deleted children.
 			// If the `value` is null or equal to `defaultValue`, we need to clean up the parent.
-			Array.isArray( newObject ) &&
-			( null === value ||
-				( defaultValue !== null && defaultValue === value ) )
+			! theRestOfTheKeys.length &&
+			shouldDeleteValue &&
+			Array.isArray( newObject )
 		) {
 			return newObject.filter( Boolean );
 		}
