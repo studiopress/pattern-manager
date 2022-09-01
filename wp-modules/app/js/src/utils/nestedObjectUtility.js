@@ -99,7 +99,7 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
  */
 function _validateObjectLevel( object, key ) {
 	if ( ! object || object.length === 0 ) {
-		return ! isNaN( Number( key ) ) ? [] : {};
+		return isNaN( Number( key ) ) ? {} : [];
 	}
 
 	return object;
