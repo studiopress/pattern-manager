@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace FseStudio\ThemeDataHandlers;
 
 use WP_REST_Response;
+use function switch_theme;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -258,4 +259,13 @@ function update_theme( $theme ) {
 	);
 
 	return $theme;
+}
+
+/**
+ * Switches to a theme.
+ *
+ * @param string $theme_slug The slug, or dirname, of the theme to switch to.
+ */
+function switch_to_theme( string $theme_slug ) {
+	switch_theme( $theme_slug );
 }

@@ -11,6 +11,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 // Utils
 import createNewTheme from '../../utils/createNewTheme';
+import switchThemeOnBackEnd from '../../utils/switchThemeOnBackEnd';
 
 // Images
 import dropMenuIcon from '../../../../img/drop-arrow.svg';
@@ -71,7 +72,7 @@ export default function FseStudioNav() {
 							type="button"
 							onClick={ () => {
 								currentThemeId?.set( key );
-
+								switchThemeOnBackEnd( items[ key ]?.dirname );
 								maybePostWindowMessage(
 									'fsestudio_hotswapped_theme'
 								);

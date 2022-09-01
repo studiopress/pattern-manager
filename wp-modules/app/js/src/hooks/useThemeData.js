@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
+import getHeaders from '../utils/getHeaders';
 
 import useSnackbarContext from './useSnackbarContext';
 import useStyleVariations from '../hooks/useStyleVariations';
@@ -184,11 +185,7 @@ export default function useThemeData(
 			setFetchInProgress( true );
 			fetch( fsestudio.apiEndpoints.getThemeEndpoint, {
 				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': fsestudio.apiNonce,
-				},
+				headers: getHeaders(),
 				body: JSON.stringify( {
 					themeId,
 					preExistingTheme: themeData,
@@ -228,11 +225,7 @@ export default function useThemeData(
 			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': fsestudio.apiNonce,
-				},
+				headers: getHeaders(),
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => {
@@ -324,11 +317,7 @@ export default function useThemeData(
 		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.exportThemeEndpoint, {
 				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': fsestudio.apiNonce,
-				},
+				headers: getHeaders(),
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => response.json() )

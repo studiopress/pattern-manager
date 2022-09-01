@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace FseStudio\ApiThemeData;
 
+use WP_REST_Request;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -59,6 +61,40 @@ function register_routes() {
 				'args'                => save_request_args(),
 			),
 			'schema' => 'response_item_schema',
+		)
+	);
+	register_rest_route(
+		$namespace,
+		'/switch-theme',
+		array(
+			array(
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\switch_to_theme',
+				'permission_callback' => __NAMESPACE__ . '\permission_check',
+				'args'                => array(
+					'dirname' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'description'       => __( 'The dirname, or slug, of the theme', 'fse-studio' ),
+						'validate_callback' => function( $param ) {
+							return is_string( $param );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
+			),
+			'schema' => array(
+				'$schema'    => 'https://json-schema.org/draft-04/schema#',
+				'title'      => 'switch_theme',
+				'type'       => 'object',
+				'properties' => array(
+					'success' => array(
+						'description' => esc_html__( 'Whether the theme switch was a success', 'fse-studio' ),
+						'type'        => 'boolean',
+						'readonly'    => true,
+					),
+				),
+			),
 		)
 	);
 }
@@ -139,12 +175,20 @@ function export_theme( $request ) {
 }
 
 /**
- * Check the permissions required to take this action.
+ * Switch to a given theme.
  *
  * @param WP_REST_Request $request Full data about the request.
+ */
+function switch_to_theme( WP_REST_Request $request ) {
+	\FseStudio\ThemeDataHandlers\switch_to_theme( $request->get_params()['dirname'] ?? '' );
+}
+
+/**
+ * Check the permissions required to take this action.
+ *
  * @return bool
  */
-function permission_check( $request ) {
+function permission_check() {
 	return current_user_can( 'manage_options' );
 }
 
