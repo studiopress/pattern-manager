@@ -60,23 +60,10 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 
 		// If there are keys left in `theRestOfTheKeys`, clone the next level of the object.
 		if ( theRestOfTheKeys.length ) {
-			// Make sure `currentKey` exists prior to attempting to update a value within it.
-			if (
-				! shouldDeleteValue &&
-				( ! object[ currentKey ] || object[ currentKey ].length === 0 )
-			) {
-				// Mutate the next object level since it is undefined or empty.
-				// Check if the next key evaluates to a number or string (NaN).
-				// If it is a number, we need to create an empty array.
-				// Otherwise, create an empty object.
-				object[ currentKey ] = ! isNaN( Number( keys[ index + 1 ] ) )
-					? []
-					: {};
-			}
-
 			// Recursively clone the next object level.
 			newObject[ currentKey ] = recursiveUpdate(
-				object[ currentKey ],
+				// Make sure `currentKey` exists prior to attempting to update a value within it.
+				_validateObjectLevel( object[ currentKey ], keys[ index + 1 ] ),
 				theRestOfTheKeys,
 				index + 1
 			);
@@ -98,4 +85,24 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 
 		return newObject;
 	};
+}
+
+/**
+ * Validate the object level by checking that it is defined and not empty.
+ *
+ * If the level is empty and the key evaluates to a number, return an empty array.
+ * If the level is empty and the key evaluates to a string (NaN), return an empty object.
+ *
+ * Otherwise, return the unaffected object.
+ *
+ * @param {*} object
+ * @param {*} key
+ * @return {*} An empty array, object, or the unaffected object.
+ */
+function _validateObjectLevel( object, key ) {
+	if ( ! object || object.length === 0 ) {
+		return ! isNaN( Number( key ) ) ? [] : {};
+	}
+
+	return object;
 }
