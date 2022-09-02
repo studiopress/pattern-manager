@@ -435,7 +435,7 @@ export default function useThemeData(
 		const keys = selectorString.split( '.' );
 
 		return (
-			getNestedValue( currentStyleVariation[ topLevelSection ], keys ) ||
+			getNestedValue( currentStyleVariation[ topLevelSection ], keys ) ??
 			defaultValue
 		);
 	}
