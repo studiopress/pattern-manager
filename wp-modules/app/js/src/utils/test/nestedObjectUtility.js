@@ -47,8 +47,8 @@ describe( 'setNestedObject', () => {
 		// Order is: value, defaultValue, keys, object, newObject.
 		[ 'newValue', null, [ 'a' ], { a: 'staleValue' }, { a: 'newValue' } ],
 		[ false, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: false } } ],
-		[ false, false, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: false } } ],
-		[ null, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: null } } ],
+		[ false, false, [ 'a', 'b' ], { a: { b: {} } }, { a: {} } ],
+		[ null, null, [ 'a', 'b' ], { a: { b: {} } }, { a: {} } ],
 		[
 			'newValue',
 			null,
@@ -57,11 +57,32 @@ describe( 'setNestedObject', () => {
 			{ a: { b: [ 'newValue' ] } },
 		],
 		[
+			null,
+			null,
+			[ 'a', 'b', 0 ],
+			{ a: { b: [ 'toDelete' ] } },
+			{ a: { b: [] } },
+		],
+		[
+			null,
+			null,
+			[ 'a', 'b', '1' ],
+			{ a: { b: [ 'toRemain', 'toDelete' ] } },
+			{ a: { b: [ 'toRemain' ] } },
+		],
+		[
+			'matchesDefaultValue',
+			'matchesDefaultValue',
+			[ 'a', 'b', '1' ],
+			{ a: { b: [ 'toRemain', 'toDelete' ] } },
+			{ a: { b: [ 'toRemain' ] } },
+		],
+		[
 			'newValue',
 			null,
 			[ 'a', 'b', '0', 'c', 'd', 4, 'e' ],
 			{
-				version: 2,
+				someKey: false,
 				a: {
 					b: [
 						{
@@ -81,7 +102,7 @@ describe( 'setNestedObject', () => {
 				},
 			},
 			{
-				version: 2,
+				someKey: false,
 				a: {
 					b: [
 						{
@@ -98,6 +119,17 @@ describe( 'setNestedObject', () => {
 							},
 						},
 					],
+				},
+			},
+		],
+		[
+			'newValue',
+			null,
+			[ 'a', 'b', '0', 'c' ],
+			{}, // Start from empty object.
+			{
+				a: {
+					b: [ { c: 'newValue' } ],
 				},
 			},
 		],
@@ -238,6 +270,7 @@ describe( 'setNestedObject', () => {
 		// Order is: value, defaultValue, keys, object, newObject.
 		[ 'newValue', null, [ 'a' ], { a: 'staleValue' }, { a: 'staleValue' } ],
 		[ false, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: {} } } ],
+		[ null, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: {} } } ],
 	] )(
 		'should updated a deeply nested value',
 		( value, defaultValue, keys, object, newObject ) => {
