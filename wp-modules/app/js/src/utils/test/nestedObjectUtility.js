@@ -257,7 +257,7 @@ describe( 'setNestedObject', () => {
 			},
 		],
 	] )(
-		'should updated a deeply nested value',
+		'should update a deeply nested value',
 		( value, defaultValue, keys, object, newObject ) => {
 			expect(
 				setNestedObject( value, defaultValue, keys )( object )
@@ -272,7 +272,7 @@ describe( 'setNestedObject', () => {
 		[ false, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: {} } } ],
 		[ null, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: {} } } ],
 	] )(
-		'should updated a deeply nested value',
+		'should update a deeply nested value',
 		( value, defaultValue, keys, object, newObject ) => {
 			expect(
 				setNestedObject( value, defaultValue, keys )( object )
