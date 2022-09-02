@@ -1,4 +1,37 @@
-import { _validateObjectLevel } from '../nestedObjectUtility';
+import { getNestedValue, _validateObjectLevel } from '../nestedObjectUtility';
+
+describe( 'getNestedValue', () => {
+	it.each( [
+		[ [ { a: 'nestedValue' } ], [ 0, 'a' ], 'nestedValue' ],
+		[ { a: { b: [ 'nestedValue' ] } }, [ 'a', 'b', 0 ], 'nestedValue' ],
+		[
+			{ a: { b: [ true, 33, 'nestedValue' ] } },
+			[ 'a', 'b', '2' ],
+			'nestedValue',
+		],
+		[
+			{
+				a: {
+					b: [
+						true,
+						{},
+						{
+							c: [ { d: 'nestedValue' }, false, 1, 2, {}, 3, 4 ],
+							e: 'anotherString',
+							f: {
+								g: [],
+							},
+						},
+					],
+				},
+			},
+			[ 'a', 'b', '2', 'c', 0, 'd' ],
+			'nestedValue',
+		],
+	] )( 'should return a deeply nested value', ( object, keys, value ) => {
+		expect( getNestedValue( object, keys, value ) ).toEqual( value );
+	} );
+} );
 
 describe( '_validateObjectLevel', () => {
 	it.each( [
