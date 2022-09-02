@@ -69,7 +69,7 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 				theRestOfTheKeys,
 				index + 1
 			);
-		} else {
+		} else if ( ! shouldDeleteValue ) {
 			// If there are no keys left, we've reached the target level!
 			// Store the result on the `currentKey`.
 			newObject[ currentKey ] = value;
