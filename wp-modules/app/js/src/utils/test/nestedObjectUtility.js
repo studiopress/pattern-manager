@@ -34,12 +34,9 @@ describe( 'getNestedValue', () => {
 			[ 'a', 'b', '2', 'c', 0, 'd' ],
 			'nestedValue',
 		],
-	] )(
-		'should return a deeply nested value',
-		( object, keys, expected ) => {
-			expect( getNestedValue( object, keys ) ).toEqual( expected );
-		}
-	);
+	] )( 'should return a deeply nested value', ( object, keys, expected ) => {
+		expect( getNestedValue( object, keys ) ).toEqual( expected );
+	} );
 } );
 
 describe( 'setNestedObject', () => {
