@@ -15,7 +15,7 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={ __( 'Theme Templates', 'fse-studio' ) }
+						alt={ __( 'Edit Theme Templates', 'fse-studio' ) }
 						className="w-full"
 						src={ imgThemeTemplate }
 					/>
@@ -50,7 +50,7 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={ __( 'Theme Template Parts', 'fse-studio' ) }
+						alt={ __( 'Edit Theme Template Parts', 'fse-studio' ) }
 						className="w-full"
 						src={ imgThemeTemplateParts }
 					/>
@@ -85,7 +85,7 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
-						alt="Theme Patterns"
+						alt="Edit Theme Patterns"
 						className="w-full"
 						src={ imgThemePatterns }
 					/>

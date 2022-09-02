@@ -116,7 +116,7 @@ export default function FseStudioNav() {
 						</span>
 						<img
 							aria-hidden="true"
-							alt="drop icon"
+							alt=""
 							className="ml-2"
 							src={ dropMenuIconRight }
 						/>
@@ -138,7 +138,7 @@ export default function FseStudioNav() {
 						{ __( 'FSE Studio', 'fse-studio' ) }{ ' ' }
 						<img
 							aria-hidden="true"
-							alt="drop icon"
+							alt=""
 							className="ml-2"
 							src={ dropMenuIcon }
 						/>
@@ -217,7 +217,7 @@ export default function FseStudioNav() {
 								{ __( 'Current Theme', 'fse-studio' ) }{ ' ' }
 								<img
 									aria-hidden="true"
-									alt="drop icon"
+									alt=""
 									className="ml-2"
 									src={ dropMenuIcon }
 								/>

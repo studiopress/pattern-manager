@@ -192,7 +192,7 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 						}
 					} }
 				>
-					{ __( 'Delete Color Palette Option', 'fse-studio' ) }
+					{ __( 'Delete Duotone Option', 'fse-studio' ) }
 				</button>
 			</div>
 		</div>

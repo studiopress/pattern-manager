@@ -18,7 +18,7 @@ export default function TemplateEditor() {
 
 	return (
 		<iframe
-			title={ __( 'Pattern Editor', 'fse-studio' ) }
+			title={ __( 'Template Editor', 'fse-studio' ) }
 			ref={ templateEditorIframe }
 			style={ {
 				width: '100%',

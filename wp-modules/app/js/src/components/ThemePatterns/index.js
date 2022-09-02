@@ -117,7 +117,7 @@ export default function ThemePatterns( { isVisible } ) {
 												type="button"
 												className="absolute bottom-16 left-2 z-50"
 												aria-label={ __(
-													'Duplicate',
+													'Duplicate Pattern',
 													'fse-studio'
 												) }
 												onClick={ () => {
