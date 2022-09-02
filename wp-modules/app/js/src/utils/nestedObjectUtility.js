@@ -97,8 +97,12 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
  * @param {string|number} key
  * @return {Object|Array} An empty object/array, or the unaffected object.
  */
-function _validateObjectLevel( object, key ) {
-	if ( ! object || object.length === 0 ) {
+export function _validateObjectLevel( object, key ) {
+	if (
+		! object ||
+		object.length === 0 ||
+		Object.keys( object ).length === 0
+	) {
 		return isNaN( Number( key ) ) ? {} : [];
 	}
 
