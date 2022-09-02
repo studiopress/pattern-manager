@@ -6,7 +6,8 @@ import {
 
 describe( 'getNestedValue', () => {
 	it.each( [
-		// Order is: object, keys, expectedValue.
+		// Order is: object, keys, expected.
+		[ [ {} ], [ 0, 'a' ], undefined ],
 		[ [ { a: 'nestedValue' } ], [ 0, 'a' ], 'nestedValue' ],
 		[ { a: { b: [ 'nestedValue' ] } }, [ 'a', 'b', 0 ], 'nestedValue' ],
 		[
@@ -35,16 +36,15 @@ describe( 'getNestedValue', () => {
 		],
 	] )(
 		'should return a deeply nested value',
-		( object, keys, expectedValue ) => {
-			expect( getNestedValue( object, keys ) ).toEqual( expectedValue );
+		( object, keys, expected ) => {
+			expect( getNestedValue( object, keys ) ).toEqual( expected );
 		}
 	);
 } );
 
 describe( 'setNestedObject', () => {
-	// Should strict equal...
 	it.each( [
-		// Order is: value, defaultValue, keys, object, newObject.
+		// Order is: value, defaultValue, keys, object, expected.
 		[ 'newValue', null, [ 'a' ], { a: 'staleValue' }, { a: 'newValue' } ],
 		[ false, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: false } } ],
 		[ false, false, [ 'a', 'b' ], { a: { b: {} } }, { a: {} } ],
@@ -265,20 +265,33 @@ describe( 'setNestedObject', () => {
 		}
 	);
 
-	// Should not equal...
 	it.each( [
-		// Order is: value, defaultValue, keys, object, newObject.
 		[ 'newValue', null, [ 'a' ], { a: 'staleValue' }, { a: 'staleValue' } ],
 		[ false, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: {} } } ],
 		[ null, null, [ 'a', 'b' ], { a: { b: {} } }, { a: { b: {} } } ],
 	] )(
 		'should update a deeply nested value',
-		( value, defaultValue, keys, object, newObject ) => {
+		( value, defaultValue, keys, object, expected ) => {
 			expect(
 				setNestedObject( value, defaultValue, keys )( object )
-			).not.toStrictEqual( newObject );
+			).not.toStrictEqual( expected );
 		}
 	);
+} );
+
+describe( 'integration', () => {
+	const keys = [ 'a', 'b' ];
+	const newValue = 'new';
+	expect(
+		getNestedValue(
+			setNestedObject(
+				newValue,
+				'defaultValue',
+				keys
+			)( { a: { b: 'stale' } } ),
+			keys
+		)
+	).toEqual( newValue );
 } );
 
 describe( '_validateObjectLevel', () => {
