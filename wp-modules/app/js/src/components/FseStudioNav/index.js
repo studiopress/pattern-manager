@@ -1,5 +1,5 @@
+/* eslint-disable react/no-unknown-property */
 // @ts-check
-/* eslint-ignore react/no-unknown-property */
 
 // WP, general dependencies
 import { __ } from '@wordpress/i18n';

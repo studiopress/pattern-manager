@@ -1,4 +1,4 @@
-/* eslint-ignore react/no-unknown-property */
+/* eslint-disable react/no-unknown-property */
 
 import { useEffect, useRef } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
