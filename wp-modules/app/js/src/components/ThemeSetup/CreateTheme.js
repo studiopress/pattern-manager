@@ -1,9 +1,15 @@
+import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 import ThemeDetails from './ThemeDetails';
 
 export default function CreateTheme( { children } ) {
 	const { currentTheme } = useStudioContext();
+	const fieldRef = useRef();
+
+	useEffect( () => {
+		fieldRef.current.focus();
+	}, [] );
 
 	return (
 		<div className="mx-auto p-8 lg:p-12">
@@ -18,6 +24,7 @@ export default function CreateTheme( { children } ) {
 						</label>
 						<div className="mt-1 sm:mt-0 sm:col-span-2">
 							<input
+								ref={ fieldRef }
 								disabled={
 									currentTheme.existsOnDisk &&
 									! currentTheme.themeNameIsDefault
@@ -25,6 +32,7 @@ export default function CreateTheme( { children } ) {
 								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 								type="text"
 								id="theme-name"
+								data-lpignore="true"
 								value={ currentTheme?.data?.name ?? '' }
 								onChange={ ( event ) => {
 									currentTheme.set( {
@@ -37,12 +45,12 @@ export default function CreateTheme( { children } ) {
 					</div>
 					<details className="mb-2 rounded-sm">
 						<summary className="py-4 focus:outline-none border-b border-grey-300 w-full group">
-							<h3 className="cursor-pointer group-focus-visible:text-wp-blue inline">
+							<h2 className="cursor-pointer group-focus-visible:text-wp-blue inline">
 								{ __(
 									'Additional Theme Details',
 									'fse-studio'
 								) }
-							</h3>
+							</h2>
 						</summary>
 						<ThemeDetails />
 					</details>
