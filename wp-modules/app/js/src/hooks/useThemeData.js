@@ -348,8 +348,7 @@ export default function useThemeData(
 		topLevelSection = 'settings',
 		selectorString,
 		value = null,
-		defaultValue = null,
-		_mode = 'overwrite' // eslint-disable-line
+		defaultValue = null
 	) {
 		const currentStyleValue = currentStyleVariationId?.value;
 
