@@ -486,6 +486,28 @@ window.addEventListener(
 				}, 200 );
 			}
 
+			if ( response.message === 'fsestudio_hotswapped_theme' ) {
+				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+				clearTimeout( fsestudioThemeJsonChangeDebounce );
+				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
+					wp.data.dispatch( 'core/notices' ).createNotice(
+						'warning', // Can be one of: success, info, warning, error.
+						'FSE Studio: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
+						{
+							id: 'fse-studio-refresh-pattern-editor-hotswap-notice',
+							isDismissible: false, // Whether the user can dismiss the notice.
+							// Any actions the user can perform.
+							actions: [
+								{
+									url: '',
+									label: 'Refresh Editor',
+								},
+							],
+						}
+					);
+				}, 200 );
+			}
+
 			if (
 				response.message === 'fsestudio_themejson_changed' ||
 				response.message === 'fsestudio_stylejson_changed'

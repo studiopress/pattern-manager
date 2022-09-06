@@ -408,7 +408,30 @@ function update_pattern( $pattern ) {
 }
 
 /**
- * WordPress's templart part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
+ * Deletes any pattern file whose name isn't present in the passed pattern names.
+ *
+ * @param string[] $pattern_names The pattern names to not delete.
+ */
+function delete_patterns_not_present( array $pattern_names ) {
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	if ( ! $wp_filesystem ) {
+		return;
+	}
+
+	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
+	if ( ! $pattern_file_paths ) {
+		return;
+	}
+
+	foreach ( $pattern_file_paths as $pattern_file ) {
+		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
+			$wp_filesystem->delete( $pattern_file );
+		}
+	}
+}
+
+/**
+ * WordPress's template part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
  * This function removes that attribute from any template part blocks in a pattern's content.
  *
  * @param string $pattern_content The HTML content for a pattern..

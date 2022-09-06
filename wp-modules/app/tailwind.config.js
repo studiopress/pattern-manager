@@ -4,10 +4,10 @@ module.exports = {
 		extend: {
 			colors: {
 				'wp-black': '#1e1e1e',
-				'wp-blue': '#007bba',
+				'wp-blue': '#0074ad',
 				'wp-blue-hover': '#006ba1',
 				'wp-gray': '#5d7179',
-				'fses-gray': '#F1F1F1',
+				'fses-gray': '#f1f1f1',
 			},
 		},
 	},

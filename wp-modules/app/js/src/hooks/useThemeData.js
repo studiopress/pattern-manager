@@ -11,7 +11,7 @@ import useSnackbarContext from './useSnackbarContext';
 import useStyleVariations from '../hooks/useStyleVariations';
 
 /**
- * @typedef {Partial<{
+ * @typedef {{
  *   id: string,
  *   name: string,
  *   namespace: string,
@@ -25,7 +25,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
- *   included_patterns: string[],
+ *   included_patterns?: Record<string, import('../components/PatternPicker').Pattern>,
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
@@ -38,7 +38,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   theme_json_file: string[],
  *   uri: string,
  *   version: string
- * }>} Theme
+ * }} Theme
  */
 
 /**
@@ -477,6 +477,32 @@ export default function useThemeData(
 		} );
 	}
 
+	/** @param {string} patternName */
+	function deletePattern( patternName ) {
+		if (
+			/* eslint-disable no-alert */
+			! window.confirm(
+				__(
+					'Are you sure you want to delete this pattern?',
+					'fse-studio'
+				)
+			)
+		) {
+			return;
+		}
+
+		const {
+			[ patternName ]: {},
+			...newIncludedPatterns
+		} = themeData.included_patterns ?? {};
+
+		setAutoSaveTheme( true );
+		setThemeData( {
+			...themeData,
+			included_patterns: newIncludedPatterns,
+		} );
+	}
+
 	/**
 	 * Allows the user to edit the theme.
 	 *
@@ -496,6 +522,7 @@ export default function useThemeData(
 		getThemeJsonValue,
 		setThemeJsonValue,
 		createPattern,
+		deletePattern,
 		get: getThemeData,
 		save: saveThemeData,
 		export: exportThemeData,

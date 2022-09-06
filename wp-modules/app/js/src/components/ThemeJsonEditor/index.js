@@ -6,7 +6,6 @@ import React from 'react';
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, check } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import useStyleVariations from '../../hooks/useStyleVariations';
@@ -120,18 +119,6 @@ export default function ThemeJsonEditor( { visible } ) {
 									</p>
 								</div>
 								<div className="flex items-center">
-									{ currentTheme.hasSaved ?
-										(
-											<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-												<Icon
-													className="fill-current"
-													icon={ check }
-													size={ 26 }
-												/>{ ' ' }
-												{ __( 'Settings Saved!', 'fse-studio' ) }
-											</span>
-										) : null
-									}
 									<button
 										type="button"
 										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
@@ -150,9 +137,12 @@ export default function ThemeJsonEditor( { visible } ) {
 						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
 							<div className="flex flex-col gap-5">
 								<div>
-									<h4 className="mb-2 font-medium">
+									<h2 className="sr-only">
+										{ __( 'Style Variations', 'fse-studio' ) }
+									</h2>
+									<h3 className="mb-2 font-medium">
 										{ __( 'Current Style Variation', 'fse-studio' ) }
-									</h4>
+									</h3>
 									<p className="text-base">
 										{ __( 'Select the style variation you would like to work on.', 'fse-studio' ) }
 									</p>
@@ -175,9 +165,9 @@ export default function ThemeJsonEditor( { visible } ) {
 						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
 							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 								<div className="flex flex-col gap-5">
-									<h4 className="mb-2 font-medium">
+									<h3 className="mb-2 font-medium">
 										{ __( 'Create a style variation', 'fse-studio' ) }
-									</h4>
+									</h3>
 									<p className="text-base">
 										{ __(
 											'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
@@ -193,6 +183,12 @@ export default function ThemeJsonEditor( { visible } ) {
 								</div>
 
 								<div className="mt-1 sm:mt-0 sm:col-span-2 flex flex-wrap">
+									<label
+										htmlFor="style-variation-name"
+										className="block text-sm font-medium text-gray-700 visuallyhidden"
+									>
+										{ __( 'Enter a style variation name', 'fse-studio' ) }
+									</label>
 									<input
 										className="w-8/12 md:w-full xl:w-8/12 !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-sm !h-12"
 										type="text"
@@ -245,6 +241,9 @@ export default function ThemeJsonEditor( { visible } ) {
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
+								<h2 className="sr-only">
+										{ __( 'Documentation', 'fse-studio' ) }
+								</h2>
 								<h3 className="mb-2 font-medium">Working with theme.json</h3>
 								<p className="text-base mb-3">Theme.json is a configuration file for your theme that allows you to control colors, customization options, font sizes, presets, and more. </p>
 								<p className="text-base">This interface let's you visually see and change all of the settings and customizations available via theme.json.</p>
@@ -373,13 +372,15 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 		renderedProperties.push(
 			<div key={propertyName} hidden={!isVisible} className={`fses-${convertToCssClass(propertyName)} fses-type-${convertToCssClass(properties[propertyName].type) || "boolean" }`}>
 				<div className="grid grid-cols-4 gap-6 py-6 items-top">
-					<label
-						htmlFor={propertyName}
+					<div
 						className="block font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]"
 					>
-						<h2>{ convertToUpperCase( propertyName ) }</h2>
+						<h2
+							id={ convertToCssClass( propertyName ) }
+						>
+							{ convertToUpperCase( propertyName ) }</h2>
 						<p className="font-normal text-base">{properties[propertyName].description}</p>
-					</label>
+					</div>
 					<div className={`mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${convertToCssClass(schemaPosition + '.' + propertyName)}`}>
 						<RenderProperty
 							key={propertyName}
@@ -409,6 +410,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 			type="checkbox"
 			id={propertyName}
 			name={propertyName}
+			aria-labelledby={ convertToCssClass( propertyName ) }
 			checked={ currentValue }
 			onChange={( event ) => {
 				currentTheme.setThemeJsonValue( 'settings', schemaPosition, currentValue ? false : true, propertySchema?.default );
@@ -561,7 +563,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 function ValueSetter({name, value, onChange}) {
 	
-	return <input name={name} type="text" value={value} onChange={(event) => {
+	return <input aria-labelledby={ convertToCssClass( name ) } name={name} type="text" value={value} onChange={(event) => {
 		onChange(event.target.value);
 	}} />
 }
