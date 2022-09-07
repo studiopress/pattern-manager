@@ -15,16 +15,16 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={ __( 'Theme Templates', 'fse-studio' ) }
+						alt={ __( 'Edit Theme Templates', 'fse-studio' ) }
 						className="w-full"
 						src={ imgThemeTemplate }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
-						<h3 className="text-2xl font-semibold">
+						<h2 className="text-2xl font-semibold">
 							{ __( 'Theme Templates', 'fse-studio' ) }
-						</h3>
+						</h2>
 						<p className="text-base">
 							{ __(
 								'Use theme template files to affect the layout and design of different parts of your website, like pages and posts.',
@@ -50,16 +50,16 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={ __( 'Theme Template Parts', 'fse-studio' ) }
+						alt={ __( 'Edit Theme Template Parts', 'fse-studio' ) }
 						className="w-full"
 						src={ imgThemeTemplateParts }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
-						<h3 className="text-2xl font-semibold">
+						<h2 className="text-2xl font-semibold">
 							{ __( 'Template Parts', 'fse-studio' ) }
-						</h3>
+						</h2>
 						<p className="text-base">
 							{ __(
 								'Template parts, such as a site header and footer, can be used as common elements across templates.',
@@ -85,16 +85,16 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
-						alt="Theme Patterns"
+						alt="Edit Theme Patterns"
 						className="w-full"
 						src={ imgThemePatterns }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
-						<h3 className="text-2xl font-semibold">
+						<h2 className="text-2xl font-semibold">
 							{ __( 'Theme Patterns', 'fse-studio' ) }
-						</h3>
+						</h2>
 						<p className="text-base">
 							{ __(
 								'Create, edit, and manage patterns (pre-configured designs), to be used across your theme.',
@@ -127,9 +127,9 @@ export default function ThemeOverview() {
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
-						<h3 className="text-2xl font-semibold">
+						<h2 className="text-2xl font-semibold">
 							{ __( 'Styles and Settings', 'fse-studio' ) }
-						</h3>
+						</h2>
 						<p className="text-base">
 							{ __(
 								'Use this tool to configure the theme.json file and set your theme styles and block settings.',
@@ -162,9 +162,9 @@ export default function ThemeOverview() {
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
-						<h3 className="text-2xl font-semibold">
+						<h2 className="text-2xl font-semibold">
 							{ __( 'Style Variations', 'fse-studio' ) }
-						</h3>
+						</h2>
 						<p className="text-base">
 							{ __(
 								'Create, edit, and save a variety of swappable theme settings and styles in your theme.json file.',
@@ -197,9 +197,9 @@ export default function ThemeOverview() {
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
-						<h3 className="text-2xl font-semibold">
+						<h2 className="text-2xl font-semibold">
 							{ __( 'Download Theme Zip', 'fse-studio' ) }
-						</h3>
+						</h2>
 						<p className="text-base">
 							{ __(
 								"Once you've finished editing your theme, you can export to a zip or use git to manage it.",

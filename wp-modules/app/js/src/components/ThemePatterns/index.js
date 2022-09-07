@@ -74,6 +74,10 @@ export default function ThemePatterns( { isVisible } ) {
 											<button
 												type="button"
 												className="absolute top-2 right-2 z-50"
+												aria-label={ __(
+													'Delete pattern',
+													'fse-studio'
+												) }
 												onClick={ () => {
 													currentTheme.deletePattern(
 														patternName
@@ -89,6 +93,10 @@ export default function ThemePatterns( { isVisible } ) {
 											<button
 												type="button"
 												className="absolute top-2 left-2 z-50"
+												aria-label={ __(
+													'Edit Pattern',
+													'fse-studio'
+												) }
 												onClick={ () => {
 													currentPatternId.set(
 														patternName
@@ -108,6 +116,10 @@ export default function ThemePatterns( { isVisible } ) {
 											<button
 												type="button"
 												className="absolute bottom-16 left-2 z-50"
+												aria-label={ __(
+													'Duplicate Pattern',
+													'fse-studio'
+												) }
 												onClick={ () => {
 													currentPatternId.set(
 														patternName
@@ -136,9 +148,9 @@ export default function ThemePatterns( { isVisible } ) {
 												/>
 											</div>
 											<div>
-												<h3 className="text-sm bg-white p-4 rounded-b">
+												<h2 className="text-sm bg-white p-4 rounded-b">
 													{ patternData.title }
-												</h3>
+												</h2>
 											</div>
 										</div>
 									);
@@ -150,9 +162,12 @@ export default function ThemePatterns( { isVisible } ) {
 					<div className="flex-1 w-full md:w-1/3 text-base">
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
-								<h4 className="mb-2 font-medium">
+								<h2 className="sr-only">
+									{ __( 'Pattern Creation', 'fse-studio' ) }
+								</h2>
+								<h3 className="mb-2 font-medium">
 									Create new patterns
-								</h4>
+								</h3>
 								<p className="text-base mb-5">
 									Create new patterns for your theme using the
 									button below. Patterns will appear on this
@@ -195,9 +210,12 @@ export default function ThemePatterns( { isVisible } ) {
 
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
-								<h4 className="mb-2 font-medium">
+								<h2 className="sr-only">
+									{ __( 'Documentation', 'fse-studio' ) }
+								</h2>
+								<h3 className="mb-2 font-medium">
 									Working with patterns
-								</h4>
+								</h3>
 								<p className="text-base">
 									Block patterns are predefined block layouts
 									that make up your website. A pattern can be
@@ -207,9 +225,9 @@ export default function ThemePatterns( { isVisible } ) {
 								</p>
 							</div>
 							<div>
-								<h4 className="mb-2 font-medium">
+								<h3 className="mb-2 font-medium">
 									Helpful Documentation
-								</h4>
+								</h3>
 								<ul>
 									<li>
 										<a
