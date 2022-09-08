@@ -141,7 +141,7 @@ function export_theme( $theme ) {
 		return new \WP_Error( 'file_not_found', __( 'Zip file not found', 'fse-studio' ) );
 	}
 
-	$zip_url = str_replace( WP_CONTENT_DIR, WP_CONTENT_URL, $zip_name );
+	$zip_url = str_replace( trailingslashit( $wp_filesystem->wp_content_dir() ), trailingslashit( WP_CONTENT_URL ), $zip_name );
 
 	\FseStudio\Tracky\send_event(
 		array(
