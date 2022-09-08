@@ -22,6 +22,7 @@ import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
 import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
+import usePatterns from '../../hooks/usePatterns';
 import useStudioContext from '../../hooks/useStudioContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
@@ -50,6 +51,7 @@ import FseStudioNav from '../FseStudioNav';
  *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
  *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
  *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings,
+ *  patterns: ReturnType<import('../../hooks/usePatterns').default>,
  *  patternEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement|undefined>>,
  *  templateEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement|undefined>>
  * }} InitialContext
@@ -74,6 +76,7 @@ function FseStudioContextHydrator() {
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
+	const patterns = usePatterns();
 
 	const currentStyleVariationId = useCurrentId( 'default-style' );
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
@@ -82,7 +85,8 @@ function FseStudioContextHydrator() {
 		themes,
 		patternEditorIframe,
 		templateEditorIframe,
-		currentStyleVariationId
+		currentStyleVariationId,
+		patterns
 	);
 
 	const currentPatternId = useCurrentId( '' );
@@ -127,6 +131,7 @@ function FseStudioContextHydrator() {
 		currentThemeId,
 		currentTheme,
 		currentStyleVariationId,
+		patterns,
 		siteUrl: fsestudio.siteUrl,
 		apiEndpoints: fsestudio.apiEndpoints,
 		blockEditorSettings: fsestudio.blockEditorSettings,
