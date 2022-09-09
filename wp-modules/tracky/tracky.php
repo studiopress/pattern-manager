@@ -29,9 +29,6 @@ function send_event( $event_data ) {
 
 	$current_user = wp_get_current_user();
 
-	// Create a hash that is anonymous to use as the ID.
-	//$user_identifier = wp_hash( get_bloginfo( 'url' ) . get_current_user_id() );
-
 	// Instead of anonymously tracking, FSE Studio is now tracking user emails with every action taken.
 	$user_identifier = $current_user->user_email;
 
