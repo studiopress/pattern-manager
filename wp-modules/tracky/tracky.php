@@ -46,7 +46,7 @@ function send_event( $event_data ) {
 					array_merge(
 						array(
 							'userId'          => $user_identifier,
-							'trackingVersion' => '1.0.0',
+							'trackingVersion' => '1.0.1',
 						),
 						$event_data
 					)
