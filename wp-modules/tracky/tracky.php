@@ -27,8 +27,10 @@ function send_event( $event_data ) {
 		return;
 	}
 
-	// Create a hash that is anonymous to use as the ID.
-	$anonymous_user_id = wp_hash( get_bloginfo( 'url' ) . get_current_user_id() );
+	$current_user = wp_get_current_user();
+
+	// Instead of anonymously tracking, FSE Studio is now tracking user emails with every action taken.
+	$user_identifier = $current_user->user_email;
 
 	// Send an event to WP Engine.
 	$result = wp_remote_post(
@@ -40,8 +42,8 @@ function send_event( $event_data ) {
 				'event_data' => wp_json_encode(
 					array_merge(
 						array(
-							'userId'          => $anonymous_user_id,
-							'trackingVersion' => '1.0.0',
+							'userId'          => $user_identifier,
+							'trackingVersion' => '1.0.1',
 						),
 						$event_data
 					)
