@@ -70,7 +70,6 @@ export default function useThemeData(
 		} );
 	}
 
-	const [ existsOnDisk, setExistsOnDisk ] = useState( !! themeData );
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
@@ -202,9 +201,7 @@ export default function useThemeData(
 						response.error === 'theme_not_found'
 					) {
 						setThemeData( themes.themes[ themeId ] );
-						setExistsOnDisk( false );
 					} else {
-						setExistsOnDisk( true );
 						setThemeData( response );
 						resolve( response );
 					}
@@ -310,7 +307,6 @@ export default function useThemeData(
 			editorDirty.current = false;
 			setPatternEditorDirty( false );
 			setSiteEditorDirty( false );
-			setExistsOnDisk( true );
 			setSaveCompleted( true );
 			setIsSaving( false );
 			patterns?.reloadPatternPreviews();
@@ -513,8 +509,6 @@ export default function useThemeData(
 		get: getThemeData,
 		save: saveThemeData,
 		export: exportThemeData,
-		existsOnDisk,
-		setExistsOnDisk,
 		saveCompleted,
 		isSaving,
 		fetchInProgress,

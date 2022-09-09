@@ -10,11 +10,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 import { fsestudio } from '../../globals';
 
 export default function TemplateEditor() {
-	const { templateEditorIframe, currentTheme } = useStudioContext();
-
-	if ( ! currentTheme?.existsOnDisk ) {
-		return '';
-	}
+	const { templateEditorIframe } = useStudioContext();
 
 	return (
 		<iframe

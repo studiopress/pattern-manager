@@ -172,7 +172,7 @@ function FseStudio() {
 						</div>
 
 						<div className="flex flex-wrap gap-2">
-							{ currentTheme?.existsOnDisk ? (
+							{ currentView?.currentView !== 'create_theme' ? (
 								<>
 									<button
 										type="button"

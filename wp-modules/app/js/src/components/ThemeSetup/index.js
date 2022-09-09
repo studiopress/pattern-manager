@@ -74,12 +74,6 @@ export default function ThemeSetup( { isVisible } ) {
 									) }
 									onClick={ () => {
 										setCurrentTab( Tabs.EditThemeDetails );
-
-										if ( ! currentTheme.existsOnDisk ) {
-											setDisplayThemeCreatedNotice(
-												true
-											);
-										}
 									} }
 								>
 									{ __( 'Edit Theme Details', 'fse-studio' ) }

@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
-import { useEffect } from 'react';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -12,16 +11,6 @@ export default function SaveTheme( {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
 
-	// Update the view after successful saving of new theme.
-	useEffect( () => {
-		if (
-			currentTheme?.existsOnDisk &&
-			'create_theme' === currentView?.currentView
-		) {
-			currentView?.set( 'theme_setup' );
-		}
-	}, [ currentTheme?.existsOnDisk ] );
-
 	return currentTheme.isSaving ? (
 		<Spinner className="mt-5 mx-0 h-10 w-10" />
 	) : (
@@ -32,11 +21,10 @@ export default function SaveTheme( {
 						type="button"
 						className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						onClick={ () => {
-							if ( ! currentTheme.existsOnDisk ) {
+							currentTheme.save().then( () => {
+								currentView.set( 'theme_setup' );
 								setDisplayThemeCreatedNotice( true );
-							}
-
-							currentTheme.save();
+							} );
 						} }
 					>
 						{ __( 'Save Your Theme', 'fse-studio' ) }
@@ -52,7 +40,6 @@ export default function SaveTheme( {
 									...modifiedThemes
 								} = themes.themes;
 								themes.setThemes( modifiedThemes );
-								currentTheme.setExistsOnDisk( true );
 
 								currentThemeId.set(
 									Object.keys( themes.themes )[ 0 ]
