@@ -17,7 +17,7 @@ import { fsestudio } from '../../globals';
 export default function ThemePatterns( { isVisible } ) {
 	const { currentTheme, currentView, currentPatternId } = useStudioContext();
 
-	if ( ! currentTheme.data ) {
+	if ( ! isVisible || ! currentTheme.data ) {
 		return '';
 	}
 

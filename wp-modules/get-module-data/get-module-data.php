@@ -21,8 +21,8 @@ if ( ! function_exists( 'module_dir_path' ) ) {
 	 * @return string
 	 */
 	function module_dir_path( string $file_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-		preg_match_all( '~.+?(?=wp-modules\/+)wp-modules\/.+?(?=\/)\/~', $file_path, $output_array );
-		return trailingslashit( $output_array[0][0] );
+		preg_match_all( '/.+?(?=wp-modules(\/|\\\)+)wp-modules(\/|\\\).+?(?=(\/|\\\))(\/|\\\)/', $file_path, $output_array );
+		return trailingslashit( str_replace( '\\', '/', $output_array[0][0] ) );
 	}
 }
 
@@ -34,7 +34,8 @@ if ( ! function_exists( 'module_dir_url' ) ) {
 	 * @return string
 	 */
 	function module_dir_url( string $file_path ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-		preg_match_all( '~(?<=plugins\/).+?(?=wp-modules)wp-modules\/.+?(?=\/)\/~', $file_path, $output_array );
+		preg_match_all( '~(?<=plugins(\/|\\\)).+?(?=wp-modules)wp-modules(\/|\\\).+?(?=(\/|\\\))(\/|\\\)~', $file_path, $output_array );
 		return plugins_url( $output_array[0][0] );
 	}
 }
+

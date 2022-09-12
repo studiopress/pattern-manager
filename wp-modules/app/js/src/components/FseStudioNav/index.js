@@ -90,21 +90,7 @@ export default function FseStudioNav() {
 								if (
 									'create_theme' === currentView?.currentView
 								) {
-									currentTheme?.setExistsOnDisk( true );
 									currentView?.set( 'theme_setup' );
-								}
-
-								/**
-								 * Existing FSES theme was selected from nav in GettingStarted.
-								 * Usually you would not land here if there were existing FSES themes.
-								 * This catches if last selected theme was deleted from disk before page refresh.
-								 */
-								if (
-									'theme_setup' ===
-										currentView?.currentView &&
-									! currentTheme?.existsOnDisk
-								) {
-									currentTheme?.setExistsOnDisk( true );
 								}
 							} }
 						>
@@ -120,9 +106,7 @@ export default function FseStudioNav() {
 			// There should be at least 1 theme other than the currently selected theme.
 			// Or the current theme should have been saved to disk.
 			Object.keys( themes?.themes || {} ).some(
-				( themeName ) =>
-					themeName !== currentThemeId?.value ||
-					currentTheme?.existsOnDisk
+				( themeName ) => themeName !== currentThemeId?.value
 			) ? (
 				<>
 					<button
@@ -185,7 +169,6 @@ export default function FseStudioNav() {
 								type="button"
 								onClick={ () => {
 									createNewTheme( themes, currentThemeId );
-									currentTheme?.setExistsOnDisk( false );
 									currentView?.set( 'create_theme' );
 								} }
 							>
@@ -232,7 +215,7 @@ export default function FseStudioNav() {
 						</li>
 					</ul>
 				</li>
-				{ currentTheme?.existsOnDisk ? (
+				{ currentView?.currentView !== 'create_theme' ? (
 					<>
 						<li>
 							<button
@@ -315,12 +298,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme?.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
@@ -338,12 +316,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme?.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
@@ -361,12 +334,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
@@ -388,12 +356,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme?.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +

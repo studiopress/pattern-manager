@@ -25,10 +25,7 @@ export default function CreateTheme( { children } ) {
 						<div className="mt-1 sm:mt-0 sm:col-span-2">
 							<input
 								ref={ fieldRef }
-								disabled={
-									currentTheme.existsOnDisk &&
-									! currentTheme.themeNameIsDefault
-								}
+								disabled={ currentTheme.isSaving }
 								className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 								type="text"
 								id="theme-name"
