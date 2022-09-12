@@ -31,7 +31,7 @@ export default function ThemeSetup( { isVisible } ) {
 		return null;
 	}
 
-	return currentTheme.existsOnDisk ? (
+	return 'theme_setup' === currentView.currentView ? (
 		<Container
 			heading={ sprintf(
 				/* translators: %1$s: The theme name */
@@ -74,12 +74,6 @@ export default function ThemeSetup( { isVisible } ) {
 									) }
 									onClick={ () => {
 										setCurrentTab( Tabs.EditThemeDetails );
-
-										if ( ! currentTheme.existsOnDisk ) {
-											setDisplayThemeCreatedNotice(
-												true
-											);
-										}
 									} }
 								>
 									{ __( 'Edit Theme Details', 'fse-studio' ) }

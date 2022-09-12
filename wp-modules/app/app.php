@@ -46,6 +46,7 @@ function get_app_state() {
 			'getThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
 			'saveThemeEndpoint'         => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
 			'exportThemeEndpoint'       => get_rest_url( false, 'fsestudio/v1/export-theme/' ),
+			'switchThemeEndpoint'       => get_rest_url( false, 'fsestudio/v1/switch-theme/' ),
 			'getThemeJsonFileEndpoint'  => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
 			'saveThemeJsonFileEndpoint' => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
 		),

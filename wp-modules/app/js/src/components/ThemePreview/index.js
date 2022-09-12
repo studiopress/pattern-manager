@@ -24,10 +24,6 @@ export default function ThemePreview( { isVisible } ) {
 		}
 	}, [ currentTheme.fetchInProgress ] );
 
-	if ( ! currentTheme?.existsOnDisk ) {
-		return '';
-	}
-
 	return (
 		<div
 			style={ {

@@ -5,6 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
 import convertToPascalCase from '../utils/convertToPascalCase';
+import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
 import useSnackbarContext from './useSnackbarContext';
@@ -42,27 +43,33 @@ import useStyleVariations from '../hooks/useStyleVariations';
  */
 
 /**
- * @param {string}                                    themeId
- * @param {ReturnType<import('./useThemes').default>} themes
- * @param {Object}                                    patternEditorIframe
- * @param {Object}                                    templateEditorIframe
- * @param {Object}                                    currentStyleVariationId
+ * @param {string|undefined}                            themeId
+ * @param {ReturnType<import('./useThemes').default>}   themes
+ * @param {Object}                                      patternEditorIframe
+ * @param {Object}                                      templateEditorIframe
+ * @param {Object}                                      currentStyleVariationId
+ * @param {ReturnType<import('./usePatterns').default>} patterns
  */
 export default function useThemeData(
 	themeId,
 	themes,
 	patternEditorIframe,
 	templateEditorIframe,
-	currentStyleVariationId
+	currentStyleVariationId,
+	patterns
 ) {
 	const snackBar = useSnackbarContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
-	const [ themeData, setThemeData ] = useState( themes.themes[ themeId ] );
-	const [ existsOnDisk, setExistsOnDisk ] = useState(
-		themes.themes[ themeId ] ? true : false
-	);
+	const themeData = themes.themes[ themeId ];
+	function setThemeData( newThemeData ) {
+		themes.setThemes( {
+			...themes.themes,
+			[ themeId ]: newThemeData,
+		} );
+	}
+
 	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
@@ -141,15 +148,6 @@ export default function useThemeData(
 	}, [ themeData ] );
 
 	useEffect( () => {
-		// If the themeId passed in changes, get the new theme data related to it.
-		if ( themeId ) {
-			getThemeData();
-		}
-
-		setThemeNameIsDefault( false );
-	}, [ themeId ] );
-
-	useEffect( () => {
 		if ( themeData?.name ) {
 			setThemeData( {
 				...themeData,
@@ -189,11 +187,7 @@ export default function useThemeData(
 			setFetchInProgress( true );
 			fetch( fsestudio.apiEndpoints.getThemeEndpoint, {
 				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': fsestudio.apiNonce,
-				},
+				headers: getHeaders(),
 				body: JSON.stringify( {
 					themeId,
 					preExistingTheme: themeData,
@@ -207,9 +201,7 @@ export default function useThemeData(
 						response.error === 'theme_not_found'
 					) {
 						setThemeData( themes.themes[ themeId ] );
-						setExistsOnDisk( false );
 					} else {
-						setExistsOnDisk( true );
 						setThemeData( response );
 						resolve( response );
 					}
@@ -233,11 +225,7 @@ export default function useThemeData(
 			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': fsestudio.apiNonce,
-				},
+				headers: getHeaders(),
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => {
@@ -319,9 +307,9 @@ export default function useThemeData(
 			editorDirty.current = false;
 			setPatternEditorDirty( false );
 			setSiteEditorDirty( false );
-			setExistsOnDisk( true );
 			setSaveCompleted( true );
 			setIsSaving( false );
+			patterns?.reloadPatternPreviews();
 		} );
 	}
 
@@ -329,11 +317,7 @@ export default function useThemeData(
 		return new Promise( ( resolve ) => {
 			fetch( fsestudio.apiEndpoints.exportThemeEndpoint, {
 				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'X-WP-Nonce': fsestudio.apiNonce,
-				},
+				headers: getHeaders(),
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => response.json() )
@@ -525,7 +509,6 @@ export default function useThemeData(
 		get: getThemeData,
 		save: saveThemeData,
 		export: exportThemeData,
-		existsOnDisk,
 		saveCompleted,
 		isSaving,
 		fetchInProgress,

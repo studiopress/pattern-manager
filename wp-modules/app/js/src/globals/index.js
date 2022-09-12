@@ -8,6 +8,7 @@
  *   getThemeJsonFileEndpoint: string,
  *   savePatternEndpoint: string,
  *   saveThemeEndpoint: string,
+ *   switchThemeEndpoint: string,
  *   saveThemeJsonFileEndpoint:	string,
  *   exportThemeEndpoint:	string,
  *  },

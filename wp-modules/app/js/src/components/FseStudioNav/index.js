@@ -12,6 +12,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 // Utils
 import createNewTheme from '../../utils/createNewTheme';
+import switchThemeOnBackEnd from '../../utils/switchThemeOnBackEnd';
 
 // Images
 import dropMenuIcon from '../../../../img/drop-arrow.svg';
@@ -23,6 +24,7 @@ export default function FseStudioNav() {
 		currentTheme,
 		themes,
 		currentThemeId,
+		patterns,
 		patternEditorIframe,
 		templateEditorIframe,
 	} = useStudioContext();
@@ -72,10 +74,24 @@ export default function FseStudioNav() {
 							type="button"
 							onClick={ () => {
 								currentThemeId?.set( key );
-
+								switchThemeOnBackEnd(
+									items[ key ]?.dirname
+								).then( () => {
+									patterns?.reloadPatternPreviews();
+								} );
 								maybePostWindowMessage(
 									'fsestudio_hotswapped_theme'
 								);
+
+								/**
+								 * Existing FSES theme was selected from nav in SaveTheme.
+								 * This action should effectively act as a cancel.
+								 */
+								if (
+									'create_theme' === currentView?.currentView
+								) {
+									currentView?.set( 'theme_setup' );
+								}
 							} }
 						>
 							{ name }
@@ -90,9 +106,7 @@ export default function FseStudioNav() {
 			// There should be at least 1 theme other than the currently selected theme.
 			// Or the current theme should have been saved to disk.
 			Object.keys( themes?.themes || {} ).some(
-				( themeName ) =>
-					themeName !== currentThemeId?.value ||
-					currentTheme?.existsOnDisk
+				( themeName ) => themeName !== currentThemeId?.value
 			) ? (
 				<>
 					<button
@@ -155,6 +169,7 @@ export default function FseStudioNav() {
 								type="button"
 								onClick={ () => {
 									createNewTheme( themes, currentThemeId );
+									currentView?.set( 'create_theme' );
 								} }
 							>
 								<svg
@@ -200,7 +215,7 @@ export default function FseStudioNav() {
 						</li>
 					</ul>
 				</li>
-				{ currentTheme?.existsOnDisk ? (
+				{ currentView?.currentView !== 'create_theme' ? (
 					<>
 						<li>
 							<button
@@ -283,12 +298,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme?.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
@@ -306,12 +316,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme?.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
@@ -329,12 +334,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
@@ -356,12 +356,7 @@ export default function FseStudioNav() {
 						</li>
 						<li>
 							<button
-								disabled={
-									currentTheme?.data &&
-									currentTheme.existsOnDisk
-										? false
-										: true
-								}
+								disabled={ ! currentTheme?.data }
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
