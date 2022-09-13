@@ -2,14 +2,13 @@ import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
 
 import useStudioContext from '../../hooks/useStudioContext';
+import useNoticeContext from '../../hooks/useNoticeContext';
 
-/** @param {{displayCancelButton: boolean, setDisplayThemeCreatedNotice: (boolean) => void}} props */
-export default function SaveTheme( {
-	displayCancelButton,
-	setDisplayThemeCreatedNotice,
-} ) {
+/** @param {{displayCancelButton: boolean}} props */
+export default function SaveTheme( { displayCancelButton } ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
+	const { setDisplayThemeCreatedNotice } = useNoticeContext();
 
 	return currentTheme.isSaving ? (
 		<Spinner className="mt-5 mx-0 h-10 w-10" />
@@ -44,8 +43,6 @@ export default function SaveTheme( {
 								currentThemeId.set(
 									Object.keys( themes.themes )[ 0 ]
 								);
-
-								setDisplayThemeCreatedNotice( false );
 
 								currentView?.set( 'theme_setup' );
 							} }

@@ -7,7 +7,7 @@ import * as React from '@wordpress/element';
  *  heading: string
  * }} props
  */
-export default function Container( { children, description, heading } ) {
+export default function ViewContainer( { children, description, heading } ) {
 	return (
 		<div className="flex-1">
 			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">

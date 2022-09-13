@@ -4,13 +4,21 @@ import { useEffect, useRef } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
+import useNoticeContext from '../../hooks/useNoticeContext';
 
 export default function ThemeCreatedNotice( { onDismiss } ) {
 	const { currentView } = useStudioContext();
+	const { setDisplayThemeCreatedNotice } = useNoticeContext();
 	const buttonRef = useRef();
 
 	useEffect( () => {
 		buttonRef.current.focus();
+
+		return () => {
+			// If you navigate away from the menu item or tab that shows this notice,
+			// this notice shouldn't show when you come back.
+			setDisplayThemeCreatedNotice( false );
+		};
 	}, [] );
 
 	return (

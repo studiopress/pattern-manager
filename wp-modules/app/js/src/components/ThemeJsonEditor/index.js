@@ -26,7 +26,7 @@ import convertToUpperCase from '../../utils/convertToUpperCase';
 export default function ThemeJsonEditor( { visible } ) {
 	/* eslint-disable */
 	const { currentTheme, currentStyleVariationId } = useStudioContext();
-	
+
 	if ( ! currentTheme?.data?.theme_json_file ) {
 		return ''
 	}
@@ -88,7 +88,7 @@ export default function ThemeJsonEditor( { visible } ) {
 			</select>
 		);
 	}
-	
+
 	return (
 		<div hidden={ ! visible } className="fsestudio-theme-manager">
 			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
@@ -268,41 +268,41 @@ export default function ThemeJsonEditor( { visible } ) {
 function getSettingsFromThemeJsonSchema() {
 
 	const listOfSettingsInSchema = {};
-	
+
 	const propertiesComplete = fsestudio.schemas.themejson.definitions['settingsPropertiesComplete'];
 
 	for ( const setting in fsestudio.schemas.themejson.definitions ) {
 		// Skip schemas that are not settings.
 		if ( setting === 'settingsPropertiesComplete' || ! setting.startsWith( 'settingsProperties' ) ) { continue }
-		
+
 		// Get the data for this setting from the schema.
 		const settingData = fsestudio.schemas.themejson.definitions[setting];
-	
+
 		// Loop through each property in each setting in the schema.
 		for ( const propertyName in settingData.properties ) {
 			// If this is not a "setting" that is defined inside propertiesComplete, skip it.
 			if ( ! ( propertyName in propertiesComplete.allOf[1].properties ) ) { continue }
-			
+
 			// FSE Studio does not yet handle the "blocks"
 			if ( ! ( propertyName in propertiesComplete.allOf[1].properties ) ) { continue }
 
 			listOfSettingsInSchema[propertyName] = settingData;
 		}
 	}
-	
+
 	return listOfSettingsInSchema;
 }
 
 function SettingsView({ isVisible }) {
 	const { currentTheme } = useStudioContext();
 	const [ currentView, setCurrentView ] = useState( 'color' );
-	
+
 	// Use the themeJson schema and currentTheme.themeJson to generate the settings and values.
 	const rendered = [];
 	const tabs = [];
-	
+
 	const settings = getSettingsFromThemeJsonSchema();
-	
+
 	for ( const setting in settings ) {
 		if ( setting === 'custom' || setting === 'appearanceTools' ) {
 			continue;
@@ -395,7 +395,7 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 			</div>
 		)
 	}
-	
+
 	return <div className={`divide-y divide-gray-200 fses-${convertToCssClass(schemaPosition)}`}>{renderedProperties}</div>
 }
 
@@ -420,7 +420,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 	if (
 		propertySchema.type === 'string' || propertySchema.type === 'number'
 	) {
-		
+
 		return <ValueSetter
 			key={schemaPosition}
 			name={ propertyName }
@@ -454,7 +454,7 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 		// If this setting does not exist in the current theme.json file.
 		if ( ! currentValue ) {
-			return <button 
+			return <button
 				key={'addAnother'}
 				onClick={() => {
 					currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.0', getBlankArrayFromSchema(propertySchema.items), null );
@@ -540,11 +540,10 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 
 			rendered.push(
 				<div key={'addAndRemoveButtons'}>
-					<button 
+					<button
 						key={'addAnother'}
 						onClick={() => {
 							console.log(  schemaPosition + '.' + Object.keys(currentValue).length );
-							
 							currentTheme.setThemeJsonValue( 'settings', schemaPosition + '.' + Object.keys(currentValue).length, getBlankArrayFromSchema(propertySchema.items), null );
 						}}
 						className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
@@ -556,13 +555,12 @@ function RenderProperty( {isVisible, propertySchema, propertyName, schemaPositio
 		}
 		return rendered;
 	}
-	
+
 	return null;
-	
+
 }
 
 function ValueSetter({name, value, onChange}) {
-	
 	return <input aria-labelledby={ convertToCssClass( name ) } name={name} type="text" value={value} onChange={(event) => {
 		onChange(event.target.value);
 	}} />

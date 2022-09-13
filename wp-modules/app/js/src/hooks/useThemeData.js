@@ -8,7 +8,7 @@ import convertToPascalCase from '../utils/convertToPascalCase';
 import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
-import useSnackbarContext from './useSnackbarContext';
+import useNoticeContext from './useNoticeContext';
 import useStyleVariations from '../hooks/useStyleVariations';
 
 /**
@@ -58,7 +58,7 @@ export default function useThemeData(
 	currentStyleVariationId,
 	patterns
 ) {
-	const snackBar = useSnackbarContext();
+	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
@@ -296,7 +296,7 @@ export default function useThemeData(
 				setAutoSaveTheme( false );
 			}
 			if ( ! autoSaveTheme ) {
-				snackBar.setValue(
+				setSnackBarValue(
 					__(
 						'Theme successfully saved and all files written to theme directory',
 						'fsestudio'
