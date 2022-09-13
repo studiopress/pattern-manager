@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 
-export default function ThemeCreatedNotice( { onDismiss } ) {
+export default function ThemeCreatedNotice() {
 	const { currentView } = useStudioContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();
 	const buttonRef = useRef();
@@ -20,6 +20,9 @@ export default function ThemeCreatedNotice( { onDismiss } ) {
 			setDisplayThemeCreatedNotice( false );
 		};
 	}, [] );
+
+	// Explicitly dismiss the notice.
+	const onDismiss = () => setDisplayThemeCreatedNotice( false );
 
 	return (
 		<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
