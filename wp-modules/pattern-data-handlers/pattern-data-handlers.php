@@ -378,9 +378,9 @@ function update_pattern( $pattern ) {
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
 		$patterns_dir      = $wp_theme_dir . '/patterns/';
 		$file_name         = sanitize_title( $pattern['name'] ) . '.php';
-		$title_was_changed = $pattern['name'] && convert_to_slug( $pattern['title'] ) !== $pattern['name'];
+		$title_was_changed = convert_to_slug( $pattern['title'] ) !== $pattern['name'];
 		if ( $title_was_changed ) {
-			// Delete the previous pattern file.
+			// Delete the previous pattern file, as the file name should change on changing the title.
 			// Later, this will save it to a new file.
 			$wp_filesystem->delete( $patterns_dir . $file_name );
 			$pattern['name'] = convert_to_slug( $pattern['title'] );
@@ -629,25 +629,6 @@ function delete_all_pattern_post_types() {
 }
 
 /**
- * Converts a string to a slug, like 'Your Example' to 'your-example'.
- *
- * @param string $to_convert The subject to convert.
- */
-function convert_to_slug( $to_convert ) {
-	return strtolower(
-		preg_replace(
-			'#[^-\w]#',
-			'',
-			preg_replace(
-				'#[_\W]+(?=\w+)#',
-				'-',
-				$to_convert
-			)
-		)
-	);
-}
-
-/**
  * When an fsestudio_pattern post is saved, save it to the pattern file, and then delete the post.
  *
  * @param WP_Post $post The Post that was updated.
@@ -736,3 +717,24 @@ function handle_wp_template_part_save( $post, $request, $creating ) {
 	update_pattern( $block_pattern_data );
 }
 add_action( 'rest_after_insert_wp_template_part', __NAMESPACE__ . '\handle_wp_template_part_save', 10, 3 );
+
+/**
+ * Converts a string to a slug.
+ *
+ * For example, 'Home Hero' to 'home-hero'.
+ *
+ * @param string $to_convert The subject to convert.
+ */
+function convert_to_slug( $to_convert ) {
+	return strtolower(
+		preg_replace(
+			'#[^-\w]#',
+			'',
+			preg_replace(
+				'#[_\W]+(?=\w+)#',
+				'-',
+				$to_convert
+			)
+		)
+	);
+}
