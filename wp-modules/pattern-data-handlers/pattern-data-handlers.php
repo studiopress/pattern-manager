@@ -377,7 +377,6 @@ function update_pattern( $pattern ) {
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
 		$patterns_dir     = $wp_theme_dir . '/patterns/';
-		$file_name        = sanitize_title( $pattern['name'] ) . '.php';
 		$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
 		if ( $name_was_changed ) {
 			// Delete the previous pattern file, as the file name should change on changing the name.
@@ -386,6 +385,7 @@ function update_pattern( $pattern ) {
 		}
 
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
+		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 	}
 
 	if ( 'template' === $pattern['type'] ) {

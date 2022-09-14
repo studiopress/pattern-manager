@@ -6,7 +6,7 @@ export default function useListener( setCurrentPatternId ) {
 		try {
 			const response = JSON.parse( event.data );
 			if (
-				response.message === 'fsestudio_pattern_editor_pattern_slug' &&
+				response.message === 'fsestudio_pattern_editor_slug_changed' &&
 				response.patternSlug
 			) {
 				setCurrentPatternId( response.patternSlug );

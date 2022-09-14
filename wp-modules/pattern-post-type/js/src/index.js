@@ -466,7 +466,7 @@ wp.data.subscribe( () => {
 		) {
 			window.parent.postMessage(
 				JSON.stringify( {
-					message: 'fsestudio_pattern_editor_pattern_slug',
+					message: 'fsestudio_pattern_editor_slug_changed',
 					patternSlug: wp.data
 						.select( 'core/editor' )
 						.getEditedPostAttribute( 'meta' )?.name,
