@@ -13,6 +13,8 @@ import PatternPreview from '../PatternPreview';
 // Globals
 import { fsestudio } from '../../globals';
 
+import convertToSlug from '../../utils/convertToSlug';
+
 /** @param {{isVisible: boolean}} props */
 export default function ThemePatterns( { isVisible } ) {
 	const { currentTheme, currentView, currentPatternId } = useStudioContext();
@@ -192,7 +194,7 @@ export default function ThemePatterns( { isVisible } ) {
 											.then( () => {
 												// Switch to the newly created theme.
 												currentPatternId.set(
-													newPatternId
+													convertToSlug( newPatternData.title )
 												);
 												currentView.set(
 													'pattern_editor'
