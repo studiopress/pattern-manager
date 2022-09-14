@@ -15,11 +15,9 @@ import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
 	const previousPatternName = useRef();
-	const postMeta = wp.data.useSelect(
-		( select ) => {
-			return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-		}
-	);
+	const postMeta = wp.data.useSelect( ( select ) => {
+		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+	} );
 
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
@@ -77,7 +75,7 @@ const FseStudioMetaControls = () => {
 			setCoreLastUpdate( Date.now() );
 		} );
 
-		previousPatternName.current = postMeta?.name
+		previousPatternName.current = postMeta?.name;
 	}, [] );
 
 	/**
@@ -459,14 +457,19 @@ wp.data.subscribe( () => {
 	) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
 		fsestudioBlockPatternEditorIsSaving = false;
-		const postMeta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )
-		if ( postMeta?.previousName && postMeta?.previousName !== postMeta?.name ) {
+		const postMeta = wp.data
+			.select( 'core/editor' )
+			.getEditedPostAttribute( 'meta' );
+		if (
+			postMeta?.previousName &&
+			postMeta?.previousName !== postMeta?.name
+		) {
 			window.parent.postMessage(
 				JSON.stringify( {
 					message: 'fsestudio_pattern_editor_pattern_slug',
 					patternSlug: wp.data
 						.select( 'core/editor' )
-						.getEditedPostAttribute( 'meta' )?.name
+						.getEditedPostAttribute( 'meta' )?.name,
 				} )
 			);
 		}
