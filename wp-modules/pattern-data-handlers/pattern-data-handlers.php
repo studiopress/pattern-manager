@@ -376,10 +376,10 @@ function update_pattern( $pattern ) {
 	$wp_theme_dir = get_template_directory();
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
-		$patterns_dir      = $wp_theme_dir . '/patterns/';
-		$file_name         = sanitize_title( $pattern['name'] ) . '.php';
-		$name_was_changed  = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
-		if ( $name_was_changed  ) {
+		$patterns_dir     = $wp_theme_dir . '/patterns/';
+		$file_name        = sanitize_title( $pattern['name'] ) . '.php';
+		$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
+		if ( $name_was_changed ) {
 			// Delete the previous pattern file, as the file name should change on changing the name.
 			// Later, this will save it to a new file.
 			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
