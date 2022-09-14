@@ -388,7 +388,6 @@ function update_pattern( $pattern ) {
 		}
 
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
-
 	}
 
 	if ( 'template' === $pattern['type'] ) {
