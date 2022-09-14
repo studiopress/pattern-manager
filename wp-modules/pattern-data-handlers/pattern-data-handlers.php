@@ -377,9 +377,19 @@ function update_pattern( $pattern ) {
 	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
-		$patterns_dir  = $wp_theme_dir . '/patterns/';
+		$patterns_dir      = $wp_theme_dir . '/patterns/';
+		$file_name         = sanitize_title( $pattern['name'] ) . '.php';
+		$title_was_changed = $pattern['name'] && convert_to_slug( $pattern['title'] ) !== $pattern['name'];
+		if ( $title_was_changed ) {
+			// Delete the previous pattern file.
+			// Later, this will save it to a new file.
+			$wp_filesystem->delete( $patterns_dir . $file_name );
+			$pattern['name'] = convert_to_slug( $pattern['title'] );
+			$file_name       = sanitize_title( $pattern['name'] ) . '.php';
+		}
+
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
-		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
+
 	}
 
 	if ( 'template' === $pattern['type'] ) {
@@ -618,6 +628,21 @@ function delete_all_pattern_post_types() {
 	foreach ( $allposts as $eachpost ) {
 		wp_delete_post( $eachpost->ID, true );
 	}
+}
+
+/**
+ * Converts a string to a slug, like 'Your Example' to 'your-example'.
+ *
+ * @param string $to_convert The subject to convert.
+ */
+function convert_to_slug( $to_convert ) {
+	strtolower(
+		preg_replace(
+			'#[^-\w]#',
+			'',
+			preg_replace( '#[_\W]+(?=\w+)#', '-', $to_convert )
+		)
+	);
 }
 
 /**
