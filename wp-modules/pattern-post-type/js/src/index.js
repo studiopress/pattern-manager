@@ -467,9 +467,7 @@ wp.data.subscribe( () => {
 			window.parent.postMessage(
 				JSON.stringify( {
 					message: 'fsestudio_pattern_editor_slug_changed',
-					patternSlug: wp.data
-						.select( 'core/editor' )
-						.getEditedPostAttribute( 'meta' )?.name,
+					patternSlug: postMeta?.name,
 				} )
 			);
 		}
