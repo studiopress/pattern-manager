@@ -646,6 +646,7 @@ function handle_pattern_post_save( $post ) {
 		'type'          => get_post_meta( $post_id, 'type', true ),
 		'title'         => get_post_meta( $post_id, 'title', true ),
 		'name'          => get_post_meta( $post_id, 'name', true ),
+		'previousName'  => get_post_meta( $post_id, 'previousName', true ),
 		'blockTypes'    => get_post_meta( $post_id, 'blockTypes', true ),
 		'postTypes'     => get_post_meta( $post_id, 'postTypes', true ),
 		'categories'    => $tag_slugs,

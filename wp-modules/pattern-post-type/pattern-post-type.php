@@ -94,6 +94,16 @@ function pattern_post_type() {
 		)
 	);
 
+	register_post_meta(
+		'fsestudio_pattern',
+		'previousName',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		)
+	);
+
 	/**
 	 * Add blockTypes array post meta.
 	 *

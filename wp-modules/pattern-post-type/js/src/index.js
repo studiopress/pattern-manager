@@ -459,14 +459,17 @@ wp.data.subscribe( () => {
 	) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
 		fsestudioBlockPatternEditorIsSaving = false;
-		window.parent.postMessage(
-			JSON.stringify( {
-				message: 'fsestudio_pattern_editor_pattern_slug',
-				patternSlug: wp.data
-					.select( 'core/editor' )
-					.getEditedPostAttribute( 'meta' )?.name
-			} )
-		);
+		const postMeta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' )
+		if ( postMeta?.previousName && postMeta?.previousName !== postMeta?.name ) {
+			window.parent.postMessage(
+				JSON.stringify( {
+					message: 'fsestudio_pattern_editor_pattern_slug',
+					patternSlug: wp.data
+						.select( 'core/editor' )
+						.getEditedPostAttribute( 'meta' )?.name
+				} )
+			);
+		}
 	}
 } );
 
