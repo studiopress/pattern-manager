@@ -378,13 +378,11 @@ function update_pattern( $pattern ) {
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
 		$patterns_dir      = $wp_theme_dir . '/patterns/';
 		$file_name         = sanitize_title( $pattern['name'] ) . '.php';
-		$title_was_changed = convert_to_slug( $pattern['title'] ) !== $pattern['name'];
-		if ( $title_was_changed ) {
-			// Delete the previous pattern file, as the file name should change on changing the title.
+		$name_was_changed  = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
+		if ( $name_was_changed  ) {
+			// Delete the previous pattern file, as the file name should change on changing the name.
 			// Later, this will save it to a new file.
-			$wp_filesystem->delete( $patterns_dir . $file_name );
-			$pattern['name'] = convert_to_slug( $pattern['title'] );
-			$file_name       = sanitize_title( $pattern['name'] ) . '.php';
+			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
 		}
 
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
@@ -717,25 +715,3 @@ function handle_wp_template_part_save( $post, $request, $creating ) {
 	update_pattern( $block_pattern_data );
 }
 add_action( 'rest_after_insert_wp_template_part', __NAMESPACE__ . '\handle_wp_template_part_save', 10, 3 );
-
-/**
- * Converts a string to a slug.
- *
- * For example, 'Home Hero' to 'home-hero'.
- *
- * @param string $to_convert The subject to convert.
- * @return string A slug.
- */
-function convert_to_slug( $to_convert ) {
-	return strtolower(
-		preg_replace(
-			'#[^-\w]#',
-			'',
-			preg_replace(
-				'#[_\W]+(?=\w+)#',
-				'-',
-				$to_convert
-			)
-		)
-	);
-}

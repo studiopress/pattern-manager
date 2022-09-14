@@ -9,12 +9,12 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
 import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
-
+	const previousPatternName = useRef();
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
@@ -74,6 +74,8 @@ const FseStudioMetaControls = () => {
 		wp.data.subscribe( () => {
 			setCoreLastUpdate( Date.now() );
 		} );
+
+		previousPatternName.current = postMeta.name;
 	}, [] );
 
 	/**
@@ -332,6 +334,8 @@ const FseStudioMetaControls = () => {
 								meta: {
 									...postMeta,
 									title: value,
+									name: convertToSlug( value ),
+									previousName: previousPatternName.current,
 								},
 							} );
 						} }
@@ -456,11 +460,9 @@ wp.data.subscribe( () => {
 		window.parent.postMessage(
 			JSON.stringify( {
 				message: 'fsestudio_pattern_editor_pattern_slug',
-				patternSlug: convertToSlug(
-					wp.data
-						.select( 'core/editor' )
-						.getEditedPostAttribute( 'meta' )?.title
-				),
+				patternSlug: wp.data
+					.select( 'core/editor' )
+					.getEditedPostAttribute( 'meta' )?.name
 			} )
 		);
 	}
