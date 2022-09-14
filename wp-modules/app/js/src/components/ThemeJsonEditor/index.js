@@ -294,7 +294,6 @@ function getSettingsFromThemeJsonSchema() {
 }
 
 function SettingsView({ isVisible }) {
-	const { currentTheme } = useStudioContext();
 	const [ currentView, setCurrentView ] = useState( 'color' );
 
 	// Use the themeJson schema and currentTheme.themeJson to generate the settings and values.
