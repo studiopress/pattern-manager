@@ -374,7 +374,6 @@ function update_pattern( $pattern ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
-	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
 		$patterns_dir      = $wp_theme_dir . '/patterns/';
@@ -636,11 +635,15 @@ function delete_all_pattern_post_types() {
  * @param string $to_convert The subject to convert.
  */
 function convert_to_slug( $to_convert ) {
-	strtolower(
+	return strtolower(
 		preg_replace(
 			'#[^-\w]#',
 			'',
-			preg_replace( '#[_\W]+(?=\w+)#', '-', $to_convert )
+			preg_replace(
+				'#[_\W]+(?=\w+)#',
+				'-',
+				$to_convert
+			)
 		)
 	);
 }
