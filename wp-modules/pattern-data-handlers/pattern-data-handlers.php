@@ -724,6 +724,7 @@ add_action( 'rest_after_insert_wp_template_part', __NAMESPACE__ . '\handle_wp_te
  * For example, 'Home Hero' to 'home-hero'.
  *
  * @param string $to_convert The subject to convert.
+ * @return string A slug.
  */
 function convert_to_slug( $to_convert ) {
 	return strtolower(

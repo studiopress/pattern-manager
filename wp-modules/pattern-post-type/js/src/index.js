@@ -10,6 +10,7 @@ import {
 	ToggleControl,
 } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
+import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
@@ -452,6 +453,16 @@ wp.data.subscribe( () => {
 	) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
 		fsestudioBlockPatternEditorIsSaving = false;
+		window.parent.postMessage(
+			JSON.stringify( {
+				message: 'fsestudio_pattern_editor_pattern_slug',
+				patternSlug: convertToSlug(
+					wp.data
+						.select( 'core/editor' )
+						.getEditedPostAttribute( 'meta' )?.title
+				),
+			} )
+		);
 	}
 } );
 
