@@ -181,8 +181,7 @@ export default function ThemePatterns( { isVisible } ) {
 										const { patternTitle, patternSlug } =
 											getNextPatternIds(
 												currentTheme?.data
-													?.included_patterns,
-												'slug'
+													?.included_patterns
 											);
 
 										const newPatternData = {

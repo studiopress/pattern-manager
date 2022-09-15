@@ -22,7 +22,7 @@ import convertToUpperCase from './convertToUpperCase';
  */
 export default function getNextPatternIds(
 	object,
-	field,
+	field = 'slug',
 	base = 'my-new-pattern'
 ) {
 	const regex = new RegExp( `^${ base }-([0-9]+)$` );
