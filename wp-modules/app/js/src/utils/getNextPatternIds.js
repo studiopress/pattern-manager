@@ -1,32 +1,29 @@
 // @ts-check
+/* eslint-disable jsdoc/valid-types */
+
 import convertToPascalCase from './convertToPascalCase';
 import convertToSlug from './convertToSlug';
 import convertToUpperCase from './convertToUpperCase';
 
 /**
  * @typedef {{
- *  object: ReturnType<import('../hooks/useStudioContext').currentTheme.data.included_patterns>
+ *  [key: string]: import('../components/PatternPicker').Pattern
  * }} Patterns
  */
 
 /**
- * Get the next number for creating a new pattern slug.
- *
- * Finds the high number from existing slugs in `included_patterns` by matching against regex.
- * Then the result plus 1 (or null) is returned.
+ * Get the new title and slug when creating a new pattern.
  *
  * @param {Patterns} object
- * @param {string}   field
  * @param {string}   base
- * @return {Object} The high number match plus 1, or null.
+ * @return {Object} The title and slug for new pattern.
  */
 export default function getNextPatternIds(
 	object,
-	field = 'slug',
-	base = 'my-new-pattern'
+	base = 'my-new-pattern' // Expected to be a hyphenated slug.
 ) {
+	const field = 'slug';
 	const regex = new RegExp( `^${ base }-([0-9]+)$` );
-	const convertedBase = convertToUpperCase( convertToPascalCase( base ) );
 
 	const patternNumber = Object.values( object ).reduce( ( acc, pattern ) => {
 		const value = pattern[ field ];
@@ -35,11 +32,12 @@ export default function getNextPatternIds(
 		}
 
 		return value.match( regex ) &&
-			parseInt( value.match( regex )[ 1 ] ) + 1 > acc
-			? parseInt( value.match( regex )[ 1 ] ) + 1
+			parseInt( value.match( regex ).filter( Boolean )[ 1 ] ) + 1 >= acc
+			? parseInt( value.match( regex ).filter( Boolean )[ 1 ] ) + 1
 			: acc;
-	}, null );
+	}, 0 );
 
+	const convertedBase = convertToUpperCase( convertToPascalCase( base ) );
 	const patternTitle = patternNumber
 		? `${ convertedBase } ${ patternNumber }`
 		: convertedBase;
