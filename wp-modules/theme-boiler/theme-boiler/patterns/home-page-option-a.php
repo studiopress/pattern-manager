@@ -1,7 +1,7 @@
 <?php
 /**
  * Title: Home Page Option A
- * Slug: 256c30de-8997-4788-b344-e7d1648a1a17
+ * Slug: home-page-option-a
  * Categories:
  * Viewport Width: 1280
  */
