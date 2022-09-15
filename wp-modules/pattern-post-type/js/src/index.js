@@ -327,7 +327,7 @@ const FseStudioMetaControls = () => {
 			>
 				<PanelRow>
 					<TextControl
-						label={ __( 'Pattern Name', 'fse-studio' ) }
+						label={ __( 'Pattern Title', 'fse-studio' ) }
 						value={ postMeta.title }
 						onChange={ ( value ) => {
 							wp.data.dispatch( 'core/editor' ).editPost( {
