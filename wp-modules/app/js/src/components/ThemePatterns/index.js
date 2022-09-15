@@ -179,13 +179,11 @@ export default function ThemePatterns( { isVisible } ) {
 									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 									onClick={ () => {
 										// Get the number for the next pattern title/slug.
-										// Use this regex to check against title: /My New Pattern\s+/
 										const newPatternNumber =
 											getNextHighNumber(
 												currentTheme?.data
 													?.included_patterns,
-												'slug',
-												/my-new-pattern-/
+												'slug'
 											);
 
 										const newPatternTitle = newPatternNumber
