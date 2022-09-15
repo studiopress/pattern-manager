@@ -12,8 +12,7 @@ import PatternPreview from '../PatternPreview';
 import { fsestudio } from '../../globals';
 
 // Utils
-import getNextHighNumber from '../../utils/getNextHighNumber';
-import convertToSlug from '../../utils/convertToSlug';
+import getNextPatternIds from '../../utils/getNextPatternIds';
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemePatterns( { isVisible } ) {
@@ -178,25 +177,18 @@ export default function ThemePatterns( { isVisible } ) {
 								<button
 									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 									onClick={ () => {
-										// Get the number for the next pattern title/slug.
-										const newPatternNumber =
-											getNextHighNumber(
+										// Get the new pattern title and slug.
+										const { patternTitle, patternSlug } =
+											getNextPatternIds(
 												currentTheme?.data
 													?.included_patterns,
 												'slug'
 											);
 
-										const newPatternTitle = newPatternNumber
-											? `My New Pattern ${ newPatternNumber }`
-											: 'My New Pattern';
-
-										const newPatternName =
-											convertToSlug( newPatternTitle );
-
 										const newPatternData = {
 											type: 'pattern',
-											title: newPatternTitle,
-											name: newPatternName,
+											title: patternTitle,
+											name: patternSlug,
 											categories: [],
 											viewportWidth: '',
 											content: '',
@@ -207,7 +199,7 @@ export default function ThemePatterns( { isVisible } ) {
 											.then( () => {
 												// Switch to the newly created theme.
 												currentPatternId.set(
-													newPatternName
+													patternSlug
 												);
 												currentView.set(
 													'pattern_editor'
