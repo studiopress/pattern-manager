@@ -4,13 +4,13 @@ import * as React from '@wordpress/element';
 export default function useListener( setCurrentPatternId ) {
 	window.addEventListener( 'message', ( event ) => {
 		try {
-			const response = JSON.parse( event.data );
+			const data = JSON.parse( event.data );
 			if (
-				response.message ===
+				data.message ===
 					'fsestudio_pattern_editor_pattern_name_changed' &&
-				response.newPatternName
+				data.newPatternName
 			) {
-				setCurrentPatternId( response.newPatternName );
+				setCurrentPatternId( data.newPatternName );
 			}
 		} catch ( e ) {}
 	} );
