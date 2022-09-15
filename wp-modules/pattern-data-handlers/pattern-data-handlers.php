@@ -380,7 +380,6 @@ function update_pattern( $pattern ) {
 		$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
 		if ( $name_was_changed ) {
 			// Delete the previous pattern file, as the file name should change on changing the name.
-			// Later, this will save it to a new file.
 			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
 		}
 
