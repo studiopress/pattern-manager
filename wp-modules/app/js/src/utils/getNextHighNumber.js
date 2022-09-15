@@ -1,3 +1,5 @@
+import { getNestedValue } from './nestedObjectUtility';
+
 /**
  * Get the high number (plus 1) from an object.
  *
@@ -5,9 +7,9 @@
  * Check the value against a regex to get the number and add to numArray.
  * Return the max value of numArray plus 1.
  *
- * @param {Object} object
- * @param {string} field
- * @param {RegExp} regex
+ * @param {Object}       object
+ * @param {Array|string} field
+ * @param {RegExp}       regex
  * @return {number} The high number plus 1.
  */
 export default function getNextHighNumber(
@@ -24,7 +26,11 @@ export default function getNextHighNumber(
 	}
 
 	const numArray = Object.keys( object ).reduce( ( acc, key ) => {
-		const value = object[ key ][ field ];
+		// If the field is an array, get the nested value from the object.
+		// Otherwise, get the value from the current object level.
+		const value = Array.isArray( field )
+			? getNestedValue( object, [ key, ...field ] )
+			: object[ key ][ field ];
 
 		return value.match( regex )
 			? acc.concat( value.replace( regex, '' ) || 0 )
