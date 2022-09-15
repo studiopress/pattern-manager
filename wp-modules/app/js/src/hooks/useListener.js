@@ -6,10 +6,11 @@ export default function useListener( setCurrentPatternId ) {
 		try {
 			const response = JSON.parse( event.data );
 			if (
-				response.message === 'fsestudio_pattern_editor_slug_changed' &&
-				response.patternSlug
+				response.message ===
+					'fsestudio_pattern_editor_pattern_name_changed' &&
+				response.newPatternName
 			) {
-				setCurrentPatternId( response.patternSlug );
+				setCurrentPatternId( response.newPatternName );
 			}
 		} catch ( e ) {}
 	} );
