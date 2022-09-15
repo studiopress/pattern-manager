@@ -13,7 +13,7 @@
 export default function getNextHighNumber(
 	object,
 	field,
-	regex = /[^0-9]+/g // Default strips eveything but numbers.
+	regex = /[^0-9]+/g // Default strips everything but numbers.
 ) {
 	if (
 		! field ||
