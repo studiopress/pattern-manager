@@ -127,7 +127,7 @@ function save_theme( $request ) {
 	$theme_data       = $request->get_params();
 	$prior_theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_data['id'] );
 
-	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data );
+	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data, false );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );

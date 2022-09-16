@@ -19,6 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
 /**
  * Get data for a single themes in the format used by FSE Theme Manager.
  *
@@ -154,9 +155,10 @@ function export_theme( $theme ) {
  * Update a single theme.
  *
  * @param array $theme Data about the theme.
+ * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the FSES UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option  exists.
  * @return array
  */
-function update_theme( $theme ) {
+function update_theme( $theme, $update_patterns = true ) {
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
@@ -214,41 +216,45 @@ function update_theme( $theme ) {
 	} else {
 		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 	}
-
-	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
+	
+	if ( $update_patterns ) {
+		foreach ( $theme['included_patterns'] as $included_pattern ) {
+			\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
+		}
 	}
 
 	foreach ( $theme['styles'] as $style ) {
 		\FseStudio\ThemeJsonDataHandlers\update_theme_style( $style );
 	}
 
-	if ( ! $theme['template_files'] ) {
-		$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
-	}
-
-	foreach ( $theme['template_files'] as $template_name => $template_data ) {
-		\FseStudio\PatternDataHandlers\update_pattern(
-			array(
-				'name'    => $template_name,
-				'content' => $template_data['content'],
-				'type'    => 'template',
-			)
-		);
-	}
-
-	if ( ! isset( $theme['template_parts'] ) ) {
-		$theme['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
-	}
-
-	foreach ( $theme['template_parts'] as $template_name => $template_data ) {
-		\FseStudio\PatternDataHandlers\update_pattern(
-			array(
-				'name'    => $template_name,
-				'content' => $template_data['content'],
-				'type'    => 'template_part',
-			)
-		);
+	if ( $update_patterns ) {
+		if ( ! $theme['template_files'] ) {
+			$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
+		}
+	
+		foreach ( $theme['template_files'] as $template_name => $template_data ) {
+			\FseStudio\PatternDataHandlers\update_pattern(
+				array(
+					'name'    => $template_name,
+					'content' => $template_data['content'],
+					'type'    => 'template',
+				)
+			);
+		}
+	
+		if ( ! isset( $theme['template_parts'] ) ) {
+			$theme['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
+		}
+	
+		foreach ( $theme['template_parts'] as $template_name => $template_data ) {
+			\FseStudio\PatternDataHandlers\update_pattern(
+				array(
+					'name'    => $template_name,
+					'content' => $template_data['content'],
+					'type'    => 'template_part',
+				)
+			);
+		}
 	}
 
 	\FseStudio\Tracky\send_event(
