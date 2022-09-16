@@ -11,6 +11,30 @@ describe( 'getNextPatternIds', () => {
 			},
 		],
 		[
+			[], // Malformed shape, should be an object.
+			{
+				patternNumber: 0,
+				patternTitle: 'My New Pattern',
+				patternSlug: 'my-new-pattern',
+			},
+		],
+		[
+			{ pattern: { slug: null } },
+			{
+				patternNumber: 0,
+				patternTitle: 'My New Pattern',
+				patternSlug: 'my-new-pattern',
+			},
+		],
+		[
+			{ pattern: { slug: '' } },
+			{
+				patternNumber: 0,
+				patternTitle: 'My New Pattern',
+				patternSlug: 'my-new-pattern',
+			},
+		],
+		[
 			{ pattern: { slug: 'abc-def' } },
 			{
 				patternNumber: 0,
