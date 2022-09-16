@@ -14,26 +14,31 @@ import convertToUpperCase from './convertToUpperCase';
 /**
  * Get the new title and slug when creating a new pattern.
  *
+ * The field can be used along with pretty much any base to be split by special character.
+ * The last element in the array is then parsed to find the number to increment.
+ *
  * @param {Patterns} object
+ * @param {string}   field
  * @param {string}   base
  * @return {Object} The title and slug for new pattern.
  */
 export default function getNextPatternIds(
 	object,
-	base = 'my-new-pattern' // Expected to be a hyphenated slug.
+	field = 'slug',
+	base = 'my-new-pattern'
 ) {
-	const field = 'slug';
-	const regex = new RegExp( `^${ base }-([0-9]+)$` );
+	const regex = new RegExp( `^${ stripSpecialChars( base ) }([0-9]+)$` );
 
 	const patternNumber = Object.values( object ).reduce( ( acc, pattern ) => {
-		const value = pattern[ field ];
+		const value = pattern[ field ] || '';
 		if ( value === base && ! acc ) {
 			return 1;
 		}
 
-		return value.match( regex ) &&
-			parseInt( value.match( regex ).filter( Boolean )[ 1 ] ) + 1 >= acc
-			? parseInt( value.match( regex ).filter( Boolean )[ 1 ] ) + 1
+		const lastNum = splitSpecialChars( value ).pop();
+		return stripSpecialChars( value ).match( regex ) &&
+			parseInt( lastNum ) + 1 >= acc
+			? parseInt( lastNum ) + 1
 			: acc;
 	}, 0 );
 
@@ -49,3 +54,6 @@ export default function getNextPatternIds(
 		patternSlug,
 	};
 }
+
+const stripSpecialChars = ( str ) => str.replace( /[^A-Za-z0-9]/g, '' );
+const splitSpecialChars = ( str ) => str.split( /[.\-=/_ ]/ );
