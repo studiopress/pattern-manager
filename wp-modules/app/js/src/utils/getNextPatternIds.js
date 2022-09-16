@@ -20,7 +20,7 @@ import convertToUpperCase from './convertToUpperCase';
  * @param {Patterns} object
  * @param {string}   field
  * @param {string}   base
- * @return {Object} The title and slug for new pattern.
+ * @return {Object} The number, title, and slug for the new pattern.
  */
 export default function getNextPatternIds(
 	object,
@@ -50,6 +50,7 @@ export default function getNextPatternIds(
 	const patternSlug = convertToSlug( patternTitle );
 
 	return {
+		patternNumber,
 		patternTitle,
 		patternSlug,
 	};
