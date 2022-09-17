@@ -86,7 +86,6 @@ wp.data.subscribe( () => {
 } );
 
 let fsestudioSaveDebounce = null;
-let fsestudioSaveAndRefreshDebounce = null;
 let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
