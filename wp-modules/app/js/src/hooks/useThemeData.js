@@ -74,7 +74,6 @@ export default function useThemeData(
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ patternEditorDirty, setPatternEditorDirty ] = useState( false );
-	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
 	const { defaultStyleName } = useStyleVariations();
@@ -98,11 +97,19 @@ export default function useThemeData(
 			( event ) => {
 				if ( event.data === 'fsestudio_pattern_editor_save_complete' ) {
 					setPatternEditorDirty( false );
-					setRequestThemeRefresh( true );
+
+					if ( ! siteEditorDirty ) {
+						uponSuccessfulSave();
+						getThemeData();
+					}
 				}
 				if ( event.data === 'fsestudio_site_editor_save_complete' ) {
 					setSiteEditorDirty( false );
-					setRequestThemeRefresh( true );
+
+					if ( ! patternEditorDirty ) {
+						uponSuccessfulSave();
+						getThemeData();
+					}
 				}
 			},
 			false
@@ -113,20 +120,6 @@ export default function useThemeData(
 			window.removeEventListener( 'beforeunload', warnIfUnsavedChanges );
 		};
 	}, [] );
-
-	useEffect( () => {
-		if ( requestThemeRefresh ) {
-			// If something is still dirty, don't do anything yet.
-			if ( siteEditorDirty || patternEditorDirty ) {
-				setRequestThemeRefresh( false );
-			} else {
-				setRequestThemeRefresh( false );
-				// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
-				uponSuccessfulSave();
-				getThemeData();
-			}
-		}
-	}, [ requestThemeRefresh ] );
 
 	useEffect( () => {
 		if ( themeData?.name === '' ) {

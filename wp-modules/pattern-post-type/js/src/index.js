@@ -433,7 +433,6 @@ wp.hooks.removeFilter(
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
-let fsestudioBlockPatternEditorIsSaving = false;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
@@ -442,35 +441,6 @@ wp.data.subscribe( () => {
 
 	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
-	}
-
-	// If saving just started, set a flag.
-	if (
-		wp.data.select( 'core/editor' ).isSavingPost() &&
-		! fsestudioBlockPatternEditorIsSaving
-	) {
-		fsestudioBlockPatternEditorIsSaving = true;
-	}
-	if (
-		! wp.data.select( 'core/editor' ).isSavingPost() &&
-		fsestudioBlockPatternEditorIsSaving
-	) {
-		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
-		fsestudioBlockPatternEditorIsSaving = false;
-		const postMeta = wp.data
-			.select( 'core/editor' )
-			.getEditedPostAttribute( 'meta' );
-		if (
-			postMeta?.previousName &&
-			postMeta?.previousName !== postMeta?.name
-		) {
-			window.parent.postMessage(
-				JSON.stringify( {
-					message: 'fsestudio_pattern_editor_pattern_name_changed',
-					newPatternName: postMeta?.name,
-				} )
-			);
-		}
 	}
 } );
 
@@ -491,6 +461,7 @@ window.addEventListener(
 					wp.data
 						.dispatch( 'core/editor' )
 						.savePost()
+						.then( onSave )
 						.then( () => {
 							window.location.reload();
 						} );
@@ -501,7 +472,8 @@ window.addEventListener(
 				// If the FSE Studio apps tells us to save the current post, do it:
 				clearTimeout( fsestudioSaveDebounce );
 				fsestudioSaveDebounce = setTimeout( () => {
-					wp.data.dispatch( 'core/editor' ).savePost();
+					wp.data.dispatch( 'core/editor' ).savePost()
+						.then( onSave )
 				}, 200 );
 			}
 
@@ -557,3 +529,36 @@ window.addEventListener(
 	},
 	false
 );
+
+function onSave() {
+	window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
+	wp.data.dispatch( 'core/notices' ).createNotice(
+		'warning', // Can be one of: success, info, warning, error.
+		'in the onSave function',
+		{
+			isDismissible: false, // Whether the user can dismiss the notice.
+			// Any actions the user can perform.
+			actions: [
+				{
+					url: '',
+					label: 'Refresh Editor',
+				},
+			],
+		}
+	);
+
+	const postMeta = wp.data
+		.select( 'core/editor' )
+		.getEditedPostAttribute( 'meta' );
+	if (
+		postMeta?.previousName &&
+		postMeta?.previousName !== postMeta?.name
+	) {
+		window.parent.postMessage(
+			JSON.stringify( {
+				message: 'fsestudio_pattern_editor_pattern_name_changed',
+				newPatternName: postMeta?.name,
+			} )
+		);
+	}
+}
