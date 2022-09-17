@@ -531,20 +531,6 @@ window.addEventListener(
 
 function onSave() {
 	window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
-	wp.data.dispatch( 'core/notices' ).createNotice(
-		'warning', // Can be one of: success, info, warning, error.
-		'in the onSave function',
-		{
-			isDismissible: false, // Whether the user can dismiss the notice.
-			// Any actions the user can perform.
-			actions: [
-				{
-					url: '',
-					label: 'Refresh Editor',
-				},
-			],
-		}
-	);
 
 	const postMeta = wp.data
 		.select( 'core/editor' )
