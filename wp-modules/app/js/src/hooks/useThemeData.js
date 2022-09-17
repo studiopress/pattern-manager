@@ -100,7 +100,6 @@ export default function useThemeData(
 
 					if ( ! siteEditorDirty ) {
 						uponSuccessfulSave();
-						getThemeData();
 					}
 				}
 				if ( event.data === 'fsestudio_site_editor_save_complete' ) {
@@ -108,7 +107,6 @@ export default function useThemeData(
 
 					if ( ! patternEditorDirty ) {
 						uponSuccessfulSave();
-						getThemeData();
 					}
 				}
 			},
