@@ -453,20 +453,6 @@ window.addEventListener(
 		try {
 			const response = JSON.parse( event.data );
 
-			if ( response.message === 'fsestudio_save_and_refresh' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveAndRefreshDebounce );
-				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
-					wp.data
-						.dispatch( 'core/editor' )
-						.savePost()
-						.then( onSave )
-						.then( () => {
-							window.location.reload();
-						} );
-				}, 100 );
-			}
-
 			if ( response.message === 'fsestudio_save' ) {
 				const noticeId = 'fse-studio-pattern-editor-no-content';
 				if ( wp.data.select( 'core/editor' ).isEditedPostSaveable() ) {
