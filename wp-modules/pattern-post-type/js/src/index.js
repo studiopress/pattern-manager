@@ -472,8 +472,7 @@ window.addEventListener(
 				// If the FSE Studio apps tells us to save the current post, do it:
 				clearTimeout( fsestudioSaveDebounce );
 				fsestudioSaveDebounce = setTimeout( () => {
-					wp.data.dispatch( 'core/editor' ).savePost()
-						.then( onSave )
+					wp.data.dispatch( 'core/editor' ).savePost().then( onSave );
 				}, 200 );
 			}
 
@@ -550,10 +549,7 @@ function onSave() {
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
-	if (
-		postMeta?.previousName &&
-		postMeta?.previousName !== postMeta?.name
-	) {
+	if ( postMeta?.previousName && postMeta?.previousName !== postMeta?.name ) {
 		window.parent.postMessage(
 			JSON.stringify( {
 				message: 'fsestudio_pattern_editor_pattern_name_changed',
