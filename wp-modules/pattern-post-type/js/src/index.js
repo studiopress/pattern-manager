@@ -444,7 +444,6 @@ wp.data.subscribe( () => {
 	}
 } );
 
-let fsestudioSaveDebounce = null;
 let fsestudioSaveAndRefreshDebounce = null;
 let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
@@ -469,11 +468,25 @@ window.addEventListener(
 			}
 
 			if ( response.message === 'fsestudio_save' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveDebounce );
-				fsestudioSaveDebounce = setTimeout( () => {
+				const noticeId = 'fse-studio-pattern-editor-no-content';
+				if ( wp.data.select( 'core/editor' ).isEditedPostSaveable() ) {
+					wp.data.dispatch( 'core/notices' ).removeNotice( noticeId );
 					wp.data.dispatch( 'core/editor' ).savePost().then( onSave );
-				}, 200 );
+				} else {
+					window.parent.postMessage(
+						'fsestudio_pattern_editor_save_complete'
+					);
+					wp.data
+						.dispatch( 'core/notices' )
+						.createNotice(
+							'warning',
+							__(
+								'FSE Studio: Please add content to this pattern to save it',
+								'fse-studio'
+							),
+							{ id: noticeId }
+						);
+				}
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {
@@ -531,7 +544,6 @@ window.addEventListener(
 
 function onSave() {
 	window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
-
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
