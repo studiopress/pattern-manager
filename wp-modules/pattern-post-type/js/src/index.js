@@ -9,14 +9,15 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
+import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
-
-	const postMeta = wp.data
-		.select( 'core/editor' )
-		.getEditedPostAttribute( 'meta' );
+	const previousPatternName = useRef();
+	const postMeta = wp.data.useSelect( ( select ) => {
+		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+	} );
 
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
@@ -73,6 +74,8 @@ const FseStudioMetaControls = () => {
 		wp.data.subscribe( () => {
 			setCoreLastUpdate( Date.now() );
 		} );
+
+		previousPatternName.current = postMeta?.name;
 	}, [] );
 
 	/**
@@ -324,13 +327,15 @@ const FseStudioMetaControls = () => {
 			>
 				<PanelRow>
 					<TextControl
-						label={ __( 'Pattern Name', 'fse-studio' ) }
+						label={ __( 'Pattern Title', 'fse-studio' ) }
 						value={ postMeta.title }
 						onChange={ ( value ) => {
 							wp.data.dispatch( 'core/editor' ).editPost( {
 								meta: {
 									...postMeta,
 									title: value,
+									name: convertToSlug( value ),
+									previousName: previousPatternName.current,
 								},
 							} );
 						} }
@@ -428,7 +433,6 @@ wp.hooks.removeFilter(
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
-let fsestudioBlockPatternEditorIsSaving = false;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
@@ -438,25 +442,8 @@ wp.data.subscribe( () => {
 	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
 	}
-
-	// If saving just started, set a flag.
-	if (
-		wp.data.select( 'core/editor' ).isSavingPost() &&
-		! fsestudioBlockPatternEditorIsSaving
-	) {
-		fsestudioBlockPatternEditorIsSaving = true;
-	}
-	if (
-		! wp.data.select( 'core/editor' ).isSavingPost() &&
-		fsestudioBlockPatternEditorIsSaving
-	) {
-		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
-		fsestudioBlockPatternEditorIsSaving = false;
-	}
 } );
 
-let fsestudioSaveDebounce = null;
-let fsestudioSaveAndRefreshDebounce = null;
 let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
@@ -465,25 +452,26 @@ window.addEventListener(
 		try {
 			const response = JSON.parse( event.data );
 
-			if ( response.message === 'fsestudio_save_and_refresh' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveAndRefreshDebounce );
-				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
-					wp.data
-						.dispatch( 'core/editor' )
-						.savePost()
-						.then( () => {
-							window.location.reload();
-						} );
-				}, 100 );
-			}
-
 			if ( response.message === 'fsestudio_save' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveDebounce );
-				fsestudioSaveDebounce = setTimeout( () => {
-					wp.data.dispatch( 'core/editor' ).savePost();
-				}, 200 );
+				const noticeId = 'fse-studio-pattern-editor-no-content';
+				if ( wp.data.select( 'core/editor' ).isEditedPostSaveable() ) {
+					wp.data.dispatch( 'core/notices' ).removeNotice( noticeId );
+					wp.data.dispatch( 'core/editor' ).savePost().then( onSave );
+				} else {
+					window.parent.postMessage(
+						'fsestudio_pattern_editor_save_complete'
+					);
+					wp.data
+						.dispatch( 'core/notices' )
+						.createNotice(
+							'warning',
+							__(
+								'FSE Studio: Please add content to this pattern to save it',
+								'fse-studio'
+							),
+							{ id: noticeId }
+						);
+				}
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {
@@ -538,3 +526,18 @@ window.addEventListener(
 	},
 	false
 );
+
+function onSave() {
+	window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
+	const postMeta = wp.data
+		.select( 'core/editor' )
+		.getEditedPostAttribute( 'meta' );
+	if ( postMeta?.previousName && postMeta?.previousName !== postMeta?.name ) {
+		window.parent.postMessage(
+			JSON.stringify( {
+				message: 'fsestudio_pattern_editor_pattern_name_changed',
+				newPatternName: postMeta?.name,
+			} )
+		);
+	}
+}
