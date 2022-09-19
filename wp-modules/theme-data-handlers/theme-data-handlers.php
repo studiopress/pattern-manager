@@ -162,15 +162,20 @@ function update_theme( $theme ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
-	$themes_dir       = $wp_filesystem->wp_themes_dir();
-	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
+	$theme_boiler_dir   = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
+	$themes_dir         = $wp_filesystem->wp_themes_dir();
+	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
+	$previous_theme_dir = ! empty( $theme['previous_name'] ) ? $themes_dir . sanitize_title( $theme['previous_dirname'] ) . '/' : '';
 
 	// Create the new theme directory, if it does not already exist.
 	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
 		$wp_filesystem->mkdir( $new_theme_dir );
 		// Copy the boiler theme into it.
 		copy_dir( $theme_boiler_dir, $new_theme_dir );
+	}
+
+	if ( $previous_theme_dir ) {
+		$wp_filesystem->rmdir( $previous_theme_dir );
 	}
 
 	// Fix strings in the stylesheet.

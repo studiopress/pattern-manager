@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 import ThemeDetails from './ThemeDetails';
 
-export default function CreateTheme( { children } ) {
+export default function CreateThemeForm( { children } ) {
 	const { currentTheme } = useStudioContext();
 	const fieldRef = useRef();
 

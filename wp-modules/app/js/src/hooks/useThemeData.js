@@ -26,6 +26,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
+ *   previous_dirname?: string,
  *   included_patterns?: Record<string, import('../components/PatternPicker').Pattern>,
  *   requires_php: string,
  *   requires_wp: string,
@@ -70,7 +71,6 @@ export default function useThemeData(
 		} );
 	}
 
-	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ patternEditorDirty, setPatternEditorDirty ] = useState( false );
@@ -129,12 +129,6 @@ export default function useThemeData(
 	}, [ requestThemeRefresh ] );
 
 	useEffect( () => {
-		if ( themeData?.name === '' ) {
-			setThemeNameIsDefault( true );
-		} else {
-			setThemeNameIsDefault( false );
-		}
-
 		if ( themeData && autoSaveTheme ) {
 			saveThemeData();
 		}
@@ -155,8 +149,6 @@ export default function useThemeData(
 				namespace: convertToPascalCase( themeData?.name ),
 				text_domain: convertToSlug( themeData?.name ),
 			} );
-
-			convertToSlug( themeData?.name );
 		}
 	}, [ themeData?.name ] );
 
@@ -215,14 +207,12 @@ export default function useThemeData(
 				/* eslint-disable */
 				alert( 'You need to change your theme name before saving' );
 				/* eslint-enable */
-				setThemeNameIsDefault( true );
 				resolve();
 				return;
 			}
 			setIsSaving( true );
 			setSaveCompleted( false );
 
-			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
@@ -512,6 +502,5 @@ export default function useThemeData(
 		saveCompleted,
 		isSaving,
 		fetchInProgress,
-		themeNameIsDefault,
 	};
 }
