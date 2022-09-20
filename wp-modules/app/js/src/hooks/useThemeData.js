@@ -26,7 +26,6 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
- *   previous_dirname?: string,
  *   included_patterns?: Record<string, import('../components/PatternPicker').Pattern>,
  *   requires_php: string,
  *   requires_wp: string,
@@ -44,7 +43,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  */
 
 /**
- * @param {string|undefined}                            themeId
+ * @param {string}                                      themeId
  * @param {ReturnType<import('./useThemes').default>}   themes
  * @param {Object}                                      patternEditorIframe
  * @param {Object}                                      templateEditorIframe
@@ -64,10 +63,24 @@ export default function useThemeData(
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
+
+	/** @param {Theme} newThemeData */
 	function setThemeData( newThemeData ) {
+		const derivedThemeData =
+			newThemeData.name !== themeData.name
+				? {
+						dirname: convertToSlug( newThemeData?.name ),
+						namespace: convertToPascalCase( newThemeData?.name ),
+						text_domain: convertToSlug( newThemeData?.name ),
+				  }
+				: {};
+
 		themes.setThemes( {
 			...themes.themes,
-			[ themeId ]: newThemeData,
+			[ themeId ]: {
+				...newThemeData,
+				...derivedThemeData,
+			},
 		} );
 	}
 
@@ -140,17 +153,6 @@ export default function useThemeData(
 			} );
 		}
 	}, [ themeData ] );
-
-	useEffect( () => {
-		if ( themeData?.name ) {
-			setThemeData( {
-				...themeData,
-				dirname: convertToSlug( themeData?.name ),
-				namespace: convertToPascalCase( themeData?.name ),
-				text_domain: convertToSlug( themeData?.name ),
-			} );
-		}
-	}, [ themeData?.name ] );
 
 	/**
 	 * Warns the user if there are unsaved changes before leaving.

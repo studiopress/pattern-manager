@@ -20,17 +20,8 @@ export default function ThemeDetails() {
 						id="theme-name"
 						value={ currentTheme?.data?.name ?? '' }
 						onChange={ ( event ) => {
-							// The first time the theme name is changed here,
-							// save a previous_dirname.
-							// The dirname comes from the theme name.
-							// So when the theme name changes, the dirname will also.
-							// The back-end will delete that dirname,
-							// as it will create a new theme at the new
 							currentTheme.set( {
 								...currentTheme.data,
-								previous_dirname: currentTheme.previous_dirname
-									? currentTheme.data.dirname
-									: '',
 								name: event.target.value,
 							} );
 						} }
