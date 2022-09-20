@@ -205,10 +205,9 @@ function format_pattern_data( $pattern_data, $file ) {
  * Get the pattern data for all patterns in a theme.
  *
  * @param string $theme_path The path to the theme.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() ) {
+function get_theme_patterns( $theme_path = false ) {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
@@ -237,23 +236,8 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 		if ( ! $pattern_data ) {
 			continue;
 		}
-		$pattern_data['name'] = basename( $path, '.php' );
-		$pattern_data['type'] = 'pattern';
-
-		// If a post_id already exists for this pattern, use it instead of creating one.
-		if ( isset( $pre_existing_theme['included_patterns'][ $pattern_data['name'] ] ) ) {
-			$the_post_id = $pre_existing_theme['included_patterns'][ $pattern_data['name'] ]['post_id'];
-			if ( ! $the_post_id ) {
-				$the_post_id = generate_pattern_post( $pattern_data );
-			}
-		} else {
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $pattern_data );
-		}
-
-		// Add the post_id to the pattern data so it can be used.
-		$pattern_data['post_id'] = $the_post_id;
-
+		$pattern_data['name']                  = basename( $path, '.php' );
+		$pattern_data['type']                  = 'pattern';
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 
@@ -264,10 +248,9 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
  * Get the data for all templates in a theme.
  *
  * @param string $theme_path The path to the theme.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_templates( $theme_path = false, $pre_existing_theme = array() ) {
+function get_theme_templates( $theme_path = false ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
@@ -292,19 +275,6 @@ function get_theme_templates( $theme_path = false, $pre_existing_theme = array()
 			'content' => $block_pattern_html,
 		);
 
-		// If a post_id already exists for this pattern, use it instead of creating one.
-		if ( isset( $pre_existing_theme['template_files'][ $template_data['name'] ] ) ) {
-			$the_post_id = $pre_existing_theme['template_files'][ $template_data['name'] ]['post_id'];
-			if ( ! $the_post_id ) {
-				$the_post_id = generate_pattern_post( $template_data );
-			}
-		} else {
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $template_data );
-		}
-
-		$template_data['post_id'] = $the_post_id;
-
 		$templates[ basename( $path, '.html' ) ] = $template_data;
 	}
 
@@ -315,10 +285,9 @@ function get_theme_templates( $theme_path = false, $pre_existing_theme = array()
  * Get the data for all template parts in a theme.
  *
  * @param string $theme_path The path to the theme.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_template_parts( $theme_path = false, $pre_existing_theme = array() ) {
+function get_theme_template_parts( $theme_path = false ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
@@ -342,19 +311,6 @@ function get_theme_template_parts( $theme_path = false, $pre_existing_theme = ar
 			'name'    => basename( $path, '.html' ),
 			'content' => $block_pattern_html,
 		);
-
-		// If a post_id already exists for this pattern, use it instead of creating one.
-		if ( isset( $pre_existing_theme['template_parts'][ $template_data['name'] ] ) ) {
-			$the_post_id = $pre_existing_theme['template_parts'][ $template_data['name'] ]['post_id'];
-			if ( ! $the_post_id ) {
-				$the_post_id = generate_pattern_post( $template_data );
-			}
-		} else {
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $template_data );
-		}
-
-		$template_data['post_id'] = $the_post_id;
 
 		$templates[ basename( $path, '.html' ) ] = $template_data;
 	}
@@ -579,83 +535,6 @@ function move_block_assets_to_theme( $pattern_html ) {
 
 	return $pattern_html;
 }
-
-
-/**
- * Generate a "fsestudio_pattern" post, populating the post_content with the passed-in value.
- *
- * @param array $block_pattern The data for the block pattern.
- */
-function generate_pattern_post( $block_pattern ) {
-	$title = isset( $block_pattern['title'] ) ? $block_pattern['title'] : $block_pattern['name'];
-
-	$new_post_details = array(
-		'post_title'   => $title,
-		'post_content' => $block_pattern['content'],
-		'post_type'    => 'fsestudio_pattern',
-		'tags_input'   => isset( $block_pattern['categories'] ) ? $block_pattern['categories'] : false,
-	);
-
-	// Insert the post into the database.
-	$post_id = wp_insert_post( $new_post_details );
-
-	update_post_meta( $post_id, 'title', $title );
-	update_post_meta( $post_id, 'name', $block_pattern['name'] );
-	update_post_meta( $post_id, 'type', $block_pattern['type'] );
-	update_post_meta( $post_id, 'blockTypes', $block_pattern['blockTypes'] ?? array() );
-	update_post_meta( $post_id, 'postTypes', $block_pattern['postTypes'] ?? array() );
-
-	return $post_id;
-}
-
-/**
- * Delete all fsestudio_pattern posts.
- */
-function delete_all_pattern_post_types() {
-	$allposts = get_posts(
-		array(
-			'post_type'   => 'fsestudio_pattern',
-			'numberposts' => -1,
-			'post_status' => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' ),
-		)
-	);
-
-	foreach ( $allposts as $eachpost ) {
-		wp_delete_post( $eachpost->ID, true );
-	}
-}
-
-/**
- * When an fsestudio_pattern post is saved, save it to the pattern file, and then delete the post.
- *
- * @param WP_Post $post The Post that was updated.
- */
-function handle_pattern_post_save( $post ) {
-	$post_id = $post->ID;
-
-	$tags = wp_get_post_tags( $post_id );
-
-	$tag_slugs = array();
-
-	foreach ( $tags as $tag ) {
-		$tag_slugs[] = $tag->slug;
-	}
-
-	$block_pattern_data = array(
-		'type'          => get_post_meta( $post_id, 'type', true ),
-		'title'         => get_post_meta( $post_id, 'title', true ),
-		'name'          => get_post_meta( $post_id, 'name', true ),
-		'previousName'  => get_post_meta( $post_id, 'previousName', true ),
-		'blockTypes'    => get_post_meta( $post_id, 'blockTypes', true ),
-		'postTypes'     => get_post_meta( $post_id, 'postTypes', true ),
-		'categories'    => $tag_slugs,
-		'viewportWidth' => 1280,
-		'content'       => $post->post_content,
-	);
-
-	update_pattern( $block_pattern_data );
-}
-add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_pattern_post_save' );
 
 /**
  * When a wp_template post is saved, save it to the theme file.
