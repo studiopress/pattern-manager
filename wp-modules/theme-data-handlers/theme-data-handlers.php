@@ -167,7 +167,7 @@ function update_theme( $theme ) {
 	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
 	$previous_theme_dir = get_theme_directory( sanitize_title( $theme['id'] ?? '' ) );
 
-	if ( $previous_theme_dir && $previous_theme_dir !== $new_theme_dir ) {
+	if ( $previous_theme_dir ) {
 		if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
 			$wp_filesystem->mkdir( $new_theme_dir );
 		}
