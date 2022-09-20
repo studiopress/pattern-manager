@@ -26,6 +26,11 @@ export default function ThemeDetails() {
 							} );
 						} }
 					/>
+					{ currentTheme.isNameTaken() ? (
+						<p>
+							{ __( 'This theme name is taken', 'fse-studio' ) }
+						</p>
+					) : null }
 				</div>
 			</div>
 			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">

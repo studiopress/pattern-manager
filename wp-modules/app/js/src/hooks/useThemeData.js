@@ -92,6 +92,20 @@ export default function useThemeData(
 
 	const { defaultStyleName } = useStyleVariations();
 
+	/** @return {boolean} Whether the current theme name is taken, excluding the current theme. */
+	function isNameTaken() {
+		return (
+			!! themeData.name &&
+			Object.entries( themes.themes )
+				.filter( ( [ id ] ) => {
+					return id !== themeId;
+				} )
+				.some( ( [ , theme ] ) => {
+					return theme.name === themeData.name;
+				} )
+		);
+	}
+
 	useEffect( () => {
 		window.addEventListener(
 			'message',
@@ -503,6 +517,7 @@ export default function useThemeData(
 		export: exportThemeData,
 		saveCompleted,
 		isSaving,
+		isNameTaken,
 		fetchInProgress,
 	};
 }
