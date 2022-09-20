@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -12,6 +10,9 @@ import PatternPreview from '../PatternPreview';
 
 // Globals
 import { fsestudio } from '../../globals';
+
+// Utils
+import getNextPatternIds from '../../utils/getNextPatternIds';
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemePatterns( { isVisible } ) {
@@ -142,7 +143,7 @@ export default function ThemePatterns( { isVisible } ) {
 													url={
 														fsestudio.siteUrl +
 														'?fsestudio_pattern_preview=' +
-														patternData.post_id
+														patternData.name
 													}
 													scale={ 0.2 }
 												/>
@@ -176,12 +177,17 @@ export default function ThemePatterns( { isVisible } ) {
 								<button
 									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 									onClick={ () => {
-										const newPatternId = uuidv4();
+										// Get the new pattern title and slug.
+										const { patternTitle, patternSlug } =
+											getNextPatternIds(
+												currentTheme?.data
+													?.included_patterns
+											);
 
 										const newPatternData = {
 											type: 'pattern',
-											title: 'My New Pattern',
-											name: newPatternId,
+											title: patternTitle,
+											name: patternSlug,
 											categories: [],
 											viewportWidth: '',
 											content: '',
@@ -192,7 +198,7 @@ export default function ThemePatterns( { isVisible } ) {
 											.then( () => {
 												// Switch to the newly created theme.
 												currentPatternId.set(
-													newPatternId
+													patternSlug
 												);
 												currentView.set(
 													'pattern_editor'

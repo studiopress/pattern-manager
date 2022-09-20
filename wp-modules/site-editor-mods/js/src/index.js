@@ -86,7 +86,6 @@ wp.data.subscribe( () => {
 } );
 
 let fsestudioSaveDebounce = null;
-let fsestudioSaveAndRefreshDebounce = null;
 let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
@@ -94,36 +93,6 @@ window.addEventListener(
 	( event ) => {
 		try {
 			const response = JSON.parse( event.data );
-
-			if ( response.message === 'fsestudio_save_and_refresh' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveAndRefreshDebounce );
-				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
-					// Trigger a click event on the "Save" button in the site editor.
-					const element = document.getElementsByClassName(
-						'edit-site-save-button__button'
-					);
-
-					if ( element.item( 0 ) ) {
-						element.item( 0 ).click();
-					}
-
-					setTimeout( () => {
-						const saveEntitiesElement =
-							document.getElementsByClassName(
-								'editor-entities-saved-states__save-button'
-							);
-						if ( saveEntitiesElement.item( 0 ) ) {
-							saveEntitiesElement.item( 0 ).click();
-						}
-
-						// Then refresh the page.
-						setTimeout( () => {
-							window.location.reload();
-						}, 100 );
-					}, 100 );
-				}, 200 );
-			}
 
 			if ( response.message === 'fsestudio_save' ) {
 				// If the FSE Studio apps tells us to save the current post, do it:

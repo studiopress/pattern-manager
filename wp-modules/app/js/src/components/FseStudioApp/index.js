@@ -7,7 +7,7 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
-import { useState, useRef } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import React from 'react';
@@ -24,6 +24,7 @@ import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import useStudioContext from '../../hooks/useStudioContext';
+import useListener from '../../hooks/useListener';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
 
@@ -72,7 +73,6 @@ function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
 	const patternEditorIframe = useRef();
 	const templateEditorIframe = useRef();
-	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const themes = useThemes( {
 		themes: fsestudio.themes,
 	} );
@@ -90,6 +90,7 @@ function FseStudioContextHydrator() {
 	);
 
 	const currentPatternId = useCurrentId( '' );
+	useListener( currentPatternId?.set );
 	let currentPattern = null;
 
 	if ( currentPatternId?.value ) {
@@ -137,8 +138,6 @@ function FseStudioContextHydrator() {
 		blockEditorSettings: fsestudio.blockEditorSettings,
 		patternEditorIframe,
 		templateEditorIframe,
-		blockEditorLoaded,
-		setBlockEditorLoaded,
 	};
 
 	return (

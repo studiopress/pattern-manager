@@ -66,10 +66,13 @@ export function BlockEditor() {
 		currentPattern,
 		currentPatternId,
 		patternEditorIframe,
-		blockEditorLoaded,
-		setBlockEditorLoaded,
+		currentTheme,
 	} = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
+
+	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
+	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
+	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
@@ -79,43 +82,63 @@ export function BlockEditor() {
 				switch ( event.data ) {
 					case 'fsestudio_pattern_editor_loaded':
 						setBlockEditorLoaded( true );
+						break;
+					case 'fsestudio_pattern_data_set':
+						// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
+						setPatternDataSet( true );
+						break;
 				}
 			},
 			false
 		);
 
-		// As a fallback, if 5 seconds have passed, hide the spinner.
-		setTimeout( () => {
-			setBlockEditorLoaded( true );
-		}, 5000 );
+		window.addEventListener( 'message', ( event ) => {
+			try {
+				const response = JSON.parse( event.data );
+
+				// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
+				if ( response.message === 'fsestudio_block_pattern_updated' ) {
+					const newThemeData = {
+						...currentTheme.data,
+						included_patterns: {
+							...currentTheme.data.included_patterns,
+							[ currentPatternId.value ]:
+								response.blockPatternData,
+						},
+					};
+					currentTheme.set( newThemeData );
+				}
+			} catch ( e ) {
+				// Message posted was not JSON, so do nothing.
+			}
+		} );
 	}, [] );
 
 	useEffect( () => {
 		if ( currentPatternId.value !== currentPatternName ) {
 			setBlockEditorLoaded( false );
-			// As a fallback, if 5 seconds have passed, hide the spinner.
-			setTimeout( () => {
-				setBlockEditorLoaded( true );
-			}, 5000 );
+			setPatternDataSet( false );
 		}
 		setCurrentPatternName( currentPatternId.value );
 	}, [ currentPatternId ] );
 
-	if ( ! currentPattern?.post_id ) {
-		return (
-			<div className="h-screen min-h-full w-screen items-center justify-center">
-				<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
-					<Spinner />
-				</div>
-			</div>
-		);
-	}
+	useEffect( () => {
+		if ( blockEditorLoaded ) {
+			// Upon initial load, fill block editor with blocks.
+			patternEditorIframe.current.contentWindow.postMessage(
+				JSON.stringify( {
+					message: 'set_initial_pattern_data',
+					patternData: currentPattern,
+				} )
+			);
+		}
+	}, [ blockEditorLoaded ] );
 
 	return (
 		<div className="fsestudio-pattern-editor">
 			<div className="fsestudio-pattern-editor-body">
 				<div className="fsestudio-pattern-editor-view">
-					{ ! blockEditorLoaded ? (
+					{ ! patternDataSet ? (
 						<div className="h-screen min-h-full w-screen items-center justify-center">
 							<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
 								<Spinner />
@@ -145,9 +168,7 @@ export function BlockEditor() {
 						} }
 						src={
 							fsestudio.siteUrl +
-							'/wp-admin/post.php?post=' +
-							currentPattern?.post_id +
-							'&action=edit'
+							'/wp-admin/post-new.php?post_type=fsestudio_pattern'
 						}
 					/>
 				</div>

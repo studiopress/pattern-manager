@@ -94,6 +94,16 @@ function pattern_post_type() {
 		)
 	);
 
+	register_post_meta(
+		'fsestudio_pattern',
+		'previousName',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		)
+	);
+
 	/**
 	 * Add blockTypes array post meta.
 	 *
@@ -147,11 +157,11 @@ function display_block_pattern_preview() {
 		return;
 	}
 
-	$post_id = absint( $_GET['fsestudio_pattern_preview'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_id = sanitize_text_field( wp_unslash( $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$post = get_post( $post_id );
+	$pattern = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
 
-	$the_content = do_the_content_things( $post->post_content );
+	$the_content = do_the_content_things( $pattern['content'] );
 
 	wp_head();
 
