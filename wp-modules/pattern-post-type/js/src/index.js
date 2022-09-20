@@ -17,7 +17,7 @@ const FseStudioMetaControls = () => {
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
-
+		
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
 
@@ -428,7 +428,7 @@ wp.hooks.removeFilter(
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
-let fsestudioBlockPatternEditorIsSaving = false;
+let patternDataSet = false;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
@@ -438,25 +438,26 @@ wp.data.subscribe( () => {
 	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
 	}
+	
+	// Whenever the block editor fires that a change happened, pass it up to the parent FSE Studio app state.
+	if ( patternDataSet ) {
+		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		// Assemble the current blockPatternData into a single object.
+		const blockPatternData = {
+			content: wp.data.select( 'core/editor' ).getEditedPostContent(),
+			...wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
+			slug: meta.name
+		}
+		window.parent.postMessage(
+			JSON.stringify( {
+				message: 'fsestudio_block_pattern_updated',
+				blockPatternData: blockPatternData,
+			} )
+		);
+	}
 
-	// If saving just started, set a flag.
-	if (
-		wp.data.select( 'core/editor' ).isSavingPost() &&
-		! fsestudioBlockPatternEditorIsSaving
-	) {
-		fsestudioBlockPatternEditorIsSaving = true;
-	}
-	if (
-		! wp.data.select( 'core/editor' ).isSavingPost() &&
-		fsestudioBlockPatternEditorIsSaving
-	) {
-		window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
-		fsestudioBlockPatternEditorIsSaving = false;
-	}
 } );
 
-let fsestudioSaveDebounce = null;
-let fsestudioSaveAndRefreshDebounce = null;
 let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
@@ -465,25 +466,29 @@ window.addEventListener(
 		try {
 			const response = JSON.parse( event.data );
 
-			if ( response.message === 'fsestudio_save_and_refresh' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveAndRefreshDebounce );
-				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
-					wp.data
-						.dispatch( 'core/editor' )
-						.savePost()
-						.then( () => {
-							window.location.reload();
-						} );
-				}, 100 );
-			}
+			if ( response.message === 'set_initial_pattern_data' ) {
+				// Insert the block string so the blocks show up in the editor itself.
+				wp.data.dispatch('core/block-editor').insertBlocks(
+					wp.blocks.rawHandler({
+						HTML: response.patternData.content,
+						mode: 'BLOCKS',
+					})
+				);
+				
+				
+				// TODO: Set the categories. They can found at: response.patternData.categories
 
-			if ( response.message === 'fsestudio_save' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveDebounce );
-				fsestudioSaveDebounce = setTimeout( () => {
-					wp.data.dispatch( 'core/editor' ).savePost();
-				}, 200 );
+				// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
+				const patternMeta = { ...response.patternData }
+				delete patternMeta.content;
+
+				// Set the meta of the pattern
+				wp.data.dispatch( 'core/editor' ).editPost( {
+					meta: { ...patternMeta },
+				} );
+				patternDataSet = true;
+				window.parent.postMessage( 'fsestudio_pattern_data_set' );
+
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {
