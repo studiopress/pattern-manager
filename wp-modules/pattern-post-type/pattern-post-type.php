@@ -147,10 +147,10 @@ function display_block_pattern_preview() {
 		return;
 	}
 
-	$pattern_id = sanitize_text_field( wp_unslash(  $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	
+	$pattern_id = sanitize_text_field( wp_unslash( $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
 	$pattern = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
-	
+
 	$the_content = do_the_content_things( $pattern['content'] );
 
 	wp_head();

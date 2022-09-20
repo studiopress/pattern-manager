@@ -236,8 +236,8 @@ function get_theme_patterns( $theme_path = false ) {
 		if ( ! $pattern_data ) {
 			continue;
 		}
-		$pattern_data['name'] = basename( $path, '.php' );
-		$pattern_data['type'] = 'pattern';
+		$pattern_data['name']                  = basename( $path, '.php' );
+		$pattern_data['type']                  = 'pattern';
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 

@@ -7,7 +7,7 @@
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
-import { useState, useRef } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import React from 'react';

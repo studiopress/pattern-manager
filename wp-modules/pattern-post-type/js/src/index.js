@@ -17,7 +17,7 @@ const FseStudioMetaControls = () => {
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
-		
+
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
 
@@ -438,24 +438,25 @@ wp.data.subscribe( () => {
 	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
 	}
-	
+
 	// Whenever the block editor fires that a change happened, pass it up to the parent FSE Studio app state.
 	if ( patternDataSet ) {
-		const meta = wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+		const meta = wp.data
+			.select( 'core/editor' )
+			.getEditedPostAttribute( 'meta' );
 		// Assemble the current blockPatternData into a single object.
 		const blockPatternData = {
 			content: wp.data.select( 'core/editor' ).getEditedPostContent(),
 			...wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
-			slug: meta.name
-		}
+			slug: meta.name,
+		};
 		window.parent.postMessage(
 			JSON.stringify( {
 				message: 'fsestudio_block_pattern_updated',
-				blockPatternData: blockPatternData,
+				blockPatternData,
 			} )
 		);
 	}
-
 } );
 
 let fsestudioThemeJsonChangeDebounce = null;
@@ -468,18 +469,17 @@ window.addEventListener(
 
 			if ( response.message === 'set_initial_pattern_data' ) {
 				// Insert the block string so the blocks show up in the editor itself.
-				wp.data.dispatch('core/block-editor').insertBlocks(
-					wp.blocks.rawHandler({
+				wp.data.dispatch( 'core/block-editor' ).insertBlocks(
+					wp.blocks.rawHandler( {
 						HTML: response.patternData.content,
 						mode: 'BLOCKS',
-					})
+					} )
 				);
-				
-				
+
 				// TODO: Set the categories. They can found at: response.patternData.categories
 
 				// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
-				const patternMeta = { ...response.patternData }
+				const patternMeta = { ...response.patternData };
 				delete patternMeta.content;
 
 				// Set the meta of the pattern
@@ -488,7 +488,6 @@ window.addEventListener(
 				} );
 				patternDataSet = true;
 				window.parent.postMessage( 'fsestudio_pattern_data_set' );
-
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {

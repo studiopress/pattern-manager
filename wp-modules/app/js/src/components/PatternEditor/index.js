@@ -69,10 +69,10 @@ export function BlockEditor() {
 		currentTheme,
 	} = useStudioContext();
 	const [ currentPatternName, setCurrentPatternName ] = useState();
-	
+
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
-	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState(false);
-	const [ patternDataSet, setPatternDataSet ] = useState(false);
+	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
+	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
@@ -82,37 +82,36 @@ export function BlockEditor() {
 				switch ( event.data ) {
 					case 'fsestudio_pattern_editor_loaded':
 						setBlockEditorLoaded( true );
+						break;
 					case 'fsestudio_pattern_data_set':
 						// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
 						setPatternDataSet( true );
+						break;
 				}
 			},
 			false
 		);
-		
-		window.addEventListener(
-			'message',
-			( event ) => {
-				try {
-					const response = JSON.parse( event.data );
-					
-					// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
-					if ( response.message === 'fsestudio_block_pattern_updated' ) {
-						const newThemeData = {
-							...currentTheme.data,
-							included_patterns: {
-								...currentTheme.data.included_patterns,
-								[currentPatternId.value]: response.blockPatternData,
-							}
-						}	
-						currentTheme.set(newThemeData);
-					}
-				} catch ( e ) {
-					// Message posted was not JSON, so do nothing.
-				}
-			}
-		);
 
+		window.addEventListener( 'message', ( event ) => {
+			try {
+				const response = JSON.parse( event.data );
+
+				// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
+				if ( response.message === 'fsestudio_block_pattern_updated' ) {
+					const newThemeData = {
+						...currentTheme.data,
+						included_patterns: {
+							...currentTheme.data.included_patterns,
+							[ currentPatternId.value ]:
+								response.blockPatternData,
+						},
+					};
+					currentTheme.set( newThemeData );
+				}
+			} catch ( e ) {
+				// Message posted was not JSON, so do nothing.
+			}
+		} );
 	}, [] );
 
 	useEffect( () => {
@@ -122,7 +121,7 @@ export function BlockEditor() {
 		}
 		setCurrentPatternName( currentPatternId.value );
 	}, [ currentPatternId ] );
-	
+
 	useEffect( () => {
 		if ( blockEditorLoaded ) {
 			// Upon initial load, fill block editor with blocks.
@@ -130,10 +129,10 @@ export function BlockEditor() {
 				JSON.stringify( {
 					message: 'set_initial_pattern_data',
 					patternData: currentPattern,
-				} ),
+				} )
 			);
 		}
-	}, [blockEditorLoaded] );
+	}, [ blockEditorLoaded ] );
 
 	return (
 		<div className="fsestudio-pattern-editor">
