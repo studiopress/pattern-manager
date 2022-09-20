@@ -69,9 +69,9 @@ export default function useThemeData(
 		const derivedThemeData =
 			newThemeData.name !== themeData.name
 				? {
-						dirname: convertToSlug( newThemeData?.name ),
-						namespace: convertToPascalCase( newThemeData?.name ),
-						text_domain: convertToSlug( newThemeData?.name ),
+						dirname: convertToSlug( newThemeData.name ),
+						namespace: convertToPascalCase( newThemeData.name ),
+						text_domain: convertToSlug( newThemeData.name ),
 				  }
 				: {};
 
