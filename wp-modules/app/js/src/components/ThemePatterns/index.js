@@ -143,7 +143,7 @@ export default function ThemePatterns( { isVisible } ) {
 													url={
 														fsestudio.siteUrl +
 														'?fsestudio_pattern_preview=' +
-														patternData.post_id
+														patternData.name
 													}
 													scale={ 0.2 }
 												/>

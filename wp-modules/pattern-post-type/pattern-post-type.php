@@ -147,11 +147,11 @@ function display_block_pattern_preview() {
 		return;
 	}
 
-	$post_id = absint( $_GET['fsestudio_pattern_preview'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-	$post = get_post( $post_id );
-
-	$the_content = do_the_content_things( $post->post_content );
+	$pattern_id = sanitize_text_field( wp_unslash(  $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	
+	$pattern = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
+	
+	$the_content = do_the_content_things( $pattern['content'] );
 
 	wp_head();
 
