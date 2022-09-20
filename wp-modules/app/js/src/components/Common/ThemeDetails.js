@@ -19,6 +19,10 @@ export default function ThemeDetails() {
 						type="text"
 						id="theme-name"
 						value={ currentTheme?.data?.name ?? '' }
+						aria-invalid={ currentTheme.isNameTaken() }
+						aria-describedby={
+							currentTheme.isNameTaken() ? 'name-help' : null
+						}
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -27,9 +31,9 @@ export default function ThemeDetails() {
 						} }
 					/>
 					{ currentTheme.isNameTaken() ? (
-						<p>
+						<span id="name-help" className="text-red-700 font-sm">
 							{ __( 'This theme name is taken', 'fse-studio' ) }
-						</p>
+						</span>
 					) : null }
 				</div>
 			</div>

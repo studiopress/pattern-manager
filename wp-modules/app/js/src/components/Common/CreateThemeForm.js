@@ -31,6 +31,12 @@ export default function CreateThemeForm( { children } ) {
 								id="theme-name"
 								data-lpignore="true"
 								value={ currentTheme?.data?.name ?? '' }
+								aria-invalid={ currentTheme.isNameTaken() }
+								aria-describedby={
+									currentTheme.isNameTaken()
+										? 'name-help'
+										: null
+								}
 								onChange={ ( event ) => {
 									currentTheme.set( {
 										...currentTheme.data,
@@ -38,6 +44,17 @@ export default function CreateThemeForm( { children } ) {
 									} );
 								} }
 							/>
+							{ currentTheme.isNameTaken() ? (
+								<span
+									id="name-help"
+									className="text-red-700 font-sm"
+								>
+									{ __(
+										'This theme name is taken',
+										'fse-studio'
+									) }
+								</span>
+							) : null }
 						</div>
 					</div>
 					<details className="mb-2 rounded-sm">
