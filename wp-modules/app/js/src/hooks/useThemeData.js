@@ -94,13 +94,16 @@ export default function useThemeData(
 
 	/** @return {boolean} Whether another theme also has the current theme name. */
 	function isNameTaken() {
-		return Object.entries( themes.themes )
-			.filter( ( [ id ] ) => {
-				return id !== themeId;
-			} )
-			.some( ( [ , theme ] ) => {
-				return theme.name === themeData.name;
-			} );
+		return (
+			!! themeData.name &&
+			Object.entries( themes.themes )
+				.filter( ( [ id ] ) => {
+					return id !== themeId;
+				} )
+				.some( ( [ , theme ] ) => {
+					return theme.name === themeData.name;
+				} )
+		);
 	}
 
 	useEffect( () => {
