@@ -177,7 +177,7 @@ function update_theme( $theme ) {
 			$wp_filesystem->move( $previous_theme_file, str_replace( $previous_theme_dir, $new_theme_dir, $previous_theme_file ) );
 		}
 
-		$wp_filesystem->rmdir( $previous_theme_dir, true );
+		$wp_filesystem->rmdir( $previous_theme_dir );
 	}
 
 	// Create the new theme directory, if it does not already exist.
