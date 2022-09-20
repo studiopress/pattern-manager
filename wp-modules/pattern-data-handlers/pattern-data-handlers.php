@@ -330,10 +330,15 @@ function update_pattern( $pattern ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
-	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
-		$patterns_dir  = $wp_theme_dir . '/patterns/';
+		$patterns_dir     = $wp_theme_dir . '/patterns/';
+		$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
+		if ( $name_was_changed ) {
+			// Delete the previous pattern file, as the file name should change on changing the name.
+			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
+		}
+
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
 		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 	}
@@ -596,6 +601,7 @@ function handle_pattern_post_save( $post ) {
 		'type'          => get_post_meta( $post_id, 'type', true ),
 		'title'         => get_post_meta( $post_id, 'title', true ),
 		'name'          => get_post_meta( $post_id, 'name', true ),
+		'previousName'  => get_post_meta( $post_id, 'previousName', true ),
 		'blockTypes'    => get_post_meta( $post_id, 'blockTypes', true ),
 		'postTypes'     => get_post_meta( $post_id, 'postTypes', true ),
 		'categories'    => $tag_slugs,
