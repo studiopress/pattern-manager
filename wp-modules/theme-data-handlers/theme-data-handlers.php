@@ -162,9 +162,23 @@ function update_theme( $theme ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
-	$themes_dir       = $wp_filesystem->wp_themes_dir();
-	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
+	$theme_boiler_dir   = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
+	$themes_dir         = $wp_filesystem->wp_themes_dir();
+	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
+	$previous_theme_dir = get_theme_directory( $theme['id'] ?? '' );
+
+	if ( $previous_theme_dir ) {
+		if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
+			$wp_filesystem->mkdir( $new_theme_dir );
+		}
+
+		$previous_theme_files = glob( "$previous_theme_dir*" );
+		foreach ( $previous_theme_files as $previous_theme_file ) {
+			$wp_filesystem->move( $previous_theme_file, str_replace( $previous_theme_dir, $new_theme_dir, $previous_theme_file ) );
+		}
+
+		$wp_filesystem->rmdir( $previous_theme_dir, true );
+	}
 
 	// Create the new theme directory, if it does not already exist.
 	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
@@ -174,10 +188,10 @@ function update_theme( $theme ) {
 	}
 
 	// Fix strings in the stylesheet.
-	$strings_fixed = \FseStudio\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
+	\FseStudio\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
 
 	// Fix strings in the functions.php file.
-	$strings_fixed = \FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
+	\FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
 
 	// Put the contents of the theme.json file into the theme.
 	if ( isset( $theme['theme_json_file'] ) && ! empty( $theme['theme_json_file'] ) ) {
@@ -268,4 +282,32 @@ function update_theme( $theme ) {
  */
 function switch_to_theme( string $theme_slug ) {
 	switch_theme( $theme_slug );
+}
+
+/**
+ * Gets the theme directory name that has a given ID in its data file.
+ *
+ * @param string $theme_id The id in the theme data file.
+ * @return string|null
+ */
+function get_theme_directory( string $theme_id ) {
+	if ( ! $theme_id ) {
+		return null;
+	}
+
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$themes        = glob( "{$wp_filesystem->wp_themes_dir()}*" );
+
+	foreach ( $themes as $theme_dir ) {
+		$theme_data_file = "$theme_dir/fsestudio-data.json";
+
+		if ( $wp_filesystem->exists( $theme_data_file ) ) {
+			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
+			if ( isset( $theme_data['id'] ) && $theme_data['id'] === $theme_id ) {
+				return trailingslashit( $theme_dir );
+			}
+		}
+	}
+
+	return null;
 }
