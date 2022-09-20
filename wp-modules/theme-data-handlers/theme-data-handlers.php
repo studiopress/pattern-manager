@@ -164,8 +164,8 @@ function update_theme( $theme ) {
 	// Build the files for the theme, located in wp-content/themes/.
 	$theme_boiler_dir   = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
 	$themes_dir         = $wp_filesystem->wp_themes_dir();
-	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
-	$previous_theme_dir = get_theme_directory( $theme['id'] ?? '' );
+	$new_theme_dir      = trailingslashit( $themes_dir . $theme['dirname'] );
+	$previous_theme_dir = trailingslashit( get_theme_directory( $theme['id'] ?? '' ) );
 
 	if ( $previous_theme_dir ) {
 		if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
@@ -285,10 +285,10 @@ function switch_to_theme( string $theme_slug ) {
 }
 
 /**
- * Gets the theme directory name that has a given ID in its data file.
+ * Gets the absolute theme directory that has a given theme id.
  *
  * @param string $theme_id The id in the theme data file.
- * @return string|null
+ * @return string|null The absolute path, if it exists.
  */
 function get_theme_directory( string $theme_id ) {
 	if ( ! $theme_id ) {
@@ -304,7 +304,7 @@ function get_theme_directory( string $theme_id ) {
 		if ( $wp_filesystem->exists( $theme_data_file ) ) {
 			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
 			if ( isset( $theme_data['id'] ) && $theme_data['id'] === $theme_id ) {
-				return trailingslashit( $theme_dir );
+				return $theme_dir;
 			}
 		}
 	}
