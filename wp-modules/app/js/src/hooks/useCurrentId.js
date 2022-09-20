@@ -2,7 +2,7 @@
 
 import { useState } from '@wordpress/element';
 
-/** @param {string} [initialId] */
+/** @param {string} initialId */
 export default function useCurrentId( initialId ) {
 	const [ value, set ] = useState( initialId );
 

@@ -6,44 +6,35 @@ export default function ThemeDetails() {
 
 	return (
 		<>
-			<div
-				hidden
-				className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
-			>
+			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
 				<label
-					htmlFor="directory-name"
+					htmlFor="theme-name"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Directory Name', 'fse-studio' ) }
+					{ __( 'Theme Name', 'fse-studio' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
-						id="directory-name"
-						value={ currentTheme?.data?.dirname ?? '' }
-						disabled
+						id="theme-name"
+						value={ currentTheme?.data?.name ?? '' }
+						aria-invalid={ currentTheme.isNameTaken() }
+						aria-describedby={
+							currentTheme.isNameTaken() ? 'name-help' : null
+						}
+						onChange={ ( event ) => {
+							currentTheme.set( {
+								...currentTheme.data,
+								name: event.target.value,
+							} );
+						} }
 					/>
-				</div>
-			</div>
-			<div
-				hidden
-				className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
-			>
-				<label
-					htmlFor="namespace"
-					className="block font-medium text-gray-700 sm:col-span-1"
-				>
-					{ __( 'Namespace', 'fse-studio' ) }
-				</label>
-				<div className="mt-1 sm:mt-0 sm:col-span-2">
-					<input
-						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-						type="text"
-						id="namespace"
-						value={ currentTheme?.data?.namespace ?? '' }
-						disabled
-					/>
+					{ currentTheme.isNameTaken() ? (
+						<span id="name-help" className="text-red-700 font-sm">
+							{ __( 'This theme name is taken', 'fse-studio' ) }
+						</span>
+					) : null }
 				</div>
 			</div>
 			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
@@ -58,9 +49,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="uri"
-						value={
-							currentTheme?.data?.uri ? currentTheme.data.uri : ''
-						}
+						value={ currentTheme?.data?.uri ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -82,11 +71,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="author"
-						value={
-							currentTheme?.data?.author
-								? currentTheme.data.author
-								: ''
-						}
+						value={ currentTheme?.data?.author ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -130,11 +115,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="description"
-						value={
-							currentTheme?.data?.description
-								? currentTheme.data.description
-								: ''
-						}
+						value={ currentTheme?.data?.description ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -156,11 +137,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="tags"
-						value={
-							currentTheme?.data?.tags
-								? currentTheme.data.tags
-								: ''
-						}
+						value={ currentTheme?.data?.tags ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -182,11 +159,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="tested"
-						value={
-							currentTheme?.data?.tested_up_to
-								? currentTheme.data.tested_up_to
-								: ''
-						}
+						value={ currentTheme?.data?.tested_up_to ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -208,11 +181,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="minimum-wp"
-						value={
-							currentTheme?.data?.requires_wp
-								? currentTheme.data.requires_wp
-								: ''
-						}
+						value={ currentTheme?.data?.requires_wp ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -234,11 +203,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="minimum-php"
-						value={
-							currentTheme?.data?.requires_php
-								? currentTheme.data.requires_php
-								: ''
-						}
+						value={ currentTheme?.data?.requires_php ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -260,11 +225,7 @@ export default function ThemeDetails() {
 						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
 						type="text"
 						id="version"
-						value={
-							currentTheme?.data?.version
-								? currentTheme.data.version
-								: ''
-						}
+						value={ currentTheme?.data?.version ?? '' }
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
