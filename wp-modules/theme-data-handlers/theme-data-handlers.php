@@ -178,6 +178,7 @@ function update_theme( $theme ) {
 			$wp_filesystem->move( $previous_theme_file, str_replace( $previous_theme_dir, $new_theme_dir, $previous_theme_file ) );
 		}
 
+		// If $previous_theme_dir isn't empty, this won't rm it, as ->rmdir() doesn't have the 2nd argument of true (recursive).
 		$wp_filesystem->rmdir( $previous_theme_dir );
 	}
 
