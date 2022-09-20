@@ -92,7 +92,7 @@ export default function useThemeData(
 
 	const { defaultStyleName } = useStyleVariations();
 
-	/** @return {boolean} Whether the current theme name is taken, excluding the current theme. */
+	/** @return {boolean} Whether another theme also has the current theme name. */
 	function isNameTaken() {
 		return (
 			!! themeData.name &&
