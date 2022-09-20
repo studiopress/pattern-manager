@@ -165,7 +165,7 @@ function update_theme( $theme ) {
 	$theme_boiler_dir   = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
 	$themes_dir         = $wp_filesystem->wp_themes_dir();
 	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
-	$previous_theme_dir = get_theme_directory( $theme['id'] ?? '' );
+	$previous_theme_dir = get_theme_directory( sanitize_title( $theme['id'] ?? '' ) );
 
 	if ( $previous_theme_dir ) {
 		if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
