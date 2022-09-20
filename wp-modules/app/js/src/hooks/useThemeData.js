@@ -86,7 +86,6 @@ export default function useThemeData(
 
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
-	const [ patternEditorDirty, setPatternEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
@@ -113,9 +112,6 @@ export default function useThemeData(
 				if ( event.data === 'fsestudio_site_editor_dirty' ) {
 					setSiteEditorDirty( true );
 				}
-				if ( event.data === 'fsestudio_pattern_editor_dirty' ) {
-					setPatternEditorDirty( true );
-				}
 			},
 			false
 		);
@@ -123,10 +119,6 @@ export default function useThemeData(
 		window.addEventListener(
 			'message',
 			( event ) => {
-				if ( event.data === 'fsestudio_pattern_editor_save_complete' ) {
-					setPatternEditorDirty( false );
-					setRequestThemeRefresh( true );
-				}
 				if ( event.data === 'fsestudio_site_editor_save_complete' ) {
 					setSiteEditorDirty( false );
 					setRequestThemeRefresh( true );
@@ -144,7 +136,7 @@ export default function useThemeData(
 	useEffect( () => {
 		if ( requestThemeRefresh ) {
 			// If something is still dirty, don't do anything yet.
-			if ( siteEditorDirty || patternEditorDirty ) {
+			if ( siteEditorDirty ) {
 				setRequestThemeRefresh( false );
 			} else {
 				setRequestThemeRefresh( false );
@@ -176,7 +168,7 @@ export default function useThemeData(
 	 * @param {Event} event The beforeunload event.
 	 */
 	function warnIfUnsavedChanges( event ) {
-		if ( editorDirty.current || patternEditorDirty || siteEditorDirty ) {
+		if ( editorDirty.current || siteEditorDirty ) {
 			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
 			event.returnValue = __(
 				'Are you sure you want to leave the editor? There are unsaved changes.',
@@ -241,15 +233,8 @@ export default function useThemeData(
 					return response.json();
 				} )
 				.then( ( data ) => {
-					// Send a message to the iframe, telling it to save and refresh.
 					if ( patternEditorIframe.current ) {
-						patternEditorIframe.current.contentWindow.postMessage(
-							JSON.stringify( {
-								message: 'fsestudio_save',
-							} ),
-							'*'
-						);
-
+						// Send a message to the iframe, telling it that the themejson has changed.
 						if ( data.themeJsonModified ) {
 							patternEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
@@ -287,7 +272,7 @@ export default function useThemeData(
 
 					setThemeData( data.themeData );
 
-					if ( ! patternEditorDirty && ! siteEditorDirty ) {
+					if ( ! siteEditorDirty ) {
 						uponSuccessfulSave();
 					}
 
@@ -311,7 +296,6 @@ export default function useThemeData(
 			}
 
 			editorDirty.current = false;
-			setPatternEditorDirty( false );
 			setSiteEditorDirty( false );
 			setSaveCompleted( true );
 			setIsSaving( false );

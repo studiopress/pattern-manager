@@ -14,10 +14,11 @@ import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
+
 	const previousPatternName = useRef();
-	const postMeta = wp.data.useSelect( ( select ) => {
-		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	} );
+	const postMeta = wp.data
+		.select( 'core/editor' )
+		.getEditedPostAttribute( 'meta' );
 
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
@@ -433,6 +434,7 @@ wp.hooks.removeFilter(
 
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
+let patternDataSet = false;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
@@ -441,6 +443,25 @@ wp.data.subscribe( () => {
 
 	if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
+	}
+
+	// Whenever the block editor fires that a change happened, pass it up to the parent FSE Studio app state.
+	if ( patternDataSet ) {
+		const meta = wp.data
+			.select( 'core/editor' )
+			.getEditedPostAttribute( 'meta' );
+		// Assemble the current blockPatternData into a single object.
+		const blockPatternData = {
+			content: wp.data.select( 'core/editor' ).getEditedPostContent(),
+			...wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
+			slug: meta.name,
+		};
+		window.parent.postMessage(
+			JSON.stringify( {
+				message: 'fsestudio_block_pattern_updated',
+				blockPatternData,
+			} )
+		);
 	}
 } );
 
@@ -452,26 +473,27 @@ window.addEventListener(
 		try {
 			const response = JSON.parse( event.data );
 
-			if ( response.message === 'fsestudio_save' ) {
-				const noticeId = 'fse-studio-pattern-editor-no-content';
-				if ( wp.data.select( 'core/editor' ).isEditedPostSaveable() ) {
-					wp.data.dispatch( 'core/notices' ).removeNotice( noticeId );
-					wp.data.dispatch( 'core/editor' ).savePost().then( onSave );
-				} else {
-					window.parent.postMessage(
-						'fsestudio_pattern_editor_save_complete'
-					);
-					wp.data
-						.dispatch( 'core/notices' )
-						.createNotice(
-							'warning',
-							__(
-								'FSE Studio: Please add content to this pattern to save it',
-								'fse-studio'
-							),
-							{ id: noticeId }
-						);
-				}
+			if ( response.message === 'set_initial_pattern_data' ) {
+				// Insert the block string so the blocks show up in the editor itself.
+				wp.data.dispatch( 'core/block-editor' ).insertBlocks(
+					wp.blocks.rawHandler( {
+						HTML: response.patternData.content,
+						mode: 'BLOCKS',
+					} )
+				);
+
+				// TODO: Set the categories. They can found at: response.patternData.categories
+
+				// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
+				const patternMeta = { ...response.patternData };
+				delete patternMeta.content;
+
+				// Set the meta of the pattern
+				wp.data.dispatch( 'core/editor' ).editPost( {
+					meta: { ...patternMeta },
+				} );
+				patternDataSet = true;
+				window.parent.postMessage( 'fsestudio_pattern_data_set' );
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {
@@ -526,18 +548,3 @@ window.addEventListener(
 	},
 	false
 );
-
-function onSave() {
-	window.parent.postMessage( 'fsestudio_pattern_editor_save_complete' );
-	const postMeta = wp.data
-		.select( 'core/editor' )
-		.getEditedPostAttribute( 'meta' );
-	if ( postMeta?.previousName && postMeta?.previousName !== postMeta?.name ) {
-		window.parent.postMessage(
-			JSON.stringify( {
-				message: 'fsestudio_pattern_editor_pattern_name_changed',
-				newPatternName: postMeta?.name,
-			} )
-		);
-	}
-}
