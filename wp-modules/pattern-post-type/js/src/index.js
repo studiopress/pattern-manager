@@ -9,11 +9,13 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useRef } from '@wordpress/element';
+import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
 
+	const previousPatternName = useRef();
 	const postMeta = wp.data
 		.select( 'core/editor' )
 		.getEditedPostAttribute( 'meta' );
@@ -73,6 +75,8 @@ const FseStudioMetaControls = () => {
 		wp.data.subscribe( () => {
 			setCoreLastUpdate( Date.now() );
 		} );
+
+		previousPatternName.current = postMeta?.name;
 	}, [] );
 
 	/**
@@ -324,13 +328,15 @@ const FseStudioMetaControls = () => {
 			>
 				<PanelRow>
 					<TextControl
-						label={ __( 'Pattern Name', 'fse-studio' ) }
+						label={ __( 'Pattern Title', 'fse-studio' ) }
 						value={ postMeta.title }
 						onChange={ ( value ) => {
 							wp.data.dispatch( 'core/editor' ).editPost( {
 								meta: {
 									...postMeta,
 									title: value,
+									name: convertToSlug( value ),
+									previousName: previousPatternName.current,
 								},
 							} );
 						} }
