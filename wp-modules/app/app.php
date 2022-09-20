@@ -70,9 +70,6 @@ function fse_studio_app() {
 		return;
 	}
 
-	// When loading the app fresh, do garbage clean up for pattern post types created on previous loads.
-	\FseStudio\PatternDataHandlers\delete_all_pattern_post_types();
-
 	// Include the app.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
