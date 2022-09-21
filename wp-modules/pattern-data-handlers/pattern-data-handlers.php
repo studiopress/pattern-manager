@@ -192,15 +192,17 @@ function format_pattern_data( $pattern_data, $file ) {
 	}
 
 	$file_contents = explode( '?>', $wp_filesystem->get_contents( $file ), 2 );
-	error_log( '----' . $file_contents[1] . '---' );
+	
+	// Replace PHP calls to get_template_directory_uri with the result of calling it. This is how it is because PHP's require is cached, forcing us to use get_contents instead.
+	$pattern_content = str_replace( '<?php echo get_template_directory_uri(); ?>', get_template_directory_uri(), $file_contents[1] );
+
 	// The actual pattern content is the output of the file.
 	ob_start();
-	$file_contents[1];
+	echo $pattern_content;
 	$pattern_data['content'] = ob_get_clean();
 	if ( ! $pattern_data['content'] ) {
 		return false;
 	}
-
 	return $pattern_data;
 }
 
@@ -493,15 +495,13 @@ function tree_shake_theme_images() {
 
 	// Get the current patterns in the theme (including templates and templates parts).
 	// Add the included Patterns for the current theme.
-	$theme_dir          = get_template_directory();
-	$patterns_in_theme  = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir );
-	$templates_in_theme = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir );
-	$parts_in_theme     = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir );
-	$patterns_in_theme  = array_merge( $patterns_in_theme, $templates_in_theme, $parts_in_theme );
-	error_log( json_encode( $patterns_in_theme ) );
-	$wp_theme_dir        = get_template_directory();
+	$theme_dir           = get_template_directory();
+	$patterns_in_theme   = \FseStudio\PatternDataHandlers\get_theme_patterns();
+	$templates_in_theme  = \FseStudio\PatternDataHandlers\get_theme_templates();
+	$parts_in_theme      = \FseStudio\PatternDataHandlers\get_theme_template_parts();
+	$patterns_in_theme   = array_merge( $patterns_in_theme, $templates_in_theme, $parts_in_theme );
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir          = $wp_theme_dir . '/assets/images/';
+	$images_dir          = $theme_dir . '/assets/images/';
 
 	$wp_theme_url        = get_template_directory_uri();
 	$backedup_images_url = content_url() . '/temp-images/';
@@ -534,9 +534,6 @@ function tree_shake_theme_images() {
 			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
 			$desired_destination_in_theme = str_replace( $backedup_images_dir, $images_dir, $local_path_to_image );
 
-			error_log( $local_path_to_image );
-			error_log( $desired_destination_in_theme );
-			error_log( '----' );
 			// If the path to this image starts with the path to our backedup images directory.
 			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
 				// Move the file into the theme again.
@@ -546,7 +543,7 @@ function tree_shake_theme_images() {
 	}
 
 	// Delete the temporary backup of the images we did.
-	// $wp_filesystem->delete( $backedup_images_dir, true, 'd' );
+	$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
 }
 
 /**
