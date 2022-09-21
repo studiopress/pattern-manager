@@ -18,20 +18,13 @@ import { fsestudio } from '../../globals';
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
 	const { currentPatternId } = useStudioContext();
-	const [ currentPatternName, setCurrentPatternName ] = useState();
-
-	useEffect( () => {
-		setCurrentPatternName( currentPatternId.value );
-	}, [ currentPatternId ] );
 
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			{ currentPatternId.value &&
-			currentPatternId.value === currentPatternName ? (
-				<BlockEditor />
-			) : (
-				<Spinner />
-			) }
+			{ currentPatternId.value
+				? <BlockEditor />
+				: <Spinner />
+			}
 		</div>
 	);
 }
