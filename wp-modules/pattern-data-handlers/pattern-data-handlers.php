@@ -371,7 +371,7 @@ function update_pattern( $pattern ) {
 /**
  * Deletes any pattern file whose name isn't present in the passed patterns.
  *
- * @param string[] $pattern_names The patterns to not delete.
+ * @param string[] $patterns The patterns to not delete.
  */
 function delete_patterns_not_present( array $patterns ) {
 	$pattern_names = wp_list_pluck( array_values( $patterns ), 'slug' );
