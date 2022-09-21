@@ -96,7 +96,7 @@ function register_routes() {
 function get_theme( $request ) {
 	$params = $request->get_params();
 
-	$theme_id           = $params['themeId'];
+	$theme_id = $params['themeId'];
 
 	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 

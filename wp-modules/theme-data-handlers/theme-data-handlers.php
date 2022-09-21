@@ -230,7 +230,7 @@ function update_theme( $theme, $update_patterns = true ) {
 	} else {
 		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 	}
-	
+
 	// Note we do not check $update_patterns here. This is because included_patterns are treated differently than template_files and template_parts, in that they are saved WITH the theme data, while template things are saved separately in the site editor.
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
@@ -244,7 +244,7 @@ function update_theme( $theme, $update_patterns = true ) {
 		if ( ! $theme['template_files'] ) {
 			$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
 		}
-	
+
 		foreach ( $theme['template_files'] as $template_name => $template_data ) {
 			\FseStudio\PatternDataHandlers\update_pattern(
 				array(
@@ -254,11 +254,11 @@ function update_theme( $theme, $update_patterns = true ) {
 				)
 			);
 		}
-	
+
 		if ( ! isset( $theme['template_parts'] ) ) {
 			$theme['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
 		}
-	
+
 		foreach ( $theme['template_parts'] as $template_name => $template_data ) {
 			\FseStudio\PatternDataHandlers\update_pattern(
 				array(
