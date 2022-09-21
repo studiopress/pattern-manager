@@ -481,13 +481,15 @@ window.addEventListener(
 
 			if ( response.message === 'set_initial_pattern_data' ) {
 				// Insert the block string so the blocks show up in the editor itself.
-				wp.data.dispatch( 'core/editor' ).resetEditorBlocks();
-				wp.data.dispatch( 'core/block-editor' ).insertBlocks(
+				wp.data.dispatch( 'core/editor' ).resetEditorBlocks(
 					wp.blocks.rawHandler( {
 						HTML: response.patternData.content,
 						mode: 'BLOCKS',
 					} )
 				);
+
+				// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
+				window.sessionStorage.removeItem( `wp-autosave-block-editor-post-${wp.data.select('core/editor').getEditedPostAttribute('id')}`)
 
 				// TODO: Set the categories. They can found at: response.patternData.categories
 
