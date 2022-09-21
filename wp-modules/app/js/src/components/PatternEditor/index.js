@@ -18,30 +18,20 @@ import { fsestudio } from '../../globals';
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
 	const { currentPatternId } = useStudioContext();
-	const [ reloadIframe, setReloadIframe ] = useState( false );
 	const [ currentPatternName, setCurrentPatternName ] = useState();
 
 	useEffect( () => {
-		if ( currentPatternId.value !== currentPatternName ) {
-			setReloadIframe( true );
-		}
 		setCurrentPatternName( currentPatternId.value );
 	}, [ currentPatternId ] );
 
-	useEffect( () => {
-		if ( reloadIframe ) {
-			setReloadIframe( false );
-		}
-	}, [ reloadIframe ] );
-
-	if ( reloadIframe ) {
-		// Make it so that BlockEditor is completely reloaded from scratch. This makes it so attached eventListeners are also reset, because the component gets umounted.
-		return <Spinner />;
-	}
-
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			{ currentPatternId.value ? <BlockEditor /> : null }
+			{ currentPatternId.value &&
+			currentPatternId.value === currentPatternName ? (
+				<BlockEditor />
+			) : (
+				<Spinner />
+			) }
 		</div>
 	);
 }
