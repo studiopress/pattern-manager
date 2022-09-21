@@ -489,7 +489,11 @@ window.addEventListener(
 				);
 
 				// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
-				window.sessionStorage.removeItem( `wp-autosave-block-editor-post-${wp.data.select('core/editor').getEditedPostAttribute('id')}`)
+				window.sessionStorage.removeItem(
+					`wp-autosave-block-editor-post-${ wp.data
+						.select( 'core/editor' )
+						.getEditedPostAttribute( 'id' ) }`
+				);
 
 				// TODO: Set the categories. They can found at: response.patternData.categories
 
