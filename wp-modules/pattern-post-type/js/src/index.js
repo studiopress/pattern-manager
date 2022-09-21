@@ -481,6 +481,7 @@ window.addEventListener(
 
 			if ( response.message === 'set_initial_pattern_data' ) {
 				// Insert the block string so the blocks show up in the editor itself.
+				wp.data.dispatch( 'core/editor' ).resetEditorBlocks();
 				wp.data.dispatch( 'core/block-editor' ).insertBlocks(
 					wp.blocks.rawHandler( {
 						HTML: response.patternData.content,

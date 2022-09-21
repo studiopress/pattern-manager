@@ -72,9 +72,13 @@ export function BlockEditor() {
 	};
 
 	useEffect( () => {
+		console.log('running useEffect to remove and readd listeners');
 		// The iframed block editor will send a message to let us know when it is ready.
 		window.removeEventListener( 'message', patternListenerCallbacks );
 		window.addEventListener( 'message', patternListenerCallbacks );
+
+		setInitialData();
+		setPatternDataSet( false );
 
 		// Cleanup event listeners when this component is unmounted.
 		return () => {
@@ -82,17 +86,14 @@ export function BlockEditor() {
 		};
 	}, [ currentPatternId?.value ] );
 
-	useEffect( () => {
-		if ( blockEditorLoaded ) {
-			// Upon initial load, fill block editor with blocks.
-			patternEditorIframe.current.contentWindow.postMessage(
-				JSON.stringify( {
-					message: 'set_initial_pattern_data',
-					patternData: currentPattern,
-				} )
-			);
-		}
-	}, [ blockEditorLoaded ] );
+	function setInitialData() {
+		patternEditorIframe?.current.contentWindow.postMessage(
+			JSON.stringify( {
+				message: 'set_initial_pattern_data',
+				patternData: currentPattern,
+			} )
+		);
+	}
 
 	return (
 		<div className="fsestudio-pattern-editor">
