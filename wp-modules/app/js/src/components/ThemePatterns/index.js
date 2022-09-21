@@ -241,7 +241,7 @@ export default function ThemePatterns( { isVisible } ) {
 											) }
 											href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/"
 											target="_blank"
-											rel="noopener noreferrer"
+											rel="noopener"
 										>
 											{ __(
 												'Exploring Block Patterns Video',
@@ -263,7 +263,7 @@ export default function ThemePatterns( { isVisible } ) {
 											) }
 											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
 											target="_blank"
-											rel="noopener noreferrer"
+											rel="noopener"
 										>
 											{ __(
 												'Block Theme Overview',
@@ -285,7 +285,7 @@ export default function ThemePatterns( { isVisible } ) {
 											) }
 											href="https://developer.wordpress.org/block-editor/"
 											target="_blank"
-											rel="noopener noreferrer"
+											rel="noopener"
 										>
 											{ __(
 												'Block Editor Handbook',
@@ -307,7 +307,7 @@ export default function ThemePatterns( { isVisible } ) {
 											) }
 											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
 											target="_blank"
-											rel="noopener noreferrer"
+											rel="noopener"
 										>
 											{ __(
 												'Block Builder Basics Video',
