@@ -374,7 +374,7 @@ function update_pattern( $pattern ) {
  * @param string[] $patterns The patterns to not delete.
  */
 function delete_patterns_not_present( array $patterns ) {
-	$pattern_names = wp_list_pluck( array_values( $patterns ), 'slug' );
+	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	if ( ! $wp_filesystem ) {
 		return;
