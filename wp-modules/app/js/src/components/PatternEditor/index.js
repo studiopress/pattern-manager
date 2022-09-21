@@ -73,13 +73,14 @@ export function BlockEditor() {
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
+		window.removeEventListener( 'message', patternListenerCallbacks );
 		window.addEventListener( 'message', patternListenerCallbacks );
 
 		// Cleanup event listeners when this component is unmounted.
 		return () => {
 			window.removeEventListener( 'message', patternListenerCallbacks );
 		};
-	}, [] );
+	}, [ currentPatternId?.value ] );
 
 	useEffect( () => {
 		if ( blockEditorLoaded ) {
