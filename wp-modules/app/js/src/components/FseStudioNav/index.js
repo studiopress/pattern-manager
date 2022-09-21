@@ -210,7 +210,7 @@ export default function FseStudioNav() {
 										fill="#969696"
 									/>
 								</svg>
-								{ __( 'Exit FSE Studio', 'fse-studio' ) }
+								{ __( 'Exit to Dashboard', 'fse-studio' ) }
 							</button>
 						</li>
 					</ul>

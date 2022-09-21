@@ -205,9 +205,27 @@ function format_pattern_data( $pattern_data, $file ) {
 }
 
 /**
+ * Get the pattern data for a specific pattern from a specific theme.
+ *
+ * @param string $pattern_id The name of the pattern to get.
+ * @param string $theme_path The path to the theme. Defaults to the current active theme.
+ * @return array
+ */
+function get_theme_pattern( $pattern_id, $theme_path = false ) {
+	$patterns_data = get_theme_patterns( $theme_path );
+	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
+		return false;
+	}
+
+	$pattern_data = $patterns_data[ $pattern_id ];
+
+	return $pattern_data;
+}
+
+/**
  * Get the pattern data for all patterns in a theme.
  *
- * @param string $theme_path The path to the theme.
+ * @param string $theme_path The path to the theme. Defaults to the current active theme.
  * @return array
  */
 function get_theme_patterns( $theme_path = false ) {
@@ -376,11 +394,12 @@ function update_pattern( $pattern ) {
 }
 
 /**
- * Deletes any pattern file whose name isn't present in the passed pattern names.
+ * Deletes any pattern file whose name isn't present in the passed patterns.
  *
- * @param string[] $pattern_names The pattern names to not delete.
+ * @param string[] $patterns The patterns to not delete.
  */
-function delete_patterns_not_present( array $pattern_names ) {
+function delete_patterns_not_present( array $patterns ) {
+	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	if ( ! $wp_filesystem ) {
 		return;

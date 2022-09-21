@@ -43,7 +43,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  */
 
 /**
- * @param {string|undefined}                            themeId
+ * @param {string}                                      themeId
  * @param {ReturnType<import('./useThemes').default>}   themes
  * @param {Object}                                      patternEditorIframe
  * @param {Object}                                      templateEditorIframe
@@ -63,20 +63,47 @@ export default function useThemeData(
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
+
+	/** @param {Theme} newThemeData */
 	function setThemeData( newThemeData ) {
+		const derivedThemeData =
+			newThemeData.name !== themeData.name
+				? {
+						dirname: convertToSlug( newThemeData.name ),
+						namespace: convertToPascalCase( newThemeData.name ),
+						text_domain: convertToSlug( newThemeData.name ),
+				  }
+				: {};
+
 		themes.setThemes( {
 			...themes.themes,
-			[ themeId ]: newThemeData,
+			[ themeId ]: {
+				...newThemeData,
+				...derivedThemeData,
+			},
 		} );
 	}
 
-	const [ themeNameIsDefault, setThemeNameIsDefault ] = useState( false );
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
 	const { defaultStyleName } = useStyleVariations();
+
+	/** @return {boolean} Whether another theme also has the current theme name. */
+	function isNameTaken() {
+		return (
+			!! themeData.name &&
+			Object.entries( themes.themes )
+				.filter( ( [ id ] ) => {
+					return id !== themeId;
+				} )
+				.some( ( [ , theme ] ) => {
+					return theme.name === themeData.name;
+				} )
+		);
+	}
 
 	useEffect( () => {
 		window.addEventListener(
@@ -121,12 +148,6 @@ export default function useThemeData(
 	}, [ requestThemeRefresh ] );
 
 	useEffect( () => {
-		if ( themeData?.name === '' ) {
-			setThemeNameIsDefault( true );
-		} else {
-			setThemeNameIsDefault( false );
-		}
-
 		if ( themeData && autoSaveTheme ) {
 			saveThemeData();
 		}
@@ -138,19 +159,6 @@ export default function useThemeData(
 			} );
 		}
 	}, [ themeData ] );
-
-	useEffect( () => {
-		if ( themeData?.name ) {
-			setThemeData( {
-				...themeData,
-				dirname: convertToSlug( themeData?.name ),
-				namespace: convertToPascalCase( themeData?.name ),
-				text_domain: convertToSlug( themeData?.name ),
-			} );
-
-			convertToSlug( themeData?.name );
-		}
-	}, [ themeData?.name ] );
 
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
@@ -206,14 +214,12 @@ export default function useThemeData(
 				/* eslint-disable */
 				alert( 'You need to change your theme name before saving' );
 				/* eslint-enable */
-				setThemeNameIsDefault( true );
 				resolve();
 				return;
 			}
 			setIsSaving( true );
 			setSaveCompleted( false );
 
-			setThemeNameIsDefault( false );
 			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
@@ -494,7 +500,7 @@ export default function useThemeData(
 		export: exportThemeData,
 		saveCompleted,
 		isSaving,
+		isNameTaken,
 		fetchInProgress,
-		themeNameIsDefault,
 	};
 }

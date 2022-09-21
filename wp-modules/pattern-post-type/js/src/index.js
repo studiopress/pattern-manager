@@ -435,6 +435,7 @@ wp.hooks.removeFilter(
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
 let patternDataSet = false;
+let patternUpdatedDebounce = null;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
@@ -447,22 +448,26 @@ wp.data.subscribe( () => {
 
 	// Whenever the block editor fires that a change happened, pass it up to the parent FSE Studio app state.
 	if ( patternDataSet ) {
-		const meta = wp.data
-			.select( 'core/editor' )
-			.getEditedPostAttribute( 'meta' );
-		// Assemble the current blockPatternData into a single object.
-		const blockPatternData = {
-			content: wp.data.select( 'core/editor' ).getEditedPostContent(),
-			...wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
-			slug: meta.name,
-		};
-		console.log( 'new block pattern data', blockPatternData );
-		window.parent.postMessage(
-			JSON.stringify( {
-				message: 'fsestudio_block_pattern_updated',
-				blockPatternData,
-			} )
-		);
+		clearTimeout( patternUpdatedDebounce );
+		patternUpdatedDebounce = setTimeout( () => {
+			const meta = wp.data
+				.select( 'core/editor' )
+				.getEditedPostAttribute( 'meta' );
+			// Assemble the current blockPatternData into a single object.
+			const blockPatternData = {
+				content: wp.data.select( 'core/editor' ).getEditedPostContent(),
+				...wp.data
+					.select( 'core/editor' )
+					.getEditedPostAttribute( 'meta' ),
+				slug: meta.name,
+			};
+			window.parent.postMessage(
+				JSON.stringify( {
+					message: 'fsestudio_block_pattern_updated',
+					blockPatternData,
+				} )
+			);
+		}, 10 );
 	}
 } );
 

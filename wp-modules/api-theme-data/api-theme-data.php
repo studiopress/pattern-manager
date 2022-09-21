@@ -212,6 +212,13 @@ function save_request_args() {
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
+		'id'                => array(
+			'required'          => false,
+			'type'              => 'string',
+			'description'       => __( 'The id of the theme', 'fse-studio' ),
+			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
+			'sanitize_callback' => 'sanitize_text_field',
+		),
 		'dirname'           => array(
 			'required'          => true,
 			'type'              => 'string',

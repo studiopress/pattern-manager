@@ -16,7 +16,7 @@ export default function CreateTheme( { isVisible } ) {
 			isVisible={ isVisible }
 			heading={ __( 'Create Your Theme', 'fse-studio' ) }
 			description={ __(
-				'To get started, enter a theme name and click Save Your Theme. Once your theme is created, you can move on to building and customizing your theme.',
+				'To get started, enter a theme name and click Save Theme. Once your theme is created, you can move on to building and customizing your theme.',
 				'fsestudio'
 			) }
 		>
