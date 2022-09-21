@@ -97,9 +97,8 @@ function get_theme( $request ) {
 	$params = $request->get_params();
 
 	$theme_id           = $params['themeId'];
-	$pre_existing_theme = $params['preExistingTheme'];
 
-	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id, $pre_existing_theme );
+	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 
 	if ( $theme_data['dirname'] ) {
 		switch_theme( $theme_data['dirname'] );

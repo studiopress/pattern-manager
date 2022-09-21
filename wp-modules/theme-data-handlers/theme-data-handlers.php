@@ -24,11 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Get data for a single themes in the format used by FSE Theme Manager.
  *
  * @param string $theme_id The directory name of the theme in question.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme( $theme_id, $pre_existing_theme = array() ) {
-	$themes_data = get_the_themes( $pre_existing_theme );
+function get_theme( $theme_id ) {
+	$themes_data = get_the_themes();
 
 	return $themes_data[ $theme_id ];
 }
@@ -36,10 +35,9 @@ function get_theme( $theme_id, $pre_existing_theme = array() ) {
 /**
  * Get data for all of the installed themes in the format used by FSE Theme Manager.
  *
- * @param array $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_the_themes( $pre_existing_theme = array() ) {
+function get_the_themes() {
 	$wpthemes = wp_get_themes();
 
 	// Spin up the filesystem api.
@@ -85,13 +83,13 @@ function get_the_themes( $pre_existing_theme = array() ) {
 			$formatted_theme_data[ $theme_data['id'] ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( "$theme_dir/theme.json" ), true );
 
 			// Add the included Patterns for the current theme.
-			$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir, $pre_existing_theme );
+			$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir );
 
 			// Add the template files that exist in the theme.
-			$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir, $pre_existing_theme );
+			$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir );
 
 			// Add the template part files that exist in the theme.
-			$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir, $pre_existing_theme );
+			$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir );
 		}
 	}
 
@@ -155,7 +153,7 @@ function export_theme( $theme ) {
  * Update a single theme.
  *
  * @param array $theme Data about the theme.
- * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the FSES UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option  exists.
+ * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the FSES UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option exists.
  * @return array
  */
 function update_theme( $theme, $update_patterns = true ) {
@@ -217,10 +215,9 @@ function update_theme( $theme, $update_patterns = true ) {
 		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 	}
 	
-	if ( $update_patterns ) {
-		foreach ( $theme['included_patterns'] as $included_pattern ) {
-			\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
-		}
+	// Note we do not check $update_patterns here. This is because included_patterns are treated differently than template_files and template_parts, in that they are saved WITH the theme data, while template things are saved separately in the site editor.
+	foreach ( $theme['included_patterns'] as $included_pattern ) {
+		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
 	}
 
 	foreach ( $theme['styles'] as $style ) {

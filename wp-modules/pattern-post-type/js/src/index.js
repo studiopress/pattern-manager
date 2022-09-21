@@ -456,6 +456,7 @@ wp.data.subscribe( () => {
 			...wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
 			slug: meta.name,
 		};
+		console.log( 'new block pattern data', blockPatternData );
 		window.parent.postMessage(
 			JSON.stringify( {
 				message: 'fsestudio_block_pattern_updated',

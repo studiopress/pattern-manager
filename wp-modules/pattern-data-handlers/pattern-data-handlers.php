@@ -103,6 +103,7 @@ function get_patterns() {
  * @param string $file The path to the theme pattern file.
  */
 function format_pattern_data( $pattern_data, $file ) {
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	if ( empty( $pattern_data['slug'] ) ) {
 		_doing_it_wrong(
 			'_register_theme_block_patterns',
@@ -189,10 +190,12 @@ function format_pattern_data( $pattern_data, $file ) {
 		//phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.WP.I18n.NonSingularStringLiteralContext, WordPress.WP.I18n.NonSingularStringLiteralDomain, WordPress.WP.I18n.LowLevelTranslationFunction
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
-
+	
+	$file_contents = explode( '?>', $wp_filesystem->get_contents( $file ), 2 );
+	error_log( '----' . $file_contents[1] . '---' );
 	// The actual pattern content is the output of the file.
 	ob_start();
-	include $file;
+	$file_contents[1];
 	$pattern_data['content'] = ob_get_clean();
 	if ( ! $pattern_data['content'] ) {
 		return false;
@@ -366,6 +369,7 @@ function update_pattern( $pattern ) {
 	);
 	
 	// Now that this pattern has been updated, remove any images no longer needed in the theme.
+	// This is done here in update_pattern because an image may no longer be used in the pattern and thus needs to be removed from the theme.
 	tree_shake_theme_images();
 
 	return $pattern_file_created;
@@ -469,8 +473,13 @@ function tree_shake_theme_images() {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	
 	// Get the current patterns in the theme (including templates and templates parts).
-	$patterns_in_theme = array();
-	
+	// Add the included Patterns for the current theme.
+	$theme_dir          = get_template_directory();
+	$patterns_in_theme  = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir ); //This seems to be cached for some reason.
+	$templates_in_theme = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir );
+	$parts_in_theme     = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir );
+	$patterns_in_theme  = array_merge( $patterns_in_theme, $templates_in_theme, $parts_in_theme );
+	error_log( json_encode( $patterns_in_theme ) );
 	$wp_theme_dir        = get_template_directory();
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $wp_theme_dir . '/assets/images/';
@@ -496,7 +505,7 @@ function tree_shake_theme_images() {
 	// Loop through all patterns in the theme.
 	foreach ( $patterns_in_theme as $pattern_data ) {
 		// Find all URLs in the block pattern html.
-		preg_match_all( '/(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-])/', $pattern_html, $output_array );
+		preg_match_all( '/(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-])/', $pattern_data['content'], $output_array );
 		$urls_found = $output_array[0];
 		
 		// Loop through each URL found.
@@ -504,15 +513,21 @@ function tree_shake_theme_images() {
 	
 			// If URL to image is local to theme, pull it from the backed-up theme images directory.
 			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
-			$desired_destination_in_theme = str_replace( $backedup_images_url, $images_url, $local_path_to_image );
-
-			// Move the file into the theme again.
-			$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+			$desired_destination_in_theme = str_replace( $backedup_images_dir, $images_dir, $local_path_to_image );
+			
+			error_log( $local_path_to_image );
+			error_log( $desired_destination_in_theme );
+			error_log( '----');
+			// If the path to this image starts with the path to our backedup images directory.
+			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
+				// Move the file into the theme again.
+				$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+			}
 		}
 	}
 	
 	// Delete the temporary backup of the images we did.
-	$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
+	//$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
 }
 
 /**
@@ -542,7 +557,12 @@ function move_block_images_to_theme( $pattern_slug, $pattern_html ) {
 
 	// Loop through each URL found.
 	foreach ( $urls_found as $url_found ) {
-
+		
+		// If this image is already in the theme, skip it.
+		if ( strpos( $url_found, $images_url ) === 0 ) {
+			continue;
+		}
+	
 		$url_details = wp_remote_get(
 			$url_found,
 			array(
