@@ -36,7 +36,7 @@ export default function PatternEditor( { visible } ) {
 
 	if ( reloadIframe ) {
 		// Make it so that BlockEditor is completely reloaded from scratch. This makes it so attached eventListeners are also reset, because the component gets umounted.
-		return 'reloading new pattern...';
+		return <Spinner />;
 	}
 
 	return (
