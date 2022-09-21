@@ -226,7 +226,7 @@ function update_theme( $theme ) {
 	switch_theme( $theme['dirname'] );
 
 	if ( isset( $theme['included_patterns'] ) ) {
-		\FseStudio\PatternDataHandlers\delete_patterns_not_present( array_keys( $theme['included_patterns'] ) );
+		\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
 	} else {
 		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 	}
