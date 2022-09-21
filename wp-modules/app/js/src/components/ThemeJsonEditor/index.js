@@ -6,6 +6,8 @@ import React from 'react';
 // WP Dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import { Icon, external } from '@wordpress/icons';
+import { Spinner } from '@wordpress/components';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import useStyleVariations from '../../hooks/useStyleVariations';
@@ -126,7 +128,17 @@ export default function ThemeJsonEditor( { visible } ) {
 											currentTheme.save();
 										} }
 									>
-										{ __( 'Save Your Theme', 'fse-studio' ) }
+										{ currentTheme.isSaving ? (
+											<>
+												<Spinner />
+												{ __(
+													'Saving Theme',
+													'fse-studio'
+												) }
+											</>
+										) : (
+											__( 'Save Theme', 'fse-studio' )
+										) }
 									</button>
 								</div>
 							</div>
@@ -251,10 +263,94 @@ export default function ThemeJsonEditor( { visible } ) {
 							<div>
 								<h3 className="mb-2 font-medium">Helpful Documentation</h3>
 								<ul>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/">Working with theme.json</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/">Block Theme Overview</a></li>
-									<li><a className="text-wp-blue" href="https://developer.wordpress.org/block-editor/">Block Editor Handbook</a></li>
-									<li><a className="text-wp-blue" href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/">Block Builder Basics Video</a></li>
+									<li>
+										<a
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Working with theme.json (link opens in a new tab)',
+												'fse-studio'
+											) }
+											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/"
+											target="_blank"
+											rel="noopener"
+										>
+											{ __(
+												'Working with theme.json',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Block Theme Overview (link opens in a new tab)',
+												'fse-studio'
+											) }
+											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
+											target="_blank"
+											rel="noopener"
+										>
+											{ __(
+												'Block Theme Overview',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Block Editor Handbook (link opens in a new tab)',
+												'fse-studio'
+											) }
+											href="https://developer.wordpress.org/block-editor/"
+											target="_blank"
+											rel="noopener"
+										>
+											{ __(
+												'Block Editor Handbook',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
+										</a>
+									</li>
+									<li>
+										<a
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Block Builder Basics Video (link opens in a new tab)',
+												'fse-studio'
+											) }
+											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/" 
+											target="_blank"
+											rel="noopener"
+										>
+											{ __(
+												'Block Builder Basics Video',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
+										</a>
+									</li>
 								</ul>
 							</div>
 						</div>

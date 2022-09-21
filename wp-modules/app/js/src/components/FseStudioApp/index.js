@@ -197,15 +197,12 @@ function FseStudio() {
 											<>
 												<Spinner />
 												{ __(
-													'Saving Your Theme',
+													'Saving Theme',
 													'fse-studio'
 												) }
 											</>
 										) : (
-											__(
-												'Save Your Theme',
-												'fse-studio'
-											)
+											__( 'Save Theme', 'fse-studio' )
 										) }
 									</button>
 								</>

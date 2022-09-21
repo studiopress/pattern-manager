@@ -1,7 +1,7 @@
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, close, edit, plus } from '@wordpress/icons';
+import { Icon, close, edit, external, plus } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -55,7 +55,7 @@ export default function ThemePatterns( { isVisible } ) {
 												span: (
 													<strong>
 														{ __(
-															'Create A New Pattern',
+															'Create New Pattern',
 															'fse-studio'
 														) }
 													</strong>
@@ -206,10 +206,7 @@ export default function ThemePatterns( { isVisible } ) {
 											} );
 									} }
 								>
-									{ __(
-										'Create A New Pattern',
-										'fse-studio'
-									) }
+									{ __( 'Create New Pattern', 'fse-studio' ) }
 								</button>
 							</div>
 						</div>
@@ -237,34 +234,90 @@ export default function ThemePatterns( { isVisible } ) {
 								<ul>
 									<li>
 										<a
-											className="text-wp-blue"
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Exploring Block Patterns Video (link opens in a new tab)',
+												'fse-studio'
+											) }
 											href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/"
+											target="_blank"
+											rel="noopener"
 										>
-											Exploring Block Patterns Video
+											{ __(
+												'Exploring Block Patterns Video',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
 										</a>
 									</li>
 									<li>
 										<a
-											className="text-wp-blue"
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Block Theme Overview (link opens in a new tab)',
+												'fse-studio'
+											) }
 											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
+											target="_blank"
+											rel="noopener"
 										>
-											Block Theme Overview
+											{ __(
+												'Block Theme Overview',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
 										</a>
 									</li>
 									<li>
 										<a
-											className="text-wp-blue"
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Block Editor Handbook (link opens in a new tab)',
+												'fse-studio'
+											) }
 											href="https://developer.wordpress.org/block-editor/"
+											target="_blank"
+											rel="noopener"
 										>
-											Block Editor Handbook
+											{ __(
+												'Block Editor Handbook',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
 										</a>
 									</li>
 									<li>
 										<a
-											className="text-wp-blue"
+											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
+											aria-label={ __(
+												'Block Builder Basics Video (link opens in a new tab)',
+												'fse-studio'
+											) }
 											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
+											target="_blank"
+											rel="noopener"
 										>
-											Block Builder Basics Video
+											{ __(
+												'Block Builder Basics Video',
+												'fse-studio'
+											) }
+											<Icon
+												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
+												icon={ external }
+												size={ 26 }
+											/>
 										</a>
 									</li>
 								</ul>

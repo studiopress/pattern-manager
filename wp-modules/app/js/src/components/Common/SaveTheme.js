@@ -26,7 +26,7 @@ export default function SaveTheme( { displayCancelButton } ) {
 							} );
 						} }
 					>
-						{ __( 'Save Your Theme', 'fse-studio' ) }
+						{ __( 'Save Theme', 'fse-studio' ) }
 					</button>
 					{ displayCancelButton &&
 					Object.keys( themes.themes ).length > 1 ? (
