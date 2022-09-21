@@ -21,10 +21,7 @@ export default function PatternEditor( { visible } ) {
 
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			{ currentPatternId.value
-				? <BlockEditor />
-				: <Spinner />
-			}
+			{ currentPatternId.value ? <BlockEditor /> : null }
 		</div>
 	);
 }
