@@ -570,7 +570,6 @@ function move_block_images_to_theme( $pattern_html ) {
 
 	// Loop through each URL found.
 	foreach ( $urls_found as $url_found ) {
-
 		$url_details = wp_remote_get(
 			$url_found,
 			array(
