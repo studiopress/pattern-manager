@@ -571,11 +571,6 @@ function move_block_images_to_theme( $pattern_html ) {
 	// Loop through each URL found.
 	foreach ( $urls_found as $url_found ) {
 
-		// If this image is already in the theme, skip it.
-		if ( strpos( $url_found, $images_url ) === 0 ) {
-			continue;
-		}
-
 		$url_details = wp_remote_get(
 			$url_found,
 			array(
