@@ -18,26 +18,6 @@ import { fsestudio } from '../../globals';
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
 	const { currentPatternId } = useStudioContext();
-	const [ reloadIframe, setReloadIframe ] = useState( false );
-	const [ currentPatternName, setCurrentPatternName ] = useState();
-
-	useEffect( () => {
-		if ( currentPatternId.value !== currentPatternName ) {
-			setReloadIframe( true );
-		}
-		setCurrentPatternName( currentPatternId.value );
-	}, [ currentPatternId ] );
-
-	useEffect( () => {
-		if ( reloadIframe ) {
-			setReloadIframe( false );
-		}
-	}, [ reloadIframe ] );
-
-	if ( reloadIframe ) {
-		// Make it so that BlockEditor is completely reloaded from scratch. This makes it so attached eventListeners are also reset, because the component gets umounted.
-		return <Spinner />;
-	}
 
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
@@ -79,6 +59,7 @@ export function BlockEditor() {
 			switch ( event.data ) {
 				case 'fsestudio_pattern_editor_loaded':
 					setBlockEditorLoaded( true );
+					setInitialData( patternEditorIframe );
 					break;
 				case 'fsestudio_pattern_data_set':
 					// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
@@ -90,25 +71,25 @@ export function BlockEditor() {
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
+		window.removeEventListener( 'message', patternListenerCallbacks );
 		window.addEventListener( 'message', patternListenerCallbacks );
+
+		setInitialData( patternEditorIframe );
 
 		// Cleanup event listeners when this component is unmounted.
 		return () => {
 			window.removeEventListener( 'message', patternListenerCallbacks );
 		};
-	}, [] );
+	}, [ currentPatternId?.value, patternEditorIframe ] );
 
-	useEffect( () => {
-		if ( blockEditorLoaded ) {
-			// Upon initial load, fill block editor with blocks.
-			patternEditorIframe.current.contentWindow.postMessage(
-				JSON.stringify( {
-					message: 'set_initial_pattern_data',
-					patternData: currentPattern,
-				} )
-			);
-		}
-	}, [ blockEditorLoaded ] );
+	function setInitialData( iframeRef ) {
+		iframeRef?.current.contentWindow.postMessage(
+			JSON.stringify( {
+				message: 'set_initial_pattern_data',
+				patternData: currentPattern,
+			} )
+		);
+	}
 
 	return (
 		<div className="fsestudio-pattern-editor">
