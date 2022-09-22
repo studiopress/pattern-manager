@@ -154,9 +154,9 @@ add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
  *
  */
 function disable_autosave() {
-	global $post_type, $current_screen;
+	global $post_type;
 	if ( 'fsestudio_pattern' === $post_type ) {
-		wp_deregister_script( 'autosave' );
+		wp_dequeue_script( 'autosave' );
 	}
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
