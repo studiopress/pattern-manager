@@ -587,7 +587,10 @@ function move_block_images_to_theme( $pattern_html ) {
 		$type = wp_remote_retrieve_header( $url_details, 'Content-Type' );
 
 		$file_contents = wp_remote_retrieve_body( wp_remote_get( $url_found ) );
-		$filename      = basename( $url_found );
+
+		// Remove any URL query vars from the filename.
+		$url_parts = explode( '?', $url_found );
+		$filename  = basename( $url_parts[0] );
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(
