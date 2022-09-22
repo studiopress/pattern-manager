@@ -498,8 +498,8 @@ function tree_shake_theme_images() {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
-	$theme_dir          = get_template_directory();
-	$patterns_in_theme  = \FseStudio\PatternDataHandlers\get_theme_patterns();
+	$theme_dir         = get_template_directory();
+	$patterns_in_theme = \FseStudio\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';
