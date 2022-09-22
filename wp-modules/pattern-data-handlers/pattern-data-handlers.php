@@ -555,10 +555,15 @@ function move_block_images_to_theme( $pattern_html ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
+	$assets_dir   = $wp_theme_dir . '/assets/';
 	$images_dir   = $wp_theme_dir . '/assets/images/';
 
 	$wp_theme_url = get_template_directory_uri();
 	$images_url   = $wp_theme_url . '/assets/images/';
+
+	if ( ! $wp_filesystem->exists( $assets_dir ) ) {
+		$wp_filesystem->mkdir( $assets_dir );
+	}
 
 	if ( ! $wp_filesystem->exists( $images_dir ) ) {
 		$wp_filesystem->mkdir( $images_dir );
