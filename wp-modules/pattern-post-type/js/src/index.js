@@ -435,6 +435,7 @@ wp.hooks.removeFilter(
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
 let patternDataSet = false;
+let patternUpdatedDebounce = null;
 wp.data.subscribe( () => {
 	if ( ! fsestudioPatternEditorLoaded ) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
@@ -447,21 +448,26 @@ wp.data.subscribe( () => {
 
 	// Whenever the block editor fires that a change happened, pass it up to the parent FSE Studio app state.
 	if ( patternDataSet ) {
-		const meta = wp.data
-			.select( 'core/editor' )
-			.getEditedPostAttribute( 'meta' );
-		// Assemble the current blockPatternData into a single object.
-		const blockPatternData = {
-			content: wp.data.select( 'core/editor' ).getEditedPostContent(),
-			...wp.data.select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
-			slug: meta.name,
-		};
-		window.parent.postMessage(
-			JSON.stringify( {
-				message: 'fsestudio_block_pattern_updated',
-				blockPatternData,
-			} )
-		);
+		clearTimeout( patternUpdatedDebounce );
+		patternUpdatedDebounce = setTimeout( () => {
+			const meta = wp.data
+				.select( 'core/editor' )
+				.getEditedPostAttribute( 'meta' );
+			// Assemble the current blockPatternData into a single object.
+			const blockPatternData = {
+				content: wp.data.select( 'core/editor' ).getEditedPostContent(),
+				...wp.data
+					.select( 'core/editor' )
+					.getEditedPostAttribute( 'meta' ),
+				slug: meta.name,
+			};
+			window.parent.postMessage(
+				JSON.stringify( {
+					message: 'fsestudio_block_pattern_updated',
+					blockPatternData,
+				} )
+			);
+		}, 10 );
 	}
 } );
 
@@ -475,11 +481,18 @@ window.addEventListener(
 
 			if ( response.message === 'set_initial_pattern_data' ) {
 				// Insert the block string so the blocks show up in the editor itself.
-				wp.data.dispatch( 'core/block-editor' ).insertBlocks(
+				wp.data.dispatch( 'core/editor' ).resetEditorBlocks(
 					wp.blocks.rawHandler( {
 						HTML: response.patternData.content,
 						mode: 'BLOCKS',
 					} )
+				);
+
+				// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
+				window.sessionStorage.removeItem(
+					`wp-autosave-block-editor-post-${ wp.data
+						.select( 'core/editor' )
+						.getEditedPostAttribute( 'id' ) }`
 				);
 
 				// TODO: Set the categories. They can found at: response.patternData.categories

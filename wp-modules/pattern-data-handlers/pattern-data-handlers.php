@@ -202,9 +202,27 @@ function format_pattern_data( $pattern_data, $file ) {
 }
 
 /**
+ * Get the pattern data for a specific pattern from a specific theme.
+ *
+ * @param string $pattern_id The name of the pattern to get.
+ * @param string $theme_path The path to the theme. Defaults to the current active theme.
+ * @return array
+ */
+function get_theme_pattern( $pattern_id, $theme_path = false ) {
+	$patterns_data = get_theme_patterns( $theme_path );
+	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
+		return false;
+	}
+
+	$pattern_data = $patterns_data[ $pattern_id ];
+
+	return $pattern_data;
+}
+
+/**
  * Get the pattern data for all patterns in a theme.
  *
- * @param string $theme_path The path to the theme.
+ * @param string $theme_path The path to the theme. Defaults to the current active theme.
  * @return array
  */
 function get_theme_patterns( $theme_path = false ) {

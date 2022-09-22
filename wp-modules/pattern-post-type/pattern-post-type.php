@@ -150,7 +150,19 @@ function pattern_post_type() {
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 
 /**
- * Recieve post_id in the URL and display its content. Useful for pattern previews and thumbnails.
+ * Disable auto-save for this post type.
+ *
+ */
+function disable_autosave() {
+	global $post_type, $current_screen;
+	if ( 'fsestudio_pattern' === $post_type ) {
+		wp_deregister_script( 'autosave' );
+	}
+}
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
+
+/**
+ * Recieve pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
 	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
@@ -159,7 +171,7 @@ function display_block_pattern_preview() {
 
 	$pattern_id = sanitize_text_field( wp_unslash( $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \FseStudio\PatternDataHandlers\get_pattern( $pattern_id );
+	$pattern = \FseStudio\PatternDataHandlers\get_theme_pattern( $pattern_id );
 
 	$the_content = do_the_content_things( $pattern['content'] );
 
