@@ -441,6 +441,8 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
  */
 function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
+	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
+	$pattern['content'] = prepare_content( $pattern['content'], $text_domain );
 
 	// phpcs:ignore
 	$file_contents = "<?php
@@ -454,7 +456,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  */
 
 ?>
-' . prepare_content( $pattern['content'], $text_domain ) . '
+' . $pattern['content'] . '
 ';
 	return $file_contents;
 }
@@ -481,7 +483,6 @@ function contruct_template_php_file_contents( $pattern, $text_domain ) {
  */
 function prepare_content( $pattern_html, $text_domain ) {
 	$pattern_html = addcslashes( $pattern_html, '\'' );
-	$pattern_html = move_block_images_to_theme( $pattern_html );
 	return $pattern_html;
 }
 
@@ -494,13 +495,11 @@ function tree_shake_theme_images() {
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	// Get the current patterns in the theme (including templates and templates parts).
+	// Get the current patterns in the theme (not including templates and templates parts).
+	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
 	$theme_dir          = get_template_directory();
 	$patterns_in_theme  = \FseStudio\PatternDataHandlers\get_theme_patterns();
-	$templates_in_theme = \FseStudio\PatternDataHandlers\get_theme_templates();
-	$parts_in_theme     = \FseStudio\PatternDataHandlers\get_theme_template_parts();
-	$patterns_in_theme  = array_merge( $patterns_in_theme, $templates_in_theme, $parts_in_theme );
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';
