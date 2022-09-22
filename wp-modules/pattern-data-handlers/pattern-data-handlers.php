@@ -500,9 +500,8 @@ function tree_shake_theme_images() {
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';
 
-	$wp_theme_url        = get_template_directory_uri();
-	$backedup_images_url = content_url() . '/temp-images/';
-	$images_url          = $wp_theme_url . '/assets/images/';
+	$wp_theme_url = get_template_directory_uri();
+	$images_url   = $wp_theme_url . '/assets/images/';
 
 	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
