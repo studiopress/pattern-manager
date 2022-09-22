@@ -68,9 +68,6 @@ function get_patterns() {
 		$pattern_data['name']                  = basename( $path, '.php' );
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
-	
-	// We may not need to load patterns from all themes.
-	return $patterns;
 
 	// Get the custom patterns (ones created by the user, not included in the plugin).
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
@@ -199,9 +196,9 @@ function format_pattern_data( $pattern_data, $file ) {
 	// Replace PHP calls to get_template_directory_uri with the result of calling it. This is how it is because PHP's require is cached, forcing us to use get_contents instead.
 	$pattern_content = str_replace( '<?php echo get_template_directory_uri(); ?>', get_template_directory_uri(), $file_contents[1] );
 
-	// The actual pattern content is the output of the file.
+	// The actual pattern content is the output of the file. The reason this is not escaped is because it's not actually being output to the screen, but being captured with output buffering.
 	ob_start();
-	echo $pattern_content;
+	echo $pattern_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	$pattern_data['content'] = ob_get_clean();
 	if ( ! $pattern_data['content'] ) {
 		return false;
@@ -499,13 +496,11 @@ function tree_shake_theme_images() {
 
 	// Get the current patterns in the theme (including templates and templates parts).
 	// Add the included Patterns for the current theme.
-	$theme_dir           = get_template_directory();
-	$patterns_in_theme   = \FseStudio\PatternDataHandlers\get_theme_patterns();
-	$templates_in_theme  = \FseStudio\PatternDataHandlers\get_theme_templates();
-	$parts_in_theme      = \FseStudio\PatternDataHandlers\get_theme_template_parts();
-	$patterns_in_theme   = array_merge( $patterns_in_theme, $templates_in_theme, $parts_in_theme );
-	
-	error_log( '-----Patterns found in theme------' . json_encode( $patterns_in_theme ) );
+	$theme_dir          = get_template_directory();
+	$patterns_in_theme  = \FseStudio\PatternDataHandlers\get_theme_patterns();
+	$templates_in_theme = \FseStudio\PatternDataHandlers\get_theme_templates();
+	$parts_in_theme     = \FseStudio\PatternDataHandlers\get_theme_template_parts();
+	$patterns_in_theme  = array_merge( $patterns_in_theme, $templates_in_theme, $parts_in_theme );
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';
@@ -533,18 +528,13 @@ function tree_shake_theme_images() {
 		// Find all URLs in the block pattern html.
 		preg_match_all( '/(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-])/', $pattern_data['content'], $output_array );
 		$urls_found = $output_array[0];
-		error_log( '-----Images found------' . json_encode( $urls_found ) );
+
 		// Loop through each URL found.
 		foreach ( $urls_found as $url_found ) {
 
 			// If URL to image is local to theme, pull it from the backed-up theme images directory.
 			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
 			$desired_destination_in_theme = str_replace( $backedup_images_dir, $images_dir, $local_path_to_image );
-			
-			error_log( '----' );
-			error_log( $local_path_to_image );
-			error_log( $desired_destination_in_theme );
-			error_log( '----' );
 
 			// If the path to this image starts with the path to our backedup images directory.
 			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
