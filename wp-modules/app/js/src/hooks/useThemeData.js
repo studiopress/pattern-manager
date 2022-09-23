@@ -87,7 +87,6 @@ export default function useThemeData(
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
-	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
 	const { defaultStyleName } = useStyleVariations();
 
@@ -148,10 +147,7 @@ export default function useThemeData(
 	}, [ requestThemeRefresh ] );
 
 	useEffect( () => {
-		if ( themeData && autoSaveTheme ) {
-			saveThemeData();
-		}
-
+		// When the the data changes, pass it up to the themes (plural) state, so it stays in sync.
 		if ( themeId ) {
 			themes.setThemes( {
 				...themes.themes,
@@ -282,17 +278,12 @@ export default function useThemeData(
 
 	function uponSuccessfulSave() {
 		getThemeData().then( () => {
-			if ( autoSaveTheme ) {
-				setAutoSaveTheme( false );
-			}
-			if ( ! autoSaveTheme ) {
-				setSnackBarValue(
-					__(
-						'Theme successfully saved and all files written to theme directory',
-						'fsestudio'
-					)
-				);
-			}
+			setSnackBarValue(
+				__(
+					'Theme successfully saved and all files written to theme directory',
+					'fsestudio'
+				)
+			);
 
 			editorDirty.current = false;
 			setSiteEditorDirty( false );
@@ -413,7 +404,6 @@ export default function useThemeData(
 	}
 
 	function createPattern( patternData ) {
-		setAutoSaveTheme( true );
 
 		return new Promise( ( resolve ) => {
 			let newThemeData = {};
@@ -468,7 +458,6 @@ export default function useThemeData(
 			...newIncludedPatterns
 		} = themeData.included_patterns ?? {};
 
-		setAutoSaveTheme( true );
 		setThemeData( {
 			...themeData,
 			included_patterns: newIncludedPatterns,
