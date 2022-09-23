@@ -87,7 +87,6 @@ export default function useThemeData(
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
-	const [ autoSaveTheme, setAutoSaveTheme ] = useState( false );
 
 	const { defaultStyleName } = useStyleVariations();
 
@@ -146,19 +145,6 @@ export default function useThemeData(
 			}
 		}
 	}, [ requestThemeRefresh ] );
-
-	useEffect( () => {
-		if ( themeData && autoSaveTheme ) {
-			saveThemeData();
-		}
-
-		if ( themeId ) {
-			themes.setThemes( {
-				...themes.themes,
-				[ themeId ]: themeData,
-			} );
-		}
-	}, [ themeData ] );
 
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
@@ -282,17 +268,12 @@ export default function useThemeData(
 
 	function uponSuccessfulSave() {
 		getThemeData().then( () => {
-			if ( autoSaveTheme ) {
-				setAutoSaveTheme( false );
-			}
-			if ( ! autoSaveTheme ) {
-				setSnackBarValue(
-					__(
-						'Theme successfully saved and all files written to theme directory',
-						'fsestudio'
-					)
-				);
-			}
+			setSnackBarValue(
+				__(
+					'Theme successfully saved and all files written to theme directory',
+					'fsestudio'
+				)
+			);
 
 			editorDirty.current = false;
 			setSiteEditorDirty( false );
@@ -413,8 +394,6 @@ export default function useThemeData(
 	}
 
 	function createPattern( patternData ) {
-		setAutoSaveTheme( true );
-
 		return new Promise( ( resolve ) => {
 			let newThemeData = {};
 			if ( patternData.type === 'pattern' ) {
@@ -468,7 +447,6 @@ export default function useThemeData(
 			...newIncludedPatterns
 		} = themeData.included_patterns ?? {};
 
-		setAutoSaveTheme( true );
 		setThemeData( {
 			...themeData,
 			included_patterns: newIncludedPatterns,
