@@ -146,16 +146,6 @@ export default function useThemeData(
 		}
 	}, [ requestThemeRefresh ] );
 
-	useEffect( () => {
-		// When the the data changes, pass it up to the themes (plural) state, so it stays in sync.
-		if ( themeId ) {
-			themes.setThemes( {
-				...themes.themes,
-				[ themeId ]: themeData,
-			} );
-		}
-	}, [ themeData ] );
-
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
 	 *
@@ -404,7 +394,6 @@ export default function useThemeData(
 	}
 
 	function createPattern( patternData ) {
-
 		return new Promise( ( resolve ) => {
 			let newThemeData = {};
 			if ( patternData.type === 'pattern' ) {
