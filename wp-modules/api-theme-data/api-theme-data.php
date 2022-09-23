@@ -96,10 +96,9 @@ function register_routes() {
 function get_theme( $request ) {
 	$params = $request->get_params();
 
-	$theme_id           = $params['themeId'];
-	$pre_existing_theme = $params['preExistingTheme'];
+	$theme_id = $params['themeId'];
 
-	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id, $pre_existing_theme );
+	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 
 	if ( $theme_data['dirname'] ) {
 		switch_theme( $theme_data['dirname'] );
@@ -127,7 +126,7 @@ function save_theme( $request ) {
 	$theme_data       = $request->get_params();
 	$prior_theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_data['id'] );
 
-	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data );
+	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data, false );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );

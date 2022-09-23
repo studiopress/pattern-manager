@@ -190,7 +190,6 @@ export default function useThemeData(
 				headers: getHeaders(),
 				body: JSON.stringify( {
 					themeId,
-					preExistingTheme: themeData,
 				} ),
 			} )
 				.then( ( response ) => response.json() )
