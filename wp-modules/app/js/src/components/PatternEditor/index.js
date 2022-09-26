@@ -45,29 +45,14 @@ export function BlockEditor() {
 
 			// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
 			if ( response.message === 'fsestudio_block_pattern_updated' ) {
-				// Handle a possible rename of the theme.
 				const newThemeData = {
 					...currentTheme.data,
 					included_patterns: {
 						...currentTheme.data.included_patterns,
-						[ response.blockPatternData.name ]:
-							response.blockPatternData,
+						[ currentPatternId.value ]: response.blockPatternData,
 					},
 				};
-
-				// Now that we've added the renamed pattern data, delete the pattern with the old name from the theme.
-				if (
-					currentPatternId.value !== response.blockPatternData.name
-				) {
-					delete newThemeData.included_patterns[
-						currentPatternId.value
-					];
-				}
-
 				currentTheme.set( newThemeData );
-
-				// Just in case the pattern was renamed, set the currentPatternId to match the pattern's name.
-				currentPatternId.set( response.blockPatternData.name );
 			}
 		} catch ( e ) {
 			// Message posted was not JSON. Handle those here.
