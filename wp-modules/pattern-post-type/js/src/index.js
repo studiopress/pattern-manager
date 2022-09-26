@@ -14,11 +14,13 @@ import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
+	const [ nameInput, setNameInput ] = useState();
+	const [ nameInputDisabled, setNameInputDisabled ] = useState();
 
 	const previousPatternName = useRef();
-	const postMeta = wp.data
-		.select( 'core/editor' )
-		.getEditedPostAttribute( 'meta' );
+	const postMeta = wp.data.useSelect( ( select ) => {
+		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
+	} );
 
 	// Current sole block type needed to display modal.
 	const blockTypePostContent = 'core/post-content';
@@ -88,6 +90,15 @@ const FseStudioMetaControls = () => {
 			handleToggleChange( true, 'postTypes', 'page' );
 		}
 	}, [ postMeta ] );
+
+	/**
+	 * Set nameInput and inputDisabled state when the post is switched.
+	 * Mostly intended to catch switching between patterns.
+	 */
+	useEffect( () => {
+		setNameInput( postMeta.title );
+		setNameInputDisabled( true );
+	}, [ postMeta.title ] );
 
 	/**
 	 * Edge case: a post type that was previously saved for modal visibility no longer exists.
@@ -323,24 +334,55 @@ const FseStudioMetaControls = () => {
 	return (
 		<div id={ coreLastUpdate }>
 			<PluginDocumentSettingPanel
-				title={ __( 'Pattern Settings', 'fse-studio' ) }
+				title={ __( 'Pattern Title', 'fse-studio' ) }
 				icon="edit"
 			>
 				<PanelRow>
 					<TextControl
-						label={ __( 'Pattern Title', 'fse-studio' ) }
-						value={ postMeta.title }
+						disabled={ nameInputDisabled }
+						style={ {
+							width: '200px',
+							height: '30px',
+							paddingRight: '50px',
+						} }
+						value={ nameInput }
 						onChange={ ( value ) => {
-							wp.data.dispatch( 'core/editor' ).editPost( {
-								meta: {
-									...postMeta,
-									title: value,
-									name: convertToSlug( value ),
-									previousName: previousPatternName.current,
-								},
-							} );
+							setNameInput( value );
 						} }
 					/>
+					<button
+						type="button"
+						style={ {
+							cursor: 'pointer',
+							background: '#0074ad',
+							color: 'white',
+							border: '0',
+							padding: '0 !important',
+							height: '30px',
+							width: '50px',
+							marginLeft: '-50px',
+						} }
+						onClick={ () => {
+							if (
+								! nameInputDisabled &&
+								nameInput !== previousPatternName.current
+							) {
+								wp.data.dispatch( 'core/editor' ).editPost( {
+									meta: {
+										...postMeta,
+										title: nameInput,
+										name: convertToSlug( nameInput ),
+										previousName:
+											previousPatternName.current,
+									},
+								} );
+							}
+
+							setNameInputDisabled( ! nameInputDisabled );
+						} }
+					>
+						{ nameInputDisabled ? 'Edit' : 'Save' }
+					</button>
 				</PanelRow>
 			</PluginDocumentSettingPanel>
 
