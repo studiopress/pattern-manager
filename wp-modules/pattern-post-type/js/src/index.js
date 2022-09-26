@@ -9,6 +9,7 @@ import {
 	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
+import { RichText } from '@wordpress/block-editor';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
@@ -16,6 +17,10 @@ const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
 	const [ nameInput, setNameInput ] = useState();
 	const [ nameInputDisabled, setNameInputDisabled ] = useState();
+	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
+	const [ errorMessage, setErrorMessage ] = useState(
+		__( 'Please enter a unique name.', 'fse-studio' )
+	);
 
 	const previousPatternName = useRef();
 	const postMeta = wp.data.useSelect( ( select ) => {
@@ -77,8 +82,33 @@ const FseStudioMetaControls = () => {
 		wp.data.subscribe( () => {
 			setCoreLastUpdate( Date.now() );
 		} );
+	}, [] );
 
-		previousPatternName.current = postMeta?.name;
+	/**
+	 * Listener to catch name collision for patterns as they are renamed.
+	 * The targeted response should populate `errorMessage` and `patternNameIsInvalid`.
+	 */
+	useEffect( () => {
+		window.addEventListener(
+			'message',
+			( event ) => {
+				const response = JSON.parse( event.data );
+				if (
+					response.message ===
+					'fsestudio_response_is_pattern_title_taken'
+				) {
+					// Hide or show notice in settings panel on name collision.
+					if ( response.isInvalid ) {
+						setPatternNameIsInvalid( true );
+					} else {
+						setPatternNameIsInvalid( false );
+					}
+
+					setErrorMessage( response.errorMessage );
+				}
+			},
+			false
+		);
 	}, [] );
 
 	/**
@@ -98,6 +128,8 @@ const FseStudioMetaControls = () => {
 	useEffect( () => {
 		setNameInput( postMeta.title );
 		setNameInputDisabled( true );
+
+		previousPatternName.current = postMeta?.title;
 	}, [ postMeta.title ] );
 
 	/**
@@ -341,48 +373,104 @@ const FseStudioMetaControls = () => {
 					<TextControl
 						disabled={ nameInputDisabled }
 						style={ {
-							width: '200px',
+							width: '190px',
 							height: '30px',
-							paddingRight: '50px',
+							paddingRight: '60px',
 						} }
 						value={ nameInput }
 						onChange={ ( value ) => {
 							setNameInput( value );
+
+							// Fire off a postMessage to validate the nameInput.
+							// Input is validated in PatternEditor component.
+							window.parent.postMessage(
+								JSON.stringify( {
+									message:
+										'fsestudio_pattern_editor_request_is_pattern_title_taken',
+									patternTitle: value, // The newly entered title.
+								} )
+							);
 						} }
 					/>
-					<button
-						type="button"
-						style={ {
-							cursor: 'pointer',
-							background: '#0074ad',
-							color: 'white',
-							border: '0',
-							padding: '0 !important',
-							height: '30px',
-							width: '50px',
-							marginLeft: '-50px',
-						} }
-						onClick={ () => {
-							if (
-								! nameInputDisabled &&
-								nameInput !== previousPatternName.current
-							) {
-								wp.data.dispatch( 'core/editor' ).editPost( {
-									meta: {
-										...postMeta,
-										title: nameInput,
-										name: convertToSlug( nameInput ),
-										previousName:
-											previousPatternName.current,
-									},
-								} );
-							}
 
-							setNameInputDisabled( ! nameInputDisabled );
-						} }
-					>
-						{ nameInputDisabled ? 'Edit' : 'Save' }
-					</button>
+					{ /* Conditionally render the "Edit" button for pattern renaming. */ }
+					{ /* If the pattern name is valid, show the "Edit" or "Done" option. */ }
+					{ ! patternNameIsInvalid && (
+						<button
+							type="button"
+							style={ {
+								cursor: 'pointer',
+								background: '#0074ad',
+								color: 'white',
+								border: '0',
+								padding: '0 !important',
+								height: '30px',
+								width: '60px',
+								marginLeft: '-60px',
+							} }
+							onClick={ () => {
+								if (
+									! nameInputDisabled &&
+									nameInput.toLowerCase() !==
+										previousPatternName.current.toLowerCase()
+								) {
+									wp.data
+										.dispatch( 'core/editor' )
+										.editPost( {
+											meta: {
+												...postMeta,
+												title: nameInput,
+												name: convertToSlug(
+													nameInput
+												),
+												previousName:
+													previousPatternName.current,
+											},
+										} );
+								}
+
+								setNameInputDisabled( ! nameInputDisabled );
+							} }
+						>
+							{ nameInputDisabled
+								? __( 'Edit', 'fse-studio' )
+								: __( 'Done', 'fse-studio' ) }
+						</button>
+					) }
+
+					{ /* Otherwise, show the "Cancel" button to bail out. */ }
+					{ patternNameIsInvalid && (
+						<button
+							type="button"
+							style={ {
+								cursor: 'pointer',
+								background: '#5d7179',
+								color: 'white',
+								border: '0',
+								padding: '0 !important',
+								height: '30px',
+								width: '60px',
+								marginLeft: '-60px',
+							} }
+							onClick={ () => {
+								setNameInput( previousPatternName?.current );
+								setNameInputDisabled( true );
+								setPatternNameIsInvalid( false );
+							} }
+						>
+							{ __( 'Cancel', 'fse-studio' ) }
+						</button>
+					) }
+				</PanelRow>
+
+				<PanelRow>
+					{ patternNameIsInvalid && (
+						<RichText.Content
+							tagName="h4"
+							style={ { color: 'red', marginTop: '-10px' } }
+							value={ errorMessage }
+						/>
+					) }
 				</PanelRow>
 			</PluginDocumentSettingPanel>
 

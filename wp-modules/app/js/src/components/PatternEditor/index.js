@@ -1,6 +1,8 @@
 // WP Dependencies
 
 // @ts-check
+import React from 'react';
+
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
 import {
@@ -14,6 +16,9 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 // Globals
 import { fsestudio } from '../../globals';
+
+// Utils
+import convertToSlug from '../../utils/convertToSlug';
 
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
@@ -37,6 +42,38 @@ export function BlockEditor() {
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
+	const [ newPatternName, setNewPatternName ] = useState(
+		currentPattern?.title
+	);
+
+	const nameTaken = ( newSlug ) => {
+		return Object.values( currentTheme?.data.included_patterns ).some(
+			( pattern ) => {
+				return (
+					pattern.slug === newSlug &&
+					currentPatternId?.value !== newSlug
+				);
+			}
+		);
+	};
+
+	useEffect( () => {
+		if ( patternEditorIframe?.current ) {
+			const newSlug = convertToSlug( newPatternName );
+			const isTaken = nameTaken( newSlug );
+			const errorMessage = isTaken
+				? __( 'This name is already taken.', 'fse-studio' )
+				: __( 'The name cannot be blank.', 'fse-studio' );
+
+			patternEditorIframe.current.contentWindow.postMessage(
+				JSON.stringify( {
+					message: 'fsestudio_response_is_pattern_title_taken',
+					isInvalid: isTaken || ! newPatternName.trim().length,
+					errorMessage,
+				} )
+			);
+		}
+	}, [ newPatternName ] );
 
 	const patternListenerCallbacks = ( event ) => {
 		try {
@@ -53,6 +90,25 @@ export function BlockEditor() {
 					},
 				};
 				currentTheme.set( newThemeData );
+			}
+
+			if ( response.message === 'fsestudio_block_pattern_updated' ) {
+				const newThemeData = {
+					...currentTheme.data,
+					included_patterns: {
+						...currentTheme.data.included_patterns,
+						[ currentPatternId.value ]: response.blockPatternData,
+					},
+				};
+				currentTheme.set( newThemeData );
+			}
+
+			// Listening for input from pattern-post-type.
+			if (
+				response.message ===
+				'fsestudio_pattern_editor_request_is_pattern_title_taken'
+			) {
+				setNewPatternName( response.patternTitle );
 			}
 		} catch ( e ) {
 			// Message posted was not JSON. Handle those here.
