@@ -24,7 +24,6 @@ import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import useStudioContext from '../../hooks/useStudioContext';
-import useListener from '../../hooks/useListener';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
 
@@ -90,7 +89,6 @@ function FseStudioContextHydrator() {
 	);
 
 	const currentPatternId = useCurrentId( '' );
-	useListener( currentPatternId?.set );
 	let currentPattern = null;
 
 	if ( currentPatternId?.value ) {
