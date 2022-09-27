@@ -370,44 +370,36 @@ const FseStudioMetaControls = () => {
 				icon="edit"
 			>
 				<PanelRow>
-					<TextControl
-						disabled={ nameInputDisabled }
-						style={ {
-							width: '190px',
-							height: '30px',
-							paddingRight: '60px',
-						} }
-						value={ nameInput }
-						onChange={ ( value ) => {
-							setNameInput( value );
-
-							// Fire off a postMessage to validate the nameInput.
-							// Input is validated in PatternEditor component.
-							window.parent.postMessage(
-								JSON.stringify( {
-									message:
-										'fsestudio_pattern_editor_request_is_pattern_title_taken',
-									patternTitle: value, // The newly entered title.
-								} )
-							);
-						} }
-					/>
+					<div className="fses-pattern-post-name-input">
+						<TextControl
+							disabled={ nameInputDisabled }
+							style={ {
+								width: '250px',
+								height: '40px',
+								paddingRight: '80px',
+							} }
+							value={ nameInput }
+							onChange={ ( value ) => {
+								setNameInput( value );
+								// Fire off a postMessage to validate the nameInput.
+								// Input is validated in PatternEditor component.
+								window.parent.postMessage(
+									JSON.stringify( {
+										message:
+											'fsestudio_pattern_editor_request_is_pattern_title_taken',
+										patternTitle: value, // The newly entered title.
+									} )
+								);
+							} }
+						/>
+					</div>
 
 					{ /* Conditionally render the "Edit" button for pattern renaming. */ }
 					{ /* If the pattern name is valid, show the "Edit" or "Done" option. */ }
 					{ ! patternNameIsInvalid && (
 						<button
 							type="button"
-							style={ {
-								cursor: 'pointer',
-								background: '#0074ad',
-								color: 'white',
-								border: '0',
-								padding: '0 !important',
-								height: '30px',
-								width: '60px',
-								marginLeft: '-60px',
-							} }
+							className="fses-pattern-post-name-button fses-pattern-post-name-button-edit"
 							onClick={ () => {
 								if (
 									! nameInputDisabled &&
@@ -442,16 +434,7 @@ const FseStudioMetaControls = () => {
 					{ patternNameIsInvalid && (
 						<button
 							type="button"
-							style={ {
-								cursor: 'pointer',
-								background: '#5d7179',
-								color: 'white',
-								border: '0',
-								padding: '0 !important',
-								height: '30px',
-								width: '60px',
-								marginLeft: '-60px',
-							} }
+							className="fses-pattern-post-name-button fses-pattern-post-name-button-cancel"
 							onClick={ () => {
 								setNameInput( previousPatternName?.current );
 								setNameInputDisabled( true );
@@ -463,14 +446,16 @@ const FseStudioMetaControls = () => {
 					) }
 				</PanelRow>
 
-				<PanelRow>
-					{ patternNameIsInvalid && (
-						<RichText.Content
-							tagName="h4"
-							style={ { color: 'red', marginTop: '-10px' } }
-							value={ errorMessage }
-						/>
-					) }
+				<PanelRow className="components-panel__row-error">
+					<RichText.Content
+						tagName="h4"
+						style={ {
+							color: 'red',
+							marginTop: '0',
+							marginBottom: '0',
+						} }
+						value={ patternNameIsInvalid && errorMessage }
+					/>
 				</PanelRow>
 			</PluginDocumentSettingPanel>
 
