@@ -373,12 +373,7 @@ const FseStudioMetaControls = () => {
 					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
 						<TextControl
 							disabled={ nameInputDisabled }
-							/* className not working as expected here — had to use inline style. */
-							style={ {
-								width: '250px',
-								height: '40px',
-								paddingRight: '80px',
-							} }
+							className="fsestudio-pattern-post-name-input-outer"
 							value={ nameInput }
 							onChange={ ( value ) => {
 								setNameInput( value );

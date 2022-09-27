@@ -29,14 +29,39 @@ button.components-button.editor-post-save-draft.is-tertiary{
 .fsestudio-post-type-toggle{
 	margin-bottom: -8px;
 }
+@media only screen and (max-width: 781.25px) {
+	.fsestudio-pattern-post-name-input-outer {
+		width: 500px;
+	}
+	.fsestudio-pattern-post-name-input-outer input {
+		height: 50px;
+		padding-right: 75px;
+	}
+	/* Pattern name input button */
+	.fsestudio-pattern-post-name-button {
+		height: 50px;
+		width: 80px;
+	}
+}
+@media only screen and (min-width: 781.25px) {
+	.fsestudio-pattern-post-name-input-outer {
+		width: 250px;
+	}
+	.fsestudio-pattern-post-name-input-outer input {
+		height: 40px;
+	}
+	/* Pattern name input button */
+	.fsestudio-pattern-post-name-button {
+		height: 30px;
+	width: 60px;
+	}
+}
 /* Pattern name input button */
 .fsestudio-pattern-post-name-button {
 	color: white;
 	border: 0;
 	padding: 0 !important;
-	height: 30px;
-	width: 60px;
-	right: 20px;
+	right: 18px;
 	position: fixed;
 	border-radius: 0.125rem;
 	align-items: center;
