@@ -89,6 +89,7 @@ function FseStudioContextHydrator() {
 	);
 
 	const currentPatternId = useCurrentId( '' );
+
 	let currentPattern = null;
 
 	if ( currentPatternId?.value ) {
