@@ -369,6 +369,7 @@ const FseStudioMetaControls = () => {
 						<TextControl
 							disabled={ nameInputDisabled }
 							className="fsestudio-pattern-post-name-input-outer"
+							aria-label="Pattern Title Name Input (used for renaming the pattern)"
 							value={ nameInput }
 							onChange={ ( value ) => {
 								setNameInput( value );
@@ -391,6 +392,7 @@ const FseStudioMetaControls = () => {
 						<button
 							type="button"
 							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-edit"
+							aria-label="Pattern Title Edit Button (click to rename the pattern title)"
 							onClick={ () => {
 								if (
 									! nameInputDisabled &&
@@ -426,6 +428,7 @@ const FseStudioMetaControls = () => {
 						<button
 							type="button"
 							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-cancel"
+							aria-label="Pattern Title Cancel Button (click to cancel renaming)"
 							onClick={ () => {
 								setNameInput( previousPatternName?.current );
 								setNameInputDisabled( true );
