@@ -30,7 +30,7 @@ button.components-button.editor-post-save-draft.is-tertiary{
 	margin-bottom: -8px;
 }
 /* Pattern name input button */
-.fses-pattern-post-name-button {
+.fsestudio-pattern-post-name-button {
 	color: white;
 	border: 0;
 	padding: 0 !important;
@@ -41,16 +41,19 @@ button.components-button.editor-post-save-draft.is-tertiary{
 	border-radius: 0.125rem;
 	align-items: center;
 	cursor: pointer;
-
 	&-edit {
 		background: #0074ad;
 	}
-
 	&-cancel {
 		background: #5d7179;
 	}
 }
 /* Pattern name input error section */
-.components-panel__row-error{
+.components-panel__row-fsestudio-pattern-name-error {
 	min-height: auto;
+	&-inner {
+		color: red;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
 }

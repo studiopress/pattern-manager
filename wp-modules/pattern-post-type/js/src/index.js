@@ -373,6 +373,7 @@ const FseStudioMetaControls = () => {
 					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
 						<TextControl
 							disabled={ nameInputDisabled }
+							/* className not working as expected here — had to use inline style. */
 							style={ {
 								width: '250px',
 								height: '40px',
@@ -399,7 +400,7 @@ const FseStudioMetaControls = () => {
 					{ ! patternNameIsInvalid && (
 						<button
 							type="button"
-							className="fses-pattern-post-name-button fses-pattern-post-name-button-edit"
+							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-edit"
 							onClick={ () => {
 								if (
 									! nameInputDisabled &&
@@ -434,7 +435,7 @@ const FseStudioMetaControls = () => {
 					{ patternNameIsInvalid && (
 						<button
 							type="button"
-							className="fses-pattern-post-name-button fses-pattern-post-name-button-cancel"
+							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-cancel"
 							onClick={ () => {
 								setNameInput( previousPatternName?.current );
 								setNameInputDisabled( true );
@@ -446,14 +447,10 @@ const FseStudioMetaControls = () => {
 					) }
 				</PanelRow>
 
-				<PanelRow className="components-panel__row-error">
+				<PanelRow className="components-panel__row-fsestudio-pattern-name-error">
 					<RichText.Content
 						tagName="h4"
-						style={ {
-							color: 'red',
-							marginTop: '0',
-							marginBottom: '0',
-						} }
+						className="components-panel__row-fsestudio-pattern-name-error-inner"
 						value={ patternNameIsInvalid && errorMessage }
 					/>
 				</PanelRow>
