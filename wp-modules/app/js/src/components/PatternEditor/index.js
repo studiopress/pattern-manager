@@ -26,7 +26,7 @@ export default function PatternEditor( { visible } ) {
 
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			{ currentPatternId.value ? <BlockEditor /> : null }
+			{ currentPatternId?.value ? <BlockEditor /> : null }
 		</div>
 	);
 }
@@ -42,9 +42,6 @@ export function BlockEditor() {
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
-	const [ newPatternName, setNewPatternName ] = useState(
-		currentPattern?.title
-	);
 
 	const nameTaken = ( newSlug ) => {
 		return Object.values( currentTheme?.data.included_patterns ).some(
@@ -57,24 +54,6 @@ export function BlockEditor() {
 		);
 	};
 
-	useEffect( () => {
-		if ( patternEditorIframe?.current ) {
-			const newSlug = convertToSlug( newPatternName );
-			const isTaken = nameTaken( newSlug );
-			const errorMessage = isTaken
-				? __( 'This name is already taken.', 'fse-studio' )
-				: __( 'The name cannot be blank.', 'fse-studio' );
-
-			patternEditorIframe.current.contentWindow.postMessage(
-				JSON.stringify( {
-					message: 'fsestudio_response_is_pattern_title_taken',
-					isInvalid: isTaken || ! newPatternName.trim().length,
-					errorMessage,
-				} )
-			);
-		}
-	}, [ newPatternName ] );
-
 	const patternListenerCallbacks = ( event ) => {
 		try {
 			// Handle JSON messages here.
@@ -82,33 +61,36 @@ export function BlockEditor() {
 
 			// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
 			if ( response.message === 'fsestudio_block_pattern_updated' ) {
-				const newThemeData = {
+				currentTheme?.set( {
 					...currentTheme.data,
 					included_patterns: {
 						...currentTheme.data.included_patterns,
 						[ currentPatternId.value ]: response.blockPatternData,
 					},
-				};
-				currentTheme.set( newThemeData );
-			}
-
-			if ( response.message === 'fsestudio_block_pattern_updated' ) {
-				const newThemeData = {
-					...currentTheme.data,
-					included_patterns: {
-						...currentTheme.data.included_patterns,
-						[ currentPatternId.value ]: response.blockPatternData,
-					},
-				};
-				currentTheme.set( newThemeData );
+				} );
 			}
 
 			// Listening for input from pattern-post-type.
 			if (
 				response.message ===
-				'fsestudio_pattern_editor_request_is_pattern_title_taken'
+					'fsestudio_pattern_editor_request_is_pattern_title_taken' &&
+				patternEditorIframe?.current
 			) {
-				setNewPatternName( response.patternTitle );
+				const isTaken = nameTaken(
+					convertToSlug( response.patternTitle )
+				);
+				const errorMessage = isTaken
+					? __( 'This name is already taken.', 'fse-studio' )
+					: __( 'The name cannot be blank.', 'fse-studio' );
+
+				patternEditorIframe.current.contentWindow.postMessage(
+					JSON.stringify( {
+						message: 'fsestudio_response_is_pattern_title_taken',
+						isInvalid:
+							isTaken || ! response.patternTitle.trim().length,
+						errorMessage,
+					} )
+				);
 			}
 		} catch ( e ) {
 			// Message posted was not JSON. Handle those here.
@@ -163,7 +145,7 @@ export function BlockEditor() {
 									{
 										span: (
 											<span className="px-1 font-semibold">
-												{ currentPattern.title }
+												{ currentPattern?.title }
 											</span>
 										),
 									}

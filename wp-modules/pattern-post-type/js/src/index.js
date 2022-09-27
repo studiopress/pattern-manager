@@ -98,12 +98,7 @@ const FseStudioMetaControls = () => {
 					'fsestudio_response_is_pattern_title_taken'
 				) {
 					// Hide or show notice in settings panel on name collision.
-					if ( response.isInvalid ) {
-						setPatternNameIsInvalid( true );
-					} else {
-						setPatternNameIsInvalid( false );
-					}
-
+					setPatternNameIsInvalid( response.isInvalid );
 					setErrorMessage( response.errorMessage );
 				}
 			},
