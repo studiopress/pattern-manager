@@ -370,7 +370,7 @@ const FseStudioMetaControls = () => {
 				icon="edit"
 			>
 				<PanelRow>
-					<div className="fses-pattern-post-name-input">
+					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
 						<TextControl
 							disabled={ nameInputDisabled }
 							style={ {
