@@ -600,6 +600,15 @@ window.addEventListener(
 						.getEditedPostAttribute( 'id' ) }`
 				);
 
+				// Still trying to prevent the "Restore the backup" notice mentioned above.
+				// Get all notices, then remove if the notice has a matching wp autosave id.
+				const notices = wp.data.select( 'core/notices' ).getNotices();
+				notices?.forEach( ( notice ) => {
+					if ( notice.id.includes( 'wpEditorAutosaveRestore' ) ) {
+						wp.data.dispatch( 'core/notices' ).removeNotice( notice.id );
+					}
+				} );
+
 				// TODO: Set the categories. They can found at: response.patternData.categories
 
 				// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
