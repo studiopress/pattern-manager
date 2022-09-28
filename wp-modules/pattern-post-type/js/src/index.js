@@ -586,35 +586,32 @@ window.addEventListener(
 
 			if ( response.message === 'set_initial_pattern_data' ) {
 				// Insert the block string so the blocks show up in the editor itself.
-				wp.domReady( () => {
-					wp.data.dispatch( 'core/editor' ).resetEditorBlocks(
-						wp.blocks.rawHandler( {
-							HTML: response.patternData.content,
-							mode: 'BLOCKS',
-						} )
-					).then(() => {
-						// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
-						window.sessionStorage.removeItem(
-							`wp-autosave-block-editor-post-${ wp.data
-								.select( 'core/editor' )
-								.getEditedPostAttribute( 'id' ) }`
-						);
+				wp.data.dispatch( 'core/editor' ).resetEditorBlocks(
+					wp.blocks.rawHandler( {
+						HTML: response.patternData.content,
+						mode: 'BLOCKS',
+					} )
+				);
 
-						// TODO: Set the categories. They can found at: response.patternData.categories
+				// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
+				window.sessionStorage.removeItem(
+					`wp-autosave-block-editor-post-${ wp.data
+						.select( 'core/editor' )
+						.getEditedPostAttribute( 'id' ) }`
+				);
 
-						// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
-						const patternMeta = { ...response.patternData };
-						delete patternMeta.content;
+				// TODO: Set the categories. They can found at: response.patternData.categories
 
-						// Set the meta of the pattern
-						wp.data.dispatch( 'core/editor' ).editPost( {
-							meta: { ...patternMeta },
-						} );
+				// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
+				const patternMeta = { ...response.patternData };
+				delete patternMeta.content;
 
-						patternDataSet = true;
-						window.parent.postMessage( 'fsestudio_pattern_data_set' );
-					} );
+				// Set the meta of the pattern
+				wp.data.dispatch( 'core/editor' ).editPost( {
+					meta: { ...patternMeta },
 				} );
+				patternDataSet = true;
+				window.parent.postMessage( 'fsestudio_pattern_data_set' );
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {
