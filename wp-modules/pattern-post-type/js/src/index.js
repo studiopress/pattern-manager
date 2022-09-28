@@ -592,27 +592,28 @@ window.addEventListener(
 							HTML: response.patternData.content,
 							mode: 'BLOCKS',
 						} )
-					);
-					// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
-					window.sessionStorage.removeItem(
-						`wp-autosave-block-editor-post-${ wp.data
-							.select( 'core/editor' )
-							.getEditedPostAttribute( 'id' ) }`
-					);
+					).then(() => {
+						// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
+						window.sessionStorage.removeItem(
+							`wp-autosave-block-editor-post-${ wp.data
+								.select( 'core/editor' )
+								.getEditedPostAttribute( 'id' ) }`
+						);
 
-					// TODO: Set the categories. They can found at: response.patternData.categories
+						// TODO: Set the categories. They can found at: response.patternData.categories
 
-					// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
-					const patternMeta = { ...response.patternData };
-					delete patternMeta.content;
+						// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
+						const patternMeta = { ...response.patternData };
+						delete patternMeta.content;
 
-					// Set the meta of the pattern
-					wp.data.dispatch( 'core/editor' ).editPost( {
-						meta: { ...patternMeta },
+						// Set the meta of the pattern
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: { ...patternMeta },
+						} );
+
+						patternDataSet = true;
+						window.parent.postMessage( 'fsestudio_pattern_data_set' );
 					} );
-
-					patternDataSet = true;
-					window.parent.postMessage( 'fsestudio_pattern_data_set' );
 				} );
 			}
 
