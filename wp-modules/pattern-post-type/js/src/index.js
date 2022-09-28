@@ -542,7 +542,10 @@ let fsestudioPatternEditorLoaded = false;
 let patternDataSet = false;
 let patternUpdatedDebounce = null;
 wp.data.subscribe( () => {
-	if ( ! fsestudioPatternEditorLoaded ) {
+	if (
+		! fsestudioPatternEditorLoaded &&
+		wp.data.select( 'core/editor' ).getCurrentPostType()
+	) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
 	}
