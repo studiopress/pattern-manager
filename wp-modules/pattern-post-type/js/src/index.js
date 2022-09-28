@@ -610,10 +610,10 @@ window.addEventListener(
 					wp.data.dispatch( 'core/editor' ).editPost( {
 						meta: { ...patternMeta },
 					} );
-				} );
 
-				patternDataSet = true;
-				window.parent.postMessage( 'fsestudio_pattern_data_set' );
+					patternDataSet = true;
+					window.parent.postMessage( 'fsestudio_pattern_data_set' );
+				} );
 			}
 
 			if ( response.message === 'fsestudio_hotswapped_theme' ) {
