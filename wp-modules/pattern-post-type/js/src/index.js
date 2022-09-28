@@ -593,13 +593,6 @@ window.addEventListener(
 					} )
 				);
 
-				// A hack to prevent the notice 'The backup of this post in your browser is different from the version below.'
-				window.sessionStorage.removeItem(
-					`wp-autosave-block-editor-post-${ wp.data
-						.select( 'core/editor' )
-						.getEditedPostAttribute( 'id' ) }`
-				);
-
 				// Still trying to prevent the "Restore the backup" notice mentioned above.
 				// Get all notices, then remove if the notice has a matching wp autosave id.
 				const notices = wp.data.select( 'core/notices' ).getNotices();
