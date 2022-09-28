@@ -605,7 +605,9 @@ window.addEventListener(
 				const notices = wp.data.select( 'core/notices' ).getNotices();
 				notices?.forEach( ( notice ) => {
 					if ( notice.id.includes( 'wpEditorAutosaveRestore' ) ) {
-						wp.data.dispatch( 'core/notices' ).removeNotice( notice.id );
+						wp.data
+							.dispatch( 'core/notices' )
+							.removeNotice( notice.id );
 					}
 				} );
 
