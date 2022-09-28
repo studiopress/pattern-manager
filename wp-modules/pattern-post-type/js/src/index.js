@@ -593,7 +593,7 @@ window.addEventListener(
 					} )
 				);
 
-				// Still trying to prevent the "Restore the backup" notice mentioned above.
+				// Prevent this notice: "The backup of this post in your browser is different from the version below."
 				// Get all notices, then remove if the notice has a matching wp autosave id.
 				const notices = wp.data.select( 'core/notices' ).getNotices();
 				notices?.forEach( ( notice ) => {
