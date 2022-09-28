@@ -544,8 +544,7 @@ let patternUpdatedDebounce = null;
 wp.data.subscribe( () => {
 	if (
 		! fsestudioPatternEditorLoaded &&
-		'fsestudio_pattern' ===
-			wp.data.select( 'core/editor' ).getCurrentPostType()
+		wp.data.select( 'core/editor' ).getCurrentPostType()
 	) {
 		window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 		fsestudioPatternEditorLoaded = true;
