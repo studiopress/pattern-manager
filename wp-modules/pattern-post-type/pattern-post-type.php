@@ -173,7 +173,7 @@ function display_block_pattern_preview() {
 
 	$pattern = \FseStudio\PatternDataHandlers\get_theme_pattern( $pattern_id );
 
-	$the_content = do_the_content_things( $pattern['content'] );
+	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
 	wp_head();
 

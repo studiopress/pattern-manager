@@ -212,7 +212,7 @@ function format_pattern_data( $pattern_data, $file ) {
 function get_theme_pattern( $pattern_id, $theme_path = false ) {
 	$patterns_data = get_theme_patterns( $theme_path );
 	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
-		return false;
+		return [];
 	}
 
 	$pattern_data = $patterns_data[ $pattern_id ];
