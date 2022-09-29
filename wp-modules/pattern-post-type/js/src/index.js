@@ -16,7 +16,7 @@ import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 const FseStudioMetaControls = () => {
 	const [ coreLastUpdate, setCoreLastUpdate ] = useState();
 	const [ nameInput, setNameInput ] = useState();
-	const [ nameInputDisabled, setNameInputDisabled ] = useState();
+	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'fse-studio' )
