@@ -121,12 +121,17 @@ const FseStudioMetaControls = () => {
 	 * Mostly intended to catch switching between patterns.
 	 */
 	useEffect( () => {
-		setNameInput( postMeta?.title );
-		setNameInputDisabled( true );
-		// Validate the initial postMeta title.
-		checkPatternTitle( postMeta?.title );
+		// postMeta is initially returned with empty values until the select request resolves.
+		// Try to prevent populating an empty title by only updating if the type is a pattern.
+		// Doing it this way should still catch an empty title if the user somehow passes one.
+		if ( postMeta?.type === 'pattern' ) {
+			setNameInput( postMeta.title );
+			setNameInputDisabled( true );
+			// Validate the initial postMeta title.
+			checkPatternTitle( postMeta.title );
 
-		previousPatternName.current = postMeta?.title;
+			previousPatternName.current = postMeta.title;
+		}
 	}, [ postMeta.title ] );
 
 	/**
