@@ -121,8 +121,10 @@ const FseStudioMetaControls = () => {
 	 * Mostly intended to catch switching between patterns.
 	 */
 	useEffect( () => {
-		setNameInput( postMeta.title );
+		setNameInput( postMeta?.title );
 		setNameInputDisabled( true );
+		// Validate the initial postMeta title.
+		checkPatternTitle( postMeta?.title );
 
 		previousPatternName.current = postMeta?.title;
 	}, [ postMeta.title ] );
@@ -160,6 +162,22 @@ const FseStudioMetaControls = () => {
 			}
 		}
 	}, [ postTypes ] );
+
+	/**
+	 * Fire off a postMessage to validate pattern title.
+	 * String is validated in PatternEditor component.
+	 *
+	 * @param {string} patternTitle
+	 */
+	function checkPatternTitle( patternTitle ) {
+		window.parent.postMessage(
+			JSON.stringify( {
+				message:
+					'fsestudio_pattern_editor_request_is_pattern_title_taken',
+				patternTitle,
+			} )
+		);
+	}
 
 	/**
 	 * Check that two indexed arrays have the same elements.
@@ -364,81 +382,82 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Pattern Title', 'fse-studio' ) }
 				icon="edit"
 			>
-				<PanelRow>
-					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
-						<TextControl
-							disabled={ nameInputDisabled }
-							className="fsestudio-pattern-post-name-input-outer"
-							aria-label="Pattern Title Name Input (used for renaming the pattern)"
-							value={ nameInput }
-							onChange={ ( value ) => {
-								setNameInput( value );
-								// Fire off a postMessage to validate the nameInput.
-								// Input is validated in PatternEditor component.
-								window.parent.postMessage(
-									JSON.stringify( {
-										message:
-											'fsestudio_pattern_editor_request_is_pattern_title_taken',
-										patternTitle: value, // The newly entered title.
-									} )
-								);
-							} }
-						/>
-					</div>
-
-					{ /* Conditionally render the "Edit" button for pattern renaming. */ }
-					{ /* If the pattern name is valid, show the "Edit" or "Done" option. */ }
-					{ ! patternNameIsInvalid && (
-						<button
-							type="button"
-							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-edit"
-							aria-label="Pattern Title Edit Button (click to rename the pattern title)"
-							onClick={ () => {
-								if (
-									! nameInputDisabled &&
-									nameInput.toLowerCase() !==
-										previousPatternName.current.toLowerCase()
-								) {
-									wp.data
-										.dispatch( 'core/editor' )
-										.editPost( {
-											meta: {
-												...postMeta,
-												title: nameInput,
-												name: convertToSlug(
-													nameInput
-												),
-												previousName:
-													previousPatternName.current,
-											},
-										} );
-								}
-
-								setNameInputDisabled( ! nameInputDisabled );
-							} }
+				{ postMeta?.title && (
+					<PanelRow>
+						<div
+							onDoubleClick={ () =>
+								setNameInputDisabled( false )
+							}
 						>
-							{ nameInputDisabled
-								? __( 'Edit', 'fse-studio' )
-								: __( 'Done', 'fse-studio' ) }
-						</button>
-					) }
+							<TextControl
+								disabled={ nameInputDisabled }
+								className="fsestudio-pattern-post-name-input-outer"
+								aria-label="Pattern Title Name Input (used for renaming the pattern)"
+								value={ nameInput }
+								onChange={ ( value ) => {
+									setNameInput( value );
+									// Validate the nameInput to provide immediate feedback.
+									checkPatternTitle( value );
+								} }
+							/>
+						</div>
 
-					{ /* Otherwise, show the "Cancel" button to bail out. */ }
-					{ patternNameIsInvalid && (
-						<button
-							type="button"
-							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-cancel"
-							aria-label="Pattern Title Cancel Button (click to cancel renaming)"
-							onClick={ () => {
-								setNameInput( previousPatternName?.current );
-								setNameInputDisabled( true );
-								setPatternNameIsInvalid( false );
-							} }
-						>
-							{ __( 'Cancel', 'fse-studio' ) }
-						</button>
-					) }
-				</PanelRow>
+						{ /* Conditionally render the "Edit" button for pattern renaming. */ }
+						{ /* If the pattern name is valid, show the "Edit" or "Done" option. */ }
+						{ ! patternNameIsInvalid && (
+							<button
+								type="button"
+								className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-edit"
+								aria-label="Pattern Title Edit Button (click to rename the pattern title)"
+								onClick={ () => {
+									if (
+										! nameInputDisabled &&
+										nameInput.toLowerCase() !==
+											previousPatternName.current.toLowerCase()
+									) {
+										wp.data
+											.dispatch( 'core/editor' )
+											.editPost( {
+												meta: {
+													...postMeta,
+													title: nameInput,
+													name: convertToSlug(
+														nameInput
+													),
+													previousName:
+														previousPatternName.current,
+												},
+											} );
+									}
+
+									setNameInputDisabled( ! nameInputDisabled );
+								} }
+							>
+								{ nameInputDisabled
+									? __( 'Edit', 'fse-studio' )
+									: __( 'Done', 'fse-studio' ) }
+							</button>
+						) }
+
+						{ /* Otherwise, show the "Cancel" button to bail out. */ }
+						{ patternNameIsInvalid && (
+							<button
+								type="button"
+								className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-cancel"
+								aria-label="Pattern Title Cancel Button (click to cancel renaming)"
+								onClick={ () => {
+									setNameInput(
+										previousPatternName?.current
+									);
+									setNameInputDisabled( true );
+									setPatternNameIsInvalid( false );
+								} }
+							>
+								{ __( 'Cancel', 'fse-studio' ) }
+							</button>
+						) }
+					</PanelRow>
+				) }
 
 				<PanelRow className="components-panel__row-fsestudio-pattern-name-error">
 					<RichText.Content
