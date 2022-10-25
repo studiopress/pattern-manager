@@ -12,7 +12,7 @@
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
-    "@wordpress/scripts": "^20.0.2",
+    "@wordpress/scripts": "^24.4.0",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
