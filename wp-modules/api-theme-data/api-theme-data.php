@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace FseStudio\ApiThemeData;
 
+use WP_REST_Request;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -61,6 +63,28 @@ function register_routes() {
 			'schema' => 'response_item_schema',
 		)
 	);
+	register_rest_route(
+		$namespace,
+		'/switch-theme',
+		array(
+			array(
+				'methods'             => 'POST',
+				'callback'            => __NAMESPACE__ . '\switch_to_theme',
+				'permission_callback' => __NAMESPACE__ . '\permission_check',
+				'args'                => array(
+					'dirname' => array(
+						'required'          => true,
+						'type'              => 'string',
+						'description'       => __( 'The dirname, or slug, of the theme', 'fse-studio' ),
+						'validate_callback' => function( $param ) {
+							return is_string( $param );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					),
+				),
+			),
+		)
+	);
 }
 
 /**
@@ -72,10 +96,9 @@ function register_routes() {
 function get_theme( $request ) {
 	$params = $request->get_params();
 
-	$theme_id           = $params['themeId'];
-	$pre_existing_theme = $params['preExistingTheme'];
+	$theme_id = $params['themeId'];
 
-	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id, $pre_existing_theme );
+	$theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_id );
 
 	if ( $theme_data['dirname'] ) {
 		switch_theme( $theme_data['dirname'] );
@@ -103,7 +126,7 @@ function save_theme( $request ) {
 	$theme_data       = $request->get_params();
 	$prior_theme_data = \FseStudio\ThemeDataHandlers\get_theme( $theme_data['id'] );
 
-	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data );
+	$result = \FseStudio\ThemeDataHandlers\update_theme( $theme_data, false );
 
 	if ( is_wp_error( $result ) ) {
 		return new \WP_REST_Response( $result, 400 );
@@ -113,6 +136,7 @@ function save_theme( $request ) {
 				'message'           => __( 'Theme successfully saved to disk', 'fse-studio' ),
 				'themeData'         => $result,
 				'themeJsonModified' => $result['theme_json_file'] !== $prior_theme_data['theme_json_file'],
+				'styleJsonModified' => $result['styles'] !== $prior_theme_data['styles'],
 			),
 			200
 		);
@@ -138,12 +162,20 @@ function export_theme( $request ) {
 }
 
 /**
- * Check the permissions required to take this action.
+ * Switch to a given theme.
  *
  * @param WP_REST_Request $request Full data about the request.
+ */
+function switch_to_theme( WP_REST_Request $request ) {
+	\FseStudio\ThemeDataHandlers\switch_to_theme( $request->get_params()['dirname'] ?? '' );
+}
+
+/**
+ * Check the permissions required to take this action.
+ *
  * @return bool
  */
-function permission_check( $request ) {
+function permission_check() {
 	return current_user_can( 'manage_options' );
 }
 
@@ -178,6 +210,13 @@ function save_request_args() {
 			'type'              => 'string',
 			'description'       => __( 'The name of the theme', 'fse-studio' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
+			'sanitize_callback' => 'sanitize_text_field',
+		),
+		'id'                => array(
+			'required'          => false,
+			'type'              => 'string',
+			'description'       => __( 'The id of the theme', 'fse-studio' ),
+			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
 			'sanitize_callback' => 'sanitize_text_field',
 		),
 		'dirname'           => array(

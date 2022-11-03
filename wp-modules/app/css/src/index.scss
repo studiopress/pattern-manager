@@ -103,6 +103,24 @@ html body.toplevel_page_fse-studio {
 		}
 	}
 
+	summary::marker,
+	summary::-webkit-details-marker {
+		color: transparent;
+		content: "";
+		display: none;
+	}
+	/* stylelint-disable */
+	summary::after {
+		content: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.50002 1L7.00002 6L12.5 1' stroke='%231E1E1E' stroke-width='1.5'/%3E%3C/svg%3E");
+		display: inline-block;
+		float: right;
+	}
+	/* stylelint-enable */
+
+	details[open] > summary::after {
+		transform: rotate(180deg);
+	}
+
 }
 
 .sidebar-closed .sticky {
@@ -231,4 +249,90 @@ input[type="checkbox"]:checked::before {
 
 .fses-nav button:disabled {
 	opacity: .6;
+}
+
+.fses-nav ul {
+    background: #1E1E1E;
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+	display: flex;
+	border-radius: 3px;
+	gap: 3px;
+}
+
+.fses-nav li {
+    color: #fff;
+    position: relative;
+    text-decoration: none;
+    transition-duration: 0.3s;
+	margin: 0;
+	border-radius: 3px;
+}
+
+.fses-nav li button {
+    color: #fff;
+	padding: 8px 16px;
+	border-radius: 3px;
+}
+
+.fses-nav li:hover,
+.fses-nav li:focus-within {
+    background: #404040;
+    cursor: pointer;
+}
+
+.fses-nav li:focus-within button {
+    outline: none;
+}
+
+.fses-nav ul li ul {
+    background: #1E1E1E;
+    visibility: hidden;
+    opacity: 0;
+    min-width: 300px;
+    position: absolute;
+    transition: all 0.5s ease;
+    margin-top: 0;
+    left: 0;
+    display: none;
+	padding: 10px 0;
+	font-weight: 400;
+	gap: 0;
+}
+
+.fses-nav ul li ul li:hover {
+	background: none; 
+}
+
+.fses-nav ul li ul li ul {
+	left: 300px;
+	top: -10px;
+	background: #2f2f2f;
+}
+
+.fses-nav ul li ul li button {
+	width: 100%;
+	text-align: left;
+	color: #c6c6c6;
+	transition-duration: 0.3s;
+	padding: 11px 16px;
+}
+
+.fses-nav ul li ul li button:hover {
+	color: #fff;
+}
+
+.fses-nav ul li:hover > ul,
+.fses-nav ul li:focus-within > ul,
+.fses-nav ul li ul:hover,
+.fses-nav ul li ul:focus {
+    visibility: visible;
+    opacity: 1;
+    display: block;
+}
+
+.fses-nav ul li ul li {
+    clear: both;
+    width: 100%;
 }

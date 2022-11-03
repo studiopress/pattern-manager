@@ -93,22 +93,87 @@ function pattern_post_type() {
 			'type'         => 'string',
 		)
 	);
+
+	register_post_meta(
+		'fsestudio_pattern',
+		'previousName',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		)
+	);
+
+	/**
+	 * Add blockTypes array post meta.
+	 *
+	 * Must define schema for 'show_in_rest' array.
+	 * @see https://make.wordpress.org/core/2019/10/03/wp-5-3-supports-object-and-array-meta-types-in-the-rest-api/
+	 */
+	register_post_meta(
+		'fsestudio_pattern',
+		'blockTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
+
+	/**
+	 * Add postTypes array post meta.
+	 */
+	register_post_meta(
+		'fsestudio_pattern',
+		'postTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
 }
 add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
 
 /**
- * Recieve post_id in the URL and display its content. Useful for pattern previews and thumbnails.
+ * Disable auto-save for this post type.
+ *
+ */
+function disable_autosave() {
+	global $post_type;
+	if ( 'fsestudio_pattern' === $post_type ) {
+		wp_dequeue_script( 'autosave' );
+	}
+}
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
+
+/**
+ * Recieve pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
 	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
-	$post_id = absint( $_GET['fsestudio_pattern_preview'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_id = sanitize_text_field( wp_unslash( $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$post = get_post( $post_id );
+	$pattern = \FseStudio\PatternDataHandlers\get_theme_pattern( $pattern_id );
 
-	$the_content = do_the_content_things( $post->post_content );
+	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
 	wp_head();
 

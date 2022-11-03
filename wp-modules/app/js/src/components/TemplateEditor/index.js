@@ -10,15 +10,11 @@ import useStudioContext from '../../hooks/useStudioContext';
 import { fsestudio } from '../../globals';
 
 export default function TemplateEditor() {
-	const { templateEditorIframe, currentTheme } = useStudioContext();
-
-	if ( ! currentTheme?.existsOnDisk ) {
-		return '';
-	}
+	const { templateEditorIframe } = useStudioContext();
 
 	return (
 		<iframe
-			title={ __( 'Pattern Editor', 'fse-studio' ) }
+			title={ __( 'Template Editor', 'fse-studio' ) }
 			ref={ templateEditorIframe }
 			style={ {
 				width: '100%',

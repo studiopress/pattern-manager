@@ -1,9 +1,9 @@
 === Frost ===
 Contributors: bgardner, ndiego
-Requires at least: 5.8
+Requires at least: 6.0
 Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 0.8.4
+Stable tag: 0.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,17 +13,77 @@ An experimental block theme for designers, developers, and creators.
 
 == Changelog ==
 
+= 0.9.8 - 2022-07-08 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.8)
+
+= 0.9.7 - 2022-05-31 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.7)
+
+= 0.9.6 - 2022-05-13 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.6)
+
+= 0.9.5 - 2022-04-25 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.5)
+
+= 0.9.4 - 2022-04-18 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.4)
+
+= 0.9.3 - 2022-04-11 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.3)
+
+= 0.9.2 - 2022-04-04 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.2)
+
+= 0.9.1 - 2022-03-21 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.1)
+
+= 0.9.0 - 2022-03-14 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.9.0)
+
+= 0.8.9 - 2022-03-07 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.8.9)
+
+= 0.8.8 - 2022-02-28 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.8.8)
+
+= 0.8.7 - 2022-02-21 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.8.7)
+
+= 0.8.6 - 2022-02-14 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.8.6)
+
+= 0.8.5 - 2022-02-07 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/v0.8.5)
+
+= 0.8.4 - 2022-01-31 =
+
+[Release Notes](https://github.com/wpengine/frost/releases/tag/2022.01.31)
+
 = 0.8.3 - 2022-01-24 =
 
-[Release Notes](https://github.com/wpengine/themes/releases/tag/2022.01.24)
+[Release Notes](https://github.com/wpengine/frost/releases/tag/2022.01.24)
 
 = 0.8.2 - 2022-01-17 =
 
-[Release Notes](https://github.com/wpengine/themes/releases/tag/2022.01.17)
+[Release Notes](https://github.com/wpengine/frost/releases/tag/2022.01.17)
 
 = 0.8.1 - 2022-01-10 =
 
-[Release Notes](https://github.com/wpengine/themes/releases/tag/2022.01.10)
+[Release Notes](https://github.com/wpengine/frost/releases/tag/2022.01.10)
 
 = 0.8.0 - 2022-01-03 =
 

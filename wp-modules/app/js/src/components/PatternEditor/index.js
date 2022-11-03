@@ -1,8 +1,10 @@
 // WP Dependencies
 
 // @ts-check
+import React from 'react';
+
 import { __ } from '@wordpress/i18n';
-import { Modal, Spinner } from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 import {
 	useState,
 	useEffect,
@@ -15,48 +17,16 @@ import useStudioContext from '../../hooks/useStudioContext';
 // Globals
 import { fsestudio } from '../../globals';
 
-// Components
-import PatternPicker from '../PatternPicker';
-
 // Utils
-import searchItems from '../../utils/searchItems';
+import convertToSlug from '../../utils/convertToSlug';
 
 /** @param {{visible: boolean}} props */
 export default function PatternEditor( { visible } ) {
-	const { currentTheme, currentPatternId } = useStudioContext();
-	const [ isPatternModalOpen, setIsPatternModalOpen ] = useState( false );
+	const { currentPatternId } = useStudioContext();
 
 	return (
 		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
-			{ isPatternModalOpen ? (
-				<Modal
-					title={ __(
-						'Edit one of your existing patterns',
-						'fse-studio'
-					) }
-					onRequestClose={ () => {
-						setIsPatternModalOpen( false );
-					} }
-				>
-					<PatternPicker
-						patterns={ searchItems(
-							Object.values(
-								currentTheme.data.included_patterns
-							),
-							'custom'
-						) }
-						onClickPattern={
-							/** @param {string} clickedPatternId */
-							( clickedPatternId ) => {
-								currentPatternId.set( clickedPatternId );
-								setIsPatternModalOpen( false );
-							}
-						}
-					/>
-				</Modal>
-			) : null }
-
-			{ currentPatternId.value ? <BlockEditor /> : null }
+			{ currentPatternId?.value ? <BlockEditor /> : null }
 		</div>
 	);
 }
@@ -66,48 +36,96 @@ export function BlockEditor() {
 		currentPattern,
 		currentPatternId,
 		patternEditorIframe,
-		blockEditorLoaded,
-		setBlockEditorLoaded,
+		currentTheme,
 	} = useStudioContext();
-	const [ currentPatternName, setCurrentPatternName ] = useState();
+
+	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
+	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
+	const [ patternDataSet, setPatternDataSet ] = useState( false );
+
+	const nameTaken = ( newSlug ) => {
+		return Object.values( currentTheme?.data.included_patterns ).some(
+			( pattern ) => {
+				return (
+					pattern.slug === newSlug &&
+					currentPatternId?.value !== newSlug
+				);
+			}
+		);
+	};
+
+	const patternListenerCallbacks = ( event ) => {
+		try {
+			// Handle JSON messages here.
+			const response = JSON.parse( event.data );
+
+			// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
+			if ( response.message === 'fsestudio_block_pattern_updated' ) {
+				currentTheme?.set( {
+					...currentTheme.data,
+					included_patterns: {
+						...currentTheme.data.included_patterns,
+						[ currentPatternId.value ]: response.blockPatternData,
+					},
+				} );
+			}
+
+			// Listening for input from pattern-post-type.
+			if (
+				response.message ===
+					'fsestudio_pattern_editor_request_is_pattern_title_taken' &&
+				patternEditorIframe?.current
+			) {
+				const isTaken = nameTaken(
+					convertToSlug( response.patternTitle )
+				);
+				const errorMessage = isTaken
+					? __( 'This name is already taken.', 'fse-studio' )
+					: __( 'The name cannot be blank.', 'fse-studio' );
+
+				patternEditorIframe.current.contentWindow.postMessage(
+					JSON.stringify( {
+						message: 'fsestudio_response_is_pattern_title_taken',
+						isInvalid:
+							isTaken || ! response.patternTitle.trim().length,
+						errorMessage,
+					} )
+				);
+			}
+		} catch ( e ) {
+			// Message posted was not JSON. Handle those here.
+			switch ( event.data ) {
+				case 'fsestudio_pattern_editor_loaded':
+					setBlockEditorLoaded( true );
+					setInitialData( patternEditorIframe );
+					break;
+				case 'fsestudio_pattern_data_set':
+					// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
+					setPatternDataSet( true );
+					break;
+			}
+		}
+	};
 
 	useEffect( () => {
 		// The iframed block editor will send a message to let us know when it is ready.
-		window.addEventListener(
-			'message',
-			( event ) => {
-				switch ( event.data ) {
-					case 'fsestudio_pattern_editor_loaded':
-						setBlockEditorLoaded( true );
-				}
-			},
-			false
-		);
+		window.removeEventListener( 'message', patternListenerCallbacks );
+		window.addEventListener( 'message', patternListenerCallbacks );
 
-		// As a fallback, if 5 seconds have passed, hide the spinner.
-		setTimeout( () => {
-			setBlockEditorLoaded( true );
-		}, 5000 );
-	}, [] );
+		setInitialData( patternEditorIframe );
 
-	useEffect( () => {
-		if ( currentPatternId.value !== currentPatternName ) {
-			setBlockEditorLoaded( false );
-			// As a fallback, if 5 seconds have passed, hide the spinner.
-			setTimeout( () => {
-				setBlockEditorLoaded( true );
-			}, 5000 );
-		}
-		setCurrentPatternName( currentPatternId.value );
-	}, [ currentPatternId ] );
+		// Cleanup event listeners when this component is unmounted.
+		return () => {
+			window.removeEventListener( 'message', patternListenerCallbacks );
+		};
+	}, [ currentPatternId?.value, patternEditorIframe ] );
 
-	if ( ! currentPattern?.post_id ) {
-		return (
-			<div className="h-screen min-h-full w-screen items-center justify-center">
-				<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
-					<Spinner />
-				</div>
-			</div>
+	function setInitialData( iframeRef ) {
+		iframeRef?.current.contentWindow.postMessage(
+			JSON.stringify( {
+				message: 'set_initial_pattern_data',
+				patternData: currentPattern,
+			} )
 		);
 	}
 
@@ -115,7 +133,7 @@ export function BlockEditor() {
 		<div className="fsestudio-pattern-editor">
 			<div className="fsestudio-pattern-editor-body">
 				<div className="fsestudio-pattern-editor-view">
-					{ ! blockEditorLoaded ? (
+					{ ! patternDataSet ? (
 						<div className="h-screen min-h-full w-screen items-center justify-center">
 							<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
 								<Spinner />
@@ -127,7 +145,7 @@ export function BlockEditor() {
 									{
 										span: (
 											<span className="px-1 font-semibold">
-												{ currentPattern.title }
+												{ currentPattern?.title }
 											</span>
 										),
 									}
@@ -145,9 +163,7 @@ export function BlockEditor() {
 						} }
 						src={
 							fsestudio.siteUrl +
-							'/wp-admin/post.php?post=' +
-							currentPattern?.post_id +
-							'&action=edit'
+							'/wp-admin/post-new.php?post_type=fsestudio_pattern'
 						}
 					/>
 				</div>

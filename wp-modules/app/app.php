@@ -46,6 +46,7 @@ function get_app_state() {
 			'getThemeEndpoint'          => get_rest_url( false, 'fsestudio/v1/get-theme/' ),
 			'saveThemeEndpoint'         => get_rest_url( false, 'fsestudio/v1/save-theme/' ),
 			'exportThemeEndpoint'       => get_rest_url( false, 'fsestudio/v1/export-theme/' ),
+			'switchThemeEndpoint'       => get_rest_url( false, 'fsestudio/v1/switch-theme/' ),
 			'getThemeJsonFileEndpoint'  => get_rest_url( false, 'fsestudio/v1/get-themejson-file/' ),
 			'saveThemeJsonFileEndpoint' => get_rest_url( false, 'fsestudio/v1/save-themejson-file/' ),
 		),
@@ -68,9 +69,6 @@ function fse_studio_app() {
 	} else {
 		return;
 	}
-
-	// When loading the app fresh, do garbage clean up for pattern post types created on previous loads.
-	\FseStudio\PatternDataHandlers\delete_all_pattern_post_types();
 
 	// Include the app.
 	$js_url = $module_dir_url . 'js/build/index.js';

@@ -86,7 +86,6 @@ wp.data.subscribe( () => {
 } );
 
 let fsestudioSaveDebounce = null;
-let fsestudioSaveAndRefreshDebounce = null;
 let fsestudioThemeJsonChangeDebounce = null;
 // If the FSE Studio app sends an instruction, listen for and do it here.
 window.addEventListener(
@@ -94,36 +93,6 @@ window.addEventListener(
 	( event ) => {
 		try {
 			const response = JSON.parse( event.data );
-
-			if ( response.message === 'fsestudio_save_and_refresh' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveAndRefreshDebounce );
-				fsestudioSaveAndRefreshDebounce = setTimeout( () => {
-					// Trigger a click event on the "Save" button in the site editor.
-					const element = document.getElementsByClassName(
-						'edit-site-save-button__button'
-					);
-
-					if ( element.item( 0 ) ) {
-						element.item( 0 ).click();
-					}
-
-					setTimeout( () => {
-						const saveEntitiesElement =
-							document.getElementsByClassName(
-								'editor-entities-saved-states__save-button'
-							);
-						if ( saveEntitiesElement.item( 0 ) ) {
-							saveEntitiesElement.item( 0 ).click();
-						}
-
-						// Then refresh the page.
-						setTimeout( () => {
-							window.location.reload();
-						}, 100 );
-					}, 100 );
-				}, 200 );
-			}
 
 			if ( response.message === 'fsestudio_save' ) {
 				// If the FSE Studio apps tells us to save the current post, do it:
@@ -151,13 +120,38 @@ window.addEventListener(
 				}, 200 );
 			}
 
-			if ( response.message === 'fsestudio_themejson_changed' ) {
+			if ( response.message === 'fsestudio_hotswapped_theme' ) {
 				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
 				clearTimeout( fsestudioThemeJsonChangeDebounce );
 				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
 					wp.data.dispatch( 'core/notices' ).createNotice(
 						'warning', // Can be one of: success, info, warning, error.
-						"FSE Studio: The values in this theme's theme.json file have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
+						'FSE Studio: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
+						{
+							id: 'fse-studio-refresh-site-editor-hotswap-notice',
+							isDismissible: false, // Whether the user can dismiss the notice.
+							// Any actions the user can perform.
+							actions: [
+								{
+									url: '',
+									label: 'Refresh Editor',
+								},
+							],
+						}
+					);
+				}, 200 );
+			}
+
+			if (
+				response.message === 'fsestudio_themejson_changed' ||
+				response.message === 'fsestudio_stylejson_changed'
+			) {
+				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+				clearTimeout( fsestudioThemeJsonChangeDebounce );
+				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
+					wp.data.dispatch( 'core/notices' ).createNotice(
+						'warning', // Can be one of: success, info, warning, error.
+						"FSE Studio: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 						{
 							id: 'fse-studio-refresh-site-editor-theme-json-notice',
 							isDismissible: false, // Whether the user can dismiss the notice.
@@ -172,6 +166,7 @@ window.addEventListener(
 					);
 				}, 200 );
 			}
+
 			if ( response.message === 'fsestudio_click_template_parts' ) {
 				// Trigger a click event on the "Template Parts" button in the site editor.
 				const element = document.querySelectorAll(
@@ -185,6 +180,7 @@ window.addEventListener(
 					element.item( 0 ).click();
 				}
 			}
+
 			if ( response.message === 'fsestudio_click_templates' ) {
 				// Trigger a click event on the "Template Parts" button in the site editor.
 				const element = document.querySelectorAll(

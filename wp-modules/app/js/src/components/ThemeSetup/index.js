@@ -1,549 +1,99 @@
 // WP Dependencies.
-import { useRef } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
-import { Icon, check } from '@wordpress/icons';
+import { useState } from '@wordpress/element';
+import { __, sprintf } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
-import createNewTheme from '../../utils/createNewTheme';
+import useNoticeContext from '../../hooks/useNoticeContext';
+import classNames from '../../utils/classNames';
+import ViewContainer from '../Common/ViewContainer';
+import SaveTheme from '../Common/SaveTheme';
+import ThemeCreatedNotice from './ThemeCreatedNotice';
+import ThemeDetails from '../Common/ThemeDetails';
+import ThemeOverview from './ThemeOverview';
+
+const Tabs = {
+	ThemeOverview: 0,
+	EditThemeDetails: 1,
+};
 
 /** @param {{isVisible: boolean}} props */
 export default function ThemeSetup( { isVisible } ) {
-	const { currentTheme, themes, currentThemeId } = useStudioContext();
-	const themeNameInput = useRef( null );
+	const { currentTheme } = useStudioContext();
+	const { displayThemeCreatedNotice } = useNoticeContext();
+	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 
-	if ( ! currentTheme.data ) {
-		return '';
-	}
-
-	function renderThemeSelector() {
-		const renderedThemes = [];
-
-		renderedThemes.push(
-			<option key={ 1 }>{ __( 'Choose a theme', 'fse-studio' ) }</option>
-		);
-
-		let counter = 3;
-
-		for ( const thisTheme in themes.themes ) {
-			const themeInQuestion = themes.themes[ thisTheme ];
-			renderedThemes.push(
-				<option key={ counter } value={ thisTheme }>
-					{ themeInQuestion?.name }
-				</option>
-			);
-			counter++;
-		}
-
-		return (
-			<>
-				<select
-					className="block w-full h-14 !pl-3 !pr-12 py-4 text-base !border-gray-300 !focus:outline-none !focus:ring-wp-blue !focus:border-wp-blue !sm:text-sm !rounded-sm"
-					id="themes"
-					value={ currentThemeId.value }
-					onChange={ ( event ) => {
-						currentThemeId.set( event.target.value );
-					} }
-				>
-					{ renderedThemes }
-				</select>
-			</>
-		);
+	if ( ! currentTheme.data || ! isVisible ) {
+		return null;
 	}
 
 	return (
-		<div hidden={ ! isVisible } className="flex-1">
-			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
-				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">
-						{ __( 'Theme Details', 'fse-studio' ) }
-					</h1>
-					<p className="text-lg max-w-2xl">
-						{ __(
-							"Start by adding technical details of your theme that appear in readme.txt, which is helpful for users to understand the theme's capabilities.",
-							'fsestudio'
-						) }
-					</p>
-				</div>
-			</div>
-
-			<div className="mx-auto p-8 lg:p-12">
-				<form className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
-					<div className="flex-initial w-full md:w-2/3">
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center pt-0">
-							<label
-								htmlFor="theme-name"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Theme Name', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									ref={ themeNameInput }
-									disabled={
-										currentTheme.existsOnDisk &&
-										! currentTheme.themeNameIsDefault
-									}
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="theme-name"
-									value={ currentTheme?.data?.name ?? '' }
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											name: event.target.value,
-										} );
-									} }
-								/>
-								{ currentTheme.themeNameIsDefault ? (
-									<div className="text-sm text-green-700 flex flex-row items-center mr-6">
-										<Icon
-											className="fill-current"
-											icon={ check }
-											size={ 26 }
-										/>{ ' ' }
-										<span
-											role="dialog"
-											aria-label="Theme Saved"
-										>
-											{ __(
-												'Get started by giving your theme a unique name!',
-												'fse-studio'
-											) }
-										</span>
-									</div>
-								) : null }
-							</div>
-						</div>
-
-						<div
-							hidden
-							className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
-						>
-							<label
-								htmlFor="directory-name"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Directory Name', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="directory-name"
-									value={ currentTheme?.data?.dirname ?? '' }
-									disabled
-								/>
-							</div>
-						</div>
-
-						<div
-							hidden
-							className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
-						>
-							<label
-								htmlFor="namespace"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Namespace', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="namespace"
-									value={
-										currentTheme?.data?.namespace ?? ''
-									}
-									disabled
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="uri"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Theme URI', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="uri"
-									value={
-										currentTheme?.data?.uri
-											? currentTheme.data.uri
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											uri: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="author"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Author', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="author"
-									value={
-										currentTheme?.data?.author
-											? currentTheme.data.author
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											author: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="author-uri"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Author URI', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="author-uri"
-									value={
-										currentTheme?.data?.author_uri ?? ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											author_uri: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="description"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Description', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="description"
-									value={
-										currentTheme?.data?.description
-											? currentTheme.data.description
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											description: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="tags"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Tags (comma separated)', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="tags"
-									value={
-										currentTheme?.data?.tags
-											? currentTheme.data.tags
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											tags: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="tested"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __(
-									'Tested up to (WP Version)',
-									'fse-studio'
-								) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="tested"
-									value={
-										currentTheme?.data?.tested_up_to
-											? currentTheme.data.tested_up_to
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											tested_up_to: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="minimum-wp"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Minimum WP Version', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="minimum-wp"
-									value={
-										currentTheme?.data?.requires_wp
-											? currentTheme.data.requires_wp
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											requires_wp: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="minimum-php"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Minimum PHP Version', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="minimum-php"
-									value={
-										currentTheme?.data?.requires_php
-											? currentTheme.data.requires_php
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											requires_php: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
-							<label
-								htmlFor="version"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Version', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="version"
-									value={
-										currentTheme?.data?.version
-											? currentTheme.data.version
-											: ''
-									}
-									onChange={ ( event ) => {
-										currentTheme.set( {
-											...currentTheme.data,
-											version: event.target.value,
-										} );
-									} }
-								/>
-							</div>
-						</div>
-
-						<div
-							hidden
-							className="sm:grid-cols-3 sm:gap-4 py-6 sm:items-center"
-						>
-							<label
-								htmlFor="text-domain"
-								className="block font-medium text-gray-700 sm:col-span-1"
-							>
-								{ __( 'Text Domain', 'fse-studio' ) }
-							</label>
-							<div className="mt-1 sm:mt-0 sm:col-span-2">
-								<input
-									className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
-									type="text"
-									id="text-domain"
-									value={
-										currentTheme?.data?.text_domain ?? ''
-									}
-									disabled
-								/>
-							</div>
-						</div>
-						<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
-							<div className="flex items-center justify-between w-full">
-								<div className="flex items-center">
-									{ currentTheme.hasSaved ? (
-										<span className="text-sm text-green-600 flex flex-row items-center mr-6">
-											<Icon
-												className="fill-current"
-												icon={ check }
-												size={ 26 }
-											/>{ ' ' }
-											{ __(
-												'Settings Saved!',
-												'fse-studio'
-											) }
-										</span>
-									) : null }
-									<button
-										type="button"
-										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											currentTheme.save();
-										} }
-									>
-										{ __(
-											'Save Your Theme',
-											'fse-studio'
-										) }
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<div className="flex flex-col gap-5">
-									<div>
-										<h2 className="mb-2 font-medium">
-											Theme Actions
-										</h2>
-										<p className="text-base">
-											Use the selector below to load a
-											theme to work on, or create a new
-											theme with the Create button.
-										</p>
-									</div>
-									{
-										// In order to render the selector…
-										// There should be at least 1 theme other than the currently selected theme.
-										// Or the current theme should have been saved to disk.
-										Object.keys( themes.themes ).some(
-											( themeName ) =>
-												themeName !==
-													currentThemeId.value ||
-												currentTheme.existsOnDisk
-										) ? (
-											<>
-												<div className="flex flex-col gap-2">
-													<div>
-														<label
-															htmlFor="themes"
-															className="block text-sm font-medium text-gray-700 visuallyhidden"
-														>
-															{ __(
-																'Choose a theme',
-																'fse-studio'
-															) }
-														</label>
-														{ renderThemeSelector() }
-													</div>
-												</div>
-											</>
-										) : null
-									}
-									<button
-										type="button"
-										className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											createNewTheme(
-												themes,
-												currentThemeId
-											);
-										} }
-									>
-										{ __(
-											'Create A New Theme',
-											'fse-studio'
-										) }
-									</button>
-								</div>
-							</div>
-						</div>
-
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<h2 className="mb-2 font-medium">
-									Export theme to .zip
-								</h2>
-								<p className="text-base mb-5">
-									{ __(
-										"Click the button below to export your theme to a zip file. We'll include your patterns, templates, styles, and theme.json file.",
-										'fsestudio'
-									) }
-								</p>
+		<ViewContainer
+			heading={ sprintf(
+				/* translators: %1$s: The theme name */
+				__( 'Theme: %1$s', 'fse-studio' ),
+				currentTheme?.data?.name ?? ''
+			) }
+			description={ __(
+				'Here you will find everything you need to customize your full-site editing theme. Visit the Edit Theme Details tab to see advanced options.',
+				'fsestudio'
+			) }
+		>
+			<>
+				<div className="bg-fses-gray">
+					<div className="mx-auto max-w-7xl">
+						<ul className="flex m-0 gap-2 px-8 xl:p-0">
+							<li className="m-0">
 								<button
 									type="button"
-									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									className={ classNames(
+										'font-medium py-3 px-5 rounded-t',
+										currentTab === Tabs.ThemeOverview
+											? 'bg-white'
+											: 'hover:bg-white'
+									) }
 									onClick={ () => {
-										currentTheme.export();
+										setCurrentTab( Tabs.ThemeOverview );
 									} }
 								>
-									{ __( 'Export Theme', 'fse-studio' ) }
+									{ __( 'Theme Overview', 'fse-studio' ) }
 								</button>
-							</div>
-						</div>
+							</li>
+							<li className="m-0">
+								<button
+									type="button"
+									className={ classNames(
+										'font-medium py-3 px-5 rounded-t',
+										currentTab === Tabs.EditThemeDetails
+											? 'bg-white'
+											: 'hover:bg-white'
+									) }
+									onClick={ () => {
+										setCurrentTab( Tabs.EditThemeDetails );
+									} }
+								>
+									{ __( 'Edit Theme Details', 'fse-studio' ) }
+								</button>
+							</li>
+						</ul>
 					</div>
-				</form>
-			</div>
-		</div>
+				</div>
+				<div className="mx-auto p-8 xl:p-0 max-w-7xl xl:mt-16 mt-8 mb-24">
+					{ currentTab === Tabs.ThemeOverview ? (
+						<>
+							{ displayThemeCreatedNotice ? (
+								<ThemeCreatedNotice />
+							) : null }
+							<ThemeOverview />
+						</>
+					) : null }
+					{ currentTab === Tabs.EditThemeDetails ? (
+						<>
+							<ThemeDetails />
+							<SaveTheme />
+						</>
+					) : null }
+				</div>
+			</>
+		</ViewContainer>
 	);
 }

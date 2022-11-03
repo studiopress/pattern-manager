@@ -47,6 +47,7 @@ function get_patterns() {
 		'categories'    => 'Categories',
 		'keywords'      => 'Keywords',
 		'blockTypes'    => 'Block Types',
+		'postTypes'     => 'Post Types',
 		'inserter'      => 'Inserter',
 	);
 
@@ -102,6 +103,7 @@ function get_patterns() {
  * @param string $file The path to the theme pattern file.
  */
 function format_pattern_data( $pattern_data, $file ) {
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 	if ( empty( $pattern_data['slug'] ) ) {
 		_doing_it_wrong(
 			'_register_theme_block_patterns',
@@ -143,7 +145,7 @@ function format_pattern_data( $pattern_data, $file ) {
 	}
 
 	// For properties of type array, parse data as comma-separated.
-	foreach ( array( 'categories', 'keywords', 'blockTypes' ) as $property ) {
+	foreach ( array( 'categories', 'keywords', 'blockTypes', 'postTypes' ) as $property ) {
 		if ( ! empty( $pattern_data[ $property ] ) ) {
 			$pattern_data[ $property ] = array_filter(
 				preg_split(
@@ -189,13 +191,31 @@ function format_pattern_data( $pattern_data, $file ) {
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
 
-	// The actual pattern content is the output of the file.
-	ob_start();
-	include $file;
-	$pattern_data['content'] = ob_get_clean();
+	$file_contents = explode( '?>', $wp_filesystem->get_contents( $file ), 2 );
+
+	// Replace PHP calls to get_template_directory_uri with the result of calling it. This is how it is because PHP's require is cached, forcing us to use get_contents instead.
+	$pattern_data['content'] = str_replace( '<?php echo get_template_directory_uri(); ?>', get_template_directory_uri(), $file_contents[1] );
+
 	if ( ! $pattern_data['content'] ) {
 		return false;
 	}
+	return $pattern_data;
+}
+
+/**
+ * Get the pattern data for a specific pattern from a specific theme.
+ *
+ * @param string $pattern_id The name of the pattern to get.
+ * @param string $theme_path The path to the theme. Defaults to the current active theme.
+ * @return array
+ */
+function get_theme_pattern( $pattern_id, $theme_path = false ) {
+	$patterns_data = get_theme_patterns( $theme_path );
+	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
+		return [];
+	}
+
+	$pattern_data = $patterns_data[ $pattern_id ];
 
 	return $pattern_data;
 }
@@ -203,11 +223,10 @@ function format_pattern_data( $pattern_data, $file ) {
 /**
  * Get the pattern data for all patterns in a theme.
  *
- * @param string $theme_path The path to the theme.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
+ * @param string $theme_path The path to the theme. Defaults to the current active theme.
  * @return array
  */
-function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() ) {
+function get_theme_patterns( $theme_path = false ) {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
@@ -216,6 +235,7 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 		'categories'    => 'Categories',
 		'keywords'      => 'Keywords',
 		'blockTypes'    => 'Block Types',
+		'postTypes'     => 'Post Types',
 		'inserter'      => 'Inserter',
 	);
 
@@ -235,23 +255,8 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
 		if ( ! $pattern_data ) {
 			continue;
 		}
-		$pattern_data['name'] = basename( $path, '.php' );
-		$pattern_data['type'] = 'pattern';
-
-		// If a post_id already exists for this pattern, use it instead of creating one.
-		if ( isset( $pre_existing_theme['included_patterns'][ $pattern_data['name'] ] ) ) {
-			$the_post_id = $pre_existing_theme['included_patterns'][ $pattern_data['name'] ]['post_id'];
-			if ( ! $the_post_id ) {
-				$the_post_id = generate_pattern_post( $pattern_data );
-			}
-		} else {
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $pattern_data );
-		}
-
-		// Add the post_id to the pattern data so it can be used.
-		$pattern_data['post_id'] = $the_post_id;
-
+		$pattern_data['name']                  = basename( $path, '.php' );
+		$pattern_data['type']                  = 'pattern';
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
 	}
 
@@ -262,10 +267,9 @@ function get_theme_patterns( $theme_path = false, $pre_existing_theme = array() 
  * Get the data for all templates in a theme.
  *
  * @param string $theme_path The path to the theme.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_templates( $theme_path = false, $pre_existing_theme = array() ) {
+function get_theme_templates( $theme_path = false ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
@@ -290,19 +294,6 @@ function get_theme_templates( $theme_path = false, $pre_existing_theme = array()
 			'content' => $block_pattern_html,
 		);
 
-		// If a post_id already exists for this pattern, use it instead of creating one.
-		if ( isset( $pre_existing_theme['template_files'][ $template_data['name'] ] ) ) {
-			$the_post_id = $pre_existing_theme['template_files'][ $template_data['name'] ]['post_id'];
-			if ( ! $the_post_id ) {
-				$the_post_id = generate_pattern_post( $template_data );
-			}
-		} else {
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $template_data );
-		}
-
-		$template_data['post_id'] = $the_post_id;
-
 		$templates[ basename( $path, '.html' ) ] = $template_data;
 	}
 
@@ -313,10 +304,9 @@ function get_theme_templates( $theme_path = false, $pre_existing_theme = array()
  * Get the data for all template parts in a theme.
  *
  * @param string $theme_path The path to the theme.
- * @param array  $pre_existing_theme If passed, an existing post_id for the fse_studio pattern post will be used, instead of creating a new one.
  * @return array
  */
-function get_theme_template_parts( $theme_path = false, $pre_existing_theme = array() ) {
+function get_theme_template_parts( $theme_path = false ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
@@ -341,19 +331,6 @@ function get_theme_template_parts( $theme_path = false, $pre_existing_theme = ar
 			'content' => $block_pattern_html,
 		);
 
-		// If a post_id already exists for this pattern, use it instead of creating one.
-		if ( isset( $pre_existing_theme['template_parts'][ $template_data['name'] ] ) ) {
-			$the_post_id = $pre_existing_theme['template_parts'][ $template_data['name'] ]['post_id'];
-			if ( ! $the_post_id ) {
-				$the_post_id = generate_pattern_post( $template_data );
-			}
-		} else {
-			// Temporarily generate a post in the databse that can be used to edit using the block editor normally.
-			$the_post_id = generate_pattern_post( $template_data );
-		}
-
-		$template_data['post_id'] = $the_post_id;
-
 		$templates[ basename( $path, '.html' ) ] = $template_data;
 	}
 
@@ -372,10 +349,15 @@ function update_pattern( $pattern ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
-	$plugin_dir   = $wp_filesystem->wp_plugins_dir() . 'fse-studio/';
 
 	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
-		$patterns_dir  = $wp_theme_dir . '/patterns/';
+		$patterns_dir     = $wp_theme_dir . '/patterns/';
+		$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
+		if ( $name_was_changed ) {
+			// Delete the previous pattern file, as the file name should change on changing the name.
+			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
+		}
+
 		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
 		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 	}
@@ -402,11 +384,39 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
+	// Now that this pattern has been updated, remove any images no longer needed in the theme.
+	// This is done here in update_pattern because an image may no longer be used in the pattern and thus needs to be removed from the theme.
+	tree_shake_theme_images();
+
 	return $pattern_file_created;
 }
 
 /**
- * WordPress's templart part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
+ * Deletes any pattern file whose name isn't present in the passed patterns.
+ *
+ * @param string[] $patterns The patterns to not delete.
+ */
+function delete_patterns_not_present( array $patterns ) {
+	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	if ( ! $wp_filesystem ) {
+		return;
+	}
+
+	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
+	if ( ! $pattern_file_paths ) {
+		return;
+	}
+
+	foreach ( $pattern_file_paths as $pattern_file ) {
+		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
+			$wp_filesystem->delete( $pattern_file );
+		}
+	}
+}
+
+/**
+ * WordPress's template part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
  * This function removes that attribute from any template part blocks in a pattern's content.
  *
  * @param string $pattern_content The HTML content for a pattern..
@@ -427,6 +437,7 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
  */
 function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
+	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
 	// phpcs:ignore
 	$file_contents = "<?php
@@ -435,10 +446,12 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Slug: ' . $pattern['name'] . '
  * Categories: ' . ( isset( $pattern['categories'] ) ? implode( ', ', $pattern['categories'] ) : '' ) . '
  * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
+ * Block Types: ' . ( isset( $pattern['blockTypes'] ) ? implode( ', ', $pattern['blockTypes'] ) : '' ) . '
+ * Post Types: ' . ( isset( $pattern['postTypes'] ) ? implode( ', ', $pattern['postTypes'] ) : '' ) . '
  */
 
 ?>
-' . prepare_content( $pattern['content'], $text_domain ) . '
+' . $pattern['content'] . '
 ';
 	return $file_contents;
 }
@@ -456,17 +469,69 @@ function contruct_template_php_file_contents( $pattern, $text_domain ) {
 }
 
 /**
- * Prepare pattern html to be written into a file.
+ * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
- * @param string $pattern_html The pattern HTML code, generated by Gutenberg functions.
- * @param string $text_domain The text domain to use for any localization required.
- * @return bool
+ * @param array $patterns_in_theme The patterns in the theme.
  */
-function prepare_content( $pattern_html, $text_domain ) {
-	$pattern_html = addcslashes( $pattern_html, '\'' );
-	// phpcs:ignore
-	// $pattern_html = move_block_assets_to_theme( $pattern_html );
-	return $pattern_html;
+function tree_shake_theme_images() {
+	// Spin up the filesystem api.
+	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+
+	// Get the current patterns in the theme (not including templates and templates parts).
+	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
+	// Add the included Patterns for the current theme.
+	$theme_dir         = get_template_directory();
+	$patterns_in_theme = \FseStudio\PatternDataHandlers\get_theme_patterns();
+
+	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
+	$images_dir          = $theme_dir . '/assets/images/';
+
+	$wp_theme_url = get_template_directory_uri();
+	$images_url   = $wp_theme_url . '/assets/images/';
+
+	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
+		$wp_filesystem->mkdir( $backedup_images_dir );
+	}
+
+	// Before we take any action, back up the current images directory.
+	copy_dir( $images_dir, $backedup_images_dir );
+
+	// Delete the images directory so we know it only contains what is needed.
+	$wp_filesystem->delete( $images_dir, true, 'd' );
+
+	if ( ! $wp_filesystem->exists( $images_dir ) ) {
+		$wp_filesystem->mkdir( $images_dir );
+	}
+
+	// Loop through all patterns in the theme.
+	foreach ( $patterns_in_theme as $pattern_data ) {
+		// Find all img URLs in the block pattern html.
+		preg_match_all(
+			// Target only URLs with an img tag (with left bracket), src attribute (with quotes around the URI), and self-closing bracket.
+			'/(<img).*(src=)["|\'](?<url>(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-]))["|\'].*(\/>)/',
+			$pattern_data['content'],
+			$output_array
+		);
+
+		$img_urls_found = $output_array['url'];
+
+		// Loop through each img URL found.
+		foreach ( $img_urls_found as $url_found ) {
+
+			// If URL to image is local to theme, pull it from the backed-up theme images directory.
+			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
+			$desired_destination_in_theme = str_replace( $backedup_images_dir, $images_dir, $local_path_to_image );
+
+			// If the path to this image starts with the path to our backedup images directory.
+			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
+				// Move the file into the theme again.
+				$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+			}
+		}
+	}
+
+	// Delete the temporary backup of the images we did.
+	$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
 }
 
 /**
@@ -475,43 +540,38 @@ function prepare_content( $pattern_html, $text_domain ) {
  * @param string $pattern_html The pattern HTML code, generated by Gutenberg functions.
  * @return $string The modified block HTML with absolute URLs changed to be localized to the theme.
  */
-function move_block_assets_to_theme( $pattern_html ) {
+function move_block_images_to_theme( $pattern_html ) {
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
-	$wp_theme_dir        = get_template_directory();
-	$backedup_assets_dir = $wp_filesystem->wp_content_dir() . '/temp-assets/';
-	$assets_dir          = $wp_theme_dir . '/assets/';
+	$wp_theme_dir = get_template_directory();
+	$assets_dir   = $wp_theme_dir . '/assets/';
+	$images_dir   = $wp_theme_dir . '/assets/images/';
 
-	$wp_theme_url        = get_template_directory_uri();
-	$backedup_assets_url = content_url() . '/temp-assets/';
-	$assets_url          = $wp_theme_url . '/assets/';
-
-	if ( ! $wp_filesystem->exists( $backedup_assets_dir ) ) {
-		$wp_filesystem->mkdir( $backedup_assets_dir );
-	}
-
-	// Before we take any action, back up the current assets directory.
-	copy_dir( $assets_dir, $backedup_assets_dir );
-
-	// Delete the assets directory so we know it only contains what is needed.
-	$wp_filesystem->delete( $assets_dir, true, 'd' );
+	$wp_theme_url = get_template_directory_uri();
+	$images_url   = $wp_theme_url . '/assets/images/';
 
 	if ( ! $wp_filesystem->exists( $assets_dir ) ) {
 		$wp_filesystem->mkdir( $assets_dir );
 	}
 
-	// Find all URLs in the block pattern html.
-	preg_match_all( '/(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-])/', $pattern_html, $output_array );
-	$urls_found = $output_array[0];
+	if ( ! $wp_filesystem->exists( $images_dir ) ) {
+		$wp_filesystem->mkdir( $images_dir );
+	}
 
-	// Loop through each URL found.
-	foreach ( $urls_found as $url_found ) {
+	// Find all img URLs in the block pattern html.
+	preg_match_all(
+		// Target only URLs with an img tag (with left bracket), src attribute (with quotes around the URI), and self-closing bracket.
+		'/(<img).*(src=)["|\'](?<url>(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-]))["|\'].*(\/>)/',
+		$pattern_html,
+		$output_array
+	);
 
-		// If looking in the theme assets directory, look in the backed up one.
-		$url_found = str_replace( $assets_url, $backedup_assets_url, $url_found );
+	$img_urls_found = $output_array['url'];
 
+	// Loop through each img URL found.
+	foreach ( $img_urls_found as $url_found ) {
 		$url_details = wp_remote_get(
 			$url_found,
 			array(
@@ -521,104 +581,32 @@ function move_block_assets_to_theme( $pattern_html ) {
 
 		$response = wp_remote_retrieve_response_code( $url_details );
 
+		// Skip images that could not be found by their URL.
 		if ( 200 !== absint( $response ) ) {
 			continue;
 		}
 
 		$type = wp_remote_retrieve_header( $url_details, 'Content-Type' );
 
-		$file_contents = wp_remote_retrieve_body( wp_remote_get( $url_found ) );
-		$filename      = wp_generate_uuid4();
+		$file_contents = wp_remote_retrieve_body( $url_details );
 
-		if ( 'image/png' === $type ) {
-			$filename = $filename . '.png';
-		}
+		// Remove any URL query vars from the filename.
+		$url_parts = explode( '?', $url_found );
+		$filename  = basename( $url_parts[0] );
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(
-			$wp_theme_dir . '/assets/' . $filename,
+			$wp_theme_dir . '/assets/images/' . $filename,
 			$file_contents,
 			FS_CHMOD_FILE
 		);
 
 		// Replace the URL with the one we just added to the theme.
-		$pattern_html = str_replace( $url_found, "' . get_template_directory_uri() . '/assets/$filename", $pattern_html );
+		$pattern_html = str_replace( $url_found, "<?php echo get_template_directory_uri(); ?>/assets/images/$filename", $pattern_html );
 	}
 
 	return $pattern_html;
 }
-
-
-/**
- * Generate a "fsestudio_pattern" post, populating the post_content with the passed-in value.
- *
- * @param array $block_pattern The data for the block pattern.
- */
-function generate_pattern_post( $block_pattern ) {
-	$title = isset( $block_pattern['title'] ) ? $block_pattern['title'] : $block_pattern['name'];
-
-	$new_post_details = array(
-		'post_title'   => $title,
-		'post_content' => $block_pattern['content'],
-		'post_type'    => 'fsestudio_pattern',
-		'tags_input'   => isset( $block_pattern['categories'] ) ? $block_pattern['categories'] : false,
-	);
-
-	// Insert the post into the database.
-	$post_id = wp_insert_post( $new_post_details );
-
-	update_post_meta( $post_id, 'title', $title );
-	update_post_meta( $post_id, 'name', $block_pattern['name'] );
-	update_post_meta( $post_id, 'type', $block_pattern['type'] );
-
-	return $post_id;
-}
-
-/**
- * Delete all fsestudio_pattern posts.
- */
-function delete_all_pattern_post_types() {
-	$allposts = get_posts(
-		array(
-			'post_type'   => 'fsestudio_pattern',
-			'numberposts' => -1,
-			'post_status' => array( 'publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash' ),
-		)
-	);
-
-	foreach ( $allposts as $eachpost ) {
-		wp_delete_post( $eachpost->ID, true );
-	}
-}
-
-/**
- * When an fsestudio_pattern post is saved, save it to the pattern file, and then delete the post.
- *
- * @param WP_Post $post The Post that was updated.
- */
-function handle_pattern_post_save( $post ) {
-	$post_id = $post->ID;
-
-	$tags = wp_get_post_tags( $post_id );
-
-	$tag_slugs = array();
-
-	foreach ( $tags as $tag ) {
-		$tag_slugs[] = $tag->slug;
-	}
-
-	$block_pattern_data = array(
-		'type'          => get_post_meta( $post_id, 'type', true ),
-		'title'         => get_post_meta( $post_id, 'title', true ),
-		'name'          => get_post_meta( $post_id, 'name', true ),
-		'categories'    => $tag_slugs,
-		'viewportWidth' => 1280,
-		'content'       => $post->post_content,
-	);
-
-	update_pattern( $block_pattern_data );
-}
-add_action( 'rest_after_insert_fsestudio_pattern', __NAMESPACE__ . '\handle_pattern_post_save' );
 
 /**
  * When a wp_template post is saved, save it to the theme file.
@@ -640,6 +628,8 @@ function handle_wp_template_save( $post, $request, $creating ) {
 		'title'         => $template_name,
 		'name'          => $template_name,
 		'categories'    => array(),
+		'blockTypes'    => array(),
+		'postTypes'     => array(),
 		'viewportWidth' => 1280,
 		'content'       => $template_content,
 	);

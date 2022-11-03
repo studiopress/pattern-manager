@@ -4,7 +4,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';
 
 export default function GettingStarted() {
-	const { themes, currentThemeId } = useStudioContext();
+	const { themes, currentThemeId, currentView } = useStudioContext();
 
 	return (
 		<>
@@ -27,6 +27,7 @@ export default function GettingStarted() {
 								className="inline-flex self-center items-center px-4 py-2 border-4 border-transparent text-lg font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
 									createNewTheme( themes, currentThemeId );
+									currentView?.set( 'create_theme' );
 								} }
 							>
 								{ __(
@@ -46,8 +47,11 @@ export default function GettingStarted() {
 						<iframe
 							width="1280"
 							height="720"
-							src="https://www.youtube.com/embed/LmvPkQkjq9I"
-							title="YouTube video player"
+							src="https://www.youtube.com/embed/LmvPkQkjq9I?cc_load_policy=1&cc_lang_pref=en"
+							title={ __(
+								'FSE Studio Demo Video',
+								'fse-studio'
+							) }
 							frameBorder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowFullScreen
