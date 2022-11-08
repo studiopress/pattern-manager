@@ -5,17 +5,7 @@ import { __ } from '@wordpress/i18n';
 import searchItems from '../../utils/searchItems.js';
 import PatternPreview from '../PatternPreview';
 import useMounted from '../../hooks/useMounted';
-
-/**
- * @typedef {{
- *  type: string,
- *  categories: Array,
- *  content: string,
- *  name: string,
- *  title: string,
- *  viewportWidth: number
- * }} Pattern
- */
+import type { Pattern } from '../../types';
 
 /**
  * @param {{

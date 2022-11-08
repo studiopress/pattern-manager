@@ -7,7 +7,7 @@ import convertToUpperCase from './convertToUpperCase';
 
 /**
  * @typedef {{
- *  [key: string]: import('../components/PatternPicker').Pattern
+ *  [key: string]: import('../types').Pattern
  * }} Patterns
  */
 
