@@ -5,11 +5,10 @@ import { __ } from '@wordpress/i18n';
 import searchItems from '../../utils/searchItems.js';
 import PatternPreview from '../PatternPreview';
 import useMounted from '../../hooks/useMounted';
-import type { Pattern } from '../../types';
 
 /**
  * @param {{
- *  patterns: Record<string, Pattern>,
+ *  patterns: Record<string, import('../../types').Pattern>,
  *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
  *  onClickPattern: Function,
  *  selectedPatterns?: string[]
