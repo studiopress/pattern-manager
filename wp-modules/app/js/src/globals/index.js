@@ -17,7 +17,7 @@
  *   styles: Record<string, unknown>[]
  *  }>,
  *  initialTheme: string,
- *  patterns: Record<string, import('../PatternPicker').Pattern>,
+ *  patterns: Record<string, import('../types').Pattern>,
  *  siteUrl: string,
  *  adminUrl: string,
  *  themeJsonFiles: Record<string, {

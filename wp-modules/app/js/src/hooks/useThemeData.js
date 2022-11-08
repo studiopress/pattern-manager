@@ -26,7 +26,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  *   author_uri: string,
  *   description: string,
  *   dirname: string,
- *   included_patterns?: Record<string, import('../components/PatternPicker').Pattern>,
+ *   included_patterns?: Record<string, import('../types').Pattern>,
  *   requires_php: string,
  *   requires_wp: string,
  *   rest_route?: string,
