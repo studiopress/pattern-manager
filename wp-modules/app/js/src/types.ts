@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 export type Pattern = {
 	type: string;
 	categories: string[];
