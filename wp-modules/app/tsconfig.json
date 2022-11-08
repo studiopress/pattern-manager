@@ -3,7 +3,6 @@
 		"allowJs": true,
 		"checkJs": true,
 		"allowSyntheticDefaultImports": true,
-		"emitDeclarationOnly": true,
 		"jsx": "preserve",
 		"target": "esnext",
 		"module": "esnext",
