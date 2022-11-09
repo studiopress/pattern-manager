@@ -1,5 +1,11 @@
 import { Pattern, Theme } from '../types';
 
+declare global {
+	interface Window {
+		fsestudio: InitialFseStudio;
+	}
+}
+
 type InitialFseStudio = {
 	apiNonce: string,
 	apiEndpoints: {
@@ -24,4 +30,4 @@ type InitialFseStudio = {
 	themes: { [ key: string ]: Theme }
 }
 
-export const fsestudio: InitialFseStudio = window.fsestudio;
+export const fsestudio = window.fsestudio;
