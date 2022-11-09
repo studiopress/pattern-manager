@@ -8,3 +8,32 @@ export type Pattern = {
 	title: string;
 	viewportWidth: number;
 };
+
+export type Theme = {
+	id: string,
+	name: string,
+	namespace: string,
+	'index.html'?: string,
+	'404.html'?: string,
+	'archive.html'?: string,
+	'single.html'?: string,
+	'page.html'?: string,
+	'search.html'?: string,
+	author: string,
+	author_uri: string,
+	description: string,
+	dirname: string,
+	included_patterns?: { [ key: string ]: Pattern },
+	requires_php: string,
+	requires_wp: string,
+	rest_route?: string,
+	styles: Object,
+	tags: string,
+	template_files: string[],
+	template_parts: string[],
+	tested_up_to: string,
+	text_domain: string,
+	theme_json_file: string[],
+	uri: string,
+	version: string
+}
