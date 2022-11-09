@@ -1,4 +1,4 @@
-// @ts-check
+/* eslint-disable no-undef */
 
 import { useMemo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -6,20 +6,21 @@ import searchItems from '../../utils/searchItems.js';
 import PatternPreview from '../PatternPreview';
 import useMounted from '../../hooks/useMounted';
 
-/**
- * @param {{
- *  patterns: Record<string, import('../../types').Pattern>,
- *  themeJsonData: import('../../hooks/useThemeJsonFile').ThemeData,
- *  onClickPattern: Function,
- *  selectedPatterns?: string[]
- * }} props The component props.
- */
+import { Pattern, Theme } from '../../types';
+
+type Props = {
+	patterns: { [ key: string ]: Pattern };
+	themeJsonData: Pick< Theme, 'theme_json_file' > | null;
+	onClickPattern: Function;
+	selectedPatterns?: string[];
+};
+
 export default function PatternPicker( {
 	patterns: allPatterns,
 	themeJsonData,
 	onClickPattern,
 	selectedPatterns = [],
-} ) {
+}: Props ) {
 	const [ searchValue, setSearchValue ] = useState( '' );
 	const [ numberToRender, setNumberToRender ] = useState( 0 );
 	const { isMounted } = useMounted();
