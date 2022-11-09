@@ -10,7 +10,7 @@ import { Pattern, Theme } from '../../types';
 
 type Props = {
 	patterns: { [ key: string ]: Pattern };
-	themeJsonData: Pick< Theme, 'theme_json_file' > | null;
+	themeJsonData: Theme[ 'theme_json_file' ];
 	onClickPattern: Function;
 	selectedPatterns?: string[];
 };
