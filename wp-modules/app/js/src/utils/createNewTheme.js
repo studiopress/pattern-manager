@@ -12,7 +12,7 @@ export default function createNewTheme(
 ) {
 	const themeId = uuidv4();
 
-	/** @type {import('../hooks/useThemeData').Theme} */
+	/** @type {Partial<import('../types').Theme>} */
 	const defaultNewThemeData = {
 		id: themeId,
 		name: '',
