@@ -25,7 +25,7 @@ export type InitialFseStudio = {
 };
 
 export type Pattern = {
-	type: string;
+	type: 'pattern' | 'template' | 'template_part';
 	categories: string[];
 	content: string;
 	name: string;
