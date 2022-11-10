@@ -21,11 +21,11 @@ export default function PatternPicker( {
 	onClickPattern,
 	selectedPatterns = [],
 }: Props ) {
-	const [ searchValue, setSearchValue ] = useState( '' );
-	const [ numberToRender, setNumberToRender ] = useState( 0 );
+	const [ searchValue, setSearchValue ] = useState< string >( '' );
+	const [ numberToRender, setNumberToRender ] = useState< number >( 0 );
 	const { isMounted } = useMounted();
 
-	const filteredPatterns = useMemo( () => {
+	const filteredPatterns: Pattern[] = useMemo( () => {
 		return searchItems( Object.values( allPatterns ), searchValue );
 	}, [ searchValue, allPatterns ] );
 
@@ -51,7 +51,7 @@ export default function PatternPicker( {
 				</div>
 				<div tabIndex={ -1 } className="grid w-full grid-cols-3 gap-10">
 					{ filteredPatterns.length > 0
-						? filteredPatterns.map( ( pattern, index ) => {
+						? filteredPatterns.map( ( pattern: Pattern, index ) => {
 								const isChecked = selectedPatterns.includes(
 									pattern.name
 								);
