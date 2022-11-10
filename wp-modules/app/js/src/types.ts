@@ -1,5 +1,29 @@
 /* eslint-disable no-undef, camelcase */
 
+export type InitialFseStudio = {
+	apiNonce: string;
+	apiEndpoints: {
+		getAppState: string;
+		getPatternEndpoint: string;
+		getThemeEndpoint: string;
+		getThemeJsonFileEndpoint: string;
+		savePatternEndpoint: string;
+		saveThemeEndpoint: string;
+		switchThemeEndpoint: string;
+		saveThemeJsonFileEndpoint: string;
+		exportThemeEndpoint: string;
+	};
+	blockEditorSettings: Partial< {
+		__unstableResolvedAssets: { styles: string };
+		styles: { [ key: string ]: unknown };
+	} >;
+	initialTheme: string;
+	patterns: { [ key: string ]: Pattern };
+	siteUrl: string;
+	adminUrl: string;
+	themes: { [ key: string ]: Theme };
+};
+
 export type Pattern = {
 	type: string;
 	categories: string[];
@@ -39,5 +63,5 @@ export type Theme = {
 };
 
 export type Themes = {
-	[ key: string ]: Theme;
+	[ key: string ]: Theme
 }
