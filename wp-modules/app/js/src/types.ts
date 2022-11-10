@@ -14,7 +14,7 @@ export type InitialFseStudio = {
 		exportThemeEndpoint: string;
 	};
 	blockEditorSettings: Partial< {
-		__unstableResolvedAssets: { styles: string };
+		__unstableResolvedAssets?: { styles: string };
 		styles: { [ key: string ]: unknown };
 	} >;
 	initialTheme: string;
