@@ -21,8 +21,8 @@ export default function PatternPicker( {
 	onClickPattern,
 	selectedPatterns = [],
 }: Props ) {
-	const [ searchValue, setSearchValue ] = useState< string >( '' );
-	const [ numberToRender, setNumberToRender ] = useState< number >( 0 );
+	const [ searchValue, setSearchValue ] = useState( '' );
+	const [ numberToRender, setNumberToRender ] = useState( 0 );
 	const { isMounted } = useMounted();
 
 	const filteredPatterns: Pattern[] = useMemo( () => {
