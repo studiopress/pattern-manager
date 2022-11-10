@@ -63,5 +63,5 @@ export type Theme = {
 };
 
 export type Themes = {
-	[ key: string ]: Theme
-}
+	[ key: string ]: Theme;
+};

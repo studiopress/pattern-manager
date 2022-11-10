@@ -10,7 +10,6 @@ import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
 import useNoticeContext from './useNoticeContext';
 import useStyleVariations from '../hooks/useStyleVariations';
-import { extendWith } from 'lodash';
 
 /**
  * @param {string}                                      themeId
@@ -432,7 +431,7 @@ export default function useThemeData(
 	 * A separate function from setThemeData(), as this sets the 'dirty'
 	 * state of the editor.
 	 *
-	 *  @param {import('../types').Theme} newThemeData
+	 * @param {import('../types').Theme} newThemeData
 	 */
 	function editTheme( newThemeData ) {
 		editorDirty.current = true;
