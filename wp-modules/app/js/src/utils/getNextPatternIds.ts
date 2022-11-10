@@ -1,40 +1,37 @@
-// @ts-check
-/* eslint-disable jsdoc/valid-types */
+/* eslint-disable no-undef */
 
 import convertToPascalCase from './convertToPascalCase';
 import convertToSlug from './convertToSlug';
 import convertToUpperCase from './convertToUpperCase';
 
-/**
- * @typedef {{
- *  [key: string]: import('../types').Pattern
- * }} Patterns
- */
+import { Pattern } from '../types';
 
-/**
- * Get the new title and slug when creating a new pattern.
- *
- * The field can be used along with pretty much any base to be split by special character.
- * The last element in the array is then parsed to find the number to increment.
- *
- * @param {Patterns} object
- * @param {string}   field
- * @param {string}   base
- * @return {Object} The number, title, and slug for the new pattern.
- */
+type Patterns = {
+	[ key: string ]: Pattern;
+};
+
+// The number, title, and slug for the new pattern.
+type NextPattern = {
+	patternNumber: number;
+	patternTitle: string;
+	patternSlug: string;
+};
+
+// Get the new title and slug when creating a new pattern.
 export default function getNextPatternIds(
-	object,
-	field = 'slug',
-	base = 'my-new-pattern'
-) {
+	object: Patterns,
+	field: string = 'slug',
+	base: string = 'my-new-pattern'
+): NextPattern {
 	const regex = new RegExp( `^${ stripSpecialChars( base ) }([0-9]+)$` );
 
 	const patternNumber = Object.values( object ).reduce( ( acc, pattern ) => {
-		const value = pattern[ field ] || '';
+		const value: string = pattern[ field ] || '';
 		if ( value === base && ! acc ) {
 			return 1;
 		}
 
+		// Parse last array element for number to increment.
 		const lastNum = splitSpecialChars( value ).pop();
 		return stripSpecialChars( value ).match( regex ) &&
 			parseInt( lastNum ) + 1 >= acc
@@ -56,5 +53,5 @@ export default function getNextPatternIds(
 	};
 }
 
-const stripSpecialChars = ( str ) => str.replace( /[^A-Za-z0-9]/g, '' );
-const splitSpecialChars = ( str ) => str.split( /[.\-=/_ ]/ );
+const stripSpecialChars = ( str: string ) => str.replace( /[^A-Za-z0-9]/g, '' );
+const splitSpecialChars = ( str: string ) => str.split( /[.\-=/_ ]/ );
