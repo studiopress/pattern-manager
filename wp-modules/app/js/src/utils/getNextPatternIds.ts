@@ -20,13 +20,13 @@ type NextPattern = {
 // Get the new title and slug when creating a new pattern.
 export default function getNextPatternIds(
 	object: Patterns,
-	field: string = 'slug',
+	field: 'slug' | 'title',
 	base: string = 'my-new-pattern'
 ): NextPattern {
 	const regex = new RegExp( `^${ stripSpecialChars( base ) }([0-9]+)$` );
 
 	const patternNumber = Object.values( object ).reduce( ( acc, pattern ) => {
-		const value: string = pattern[ field ] || '';
+		const value = pattern[ field ] || '';
 		if ( value === base && ! acc ) {
 			return 1;
 		}
