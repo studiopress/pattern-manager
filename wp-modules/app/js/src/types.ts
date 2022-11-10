@@ -37,3 +37,7 @@ export type Theme = {
 	uri: string;
 	version: string;
 };
+
+export type Themes = {
+	[ key: string ]: Theme;
+}
