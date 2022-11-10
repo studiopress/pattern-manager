@@ -200,7 +200,6 @@ export default function useThemeData(
 				/* eslint-disable */
 				alert( 'You need to change your theme name before saving' );
 				/* eslint-enable */
-				resolve();
 				return;
 			}
 			setIsSaving( true );
