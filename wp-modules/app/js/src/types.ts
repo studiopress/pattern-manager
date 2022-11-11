@@ -50,6 +50,9 @@ export type InitialFseStudio = {
 	siteUrl: string;
 	adminUrl: string;
 	themes: { [ key: string ]: Theme };
+	schemas: {
+		[ key: string ]: { [ key: string ]: { key: string; unknown } | [] };
+	};
 };
 
 export type Pattern = {
@@ -58,7 +61,8 @@ export type Pattern = {
 	content: string;
 	name: string;
 	title: string;
-	viewportWidth: number;
+	slug?: string;
+	viewportWidth: string | number;
 };
 
 export type Patterns = {
