@@ -1,5 +1,31 @@
 /* eslint-disable no-undef, camelcase */
 
+import type { fsestudio } from './globals';
+
+export type InitialContext = {
+	currentView: ReturnType< typeof import('./hooks/useCurrentView').default >;
+	currentPatternId: ReturnType<
+		typeof import('./hooks/useCurrentId').default
+	>;
+	currentPattern: ReturnType< typeof import('./hooks/useThemes').default >;
+	themes: ReturnType< typeof import('./hooks/useThemes').default >;
+	currentThemeId: ReturnType< typeof import('./hooks/useCurrentId').default >;
+	currentTheme: ReturnType< typeof import('./hooks/useThemeData').default >;
+	currentStyleVariationId: ReturnType<
+		typeof import('./hooks/useCurrentId').default
+	>;
+	siteUrl: typeof fsestudio.siteUrl;
+	apiEndpoints: typeof fsestudio.apiEndpoints;
+	blockEditorSettings: typeof fsestudio.blockEditorSettings;
+	patterns: ReturnType< typeof import('./hooks/usePatterns').default >;
+	patternEditorIframe: import('react').MutableRefObject<
+		HTMLIFrameElement | undefined
+	>;
+	templateEditorIframe: import('react').MutableRefObject<
+		HTMLIFrameElement | undefined
+	>;
+};
+
 export type InitialFseStudio = {
 	apiNonce: string;
 	apiEndpoints: {
@@ -31,6 +57,10 @@ export type Pattern = {
 	name: string;
 	title: string;
 	viewportWidth: number;
+};
+
+export type Patterns = {
+	[ key: string ]: Pattern;
 };
 
 export type Theme = {
