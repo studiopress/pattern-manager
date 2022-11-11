@@ -1,4 +1,4 @@
-import * as React from '@wordpress/element';
+import React from 'react';
 
 /** @param {React.Dispatch<React.SetStateAction<string | undefined>>} setCurrentPatternId */
 export default function useListener( setCurrentPatternId ) {

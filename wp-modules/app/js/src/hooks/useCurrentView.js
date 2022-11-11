@@ -10,6 +10,7 @@ export default function useCurrentView( initialView ) {
 	const [ currentTemplatesView, setCurrentTemplatesView ] =
 		useState( 'theme_templates' );
 
+	/** @param {string} newView */
 	function setCurrentViewConditions( newView ) {
 		// When going from theme_patterns to pattern_editor, remember that theme_patterns is currently showing the pattern_editor.
 		if (

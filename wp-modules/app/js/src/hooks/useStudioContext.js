@@ -3,7 +3,7 @@
 import { useContext } from '@wordpress/element';
 import FseStudioContext from '../contexts/FseStudioContext';
 
-/** @return {Partial<import('../components/FseStudioApp').InitialContext>} The FSE Studio context. */
+/** @return {Partial<import('../types').InitialContext>} The FSE Studio context. */
 export default function useStudioContext() {
 	const context = useContext( FseStudioContext );
 	if ( ! context ) {

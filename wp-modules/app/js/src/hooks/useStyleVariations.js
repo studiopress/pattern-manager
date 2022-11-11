@@ -1,4 +1,5 @@
 // @ts-check
+/* eslint-disable jsdoc/valid-types */
 
 // WP Dependencies
 import { useRef, useState, useEffect } from '@wordpress/element';
@@ -68,6 +69,7 @@ export default function useStyleVariations() {
 		const id = `${ convertToSlug( newStyleName ) }-${ uuidv4() }`;
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
+		/** @type {import('../types').Style['body']} */
 		const currentStyleBody =
 			currentStyleVariationId?.value === defaultStyleName
 				? defaultStyle[ defaultStyleName ].body
@@ -92,7 +94,7 @@ export default function useStyleVariations() {
 		setUpdateCurrentStyle( true );
 
 		// Set the new style.
-		addStyleToTheme( newStyle, id );
+		addStyleToTheme( newStyle[ id ], id );
 	};
 
 	/**
@@ -100,8 +102,8 @@ export default function useStyleVariations() {
 	 *
 	 * Triggers useEffect via update of currentTheme.data.styles.
 	 *
-	 * @param {Object} style
-	 * @param {string} styleId
+	 * @param {import('../types').Style} style
+	 * @param {string}                   styleId
 	 * @return {void}
 	 */
 	const addStyleToTheme = ( style, styleId ) => {
@@ -109,7 +111,7 @@ export default function useStyleVariations() {
 			...currentTheme.data,
 			styles: {
 				...currentTheme.data.styles,
-				[ styleId ]: style[ styleId ],
+				[ styleId ]: style,
 			},
 		} );
 	};

@@ -1,4 +1,5 @@
 // @ts-check
+/* eslint-disable jsdoc/valid-types */
 
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -12,12 +13,12 @@ import useNoticeContext from './useNoticeContext';
 import useStyleVariations from '../hooks/useStyleVariations';
 
 /**
- * @param {string}                                      themeId
- * @param {ReturnType<import('./useThemes').default>}   themes
- * @param {Object}                                      patternEditorIframe
- * @param {Object}                                      templateEditorIframe
- * @param {Object}                                      currentStyleVariationId
- * @param {ReturnType<import('./usePatterns').default>} patterns
+ * @param {import('../types').InitialContext['currentThemeId']['value']} themeId
+ * @param {import('../types').InitialContext['themes']}                  themes
+ * @param {import('../types').InitialContext['patternEditorIframe']}     patternEditorIframe
+ * @param {import('../types').InitialContext['templateEditorIframe']}    templateEditorIframe
+ * @param {import('../types').InitialContext['currentStyleVariationId']} currentStyleVariationId
+ * @param {import('../types').InitialContext['patterns']}                patterns
  */
 export default function useThemeData(
 	themeId,
