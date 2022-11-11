@@ -1,27 +1,29 @@
 /* eslint-disable no-undef, camelcase */
 
+import React from 'react';
+import useCurrentView from './hooks/useCurrentView';
+import useCurrentId from './hooks/useCurrentId';
+import useThemes from './hooks/useThemes';
+import useThemeData from './hooks/useThemeData';
+import usePatterns from './hooks/usePatterns';
 import type { fsestudio } from './globals';
 
 export type InitialContext = {
-	currentView: ReturnType< typeof import('./hooks/useCurrentView').default >;
-	currentPatternId: ReturnType<
-		typeof import('./hooks/useCurrentId').default
-	>;
-	currentPattern: ReturnType< typeof import('./hooks/useThemes').default >;
-	themes: ReturnType< typeof import('./hooks/useThemes').default >;
-	currentThemeId: ReturnType< typeof import('./hooks/useCurrentId').default >;
-	currentTheme: ReturnType< typeof import('./hooks/useThemeData').default >;
-	currentStyleVariationId: ReturnType<
-		typeof import('./hooks/useCurrentId').default
-	>;
+	currentView: ReturnType< typeof useCurrentView >;
+	currentPatternId: ReturnType< typeof useCurrentId >;
+	currentPattern: ReturnType< typeof useThemes >;
+	themes: ReturnType< typeof useThemes >;
+	currentThemeId: ReturnType< typeof useCurrentId >;
+	currentTheme: ReturnType< typeof useThemeData >;
+	currentStyleVariationId: ReturnType< typeof useCurrentId >;
 	siteUrl: typeof fsestudio.siteUrl;
 	apiEndpoints: typeof fsestudio.apiEndpoints;
 	blockEditorSettings: typeof fsestudio.blockEditorSettings;
-	patterns: ReturnType< typeof import('./hooks/usePatterns').default >;
-	patternEditorIframe: import('react').MutableRefObject<
+	patterns: ReturnType< typeof usePatterns >;
+	patternEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
 	>;
-	templateEditorIframe: import('react').MutableRefObject<
+	templateEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
 	>;
 };
