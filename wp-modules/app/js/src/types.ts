@@ -55,7 +55,7 @@ export type InitialFseStudio = {
 	};
 };
 
-export type Pattern<T = void | string> = {
+export type Pattern< T = void | string > = {
 	type: 'pattern' | 'template' | 'template_part' | T;
 	categories?: string[];
 	content: string;
