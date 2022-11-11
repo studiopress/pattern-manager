@@ -63,6 +63,16 @@ export type Patterns = {
 	[ key: string ]: Pattern;
 };
 
+export type Style = {
+	id: string;
+	title: string;
+	body: { [ key: string ]: unknown };
+};
+
+export type Styles = {
+	[ key: string ]: Style;
+};
+
 export type Theme = {
 	id: string;
 	name: string;
@@ -81,7 +91,7 @@ export type Theme = {
 	requires_php: string;
 	requires_wp: string;
 	rest_route?: string;
-	styles: Object;
+	styles: { [ key: string ]: Style };
 	tags: string;
 	template_files: string[];
 	template_parts: string[];
