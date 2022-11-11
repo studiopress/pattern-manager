@@ -494,7 +494,6 @@ function RenderProperties( { isVisible, properties, schemaPosition, topLevelSett
 	return <div className={`divide-y divide-gray-200 fses-${convertToCssClass(schemaPosition)}`}>{renderedProperties}</div>
 }
 
-
 function RenderProperty( {isVisible, propertySchema, propertyName, schemaPosition, topLevelSettingName } ) {
 	const { currentTheme } = useStudioContext();
 	const currentValue = currentTheme.getThemeJsonValue( 'settings', schemaPosition, propertySchema.default );
