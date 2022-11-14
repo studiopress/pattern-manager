@@ -133,7 +133,6 @@ export default function useThemeData(
 	function getThemeData() {
 		return new Promise( ( resolve ) => {
 			if ( ! themeId || fetchInProgress ) {
-				resolve();
 				return;
 			}
 			setFetchInProgress( true );
