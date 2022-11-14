@@ -264,9 +264,9 @@ export default function useThemeData(
 
 	function setThemeJsonValue(
 		topLevelSection = 'settings',
-		selectorString,
-		value = null,
-		defaultValue = null
+		selectorString: string,
+		value: unknown = null,
+		defaultValue: unknown = null
 	) {
 		const currentStyleValue = currentStyleVariationId?.value;
 
@@ -292,7 +292,7 @@ export default function useThemeData(
 		// Split the selector string at commas
 		const keys = selectorString.split( '.' );
 
-		const modifiedData = setNestedObject(
+		const modifiedData: { [ key: string ]: unknown } = setNestedObject(
 			value,
 			defaultValue,
 			[ topLevelSection, ...keys ] // Top level key with the array of keys.
@@ -328,9 +328,9 @@ export default function useThemeData(
 
 	function getThemeJsonValue(
 		topLevelSection = 'settings',
-		selectorString,
-		defaultValue = undefined
-	) {
+		selectorString: string,
+		defaultValue: unknown = undefined
+	): unknown {
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
 		// Use theme_json_file if current style variation is default.
