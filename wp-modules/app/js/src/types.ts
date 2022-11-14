@@ -102,7 +102,7 @@ export type Theme = {
 	template_parts?: string[];
 	tested_up_to: string;
 	text_domain: string;
-	theme_json_file?: string[];
+	theme_json_file?: { [ key: string ]: unknown };
 	uri: string;
 	version: string;
 };
