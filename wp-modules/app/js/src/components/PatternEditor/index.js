@@ -120,6 +120,7 @@ export function BlockEditor() {
 		};
 	}, [ currentPatternId?.value, patternEditorIframe ] );
 
+	/** @param {React.MutableRefObject<HTMLIFrameElement | undefined>} iframeRef */
 	function setInitialData( iframeRef ) {
 		iframeRef?.current.contentWindow.postMessage(
 			JSON.stringify( {

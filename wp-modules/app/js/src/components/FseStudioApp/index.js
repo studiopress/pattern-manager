@@ -39,24 +39,6 @@ import FseStudioHelp from '../FseStudioHelp';
 import GettingStarted from '../GettingStarted';
 import FseStudioNav from '../FseStudioNav';
 
-/**
- * @typedef {{
- *  currentView: ReturnType<import('../../hooks/useCurrentView').default>,
- *  currentPatternId: ReturnType<import('../../hooks/useCurrentId').default>,
- *  currentPattern: ReturnType<import('../../hooks/useThemes').default>,
- *  themes: ReturnType<import('../../hooks/useThemes').default>,
- *  currentThemeId: ReturnType<import('../../hooks/useCurrentId').default>,
- *  currentTheme: ReturnType<import('../../hooks/useThemeData').default>,
- *  currentStyleVariationId: ReturnType<import('../../hooks/useCurrentId').default>,
- *  siteUrl: typeof import('../../globals').fsestudio.siteUrl,
- *  apiEndpoints: typeof import('../../globals').fsestudio.apiEndpoints,
- *  blockEditorSettings: typeof import('../../globals').fsestudio.blockEditorSettings,
- *  patterns: ReturnType<import('../../hooks/usePatterns').default>,
- *  patternEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement|undefined>>,
- *  templateEditorIframe: ReturnType<import('react').useRef<HTMLIFrameElement|undefined>>
- * }} InitialContext
- */
-
 export default function FseStudioApp() {
 	/** @type {ReturnType<import('../../hooks/useNotice').default>} */
 	const providerValue = useSnackbar();
@@ -122,7 +104,7 @@ function FseStudioContextHydrator() {
 		}
 	}
 
-	/** @type {InitialContext} */
+	/** @type {import('../../types').InitialContext} */
 	const providerValue = {
 		currentView,
 		currentPatternId,

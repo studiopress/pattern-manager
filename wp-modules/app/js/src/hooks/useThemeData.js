@@ -1,4 +1,5 @@
 // @ts-check
+/* eslint-disable jsdoc/valid-types */
 
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -12,43 +13,12 @@ import useNoticeContext from './useNoticeContext';
 import useStyleVariations from '../hooks/useStyleVariations';
 
 /**
- * @typedef {{
- *   id: string,
- *   name: string,
- *   namespace: string,
- *   'index.html'?: string,
- *   '404.html'?: string,
- *   'archive.html'?: string,
- *   'single.html'?: string,
- *   'page.html'?: string,
- *   'search.html'?: string,
- *   author: string,
- *   author_uri: string,
- *   description: string,
- *   dirname: string,
- *   included_patterns?: Record<string, import('../components/PatternPicker').Pattern>,
- *   requires_php: string,
- *   requires_wp: string,
- *   rest_route?: string,
- *   styles: {Object},
- *   tags: string,
- *   template_files: string[],
- *   template_parts: string[],
- *   tested_up_to: string,
- *   text_domain: string,
- *   theme_json_file: string[],
- *   uri: string,
- *   version: string
- * }} Theme
- */
-
-/**
- * @param {string}                                      themeId
- * @param {ReturnType<import('./useThemes').default>}   themes
- * @param {Object}                                      patternEditorIframe
- * @param {Object}                                      templateEditorIframe
- * @param {Object}                                      currentStyleVariationId
- * @param {ReturnType<import('./usePatterns').default>} patterns
+ * @param {import('../types').InitialContext['currentThemeId']['value']} themeId
+ * @param {import('../types').InitialContext['themes']}                  themes
+ * @param {import('../types').InitialContext['patternEditorIframe']}     patternEditorIframe
+ * @param {import('../types').InitialContext['templateEditorIframe']}    templateEditorIframe
+ * @param {import('../types').InitialContext['currentStyleVariationId']} currentStyleVariationId
+ * @param {ReturnType<import('./usePatterns').default>}                  patterns
  */
 export default function useThemeData(
 	themeId,
@@ -64,7 +34,7 @@ export default function useThemeData(
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
 
-	/** @param {Theme} newThemeData */
+	/** @param {import('../types').Theme} newThemeData */
 	function setThemeData( newThemeData ) {
 		const derivedThemeData =
 			newThemeData.name !== themeData.name
@@ -156,6 +126,7 @@ export default function useThemeData(
 	function warnIfUnsavedChanges( event ) {
 		if ( editorDirty.current || siteEditorDirty ) {
 			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
+			// @ts-expect-error: returnvalue is deprecated.
 			event.returnValue = __(
 				'Are you sure you want to leave the editor? There are unsaved changes.',
 				'fse-studio'
@@ -392,9 +363,10 @@ export default function useThemeData(
 		);
 	}
 
+	/** @param {import('../types').Pattern} patternData */
 	function createPattern( patternData ) {
 		return new Promise( ( resolve ) => {
-			let newThemeData = {};
+			let newThemeData;
 			if ( patternData.type === 'pattern' ) {
 				newThemeData = {
 					...themeData,
@@ -403,8 +375,7 @@ export default function useThemeData(
 						[ patternData.name ]: patternData,
 					},
 				};
-			}
-			if ( patternData.type === 'template' ) {
+			} else if ( patternData.type === 'template' ) {
 				newThemeData = {
 					...themeData,
 					template_files: {
@@ -412,8 +383,7 @@ export default function useThemeData(
 						[ patternData.name ]: patternData,
 					},
 				};
-			}
-			if ( patternData.type === 'template_part' ) {
+			} else if ( patternData.type === 'template_part' ) {
 				newThemeData = {
 					...themeData,
 					template_parts: {
@@ -421,7 +391,10 @@ export default function useThemeData(
 						[ patternData.name ]: patternData,
 					},
 				};
+			} else {
+				return;
 			}
+
 			setThemeData( newThemeData );
 			resolve( newThemeData );
 		} );
@@ -458,7 +431,7 @@ export default function useThemeData(
 	 * A separate function from setThemeData(), as this sets the 'dirty'
 	 * state of the editor.
 	 *
-	 * @param {Theme} newThemeData
+	 * @param {import('../types').Theme} newThemeData
 	 */
 	function editTheme( newThemeData ) {
 		editorDirty.current = true;

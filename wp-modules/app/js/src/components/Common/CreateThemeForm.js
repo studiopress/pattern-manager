@@ -5,7 +5,7 @@ import ThemeDetails from './ThemeDetails';
 
 export default function CreateThemeForm( { children } ) {
 	const { currentTheme } = useStudioContext();
-	const fieldRef = useRef();
+	const fieldRef = useRef( null );
 
 	useEffect( () => {
 		fieldRef.current.focus();

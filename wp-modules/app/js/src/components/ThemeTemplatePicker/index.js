@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/valid-types */
+
 import { __ } from '@wordpress/i18n';
 
 import PatternPreview from '../PatternPreview';
@@ -8,7 +10,11 @@ import { Icon, close, edit, plus } from '@wordpress/icons';
 
 /**
  * @param {{
- *  templateName: string
+ *  templateName: string,
+ *  templateData: Object,
+ *  standardTemplates: Object,
+ *  existsInTheme: boolean,
+ *  type: import('../../types').Pattern['type'],
  * }} props The component props.
  */
 export default function ThemeTemplatePicker( {
@@ -52,6 +58,7 @@ export default function ThemeTemplatePicker( {
 										title: templateName,
 										name: templateName,
 										content: '',
+										slug: '',
 									};
 
 									currentTheme

@@ -14,6 +14,7 @@ export default function PatternPreview( { url, scale } ) {
 	const { patterns } = useStudioContext();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
 		useState( 10 );
+	/** @type {[HTMLIFrameElement|undefined, React.Dispatch<React.SetStateAction<HTMLIFrameElement|undefined>>]} */
 	const [ iframeRef, setIframeRef ] = useState();
 	patterns?.addRef( url, iframeRef );
 	const scaleMultiplier = 10 / ( scale * 10 );
@@ -31,7 +32,6 @@ export default function PatternPreview( { url, scale } ) {
 				src={ url }
 				title={ __( 'Pattern Preview', 'fse-studio' ) }
 				role={ 'img' }
-				// @ts-ignore
 				ref={ setIframeRef }
 				onLoad={ () => {
 					if (

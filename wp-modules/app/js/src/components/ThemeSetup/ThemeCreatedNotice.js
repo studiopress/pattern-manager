@@ -9,7 +9,7 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 export default function ThemeCreatedNotice() {
 	const { currentView } = useStudioContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();
-	const buttonRef = useRef();
+	const buttonRef = useRef( null );
 
 	useEffect( () => {
 		buttonRef.current.focus();

@@ -10,7 +10,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 // Globals
 import { fsestudio } from '../../globals';
 
-/** @param {{visible: boolean}} props */
+/** @param {{isVisible: boolean}} props */
 export default function ThemePreview( { isVisible } ) {
 	const { currentView, currentTheme } = useStudioContext();
 	const [ currentUrl, setCurrentUrl ] = useState( fsestudio.siteUrl );
