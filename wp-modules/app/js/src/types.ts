@@ -55,13 +55,13 @@ export type InitialFseStudio = {
 	};
 };
 
-export type Pattern< T = void | string > = {
-	type: 'pattern' | 'template' | 'template_part' | T;
+export type Pattern = {
+	type: 'pattern' | 'template' | 'template_part';
 	categories?: string[];
 	content: string;
 	name: string;
 	title: string;
-	slug?: string;
+	slug: string;
 	viewportWidth?: string | number;
 };
 

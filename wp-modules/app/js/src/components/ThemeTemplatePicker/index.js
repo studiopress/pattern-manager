@@ -14,7 +14,7 @@ import { Icon, close, edit, plus } from '@wordpress/icons';
  *  templateData: Object
  *  standardTemplates: Object
  *  existsInTheme: boolean
- *  type: import('../../types').Pattern<'button'>['type']
+ *  type: import('../../types').Pattern['type']
  * }} props The component props.
  */
 export default function ThemeTemplatePicker( {
@@ -58,6 +58,7 @@ export default function ThemeTemplatePicker( {
 										title: templateName,
 										name: templateName,
 										content: '',
+										slug: ''
 									};
 
 									currentTheme
