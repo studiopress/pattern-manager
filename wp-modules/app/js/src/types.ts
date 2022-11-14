@@ -16,7 +16,7 @@ export type InitialContext = {
 	currentTheme: ReturnType< typeof useThemeData >;
 	currentStyleVariationId: ReturnType< typeof useCurrentId >;
 	siteUrl: InitialFseStudio[ 'siteUrl' ];
-	blockEditorSettings: InitialFseStudio[ 'apiEndpoints' ];
+	apiEndpoints: InitialFseStudio[ 'apiEndpoints' ];
 	blockEditorSettings: InitialFseStudio[ 'blockEditorSettings' ];
 	patterns: ReturnType< typeof usePatterns >;
 	patternEditorIframe: React.MutableRefObject<
