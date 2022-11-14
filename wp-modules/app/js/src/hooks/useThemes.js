@@ -1,6 +1,5 @@
 // @ts-check
 
-import React from 'react';
 import { useState } from '@wordpress/element';
 
 /**

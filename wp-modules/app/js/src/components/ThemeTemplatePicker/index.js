@@ -58,7 +58,7 @@ export default function ThemeTemplatePicker( {
 										title: templateName,
 										name: templateName,
 										content: '',
-										slug: ''
+										slug: '',
 									};
 
 									currentTheme
