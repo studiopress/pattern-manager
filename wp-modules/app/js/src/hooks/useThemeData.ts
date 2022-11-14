@@ -304,7 +304,7 @@ export default function useThemeData(
 		 *
 		 * Also, I hate the way prettier wants to format this ternary!
 		 */
-		const dataToSave =
+		const dataToSave: Theme =
 			currentStyleVariationId.value !== defaultStyleName
 				? {
 						...themeData,
@@ -423,9 +423,9 @@ export default function useThemeData(
 	 * A separate function from setThemeData(), as this sets the 'dirty'
 	 * state of the editor.
 	 *
-	 * @param {import('../types').Theme} newThemeData
+	 * @param {Theme} newThemeData
 	 */
-	function editTheme( newThemeData ) {
+	function editTheme( newThemeData: Theme ) {
 		editorDirty.current = true;
 		setThemeData( newThemeData );
 	}
