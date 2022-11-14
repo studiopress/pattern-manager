@@ -1,4 +1,4 @@
-/* eslint-disable jsdoc/valid-types */
+/* eslint-disable no-unused-vars */
 
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -8,33 +8,29 @@ import convertToPascalCase from '../utils/convertToPascalCase';
 import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
+import useNotice from './useNotice';
 import useNoticeContext from './useNoticeContext';
-import useStyleVariations from '../hooks/useStyleVariations';
+import usePatterns from './usePatterns';
+import useStyleVariations from './useStyleVariations';
 
-/**
- * @param {import('../types').InitialContext['currentThemeId']['value']} themeId
- * @param {import('../types').InitialContext['themes']}                  themes
- * @param {import('../types').InitialContext['patternEditorIframe']}     patternEditorIframe
- * @param {import('../types').InitialContext['templateEditorIframe']}    templateEditorIframe
- * @param {import('../types').InitialContext['currentStyleVariationId']} currentStyleVariationId
- * @param {ReturnType<import('./usePatterns').default>}                  patterns
- */
+import type { InitialContext } from '../types';
+
 export default function useThemeData(
-	themeId,
-	themes,
-	patternEditorIframe,
-	templateEditorIframe,
-	currentStyleVariationId,
-	patterns
+	themeId: InitialContext[ 'currentThemeId' ][ 'value' ],
+	themes: InitialContext[ 'themes' ],
+	patternEditorIframe: InitialContext[ 'patternEditorIframe' ],
+	templateEditorIframe: InitialContext[ 'templateEditorIframe' ],
+	currentStyleVariationId: InitialContext[ 'currentStyleVariationId' ],
+	patterns: ReturnType< typeof usePatterns >
 ) {
-	const { setSnackBarValue } = useNoticeContext();
+	const { setSnackBarValue }: ReturnType< typeof useNotice > =
+		useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
 
-	/** @param {import('../types').Theme} newThemeData */
-	function setThemeData( newThemeData ) {
+	function setThemeData( newThemeData: typeof themeData ) {
 		const derivedThemeData =
 			newThemeData.name !== themeData.name
 				? {
@@ -59,7 +55,7 @@ export default function useThemeData(
 
 	const { defaultStyleName } = useStyleVariations();
 
-	/** @return {boolean} Whether another theme also has the current theme name. */
+	// Whether another theme also has the current theme name.
 	function isNameTaken() {
 		return (
 			!! themeData.name &&
