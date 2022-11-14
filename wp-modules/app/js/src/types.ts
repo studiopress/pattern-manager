@@ -98,11 +98,11 @@ export type Theme = {
 	rest_route?: string;
 	styles: { [ key: string ]: Style };
 	tags: string;
-	template_files: string[];
-	template_parts: string[];
+	template_files?: string[];
+	template_parts?: string[];
 	tested_up_to: string;
 	text_domain: string;
-	theme_json_file: string[];
+	theme_json_file?: string[];
 	uri: string;
 	version: string;
 };
