@@ -6,7 +6,6 @@ import useCurrentId from './hooks/useCurrentId';
 import useThemes from './hooks/useThemes';
 import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
-import type { fsestudio } from './globals';
 
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
@@ -16,9 +15,9 @@ export type InitialContext = {
 	currentThemeId: ReturnType< typeof useCurrentId >;
 	currentTheme: ReturnType< typeof useThemeData >;
 	currentStyleVariationId: ReturnType< typeof useCurrentId >;
-	siteUrl: typeof fsestudio.siteUrl;
-	apiEndpoints: typeof fsestudio.apiEndpoints;
-	blockEditorSettings: typeof fsestudio.blockEditorSettings;
+	siteUrl: InitialFseStudio[ 'siteUrl' ];
+	blockEditorSettings: InitialFseStudio[ 'apiEndpoints' ];
+	blockEditorSettings: InitialFseStudio[ 'blockEditorSettings' ];
 	patterns: ReturnType< typeof usePatterns >;
 	patternEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
@@ -41,17 +40,17 @@ export type InitialFseStudio = {
 		saveThemeJsonFileEndpoint: string;
 		exportThemeEndpoint: string;
 	};
-	blockEditorSettings: Partial< {
+	blockEditorSettings: {
 		__unstableResolvedAssets?: { styles: string };
 		styles?: { [ key: string ]: unknown }[];
-	} >;
+	};
 	initialTheme: string;
-	patterns: { [ key: string ]: Pattern };
+	patterns: Patterns;
 	siteUrl: string;
 	adminUrl: string;
-	themes: { [ key: string ]: Theme };
+	themes: Themes;
 	schemas: {
-		[ key: string ]: { [ key: string ]: { key: string; unknown } | [] };
+		[ key: string ]: { [ key: string ]: { [ key: string ]: unknown } | [] };
 	};
 };
 
@@ -93,7 +92,7 @@ export type Theme = {
 	author_uri: string;
 	description: string;
 	dirname: string;
-	included_patterns?: { [ key: string ]: Pattern };
+	included_patterns?: Patterns;
 	requires_php: string;
 	requires_wp: string;
 	rest_route?: string;

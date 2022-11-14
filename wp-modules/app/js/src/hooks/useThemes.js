@@ -9,7 +9,6 @@ import { useState } from '@wordpress/element';
  * }} The themes.
  */
 export default function useThemes( { themes } ) {
-	/** @type {[import('../types').Themes, React.Dispatch<React.SetStateAction<import('../types').Themes>>]} */
 	const [ theThemes, setTheThemes ] = useState( themes );
 
 	return {

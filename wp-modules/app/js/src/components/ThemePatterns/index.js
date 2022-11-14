@@ -184,7 +184,6 @@ export default function ThemePatterns( { isVisible } ) {
 													?.included_patterns
 											);
 
-										/** @type {import('../../types').Pattern} */
 										const newPatternData = {
 											type: 'pattern',
 											title: patternTitle,

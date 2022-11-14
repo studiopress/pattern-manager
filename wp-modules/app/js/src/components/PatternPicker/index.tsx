@@ -6,10 +6,10 @@ import searchItems from '../../utils/searchItems.js';
 import PatternPreview from '../PatternPreview';
 import useMounted from '../../hooks/useMounted';
 
-import { Pattern, Theme } from '../../types';
+import { Pattern, Patterns, Theme } from '../../types';
 
 type Props = {
-	patterns: { [ key: string ]: Pattern };
+	patterns: Patterns;
 	themeJsonData: Theme[ 'theme_json_file' ];
 	onClickPattern: Function;
 	selectedPatterns?: string[];

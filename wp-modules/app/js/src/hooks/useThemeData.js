@@ -18,7 +18,7 @@ import useStyleVariations from '../hooks/useStyleVariations';
  * @param {import('../types').InitialContext['patternEditorIframe']}     patternEditorIframe
  * @param {import('../types').InitialContext['templateEditorIframe']}    templateEditorIframe
  * @param {import('../types').InitialContext['currentStyleVariationId']} currentStyleVariationId
- * @param {import('../types').InitialContext['patterns']}                patterns
+ * @param {ReturnType<import('./usePatterns').default>}                  patterns
  */
 export default function useThemeData(
 	themeId,
