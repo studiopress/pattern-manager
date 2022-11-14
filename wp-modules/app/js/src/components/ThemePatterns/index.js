@@ -184,19 +184,16 @@ export default function ThemePatterns( { isVisible } ) {
 													?.included_patterns
 											);
 
-										/** @type {import('../../types').Pattern} */
-										const newPatternData = {
-											type: 'pattern',
-											title: patternTitle,
-											name: patternSlug,
-											slug: patternSlug,
-											categories: [],
-											viewportWidth: '',
-											content: '',
-										};
-
 										currentTheme
-											.createPattern( newPatternData )
+											.createPattern( {
+												type: 'pattern',
+												title: patternTitle,
+												name: patternSlug,
+												slug: patternSlug,
+												categories: [],
+												viewportWidth: '',
+												content: '',
+											} )
 											.then( () => {
 												// Switch to the newly created theme.
 												currentPatternId.set(
