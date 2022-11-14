@@ -1,4 +1,3 @@
-// @ts-check
 /* eslint-disable jsdoc/check-param-names, jsdoc/require-param */
 
 /**
