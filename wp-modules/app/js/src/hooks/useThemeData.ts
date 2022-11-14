@@ -393,8 +393,7 @@ export default function useThemeData(
 		} );
 	}
 
-	/** @param {string} patternName */
-	function deletePattern( patternName ) {
+	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		if (
 			/* eslint-disable no-alert */
 			! window.confirm(
