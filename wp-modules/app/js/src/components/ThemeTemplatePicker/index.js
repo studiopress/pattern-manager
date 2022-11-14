@@ -10,11 +10,11 @@ import { Icon, close, edit, plus } from '@wordpress/icons';
 
 /**
  * @param {{
- *  templateName: string
- *  templateData: Object
- *  standardTemplates: Object
- *  existsInTheme: boolean
- *  type: import('../../types').Pattern['type']
+ *  templateName: string,
+ *  templateData: Object,
+ *  standardTemplates: Object,
+ *  existsInTheme: boolean,
+ *  type: import('../../types').Pattern['type'],
  * }} props The component props.
  */
 export default function ThemeTemplatePicker( {
