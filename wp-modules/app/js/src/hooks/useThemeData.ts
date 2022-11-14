@@ -55,7 +55,7 @@ export default function useThemeData(
 
 	const { defaultStyleName } = useStyleVariations();
 
-	// Whether another theme also has the current theme name.
+	/** Whether another theme also has the current theme name. */
 	function isNameTaken() {
 		return (
 			!! themeData.name &&
@@ -118,7 +118,7 @@ export default function useThemeData(
 	 *
 	 * @param {Event} event The beforeunload event.
 	 */
-	function warnIfUnsavedChanges( event ) {
+	function warnIfUnsavedChanges( event: Event ) {
 		if ( editorDirty.current || siteEditorDirty ) {
 			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
 			// @ts-expect-error: returnvalue is deprecated.
