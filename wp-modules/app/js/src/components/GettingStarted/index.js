@@ -1,4 +1,3 @@
-// @ts-check
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 import createNewTheme from '../../utils/createNewTheme';

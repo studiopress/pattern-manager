@@ -1,5 +1,3 @@
-// @ts-check
-
 import { useContext } from '@wordpress/element';
 import FseStudioContext from '../contexts/FseStudioContext';
 

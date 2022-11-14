@@ -1,6 +1,5 @@
 // WP Dependencies
 
-// @ts-check
 import React from 'react';
 
 import { __ } from '@wordpress/i18n';

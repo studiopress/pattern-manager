@@ -1,4 +1,3 @@
-// @ts-check
 /* eslint-disable jsdoc/valid-types */
 
 import { useState, useEffect, useRef } from '@wordpress/element';

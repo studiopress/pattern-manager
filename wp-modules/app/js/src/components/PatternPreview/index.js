@@ -1,6 +1,4 @@
-// @ts-check
-
-import * as React from 'react';
+import React from 'react';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
