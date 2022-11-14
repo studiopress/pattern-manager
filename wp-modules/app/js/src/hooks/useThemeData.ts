@@ -13,7 +13,7 @@ import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
 import useStyleVariations from './useStyleVariations';
 
-import type { InitialContext } from '../types';
+import type { InitialContext, Pattern, Theme } from '../types';
 
 export default function useThemeData(
 	themeId: InitialContext[ 'currentThemeId' ][ 'value' ],
@@ -30,7 +30,7 @@ export default function useThemeData(
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
 
-	function setThemeData( newThemeData: typeof themeData ) {
+	function setThemeData( newThemeData: Theme ) {
 		const derivedThemeData =
 			newThemeData.name !== themeData.name
 				? {
@@ -357,10 +357,9 @@ export default function useThemeData(
 		);
 	}
 
-	/** @param {import('../types').Pattern} patternData */
-	function createPattern( patternData ) {
+	function createPattern( patternData: Pattern ) {
 		return new Promise( ( resolve ) => {
-			let newThemeData;
+			let newThemeData: Theme;
 			if ( patternData.type === 'pattern' ) {
 				newThemeData = {
 					...themeData,
