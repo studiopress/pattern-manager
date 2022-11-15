@@ -145,7 +145,7 @@ export default function useThemeData(
 				} ),
 			} )
 				.then( ( response ) => response.json() )
-				.then( ( response ) => {
+				.then( ( response: Theme & { error?: string } ) => {
 					setFetchInProgress( false );
 					if (
 						response.error &&
@@ -182,52 +182,59 @@ export default function useThemeData(
 					}
 					return response.json();
 				} )
-				.then( ( data ) => {
-					if ( patternEditorIframe.current ) {
-						// Send a message to the iframe, telling it that the themejson has changed.
-						if ( data.themeJsonModified ) {
-							patternEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify( {
-									message: 'fsestudio_themejson_changed',
-								} ),
-								'*'
-							);
+				.then(
+					( data: {
+						message: string;
+						styleJsonModified: boolean;
+						themeData: Theme;
+						themeJsonModified: boolean;
+					} ) => {
+						if ( patternEditorIframe.current ) {
+							// Send a message to the iframe, telling it that the themejson has changed.
+							if ( data.themeJsonModified ) {
+								patternEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message: 'fsestudio_themejson_changed',
+									} ),
+									'*'
+								);
+							}
 						}
-					}
 
-					if ( templateEditorIframe.current ) {
-						templateEditorIframe.current.contentWindow.postMessage(
-							JSON.stringify( {
-								message: 'fsestudio_save',
-							} ),
-							'*'
-						);
-
-						if ( data.themeJsonModified ) {
+						if ( templateEditorIframe.current ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
-									message: 'fsestudio_themejson_changed',
+									message: 'fsestudio_save',
 								} ),
 								'*'
 							);
-						} else if ( data.styleJsonModified ) {
-							templateEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify( {
-									message: 'fsestudio_stylejson_changed',
-								} ),
-								'*'
-							);
+
+							if ( data.themeJsonModified ) {
+								templateEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message: 'fsestudio_themejson_changed',
+									} ),
+									'*'
+								);
+							} else if ( data.styleJsonModified ) {
+								templateEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message: 'fsestudio_stylejson_changed',
+									} ),
+									'*'
+								);
+							}
 						}
+
+						setThemeData( data.themeData );
+
+						if ( ! siteEditorDirty ) {
+							uponSuccessfulSave();
+						}
+
+						resolve( data );
 					}
-
-					setThemeData( data.themeData );
-
-					if ( ! siteEditorDirty ) {
-						uponSuccessfulSave();
-					}
-
-					resolve( data );
-				} );
+				);
 		} );
 	}
 
@@ -256,7 +263,7 @@ export default function useThemeData(
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => response.json() )
-				.then( ( data ) => {
+				.then( ( data: string ) => {
 					window.location.replace( data );
 					resolve( data );
 				} );
