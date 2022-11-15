@@ -298,9 +298,9 @@ export default function useThemeData(
 			[ topLevelSection, ...keys ] // Top level key with the array of keys.
 		)( jsonDataBody );
 
-		// If the current style is not default, save the variation data to the styles array.
-		// Otherwise, save the modifiedData to theme.json.
-		const dataToSave: Theme =
+		editTheme(
+			// If the current style is not default, save the variation data to the styles array.
+			// Otherwise, save the modifiedData to theme.json.
 			currentStyleVariationId.value !== defaultStyleName
 				? {
 						...themeData,
@@ -317,9 +317,8 @@ export default function useThemeData(
 				: {
 						...themeData,
 						theme_json_file: modifiedData,
-				  };
-
-		editTheme( dataToSave );
+				  }
+		);
 	}
 
 	function getThemeJsonValue(
