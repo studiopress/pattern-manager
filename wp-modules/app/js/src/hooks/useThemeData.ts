@@ -298,12 +298,8 @@ export default function useThemeData(
 			[ topLevelSection, ...keys ] // Top level key with the array of keys.
 		)( jsonDataBody );
 
-		/**
-		 * If the current style is not default, save the variation data to the styles array.
-		 * Otherwise, save the modifiedData to theme.json.
-		 *
-		 * Also, I hate the way prettier wants to format this ternary!
-		 */
+		// If the current style is not default, save the variation data to the styles array.
+		// Otherwise, save the modifiedData to theme.json.
 		const dataToSave: Theme =
 			currentStyleVariationId.value !== defaultStyleName
 				? {
