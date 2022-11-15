@@ -6,6 +6,7 @@ import useCurrentId from './hooks/useCurrentId';
 import useThemes from './hooks/useThemes';
 import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
+import { PatternType } from './enums';
 
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
@@ -55,7 +56,7 @@ export type InitialFseStudio = {
 };
 
 export type Pattern = {
-	type: 'pattern' | 'template' | 'template_part';
+	type: keyof typeof PatternType;
 	categories?: string[];
 	content: string;
 	name: string;
