@@ -24,8 +24,7 @@ export default function useThemeData(
 	currentStyleVariationId: InitialContext[ 'currentStyleVariationId' ],
 	patterns: ReturnType< typeof usePatterns >
 ) {
-	const { setSnackBarValue }: ReturnType< typeof useNotice > =
-		useNoticeContext();
+	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );

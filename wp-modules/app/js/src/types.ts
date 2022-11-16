@@ -1,12 +1,15 @@
 /* eslint-disable no-undef, camelcase */
 
 import React from 'react';
+import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
 import useThemes from './hooks/useThemes';
 import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
+
+export type NoticeContext = ReturnType< typeof useNotice >;
 
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
