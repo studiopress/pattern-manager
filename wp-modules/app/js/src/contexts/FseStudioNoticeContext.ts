@@ -1,4 +1,4 @@
 import { createContext } from '@wordpress/element';
-import { NoticeContext } from '../types';
+import type { NoticeContext } from '../types';
 
 export default createContext< NoticeContext | undefined >( undefined );
