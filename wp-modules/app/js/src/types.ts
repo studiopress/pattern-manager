@@ -56,7 +56,7 @@ export type InitialFseStudio = {
 };
 
 export type Pattern = {
-	type: keyof typeof PatternType;
+	type: PatternType;
 	categories?: string[];
 	content: string;
 	name: string;

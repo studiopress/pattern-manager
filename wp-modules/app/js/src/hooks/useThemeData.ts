@@ -14,7 +14,7 @@ import usePatterns from './usePatterns';
 import useStyleVariations from './useStyleVariations';
 
 import type { InitialContext, Pattern, Theme } from '../types';
-import { PatternType } from '../enums';
+import { ThemePatternType } from '../enums';
 
 export default function useThemeData(
 	themeId: InitialContext[ 'currentThemeId' ][ 'value' ],
@@ -362,18 +362,10 @@ export default function useThemeData(
 
 	function createPattern( patternData: Pattern ) {
 		return new Promise( ( resolve ) => {
-			if (
-				! Object.keys( PatternType ).includes(
-					patternData.type as PatternType
-				)
-			) {
-				return;
-			}
-
 			const newThemeData = {
 				...themeData,
-				[ PatternType[ patternData.type ] ]: {
-					...themeData[ PatternType[ patternData.type ] ],
+				[ ThemePatternType[ patternData.type ] ]: {
+					...themeData[ ThemePatternType[ patternData.type ] ],
 					[ patternData.name ]: patternData,
 				},
 			};
