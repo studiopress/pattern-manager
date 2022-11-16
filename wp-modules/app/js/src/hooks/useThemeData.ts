@@ -300,7 +300,7 @@ export default function useThemeData(
 		// Split the selector string at commas
 		const keys = selectorString.split( '.' );
 
-		const modifiedData: { [ key: string ]: unknown } = setNestedObject(
+		const modifiedData = setNestedObject(
 			value,
 			defaultValue,
 			[ topLevelSection, ...keys ] // Top level key with the array of keys.
