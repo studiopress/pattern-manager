@@ -1,5 +1,3 @@
-// @ts-check
-
 import { useEffect, useRef } from '@wordpress/element';
 
 export default function useMounted() {
