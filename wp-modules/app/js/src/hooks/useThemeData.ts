@@ -8,7 +8,6 @@ import convertToPascalCase from '../utils/convertToPascalCase';
 import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
-import useNotice from './useNotice';
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
 import useStyleVariations from './useStyleVariations';
