@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 // WP Dependencies.
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -7,8 +9,11 @@ import useStudioContext from '../../hooks/useStudioContext';
 // Components
 import ThemeTemplatePicker from '../ThemeTemplatePicker';
 
-/** @param {{isVisible: boolean}} props */
-export default function ThemeTemplateFiles( { isVisible } ) {
+type Props = {
+	isVisible: boolean;
+};
+
+export default function ThemeTemplateFiles( { isVisible }: Props ) {
 	const { currentTheme } = useStudioContext();
 	const [ currentTab, setCurrentTab ] = useState( 'templates' );
 
@@ -16,7 +21,9 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 		return '';
 	}
 
-	const standardTemplates = {
+	const standardTemplates: {
+		[ key: string ]: { title: string; description: string };
+	} = {
 		'front-page': {
 			title: __( 'Template: front-page.html', 'fse-studio' ),
 			description: __(
@@ -68,7 +75,9 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 		},
 	};
 
-	const standardTemplateParts = {
+	const standardTemplateParts: {
+		[ key: string ]: { title: string; description: string };
+	} = {
 		header: {
 			title: __( 'Template Part: header.html', 'fse-studio' ),
 			description: __(
@@ -177,7 +186,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 											<ThemeTemplatePicker
 												key={ templateName }
 												templateName={ templateName }
-												templateContent={
+												templateData={
 													currentTheme.data
 														?.template_files
 														? currentTheme.data
@@ -242,7 +251,7 @@ export default function ThemeTemplateFiles( { isVisible } ) {
 											<ThemeTemplatePicker
 												key={ templateName }
 												templateName={ templateName }
-												templateContent={
+												templateData={
 													currentTheme.data
 														?.template_parts
 														? currentTheme.data

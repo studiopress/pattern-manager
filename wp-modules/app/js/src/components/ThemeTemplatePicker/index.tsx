@@ -1,4 +1,4 @@
-/* eslint-disable jsdoc/valid-types */
+/* eslint-disable no-undef */
 
 import { __ } from '@wordpress/i18n';
 
@@ -8,22 +8,25 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 import { Icon, close, edit, plus } from '@wordpress/icons';
 
-/**
- * @param {{
- *  templateName: string,
- *  templateData: Object,
- *  standardTemplates: Object,
- *  existsInTheme: boolean,
- *  type: import('../../types').Pattern['type'],
- * }} props The component props.
- */
+import { Pattern } from '../../types';
+
+type Props = {
+	templateName: string;
+	templateData: { url: string };
+	standardTemplates: {
+		[ key: string ]: { title: string; description: string };
+	};
+	existsInTheme: boolean;
+	type: Pattern[ 'type' ];
+};
+
 export default function ThemeTemplatePicker( {
 	templateName,
 	templateData,
 	standardTemplates,
 	existsInTheme,
 	type,
-} ) {
+}: Props ) {
 	const { currentView, currentTheme, currentPatternId } = useStudioContext();
 
 	return (
