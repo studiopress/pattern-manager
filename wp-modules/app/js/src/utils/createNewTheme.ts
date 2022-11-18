@@ -3,15 +3,16 @@
  */
 import { v4 as uuidv4 } from 'uuid';
 
-export default function createNewTheme(
-	themes,
-	currentThemeId,
-	newThemeData = {}
-) {
-	const themeId = uuidv4();
+import type { InitialContext, Theme } from '../types';
 
-	/** @type {Partial<import('../types').Theme>} */
-	const defaultNewThemeData = {
+export default function createNewTheme(
+	themes: InitialContext[ 'themes' ],
+	currentThemeId: InitialContext[ 'currentThemeId' ],
+	newThemeData: Theme | undefined = undefined
+) {
+	const themeId: string = uuidv4();
+
+	const defaultNewThemeData: Theme = {
 		id: themeId,
 		name: '',
 		dirname: '',
