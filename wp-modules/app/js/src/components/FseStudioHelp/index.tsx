@@ -1,7 +1,12 @@
+/* eslint-disable no-undef */
+
 import { __ } from '@wordpress/i18n';
 
-/** @param {{visible: boolean}} props */
-export default function FseStudioHelp( { visible } ) {
+type Props = {
+	visible: boolean;
+};
+
+export default function FseStudioHelp( { visible }: Props ) {
 	return (
 		<div hidden={ ! visible } className="p-12">
 			<div className="max-w-7xl mx-auto bg-white shadow">

@@ -17,6 +17,8 @@ import switchThemeOnBackEnd from '../../utils/switchThemeOnBackEnd';
 import dropMenuIcon from '../../../../img/drop-arrow.svg';
 import dropMenuIconRight from '../../../../img/drop-arrow-right.svg';
 
+import type { Themes } from '../../types';
+
 export default function FseStudioNav() {
 	const {
 		currentView,
@@ -36,7 +38,7 @@ export default function FseStudioNav() {
 	 *
 	 * @param {string} message
 	 */
-	function maybePostWindowMessage( message ) {
+	function maybePostWindowMessage( message: string ) {
 		if ( patternEditorIframe?.current ) {
 			patternEditorIframe.current.contentWindow.postMessage(
 				JSON.stringify( {
@@ -60,7 +62,7 @@ export default function FseStudioNav() {
 	 * Hide if no themes are available.
 	 */
 	function MenuOpenTheme() {
-		const listMenuOptions = ( items ) => {
+		const listMenuOptions = ( items: Themes ) => {
 			return Object.keys( items ).map( ( key ) => {
 				const name =
 					currentThemeId?.value === key

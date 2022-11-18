@@ -1,8 +1,6 @@
-// @ts-check
-
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import FseStudioHelp from '../';
+import FseStudioHelp from '..';
 
 describe( 'FseStudioHelp', () => {
 	it( 'should have the right heading', () => {
