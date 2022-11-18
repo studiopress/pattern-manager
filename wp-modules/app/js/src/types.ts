@@ -96,7 +96,7 @@ export type Theme = {
 	author_uri: string;
 	description: string;
 	dirname: string;
-	included_patterns?: Patterns;
+	included_patterns?: Patterns | {};
 	requires_php: string;
 	requires_wp: string;
 	rest_route?: string;
