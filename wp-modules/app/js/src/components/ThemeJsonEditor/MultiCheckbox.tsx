@@ -1,14 +1,13 @@
-// @ts-check
+/* eslint-disable no-undef */
 
 import { CheckboxControl } from '@wordpress/components';
 
-/**
- * @param {{
- *  value?: Array,
- *  onChange: Function
- * }} props
- */
-export default function MultiCheckbox( { value = [], onChange } ) {
+type Props = {
+	value: string[];
+	onChange: ( arg: string[] ) => unknown;
+};
+
+export default function MultiCheckbox( { value = [], onChange }: Props ) {
 	const units = [ 'px', 'em', 'rem', 'vh', 'vw', '%' ];
 
 	return (

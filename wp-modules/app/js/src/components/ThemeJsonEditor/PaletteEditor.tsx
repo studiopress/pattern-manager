@@ -1,4 +1,4 @@
-// @ts-check
+/* eslint-disable no-undef */
 
 // WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
@@ -8,7 +8,16 @@ import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
-export default function PaletteEditor( { properties, schemaPosition } ) {
+type Props = {
+	properties: {
+		name: { [ key: string ]: string };
+		slug: { [ key: string ]: string };
+		color: { [ key: string ]: string };
+	};
+	schemaPosition: string;
+};
+
+export default function PaletteEditor( { properties, schemaPosition }: Props ) {
 	const [ popoverOpen, setPopoverOpen ] = useState( false );
 	const { currentTheme } = useStudioContext();
 	const inputId = useInstanceId( PaletteEditor );
@@ -17,17 +26,17 @@ export default function PaletteEditor( { properties, schemaPosition } ) {
 		'settings',
 		schemaPosition + '.name',
 		properties.name.type
-	);
+	) as string;
 	const slugValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.slug',
 		properties.slug.type
-	);
+	) as string;
 	const colorValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.color',
 		properties.color.type
-	);
+	) as string;
 
 	return (
 		<div className="bg-gray-100 p-5 rounded">

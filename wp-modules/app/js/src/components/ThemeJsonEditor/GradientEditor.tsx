@@ -1,4 +1,4 @@
-// @ts-check
+/* eslint-disable no-undef */
 
 // WP Dependencies
 import { CustomGradientPicker } from '@wordpress/components';
@@ -7,7 +7,19 @@ import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
-export default function GradientEditor( { properties, schemaPosition } ) {
+type Props = {
+	properties: {
+		name: { [ key: string ]: string };
+		slug: { [ key: string ]: string };
+		gradient: { [ key: string ]: string };
+	};
+	schemaPosition: string;
+};
+
+export default function GradientEditor( {
+	properties,
+	schemaPosition,
+}: Props ) {
 	const { currentTheme } = useStudioContext();
 	const inputId = useInstanceId( GradientEditor );
 
@@ -15,17 +27,17 @@ export default function GradientEditor( { properties, schemaPosition } ) {
 		'settings',
 		schemaPosition + '.name',
 		properties.name.type
-	);
+	) as string;
 	const slugValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.slug',
 		properties.slug.type
-	);
+	) as string;
 	const gradientValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.gradient',
 		properties.gradient.type
-	);
+	) as string;
 
 	return (
 		<div className="bg-gray-100 p-5 rounded">

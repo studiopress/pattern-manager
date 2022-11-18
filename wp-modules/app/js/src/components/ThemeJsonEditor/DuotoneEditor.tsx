@@ -1,4 +1,4 @@
-// @ts-check
+/* eslint-disable no-undef */
 
 // WP Dependencies
 import { ColorPicker, Popover } from '@wordpress/components';
@@ -8,7 +8,16 @@ import { __ } from '@wordpress/i18n';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
-export default function DuotoneEditor( { properties, schemaPosition } ) {
+type Props = {
+	properties: {
+		name: { [ key: string ]: string };
+		slug: { [ key: string ]: string };
+		colors: { [ key: string ]: unknown };
+	};
+	schemaPosition: string;
+};
+
+export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 	const [ popover1Open, setPopover1Open ] = useState( false );
 	const [ popover2Open, setPopover2Open ] = useState( false );
 	const { currentTheme } = useStudioContext();
@@ -18,22 +27,22 @@ export default function DuotoneEditor( { properties, schemaPosition } ) {
 		'settings',
 		schemaPosition + '.name',
 		properties.name.type
-	);
+	) as string;
 	const slugValue = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.slug',
 		properties.slug.type
-	);
+	) as string;
 	const color1Value = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.colors.0',
 		'string'
-	);
+	) as string;
 	const color2Value = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition + '.colors.1',
 		'string'
-	);
+	) as string;
 
 	return (
 		<div className="bg-gray-100 p-5 rounded">
