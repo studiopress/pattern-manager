@@ -1,6 +1,3 @@
-// WP Dependencies
-
-// @ts-check
 import { __ } from '@wordpress/i18n';
 
 // Hooks
