@@ -13,7 +13,7 @@ export default function useStyleVariations() {
 	const [ newStyleName, setNewStyleName ] = useState( '' );
 	const [ updateCurrentStyle, setUpdateCurrentStyle ] = useState( false );
 	const newStyleId = useRef( '' );
-	const defaultStyleName = 'default-style';
+	const defaultStyleName = useRef( currentStyleVariationId.value );
 
 	/**
 	 * This key is referenced by `Object.keys( defaultStyle )[0]` in most places the hook is used.
@@ -23,7 +23,7 @@ export default function useStyleVariations() {
 	 * @see useCurrentId currentStyleVariationId
 	 */
 	const defaultStyle = {
-		[ defaultStyleName ]: {
+		[ defaultStyleName.current ]: {
 			title: __( 'Default Style', 'fse-studio' ),
 			body: currentTheme?.data?.theme_json_file ?? {},
 		},
@@ -66,10 +66,10 @@ export default function useStyleVariations() {
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
 		const currentStyleBody =
-			currentStyleVariationId?.value === defaultStyleName
-				? defaultStyle[ defaultStyleName ].body
+			currentStyleVariationId?.value === defaultStyleName.current
+				? defaultStyle[ defaultStyleName.current ].body
 				: currentTheme?.data.styles[ currentStyleValue ]?.body ??
-				  defaultStyle[ defaultStyleName ].body;
+				  defaultStyle[ defaultStyleName.current ].body;
 
 		const newStyle = {
 			[ id ]: {

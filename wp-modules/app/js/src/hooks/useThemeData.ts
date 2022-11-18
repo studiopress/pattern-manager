@@ -10,7 +10,6 @@ import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
-import useStyleVariations from './useStyleVariations';
 
 import type { InitialContext, Pattern, Theme } from '../types';
 import { ThemePatternType } from '../enums';
@@ -28,6 +27,8 @@ export default function useThemeData(
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
+
+	const defaultStyleName = useRef( currentStyleVariationId.value );
 
 	function setThemeData( newThemeData: Theme ) {
 		const derivedThemeData =
@@ -51,8 +52,6 @@ export default function useThemeData(
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
-
-	const { defaultStyleName } = useStyleVariations();
 
 	/** Whether another theme also has the current theme name. */
 	function isNameTaken() {
@@ -279,7 +278,7 @@ export default function useThemeData(
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
 		const jsonDataBody =
-			currentStyleValue === defaultStyleName
+			currentStyleValue === defaultStyleName.current
 				? themeData.theme_json_file
 				: themeData.styles[ currentStyleValue ]?.body;
 
@@ -307,7 +306,7 @@ export default function useThemeData(
 		editTheme(
 			// If the current style is not default, save the variation data to the styles array.
 			// Otherwise, save the modifiedData to theme.json.
-			currentStyleVariationId.value !== defaultStyleName
+			currentStyleVariationId.value !== defaultStyleName.current
 				? {
 						...themeData,
 						styles: {
@@ -337,7 +336,7 @@ export default function useThemeData(
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
 		const currentStyleVariation =
-			currentStyleValue === defaultStyleName
+			currentStyleValue === defaultStyleName.current
 				? themeData.theme_json_file
 				: themeData?.styles[ currentStyleValue ]?.body ??
 				  // Edge case fallback: intermittent crash on switching themes.
