@@ -19,3 +19,8 @@ export enum ThemePatternType {
 }
 
 export type PatternType = keyof typeof ThemePatternType;
+
+export enum Tabs {
+	ThemeOverview,
+	EditThemeDetails,
+}

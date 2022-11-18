@@ -7,7 +7,7 @@ import useStudioContext from '../../hooks/useStudioContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 
 type Props = {
-	displayCancelButton: boolean;
+	displayCancelButton?: boolean;
 };
 
 export default function SaveTheme( { displayCancelButton }: Props ) {
