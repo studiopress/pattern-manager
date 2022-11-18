@@ -1,3 +1,7 @@
+/* eslint-disable no-unused-vars, no-undef */
+
+import React from 'react';
+
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -14,12 +18,15 @@ import { fsestudio } from '../../globals';
 // Utils
 import getNextPatternIds from '../../utils/getNextPatternIds';
 
-/** @param {{isVisible: boolean}} props */
-export default function ThemePatterns( { isVisible } ) {
+type Props = {
+	isVisible: boolean;
+};
+
+export default function ThemePatterns( { isVisible }: Props ) {
 	const { currentTheme, currentView, currentPatternId } = useStudioContext();
 
 	if ( ! isVisible || ! currentTheme.data ) {
-		return '';
+		return null;
 	}
 
 	return (

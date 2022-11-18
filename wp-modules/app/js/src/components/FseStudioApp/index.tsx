@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
  * Fse Studio
  */
@@ -37,8 +38,9 @@ import FseStudioHelp from '../FseStudioHelp';
 import GettingStarted from '../GettingStarted';
 import FseStudioNav from '../FseStudioNav';
 
+import type { InitialContext, Pattern } from '../../types';
+
 export default function FseStudioApp() {
-	/** @type {ReturnType<import('../../hooks/useNotice').default>} */
 	const providerValue = useSnackbar();
 
 	return (
@@ -55,7 +57,7 @@ function FseStudioContextHydrator() {
 	const themes = useThemes( fsestudio.themes );
 	const patterns = usePatterns();
 
-	const currentStyleVariationId = useCurrentId( 'default-style' );
+	const currentStyleVariationId = useCurrentId( 'default-style' ); // Initial value also used as defaultStyleName.
 	const currentThemeId = useCurrentId( fsestudio.initialTheme );
 	const currentTheme = useThemeData(
 		currentThemeId.value,
@@ -68,7 +70,7 @@ function FseStudioContextHydrator() {
 
 	const currentPatternId = useCurrentId( '' );
 
-	let currentPattern = null;
+	let currentPattern: Pattern | null = null;
 
 	if ( currentPatternId?.value ) {
 		// If the pattern name is found in the theme's included_patterns object.
@@ -100,8 +102,7 @@ function FseStudioContextHydrator() {
 		}
 	}
 
-	/** @type {import('../../types').InitialContext} */
-	const providerValue = {
+	const providerValue: InitialContext = {
 		currentView,
 		currentPatternId,
 		currentPattern,
@@ -125,7 +126,6 @@ function FseStudioContextHydrator() {
 }
 
 function FseStudio() {
-	// @ts-ignore
 	const { currentView, currentTheme } = useStudioContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
