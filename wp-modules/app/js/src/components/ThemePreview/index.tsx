@@ -1,6 +1,6 @@
-// WP Dependencies
+/* eslint-disable no-unused-vars, no-undef */
 
-// @ts-check
+// WP Dependencies
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
@@ -10,8 +10,11 @@ import useStudioContext from '../../hooks/useStudioContext';
 // Globals
 import { fsestudio } from '../../globals';
 
-/** @param {{isVisible: boolean}} props */
-export default function ThemePreview( { isVisible } ) {
+type Props = {
+	isVisible: boolean;
+};
+
+export default function ThemePreview( { isVisible }: Props ) {
 	const { currentView, currentTheme } = useStudioContext();
 	const [ currentUrl, setCurrentUrl ] = useState( fsestudio.siteUrl );
 
