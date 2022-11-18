@@ -1,19 +1,22 @@
+/* eslint-disable no-undef */
+
 import React from 'react';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
-/**
- * @param {{
- *  url: string,
- *  scale: number,
- * }} props
- */
-export default function PatternPreview( { url, scale } ) {
+
+type Props = {
+	url: string;
+	scale: number;
+};
+
+export default function PatternPreview( { url, scale }: Props ) {
 	const { patterns } = useStudioContext();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
 		useState( 10 );
-	/** @type {[HTMLIFrameElement|undefined, React.Dispatch<React.SetStateAction<HTMLIFrameElement|undefined>>]} */
-	const [ iframeRef, setIframeRef ] = useState();
+	const [ iframeRef, setIframeRef ] = useState<
+		HTMLIFrameElement | undefined
+	>( undefined );
 	patterns?.addRef( url, iframeRef );
 	const scaleMultiplier = 10 / ( scale * 10 );
 
