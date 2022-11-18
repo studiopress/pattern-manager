@@ -14,7 +14,7 @@ export type NoticeContext = ReturnType< typeof useNotice >;
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
-	currentPattern: ReturnType< typeof useThemes >;
+	currentPattern: Pattern;
 	themes: ReturnType< typeof useThemes >;
 	currentThemeId: ReturnType< typeof useCurrentId >;
 	currentTheme: ReturnType< typeof useThemeData >;
