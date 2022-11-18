@@ -1,11 +1,17 @@
+/* eslint-disable no-undef */
+
 import { useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import useStudioContext from '../../hooks/useStudioContext';
 import ThemeDetails from './ThemeDetails';
 
-export default function CreateThemeForm( { children } ) {
+type Props = {
+	children: React.ReactChild;
+};
+
+export default function CreateThemeForm( { children }: Props ) {
 	const { currentTheme } = useStudioContext();
-	const fieldRef = useRef( null );
+	const fieldRef = useRef< HTMLInputElement >( null );
 
 	useEffect( () => {
 		fieldRef.current.focus();

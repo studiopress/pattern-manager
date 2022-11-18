@@ -1,11 +1,16 @@
+/* eslint-disable no-undef */
+
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
 
 import useStudioContext from '../../hooks/useStudioContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 
-/** @param {{displayCancelButton: boolean}} props */
-export default function SaveTheme( { displayCancelButton } ) {
+type Props = {
+	displayCancelButton: boolean;
+};
+
+export default function SaveTheme( { displayCancelButton }: Props ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
 		useStudioContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();

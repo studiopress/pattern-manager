@@ -1,13 +1,18 @@
+/* eslint-disable no-undef */
+
 import React from 'react';
 
-/**
- * @param {{
- *  children: React.ReactChildren,
- *  description: string,
- *  heading: string
- * }} props
- */
-export default function ViewContainer( { children, description, heading } ) {
+type Props = {
+	children: JSX.Element | React.ReactChildren;
+	description: string;
+	heading: string;
+};
+
+export default function ViewContainer( {
+	children,
+	description,
+	heading,
+}: Props ) {
 	return (
 		<div className="flex-1">
 			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
