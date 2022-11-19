@@ -54,7 +54,17 @@ export type InitialFseStudio = {
 	adminUrl: string;
 	themes: Themes;
 	schemas: {
-		[ key: string ]: { [ key: string ]: { [ key: string ]: unknown } | [] };
+		themejson: {
+			definitions: {
+				settingsPropertiesComplete: {
+					allOf: {
+						properties: {
+							[ key: string ]: unknown;
+						};
+					}[];
+				};
+			};
+		};
 	};
 };
 
