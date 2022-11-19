@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 // WP Dependencies.
 import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
@@ -11,13 +13,13 @@ import ThemeCreatedNotice from './ThemeCreatedNotice';
 import ThemeDetails from '../Common/ThemeDetails';
 import ThemeOverview from './ThemeOverview';
 
-const Tabs = {
-	ThemeOverview: 0,
-	EditThemeDetails: 1,
+import { Tabs } from '../../enums';
+
+type Props = {
+	isVisible: boolean;
 };
 
-/** @param {{isVisible: boolean}} props */
-export default function ThemeSetup( { isVisible } ) {
+export default function ThemeSetup( { isVisible }: Props ) {
 	const { currentTheme } = useStudioContext();
 	const { displayThemeCreatedNotice } = useNoticeContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );

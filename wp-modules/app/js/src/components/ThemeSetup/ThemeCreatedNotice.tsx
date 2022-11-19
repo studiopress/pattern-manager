@@ -1,4 +1,4 @@
-/* eslint-disable react/no-unknown-property */
+/* eslint-disable no-undef */
 
 import { useEffect, useRef } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
@@ -9,7 +9,7 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 export default function ThemeCreatedNotice() {
 	const { currentView } = useStudioContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();
-	const buttonRef = useRef( null );
+	const buttonRef = useRef< HTMLButtonElement | null >( null );
 
 	useEffect( () => {
 		buttonRef.current.focus();
