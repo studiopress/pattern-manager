@@ -44,11 +44,13 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 
 	// Populate options for the style variations dropdown.
 	function styleSelectorOptions() {
-		return Object.keys( styleVariations ).map( ( id, index ) => (
-			<option key={ index } value={ id }>
-				{ styleVariations[ id ]?.title }
-			</option>
-		) );
+		return Object.entries( styleVariations ).map(
+			( [ id, variation ], index ) => (
+				<option key={ index } value={ id }>
+					{ variation.title }
+				</option>
+			)
+		);
 	}
 
 	/**
