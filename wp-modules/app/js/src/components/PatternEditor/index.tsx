@@ -127,7 +127,7 @@ export function BlockEditor() {
 	}, [ currentPatternId?.value, patternEditorIframe ] );
 
 	function setInitialData(
-		iframeRef: React.MutableRefObject< HTMLIFrameElement | undefined >
+		iframeRef: React.MutableRefObject< HTMLIFrameElement >
 	) {
 		iframeRef?.current.contentWindow.postMessage(
 			JSON.stringify( {
