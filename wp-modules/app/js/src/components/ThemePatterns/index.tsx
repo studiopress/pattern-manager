@@ -72,7 +72,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 									</div>
 								) : null }
 								{ Object.entries(
-									currentTheme?.data?.included_patterns ?? {}
+									currentTheme?.data?.included_patterns
 								).map( ( [ patternName, patternData ] ) => {
 									return (
 										<div
