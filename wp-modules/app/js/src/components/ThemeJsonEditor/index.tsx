@@ -475,7 +475,7 @@ function SettingsView( { isVisible } ) {
 						key={ propertyName }
 						isVisible={ currentView === setting }
 						properties={ settings[ setting ].properties }
-						schemaPosition={ '' }
+						schemaPosition=""
 						topLevelSettingName={ setting }
 					/>
 				);
