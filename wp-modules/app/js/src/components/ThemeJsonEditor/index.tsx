@@ -42,23 +42,13 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 		...currentTheme?.data?.styles,
 	};
 
-	/**
-	 * Populate options to render in the style variations dropdown.
-	 *
-	 * @return {Array} The array of rendered styles.
-	 */
+	// Populate options for the style variations dropdown.
 	function styleSelectorOptions() {
-		const renderedStyles = [];
-
-		Object.keys( styleVariations ).forEach( ( id, index ) => {
-			renderedStyles.push(
-				<option key={ index } value={ id }>
-					{ styleVariations[ id ]?.title }
-				</option>
-			);
-		} );
-
-		return renderedStyles;
+		return Object.keys( styleVariations ).map( ( id, index ) => (
+			<option key={ index } value={ id }>
+				{ styleVariations[ id ]?.title }
+			</option>
+		) );
 	}
 
 	/**
