@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 type Props = {
-	children: JSX.Element | React.ReactChildren;
+	children: ReactNode;
 	description: string;
 	heading: string;
 };
