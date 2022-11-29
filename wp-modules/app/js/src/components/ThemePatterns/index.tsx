@@ -74,96 +74,101 @@ export default function ThemePatterns( { isVisible }: Props ) {
 								) : null }
 								{ Object.entries(
 									currentTheme?.data?.included_patterns ?? {}
-								).map( ( [ patternName, patternData ]: [ string, Partial< Pattern > ] ) => {
-									return (
-										<div
-											key={ patternName }
-											className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
-										>
-											<button
-												type="button"
-												className="absolute top-2 right-2 z-50"
-												aria-label={ __(
-													'Delete pattern',
-													'fse-studio'
-												) }
-												onClick={ () => {
-													currentTheme.deletePattern(
-														patternName
-													);
-												} }
+								).map(
+									( [ patternName, patternData ]: [
+										string,
+										Partial< Pattern >
+									] ) => {
+										return (
+											<div
+												key={ patternName }
+												className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
 											>
-												<Icon
-													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-													icon={ close }
-													size={ 30 }
-												/>
-											</button>
-											<button
-												type="button"
-												className="absolute top-2 left-2 z-50"
-												aria-label={ __(
-													'Edit Pattern',
-													'fse-studio'
-												) }
-												onClick={ () => {
-													currentPatternId.set(
-														patternName
-													);
-													currentView.set(
-														'pattern_editor'
-													);
-												} }
-											>
-												<Icon
-													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-													icon={ edit }
-													size={ 30 }
-												/>
-											</button>
+												<button
+													type="button"
+													className="absolute top-2 right-2 z-50"
+													aria-label={ __(
+														'Delete pattern',
+														'fse-studio'
+													) }
+													onClick={ () => {
+														currentTheme.deletePattern(
+															patternName
+														);
+													} }
+												>
+													<Icon
+														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+														icon={ close }
+														size={ 30 }
+													/>
+												</button>
+												<button
+													type="button"
+													className="absolute top-2 left-2 z-50"
+													aria-label={ __(
+														'Edit Pattern',
+														'fse-studio'
+													) }
+													onClick={ () => {
+														currentPatternId.set(
+															patternName
+														);
+														currentView.set(
+															'pattern_editor'
+														);
+													} }
+												>
+													<Icon
+														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+														icon={ edit }
+														size={ 30 }
+													/>
+												</button>
 
-											<button
-												type="button"
-												className="absolute bottom-16 left-2 z-50"
-												aria-label={ __(
-													'Duplicate Pattern',
-													'fse-studio'
-												) }
-												onClick={ () => {
-													currentPatternId.set(
-														patternName
-													);
-													currentView.set(
-														'pattern_editor'
-													);
-												} }
-											>
-												<Icon
-													className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-													icon={ plus }
-													size={ 30 }
-												/>
-											</button>
+												<button
+													type="button"
+													className="absolute bottom-16 left-2 z-50"
+													aria-label={ __(
+														'Duplicate Pattern',
+														'fse-studio'
+													) }
+													onClick={ () => {
+														currentPatternId.set(
+															patternName
+														);
+														currentView.set(
+															'pattern_editor'
+														);
+													} }
+												>
+													<Icon
+														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
+														icon={ plus }
+														size={ 30 }
+													/>
+												</button>
 
-											<div className="p-3 flex flex-grow items-center z-0">
-												<PatternPreview
-													key={ patternName }
-													url={
-														fsestudio.siteUrl +
-														'?fsestudio_pattern_preview=' +
-														patternData.name
-													}
-													scale={ 0.2 }
-												/>
+												<div className="p-3 flex flex-grow items-center z-0">
+													<PatternPreview
+														key={ patternName }
+														url={
+															fsestudio.siteUrl +
+															'?fsestudio_pattern_preview=' +
+															patternData.name
+														}
+														scale={ 0.2 }
+													/>
+												</div>
+												<div>
+													<h2 className="text-sm bg-white p-4 rounded-b">
+														{ patternData.title }
+													</h2>
+												</div>
 											</div>
-											<div>
-												<h2 className="text-sm bg-white p-4 rounded-b">
-													{ patternData.title }
-												</h2>
-											</div>
-										</div>
-									);
-								} ) }
+										);
+									}
+								) }
 							</div>
 						</>
 					</div>
