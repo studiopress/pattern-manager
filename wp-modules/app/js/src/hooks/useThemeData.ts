@@ -330,7 +330,7 @@ export default function useThemeData(
 		topLevelSection = 'settings',
 		selectorString: string,
 		defaultValue: unknown = undefined
-	): unknown {
+	) {
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
 		// Use theme_json_file if current style variation is default.
