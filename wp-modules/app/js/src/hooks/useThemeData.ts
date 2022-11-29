@@ -388,7 +388,7 @@ export default function useThemeData(
 		const {
 			[ patternName ]: {},
 			...newIncludedPatterns
-		} = themeData.included_patterns as Patterns ?? {};
+		} = ( themeData.included_patterns as Patterns ) ?? {};
 
 		setThemeData( {
 			...themeData,
