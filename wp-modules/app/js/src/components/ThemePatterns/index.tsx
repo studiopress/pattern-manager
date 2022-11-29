@@ -17,6 +17,7 @@ import { fsestudio } from '../../globals';
 
 // Utils
 import getNextPatternIds from '../../utils/getNextPatternIds';
+import { Pattern } from '../../types';
 
 type Props = {
 	isVisible: boolean;
@@ -72,8 +73,8 @@ export default function ThemePatterns( { isVisible }: Props ) {
 									</div>
 								) : null }
 								{ Object.entries(
-									currentTheme?.data?.included_patterns
-								).map( ( [ patternName, patternData ] ) => {
+									currentTheme?.data?.included_patterns ?? {}
+								).map( ( [ patternName, patternData ]: [ string, Partial< Pattern > ] ) => {
 									return (
 										<div
 											key={ patternName }
