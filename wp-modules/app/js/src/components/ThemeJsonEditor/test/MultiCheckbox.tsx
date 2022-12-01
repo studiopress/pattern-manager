@@ -3,7 +3,6 @@
 import { useState } from '@wordpress/element';
 import { fireEvent, render, screen } from '@testing-library/react';
 import MultiCheckbox from '../MultiCheckbox';
-import { ButtonHTMLAttributes } from 'react';
 
 function Container( { initialValue } ) {
 	const [ checkboxValue, setCheckboxValue ] = useState( initialValue );
