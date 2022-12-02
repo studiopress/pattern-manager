@@ -1,3 +1,5 @@
+/* eslint-disable no-undef, no-unused-vars, jsdoc/check-param-names, jsdoc/require-param, jsdoc/require-param-type, jsdoc/require-returns-type */
+
 /**
  * Entire file forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/8029f73ff0d4066a5d3fd72fb5a7cff9b6a05b7e/packages/block-editor/src/components/inserter/index.js
  */
@@ -7,20 +9,30 @@
  */
 import { deburr, differenceWith, words } from 'lodash';
 
+type Item = {
+	type?: string;
+	name?: string;
+	title: string;
+	description?: string;
+	keywords?: string[];
+	category?: string;
+	collection?: unknown[];
+};
+
 // Default search helpers
-const defaultGetType = ( item ) => item.type || '';
-const defaultGetName = ( item ) => item.name || '';
-const defaultGetTitle = ( item ) => item.title;
-const defaultGetDescription = ( item ) => item.description || '';
-const defaultGetKeywords = ( item ) => item.keywords || [];
-const defaultGetCategory = ( item ) => item.category;
-const defaultGetCollection = () => null;
+const defaultGetType = ( item: Item ) => item.type || '';
+const defaultGetName = ( item: Item ) => item.name || '';
+const defaultGetTitle = ( item: Item ) => item.title;
+const defaultGetDescription = ( item: Item ) => item.description || '';
+const defaultGetKeywords = ( item: Item ) => item.keywords || [];
+const defaultGetCategory = ( item: Item ) => item.category;
+const defaultGetCollection = < T extends Item >( T ): null => null;
 
 /**
  * Sanitizes the search input string.
  *
- * @param {string} [input] The search input to normalize.
- * @return {string} The normalized search input.
+ * @param  input The search input to normalize.
+ * @return       The normalized search input.
  */
 function normalizeSearchInput( input = '' ) {
 	// Disregard diacritics.
@@ -41,15 +53,18 @@ function normalizeSearchInput( input = '' ) {
 /**
  * Converts the search term into a list of normalized terms.
  *
- * @param {string} [input] The search term to normalize.
- * @return {string[]} The normalized list of search terms.
+ * @param  input The search term to normalize.
+ * @return      The normalized list of search terms.
  */
 function getNormalizedSearchTerms( input = '' ) {
 	// Extract words.
 	return words( normalizeSearchInput( input ) );
 }
 
-function removeMatchingTerms( unmatchedTerms, unprocessedTerms ) {
+function removeMatchingTerms(
+	unmatchedTerms: string[],
+	unprocessedTerms: string
+) {
 	return differenceWith(
 		unmatchedTerms,
 		getNormalizedSearchTerms( unprocessedTerms ),
@@ -61,16 +76,16 @@ function removeMatchingTerms( unmatchedTerms, unprocessedTerms ) {
 /**
  * Filters an item list given a search term.
  *
- * @param {Array}  [items]       Item list
- * @param {string} [searchInput] Search input.
- * @param {Object} [config]      Search Config.
- * @return {Array} Filtered item list.
+ * @param  items       Item list
+ * @param  searchInput Search input.
+ * @param  config      Search Config.
+ * @return            Filtered item list.
  */
 export default function searchItems(
-	items = [],
+	items: Item[] = [],
 	searchInput = '',
-	config = {}
-) {
+	config: { [ key: string ]: unknown } = {}
+): unknown[] {
 	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
 	if ( normalizedSearchTerms.length === 0 ) {
 		return items;
@@ -82,7 +97,10 @@ export default function searchItems(
 		} )
 		.filter( ( [ , rank ] ) => rank > 0 );
 
-	rankedItems.sort( ( [ , rank1 ], [ , rank2 ] ) => rank2 - rank1 );
+	rankedItems.sort(
+		( [ , rank1 ]: number[], [ , rank2 ]: number[] ) => rank2 - rank1
+	);
+
 	return rankedItems.map( ( [ item ] ) => item );
 }
 
@@ -91,12 +109,24 @@ export default function searchItems(
  * The better the match, the higher the rank.
  * If the rank equals 0, it should be excluded from the results.
  *
- * @param {Object} item       Item to filter.
- * @param {string} searchTerm Search term.
- * @param {Object} [config]   Search Config.
- * @return {number} Search Rank.
+ * @param  item       Item to filter.
+ * @param  searchTerm Search term.
+ * @param  config     Search Config.
+ * @return           Search Rank.
  */
-function getItemSearchRank( item, searchTerm, config = {} ) {
+function getItemSearchRank(
+	item: Item,
+	searchTerm: string,
+	config: {
+		getType?: () => string;
+		getName?: () => string;
+		getTitle?: () => string;
+		getDescription?: () => string;
+		getKeywords?: () => string[];
+		getCategory?: () => string;
+		getCollection?: () => null;
+	} = {}
+) {
 	const {
 		getType = defaultGetType,
 		getName = defaultGetName,
