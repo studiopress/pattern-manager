@@ -1,13 +1,14 @@
-/** @param {string} name */
-function capitalize( name ) {
+/* eslint-disable jsdoc/require-param-type, jsdoc/require-returns-type */
+
+function capitalize( name: string ) {
 	return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }
 
 /**
  * Converts a string to a Upper Case.
  *
- * @param {string} [toConvert] The string to convert, like 'exampleHere'.
- * @return {string} The string in Upper Case, like 'Example Here'.
+ * @param  toConvert The string to convert, like 'exampleHere'.
+ * @return The string in Upper Case, like 'Example Here'.
  */
 export default function convertToUpperCase( toConvert = '' ) {
 	return capitalize(
