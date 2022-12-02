@@ -1,8 +1,7 @@
 import { fsestudio } from '../globals';
 import getHeaders from './getHeaders';
 
-/** @param {string} newThemeSlug */
-export default async function switchThemeOnBackEnd( newThemeSlug ) {
+export default async function switchThemeOnBackEnd( newThemeSlug: string ) {
 	await fetch( fsestudio.apiEndpoints.switchThemeEndpoint, {
 		method: 'POST',
 		headers: getHeaders(),
