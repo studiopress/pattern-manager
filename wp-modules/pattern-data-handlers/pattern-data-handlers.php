@@ -576,7 +576,7 @@ function move_block_images_to_theme( $pattern_html ) {
 		if ( 200 !== absint( $response ) ) {
 			continue;
 		}
-		
+
 		$type = wp_remote_retrieve_header( $url_details, 'Content-Type' );
 
 		// Skip URLs that are not images by checking the content-type contains "image" (image/png, image/jpg, etc).
