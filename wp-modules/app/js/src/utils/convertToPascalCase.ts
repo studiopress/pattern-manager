@@ -7,7 +7,7 @@ function capitalize( name: string ) {
 /**
  * Converts a string to a PascalCase.
  *
- * @param  toConvert The string to convert to a slug like 'example here'.
+ * @param  toConvert The string to convert, like 'example here'.
  * @return The string in PascalCase, like 'ExampleHere'.
  */
 export default function convertToPascalCase( toConvert = '' ) {
