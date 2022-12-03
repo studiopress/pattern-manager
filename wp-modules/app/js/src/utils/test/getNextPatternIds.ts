@@ -1,3 +1,4 @@
+import { Patterns } from '../../types';
 import getNextPatternIds from '../getNextPatternIds';
 
 describe( 'getNextPatternIds', () => {
@@ -86,14 +87,29 @@ describe( 'getNextPatternIds', () => {
 		],
 	] )(
 		'using default field param, should return new pattern title and slug',
-		( pattern, expected ) => {
-			expect( getNextPatternIds( pattern ) ).toEqual( expected );
+		(
+			patterns: Patterns,
+			expected: {
+				patternNumber: number;
+				patternTitle: string;
+				patternSlug: string;
+			}
+		) => {
+			expect( getNextPatternIds( patterns ) ).toEqual( expected );
 		}
 	);
 
 	it.each( [
 		[
-			{ pattern: { title: 'Abc Def' } },
+			{
+				pattern: {
+					title: 'Abc Def',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+			},
 			{
 				patternNumber: 0,
 				patternTitle: 'My New Pattern',
@@ -101,7 +117,15 @@ describe( 'getNextPatternIds', () => {
 			},
 		],
 		[
-			{ pattern: { title: 'My New Pattern' } },
+			{
+				pattern: {
+					title: 'My New Pattern',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+			},
 			{
 				patternNumber: 1,
 				patternTitle: 'My New Pattern 1',
@@ -109,7 +133,15 @@ describe( 'getNextPatternIds', () => {
 			},
 		],
 		[
-			{ pattern: { title: 'My New Pattern 22' } },
+			{
+				pattern: {
+					title: 'My New Pattern 22',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+			},
 			{
 				patternNumber: 23,
 				patternTitle: 'My New Pattern 23',
@@ -118,9 +150,27 @@ describe( 'getNextPatternIds', () => {
 		],
 		[
 			{
-				pattern: { title: 'My New Pattern' },
-				pattern1: { title: 'My New Pattern 2' },
-				pattern2: { title: 'My New Pattern 3' },
+				pattern: {
+					title: 'My New Pattern',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern1: {
+					title: 'My New Pattern 2',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern2: {
+					title: 'My New Pattern 3',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
 			},
 			{
 				patternNumber: 4,
@@ -130,9 +180,27 @@ describe( 'getNextPatternIds', () => {
 		],
 		[
 			{
-				pattern: { title: 'My New Pattern' },
-				pattern1: { title: 'My New Pattern 2' },
-				pattern2: { title: 'Some Other Pattern 3' },
+				pattern: {
+					title: 'My New Pattern',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern1: {
+					title: 'My New Pattern 2',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern2: {
+					title: 'Some Other Pattern 3',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
 			},
 			{
 				patternNumber: 3,
@@ -142,9 +210,27 @@ describe( 'getNextPatternIds', () => {
 		],
 		[
 			{
-				pattern: { title: 'My New Pattern' },
-				pattern1: { title: 'My New Pattern 2' },
-				pattern2: { title: 'My New Pattern 3 1' },
+				pattern: {
+					title: 'My New Pattern',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern1: {
+					title: 'My New Pattern 2',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern2: {
+					title: 'My New Pattern 3 1',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
 			},
 			{
 				patternNumber: 3,
@@ -154,10 +240,34 @@ describe( 'getNextPatternIds', () => {
 		],
 		[
 			{
-				pattern: { title: 'My New Pattern' },
-				pattern1: { title: 'My New Pattern 2' },
-				pattern2: { title: 'My New Pattern 3' },
-				pattern3: { title: 'My New Pattern 3 1' },
+				pattern: {
+					title: 'My New Pattern',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern1: {
+					title: 'My New Pattern 2',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern2: {
+					title: 'My New Pattern 3',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
+				pattern3: {
+					title: 'My New Pattern 3 1',
+					type: 'pattern',
+					content: '',
+					name: '',
+					slug: '',
+				},
 			},
 			{
 				patternNumber: 4,
@@ -167,26 +277,34 @@ describe( 'getNextPatternIds', () => {
 		],
 	] )(
 		'using title as field param, should return new pattern title and slug',
-		( pattern, expected ) => {
+		(
+			patterns,
+			expected: {
+				patternNumber: number;
+				patternTitle: string;
+				patternSlug: string;
+			}
+		) => {
 			expect(
-				getNextPatternIds( pattern, 'title', 'My New Pattern' )
+				getNextPatternIds(
+					patterns as Patterns,
+					'title',
+					'My New Pattern'
+				)
 			).toEqual( expected );
 		}
 	);
 
 	it.each( [
 		[
-			{ pattern: { slug: 'some-pattern-44' } },
 			{
-				patternNumber: 1,
-				patternTitle: 'Some Pattern 44 1',
-				patternSlug: 'some-pattern-44-1',
-			},
-		],
-		[
-			{
-				pattern: { slug: 'some-pattern' },
-				pattern1: { slug: 'some-pattern-44' },
+				pattern: {
+					slug: 'some-pattern-44',
+					type: 'pattern',
+					content: '',
+					name: '',
+					title: '',
+				},
 			},
 			{
 				patternNumber: 1,
@@ -196,9 +314,50 @@ describe( 'getNextPatternIds', () => {
 		],
 		[
 			{
-				pattern: { slug: 'some-pattern-44' },
-				pattern1: { slug: 'some-pattern-44-1' },
-				pattern2: { slug: 'some-pattern-44-2' },
+				pattern: {
+					slug: 'some-pattern',
+					type: 'pattern',
+					content: '',
+					name: '',
+					title: '',
+				},
+				pattern1: {
+					slug: 'some-pattern-44',
+					type: 'pattern',
+					content: '',
+					name: '',
+					title: '',
+				},
+			},
+			{
+				patternNumber: 1,
+				patternTitle: 'Some Pattern 44 1',
+				patternSlug: 'some-pattern-44-1',
+			},
+		],
+		[
+			{
+				pattern: {
+					slug: 'some-pattern-44',
+					type: 'pattern',
+					content: '',
+					name: '',
+					title: '',
+				},
+				pattern1: {
+					slug: 'some-pattern-44-1',
+					type: 'pattern',
+					content: '',
+					name: '',
+					title: '',
+				},
+				pattern2: {
+					slug: 'some-pattern-44-2',
+					type: 'pattern',
+					content: '',
+					name: '',
+					title: '',
+				},
 			},
 			{
 				patternNumber: 3,
@@ -208,9 +367,20 @@ describe( 'getNextPatternIds', () => {
 		],
 	] )(
 		'using custom base param, should return new pattern title and slug',
-		( pattern, expected ) => {
+		(
+			patterns,
+			expected: {
+				patternNumber: number;
+				patternTitle: string;
+				patternSlug: string;
+			}
+		) => {
 			expect(
-				getNextPatternIds( pattern, 'slug', 'some-pattern-44' )
+				getNextPatternIds(
+					patterns as Patterns,
+					'slug',
+					'some-pattern-44'
+				)
 			).toEqual( expected );
 		}
 	);
