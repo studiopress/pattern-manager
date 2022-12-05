@@ -1,8 +1,16 @@
+/* eslint-disable no-undef */
+
 import { Patterns } from '../../types';
 import getNextPatternIds from '../getNextPatternIds';
 
+type Expected = {
+	patternNumber: number;
+	patternTitle: string;
+	patternSlug: string;
+};
+
 describe( 'getNextPatternIds', () => {
-	it.each( [
+	it.each< [ {} | Patterns, Expected ] >( [
 		[
 			{},
 			{
@@ -87,19 +95,12 @@ describe( 'getNextPatternIds', () => {
 		],
 	] )(
 		'using default field param, should return new pattern title and slug',
-		(
-			patterns: Patterns,
-			expected: {
-				patternNumber: number;
-				patternTitle: string;
-				patternSlug: string;
-			}
-		) => {
+		( patterns, expected ) => {
 			expect( getNextPatternIds( patterns ) ).toEqual( expected );
 		}
 	);
 
-	it.each( [
+	it.each< [ Patterns, Expected ] >( [
 		[
 			{
 				pattern: {
@@ -277,25 +278,14 @@ describe( 'getNextPatternIds', () => {
 		],
 	] )(
 		'using title as field param, should return new pattern title and slug',
-		(
-			patterns,
-			expected: {
-				patternNumber: number;
-				patternTitle: string;
-				patternSlug: string;
-			}
-		) => {
+		( patterns, expected ) => {
 			expect(
-				getNextPatternIds(
-					patterns as Patterns,
-					'title',
-					'My New Pattern'
-				)
+				getNextPatternIds( patterns, 'title', 'My New Pattern' )
 			).toEqual( expected );
 		}
 	);
 
-	it.each( [
+	it.each< [ Patterns, Expected ] >( [
 		[
 			{
 				pattern: {
@@ -367,20 +357,9 @@ describe( 'getNextPatternIds', () => {
 		],
 	] )(
 		'using custom base param, should return new pattern title and slug',
-		(
-			patterns,
-			expected: {
-				patternNumber: number;
-				patternTitle: string;
-				patternSlug: string;
-			}
-		) => {
+		( patterns, expected ) => {
 			expect(
-				getNextPatternIds(
-					patterns as Patterns,
-					'slug',
-					'some-pattern-44'
-				)
+				getNextPatternIds( patterns, 'slug', 'some-pattern-44' )
 			).toEqual( expected );
 		}
 	);
