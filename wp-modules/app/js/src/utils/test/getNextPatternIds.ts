@@ -10,7 +10,7 @@ type Expected = {
 };
 
 describe( 'getNextPatternIds', () => {
-	it.each< [ {} | Patterns, Expected ] >( [
+	it.each< [ Patterns, Expected ] >( [
 		[
 			{},
 			{

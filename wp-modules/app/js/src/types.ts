@@ -89,9 +89,11 @@ export type Pattern = {
 	viewportWidth?: string | number;
 };
 
-export type Patterns = {
-	[ key: string ]: Pattern;
-};
+export type Patterns =
+	| {}
+	| {
+			[ key: string ]: Pattern;
+	  };
 
 export type Style = {
 	id: string;
