@@ -59,6 +59,8 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - node/install:
+          node-version: '14'
       - node/install-packages:
           app-dir: *PLUGIN_PATH
       - run:

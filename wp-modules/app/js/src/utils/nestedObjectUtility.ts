@@ -44,7 +44,6 @@ export function setNestedObject(
 	 *
 	 * @param {Object|Array} object The object to clone.
 	 * @param {Array}        keys   The destructured keys.
-	 * @return {Object} The new, updated object.
 	 */
 	return function recursiveUpdate(
 		object: unknown[] | {},
