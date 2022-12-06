@@ -21,9 +21,7 @@ export default function ThemeTemplateFiles( { isVisible }: Props ) {
 		return '';
 	}
 
-	const standardTemplates: {
-		[ key: string ]: { title: string; description: string };
-	} = {
+	const standardTemplates = {
 		'front-page': {
 			title: __( 'Template: front-page.html', 'fse-studio' ),
 			description: __(
@@ -76,8 +74,6 @@ export default function ThemeTemplateFiles( { isVisible }: Props ) {
 	};
 
 	const standardTemplateParts = {
-		[ key: string ]: { title: string; description: string };
-	} = {
 		header: {
 			title: __( 'Template Part: header.html', 'fse-studio' ),
 			description: __(
