@@ -77,7 +77,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 								).map(
 									( [ patternName, patternData ]: [
 										string,
-										Partial< Pattern >
+										Pattern
 									] ) => {
 										return (
 											<div
