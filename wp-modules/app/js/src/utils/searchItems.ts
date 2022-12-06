@@ -29,12 +29,7 @@ type Config = {
 	getCollection?: () => Item[ 'collection' ];
 };
 
-/**
- * Sanitizes the search input string.
- *
- * @param  input The search input to normalize.
- * @return       The normalized search input.
- */
+// Sanitizes the search input string.
 function normalizeSearchInput( input = '' ) {
 	// Disregard diacritics.
 	//  Input: "média"
@@ -51,12 +46,7 @@ function normalizeSearchInput( input = '' ) {
 	return input;
 }
 
-/**
- * Converts the search term into a list of normalized terms.
- *
- * @param  input The search term to normalize.
- * @return      The normalized list of search terms.
- */
+// Converts the search term into a list of normalized terms.
 function getNormalizedSearchTerms( input = '' ) {
 	// Extract words.
 	return words( normalizeSearchInput( input ) );
@@ -80,7 +70,7 @@ function removeMatchingTerms(
  * @param  items       Item list
  * @param  searchInput Search input.
  * @param  config      Search Config.
- * @return            Filtered item list.
+ * @return             Filtered item list.
  */
 export default function searchItems(
 	items: Item[] = [],
@@ -113,7 +103,7 @@ export default function searchItems(
  * @param  item       Item to filter.
  * @param  searchTerm Search term.
  * @param  config     Search Config.
- * @return           Search Rank.
+ * @return            Search Rank.
  */
 function getItemSearchRank(
 	item: Item,
