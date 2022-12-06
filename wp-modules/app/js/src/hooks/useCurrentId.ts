@@ -1,9 +1,6 @@
-// @ts-check
-
 import { useState } from '@wordpress/element';
 
-/** @param {string} initialId */
-export default function useCurrentId( initialId ) {
+export default function useCurrentId( initialId: string ) {
 	const [ value, set ] = useState( initialId );
 
 	return {

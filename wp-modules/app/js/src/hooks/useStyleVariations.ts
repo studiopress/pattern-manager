@@ -1,23 +1,19 @@
-// @ts-check
-/* eslint-disable jsdoc/valid-types */
+/* eslint-disable no-unused-vars */
 
-// WP Dependencies
 import { useRef, useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-
 import useStudioContext from './useStudioContext';
 import convertToSlug from '../utils/convertToSlug';
 import { v4 as uuidv4 } from 'uuid';
 
+import type { Style } from '../types';
+
 export default function useStyleVariations() {
 	const { currentTheme, currentStyleVariationId } = useStudioContext();
-
-	const newStyleId = useRef( '' );
-
 	const [ newStyleName, setNewStyleName ] = useState( '' );
 	const [ updateCurrentStyle, setUpdateCurrentStyle ] = useState( false );
-
-	const defaultStyleName = 'default-style';
+	const newStyleId = useRef( '' );
+	const defaultStyleName = useRef( currentStyleVariationId.value );
 
 	/**
 	 * This key is referenced by `Object.keys( defaultStyle )[0]` in most places the hook is used.
@@ -27,7 +23,7 @@ export default function useStyleVariations() {
 	 * @see useCurrentId currentStyleVariationId
 	 */
 	const defaultStyle = {
-		[ defaultStyleName ]: {
+		[ defaultStyleName.current ]: {
 			title: __( 'Default Style', 'fse-studio' ),
 			body: currentTheme?.data?.theme_json_file ?? {},
 		},
@@ -69,12 +65,11 @@ export default function useStyleVariations() {
 		const id = `${ convertToSlug( newStyleName ) }-${ uuidv4() }`;
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
-		/** @type {import('../types').Style['body']} */
 		const currentStyleBody =
-			currentStyleVariationId?.value === defaultStyleName
-				? defaultStyle[ defaultStyleName ].body
+			currentStyleVariationId?.value === defaultStyleName.current
+				? defaultStyle[ defaultStyleName.current ].body
 				: currentTheme?.data.styles[ currentStyleValue ]?.body ??
-				  defaultStyle[ defaultStyleName ].body;
+				  defaultStyle[ defaultStyleName.current ].body;
 
 		const newStyle = {
 			[ id ]: {
@@ -102,11 +97,11 @@ export default function useStyleVariations() {
 	 *
 	 * Triggers useEffect via update of currentTheme.data.styles.
 	 *
-	 * @param {import('../types').Style} style
-	 * @param {string}                   styleId
+	 * @param {Style}  style
+	 * @param {string} styleId
 	 * @return {void}
 	 */
-	const addStyleToTheme = ( style, styleId ) => {
+	const addStyleToTheme = ( style: Style, styleId: Style[ 'id' ] ) => {
 		currentTheme?.set( {
 			...currentTheme.data,
 			styles: {

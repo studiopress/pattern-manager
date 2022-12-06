@@ -1,5 +1,3 @@
-// @ts-check
-
 import { useState, useEffect } from '@wordpress/element';
 import useMounted from './useMounted';
 

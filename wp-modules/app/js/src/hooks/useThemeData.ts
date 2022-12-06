@@ -1,4 +1,4 @@
-/* eslint-disable jsdoc/valid-types */
+/* eslint-disable no-unused-vars */
 
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
@@ -9,23 +9,18 @@ import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
 import useNoticeContext from './useNoticeContext';
-import useStyleVariations from '../hooks/useStyleVariations';
+import usePatterns from './usePatterns';
 
-/**
- * @param {import('../types').InitialContext['currentThemeId']['value']} themeId
- * @param {import('../types').InitialContext['themes']}                  themes
- * @param {import('../types').InitialContext['patternEditorIframe']}     patternEditorIframe
- * @param {import('../types').InitialContext['templateEditorIframe']}    templateEditorIframe
- * @param {import('../types').InitialContext['currentStyleVariationId']} currentStyleVariationId
- * @param {ReturnType<import('./usePatterns').default>}                  patterns
- */
+import type { InitialContext, Pattern, Theme } from '../types';
+import { ThemePatternType } from '../enums';
+
 export default function useThemeData(
-	themeId,
-	themes,
-	patternEditorIframe,
-	templateEditorIframe,
-	currentStyleVariationId,
-	patterns
+	themeId: InitialContext[ 'currentThemeId' ][ 'value' ],
+	themes: InitialContext[ 'themes' ],
+	patternEditorIframe: InitialContext[ 'patternEditorIframe' ],
+	templateEditorIframe: InitialContext[ 'templateEditorIframe' ],
+	currentStyleVariationId: InitialContext[ 'currentStyleVariationId' ],
+	patterns: ReturnType< typeof usePatterns >
 ) {
 	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -33,8 +28,9 @@ export default function useThemeData(
 	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
 
-	/** @param {import('../types').Theme} newThemeData */
-	function setThemeData( newThemeData ) {
+	const defaultStyleName = useRef( currentStyleVariationId.value );
+
+	function setThemeData( newThemeData: Theme ) {
 		const derivedThemeData =
 			newThemeData.name !== themeData.name
 				? {
@@ -57,9 +53,7 @@ export default function useThemeData(
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 
-	const { defaultStyleName } = useStyleVariations();
-
-	/** @return {boolean} Whether another theme also has the current theme name. */
+	/** Whether another theme also has the current theme name. */
 	function isNameTaken() {
 		return (
 			!! themeData.name &&
@@ -122,7 +116,7 @@ export default function useThemeData(
 	 *
 	 * @param {Event} event The beforeunload event.
 	 */
-	function warnIfUnsavedChanges( event ) {
+	function warnIfUnsavedChanges( event: Event ) {
 		if ( editorDirty.current || siteEditorDirty ) {
 			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
 			// @ts-expect-error: returnvalue is deprecated.
@@ -137,7 +131,6 @@ export default function useThemeData(
 	function getThemeData() {
 		return new Promise( ( resolve ) => {
 			if ( ! themeId || fetchInProgress ) {
-				resolve();
 				return;
 			}
 			setFetchInProgress( true );
@@ -149,7 +142,7 @@ export default function useThemeData(
 				} ),
 			} )
 				.then( ( response ) => response.json() )
-				.then( ( response ) => {
+				.then( ( response: Theme & { error?: string } ) => {
 					setFetchInProgress( false );
 					if (
 						response.error &&
@@ -186,52 +179,59 @@ export default function useThemeData(
 					}
 					return response.json();
 				} )
-				.then( ( data ) => {
-					if ( patternEditorIframe.current ) {
-						// Send a message to the iframe, telling it that the themejson has changed.
-						if ( data.themeJsonModified ) {
-							patternEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify( {
-									message: 'fsestudio_themejson_changed',
-								} ),
-								'*'
-							);
+				.then(
+					( data: {
+						message: string;
+						styleJsonModified: boolean;
+						themeData: Theme;
+						themeJsonModified: boolean;
+					} ) => {
+						if ( patternEditorIframe.current ) {
+							// Send a message to the iframe, telling it that the themejson has changed.
+							if ( data.themeJsonModified ) {
+								patternEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message: 'fsestudio_themejson_changed',
+									} ),
+									'*'
+								);
+							}
 						}
-					}
 
-					if ( templateEditorIframe.current ) {
-						templateEditorIframe.current.contentWindow.postMessage(
-							JSON.stringify( {
-								message: 'fsestudio_save',
-							} ),
-							'*'
-						);
-
-						if ( data.themeJsonModified ) {
+						if ( templateEditorIframe.current ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
-									message: 'fsestudio_themejson_changed',
+									message: 'fsestudio_save',
 								} ),
 								'*'
 							);
-						} else if ( data.styleJsonModified ) {
-							templateEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify( {
-									message: 'fsestudio_stylejson_changed',
-								} ),
-								'*'
-							);
+
+							if ( data.themeJsonModified ) {
+								templateEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message: 'fsestudio_themejson_changed',
+									} ),
+									'*'
+								);
+							} else if ( data.styleJsonModified ) {
+								templateEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message: 'fsestudio_stylejson_changed',
+									} ),
+									'*'
+								);
+							}
 						}
+
+						setThemeData( data.themeData );
+
+						if ( ! siteEditorDirty ) {
+							uponSuccessfulSave();
+						}
+
+						resolve( data );
 					}
-
-					setThemeData( data.themeData );
-
-					if ( ! siteEditorDirty ) {
-						uponSuccessfulSave();
-					}
-
-					resolve( data );
-				} );
+				);
 		} );
 	}
 
@@ -260,7 +260,7 @@ export default function useThemeData(
 				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => response.json() )
-				.then( ( data ) => {
+				.then( ( data: string ) => {
 					window.location.replace( data );
 					resolve( data );
 				} );
@@ -269,16 +269,16 @@ export default function useThemeData(
 
 	function setThemeJsonValue(
 		topLevelSection = 'settings',
-		selectorString,
-		value = null,
-		defaultValue = null
+		selectorString: string,
+		value: unknown = null,
+		defaultValue: unknown = null
 	) {
 		const currentStyleValue = currentStyleVariationId?.value;
 
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
 		const jsonDataBody =
-			currentStyleValue === defaultStyleName
+			currentStyleValue === defaultStyleName.current
 				? themeData.theme_json_file
 				: themeData.styles[ currentStyleValue ]?.body;
 
@@ -303,14 +303,10 @@ export default function useThemeData(
 			[ topLevelSection, ...keys ] // Top level key with the array of keys.
 		)( jsonDataBody );
 
-		/**
-		 * If the current style is not default, save the variation data to the styles array.
-		 * Otherwise, save the modifiedData to theme.json.
-		 *
-		 * Also, I hate the way prettier wants to format this ternary!
-		 */
-		const dataToSave =
-			currentStyleVariationId.value !== defaultStyleName
+		editTheme(
+			// If the current style is not default, save the variation data to the styles array.
+			// Otherwise, save the modifiedData to theme.json.
+			currentStyleVariationId.value !== defaultStyleName.current
 				? {
 						...themeData,
 						styles: {
@@ -326,22 +322,21 @@ export default function useThemeData(
 				: {
 						...themeData,
 						theme_json_file: modifiedData,
-				  };
-
-		editTheme( dataToSave );
+				  }
+		);
 	}
 
 	function getThemeJsonValue(
 		topLevelSection = 'settings',
-		selectorString,
-		defaultValue = undefined
+		selectorString: string,
+		defaultValue: unknown = undefined
 	) {
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
 		// Use theme_json_file if current style variation is default.
 		// Otherwise, use the current style variation body.
 		const currentStyleVariation =
-			currentStyleValue === defaultStyleName
+			currentStyleValue === defaultStyleName.current
 				? themeData.theme_json_file
 				: themeData?.styles[ currentStyleValue ]?.body ??
 				  // Edge case fallback: intermittent crash on switching themes.
@@ -362,45 +357,22 @@ export default function useThemeData(
 		);
 	}
 
-	/** @param {import('../types').Pattern} patternData */
-	function createPattern( patternData ) {
+	function createPattern( patternData: Pattern ) {
 		return new Promise( ( resolve ) => {
-			let newThemeData;
-			if ( patternData.type === 'pattern' ) {
-				newThemeData = {
-					...themeData,
-					included_patterns: {
-						...themeData.included_patterns,
-						[ patternData.name ]: patternData,
-					},
-				};
-			} else if ( patternData.type === 'template' ) {
-				newThemeData = {
-					...themeData,
-					template_files: {
-						...themeData.template_files,
-						[ patternData.name ]: patternData,
-					},
-				};
-			} else if ( patternData.type === 'template_part' ) {
-				newThemeData = {
-					...themeData,
-					template_parts: {
-						...themeData.template_parts,
-						[ patternData.name ]: patternData,
-					},
-				};
-			} else {
-				return;
-			}
+			const newThemeData = {
+				...themeData,
+				[ ThemePatternType[ patternData.type ] ]: {
+					...themeData[ ThemePatternType[ patternData.type ] ],
+					[ patternData.name ]: patternData,
+				},
+			};
 
 			setThemeData( newThemeData );
 			resolve( newThemeData );
 		} );
 	}
 
-	/** @param {string} patternName */
-	function deletePattern( patternName ) {
+	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		if (
 			/* eslint-disable no-alert */
 			! window.confirm(
@@ -430,9 +402,9 @@ export default function useThemeData(
 	 * A separate function from setThemeData(), as this sets the 'dirty'
 	 * state of the editor.
 	 *
-	 * @param {import('../types').Theme} newThemeData
+	 * @param {Theme} newThemeData
 	 */
-	function editTheme( newThemeData ) {
+	function editTheme( newThemeData: Theme ) {
 		editorDirty.current = true;
 		setThemeData( newThemeData );
 	}

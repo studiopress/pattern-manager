@@ -52,9 +52,7 @@ function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
 	const patternEditorIframe = useRef();
 	const templateEditorIframe = useRef();
-	const themes = useThemes( {
-		themes: fsestudio.themes,
-	} );
+	const themes = useThemes( fsestudio.themes );
 	const patterns = usePatterns();
 
 	const currentStyleVariationId = useCurrentId( 'default-style' );

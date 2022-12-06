@@ -1,11 +1,9 @@
-import { useState } from '@wordpress/element';
+/* eslint-disable no-unused-vars */
 
-/**
- * @param {{
- *  themes: import('../types').Themes
- * }} The themes.
- */
-export default function useThemes( { themes } ) {
+import { useState } from '@wordpress/element';
+import type { Themes } from '../types';
+
+export default function useThemes( themes: Themes ) {
 	const [ theThemes, setTheThemes ] = useState( themes );
 
 	return {

@@ -1,16 +1,20 @@
 /* eslint-disable no-undef, camelcase */
 
 import React from 'react';
+import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
 import useThemes from './hooks/useThemes';
 import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
+import { PatternType } from './enums';
+
+export type NoticeContext = ReturnType< typeof useNotice >;
 
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
-	currentPattern: ReturnType< typeof useThemes >;
+	currentPattern: Pattern;
 	themes: ReturnType< typeof useThemes >;
 	currentThemeId: ReturnType< typeof useCurrentId >;
 	currentTheme: ReturnType< typeof useThemeData >;
@@ -55,7 +59,7 @@ export type InitialFseStudio = {
 };
 
 export type Pattern = {
-	type: 'pattern' | 'template' | 'template_part';
+	type: PatternType;
 	categories?: string[];
 	content: string;
 	name: string;
@@ -102,7 +106,7 @@ export type Theme = {
 	template_parts?: string[];
 	tested_up_to: string;
 	text_domain: string;
-	theme_json_file?: string[];
+	theme_json_file?: { [ key: string ]: unknown };
 	uri: string;
 	version: string;
 };

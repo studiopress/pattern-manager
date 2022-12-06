@@ -1,9 +1,6 @@
-// @ts-check
-
 import { useContext } from '@wordpress/element';
 import NoticeContext from '../contexts/FseStudioNoticeContext';
 
-/** @return {ReturnType<import('./useNotice')>} The notice context. */
 export default function useNoticeContext() {
 	const context = useContext( NoticeContext );
 	if ( ! context ) {

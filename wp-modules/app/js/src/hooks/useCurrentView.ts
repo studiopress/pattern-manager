@@ -1,17 +1,15 @@
-// @ts-check
+/* eslint-disable no-unused-vars */
 
 import { useState } from '@wordpress/element';
 
-/** @param {string} initialView */
-export default function useCurrentView( initialView ) {
+export default function useCurrentView( initialView: string ) {
 	const [ currentView, setCurrentView ] = useState( initialView );
 	const [ currentPatternsView, setCurrentPatternsView ] =
 		useState( 'theme_patterns' );
 	const [ currentTemplatesView, setCurrentTemplatesView ] =
 		useState( 'theme_templates' );
 
-	/** @param {string} newView */
-	function setCurrentViewConditions( newView ) {
+	function setCurrentViewConditions( newView: string ) {
 		// When going from theme_patterns to pattern_editor, remember that theme_patterns is currently showing the pattern_editor.
 		if (
 			newView === 'pattern_editor' &&

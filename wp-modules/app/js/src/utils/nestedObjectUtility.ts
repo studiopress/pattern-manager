@@ -1,13 +1,16 @@
-/* eslint-disable jsdoc/check-param-names, jsdoc/require-param */
+/* eslint-disable no-undef, jsdoc/check-param-names, jsdoc/require-param */
 
 /**
  * Return a deeply nested value from an object.
  *
- * @param {Object} object
- * @param {Array}  keys
+ * @param {Object|Array} object
+ * @param {Array}        keys
  * @return {*} The nested value.
  */
-export function getNestedValue( object, keys ) {
+export function getNestedValue(
+	object: unknown[] | {},
+	keys: ( string | number )[]
+): unknown {
 	// Iterate over `keys`, passing the `currentKey` as the `accumulator` index on each iteration.
 	return keys.reduce(
 		( accumulator, currentKey ) =>
@@ -23,27 +26,33 @@ export function getNestedValue( object, keys ) {
  * being passed immediately after. For example, the partial application could be called like this:
  *  - setNestedObject( value, defaultValue )( object, keys )
  *
+ * Alternatively, it could be called with keys in the first set of args:
+ *  - setNestedObject( value, defaultValue, keys )( object )
+ *
  * @param {*}     value        A `value` of null means the child element should be deleted.
  * @param {*}     defaultValue Equality of `defaultValue` and `value` also specifies deletion.
  * @param {Array} keys         The array of object keys.
  * @return {Function} recursiveUpdate()
  */
-export function setNestedObject( value, defaultValue, keys = [] ) {
+export function setNestedObject(
+	value: unknown,
+	defaultValue: unknown,
+	keys: ( string | number )[] = []
+) {
 	/**
 	 * Recursively clone an object and update a nested value.
 	 *
-	 * @param {Object} object The object to clone.
-	 * @param {Array}  keys   The destructured keys.
-	 * @return {Object} The new, updated object.
+	 * @param {Object|Array} object The object to clone.
+	 * @param {Array}        keys   The destructured keys.
 	 */
 	return function recursiveUpdate(
-		object,
+		object: unknown[] | {},
 		[ currentKey, ...theRestOfTheKeys ] = keys,
 		index = 0
-	) {
+	): { [ key: string ]: unknown } {
 		// Create a new object to avoid mutating the original.
 		// Check if the current level is an array or object, then spread accordingly.
-		const newObject = Array.isArray( object )
+		const newObject: [] | {} = Array.isArray( object )
 			? [ ...object ]
 			: { ...object };
 
@@ -75,12 +84,10 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
 		}
 
 		// Filter out empty elements from parent arrays of deleted children.
-		// Return the filtered array.
-		if ( shouldDeleteValue && Array.isArray( newObject ) ) {
-			return newObject.filter( Boolean );
-		}
-
-		return newObject;
+		// Return the filtered array or the newObject.
+		return shouldDeleteValue && Array.isArray( newObject )
+			? newObject.filter( Boolean )
+			: newObject;
 	};
 }
 
@@ -96,7 +103,10 @@ export function setNestedObject( value, defaultValue, keys = [] ) {
  * @param {string|number} key
  * @return {Object|Array} An empty object/array, or the unaffected object.
  */
-export function _validateObjectLevel( object, key ) {
+export function _validateObjectLevel(
+	object: unknown[] | { [ key: string ]: unknown },
+	key: string | number
+): [] | {} {
 	if (
 		! object ||
 		object.length === 0 ||
