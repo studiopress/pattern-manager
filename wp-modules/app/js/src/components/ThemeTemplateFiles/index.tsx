@@ -75,7 +75,7 @@ export default function ThemeTemplateFiles( { isVisible }: Props ) {
 		},
 	};
 
-	const standardTemplateParts: {
+	const standardTemplateParts = {
 		[ key: string ]: { title: string; description: string };
 	} = {
 		header: {

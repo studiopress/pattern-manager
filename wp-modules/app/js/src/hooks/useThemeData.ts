@@ -329,7 +329,7 @@ export default function useThemeData(
 	function getThemeJsonValue(
 		topLevelSection = 'settings',
 		selectorString: string,
-		defaultValue: unknown = undefined
+		defaultValue?: unknown
 	) {
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 

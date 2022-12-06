@@ -9,7 +9,7 @@
  */
 export default function assembleUrl(
 	theUrl: string,
-	params: Record< string, string >
+	params: { [ key: string ]: string }
 ) {
 	const url = new URL( theUrl );
 	Object.keys( params ).forEach( ( key ) =>

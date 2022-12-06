@@ -4,7 +4,7 @@ import { CheckboxControl } from '@wordpress/components';
 
 type Props = {
 	value: string[];
-	onChange: ( arg: string[] ) => unknown;
+	onChange: ( newValue: string[] ) => unknown;
 };
 
 export default function MultiCheckbox( { value = [], onChange }: Props ) {
