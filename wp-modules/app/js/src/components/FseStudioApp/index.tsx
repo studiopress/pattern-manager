@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, no-undef */
 /**
  * Fse Studio
  */
@@ -52,8 +52,8 @@ export default function FseStudioApp() {
 
 function FseStudioContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
-	const patternEditorIframe = useRef();
-	const templateEditorIframe = useRef();
+	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
+	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const themes = useThemes( fsestudio.themes );
 	const patterns = usePatterns();
 
