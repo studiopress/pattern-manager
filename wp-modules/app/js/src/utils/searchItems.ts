@@ -19,14 +19,15 @@ type Item = {
 	collection?: unknown[];
 };
 
-// Default search helpers
-const defaultGetType = ( item: Item ) => item.type || '';
-const defaultGetName = ( item: Item ) => item.name || '';
-const defaultGetTitle = ( item: Item ) => item.title;
-const defaultGetDescription = ( item: Item ) => item.description || '';
-const defaultGetKeywords = ( item: Item ) => item.keywords || [];
-const defaultGetCategory = ( item: Item ) => item.category;
-const defaultGetCollection = < T extends Item >( T ): null => null;
+type Config = {
+	getType?: () => Item[ 'type' ];
+	getName?: () => Item[ 'name' ];
+	getTitle?: () => Item[ 'title' ];
+	getDescription?: () => Item[ 'description' ];
+	getKeywords?: () => Item[ 'keywords' ];
+	getCategory?: () => Item[ 'category' ];
+	getCollection?: () => Item[ 'collection' ];
+};
 
 /**
  * Sanitizes the search input string.
@@ -84,7 +85,7 @@ function removeMatchingTerms(
 export default function searchItems(
 	items: Item[] = [],
 	searchInput = '',
-	config: { [ key: string ]: unknown } = {}
+	config: Config = {}
 ): unknown[] {
 	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
 	if ( normalizedSearchTerms.length === 0 ) {
@@ -117,33 +118,26 @@ export default function searchItems(
 function getItemSearchRank(
 	item: Item,
 	searchTerm: string,
-	config: {
-		getType?: () => string;
-		getName?: () => string;
-		getTitle?: () => string;
-		getDescription?: () => string;
-		getKeywords?: () => string[];
-		getCategory?: () => string;
-		getCollection?: () => null;
-	} = {}
+	config: Config = {}
 ) {
+	// Default search helpers
 	const {
-		getType = defaultGetType,
-		getName = defaultGetName,
-		getTitle = defaultGetTitle,
-		getDescription = defaultGetDescription,
-		getKeywords = defaultGetKeywords,
-		getCategory = defaultGetCategory,
-		getCollection = defaultGetCollection,
+		getType = () => item.type || '',
+		getName = () => item.name || '',
+		getTitle = () => item.title,
+		getDescription = () => item.description || '',
+		getKeywords = () => item.keywords || [],
+		getCategory = () => item.category,
+		getCollection = (): null => null,
 	} = config;
 
-	const type = getType( item );
-	const name = getName( item );
-	const title = getTitle( item );
-	const description = getDescription( item );
-	const keywords = getKeywords( item );
-	const category = getCategory( item );
-	const collection = getCollection( item );
+	const type = getType();
+	const name = getName();
+	const title = getTitle();
+	const description = getDescription();
+	const keywords = getKeywords();
+	const category = getCategory();
+	const collection = getCollection();
 
 	const normalizedSearchInput = normalizeSearchInput( searchTerm );
 	const normalizedTitle = normalizeSearchInput( title );
