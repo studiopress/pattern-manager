@@ -20,14 +20,14 @@ button.components-button.editor-post-save-draft.is-tertiary{
 .components-snackbar{
 	display:none!important;
 }
-/* PostTypeHeading component */
-.fsestudio-post-type-heading{
+/* Post type modal heading */
+.fsestudio-post-type-heading {
 	margin-bottom: 16px;
 }
 /* Toggle components */
 .fsestudio-post-type-modal-toggle,
-.fsestudio-post-type-toggle{
-	margin-bottom: -8px;
+.fsestudio-pattern-editor-toggle-component {
+	margin-bottom: -12px;
 }
 @media only screen and (max-width: 781.25px) {
 	.fsestudio-pattern-post-name-input-outer {

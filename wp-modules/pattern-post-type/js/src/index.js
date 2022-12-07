@@ -27,13 +27,6 @@ const FseStudioMetaControls = () => {
 		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 	} );
 
-	// Current sole block type needed to display modal.
-	const blockTypePostContent = 'core/post-content';
-
-	// Simple bool to match primary toggle for 'Post Type Modal' section.
-	const blockModalVisible =
-		postMeta.blockTypes?.includes( blockTypePostContent );
-
 	/**
 	 * Get, filter, and sort the custom post types.
 	 * Wrapping call in useSelect to prevent async null return on initial load.
@@ -53,30 +46,36 @@ const FseStudioMetaControls = () => {
 				'attachment', // Media
 				'nav_menu_item',
 				// 'wp_block', // Reusable blocks are a user-accessible post type
-				'wp_template',
-				'wp_template_part',
+				// 'wp_template',
+				// 'wp_template_part',
 				'wp_navigation',
 				'fsestudio_pattern',
 			];
 
 			const filteredPostTypes = initialPostTypes.filter( ( postType ) => {
-				// Since core/post-content always shows for 'page', add blockType value for that index.
-				if ( postType.slug === 'page' ) {
-					postType.blockType = blockTypePostContent;
-				}
-
 				// Filter out the unapplicable core post types.
 				return ! corePostTypesToRemove.includes( postType.slug );
 			} );
 
-			return sortAlphabetically(
-				filteredPostTypes,
-				'name',
-				'blockType',
-				blockTypePostContent
-			);
+			return sortAlphabetically( filteredPostTypes, 'name' );
 		}
 	}, [] );
+
+	/**
+	 * Placeholder blockTypes.
+	 * To-do: curate list of blockTypes to target...
+	 */
+	const blockTypes = (() => {
+		return sortAlphabetically(
+			[
+				{ name: 'Code', slug: 'core/code' },
+				{ name: 'Heading', slug: 'core/heading' },
+				{ name: 'Paragraph', slug: 'core/paragraph' },
+				{ name: 'Image', slug: 'core/image' },
+			],
+			'name'
+		);
+	})();
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
@@ -105,16 +104,6 @@ const FseStudioMetaControls = () => {
 			false
 		);
 	}, [] );
-
-	/**
-	 * Edge case: postType 'page' was not selected before modal visibility was checked.
-	 * Without this block, 'page' would not be stored to 'Post Types' in the pattern file.
-	 */
-	useEffect( () => {
-		if ( blockModalVisible && ! postMeta?.postTypes?.includes( 'page' ) ) {
-			handleToggleChange( true, 'postTypes', 'page' );
-		}
-	}, [ postMeta ] );
 
 	/**
 	 * Set nameInput and inputDisabled state when the post is switched.
@@ -266,18 +255,19 @@ const FseStudioMetaControls = () => {
 	 * The value of this toggle hides or shows the 'Post Types' section.
 	 */
 	function ModalToggle() {
+		// Block type for displaying in the pattern modal on new post creation.
+		const blockTypeForModal = 'core/post-content';
+
 		return (
 			<div className="fsestudio-post-type-modal-toggle">
 				<PanelRow key={ `fse-pattern-visibility-block-content` }>
 					<ToggleControl
 						label={ __( 'Modal Visibility', 'fse-studio' ) }
 						checked={ postMeta.blockTypes?.includes(
-							blockTypePostContent
+							blockTypeForModal
 						) }
 						help={
-							postMeta.blockTypes?.includes(
-								blockTypePostContent
-							)
+							postMeta.blockTypes?.includes( blockTypeForModal )
 								? __(
 										'Enabled for selected post types.',
 										'fse-studio'
@@ -291,7 +281,7 @@ const FseStudioMetaControls = () => {
 							handleToggleChange(
 								event,
 								'blockTypes',
-								blockTypePostContent
+								blockTypeForModal
 							);
 						} }
 					/>
@@ -301,54 +291,28 @@ const FseStudioMetaControls = () => {
 	}
 
 	/**
-	 * Heading component for 'Post Types' section.
-	 */
-	function PostTypeHeading() {
-		return (
-			<div className="fsestudio-post-type-heading">
-				<PanelHeader>{ __( 'Post Types', 'fse-studio' ) }</PanelHeader>
-			</div>
-		);
-	}
-
-	/**
-	 * Toggle component for postType. Intended to be iterated over.
-	 * Toggle is disabled and checked if postType is associated with blockTypePostContent.
+	 * Toggle component for postTypes and blockTypes. Intended to be iterated over.
+	 *
+	 * Shape of postOrBlockTypes is expected to be as follows:
+	 * { name: string; slug: string }
 	 *
 	 * @param {Object} props
-	 * @param {Object} props.postType
+	 * @param {Object} props.postOrBlockType
+	 * @param {string} props.metaTypeToTarget
 	 */
-	function PostTypeToggle( { postType } ) {
-		const { name, blockType, slug } = postType;
+	function SidebarToggle( { postOrBlockType, metaTypeToTarget } ) {
+		const { name, slug } = postOrBlockType;
 
 		return (
-			<div className="fsestudio-post-type-toggle">
-				<PanelRow key={ `fse-pattern-visibility-post-type-${ name }` }>
+			<div className="fsestudio-pattern-editor-toggle-component">
+				<PanelRow>
 					<ToggleControl
 						label={ name }
-						disabled={
-							( blockType === blockTypePostContent &&
-								blockModalVisible ) ||
-							! postMeta.blockTypes?.includes(
-								blockTypePostContent
-							)
-						}
-						checked={
-							( blockType === blockTypePostContent &&
-								blockModalVisible ) ||
-							postMeta.postTypes?.includes( slug )
-						}
-						help={
-							blockType === blockTypePostContent &&
-							blockModalVisible
-								? __(
-										'Enabled by default for modal visibility.',
-										'fse-studio'
-								  )
-								: ''
-						}
+						checked={ postMeta[ metaTypeToTarget ]?.includes(
+							slug
+						) }
 						onChange={ ( event ) => {
-							handleToggleChange( event, 'postTypes', slug );
+							handleToggleChange( event, metaTypeToTarget, slug );
 						} }
 					/>
 				</PanelRow>
@@ -473,28 +437,54 @@ const FseStudioMetaControls = () => {
 				</PanelRow>
 			</PluginDocumentSettingPanel>
 
-			{ /* The panel section for controlling pattern post type modals. */ }
-			{ /* Custom post types (outside of inapplicable core types) are displayed as toggles. */ }
+			{ /* The panel section for restricting post types for the pattern. */ }
+			{ /* Custom post types and certain core types are displayed as toggles. */ }
 			<PluginDocumentSettingPanel
-				title={ __( 'Post Type Modal', 'fse-studio' ) }
+				title={ __( 'Post Types', 'fse-studio' ) }
 				icon="admin-post"
 			>
-				{ /* `ModalToggle` will hide or display remaining components via `blockModalVisible`. */ }
+				{ postTypes ? (
+					postTypes.map( ( postType ) => {
+						return (
+							<SidebarToggle
+								key={ postType.slug }
+								postOrBlockType={ postType }
+								metaTypeToTarget="postTypes"
+							/>
+						);
+					} )
+				) : (
+					<Spinner />
+				) }
+
+				{ /* Toggle the pattern modal on new post creation for the given post types. */ }
+				<div className="fsestudio-post-type-heading">
+					<PanelHeader>
+						{ __( 'Post Type Modal', 'fse-studio' ) }
+					</PanelHeader>
+				</div>
 				<ModalToggle />
+			</PluginDocumentSettingPanel>
 
-				{ blockModalVisible && <PostTypeHeading /> }
-
-				{ postTypes
-					? blockModalVisible &&
-					  postTypes.map( ( postType ) => {
-							return (
-								<PostTypeToggle
-									key={ postType.slug }
-									postType={ postType }
-								/>
-							);
-					  } )
-					: blockModalVisible && <Spinner /> }
+			{ /* The panel section for assigning block types to the pattern. */ }
+			{ /* Block types in the pattern file are primarily used for transforming blocks. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Block Types', 'fse-studio' ) }
+				icon="block-default"
+			>
+				{ blockTypes ? (
+					blockTypes.map( ( blockType ) => {
+						return (
+							<SidebarToggle
+								key={ blockType.slug }
+								postOrBlockType={ blockType }
+								metaTypeToTarget="blockTypes"
+							/>
+						);
+					} )
+				) : (
+					<Spinner />
+				) }
 			</PluginDocumentSettingPanel>
 		</div>
 	);
