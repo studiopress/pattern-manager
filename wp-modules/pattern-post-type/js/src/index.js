@@ -61,21 +61,20 @@ const FseStudioMetaControls = () => {
 		}
 	}, [] );
 
+	/* eslint-disable @wordpress/no-unused-vars-before-return */
 	/**
 	 * Placeholder blockTypes.
-	 * To-do: curate list of blockTypes to target...
+	 * To-do: curate list of blockTypes to target, maybe remove eslint-disable...
 	 */
-	const blockTypes = (() => {
-		return sortAlphabetically(
-			[
-				{ name: 'Code', slug: 'core/code' },
-				{ name: 'Heading', slug: 'core/heading' },
-				{ name: 'Paragraph', slug: 'core/paragraph' },
-				{ name: 'Image', slug: 'core/image' },
-			],
-			'name'
-		);
-	})();
+	const blockTypes = sortAlphabetically(
+		[
+			{ name: 'Code', slug: 'core/code' },
+			{ name: 'Heading', slug: 'core/heading' },
+			{ name: 'Paragraph', slug: 'core/paragraph' },
+			{ name: 'Image', slug: 'core/image' },
+		],
+		'name'
+	);
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
