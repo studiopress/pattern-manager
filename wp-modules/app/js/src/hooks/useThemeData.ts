@@ -11,7 +11,7 @@ import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
 
-import type { InitialContext, Pattern, Theme } from '../types';
+import type { InitialContext, Pattern, Patterns, Theme } from '../types';
 import { ThemePatternType } from '../enums';
 
 export default function useThemeData(
@@ -329,7 +329,7 @@ export default function useThemeData(
 	function getThemeJsonValue(
 		topLevelSection = 'settings',
 		selectorString: string,
-		defaultValue: unknown = undefined
+		defaultValue?: unknown
 	) {
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
@@ -388,7 +388,7 @@ export default function useThemeData(
 		const {
 			[ patternName ]: {},
 			...newIncludedPatterns
-		} = themeData.included_patterns ?? {};
+		} = ( themeData.included_patterns as Patterns ) ?? {};
 
 		setThemeData( {
 			...themeData,

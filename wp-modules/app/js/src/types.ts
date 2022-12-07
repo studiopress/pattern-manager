@@ -9,6 +9,17 @@ import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
+export type FseStudioViews =
+	| 'theme_setup'
+	| 'create_theme'
+	| 'theme_preview'
+	| 'theme_patterns'
+	| 'theme_templates'
+	| 'template_parts'
+	| 'pattern_editor'
+	| 'themejson_editor'
+	| 'fse_studio_help';
+
 export type NoticeContext = ReturnType< typeof useNotice >;
 
 export type InitialContext = {
@@ -54,7 +65,17 @@ export type InitialFseStudio = {
 	adminUrl: string;
 	themes: Themes;
 	schemas: {
-		[ key: string ]: { [ key: string ]: { [ key: string ]: unknown } | [] };
+		themejson: {
+			definitions: {
+				settingsPropertiesComplete: {
+					allOf: {
+						properties: {
+							[ key: string ]: unknown;
+						};
+					}[];
+				};
+			};
+		};
 	};
 };
 
