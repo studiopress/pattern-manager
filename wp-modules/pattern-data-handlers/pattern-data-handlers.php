@@ -384,10 +384,6 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
-	// Now that this pattern has been updated, remove any images no longer needed in the theme.
-	// This is done here in update_pattern because an image may no longer be used in the pattern and thus needs to be removed from the theme.
-	tree_shake_theme_images();
-
 	return $pattern_file_created;
 }
 
