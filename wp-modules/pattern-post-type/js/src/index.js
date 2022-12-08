@@ -84,6 +84,10 @@ const FseStudioMetaControls = () => {
 		'name'
 	);
 
+	/**
+	 * Boolean to catch when a template-part related block type is selected.
+	 * This is used to automatically select and disable the wp_template post type.
+	 */
 	const templatePartBlockTypeSelected =
 		postMeta?.blockTypes.filter(
 			( blockType ) => blockType !== 'core/post-content'
