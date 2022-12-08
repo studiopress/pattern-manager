@@ -270,8 +270,7 @@ function update_theme( $theme, $update_patterns = true ) {
 		}
 	}
 
-	// Now that this pattern has been updated, remove any images no longer needed in the theme.
-	// This is done here in update_pattern because an image may no longer be used in the pattern and thus needs to be removed from the theme.
+	// Now that all patterns have been saved, remove any images no longer needed in the theme.
 	\FseStudio\PatternDataHandlers\tree_shake_theme_images();
 
 	\FseStudio\Tracky\send_event(
