@@ -1,3 +1,5 @@
+/* eslint-disable @wordpress/no-unused-vars-before-return */
+
 import '../../css/src/index.scss';
 import { registerPlugin } from '@wordpress/plugins';
 import { __ } from '@wordpress/i18n';
@@ -69,28 +71,21 @@ const FseStudioMetaControls = () => {
 		}
 	}, [] );
 
-	/* eslint-disable @wordpress/no-unused-vars-before-return */
 	/**
-	 * Placeholder blockTypes.
-	 * To-do: curate list of blockTypes to target, maybe remove eslint-disable...
+	 * The list of registered block types, filtered to return only transformable types plus
+	 * manually added template-parts (supports template part replacement in template editor).
 	 */
-	const blockTypes = sortAlphabetically(
-		[
-			{ name: 'Code', slug: 'core/code' },
-			{ name: 'Heading', slug: 'core/heading' },
-			{ name: 'Paragraph', slug: 'core/paragraph' },
-			{ name: 'Image', slug: 'core/image' },
-			{
-				name: 'Template Part (Header)',
-				slug: 'core/template-part/header',
-			},
-			{
-				name: 'Template Part (Footer)',
-				slug: 'core/template-part/footer',
-			},
-		],
-		'name'
-	);
+	const blockTypes = wp.data.useSelect( ( select ) => {
+		const registeredBlockTypes = [
+			...select( 'core/blocks' )
+				.getBlockTypes()
+				.filter( ( blockType ) => blockType.transforms ),
+			{ name: 'core/template-part/header' },
+			{ name: 'core/template-part/footer' },
+		];
+
+		return sortAlphabetically( registeredBlockTypes, 'name' );
+	}, [] );
 
 	/**
 	 * Boolean to catch when a template-part related block type is selected.
@@ -333,15 +328,14 @@ const FseStudioMetaControls = () => {
 	/**
 	 * Toggle component for postTypes and blockTypes. Intended to be iterated over.
 	 *
-	 * Shape of postOrBlockTypes is expected to be as follows:
-	 * { name: string; slug: string }
+	 * Shape of postType object is expected to be as follows:
+	 * { name: string; slug: string; [ key: string ]: unknown }
 	 *
 	 * @param {Object} props
-	 * @param {Object} props.postOrBlockType
-	 * @param {string} props.metaTypeToTarget
+	 * @param {Object} props.postType
 	 */
-	function PostOrBlockTypeToggle( { postOrBlockType, metaTypeToTarget } ) {
-		const { name, slug } = postOrBlockType;
+	function PostTypeToggle( { postType } ) {
+		const { name, slug } = postType;
 
 		return (
 			<div className="fsestudio-pattern-editor-toggle-component">
@@ -352,11 +346,36 @@ const FseStudioMetaControls = () => {
 							templatePartBlockTypeSelected &&
 							slug === 'wp_template'
 						}
-						checked={ postMeta[ metaTypeToTarget ]?.includes(
-							slug
-						) }
+						checked={ postMeta?.postTypes?.includes( slug ) }
 						onChange={ ( event ) => {
-							handleToggleChange( event, metaTypeToTarget, slug );
+							handleToggleChange( event, 'postTypes', slug );
+						} }
+					/>
+				</PanelRow>
+			</div>
+		);
+	}
+
+	/**
+	 * Toggle component for postTypes and blockTypes. Intended to be iterated over.
+	 *
+	 * Shape of blockType is expected to be as follows:
+	 * { name: string; [ key: string ]: unknown }
+	 *
+	 * @param {Object} props
+	 * @param {Object} props.blockType
+	 */
+	function BlockTypeToggle( { blockType } ) {
+		const { name } = blockType;
+
+		return (
+			<div className="fsestudio-pattern-editor-toggle-component">
+				<PanelRow>
+					<ToggleControl
+						label={ name }
+						checked={ postMeta?.blockTypes?.includes( name ) }
+						onChange={ ( event ) => {
+							handleToggleChange( event, 'blockTypes', name );
 						} }
 					/>
 				</PanelRow>
@@ -490,10 +509,9 @@ const FseStudioMetaControls = () => {
 				{ postTypes ? (
 					postTypes.map( ( postType ) => {
 						return (
-							<PostOrBlockTypeToggle
+							<PostTypeToggle
 								key={ postType.slug }
-								postOrBlockType={ postType }
-								metaTypeToTarget="postTypes"
+								postType={ postType }
 							/>
 						);
 					} )
@@ -516,13 +534,12 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Block Types', 'fse-studio' ) }
 				icon="block-default"
 			>
-				{ blockTypes.length ? (
+				{ blockTypes ? (
 					blockTypes.map( ( blockType ) => {
 						return (
-							<PostOrBlockTypeToggle
-								key={ blockType.slug }
-								postOrBlockType={ blockType }
-								metaTypeToTarget="blockTypes"
+							<BlockTypeToggle
+								key={ blockType.name }
+								blockType={ blockType }
 							/>
 						);
 					} )
