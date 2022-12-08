@@ -72,9 +72,25 @@ const FseStudioMetaControls = () => {
 			{ name: 'Heading', slug: 'core/heading' },
 			{ name: 'Paragraph', slug: 'core/paragraph' },
 			{ name: 'Image', slug: 'core/image' },
+			{
+				name: 'Template Part (Header)',
+				slug: 'core/template-part/header',
+			},
+			{
+				name: 'Template Part (Footer)',
+				slug: 'core/template-part/footer',
+			},
 		],
 		'name'
 	);
+
+	const templatePartBlockTypeSelected =
+		postMeta?.blockTypes.filter(
+			( blockType ) => blockType !== 'core/post-content'
+		).length &&
+		postMeta?.blockTypes?.some( ( blockType ) =>
+			blockType.includes( 'core/template-part' )
+		);
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
@@ -103,6 +119,15 @@ const FseStudioMetaControls = () => {
 			false
 		);
 	}, [] );
+
+	useEffect( () => {
+		if (
+			templatePartBlockTypeSelected &&
+			! postMeta?.postTypes?.includes( 'wp_template' )
+		) {
+			handleToggleChange( true, 'postTypes', 'wp_template' );
+		}
+	}, [ postMeta ] );
 
 	/**
 	 * Set nameInput and inputDisabled state when the post is switched.
@@ -307,6 +332,10 @@ const FseStudioMetaControls = () => {
 				<PanelRow>
 					<ToggleControl
 						label={ name }
+						disabled={
+							templatePartBlockTypeSelected &&
+							slug === 'wp_template'
+						}
 						checked={ postMeta[ metaTypeToTarget ]?.includes(
 							slug
 						) }
