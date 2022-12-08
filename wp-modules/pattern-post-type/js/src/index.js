@@ -41,13 +41,21 @@ const FseStudioMetaControls = () => {
 		} );
 
 		if ( initialPostTypes ) {
-			// Core post types that are inapplicable or not user accessible.
+			/**
+			 * Core post types that are inapplicable or not user accessible.
+			 *
+			 * Current core types for possible removal:
+			  'attachment', // Media
+			  'nav_menu_item',
+			  'wp_block', // Reusable blocks are a user-accessible post type
+			  'wp_template',
+			  'wp_template_part',
+			  'wp_navigation',
+			  'fsestudio_pattern',
+			 */
 			const corePostTypesToRemove = [
-				'attachment', // Media
+				'attachment',
 				'nav_menu_item',
-				// 'wp_block', // Reusable blocks are a user-accessible post type
-				// 'wp_template',
-				// 'wp_template_part',
 				'wp_navigation',
 				'fsestudio_pattern',
 			];
@@ -135,7 +143,7 @@ const FseStudioMetaControls = () => {
 		) {
 			handleToggleChange( true, 'postTypes', 'wp_template' );
 		}
-	}, [ postMeta ] );
+	}, [ postMeta.postTypes, templatePartBlockTypeSelected ] );
 
 	/**
 	 * Set nameInput and inputDisabled state when the post is switched.
@@ -508,7 +516,7 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Block Types', 'fse-studio' ) }
 				icon="block-default"
 			>
-				{ blockTypes ? (
+				{ blockTypes.length ? (
 					blockTypes.map( ( blockType ) => {
 						return (
 							<PostOrBlockTypeToggle
