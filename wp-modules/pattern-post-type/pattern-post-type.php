@@ -250,7 +250,7 @@ function register_block_patterns() {
 		return;
 	}
 
-	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
+	$patterns = \FseStudio\PatternDataHandlers\get_theme_patterns();
 
 	foreach ( $patterns as $pattern ) {
 		if ( isset( $pattern['categories'] ) ) {
