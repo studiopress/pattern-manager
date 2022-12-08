@@ -120,6 +120,10 @@ const FseStudioMetaControls = () => {
 		);
 	}, [] );
 
+	/**
+	 * Automatically select the wp_template postType when a template-part blockType is selected.
+	 * wp_template postType toggle will also be disabled in the PostOrBlockTypeToggle component.
+	 */
 	useEffect( () => {
 		if (
 			templatePartBlockTypeSelected &&
@@ -324,7 +328,7 @@ const FseStudioMetaControls = () => {
 	 * @param {Object} props.postOrBlockType
 	 * @param {string} props.metaTypeToTarget
 	 */
-	function SidebarToggle( { postOrBlockType, metaTypeToTarget } ) {
+	function PostOrBlockTypeToggle( { postOrBlockType, metaTypeToTarget } ) {
 		const { name, slug } = postOrBlockType;
 
 		return (
@@ -474,7 +478,7 @@ const FseStudioMetaControls = () => {
 				{ postTypes ? (
 					postTypes.map( ( postType ) => {
 						return (
-							<SidebarToggle
+							<PostOrBlockTypeToggle
 								key={ postType.slug }
 								postOrBlockType={ postType }
 								metaTypeToTarget="postTypes"
@@ -503,7 +507,7 @@ const FseStudioMetaControls = () => {
 				{ blockTypes ? (
 					blockTypes.map( ( blockType ) => {
 						return (
-							<SidebarToggle
+							<PostOrBlockTypeToggle
 								key={ blockType.slug }
 								postOrBlockType={ blockType }
 								metaTypeToTarget="blockTypes"
