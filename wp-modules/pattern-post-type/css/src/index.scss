@@ -13,7 +13,7 @@
 	display:none!important;
 }
 /* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
-button.components-button.editor-post-save-draft.is-tertiary{
+button.components-button.editor-post-save-draft.is-tertiary {
 	display: none;
 } 
 /* Hide the snackbar on the pattern editor, as the fse-studio app has its own snackbar. */
@@ -53,7 +53,7 @@ button.components-button.editor-post-save-draft.is-tertiary{
 	/* Pattern name input button */
 	.fsestudio-pattern-post-name-button {
 		height: 30px;
-	width: 60px;
+		width: 60px;
 	}
 }
 /* Pattern name input button */
