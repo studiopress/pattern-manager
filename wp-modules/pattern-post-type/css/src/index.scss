@@ -87,6 +87,10 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	margin-bottom: 15px;
 }
 .fsestudio-pattern-sidebar-tooltip #tooltip-icon-helper-text {
-	padding-left: 5px;
+	padding-left: 8px;
+	cursor: default;
+}
+.fsestudio-pattern-sidebar-reverse-tooltip #tooltip-icon-helper-text {
+	padding-right: 8px;
 	cursor: default;
 }

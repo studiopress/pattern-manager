@@ -345,7 +345,12 @@ const FseStudioMetaControls = () => {
 			<div className="fsestudio-post-type-modal-toggle">
 				<PanelRow key={ `fse-pattern-visibility-block-content` }>
 					<ToggleControl
-						label={ __( 'Modal Visibility', 'fse-studio' ) }
+						label={
+							<ReverseTooltip
+								helperText="Show this pattern in a modal when new posts are created."
+								helperTitle="Modal visibility"
+							/>
+						}
 						checked={ postMeta.blockTypes?.includes(
 							blockTypeForModal
 						) }
@@ -373,18 +378,30 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
-	function BlockTransformsTooltip() {
-		const helperText =
-			'Select the blocks that users can transform into this pattern.';
-
+	function HelperTooltip( { helperText, helperTitle = '' } ) {
 		return (
 			<div className="fsestudio-pattern-sidebar-tooltip">
 				<Tooltip text={ helperText } delay="200">
 					<div>
 						<Dashicon icon="info-outline" />
 						<span id="tooltip-icon-helper-text">
-							Block Transformation
+							{ helperTitle }
 						</span>
+					</div>
+				</Tooltip>
+			</div>
+		);
+	}
+
+	function ReverseTooltip( { helperText, helperTitle = '' } ) {
+		return (
+			<div className="fsestudio-pattern-sidebar-reverse-tooltip">
+				<Tooltip text={ helperText } delay="200">
+					<div>
+						<span id="tooltip-icon-helper-text">
+							{ helperTitle }
+						</span>
+						<Dashicon icon="info-outline" />
 					</div>
 				</Tooltip>
 			</div>
@@ -514,6 +531,10 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Post Types', 'fse-studio' ) }
 				icon="admin-post"
 			>
+				<HelperTooltip
+					helperText="With no selections, this pattern will show for all post types."
+					helperTitle="Allowed post types"
+				/>
 				{ postTypes ? (
 					<Select
 						isMulti
@@ -550,7 +571,7 @@ const FseStudioMetaControls = () => {
 				{ /* Toggle the pattern modal on new post creation for the given post types. */ }
 				<div className="fsestudio-post-type-heading">
 					<PanelHeader>
-						{ __( 'Post Type Modal', 'fse-studio' ) }
+						{ __( 'Additional settings', 'fse-studio' ) }
 					</PanelHeader>
 				</div>
 				<ModalToggle />
@@ -562,7 +583,10 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Transforms (Block Types)', 'fse-studio' ) }
 				icon="block-default"
 			>
-				<BlockTransformsTooltip />
+				<HelperTooltip
+					helperText="Select the blocks that users can transform into this pattern."
+					helperTitle="Blocks for transformation"
+				/>
 				{ transformableBlockTypes ? (
 					<Select
 						isMulti
@@ -614,6 +638,10 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Block Pattern Categories', 'fse-studio' ) }
 				icon="paperclip"
 			>
+				<HelperTooltip
+					helperText="Select the dropdown categories to nest this pattern under."
+					helperTitle="Site editor categories"
+				/>
 				{ blockPatternCategories ? (
 					<Select
 						isMulti
