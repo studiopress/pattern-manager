@@ -120,14 +120,15 @@ const FseStudioMetaControls = () => {
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
 	 */
 	const blockPatternCategories = wp.data.useSelect( ( select ) => {
-		const categories = select( 'core' )
-			.getBlockPatternCategories()
-			.map( ( category ) => ( {
-				label: category.label,
-				value: category.name,
-			} ) );
-
-		return sortAlphabetically( categories, 'label' );
+		return sortAlphabetically(
+			select( 'core' )
+				.getBlockPatternCategories()
+				.map( ( category ) => ( {
+					label: category.label,
+					value: category.name,
+				} ) ),
+			'label'
+		);
 	}, [] );
 
 	/**
