@@ -15,7 +15,6 @@ import {
 } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import Select from 'react-select';
-import CreatableSelect from 'react-select/creatable';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
@@ -565,7 +564,7 @@ const FseStudioMetaControls = () => {
 			>
 				<BlockTransformsTooltip />
 				{ transformableBlockTypes ? (
-					<CreatableSelect
+					<Select
 						isMulti
 						isClearable
 						closeMenuOnSelect={ false }
