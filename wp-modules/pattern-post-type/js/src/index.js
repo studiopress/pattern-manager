@@ -10,6 +10,8 @@ import {
 	Spinner,
 	TextControl,
 	ToggleControl,
+	Tooltip,
+	Dashicon,
 } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import Select from 'react-select';
@@ -79,53 +81,40 @@ const FseStudioMetaControls = () => {
 	}, [] );
 
 	/**
-	 * The alphabetized list of registered block types, mapped for react-select.
-	 *
-	 * By passing a value of `true` when the IIFE is called, a list of only transformable
-	 * block types will optionally be returned.
-	 *
+	 * The alphabetized list of transformable block types, mapped for react-select.
 	 * Template-part types are added to support template part replacement in site editor.
-	 *
-	 * @param {boolean} allowTransformsOnly
 	 */
-	const blockTypes = ( ( allowTransformsOnly = false ) =>
-		wp.data.useSelect( ( select ) => {
-			const registeredBlockTypes = [
-				...select( 'core/blocks' )
-					.getBlockTypes()
-					.map( ( blockType ) => ( {
-						label: blockType.name, // blockType.title also available
-						value: blockType.name,
-						// Only add the transforms property if it exists.
-						...( blockType.transforms && {
-							transforms: blockType.transforms,
-						} ),
-					} ) ),
-				{
-					label: 'core/template-part/header',
-					value: 'core/template-part/header',
-					// Add some value for `transforms` so extra options are always included.
-					transforms: {},
-				},
-				{
-					label: 'core/template-part/footer',
-					value: 'core/template-part/footer',
-					transforms: {},
-				},
-			];
+	const transformableBlockTypes = wp.data.useSelect( ( select ) => {
+		const registeredBlockTypes = [
+			...select( 'core/blocks' )
+				.getBlockTypes()
+				.map( ( blockType ) => ( {
+					label: blockType.name, // blockType.title also available
+					value: blockType.name,
+					// Only add the transforms property if it exists.
+					...( blockType.transforms && {
+						transforms: blockType.transforms,
+					} ),
+				} ) ),
+			{
+				label: 'core/template-part/header',
+				value: 'core/template-part/header',
+				transforms: {},
+			},
+			{
+				label: 'core/template-part/footer',
+				value: 'core/template-part/footer',
+				transforms: {},
+			},
+		];
 
-			return sortAlphabetically(
-				allowTransformsOnly
-					? registeredBlockTypes.filter(
-							( blockType ) => blockType.transforms
-					  )
-					: registeredBlockTypes,
-				'label'
-			);
-		}, [] ) )(
-		// Call the IIFE and allow/disallow transforms with a boolean.
-		true
-	);
+		return sortAlphabetically(
+			registeredBlockTypes.filter(
+				( blockType ) => blockType.transforms
+			),
+			'label'
+		);
+	}, [] );
 
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
@@ -384,6 +373,24 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
+	function BlockTransformsTooltip() {
+		const helperText =
+			'Select the blocks that users can transform into this pattern.';
+
+		return (
+			<div className="fsestudio-pattern-sidebar-tooltip">
+				<Tooltip text={ helperText } delay="200">
+					<div>
+						<Dashicon icon="info-outline" />
+						<span id="tooltip-icon-helper-text">
+							Block Transformation
+						</span>
+					</div>
+				</Tooltip>
+			</div>
+		);
+	}
+
 	if (
 		'fsestudio_pattern' !==
 		wp.data.select( 'core/editor' ).getCurrentPostType()
@@ -555,7 +562,8 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Transforms (Block Types)', 'fse-studio' ) }
 				icon="block-default"
 			>
-				{ blockTypes ? (
+				<BlockTransformsTooltip />
+				{ transformableBlockTypes ? (
 					<CreatableSelect
 						isMulti
 						isClearable
@@ -567,7 +575,7 @@ const FseStudioMetaControls = () => {
 							}
 
 							return (
-								blockTypes.find(
+								transformableBlockTypes.find(
 									( matchedBlocktype ) =>
 										matchedBlocktype.value === blockType
 								) || {
@@ -576,7 +584,7 @@ const FseStudioMetaControls = () => {
 								}
 							);
 						} ) }
-						options={ blockTypes }
+						options={ transformableBlockTypes }
 						onChange={ ( blockTypeSelections ) => {
 							wp.data.dispatch( 'core/editor' ).editPost( {
 								meta: {
