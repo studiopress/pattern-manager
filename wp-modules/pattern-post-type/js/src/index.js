@@ -540,12 +540,19 @@ const FseStudioMetaControls = () => {
 						isMulti
 						isClearable
 						closeMenuOnSelect={ false }
-						value={ postMeta?.postTypes?.map( ( postType ) =>
-							postTypes.find(
-								( matchedPostType ) =>
-									matchedPostType.value === postType
-							)
-						) }
+						value={ postMeta?.postTypes?.map( ( postType ) => {
+							return {
+								...postTypes.find(
+									( matchedPostType ) =>
+										matchedPostType.value === postType
+								),
+								// Conditionally make wp_template post type non-removable.
+								...( postType === 'wp_template' &&
+									templatePartBlockTypeSelected && {
+										isFixed: true,
+									} ),
+							};
+						} ) }
 						options={ postTypes }
 						onChange={ ( postTypeSelections ) => {
 							wp.data.dispatch( 'core/editor' ).editPost( {
@@ -564,6 +571,26 @@ const FseStudioMetaControls = () => {
 								// Without this z-index value, the dropdown is transparent.
 								zIndex: 100,
 							} ),
+							multiValue: ( base, state ) => {
+								return state.data.isFixed
+									? { ...base, backgroundColor: 'gray' }
+									: base;
+							},
+							multiValueLabel: ( base, state ) => {
+								return state.data.isFixed
+									? {
+											...base,
+											fontWeight: 'bold',
+											color: 'white',
+											paddingRight: 6,
+									  }
+									: base;
+							},
+							multiValueRemove: ( base, state ) => {
+								return state.data.isFixed
+									? { ...base, display: 'none' }
+									: base;
+							},
 						} }
 					/>
 				) : (
