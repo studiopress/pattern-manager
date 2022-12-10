@@ -172,7 +172,7 @@ const FseStudioMetaControls = () => {
 
 	/**
 	 * Automatically select the wp_template postType when a template-part blockType is selected.
-	 * wp_template postType toggle will also be disabled in the PostOrBlockTypeToggle component.
+	 * wp_template postType removal will also be disabled in the postType Select component.
 	 */
 	useEffect( () => {
 		if (
