@@ -561,6 +561,11 @@ wp.hooks.removeFilter(
 	'removeTemplatePartsFromInserter'
 );
 
+// Remove the `tags` panel from the sidebar.
+wp.data
+	.dispatch( 'core/edit-post' )
+	.removeEditorPanel( 'taxonomy-panel-post_tag' );
+
 // Tell the parent page (fse studio) that we are loaded.
 let fsestudioPatternEditorLoaded = false;
 let patternDataSet = false;
