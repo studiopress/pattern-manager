@@ -547,8 +547,15 @@ const FseStudioMetaControls = () => {
 										matchedPostType.value === postType
 								),
 								// Conditionally make wp_template post type non-removable.
+								// Add a custom label with Tooltip.
 								...( postType === 'wp_template' &&
 									templatePartBlockTypeSelected && {
+										label: (
+											<ReverseTooltip
+												helperText='Required for "core/template-part" transforms (block types).'
+												helperTitle="Templates"
+											/>
+										),
 										isFixed: true,
 									} ),
 							};
