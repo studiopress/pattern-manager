@@ -612,10 +612,6 @@ const FseStudioMetaControls = () => {
 				title={ __( 'Block Pattern Categories', 'fse-studio' ) }
 				icon="paperclip"
 			>
-				<HelperTooltip
-					helperText="Select the dropdown categories to nest this pattern under."
-					helperTitle="Site editor categories"
-				/>
 				{ blockPatternCategories ? (
 					<Select
 						isMulti
