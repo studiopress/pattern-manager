@@ -539,6 +539,7 @@ const FseStudioMetaControls = () => {
 					<Select
 						isMulti
 						isClearable
+						closeMenuOnSelect={ false }
 						value={ postMeta?.postTypes?.map( ( postType ) =>
 							postTypes.find(
 								( matchedPostType ) =>
@@ -556,6 +557,7 @@ const FseStudioMetaControls = () => {
 								},
 							} );
 						} }
+						menuPlacement="auto"
 						styles={ {
 							menu: ( base ) => ( {
 								...base,
@@ -575,6 +577,51 @@ const FseStudioMetaControls = () => {
 					</PanelHeader>
 				</div>
 				<ModalToggle />
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for assigning block pattern categories to the pattern. */ }
+			{ /* Selected categories will show under the matching dropdown in the site editor. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Block Pattern Categories', 'fse-studio' ) }
+				icon="paperclip"
+			>
+				<HelperTooltip
+					helperText="Select the dropdown categories to nest this pattern under."
+					helperTitle="Site editor categories"
+				/>
+				{ blockPatternCategories ? (
+					<Select
+						isMulti
+						isClearable
+						closeMenuOnSelect={ false }
+						value={ postMeta?.categories?.map( ( category ) =>
+							blockPatternCategories.find(
+								( matchedCategory ) =>
+									matchedCategory.value === category
+							)
+						) }
+						options={ blockPatternCategories }
+						onChange={ ( categorySelections ) => {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									categories: categorySelections.map(
+										( category ) => category.value
+									),
+								},
+							} );
+						} }
+						menuPlacement="auto"
+						styles={ {
+							menu: ( base ) => ( {
+								...base,
+								zIndex: 100,
+							} ),
+						} }
+					/>
+				) : (
+					<Spinner />
+				) }
 			</PluginDocumentSettingPanel>
 
 			{ /* The panel section for assigning block types to the pattern. */ }
@@ -620,49 +667,7 @@ const FseStudioMetaControls = () => {
 								},
 							} );
 						} }
-						styles={ {
-							menu: ( base ) => ( {
-								...base,
-								zIndex: 100,
-							} ),
-						} }
-					/>
-				) : (
-					<Spinner />
-				) }
-			</PluginDocumentSettingPanel>
-
-			{ /* The panel section for assigning block pattern categories to the pattern. */ }
-			{ /* Selected categories will show under the matching dropdown in the site editor. */ }
-			<PluginDocumentSettingPanel
-				title={ __( 'Block Pattern Categories', 'fse-studio' ) }
-				icon="paperclip"
-			>
-				<HelperTooltip
-					helperText="Select the dropdown categories to nest this pattern under."
-					helperTitle="Site editor categories"
-				/>
-				{ blockPatternCategories ? (
-					<Select
-						isMulti
-						isClearable
-						value={ postMeta?.categories?.map( ( category ) =>
-							blockPatternCategories.find(
-								( matchedCategory ) =>
-									matchedCategory.value === category
-							)
-						) }
-						options={ blockPatternCategories }
-						onChange={ ( categorySelections ) => {
-							wp.data.dispatch( 'core/editor' ).editPost( {
-								meta: {
-									...postMeta,
-									categories: categorySelections.map(
-										( category ) => category.value
-									),
-								},
-							} );
-						} }
+						menuPlacement="auto"
 						styles={ {
 							menu: ( base ) => ( {
 								...base,
