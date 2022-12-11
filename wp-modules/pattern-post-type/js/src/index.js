@@ -15,6 +15,7 @@ import {
 } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
@@ -26,6 +27,7 @@ const FseStudioMetaControls = () => {
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'fse-studio' )
 	);
+	const [ keywordInputValue, setKeywordInputValue ] = useState( '' );
 
 	const previousPatternName = useRef();
 	const postMeta = wp.data.useSelect( ( select ) => {
@@ -622,10 +624,68 @@ const FseStudioMetaControls = () => {
 				<ModalToggle />
 			</PluginDocumentSettingPanel>
 
+			{ /* The panel section for assigning keywords to the pattern. */ }
+			{ /* Keywords are searchable terms in the site editor inserter. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Pattern Keywords', 'fse-studio' ) }
+				icon="filter"
+			>
+				<CreatableSelect
+					components={ {
+						DropdownIndicator: null,
+					} }
+					inputValue={ keywordInputValue }
+					isClearable
+					isMulti
+					menuIsOpen={ false }
+					onChange={ ( newValue ) => {
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: {
+								...postMeta,
+								keywords: [
+									...newValue.map( ( keywordObject ) =>
+										keywordObject.value,	
+									),
+								],
+							},
+						} );
+					} }
+					onInputChange={ ( newValue ) =>
+						setKeywordInputValue( newValue )
+					}
+					onKeyDown={ ( event ) => {
+						if ( ! keywordInputValue ) {
+							return;
+						}
+
+						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									keywords: [
+										...postMeta.keywords,
+										keywordInputValue,
+									],
+								},
+							} );
+							setKeywordInputValue( '' );
+							event.preventDefault();
+						}
+					} }
+					placeholder="Add searchable terms..."
+					value={ postMeta.keywords.map(
+						( keyword ) => ( {
+							label: keyword,
+							value: keyword,
+						} )
+					) }
+				/>
+			</PluginDocumentSettingPanel>
+
 			{ /* The panel section for assigning block pattern categories to the pattern. */ }
 			{ /* Selected categories will show under the matching dropdown in the site editor. */ }
 			<PluginDocumentSettingPanel
-				title={ __( 'Block Pattern Categories', 'fse-studio' ) }
+				title={ __( 'Pattern Categories', 'fse-studio' ) }
 				icon="paperclip"
 			>
 				{ blockPatternCategories ? (

@@ -127,12 +127,26 @@ function pattern_post_type() {
 		)
 	);
 
-	/**
-	 * Add postTypes array post meta.
-	 */
 	register_post_meta(
 		'fsestudio_pattern',
 		'postTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
+
+	register_post_meta(
+		'fsestudio_pattern',
+		'keywords',
 		array(
 			'show_in_rest' => array(
 				'schema' => array(
