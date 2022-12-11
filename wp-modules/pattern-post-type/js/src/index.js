@@ -458,6 +458,7 @@ const FseStudioMetaControls = () => {
 							}
 						>
 							<TextControl
+								id="fsestudio-pattern-post-name-input-component"
 								disabled={ nameInputDisabled }
 								className="fsestudio-pattern-post-name-input-outer"
 								aria-label="Pattern Title Name Input (used for renaming the pattern)"
@@ -784,6 +785,7 @@ const FseStudioMetaControls = () => {
 				icon="media-text"
 			>
 				<TextareaControl
+					id="fsestudio-pattern-editor-description-textarea"
 					help="Optionally describe the pattern."
 					value={ postMeta?.description }
 					onChange={ ( newValue ) =>
