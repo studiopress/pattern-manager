@@ -378,7 +378,11 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
-	function HelperTooltip( { helperText, helperTitle, icon = 'info-outline' } ) {
+	function HelperTooltip( {
+		helperText,
+		helperTitle,
+		icon = 'info-outline',
+	} ) {
 		return (
 			<div className="fsestudio-pattern-sidebar-tooltip">
 				<Tooltip text={ helperText } delay="200">
@@ -393,7 +397,11 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
-	function ReverseTooltip( { helperText, helperTitle, icon = 'info-outline' } ) {
+	function ReverseTooltip( {
+		helperText,
+		helperTitle,
+		icon = 'info-outline',
+	} ) {
 		return (
 			<div className="fsestudio-pattern-sidebar-reverse-tooltip">
 				<Tooltip text={ helperText } delay="200">
