@@ -444,6 +444,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
 /**
  * Title: " . addcslashes( $pattern['title'], '\'' ) . '
  * Slug: ' . $pattern['name'] . '
+ * Description: ' . $pattern['description'] . '
  * Categories: ' . ( isset( $pattern['categories'] ) ? implode( ', ', $pattern['categories'] ) : '' ) . '
  * Keywords: ' . ( isset( $pattern['keywords'] ) ? implode( ', ', $pattern['keywords'] ) : '' ) . '
  * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
