@@ -378,12 +378,12 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
-	function HelperTooltip( { helperText, helperTitle = '' } ) {
+	function HelperTooltip( { helperText, helperTitle, icon = 'info' } ) {
 		return (
 			<div className="fsestudio-pattern-sidebar-tooltip">
 				<Tooltip text={ helperText } delay="200">
 					<div>
-						<Dashicon icon="info-outline" />
+						<Dashicon icon={ icon } />
 						<span id="tooltip-icon-helper-text">
 							{ helperTitle }
 						</span>
@@ -393,7 +393,7 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
-	function ReverseTooltip( { helperText, helperTitle = '' } ) {
+	function ReverseTooltip( { helperText, helperTitle, icon = 'info' } ) {
 		return (
 			<div className="fsestudio-pattern-sidebar-reverse-tooltip">
 				<Tooltip text={ helperText } delay="200">
@@ -401,7 +401,7 @@ const FseStudioMetaControls = () => {
 						<span id="tooltip-icon-helper-text">
 							{ helperTitle }
 						</span>
-						<Dashicon icon="info-outline" />
+						<Dashicon icon={ icon } />
 					</div>
 				</Tooltip>
 			</div>
@@ -554,6 +554,7 @@ const FseStudioMetaControls = () => {
 											<ReverseTooltip
 												helperText='Required for "core/template-part" transforms (block types).'
 												helperTitle="Templates"
+												icon="lock"
 											/>
 										),
 										isFixed: true,
