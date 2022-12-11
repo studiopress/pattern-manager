@@ -643,8 +643,8 @@ const FseStudioMetaControls = () => {
 							meta: {
 								...postMeta,
 								keywords: [
-									...newValue.map( ( keywordObject ) =>
-										keywordObject.value,	
+									...newValue.map(
+										( keywordObject ) => keywordObject.value
 									),
 								],
 							},
@@ -673,12 +673,10 @@ const FseStudioMetaControls = () => {
 						}
 					} }
 					placeholder="Add searchable terms..."
-					value={ postMeta.keywords.map(
-						( keyword ) => ( {
-							label: keyword,
-							value: keyword,
-						} )
-					) }
+					value={ postMeta.keywords.map( ( keyword ) => ( {
+						label: keyword,
+						value: keyword,
+					} ) ) }
 				/>
 			</PluginDocumentSettingPanel>
 
