@@ -585,7 +585,7 @@ const FseStudioMetaControls = () => {
 			>
 				<HelperTooltip
 					helperText={ __(
-						'With no selections, this pattern will show for all post types.',
+						'With no selections, this pattern will be available in the block inserter for all post types.',
 						'fse-studio'
 					) }
 					helperTitle={ __( 'Allowed post types', 'fse-studio' ) }
