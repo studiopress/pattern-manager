@@ -4,8 +4,8 @@ import React from 'react';
 
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
-import { __ } from '@wordpress/i18n';
-import { Icon, close, edit, external, copy } from '@wordpress/icons';
+import { sprintf, __ } from '@wordpress/i18n';
+import { Icon, close, copy, edit, external,  } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -134,13 +134,24 @@ export default function ThemePatterns( { isVisible }: Props ) {
 														'fse-studio'
 													) }
 													onClick={ () => {
-														currentPatternId.set(
-															patternName
-														);
-														currentView.set(
-															'pattern_editor'
-														);
-													} }
+														const newSlug = `${ patternData.slug }-copied`;
+														currentTheme
+															.createPattern( {
+																...patternData,
+																type: 'pattern',
+																title: sprintf( __( '%s (copied)', 'fse-studio' ), patternData.title  ),
+																name: newSlug,
+																slug: newSlug,
+															} )
+															.then( () => {
+																currentPatternId.set(
+																	newSlug
+																);
+																currentView.set(
+																	'pattern_editor'
+																);
+															} );
+														} }
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
