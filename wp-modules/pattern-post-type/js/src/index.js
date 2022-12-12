@@ -577,92 +577,6 @@ const FseStudioMetaControls = () => {
 				) }
 			</PluginDocumentSettingPanel>
 
-			{ /* The panel section for assigning keywords to the pattern. */ }
-			{ /* Keywords are searchable terms in the site editor inserter. */ }
-			<PluginDocumentSettingPanel
-				title={ __( 'Pattern Keywords', 'fse-studio' ) }
-				icon="filter"
-			>
-				<CreatableSelect
-					components={ {
-						DropdownIndicator: null,
-					} }
-					inputValue={ keywordInputValue }
-					isClearable
-					isMulti
-					menuIsOpen={ false }
-					onChange={ ( newValue ) => {
-						// Handle the deletion of keywords.
-						wp.data.dispatch( 'core/editor' ).editPost( {
-							meta: {
-								...postMeta,
-								keywords: [
-									...newValue.map( ( keywordObject ) =>
-										keywordObject.value.toLowerCase()
-									),
-								],
-							},
-						} );
-					} }
-					onInputChange={ ( newValue ) =>
-						setKeywordInputValue( newValue )
-					}
-					onKeyDown={ ( event ) => {
-						if ( ! keywordInputValue ) {
-							return;
-						}
-
-						if (
-							postMeta.keywords.includes(
-								keywordInputValue.toLowerCase()
-							)
-						) {
-							setKeywordInputValue( '' );
-							return;
-						}
-
-						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
-							wp.data.dispatch( 'core/editor' ).editPost( {
-								meta: {
-									...postMeta,
-									keywords: [
-										...postMeta.keywords,
-										keywordInputValue.toLowerCase(),
-									],
-								},
-							} );
-							setKeywordInputValue( '' );
-							event.preventDefault();
-						}
-					} }
-					placeholder="Add searchable terms..."
-					value={ postMeta.keywords.map( ( keyword ) => ( {
-						label: keyword,
-						value: keyword,
-					} ) ) }
-				/>
-			</PluginDocumentSettingPanel>
-
-			{ /* The panel section for typing a description of the pattern. */ }
-			<PluginDocumentSettingPanel
-				title={ __( 'Expanded Description', 'fse-studio' ) }
-				icon="media-text"
-			>
-				<TextareaControl
-					id="fsestudio-pattern-editor-description-textarea"
-					help="Optionally describe the pattern."
-					value={ postMeta?.description }
-					onChange={ ( newValue ) =>
-						wp.data.dispatch( 'core/editor' ).editPost( {
-							meta: {
-								...postMeta,
-								description: newValue,
-							},
-						} )
-					}
-				/>
-			</PluginDocumentSettingPanel>
-
 			{ /* The panel section for restricting post types for the pattern. */ }
 			{ /* Custom post types and certain core types are displayed as toggles. */ }
 			<PluginDocumentSettingPanel
@@ -801,6 +715,92 @@ const FseStudioMetaControls = () => {
 				) : (
 					<Spinner />
 				) }
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for assigning keywords to the pattern. */ }
+			{ /* Keywords are searchable terms in the site editor inserter. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Pattern Keywords', 'fse-studio' ) }
+				icon="filter"
+			>
+				<CreatableSelect
+					components={ {
+						DropdownIndicator: null,
+					} }
+					inputValue={ keywordInputValue }
+					isClearable
+					isMulti
+					menuIsOpen={ false }
+					onChange={ ( newValue ) => {
+						// Handle the deletion of keywords.
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: {
+								...postMeta,
+								keywords: [
+									...newValue.map( ( keywordObject ) =>
+										keywordObject.value.toLowerCase()
+									),
+								],
+							},
+						} );
+					} }
+					onInputChange={ ( newValue ) =>
+						setKeywordInputValue( newValue )
+					}
+					onKeyDown={ ( event ) => {
+						if ( ! keywordInputValue ) {
+							return;
+						}
+
+						if (
+							postMeta.keywords.includes(
+								keywordInputValue.toLowerCase()
+							)
+						) {
+							setKeywordInputValue( '' );
+							return;
+						}
+
+						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									keywords: [
+										...postMeta.keywords,
+										keywordInputValue.toLowerCase(),
+									],
+								},
+							} );
+							setKeywordInputValue( '' );
+							event.preventDefault();
+						}
+					} }
+					placeholder="Add searchable terms..."
+					value={ postMeta.keywords.map( ( keyword ) => ( {
+						label: keyword,
+						value: keyword,
+					} ) ) }
+				/>
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for typing a description of the pattern. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Expanded Description', 'fse-studio' ) }
+				icon="media-text"
+			>
+				<TextareaControl
+					id="fsestudio-pattern-editor-description-textarea"
+					help="Optionally describe the pattern."
+					value={ postMeta?.description }
+					onChange={ ( newValue ) =>
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: {
+								...postMeta,
+								description: newValue,
+							},
+						} )
+					}
+				/>
 			</PluginDocumentSettingPanel>
 		</div>
 	);
