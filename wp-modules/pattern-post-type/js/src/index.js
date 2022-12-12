@@ -802,9 +802,40 @@ const FseStudioMetaControls = () => {
 					}
 				/>
 			</PluginDocumentSettingPanel>
+			<PluginDocumentSettingPanel
+				title={ __( 'Inserter', 'fse-studio' ) }
+			>
+				<InserterToggle postMeta={ postMeta } />
+			</PluginDocumentSettingPanel>
 		</div>
 	);
 };
+
+function InserterToggle( { postMeta } ) {
+	const isChecked = postMeta?.inserter ?? true;
+
+	return (
+		<PanelRow>
+			<ToggleControl
+				label={ __( 'Display in inserter', 'fse-studio' ) }
+				checked={ isChecked }
+				help={
+					isChecked
+						? __( 'Appears in the inserter', 'fse-studio' )
+						: __( 'Hidden in the inserter', 'fse-studio' )
+				}
+				onChange={ ( newIsChecked ) => {
+					wp.data.dispatch( 'core/editor' ).editPost( {
+						meta: {
+							...postMeta,
+							inserter: newIsChecked,
+						},
+					} );
+				} }
+			/>
+		</PanelRow>
+	);
+}
 
 registerPlugin( 'fsestudio-postmeta-for-patterns', {
 	icon: null,

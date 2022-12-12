@@ -170,11 +170,7 @@ function format_pattern_data( $pattern_data, $file ) {
 	// Parse properties of type bool.
 	foreach ( array( 'inserter' ) as $property ) {
 		if ( ! empty( $pattern_data[ $property ] ) ) {
-			$pattern_data[ $property ] = in_array(
-				strtolower( $pattern_data[ $property ] ),
-				array( 'yes', 'true' ),
-				true
-			);
+			$pattern_data[ $property ] = 'true' === $pattern_data[ $property ];
 		} else {
 			unset( $pattern_data[ $property ] );
 		}
@@ -450,6 +446,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
  * Block Types: ' . ( isset( $pattern['blockTypes'] ) ? implode( ', ', $pattern['blockTypes'] ) : '' ) . '
  * Post Types: ' . ( isset( $pattern['postTypes'] ) ? implode( ', ', $pattern['postTypes'] ) : '' ) . '
+ * Inserter: ' . ( $pattern['inserter'] ?? true ? 'true' : 'false' ) . '
  */
 
 ?>
