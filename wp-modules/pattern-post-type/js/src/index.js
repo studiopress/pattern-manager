@@ -12,6 +12,7 @@ import {
 	ToggleControl,
 	Tooltip,
 	Dashicon,
+	TextareaControl,
 } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import Select from 'react-select';
@@ -457,6 +458,7 @@ const FseStudioMetaControls = () => {
 							}
 						>
 							<TextControl
+								id="fsestudio-pattern-post-name-input-component"
 								disabled={ nameInputDisabled }
 								className="fsestudio-pattern-post-name-input-outer"
 								aria-label="Pattern Title Name Input (used for renaming the pattern)"
@@ -785,6 +787,26 @@ const FseStudioMetaControls = () => {
 				) : (
 					<Spinner />
 				) }
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for typing a description of the pattern. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Expanded Description', 'fse-studio' ) }
+				icon="media-text"
+			>
+				<TextareaControl
+					id="fsestudio-pattern-editor-description-textarea"
+					help="Optionally describe the pattern."
+					value={ postMeta?.description }
+					onChange={ ( newValue ) =>
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: {
+								...postMeta,
+								description: newValue,
+							},
+						} )
+					}
+				/>
 			</PluginDocumentSettingPanel>
 		</div>
 	);

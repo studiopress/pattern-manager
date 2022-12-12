@@ -56,6 +56,16 @@ button.components-button.editor-post-save-draft.is-tertiary {
 		width: 60px;
 	}
 }
+#fsestudio-pattern-post-name-input-component {
+	border-color: hsl(0, 0%, 80%);
+	border-radius: 4px;
+	border-width: 1px;
+	&:focus {
+		box-shadow: 0 0 1px #2684FF;
+		border-color: #2684FF;
+		border-width: 2px;
+	}
+}
 /* Pattern name input button */
 .fsestudio-pattern-post-name-button {
 	color: white;
@@ -93,4 +103,14 @@ button.components-button.editor-post-save-draft.is-tertiary {
 .fsestudio-pattern-sidebar-reverse-tooltip #tooltip-icon-helper-text {
 	padding-right: 8px;
 	cursor: default;
+}
+#fsestudio-pattern-editor-description-textarea {
+	border-color: hsl(0, 0%, 80%);
+	border-radius: 4px;
+	border-width: 1px;
+	&:focus {
+		box-shadow: 0 0 1px #2684FF;
+		border-color: #2684FF;
+		border-width: 2px;
+	}
 }
