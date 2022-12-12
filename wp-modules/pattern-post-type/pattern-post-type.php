@@ -55,7 +55,6 @@ function pattern_post_type() {
 			'show_ui'      => true,
 			'show_in_menu' => false,
 			'show_in_rest' => true,
-			'taxonomies'   => array( 'post_tag' ),
 			'supports'     => array(
 				'editor',
 				'custom-fields',
@@ -264,7 +263,7 @@ function register_block_patterns() {
 		return;
 	}
 
-	$patterns = \FseStudio\PatternDataHandlers\get_patterns();
+	$patterns = \FseStudio\PatternDataHandlers\get_theme_patterns();
 
 	foreach ( $patterns as $pattern ) {
 		if ( isset( $pattern['categories'] ) ) {
