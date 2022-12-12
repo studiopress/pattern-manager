@@ -1,15 +1,21 @@
+/* eslint-disable @wordpress/no-unused-vars-before-return */
+
 import '../../css/src/index.scss';
 import { registerPlugin } from '@wordpress/plugins';
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import {
-	PanelHeader,
 	PanelRow,
 	Spinner,
 	TextControl,
 	ToggleControl,
+	Tooltip,
+	Dashicon,
+	TextareaControl,
 } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { useState, useEffect, useRef } from '@wordpress/element';
 import convertToSlug from '../../../app/js/src/utils/convertToSlug';
 
@@ -21,21 +27,15 @@ const FseStudioMetaControls = () => {
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'fse-studio' )
 	);
+	const [ keywordInputValue, setKeywordInputValue ] = useState( '' );
 
 	const previousPatternName = useRef();
 	const postMeta = wp.data.useSelect( ( select ) => {
 		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 	} );
 
-	// Current sole block type needed to display modal.
-	const blockTypePostContent = 'core/post-content';
-
-	// Simple bool to match primary toggle for 'Post Type Modal' section.
-	const blockModalVisible =
-		postMeta.blockTypes?.includes( blockTypePostContent );
-
 	/**
-	 * Get, filter, and sort the custom post types.
+	 * Get, filter, and sort the custom post types, mapped for react-select.
 	 * Wrapping call in useSelect to prevent async null return on initial load.
 	 *
 	 * 'core/post-content' in 'Block Types' header always displays for 'page' post type.
@@ -43,40 +43,106 @@ const FseStudioMetaControls = () => {
 	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
 	 */
 	const postTypes = wp.data.useSelect( ( select ) => {
-		const initialPostTypes = select( 'core' ).getPostTypes( {
-			per_page: 100,
-		} );
+		const initialPostTypes = select( 'core' )
+			.getPostTypes( {
+				per_page: 100,
+			} )
+			?.map( ( postType ) => ( {
+				label: postType.name,
+				value: postType.slug,
+			} ) );
 
 		if ( initialPostTypes ) {
-			// Core post types that are inapplicable or not user accessible.
+			/**
+			 * Core post types that are inapplicable or not user accessible.
+			 *
+			 * Current core types for possible removal:
+			  'attachment', // Media
+			  'nav_menu_item',
+			  'wp_block', // Reusable blocks are a user-accessible post type
+			  'wp_template',
+			  'wp_template_part',
+			  'wp_navigation',
+			  'fsestudio_pattern',
+			 */
 			const corePostTypesToRemove = [
-				'attachment', // Media
+				'attachment',
 				'nav_menu_item',
-				// 'wp_block', // Reusable blocks are a user-accessible post type
-				'wp_template',
-				'wp_template_part',
 				'wp_navigation',
 				'fsestudio_pattern',
 			];
 
 			const filteredPostTypes = initialPostTypes.filter( ( postType ) => {
-				// Since core/post-content always shows for 'page', add blockType value for that index.
-				if ( postType.slug === 'page' ) {
-					postType.blockType = blockTypePostContent;
-				}
-
 				// Filter out the unapplicable core post types.
-				return ! corePostTypesToRemove.includes( postType.slug );
+				return ! corePostTypesToRemove.includes( postType.value );
 			} );
 
-			return sortAlphabetically(
-				filteredPostTypes,
-				'name',
-				'blockType',
-				blockTypePostContent
-			);
+			return sortAlphabetically( filteredPostTypes, 'label' );
 		}
 	}, [] );
+
+	/**
+	 * The alphabetized list of transformable block types, mapped for react-select.
+	 * Template-part types are added to support template part replacement in site editor.
+	 */
+	const transformableBlockTypes = wp.data.useSelect( ( select ) => {
+		const registeredBlockTypes = [
+			...select( 'core/blocks' )
+				.getBlockTypes()
+				.map( ( blockType ) => ( {
+					label: blockType.name, // blockType.title also available
+					value: blockType.name,
+					// Only add the transforms property if it exists.
+					...( blockType.transforms && {
+						transforms: blockType.transforms,
+					} ),
+				} ) ),
+			{
+				label: 'core/template-part/header',
+				value: 'core/template-part/header',
+				transforms: {},
+			},
+			{
+				label: 'core/template-part/footer',
+				value: 'core/template-part/footer',
+				transforms: {},
+			},
+		];
+
+		return sortAlphabetically(
+			registeredBlockTypes.filter(
+				( blockType ) => blockType.transforms
+			),
+			'label'
+		);
+	}, [] );
+
+	/**
+	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
+	 */
+	const blockPatternCategories = wp.data.useSelect( ( select ) => {
+		return sortAlphabetically(
+			select( 'core' )
+				.getBlockPatternCategories()
+				.map( ( category ) => ( {
+					label: category.label,
+					value: category.name,
+				} ) ),
+			'label'
+		);
+	}, [] );
+
+	/**
+	 * Boolean to catch when a template-part related block type is selected.
+	 * This is used to automatically select and disable the wp_template post type.
+	 */
+	const templatePartBlockTypeSelected =
+		postMeta?.blockTypes.some(
+			( blockType ) => blockType !== 'core/post-content'
+		) &&
+		postMeta?.blockTypes?.some( ( blockType ) =>
+			blockType.includes( 'core/template-part' )
+		);
 
 	useEffect( () => {
 		wp.data.subscribe( () => {
@@ -107,14 +173,22 @@ const FseStudioMetaControls = () => {
 	}, [] );
 
 	/**
-	 * Edge case: postType 'page' was not selected before modal visibility was checked.
-	 * Without this block, 'page' would not be stored to 'Post Types' in the pattern file.
+	 * Automatically select the wp_template postType when a template-part blockType is selected.
+	 * wp_template postType removal will also be disabled in the postType Select component.
 	 */
 	useEffect( () => {
-		if ( blockModalVisible && ! postMeta?.postTypes?.includes( 'page' ) ) {
-			handleToggleChange( true, 'postTypes', 'page' );
+		if (
+			templatePartBlockTypeSelected &&
+			! postMeta?.postTypes?.includes( 'wp_template' )
+		) {
+			wp.data.dispatch( 'core/editor' ).editPost( {
+				meta: {
+					...postMeta,
+					postTypes: [ ...postMeta.postTypes, 'wp_template' ],
+				},
+			} );
 		}
-	}, [ postMeta ] );
+	}, [ postMeta.postTypes, templatePartBlockTypeSelected ] );
 
 	/**
 	 * Set nameInput and inputDisabled state when the post is switched.
@@ -135,20 +209,20 @@ const FseStudioMetaControls = () => {
 	}, [ postMeta.title ] );
 
 	/**
-	 * Edge case: a post type that was previously saved for modal visibility no longer exists.
+	 * Delete non-existing post types that were previously saved to the pattern.
 	 *
-	 * This will compare the post types found in post meta to currently allowed modal post types
-	 * and clean up both the post meta and pattern file.
+	 * This will compare the post types found in post meta to currently allowed post types and
+	 * clean up both the post meta and pattern file.
 	 *
-	 * Admittedly, this might be needlessly destructive. The cleanup is not required for modal
-	 * visibility to work as expected, and this method only targets one pattern at a time.
+	 * Admittedly, this might be needlessly destructive. The cleanup is not required, and this
+	 * method only targets one pattern at a time.
 	 */
 	useEffect( () => {
 		if ( postTypes ) {
 			/* prettier-ignore */
 			const filteredPostTypeSlugs = postTypes?.map( ( postType ) => {
-				return postMeta?.postTypes?.includes( postType?.slug ) ?
-					postType?.slug :
+				return postMeta?.postTypes?.includes( postType?.value ) ?
+					postType?.value :
 					'';
 			} ).filter( Boolean );
 
@@ -266,18 +340,24 @@ const FseStudioMetaControls = () => {
 	 * The value of this toggle hides or shows the 'Post Types' section.
 	 */
 	function ModalToggle() {
+		// Block type for displaying in the pattern modal on new post creation.
+		const blockTypeForModal = 'core/post-content';
+
 		return (
 			<div className="fsestudio-post-type-modal-toggle">
 				<PanelRow key={ `fse-pattern-visibility-block-content` }>
 					<ToggleControl
-						label={ __( 'Modal Visibility', 'fse-studio' ) }
+						label={
+							<ReverseTooltip
+								helperText="Show this pattern in a modal when new posts are created."
+								helperTitle="Modal visibility"
+							/>
+						}
 						checked={ postMeta.blockTypes?.includes(
-							blockTypePostContent
+							blockTypeForModal
 						) }
 						help={
-							postMeta.blockTypes?.includes(
-								blockTypePostContent
-							)
+							postMeta.blockTypes?.includes( blockTypeForModal )
 								? __(
 										'Enabled for selected post types.',
 										'fse-studio'
@@ -291,7 +371,7 @@ const FseStudioMetaControls = () => {
 							handleToggleChange(
 								event,
 								'blockTypes',
-								blockTypePostContent
+								blockTypeForModal
 							);
 						} }
 					/>
@@ -300,58 +380,40 @@ const FseStudioMetaControls = () => {
 		);
 	}
 
-	/**
-	 * Heading component for 'Post Types' section.
-	 */
-	function PostTypeHeading() {
+	function HelperTooltip( {
+		helperText,
+		helperTitle,
+		icon = 'info-outline',
+	} ) {
 		return (
-			<div className="fsestudio-post-type-heading">
-				<PanelHeader>{ __( 'Post Types', 'fse-studio' ) }</PanelHeader>
+			<div className="fsestudio-pattern-sidebar-tooltip">
+				<Tooltip text={ helperText } delay="200">
+					<div>
+						<Dashicon icon={ icon } />
+						<span id="tooltip-icon-helper-text">
+							{ helperTitle }
+						</span>
+					</div>
+				</Tooltip>
 			</div>
 		);
 	}
 
-	/**
-	 * Toggle component for postType. Intended to be iterated over.
-	 * Toggle is disabled and checked if postType is associated with blockTypePostContent.
-	 *
-	 * @param {Object} props
-	 * @param {Object} props.postType
-	 */
-	function PostTypeToggle( { postType } ) {
-		const { name, blockType, slug } = postType;
-
+	function ReverseTooltip( {
+		helperText,
+		helperTitle,
+		icon = 'info-outline',
+	} ) {
 		return (
-			<div className="fsestudio-post-type-toggle">
-				<PanelRow key={ `fse-pattern-visibility-post-type-${ name }` }>
-					<ToggleControl
-						label={ name }
-						disabled={
-							( blockType === blockTypePostContent &&
-								blockModalVisible ) ||
-							! postMeta.blockTypes?.includes(
-								blockTypePostContent
-							)
-						}
-						checked={
-							( blockType === blockTypePostContent &&
-								blockModalVisible ) ||
-							postMeta.postTypes?.includes( slug )
-						}
-						help={
-							blockType === blockTypePostContent &&
-							blockModalVisible
-								? __(
-										'Enabled by default for modal visibility.',
-										'fse-studio'
-								  )
-								: ''
-						}
-						onChange={ ( event ) => {
-							handleToggleChange( event, 'postTypes', slug );
-						} }
-					/>
-				</PanelRow>
+			<div className="fsestudio-pattern-sidebar-reverse-tooltip">
+				<Tooltip text={ helperText } delay="200">
+					<div>
+						<span id="tooltip-icon-helper-text">
+							{ helperTitle }
+						</span>
+						<Dashicon icon={ icon } />
+					</div>
+				</Tooltip>
 			</div>
 		);
 	}
@@ -395,6 +457,7 @@ const FseStudioMetaControls = () => {
 							}
 						>
 							<TextControl
+								id="fsestudio-pattern-post-name-input-component"
 								disabled={ nameInputDisabled }
 								className="fsestudio-pattern-post-name-input-outer"
 								aria-label="Pattern Title Name Input (used for renaming the pattern)"
@@ -473,33 +536,290 @@ const FseStudioMetaControls = () => {
 				</PanelRow>
 			</PluginDocumentSettingPanel>
 
-			{ /* The panel section for controlling pattern post type modals. */ }
-			{ /* Custom post types (outside of inapplicable core types) are displayed as toggles. */ }
+			{ /* The panel section for assigning block pattern categories to the pattern. */ }
+			{ /* Selected categories will show under the matching dropdown in the site editor. */ }
 			<PluginDocumentSettingPanel
-				title={ __( 'Post Type Modal', 'fse-studio' ) }
+				title={ __( 'Pattern Categories', 'fse-studio' ) }
+				icon="paperclip"
+			>
+				{ blockPatternCategories ? (
+					<Select
+						isMulti
+						isClearable
+						closeMenuOnSelect={ false }
+						value={ postMeta?.categories?.map( ( category ) =>
+							blockPatternCategories.find(
+								( matchedCategory ) =>
+									matchedCategory.value === category
+							)
+						) }
+						options={ blockPatternCategories }
+						onChange={ ( categorySelections ) => {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									categories: categorySelections.map(
+										( category ) => category.value
+									),
+								},
+							} );
+						} }
+						menuPlacement="auto"
+						styles={ {
+							menu: ( base ) => ( {
+								...base,
+								zIndex: 100,
+							} ),
+						} }
+					/>
+				) : (
+					<Spinner />
+				) }
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for restricting post types for the pattern. */ }
+			{ /* Custom post types and certain core types are displayed as toggles. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Post Types', 'fse-studio' ) }
 				icon="admin-post"
 			>
-				{ /* `ModalToggle` will hide or display remaining components via `blockModalVisible`. */ }
+				<HelperTooltip
+					helperText={ __(
+						'With no selections, this pattern will be available in the block inserter for all post types.',
+						'fse-studio'
+					) }
+					helperTitle={ __( 'Allowed post types', 'fse-studio' ) }
+				/>
+				{ postTypes ? (
+					<Select
+						isMulti
+						isClearable
+						closeMenuOnSelect={ false }
+						value={ postMeta?.postTypes?.map( ( postType ) => {
+							return {
+								...postTypes.find(
+									( matchedPostType ) =>
+										matchedPostType.value === postType
+								),
+								// Conditionally make wp_template post type non-removable.
+								// Add a custom label with Tooltip.
+								...( postType === 'wp_template' &&
+									templatePartBlockTypeSelected && {
+										label: (
+											<ReverseTooltip
+												helperText={ __(
+													'Required for "core/template-part" transforms (block types).',
+													'fse-studio'
+												) }
+												helperTitle={ __(
+													'Templates',
+													'fse-studio'
+												) }
+												icon="lock"
+											/>
+										),
+										isFixed: true,
+									} ),
+							};
+						} ) }
+						options={ postTypes }
+						onChange={ ( postTypeSelections ) => {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									postTypes: postTypeSelections.map(
+										( postType ) => postType.value
+									),
+								},
+							} );
+						} }
+						menuPlacement="auto"
+						styles={ {
+							menu: ( base ) => ( {
+								...base,
+								// Without this z-index value, the dropdown is transparent.
+								zIndex: 100,
+							} ),
+							multiValue: ( base, state ) => {
+								return state.data.isFixed
+									? { ...base, backgroundColor: 'gray' }
+									: base;
+							},
+							multiValueLabel: ( base, state ) => {
+								return state.data.isFixed
+									? {
+											...base,
+											fontWeight: 'bold',
+											color: 'white',
+											paddingRight: 6,
+									  }
+									: base;
+							},
+							multiValueRemove: ( base, state ) => {
+								return state.data.isFixed
+									? { ...base, display: 'none' }
+									: base;
+							},
+						} }
+					/>
+				) : (
+					<Spinner />
+				) }
+
+				{ /* Toggle the pattern modal on new post creation for the given post types. */ }
 				<ModalToggle />
-
-				{ blockModalVisible && <PostTypeHeading /> }
-
-				{ postTypes
-					? blockModalVisible &&
-					  postTypes.map( ( postType ) => {
-							return (
-								<PostTypeToggle
-									key={ postType.slug }
-									postType={ postType }
-								/>
-							);
-					  } )
-					: blockModalVisible && <Spinner /> }
-			</PluginDocumentSettingPanel>
-			<PluginDocumentSettingPanel
-				title={ __( 'Inserter', 'fse-studio' ) }
-			>
 				<InserterToggle postMeta={ postMeta } />
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for assigning block types to the pattern. */ }
+			{ /* Block types in the pattern file are primarily used for transforming blocks. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Transforms (Block Types)', 'fse-studio' ) }
+				icon="block-default"
+			>
+				<HelperTooltip
+					helperText={ __(
+						'Select the blocks that users can transform into this pattern.',
+						'fse-studio'
+					) }
+					helperTitle={ __(
+						'Blocks for transformation',
+						'fse-studio'
+					) }
+				/>
+				{ transformableBlockTypes ? (
+					<Select
+						isMulti
+						isClearable
+						closeMenuOnSelect={ false }
+						value={ postMeta?.blockTypes?.map( ( blockType ) => {
+							// Hide block type related to the post type modal.
+							if ( blockType === 'core/post-content' ) {
+								return null;
+							}
+
+							return (
+								transformableBlockTypes.find(
+									( matchedBlocktype ) =>
+										matchedBlocktype.value === blockType
+								) || {
+									label: blockType,
+									value: blockType,
+								}
+							);
+						} ) }
+						options={ transformableBlockTypes }
+						onChange={ ( blockTypeSelections ) => {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									blockTypes: blockTypeSelections.map(
+										( blockTypeObject ) =>
+											blockTypeObject.value
+									),
+								},
+							} );
+						} }
+						menuPlacement="auto"
+						styles={ {
+							menu: ( base ) => ( {
+								...base,
+								zIndex: 100,
+							} ),
+						} }
+					/>
+				) : (
+					<Spinner />
+				) }
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for assigning keywords to the pattern. */ }
+			{ /* Keywords are searchable terms in the site editor inserter. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Pattern Keywords', 'fse-studio' ) }
+				icon="filter"
+			>
+				<CreatableSelect
+					components={ {
+						DropdownIndicator: null,
+					} }
+					inputValue={ keywordInputValue }
+					isClearable
+					isMulti
+					menuIsOpen={ false }
+					onChange={ ( newValue ) => {
+						// Handle the deletion of keywords.
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: {
+								...postMeta,
+								keywords: [
+									...newValue.map( ( keywordObject ) =>
+										keywordObject.value.toLowerCase()
+									),
+								],
+							},
+						} );
+					} }
+					onInputChange={ ( newValue ) =>
+						setKeywordInputValue( newValue )
+					}
+					onKeyDown={ ( event ) => {
+						if ( ! keywordInputValue ) {
+							return;
+						}
+
+						if (
+							postMeta.keywords.includes(
+								keywordInputValue.toLowerCase()
+							)
+						) {
+							setKeywordInputValue( '' );
+							return;
+						}
+
+						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
+							wp.data.dispatch( 'core/editor' ).editPost( {
+								meta: {
+									...postMeta,
+									keywords: [
+										...postMeta.keywords,
+										keywordInputValue.toLowerCase(),
+									],
+								},
+							} );
+							setKeywordInputValue( '' );
+							event.preventDefault();
+						}
+					} }
+					placeholder={ __( 'Add searchable terms…', 'fse-studio' ) }
+					value={ postMeta.keywords.map( ( keyword ) => ( {
+						label: keyword,
+						value: keyword,
+					} ) ) }
+				/>
+			</PluginDocumentSettingPanel>
+
+			{ /* The panel section for typing a description of the pattern. */ }
+			<PluginDocumentSettingPanel
+				title={ __( 'Expanded Description', 'fse-studio' ) }
+				icon="media-text"
+			>
+				<TextareaControl
+					id="fsestudio-pattern-editor-description-textarea"
+					help={ __(
+						'Optionally describe the pattern.',
+						'fse-studio'
+					) }
+					value={ postMeta?.description }
+					onChange={ ( newValue ) =>
+						wp.data.dispatch( 'core/editor' ).editPost( {
+							meta: {
+								...postMeta,
+								description: newValue,
+							},
+						} )
+					}
+				/>
 			</PluginDocumentSettingPanel>
 		</div>
 	);
