@@ -5,7 +5,6 @@ import { registerPlugin } from '@wordpress/plugins';
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import {
-	PanelHeader,
 	PanelRow,
 	Spinner,
 	TextControl,
