@@ -639,12 +639,13 @@ const FseStudioMetaControls = () => {
 					isMulti
 					menuIsOpen={ false }
 					onChange={ ( newValue ) => {
+						// Handle the deletion of keywords.
 						wp.data.dispatch( 'core/editor' ).editPost( {
 							meta: {
 								...postMeta,
 								keywords: [
-									...newValue.map(
-										( keywordObject ) => keywordObject.value
+									...newValue.map( ( keywordObject ) =>
+										keywordObject.value.toLowerCase()
 									),
 								],
 							},
@@ -658,13 +659,22 @@ const FseStudioMetaControls = () => {
 							return;
 						}
 
+						if (
+							postMeta.keywords.includes(
+								keywordInputValue.toLowerCase()
+							)
+						) {
+							setKeywordInputValue( '' );
+							return;
+						}
+
 						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
 							wp.data.dispatch( 'core/editor' ).editPost( {
 								meta: {
 									...postMeta,
 									keywords: [
 										...postMeta.keywords,
-										keywordInputValue,
+										keywordInputValue.toLowerCase(),
 									],
 								},
 							} );
