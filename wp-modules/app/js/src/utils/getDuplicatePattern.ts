@@ -7,7 +7,7 @@ function getDuplicateNumber( newSlug: string, allPatterns: Pattern[] ) {
 			return 1 > highest ? 1 : highest;
 		}
 
-		const matches = pattern.slug.match( `${ newSlug }-([0-9]+)` );
+		const matches = pattern.slug.match( `^${ newSlug }-([0-9]+)$` );
 		if ( ! matches ) {
 			return highest;
 		}
