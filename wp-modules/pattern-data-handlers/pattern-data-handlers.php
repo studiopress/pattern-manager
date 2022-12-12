@@ -17,23 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * A the data for a single pattern.
- *
- * @param string $pattern_id The name of the pattern to get.
- * @return array
- */
-function get_pattern( $pattern_id ) {
-	$patterns_data = get_patterns();
-	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
-		return false;
-	}
-
-	$pattern_data = $patterns_data[ $pattern_id ];
-
-	return $pattern_data;
-}
-
-/**
  * Get the data for all patterns available.
  *
  * @return array
