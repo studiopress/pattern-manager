@@ -5,7 +5,7 @@ import React from 'react';
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
 import { sprintf, __ } from '@wordpress/i18n';
-import { Icon, close, copy, edit, external,  } from '@wordpress/icons';
+import { Icon, close, copy, edit, external } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -16,6 +16,7 @@ import PatternPreview from '../PatternPreview';
 import { fsestudio } from '../../globals';
 
 // Utils
+import getDuplicatePattern from '../../utils/getDuplicatePattern';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 import { Pattern } from '../../types';
 
@@ -134,24 +135,29 @@ export default function ThemePatterns( { isVisible }: Props ) {
 														'fse-studio'
 													) }
 													onClick={ () => {
-														const newSlug = `${ patternData.slug }-copied`;
+														const newPattern =
+															getDuplicatePattern(
+																patternData,
+																Object.values(
+																	currentTheme
+																		.data
+																		?.included_patterns ??
+																		{}
+																)
+															);
 														currentTheme
-															.createPattern( {
-																...patternData,
-																type: 'pattern',
-																title: sprintf( __( '%s (copied)', 'fse-studio' ), patternData.title  ),
-																name: newSlug,
-																slug: newSlug,
-															} )
+															.createPattern(
+																newPattern
+															)
 															.then( () => {
 																currentPatternId.set(
-																	newSlug
+																	newPattern.slug
 																);
 																currentView.set(
 																	'pattern_editor'
 																);
 															} );
-														} }
+													} }
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
