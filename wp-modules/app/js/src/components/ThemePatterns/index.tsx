@@ -4,7 +4,7 @@ import React from 'react';
 
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
-import { sprintf, __ } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { Icon, close, copy, edit, external } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';

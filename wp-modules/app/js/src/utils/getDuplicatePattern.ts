@@ -2,19 +2,19 @@ import type { Pattern } from '../types'; // eslint-disable-line no-unused-vars
 import convertToSlug from './convertToSlug';
 
 function getDuplicateNumber( newSlug: string, allPatterns: Pattern[] ) {
-	const slugs = allPatterns.map( ( pattern ) => {
-		return pattern.slug;
-	} );
-
-	if ( ! slugs.includes( newSlug ) ) {
-		return 0;
-	}
-
-	for ( let i = 1; i <= slugs.length; i++ ) {
-		if ( ! slugs.includes( `${ newSlug }-${ i }` ) ) {
-			return i;
+	return allPatterns.reduce( ( highest, pattern ) => {
+		if ( pattern.slug === newSlug ) {
+			return 1 > highest ? 1 : highest;
 		}
-	}
+
+		const matches = pattern.slug.match( `${ newSlug }-([0-9]+)` );
+		if ( ! matches ) {
+			return highest;
+		}
+
+		const newDuplicateNumber = 1 + parseInt( matches[ 1 ] );
+		return newDuplicateNumber > highest ? newDuplicateNumber : highest;
+	}, 0 );
 }
 
 export default function getDuplicatePattern(
