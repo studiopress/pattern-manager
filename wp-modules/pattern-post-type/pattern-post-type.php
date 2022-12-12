@@ -55,7 +55,6 @@ function pattern_post_type() {
 			'show_ui'      => true,
 			'show_in_menu' => false,
 			'show_in_rest' => true,
-			'taxonomies'   => array( 'post_tag' ),
 			'supports'     => array(
 				'editor',
 				'custom-fields',
