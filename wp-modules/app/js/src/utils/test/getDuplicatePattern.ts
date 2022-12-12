@@ -55,17 +55,17 @@ describe( 'getDuplicatePattern', () => {
 			},
 			[
 				{
-					title: 'Foo (copied) 2',
-					name: 'foo-copied-2',
-					slug: 'foo-copied-2',
+					title: 'Foo (copied) 9',
+					name: 'foo-copied-9',
+					slug: 'foo-copied-9',
 					content: 'Here is some content',
 					type: 'pattern',
 				},
 			],
 			{
-				title: 'Foo (copied) 3',
-				name: 'foo-copied-3',
-				slug: 'foo-copied-3',
+				title: 'Foo (copied) 10',
+				name: 'foo-copied-10',
+				slug: 'foo-copied-10',
 				content: 'Here is some content',
 				type: 'pattern',
 			},
