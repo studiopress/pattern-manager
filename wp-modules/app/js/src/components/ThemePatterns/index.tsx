@@ -5,7 +5,7 @@ import React from 'react';
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, close, edit, external, plus } from '@wordpress/icons';
+import { Icon, close, edit, external, copy } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -144,7 +144,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={ plus }
+														icon={ copy }
 														size={ 30 }
 													/>
 												</button>
