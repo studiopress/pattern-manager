@@ -618,11 +618,6 @@ const FseStudioMetaControls = () => {
 				) }
 
 				{ /* Toggle the pattern modal on new post creation for the given post types. */ }
-				<div className="fsestudio-post-type-heading">
-					<PanelHeader>
-						{ __( 'Additional settings', 'fse-studio' ) }
-					</PanelHeader>
-				</div>
 				<ModalToggle />
 			</PluginDocumentSettingPanel>
 
