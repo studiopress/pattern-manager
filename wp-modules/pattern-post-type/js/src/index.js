@@ -584,8 +584,11 @@ const FseStudioMetaControls = () => {
 				icon="admin-post"
 			>
 				<HelperTooltip
-					helperText="With no selections, this pattern will show for all post types."
-					helperTitle="Allowed post types"
+					helperText={ __(
+						'With no selections, this pattern will show for all post types.',
+						'fse-studio'
+					) }
+					helperTitle={ __( 'Allowed post types', 'fse-studio' ) }
 				/>
 				{ postTypes ? (
 					<Select
@@ -604,8 +607,14 @@ const FseStudioMetaControls = () => {
 									templatePartBlockTypeSelected && {
 										label: (
 											<ReverseTooltip
-												helperText='Required for "core/template-part" transforms (block types).'
-												helperTitle="Templates"
+												helperText={ __(
+													'Required for "core/template-part" transforms (block types).',
+													'fse-studio'
+												) }
+												helperTitle={ __(
+													'Templates',
+													'fse-studio'
+												) }
 												icon="lock"
 											/>
 										),
@@ -659,6 +668,7 @@ const FseStudioMetaControls = () => {
 
 				{ /* Toggle the pattern modal on new post creation for the given post types. */ }
 				<ModalToggle />
+				<InserterToggle postMeta={ postMeta } />
 			</PluginDocumentSettingPanel>
 
 			{ /* The panel section for assigning block types to the pattern. */ }
@@ -668,8 +678,14 @@ const FseStudioMetaControls = () => {
 				icon="block-default"
 			>
 				<HelperTooltip
-					helperText="Select the blocks that users can transform into this pattern."
-					helperTitle="Blocks for transformation"
+					helperText={ __(
+						'Select the blocks that users can transform into this pattern.',
+						'fse-studio'
+					) }
+					helperTitle={ __(
+						'Blocks for transformation',
+						'fse-studio'
+					) }
 				/>
 				{ transformableBlockTypes ? (
 					<Select
@@ -775,7 +791,7 @@ const FseStudioMetaControls = () => {
 							event.preventDefault();
 						}
 					} }
-					placeholder="Add searchable terms..."
+					placeholder={ __( 'Add searchable terms…', 'fse-studio' ) }
 					value={ postMeta.keywords.map( ( keyword ) => ( {
 						label: keyword,
 						value: keyword,
@@ -790,7 +806,10 @@ const FseStudioMetaControls = () => {
 			>
 				<TextareaControl
 					id="fsestudio-pattern-editor-description-textarea"
-					help="Optionally describe the pattern."
+					help={ __(
+						'Optionally describe the pattern.',
+						'fse-studio'
+					) }
 					value={ postMeta?.description }
 					onChange={ ( newValue ) =>
 						wp.data.dispatch( 'core/editor' ).editPost( {
@@ -801,11 +820,6 @@ const FseStudioMetaControls = () => {
 						} )
 					}
 				/>
-			</PluginDocumentSettingPanel>
-			<PluginDocumentSettingPanel
-				title={ __( 'Inserter', 'fse-studio' ) }
-			>
-				<InserterToggle postMeta={ postMeta } />
 			</PluginDocumentSettingPanel>
 		</div>
 	);
