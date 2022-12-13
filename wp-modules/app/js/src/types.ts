@@ -81,11 +81,16 @@ export type InitialFseStudio = {
 
 export type Pattern = {
 	type: PatternType;
-	categories?: string[];
 	content: string;
 	name: string;
 	title: string;
 	slug: string;
+	description?: string;
+	categories?: string[];
+	keywords?: string[];
+	blockTypes?: string[];
+	postTypes?: string[];
+	inserter?: boolean;
 	viewportWidth?: string | number;
 };
 

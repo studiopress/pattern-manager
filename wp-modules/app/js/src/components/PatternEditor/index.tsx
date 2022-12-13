@@ -18,6 +18,7 @@ import { fsestudio } from '../../globals';
 
 // Utils
 import convertToSlug from '../../utils/convertToSlug';
+import { Patterns } from '../../types';
 
 type Props = {
 	visible: boolean;
@@ -72,7 +73,7 @@ export function BlockEditor() {
 					included_patterns: {
 						...currentTheme.data.included_patterns,
 						[ currentPatternId.value ]: response.blockPatternData,
-					},
+					} as Patterns,
 				} );
 			}
 
