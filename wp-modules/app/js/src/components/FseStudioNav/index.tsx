@@ -35,8 +35,6 @@ export default function FseStudioNav() {
 	 *
 	 * Main purpose here is to throw notice for user to refresh editor.
 	 * Currently targets pattern and template editors.
-	 *
-	 * @param {string} message
 	 */
 	function maybePostWindowMessage( message: string ) {
 		if ( patternEditorIframe?.current ) {
