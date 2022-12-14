@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars, no-undef */
-
 import React from 'react';
 
 // WP Dependencies.
