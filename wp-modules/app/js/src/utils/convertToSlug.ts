@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-param-type, jsdoc/require-returns-type */
-
 /**
  * Converts a string to a slug.
  *

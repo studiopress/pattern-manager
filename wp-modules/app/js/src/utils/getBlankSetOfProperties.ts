@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, jsdoc/require-param-type, jsdoc/require-returns-type */
+/* eslint-disable no-undef */
 
 type BlankProperties = [] | '' | false;
 type Properties = BlankProperties | { [ key: string ]: Properties };

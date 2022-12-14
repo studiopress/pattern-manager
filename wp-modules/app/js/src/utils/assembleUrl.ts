@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-param-type, jsdoc/require-returns-type */
-
 /**
  * Assemble a URL given the base/relative URL and search parameters.
  *

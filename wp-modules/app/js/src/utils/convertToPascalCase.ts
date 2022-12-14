@@ -1,5 +1,3 @@
-/* eslint-disable jsdoc/require-param-type, jsdoc/require-returns-type */
-
 function capitalize( name: string ) {
 	return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }

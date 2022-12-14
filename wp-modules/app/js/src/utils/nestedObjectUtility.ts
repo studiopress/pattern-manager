@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, jsdoc/check-param-names, jsdoc/require-param */
+/* eslint-disable no-undef, jsdoc/check-param-names */
 
 /**
  * Return a deeply nested value from an object.
