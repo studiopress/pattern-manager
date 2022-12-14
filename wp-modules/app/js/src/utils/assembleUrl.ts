@@ -1,10 +1,4 @@
-/**
- * Assemble a URL given the base/relative URL and search parameters.
- *
- * @param  theUrl
- * @param  params
- * @return The full URL.
- */
+/** Assemble a URL given the base/relative URL and search parameters. */
 export default function assembleUrl(
 	theUrl: string,
 	params: { [ key: string ]: string }

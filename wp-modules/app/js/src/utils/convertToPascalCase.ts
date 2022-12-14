@@ -2,12 +2,7 @@ function capitalize( name: string ) {
 	return name.charAt( 0 ).toUpperCase() + name.slice( 1 );
 }
 
-/**
- * Converts a string to a PascalCase.
- *
- * @param  toConvert The string to convert, like 'example here'.
- * @return The string in PascalCase, like 'ExampleHere'.
- */
+/** Converts a string to a PascalCase. */
 export default function convertToPascalCase( toConvert = '' ) {
 	return toConvert
 		.replace( /(^|[_\W]+)(\w)/g, ( fullMatch, firstMatch, secondMatch ) =>

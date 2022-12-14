@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, no-unused-vars, jsdoc/check-param-names */
+/* eslint-disable no-undef, no-unused-vars */
 
 /**
  * Entire file forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/8029f73ff0d4066a5d3fd72fb5a7cff9b6a05b7e/packages/block-editor/src/components/inserter/index.js
