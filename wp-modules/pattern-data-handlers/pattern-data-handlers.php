@@ -363,10 +363,6 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
-	// Now that this pattern has been updated, remove any images no longer needed in the theme.
-	// This is done here in update_pattern because an image may no longer be used in the pattern and thus needs to be removed from the theme.
-	tree_shake_theme_images();
-
 	return $pattern_file_created;
 }
 
@@ -433,7 +429,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  */
 
 ?>
-' . $pattern['content'] . '
+' . trim( $pattern['content'] ) . '
 ';
 	return $file_contents;
 }
@@ -487,18 +483,15 @@ function tree_shake_theme_images() {
 
 	// Loop through all patterns in the theme.
 	foreach ( $patterns_in_theme as $pattern_data ) {
-		// Find all img URLs in the block pattern html.
-		preg_match_all(
-			// Target only URLs with an img tag (with left bracket), src attribute (with quotes around the URI), and self-closing bracket.
-			'/(<img).*(src=)["|\'](?<url>(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-]))["|\'].*(\/>)/',
-			$pattern_data['content'],
-			$output_array
-		);
+		// Find all URLs in the block pattern html.
+		preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
+
+		$urls_found = $output_array[0];
 
 		$img_urls_found = $output_array['url'];
 
-		// Loop through each img URL found.
-		foreach ( $img_urls_found as $url_found ) {
+		// Loop through each URL found.
+		foreach ( $urls_found as $url_found ) {
 
 			// If URL to image is local to theme, pull it from the backed-up theme images directory.
 			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
@@ -542,18 +535,12 @@ function move_block_images_to_theme( $pattern_html ) {
 		$wp_filesystem->mkdir( $images_dir );
 	}
 
-	// Find all img URLs in the block pattern html.
-	preg_match_all(
-		// Target only URLs with an img tag (with left bracket), src attribute (with quotes around the URI), and self-closing bracket.
-		'/(<img).*(src=)["|\'](?<url>(http|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:;\/~+#-]*[\w@?^=%&\/~+#-]))["|\'].*(\/>)/',
-		$pattern_html,
-		$output_array
-	);
-
-	$img_urls_found = $output_array['url'];
+	// Find all URLs in the block pattern html.
+	preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_html, $output_array );
+	$urls_found = $output_array[0];
 
 	// Loop through each img URL found.
-	foreach ( $img_urls_found as $url_found ) {
+	foreach ( $urls_found as $url_found ) {
 		$url_details = wp_remote_get(
 			$url_found,
 			array(
@@ -569,6 +556,11 @@ function move_block_images_to_theme( $pattern_html ) {
 		}
 
 		$type = wp_remote_retrieve_header( $url_details, 'Content-Type' );
+
+		// Skip URLs that are not images by checking the content-type contains "image" (image/png, image/jpg, etc).
+		if ( strpos( $type, 'image' ) === false ) {
+			continue;
+		}
 
 		$file_contents = wp_remote_retrieve_body( $url_details );
 
