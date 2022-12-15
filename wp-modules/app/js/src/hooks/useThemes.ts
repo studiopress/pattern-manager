@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { useState } from '@wordpress/element';
 import type { Themes } from '../types';
 

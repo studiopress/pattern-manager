@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';

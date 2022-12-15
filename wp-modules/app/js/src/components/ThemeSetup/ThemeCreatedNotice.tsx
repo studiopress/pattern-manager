@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import { useEffect, useRef } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
