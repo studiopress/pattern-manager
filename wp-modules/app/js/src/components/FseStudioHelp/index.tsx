@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import { __ } from '@wordpress/i18n';
 
 type Props = {

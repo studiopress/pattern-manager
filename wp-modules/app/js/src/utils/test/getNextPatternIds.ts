@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import { Patterns } from '../../types';
 import getNextPatternIds from '../getNextPatternIds';
 

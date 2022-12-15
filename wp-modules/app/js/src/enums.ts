@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, camelcase */
+/* eslint-disable camelcase */
 
 /**
  * Mapping of pattern types and their corresponding properties in type `Theme`.

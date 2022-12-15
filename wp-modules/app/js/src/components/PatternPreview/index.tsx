@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import React from 'react';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';

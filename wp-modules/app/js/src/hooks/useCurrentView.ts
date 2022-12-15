@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars, no-undef */
-
 import { useState } from '@wordpress/element';
 import { FseStudioViews } from '../types';
 

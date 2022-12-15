@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import { useRef } from '@wordpress/element';
 
 export default function usePatterns() {

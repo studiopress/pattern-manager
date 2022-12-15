@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 // WP Dependencies
 import { CustomGradientPicker } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
