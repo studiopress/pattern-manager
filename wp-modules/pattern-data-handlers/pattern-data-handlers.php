@@ -504,6 +504,11 @@ function tree_shake_theme_images() {
 		// Find all URLs in the block pattern html.
 		preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
 
+		// If no URLs were found in this pattern, skip to the next pattern.
+		if ( ! isset( $output_array[0] ) ) {
+			continue;
+		}
+
 		$urls_found = $output_array[0];
 
 		$img_urls_found = $output_array['url'];
