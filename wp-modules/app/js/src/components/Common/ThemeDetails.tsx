@@ -19,10 +19,6 @@ export default function ThemeDetails() {
 						type="text"
 						id="theme-name"
 						value={ currentTheme?.data?.name ?? '' }
-						aria-invalid={ currentTheme.isNameTaken() }
-						aria-describedby={
-							currentTheme.isNameTaken() ? 'name-help' : null
-						}
 						onChange={ ( event ) => {
 							currentTheme.set( {
 								...currentTheme.data,
@@ -30,11 +26,59 @@ export default function ThemeDetails() {
 							} );
 						} }
 					/>
-					{ currentTheme.isNameTaken() ? (
+				</div>
+			</div>
+			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<label
+					htmlFor="theme-directory-name"
+					className="block font-medium text-gray-700 sm:col-span-1"
+				>
+					{ __( 'Theme Directory Name', 'fse-studio' ) }
+				</label>
+				<div className="mt-1 sm:mt-0 sm:col-span-2">
+					<input
+						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
+						type="text"
+						id="theme-directory-name"
+						value={ currentTheme?.data?.dirname ?? '' }
+						aria-invalid={ currentTheme.isDirnameTaken() }
+						aria-describedby={
+							currentTheme.isDirnameTaken() ? 'name-help' : null
+						}
+						onChange={ ( event ) => {
+							currentTheme.set( {
+								...currentTheme.data,
+								dirname: event.target.value,
+							} );
+						} }
+					/>
+					{ currentTheme.isDirnameTaken() ? (
 						<span id="name-help" className="text-red-700 font-sm">
-							{ __( 'This theme name is taken', 'fse-studio' ) }
+							{ __( 'This theme directory name is taken in wp-content. If you save, it will overwrite your other theme.', 'fse-studio' ) }
 						</span>
 					) : null }
+				</div>
+			</div>
+			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">
+				<label
+					htmlFor="text-domain"
+					className="block font-medium text-gray-700 sm:col-span-1"
+				>
+					{ __( 'Text Domain', 'fse-studio' ) }
+				</label>
+				<div className="mt-1 sm:mt-0 sm:col-span-2">
+					<input
+						className="block w-full !shadow-sm !focus:ring-2 !focus:ring-wp-blue !focus:border-wp-blue !border-gray-300 !rounded-md !h-10"
+						type="text"
+						id="text-domain"
+						value={ currentTheme?.data?.text_domain ?? '' }
+						onChange={ ( event ) => {
+							currentTheme.set( {
+								...currentTheme.data,
+								text_domain: event.target.value,
+							} );
+						} }
+					/>
 				</div>
 			</div>
 			<div className="sm:grid sm:grid-cols-3 sm:gap-4 py-6 sm:items-center">

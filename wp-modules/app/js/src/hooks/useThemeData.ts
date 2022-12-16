@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { fsestudio } from '../globals';
-import convertToSlug from '../utils/convertToSlug';
-import convertToPascalCase from '../utils/convertToPascalCase';
 import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
@@ -29,20 +27,10 @@ export default function useThemeData(
 	const defaultStyleName = useRef( currentStyleVariationId.value );
 
 	function setThemeData( newThemeData: Theme ) {
-		const derivedThemeData =
-			newThemeData.name !== themeData.name
-				? {
-						dirname: convertToSlug( newThemeData.name ),
-						namespace: convertToPascalCase( newThemeData.name ),
-						text_domain: convertToSlug( newThemeData.name ),
-				  }
-				: {};
-
 		themes.setThemes( {
 			...themes.themes,
 			[ themeId ]: {
 				...newThemeData,
-				...derivedThemeData,
 			},
 		} );
 	}
@@ -51,18 +39,18 @@ export default function useThemeData(
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 
-	/** Whether another theme also has the current theme name. */
-	function isNameTaken() {
-		return (
-			!! themeData.name &&
-			Object.entries( themes.themes )
-				.filter( ( [ id ] ) => {
-					return id !== themeId;
-				} )
-				.some( ( [ , theme ] ) => {
-					return theme.name === themeData.name;
-				} )
-		);
+	/** Whether another theme also has the current directory name. */
+	function isDirnameTaken() {
+		const themeDirNames = Object.keys( themes.themes );
+		const otherThemeDirNames = [];
+		// Remove this theme from the list of theme directories (a theme can of course have the same dirname as itself).
+		for ( const themeDirnameIndex in themeDirNames ) {
+			if ( themeDirNames[themeDirnameIndex] !== themeData.id ) {
+				otherThemeDirNames.push( themeDirNames[themeDirnameIndex] );
+			}
+		}
+		
+		return otherThemeDirNames.includes(themeData.dirname);
 	}
 
 	useEffect( () => {
@@ -419,7 +407,7 @@ export default function useThemeData(
 		export: exportThemeData,
 		saveCompleted,
 		isSaving,
-		isNameTaken,
+		isDirnameTaken,
 		fetchInProgress,
 	};
 }

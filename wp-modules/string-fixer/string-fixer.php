@@ -28,6 +28,10 @@ function fix_theme_functions_strings( string $functions_file_path, array $string
 	}
 
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	
+	if ( ! $wp_filesystem->exists( $functions_file_path ) ) {
+		return false;
+	}
 
 	// Open the file.
 	$file_contents = $wp_filesystem->get_contents( $functions_file_path );

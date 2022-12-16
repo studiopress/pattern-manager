@@ -23,13 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get data for a single themes in the format used by FSE Theme Manager.
  *
- * @param string $theme_id The directory name of the theme in question.
+ * @param string $theme_slug The directory name of the theme in question.
  * @return array
  */
-function get_theme( $theme_id ) {
+function get_theme( $theme_slug ) {
 	$themes_data = get_the_themes();
 
-	return $themes_data[ $theme_id ];
+	return $themes_data[ $theme_slug ];
 }
 
 /**
@@ -44,77 +44,66 @@ function get_the_themes() {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$formatted_theme_data = [];
+	
+	$wpthemes = wp_get_themes();
+	
+	$file_headers = array(
+		'Name'        => 'Theme Name',
+		'ThemeURI'    => 'Theme URI',
+		'Description' => 'Description',
+		'Author'      => 'Author',
+		'AuthorURI'   => 'Author URI',
+		'Version'     => 'Version',
+		'Template'    => 'Template',
+		'Status'      => 'Status',
+		'Tags'        => 'Tags',
+		'TextDomain'  => 'Text Domain',
+		'DomainPath'  => 'Domain Path',
+		'RequiresWP'  => 'Requires at least',
+		'RequiresPHP' => 'Requires PHP',
+		'UpdateURI'   => 'Update URI',
+	);
 
-	$default_theme_data = [
-		'name'              => '',
-		'dirname'           => '',
-		'namespace'         => '',
-		'uri'               => '',
-		'author'            => '',
-		'author_uri'        => '',
-		'description'       => '',
-		'tags'              => [],
-		'tested_up_to'      => '',
-		'requires_wp'       => '',
-		'requires_php'      => '',
-		'version'           => '1.0.0',
-		'text_domain'       => '',
-		'included_patterns' => [],
-		'template_files'    => [],
-		'template_parts'    => [],
-		'theme_json_file'   => [],
-		'styles'            => [],
-	];
-
-	foreach ( $wpthemes as $theme_slug => $theme ) {
-	foreach ( $wpthemes as $theme_slug => $theme ) {
-		print_r( $theme );
-		die();
+	foreach ( $wpthemes as $theme_slug => $theme_data ) {
 		
 		$theme_root = get_theme_root( $theme_slug );
 		$theme_dir  = "$theme_root/$theme_slug";
 
+		$theme = get_file_data( $theme_dir . '/style.css', $file_headers, 'theme' );
+
 		/** This filter is documented in wp-includes/theme.php */
-		$theme_dir       = apply_filters( 'template_directory', $theme_dir, $theme_slug, $theme_root ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		$theme_data_file = "$theme_dir/fsestudio-data.json";
-
+		$theme_dir = apply_filters( 'template_directory', $theme_dir, $theme_slug, $theme_root ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		
-			$theme_data = [
-				'name'              => '',
-				'dirname'           => '',
-				'namespace'         => '',
-				'uri'               => '',
-				'author'            => '',
-				'author_uri'        => '',
-				'description'       => '',
-				'tags'              => [],
-				'tested_up_to'      => '',
-				'requires_wp'       => '',
-				'requires_php'      => '',
-				'version'           => '1.0.0',
-				'text_domain'       => '',
-				'included_patterns' => [],
-				'template_files'    => [],
-				'template_parts'    => [],
-				'theme_json_file'   => [],
-				'styles'            => [],
-			];
+		// Create a namespace from a theme slug.
+		$theme_slug_parts = explode( '-', $theme_slug );
+		$namespace = '';
+		foreach( $theme_slug_parts as $theme_slug_part ) {
+			$namespace .= ucfirst($theme_slug_part);
+		}
 
-			$theme_data = wp_parse_args( $theme_data, $default_theme_data );
+		$theme_data = [
+			'id'                => $theme_slug,
+			'name'              => $theme['Name'],
+			'dirname'           => $theme_slug,
+			'namespace'         => $namespace,
+			'uri'               => $theme['ThemeURI'],
+			'author'            => $theme['Author'],
+			'author_uri'        => $theme['AuthorURI'],
+			'description'       => $theme['Description'],
+			'tags'              => $theme['Tags'],
+			'tested_up_to'      => $theme['Description'],
+			'requires_wp'       => $theme['RequiresWP'],
+			'requires_php'      => $theme['RequiresPHP'],
+			'version'           => $theme['Version'],
+			'text_domain'       => $theme['TextDomain'],
+			'included_patterns' => \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir ),
+			'template_files'    => \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir ),
+			'template_parts'    => \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
+			'theme_json_file'   => json_decode( $wp_filesystem->get_contents( "$theme_dir/theme.json" ), true ),
+			'styles'            => [],
+		];
 
-			$formatted_theme_data[ $theme_data['id'] ] = wp_generate_uuid4();
-
-			// Add the theme.json file data to the theme data.
-			$formatted_theme_data[ $theme_data['id'] ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( "$theme_dir/theme.json" ), true );
-
-			// Add the included Patterns for the current theme.
-			$formatted_theme_data[ $theme_data['id'] ]['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir );
-
-			// Add the template files that exist in the theme.
-			$formatted_theme_data[ $theme_data['id'] ]['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir );
-
-			// Add the template part files that exist in the theme.
-			$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir );
+		$formatted_theme_data[ $theme_data['id'] ] = $theme_data;
 		
 	}
 
@@ -190,23 +179,7 @@ function update_theme( $theme, $update_patterns = true ) {
 	$theme_boiler_dir   = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
 	$themes_dir         = $wp_filesystem->wp_themes_dir();
 	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
-	$previous_theme_dir = get_theme_directory( sanitize_title( $theme['id'] ?? '' ) );
-
-	if ( $previous_theme_dir && $previous_theme_dir !== $new_theme_dir ) {
-		if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
-			$wp_filesystem->mkdir( $new_theme_dir );
-		}
-
-		// Copy and remove the pre-existing theme with this theme's ID. This allows theme directories to be renamed.
-		$previous_theme_files = glob( "$previous_theme_dir*" );
-		foreach ( $previous_theme_files as $previous_theme_file ) {
-			$wp_filesystem->move( $previous_theme_file, str_replace( $previous_theme_dir, $new_theme_dir, $previous_theme_file ) );
-		}
-
-		// If $previous_theme_dir isn't empty, this won't rm it, as ->rmdir() doesn't have the 2nd argument of true (recursive).
-		$wp_filesystem->rmdir( $previous_theme_dir );
-	}
-
+	
 	// Create the new theme directory, if it does not already exist.
 	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
 		$wp_filesystem->mkdir( $new_theme_dir );
@@ -236,16 +209,6 @@ function update_theme( $theme, $update_patterns = true ) {
 	if ( ! $theme['id'] ) {
 		$theme['id'] = wp_generate_uuid4();
 	}
-
-	// Create the theme's fsestudio-data.json file.
-	$wp_filesystem->put_contents(
-		$new_theme_dir . 'fsestudio-data.json',
-		wp_json_encode(
-			$theme,
-			JSON_PRETTY_PRINT
-		),
-		FS_CHMOD_FILE
-	);
 
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
@@ -315,32 +278,4 @@ function update_theme( $theme, $update_patterns = true ) {
  */
 function switch_to_theme( string $theme_slug ) {
 	switch_theme( $theme_slug );
-}
-
-/**
- * Gets the absolute theme directory that has a given theme id.
- *
- * @param string $theme_id The id in the theme data file.
- * @return string|null The absolute path, if it exists.
- */
-function get_theme_directory( string $theme_id ) {
-	if ( ! $theme_id ) {
-		return null;
-	}
-
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-	$themes        = glob( "{$wp_filesystem->wp_themes_dir()}*" );
-
-	foreach ( $themes as $theme_dir ) {
-		$theme_data_file = "$theme_dir/fsestudio-data.json";
-
-		if ( $wp_filesystem->exists( $theme_data_file ) ) {
-			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
-			if ( isset( $theme_data['id'] ) && $theme_data['id'] === $theme_id ) {
-				return trailingslashit( $theme_dir );
-			}
-		}
-	}
-
-	return null;
 }

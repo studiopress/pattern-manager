@@ -28,9 +28,7 @@ function get_app_state() {
 	$current_theme_data = null;
 
 	// Make sure the theme WP thinks is active actually exists.
-	if ( $wp_filesystem->exists( $wp_filesystem->wp_themes_dir() . $current_theme_dir . '/fsestudio-data.json' ) ) {
-		$current_theme_data = json_decode( $wp_filesystem->get_contents( $wp_filesystem->wp_themes_dir() . $current_theme_dir . '/fsestudio-data.json' ), true );
-	}
+	$current_theme_data = \FseStudio\ThemeDataHandlers\get_theme($current_theme_dir);
 
 	return array(
 		'patterns'           => \FseStudio\PatternDataHandlers\get_patterns(),
