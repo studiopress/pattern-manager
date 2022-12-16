@@ -169,7 +169,7 @@ function format_pattern_data( $pattern_data, $file ) {
 		//phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.WP.I18n.NonSingularStringLiteralContext, WordPress.WP.I18n.NonSingularStringLiteralDomain, WordPress.WP.I18n.LowLevelTranslationFunction
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
-	
+
 	// The actual pattern content is the output of the file.
 	ob_start();
 	include $file;

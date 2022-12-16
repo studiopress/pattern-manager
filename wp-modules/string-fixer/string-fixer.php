@@ -28,7 +28,7 @@ function fix_theme_functions_strings( string $functions_file_path, array $string
 	}
 
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
-	
+
 	if ( ! $wp_filesystem->exists( $functions_file_path ) ) {
 		return false;
 	}

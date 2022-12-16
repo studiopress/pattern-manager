@@ -44,9 +44,9 @@ function get_the_themes() {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	$formatted_theme_data = [];
-	
+
 	$wpthemes = wp_get_themes();
-	
+
 	$file_headers = array(
 		'Name'        => 'Theme Name',
 		'ThemeURI'    => 'Theme URI',
@@ -65,7 +65,6 @@ function get_the_themes() {
 	);
 
 	foreach ( $wpthemes as $theme_slug => $theme_data ) {
-		
 		$theme_root = get_theme_root( $theme_slug );
 		$theme_dir  = "$theme_root/$theme_slug";
 
@@ -73,12 +72,12 @@ function get_the_themes() {
 
 		/** This filter is documented in wp-includes/theme.php */
 		$theme_dir = apply_filters( 'template_directory', $theme_dir, $theme_slug, $theme_root ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-		
+
 		// Create a namespace from a theme slug.
 		$theme_slug_parts = explode( '-', $theme_slug );
-		$namespace = '';
-		foreach( $theme_slug_parts as $theme_slug_part ) {
-			$namespace .= ucfirst($theme_slug_part);
+		$namespace        = '';
+		foreach ( $theme_slug_parts as $theme_slug_part ) {
+			$namespace .= ucfirst( $theme_slug_part );
 		}
 
 		$theme_data = [
@@ -104,7 +103,6 @@ function get_the_themes() {
 		];
 
 		$formatted_theme_data[ $theme_data['id'] ] = $theme_data;
-		
 	}
 
 	return $formatted_theme_data;
@@ -176,10 +174,10 @@ function update_theme( $theme, $update_patterns = true ) {
 	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir   = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
-	$themes_dir         = $wp_filesystem->wp_themes_dir();
-	$new_theme_dir      = $themes_dir . $theme['dirname'] . '/';
-	
+	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
+	$themes_dir       = $wp_filesystem->wp_themes_dir();
+	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
+
 	// Create the new theme directory, if it does not already exist.
 	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
 		$wp_filesystem->mkdir( $new_theme_dir );
