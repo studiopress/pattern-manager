@@ -61,11 +61,16 @@ function get_the_themes() {
 		'text_domain'       => '',
 		'included_patterns' => [],
 		'template_files'    => [],
+		'template_parts'    => [],
 		'theme_json_file'   => [],
 		'styles'            => [],
 	];
 
 	foreach ( $wpthemes as $theme_slug => $theme ) {
+	foreach ( $wpthemes as $theme_slug => $theme ) {
+		print_r( $theme );
+		die();
+		
 		$theme_root = get_theme_root( $theme_slug );
 		$theme_dir  = "$theme_root/$theme_slug";
 
@@ -73,11 +78,31 @@ function get_the_themes() {
 		$theme_dir       = apply_filters( 'template_directory', $theme_dir, $theme_slug, $theme_root ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 		$theme_data_file = "$theme_dir/fsestudio-data.json";
 
-		if ( $wp_filesystem->exists( $theme_data_file ) ) {
-			$theme_data = json_decode( $wp_filesystem->get_contents( $theme_data_file ), true );
+		
+			$theme_data = [
+				'name'              => '',
+				'dirname'           => '',
+				'namespace'         => '',
+				'uri'               => '',
+				'author'            => '',
+				'author_uri'        => '',
+				'description'       => '',
+				'tags'              => [],
+				'tested_up_to'      => '',
+				'requires_wp'       => '',
+				'requires_php'      => '',
+				'version'           => '1.0.0',
+				'text_domain'       => '',
+				'included_patterns' => [],
+				'template_files'    => [],
+				'template_parts'    => [],
+				'theme_json_file'   => [],
+				'styles'            => [],
+			];
+
 			$theme_data = wp_parse_args( $theme_data, $default_theme_data );
 
-			$formatted_theme_data[ $theme_data['id'] ] = $theme_data;
+			$formatted_theme_data[ $theme_data['id'] ] = wp_generate_uuid4();
 
 			// Add the theme.json file data to the theme data.
 			$formatted_theme_data[ $theme_data['id'] ]['theme_json_file'] = json_decode( $wp_filesystem->get_contents( "$theme_dir/theme.json" ), true );
@@ -90,7 +115,7 @@ function get_the_themes() {
 
 			// Add the template part files that exist in the theme.
 			$formatted_theme_data[ $theme_data['id'] ]['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir );
-		}
+		
 	}
 
 	return $formatted_theme_data;
