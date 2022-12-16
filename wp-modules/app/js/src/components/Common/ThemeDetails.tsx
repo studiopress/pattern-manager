@@ -54,7 +54,10 @@ export default function ThemeDetails() {
 					/>
 					{ currentTheme.isDirnameTaken() ? (
 						<span id="name-help" className="text-red-700 font-sm">
-							{ __( 'This theme directory name is taken in wp-content. If you save, it will overwrite your other theme.', 'fse-studio' ) }
+							{ __(
+								'This theme directory name is taken in wp-content. If you save, it will overwrite your other theme.',
+								'fse-studio'
+							) }
 						</span>
 					) : null }
 				</div>

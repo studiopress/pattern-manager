@@ -45,12 +45,12 @@ export default function useThemeData(
 		const otherThemeDirNames = [];
 		// Remove this theme from the list of theme directories (a theme can of course have the same dirname as itself).
 		for ( const themeDirnameIndex in themeDirNames ) {
-			if ( themeDirNames[themeDirnameIndex] !== themeData.id ) {
-				otherThemeDirNames.push( themeDirNames[themeDirnameIndex] );
+			if ( themeDirNames[ themeDirnameIndex ] !== themeData.id ) {
+				otherThemeDirNames.push( themeDirNames[ themeDirnameIndex ] );
 			}
 		}
-		
-		return otherThemeDirNames.includes(themeData.dirname);
+
+		return otherThemeDirNames.includes( themeData.dirname );
 	}
 
 	useEffect( () => {
