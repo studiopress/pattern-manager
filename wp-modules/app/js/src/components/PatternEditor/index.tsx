@@ -18,7 +18,7 @@ import { fsestudio } from '../../globals';
 
 // Utils
 import convertToSlug from '../../utils/convertToSlug';
-import { Patterns } from '../../types';
+import { Pattern } from '../../types';
 
 type Props = {
 	visible: boolean;
@@ -62,7 +62,7 @@ export function BlockEditor() {
 			// Handle JSON messages here.
 			const response: {
 				message: string;
-				blockPatternData?: string;
+				blockPatternData?: Pattern;
 				patternTitle?: string;
 			} = JSON.parse( event.data );
 
@@ -73,7 +73,7 @@ export function BlockEditor() {
 					included_patterns: {
 						...currentTheme.data.included_patterns,
 						[ currentPatternId.value ]: response.blockPatternData,
-					} as Patterns,
+					},
 				} );
 			}
 
