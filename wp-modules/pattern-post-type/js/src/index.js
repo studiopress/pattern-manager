@@ -768,22 +768,23 @@ const FseStudioMetaControls = () => {
 							return;
 						}
 
-						if (
-							postMeta.keywords.includes(
-								keywordInputValue.toLowerCase()
-							)
-						) {
-							setKeywordInputValue( '' );
-							return;
-						}
-
 						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
+							// Split the keywords, then filter that array.
+							// This disallows duplicate terms.
+							const filteredKeywords = keywordInputValue
+								.toLowerCase()
+								.split( ' ' )
+								.filter(
+									( word ) =>
+										! postMeta.keywords.includes( word )
+								);
+
 							wp.data.dispatch( 'core/editor' ).editPost( {
 								meta: {
 									...postMeta,
 									keywords: [
 										...postMeta.keywords,
-										keywordInputValue.toLowerCase(),
+										...filteredKeywords,
 									],
 								},
 							} );
