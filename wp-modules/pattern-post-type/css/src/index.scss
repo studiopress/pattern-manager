@@ -26,11 +26,11 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	margin-top: 16px;
 	margin-bottom: -12px;
 }
+.fsestudio-pattern-post-name-input-outer {
+	position: relative;
+}
 @media only screen and (max-width: 781.25px) {
-	.fsestudio-pattern-post-name-input-outer {
-		width: 500px;
-	}
-	.fsestudio-pattern-post-name-input-outer input {
+	.fsestudio-pattern-post-name-input input {
 		height: 50px;
 		padding-right: 75px;
 	}
@@ -41,10 +41,7 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	}
 }
 @media only screen and (min-width: 781.25px) {
-	.fsestudio-pattern-post-name-input-outer {
-		width: 250px;
-	}
-	.fsestudio-pattern-post-name-input-outer input {
+	.fsestudio-pattern-post-name-input input {
 		height: 40px;
 	}
 	/* Pattern name input button */
@@ -68,7 +65,8 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	color: white;
 	border: 0;
 	padding: 0 !important;
-	right: 18px;
+	top: 5px;
+	right: 4px;
 	position: absolute;
 	border-radius: 0.125rem;
 	align-items: center;
