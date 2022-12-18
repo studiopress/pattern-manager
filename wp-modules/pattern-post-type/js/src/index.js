@@ -768,7 +768,7 @@ const FseStudioMetaControls = () => {
 							return;
 						}
 
-						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
+						if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
 							// Split the keywords, then filter that array.
 							// This disallows duplicate terms.
 							const filteredKeywords = keywordInputValue
