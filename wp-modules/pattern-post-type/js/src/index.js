@@ -209,6 +209,21 @@ const FseStudioMetaControls = () => {
 	}, [ postMeta.title ] );
 
 	/**
+	 * Disable the post type modal toggle if no postTypes are selected.
+	 *
+	 * While the pattern will show for all post types if no selections are made, the inserter
+	 * modal will not show unless the postTypes are populated.
+	 */
+	useEffect( () => {
+		if (
+			! postMeta.postTypes.length &&
+			postMeta.blockTypes.includes( 'core/post-content' )
+		) {
+			handleToggleChange( false, 'blockTypes', 'core/post-content' );
+		}
+	}, [ postMeta.postTypes, postMeta.blockTypes ] );
+
+	/**
 	 * Delete non-existing post types that were previously saved to the pattern.
 	 *
 	 * This will compare the post types found in post meta to currently allowed post types and
@@ -335,11 +350,7 @@ const FseStudioMetaControls = () => {
 		} );
 	}
 
-	/**
-	 * Primary toggle component.
-	 * The value of this toggle hides or shows the 'Post Types' section.
-	 */
-	function ModalToggle() {
+	function ModalToggle( { disabled = false } ) {
 		// Block type for displaying in the pattern modal on new post creation.
 		const blockTypeForModal = 'core/post-content';
 
@@ -349,13 +360,14 @@ const FseStudioMetaControls = () => {
 					<ToggleControl
 						label={
 							<ReverseTooltip
-								helperText="Show this pattern in a modal when new posts are created."
+								helperText="Show this pattern in a modal when new posts of selected post types are created."
 								helperTitle="Modal visibility"
 							/>
 						}
 						checked={ postMeta.blockTypes?.includes(
 							blockTypeForModal
 						) }
+						disabled={ disabled }
 						help={
 							postMeta.blockTypes?.includes( blockTypeForModal )
 								? __(
@@ -667,7 +679,7 @@ const FseStudioMetaControls = () => {
 				) }
 
 				{ /* Toggle the pattern modal on new post creation for the given post types. */ }
-				<ModalToggle />
+				<ModalToggle disabled={ ! postMeta.postTypes.length } />
 				<InserterToggle postMeta={ postMeta } />
 			</PluginDocumentSettingPanel>
 
