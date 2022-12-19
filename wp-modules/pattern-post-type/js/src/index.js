@@ -458,11 +458,11 @@ const FseStudioMetaControls = () => {
 	return (
 		<div id={ coreLastUpdate }>
 			<PluginDocumentSettingPanel
+				name="fsestudio-pattern-editor-pattern-title"
 				title={ __( 'Pattern Title', 'fse-studio' ) }
-				icon="edit"
 			>
 				{ postMeta?.title && (
-					<PanelRow>
+					<div className="fsestudio-pattern-post-name-input-outer">
 						<div
 							onDoubleClick={ () =>
 								setNameInputDisabled( false )
@@ -471,7 +471,7 @@ const FseStudioMetaControls = () => {
 							<TextControl
 								id="fsestudio-pattern-post-name-input-component"
 								disabled={ nameInputDisabled }
-								className="fsestudio-pattern-post-name-input-outer"
+								className="fsestudio-pattern-post-name-input"
 								aria-label="Pattern Title Name Input (used for renaming the pattern)"
 								value={ nameInput }
 								onChange={ ( value ) => {
@@ -536,7 +536,7 @@ const FseStudioMetaControls = () => {
 								{ __( 'Cancel', 'fse-studio' ) }
 							</button>
 						) }
-					</PanelRow>
+					</div>
 				) }
 
 				<PanelRow className="components-panel__row-fsestudio-pattern-name-error">
@@ -551,8 +551,8 @@ const FseStudioMetaControls = () => {
 			{ /* The panel section for assigning block pattern categories to the pattern. */ }
 			{ /* Selected categories will show under the matching dropdown in the site editor. */ }
 			<PluginDocumentSettingPanel
+				name="fsestudio-pattern-editor-pattern-categories"
 				title={ __( 'Pattern Categories', 'fse-studio' ) }
-				icon="paperclip"
 			>
 				{ blockPatternCategories ? (
 					<Select
@@ -592,8 +592,8 @@ const FseStudioMetaControls = () => {
 			{ /* The panel section for restricting post types for the pattern. */ }
 			{ /* Custom post types and certain core types are displayed as toggles. */ }
 			<PluginDocumentSettingPanel
+				name="fsestudio-pattern-editor-pattern-post-types"
 				title={ __( 'Post Types', 'fse-studio' ) }
-				icon="admin-post"
 			>
 				<HelperTooltip
 					helperText={ __(
@@ -686,8 +686,8 @@ const FseStudioMetaControls = () => {
 			{ /* The panel section for assigning block types to the pattern. */ }
 			{ /* Block types in the pattern file are primarily used for transforming blocks. */ }
 			<PluginDocumentSettingPanel
+				name="fsestudio-pattern-editor-pattern-transforms"
 				title={ __( 'Transforms (Block Types)', 'fse-studio' ) }
-				icon="block-default"
 			>
 				<HelperTooltip
 					helperText={ __(
@@ -748,8 +748,8 @@ const FseStudioMetaControls = () => {
 			{ /* The panel section for assigning keywords to the pattern. */ }
 			{ /* Keywords are searchable terms in the site editor inserter. */ }
 			<PluginDocumentSettingPanel
+				name="fsestudio-pattern-editor-pattern-keywords"
 				title={ __( 'Pattern Keywords', 'fse-studio' ) }
-				icon="filter"
 			>
 				<CreatableSelect
 					components={ {
@@ -780,22 +780,23 @@ const FseStudioMetaControls = () => {
 							return;
 						}
 
-						if (
-							postMeta.keywords.includes(
-								keywordInputValue.toLowerCase()
-							)
-						) {
-							setKeywordInputValue( '' );
-							return;
-						}
+						if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
+							// Split the keywords, then filter that array.
+							// This disallows duplicate terms.
+							const filteredKeywords = keywordInputValue
+								.toLowerCase()
+								.split( ' ' )
+								.filter(
+									( word ) =>
+										! postMeta.keywords.includes( word )
+								);
 
-						if ( [ 'Enter', 'Tab' ].includes( event.key ) ) {
 							wp.data.dispatch( 'core/editor' ).editPost( {
 								meta: {
 									...postMeta,
 									keywords: [
 										...postMeta.keywords,
-										keywordInputValue.toLowerCase(),
+										...filteredKeywords,
 									],
 								},
 							} );
@@ -813,8 +814,8 @@ const FseStudioMetaControls = () => {
 
 			{ /* The panel section for typing a description of the pattern. */ }
 			<PluginDocumentSettingPanel
+				name="fsestudio-pattern-editor-pattern-description"
 				title={ __( 'Expanded Description', 'fse-studio' ) }
-				icon="media-text"
 			>
 				<TextareaControl
 					id="fsestudio-pattern-editor-description-textarea"
