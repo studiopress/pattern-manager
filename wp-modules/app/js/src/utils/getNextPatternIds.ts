@@ -1,5 +1,3 @@
-/* eslint-disable no-undef, no-unused-vars */
-
 import convertToPascalCase from './convertToPascalCase';
 import convertToSlug from './convertToSlug';
 import convertToUpperCase from './convertToUpperCase';

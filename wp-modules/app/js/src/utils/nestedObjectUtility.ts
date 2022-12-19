@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, jsdoc/check-param-names, jsdoc/require-param */
+/* eslint-disable jsdoc/check-param-names */
 
 /**
  * Return a deeply nested value from an object.
@@ -44,6 +44,7 @@ export function setNestedObject(
 	 *
 	 * @param {Object|Array} object The object to clone.
 	 * @param {Array}        keys   The destructured keys.
+	 * @param                index
 	 */
 	return function recursiveUpdate(
 		object: unknown[] | {},

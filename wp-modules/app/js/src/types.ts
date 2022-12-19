@@ -1,4 +1,4 @@
-/* eslint-disable no-undef, camelcase */
+/* eslint-disable camelcase */
 
 import React from 'react';
 import useNotice from './hooks/useNotice';

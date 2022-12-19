@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 // WP, general dependencies
 import { __ } from '@wordpress/i18n';
 import React from 'react';
@@ -35,8 +33,6 @@ export default function FseStudioNav() {
 	 *
 	 * Main purpose here is to throw notice for user to refresh editor.
 	 * Currently targets pattern and template editors.
-	 *
-	 * @param {string} message
 	 */
 	function maybePostWindowMessage( message: string ) {
 		if ( patternEditorIframe?.current ) {

@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import { CheckboxControl } from '@wordpress/components';
 
 type Props = {

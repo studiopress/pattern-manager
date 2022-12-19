@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, no-undef, no-alert, no-console */
+/* eslint-disable no-alert, no-console */
 
 import React from 'react';
 

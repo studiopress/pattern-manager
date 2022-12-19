@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 import React, { ReactNode } from 'react';
 
 type Props = {

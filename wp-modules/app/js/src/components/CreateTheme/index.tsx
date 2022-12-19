@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 // WP Dependencies.
 import { __ } from '@wordpress/i18n';
 

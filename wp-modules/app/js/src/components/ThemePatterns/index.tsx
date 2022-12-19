@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars, no-undef */
-
 import React from 'react';
 
 // WP Dependencies.
 import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Icon, close, edit, external, plus } from '@wordpress/icons';
+import { Icon, close, copy, edit, external } from '@wordpress/icons';
 
 import useStudioContext from '../../hooks/useStudioContext';
 
@@ -16,6 +14,7 @@ import PatternPreview from '../PatternPreview';
 import { fsestudio } from '../../globals';
 
 // Utils
+import getDuplicatePattern from '../../utils/getDuplicatePattern';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 import { Pattern } from '../../types';
 
@@ -134,17 +133,33 @@ export default function ThemePatterns( { isVisible }: Props ) {
 														'fse-studio'
 													) }
 													onClick={ () => {
-														currentPatternId.set(
-															patternName
-														);
-														currentView.set(
-															'pattern_editor'
-														);
+														const newPattern =
+															getDuplicatePattern(
+																patternData,
+																Object.values(
+																	currentTheme
+																		.data
+																		?.included_patterns ??
+																		{}
+																)
+															);
+														currentTheme
+															.createPattern(
+																newPattern
+															)
+															.then( () => {
+																currentPatternId.set(
+																	newPattern.slug
+																);
+																currentView.set(
+																	'pattern_editor'
+																);
+															} );
 													} }
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={ plus }
+														icon={ copy }
 														size={ 30 }
 													/>
 												</button>
