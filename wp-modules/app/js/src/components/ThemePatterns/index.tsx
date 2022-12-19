@@ -219,6 +219,11 @@ export default function ThemePatterns( { isVisible }: Props ) {
 												name: patternSlug,
 												slug: patternSlug,
 												categories: [],
+												keywords: [],
+												blockTypes: [],
+												postTypes: [],
+												inserter: true,
+												description: '',
 												viewportWidth: '',
 												content: '',
 											} )
