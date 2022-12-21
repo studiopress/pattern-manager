@@ -5,7 +5,7 @@ import useChangeWords from '../../hooks/useChangeWords';
 export default function FseStudioMetaControls() {
 	const postMeta = wp.data.useSelect( ( select ) => {
 		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	} );
+	}, [] );
 
 	const { coreLastUpdate } = useSubscription();
 	const { changeWords } = useChangeWords( postMeta );
