@@ -4,3 +4,4 @@ export * from './CategoriesPanel';
 export * from './TransformsPanel';
 export * from './KeywordsPanel';
 export * from './DescriptionPanel';
+export * from './TemplateDetails';
