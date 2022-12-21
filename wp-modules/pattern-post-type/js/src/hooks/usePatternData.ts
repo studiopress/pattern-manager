@@ -51,7 +51,7 @@ export default function usePatternData( { postMeta } ) {
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
 	 */
-	const blockPatternCategories = wp.data.useSelect( ( select ) => {
+	const categories = wp.data.useSelect( ( select ) => {
 		return sortAlphabetically(
 			select( 'core' )
 				.getBlockPatternCategories()
@@ -67,7 +67,7 @@ export default function usePatternData( { postMeta } ) {
 	 * The alphabetized list of transformable block types, mapped for react-select.
 	 * Template-part types are added to support template part replacement in site editor.
 	 */
-	const transformableBlockTypes = wp.data.useSelect( ( select ) => {
+	const blockTypes = wp.data.useSelect( ( select ) => {
 		const registeredBlockTypes = [
 			...select( 'core/blocks' )
 				.getBlockTypes()
@@ -113,8 +113,8 @@ export default function usePatternData( { postMeta } ) {
 
 	return {
 		postTypes,
-		blockPatternCategories,
-		transformableBlockTypes,
+		categories,
+		blockTypes,
 		updatePostMeta,
 	};
 }

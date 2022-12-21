@@ -13,36 +13,51 @@ import {
 import usePatternData from '../../hooks/usePatternData';
 
 export default function PatternEditorSidebar( { coreLastUpdate, postMeta } ) {
-	const {
-		postTypes,
-		blockPatternCategories,
-		transformableBlockTypes,
-		updatePostMeta,
-	} = usePatternData( postMeta );
-
-	const panelProps = {
-		postMeta,
-		postTypes,
-		categories: blockPatternCategories,
-		blockTypes: transformableBlockTypes,
-		handleChange: updatePostMeta,
-	};
+	const { postTypes, categories, blockTypes, updatePostMeta } =
+		usePatternData( postMeta );
 
 	return (
 		<div id={ coreLastUpdate }>
 			{ postMeta?.type === 'template' ? (
-				<TemplateDetails { ...panelProps } />
+				<TemplateDetails postMeta={ postMeta } />
 			) : (
 				<>
-					<TitlePanel { ...panelProps } />
-					<CategoriesPanel { ...panelProps } />
-					<PostTypesPanel { ...panelProps }>
-						<ModalToggle { ...panelProps } />
-						<InserterToggle { ...panelProps } />
+					<TitlePanel
+						postMeta={ postMeta }
+						handleChange={ updatePostMeta }
+					/>
+					<CategoriesPanel
+						postMeta={ postMeta }
+						categories={ categories }
+						handleChange={ updatePostMeta }
+					/>
+					<PostTypesPanel
+						postMeta={ postMeta }
+						postTypes={ postTypes }
+						handleChange={ updatePostMeta }
+					>
+						<ModalToggle
+							postMeta={ postMeta }
+							handleChange={ updatePostMeta }
+						/>
+						<InserterToggle
+							postMeta={ postMeta }
+							handleChange={ updatePostMeta }
+						/>
 					</PostTypesPanel>
-					<TransformsPanel { ...panelProps } />
-					<KeywordsPanel { ...panelProps } />
-					<DescriptionPanel { ...panelProps } />
+					<TransformsPanel
+						postMeta={ postMeta }
+						blockTypes={ blockTypes }
+						handleChange={ updatePostMeta }
+					/>
+					<KeywordsPanel
+						postMeta={ postMeta }
+						handleChange={ updatePostMeta }
+					/>
+					<DescriptionPanel
+						postMeta={ postMeta }
+						handleChange={ updatePostMeta }
+					/>
 				</>
 			) }
 		</div>
