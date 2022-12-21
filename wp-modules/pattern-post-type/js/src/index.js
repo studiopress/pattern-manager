@@ -4,7 +4,5 @@ import FseStudioMetaControls from './components/FseStudioMetaControls';
 
 registerPlugin( 'fsestudio-postmeta-for-patterns', {
 	icon: null,
-	render: () => {
-		return <FseStudioMetaControls />;
-	},
+	render: FseStudioMetaControls,
 } );
