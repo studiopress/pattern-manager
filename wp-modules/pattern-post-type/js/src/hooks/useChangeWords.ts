@@ -1,4 +1,4 @@
-import { PostMeta } from "../types";
+import { PostMeta } from '../types';
 
 export default function useChangeWords( postMeta: PostMeta ) {
 	// Change the word "Publish" to "Save Pattern"
