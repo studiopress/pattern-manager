@@ -11,9 +11,35 @@ export function ModalToggle( { postMeta, handleChange } ) {
 	// Conditionally remove blockTypeForModal from postMeta.blockTypes.
 	useEffect( () => {
 		if ( isDisabled && isChecked ) {
-			handleChange( false, 'blockTypes', blockTypeForModal );
+			handleToggleChangeMulti( false, 'blockTypes', blockTypeForModal );
 		}
 	}, [ isDisabled, isChecked, blockTypeForModal ] );
+
+	/**
+	 * Handler for ToggleControl component changes.
+	 * Intended to target postMeta values in an array.
+	 *
+	 * @param {boolean} event The toggle event.
+	 * @param {string}  key   The object key to reference in postMeta.
+	 * @param {string}  value The value to update or remove from postMeta.
+	 */
+	function handleToggleChangeMulti( event, key, value ) {
+		let updatedValues = [];
+
+		if ( event ) {
+			updatedValues = ! postMeta[ key ]?.includes( value )
+				? postMeta[ key ]?.concat( [ value ] )
+				: postMeta[ key ];
+		} else {
+			updatedValues = postMeta[ key ]?.includes( value )
+				? postMeta[ key ]?.filter( ( item ) => {
+						return item !== value;
+				  } )
+				: postMeta[ key ];
+		}
+
+		handleChange( key, updatedValues );
+	}
 
 	return (
 		<div className="fsestudio-post-type-modal-toggle">
@@ -36,7 +62,11 @@ export function ModalToggle( { postMeta, handleChange } ) {
 							: __( 'Disabled for all post types.', 'fse-studio' )
 					}
 					onChange={ ( event ) => {
-						handleChange( event, 'blockTypes', blockTypeForModal );
+						handleToggleChangeMulti(
+							event,
+							'blockTypes',
+							blockTypeForModal
+						);
 					} }
 				/>
 			</PanelRow>
