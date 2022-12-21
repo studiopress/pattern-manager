@@ -1,5 +1,5 @@
 export type PostMeta = {
-	type: "pattern" | "template" | "template_part";
+	type: 'pattern' | 'template' | 'template_part';
 	title: string;
 	slug: string;
 	name: string;
@@ -16,4 +16,4 @@ export type PostMeta = {
 export type SelectOptions = {
 	label: string;
 	value: string;
-};
+}[];
