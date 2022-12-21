@@ -1,4 +1,4 @@
-export default function useChangeWords( { postMeta } ) {
+export default function useChangeWords( postMeta ) {
 	// Change the word "Publish" to "Save Pattern"
 	function changeWords( translation, text ) {
 		if ( postMeta?.type === 'pattern' ) {
