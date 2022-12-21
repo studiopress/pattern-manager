@@ -2,10 +2,17 @@ import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { TextareaControl } from '@wordpress/components';
 
+import { PostMeta } from '../../../types';
+
+type Props = {
+	postMeta: PostMeta;
+	handleChange: ( metaKey: 'description', newValue: string ) => void;
+};
+
 /**
  * The panel section for typing a description of the pattern.
  */
-export function DescriptionPanel( { postMeta, handleChange } ) {
+export function DescriptionPanel( { postMeta, handleChange }: Props ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="fsestudio-pattern-editor-pattern-description"

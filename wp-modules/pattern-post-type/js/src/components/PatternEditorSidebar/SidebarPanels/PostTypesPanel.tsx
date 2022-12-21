@@ -5,6 +5,15 @@ import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 import { HelperTooltip, ReverseTooltip } from '../../Tooltips';
 
+import { PostMeta, SelectOptions } from '../../../types';
+
+type Props = {
+	postMeta: PostMeta;
+	postTypes: SelectOptions;
+	handleChange: ( metaKey: 'postTypes', newValue: string[] ) => void;
+	children: React.ReactNode;
+};
+
 /**
  * The panel section for restricting post types for the pattern.
  * Custom post types and certain core types are displayed as toggles.
@@ -14,7 +23,7 @@ export function PostTypesPanel( {
 	postTypes,
 	handleChange,
 	children,
-} ) {
+}: Props ) {
 	/**
 	 * Boolean to catch when a template-part related block type is selected.
 	 * This is used to automatically select and disable the wp_template post type.

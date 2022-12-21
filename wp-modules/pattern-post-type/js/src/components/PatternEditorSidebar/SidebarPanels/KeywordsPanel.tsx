@@ -3,11 +3,18 @@ import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import CreatableSelect from 'react-select/creatable';
 
+import { PostMeta } from '../../../types';
+
+type Props = {
+	postMeta: PostMeta;
+	handleChange: ( metaKey: 'keywords', newValue: string[] ) => void;
+};
+
 /**
  * The panel section for assigning keywords to the pattern.
  * Keywords are searchable terms in the site editor inserter.
  */
-export function KeywordsPanel( { postMeta, handleChange } ) {
+export function KeywordsPanel( { postMeta, handleChange }: Props ) {
 	const [ keywordInputValue, setKeywordInputValue ] = useState( '' );
 
 	return (

@@ -5,15 +5,26 @@ import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import convertToSlug from '../../../../../../app/js/src/utils/convertToSlug';
 
-export function TitlePanel( { postMeta, handleChange } ) {
-	const [ nameInput, setNameInput ] = useState();
+import { PostMeta } from '../../../types';
+
+type Props = {
+	postMeta: PostMeta;
+	handleChange: (
+		metaKey: 'title',
+		newValue: string,
+		additionalMeta: { name: string; previousName: string }
+	) => void;
+};
+
+export function TitlePanel( { postMeta, handleChange }: Props ) {
+	const [ nameInput, setNameInput ] = useState( '' );
 	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'fse-studio' )
 	);
 
-	const previousPatternName = useRef();
+	const previousPatternName = useRef( '' );
 
 	/**
 	 * Listener to catch name collision for patterns as they are renamed.

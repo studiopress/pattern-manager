@@ -2,7 +2,13 @@ import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow } from '@wordpress/components';
 
-export function TemplateDetails( { postMeta } ) {
+import { PostMeta } from '../../../types';
+
+type Props = {
+	postMeta: PostMeta;
+};
+
+export function TemplateDetails( { postMeta }: Props ) {
 	return (
 		<PluginDocumentSettingPanel
 			className="fsestudio-template-details"

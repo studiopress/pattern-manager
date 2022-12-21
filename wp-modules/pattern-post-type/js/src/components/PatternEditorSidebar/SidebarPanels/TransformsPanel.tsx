@@ -4,11 +4,23 @@ import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 import { HelperTooltip } from '../../Tooltips';
 
+import { PostMeta, SelectOptions } from '../../../types';
+
+type Props = {
+	postMeta: PostMeta;
+	blockTypes: SelectOptions;
+	handleChange: ( metaKey: 'blockTypes', newValue: string[] ) => void;
+};
+
 /**
  * The panel section for assigning block types to the pattern.
  * Block types in the pattern file are primarily used for transforming blocks.
  */
-export function TransformsPanel( { postMeta, blockTypes, handleChange } ) {
+export function TransformsPanel( {
+	postMeta,
+	blockTypes,
+	handleChange,
+}: Props ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="fsestudio-pattern-editor-pattern-transforms"
