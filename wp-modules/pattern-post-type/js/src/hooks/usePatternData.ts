@@ -1,6 +1,7 @@
 import sortAlphabetically from '../utils/sortAlphabetically';
+import { SelectOptions } from '../types';
 
-export default function usePatternData( { postMeta } ) {
+export default function usePatternData( postMeta ) {
 	/**
 	 * Get, filter, and sort the custom post types, mapped for react-select.
 	 * Wrapping call in useSelect to prevent async null return on initial load.
@@ -9,7 +10,7 @@ export default function usePatternData( { postMeta } ) {
 	 *
 	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
 	 */
-	const postTypes = wp.data.useSelect( ( select ) => {
+	const postTypes: SelectOptions = wp.data.useSelect( ( select ) => {
 		const initialPostTypes = select( 'core' )
 			.getPostTypes( {
 				per_page: 100,
@@ -51,7 +52,7 @@ export default function usePatternData( { postMeta } ) {
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
 	 */
-	const categories = wp.data.useSelect( ( select ) => {
+	const categories: SelectOptions = wp.data.useSelect( ( select ) => {
 		return sortAlphabetically(
 			select( 'core' )
 				.getBlockPatternCategories()
@@ -67,7 +68,7 @@ export default function usePatternData( { postMeta } ) {
 	 * The alphabetized list of transformable block types, mapped for react-select.
 	 * Template-part types are added to support template part replacement in site editor.
 	 */
-	const blockTypes = wp.data.useSelect( ( select ) => {
+	const blockTypes: SelectOptions = wp.data.useSelect( ( select ) => {
 		const registeredBlockTypes = [
 			...select( 'core/blocks' )
 				.getBlockTypes()
@@ -99,7 +100,11 @@ export default function usePatternData( { postMeta } ) {
 		);
 	}, [] );
 
-	function updatePostMeta( metaKey, newValue, additionalMeta = {} ) {
+	function updatePostMeta(
+		metaKey: string,
+		newValue: unknown,
+		additionalMeta: { [ key: string ]: unknown } = {}
+	) {
 		wp.data.dispatch( 'core/editor' ).editPost( {
 			meta: {
 				...postMeta,
