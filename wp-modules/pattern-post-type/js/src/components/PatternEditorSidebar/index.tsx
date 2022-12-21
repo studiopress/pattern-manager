@@ -11,8 +11,17 @@ import {
 } from './SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
+import { PostMeta } from '../../types';
 
-export default function PatternEditorSidebar( { coreLastUpdate, postMeta } ) {
+type Props = {
+	coreLastUpdate: string;
+	postMeta: PostMeta;
+};
+
+export default function PatternEditorSidebar( {
+	coreLastUpdate,
+	postMeta,
+}: Props ) {
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
 
