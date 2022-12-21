@@ -1,7 +1,17 @@
 import { __ } from '@wordpress/i18n';
 import { PanelRow, ToggleControl } from '@wordpress/components';
 
-export function InserterToggle( { postMeta, handleChange } ) {
+import { PostMeta } from '../../types';
+
+type Props = {
+	postMeta: PostMeta;
+	handleChange: (
+		metaKey: 'inserter',
+		newValue: PostMeta[ 'inserter' ]
+	) => void;
+};
+
+export function InserterToggle( { postMeta, handleChange }: Props ) {
 	const isChecked = postMeta?.inserter ?? true;
 
 	return (
