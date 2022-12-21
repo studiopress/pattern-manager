@@ -1,6 +1,8 @@
-export default function useChangeWords( postMeta ) {
+import { PostMeta } from "../types";
+
+export default function useChangeWords( postMeta: PostMeta ) {
 	// Change the word "Publish" to "Save Pattern"
-	function changeWords( translation, text ) {
+	function changeWords( translation: string, text: string ) {
 		if ( postMeta?.type === 'pattern' ) {
 			if ( text === 'Publish' ) {
 				return 'Save pattern to theme';
