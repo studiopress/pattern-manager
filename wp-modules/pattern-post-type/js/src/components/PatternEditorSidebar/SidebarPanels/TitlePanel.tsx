@@ -16,7 +16,7 @@ type Props = {
 	) => void;
 };
 
-export function TitlePanel( { postMeta, handleChange }: Props ) {
+export default function TitlePanel( { postMeta, handleChange }: Props ) {
 	const [ nameInput, setNameInput ] = useState( '' );
 	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );

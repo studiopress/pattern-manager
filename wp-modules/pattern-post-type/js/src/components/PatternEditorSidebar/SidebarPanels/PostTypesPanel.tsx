@@ -21,7 +21,7 @@ type Props = {
  * The panel section for restricting post types for the pattern.
  * Custom post types and certain core types are displayed as toggles.
  */
-export function PostTypesPanel( {
+export default function PostTypesPanel( {
 	postMeta,
 	postTypes,
 	handleChange,

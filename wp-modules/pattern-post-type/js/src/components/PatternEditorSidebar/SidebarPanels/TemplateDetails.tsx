@@ -8,7 +8,7 @@ type Props = {
 	postMeta: PostMeta;
 };
 
-export function TemplateDetails( { postMeta }: Props ) {
+export default function TemplateDetails( { postMeta }: Props ) {
 	return (
 		<PluginDocumentSettingPanel
 			className="fsestudio-template-details"

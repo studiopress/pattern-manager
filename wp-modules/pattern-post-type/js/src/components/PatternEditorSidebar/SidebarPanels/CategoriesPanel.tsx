@@ -18,7 +18,7 @@ type Props = {
  * The panel section for assigning block pattern categories to the pattern.
  * Selected categories will show under the matching dropdown in the site editor.
  */
-export function CategoriesPanel( {
+export default function CategoriesPanel( {
 	postMeta,
 	categories,
 	handleChange,

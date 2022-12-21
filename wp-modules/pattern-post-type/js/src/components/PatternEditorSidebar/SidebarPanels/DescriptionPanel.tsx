@@ -15,7 +15,7 @@ type Props = {
 /**
  * The panel section for typing a description of the pattern.
  */
-export function DescriptionPanel( { postMeta, handleChange }: Props ) {
+export default function DescriptionPanel( { postMeta, handleChange }: Props ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="fsestudio-pattern-editor-pattern-description"

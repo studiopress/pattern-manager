@@ -17,7 +17,7 @@ type Props = {
  * The panel section for assigning keywords to the pattern.
  * Keywords are searchable terms in the site editor inserter.
  */
-export function KeywordsPanel( { postMeta, handleChange }: Props ) {
+export default function KeywordsPanel( { postMeta, handleChange }: Props ) {
 	const [ keywordInputValue, setKeywordInputValue ] = useState( '' );
 
 	return (

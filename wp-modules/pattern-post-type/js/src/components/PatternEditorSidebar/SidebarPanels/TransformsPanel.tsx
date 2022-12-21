@@ -19,7 +19,7 @@ type Props = {
  * The panel section for assigning block types to the pattern.
  * Block types in the pattern file are primarily used for transforming blocks.
  */
-export function TransformsPanel( {
+export default function TransformsPanel( {
 	postMeta,
 	blockTypes,
 	handleChange,
