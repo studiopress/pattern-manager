@@ -9,7 +9,10 @@ import { PostMeta, SelectOptions } from '../../../types';
 type Props = {
 	postMeta: PostMeta;
 	blockTypes: SelectOptions;
-	handleChange: ( metaKey: 'blockTypes', newValue: string[] ) => void;
+	handleChange: (
+		metaKey: 'blockTypes',
+		newValue: PostMeta[ 'blockTypes' ]
+	) => void;
 };
 
 /**

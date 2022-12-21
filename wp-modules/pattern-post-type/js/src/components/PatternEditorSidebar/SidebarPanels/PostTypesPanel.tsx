@@ -10,7 +10,10 @@ import { PostMeta, SelectOptions } from '../../../types';
 type Props = {
 	postMeta: PostMeta;
 	postTypes: SelectOptions;
-	handleChange: ( metaKey: 'postTypes', newValue: string[] ) => void;
+	handleChange: (
+		metaKey: 'postTypes',
+		newValue: PostMeta[ 'postTypes' ]
+	) => void;
 	children: React.ReactNode;
 };
 

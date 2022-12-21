@@ -11,7 +11,7 @@ type Props = {
 	postMeta: PostMeta;
 	handleChange: (
 		metaKey: 'title',
-		newValue: string,
+		newValue: PostMeta[ 'title' ],
 		additionalMeta: { name: string; previousName: string }
 	) => void;
 };

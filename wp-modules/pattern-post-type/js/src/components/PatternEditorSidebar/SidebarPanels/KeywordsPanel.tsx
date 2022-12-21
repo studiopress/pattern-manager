@@ -7,7 +7,10 @@ import { PostMeta } from '../../../types';
 
 type Props = {
 	postMeta: PostMeta;
-	handleChange: ( metaKey: 'keywords', newValue: string[] ) => void;
+	handleChange: (
+		metaKey: 'keywords',
+		newValue: PostMeta[ 'keywords' ]
+	) => void;
 };
 
 /**

@@ -6,7 +6,10 @@ import { PostMeta } from '../../../types';
 
 type Props = {
 	postMeta: PostMeta;
-	handleChange: ( metaKey: 'description', newValue: string ) => void;
+	handleChange: (
+		metaKey: 'description',
+		newValue: PostMeta[ 'description' ]
+	) => void;
 };
 
 /**
