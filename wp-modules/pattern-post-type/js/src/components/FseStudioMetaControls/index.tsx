@@ -8,9 +8,7 @@ import usePostData from '../../hooks/usePostData';
 
 export default function FseStudioMetaControls() {
 	const { coreLastUpdate, postMeta, currentPostType } = usePostData();
-
 	const { changeWords } = useChangeWords( postMeta );
-
 	useSubscription();
 
 	addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
