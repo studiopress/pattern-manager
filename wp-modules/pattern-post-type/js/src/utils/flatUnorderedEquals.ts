@@ -6,7 +6,7 @@
  * @param {Array} arrayB
  * @return {boolean} True if the arrays are loosely equal.
  */
-export default function flatUnorderedEquals( arrayA, arrayB ) {
+export default function flatUnorderedEquals( arrayA: string[], arrayB: string[] ) {
 	arrayA.sort();
 	arrayB.sort();
 
