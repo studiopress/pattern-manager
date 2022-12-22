@@ -5,7 +5,10 @@ import { ReverseTooltip } from '../Tooltips';
 
 import type { BaseToggleTypes } from './types';
 
-export default function ModalToggle( { postMeta, handleChange }: BaseToggleTypes ) {
+export default function ModalToggle( {
+	postMeta,
+	handleChange,
+}: BaseToggleTypes ) {
 	const blockTypeForModal = 'core/post-content';
 	const isDisabled = ! postMeta.postTypes?.length;
 	const isChecked = postMeta.blockTypes?.includes( blockTypeForModal );

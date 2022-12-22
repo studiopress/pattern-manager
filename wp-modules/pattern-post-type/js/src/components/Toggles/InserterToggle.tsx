@@ -3,7 +3,10 @@ import { PanelRow, ToggleControl } from '@wordpress/components';
 
 import type { BaseToggleTypes } from './types';
 
-export default function InserterToggle( { postMeta, handleChange }: BaseToggleTypes ) {
+export default function InserterToggle( {
+	postMeta,
+	handleChange,
+}: BaseToggleTypes ) {
 	const isChecked = postMeta?.inserter ?? true;
 
 	return (
