@@ -7,7 +7,7 @@ type Props = {
 	icon?: IconKey;
 };
 
-export function ReverseTooltip( {
+export default function ReverseTooltip( {
 	helperText,
 	helperTitle,
 	icon = 'info-outline',

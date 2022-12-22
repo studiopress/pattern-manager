@@ -13,7 +13,7 @@ type Props = {
 	) => void;
 };
 
-export function ModalToggle( { postMeta, handleChange }: Props ) {
+export default function ModalToggle( { postMeta, handleChange }: Props ) {
 	const blockTypeForModal = 'core/post-content';
 	const isDisabled = ! postMeta.postTypes?.length;
 	const isChecked = postMeta.blockTypes?.includes( blockTypeForModal );

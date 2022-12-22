@@ -11,7 +11,7 @@ type Props = {
 	) => void;
 };
 
-export function InserterToggle( { postMeta, handleChange }: Props ) {
+export default function InserterToggle( { postMeta, handleChange }: Props ) {
 	const isChecked = postMeta?.inserter ?? true;
 
 	return (

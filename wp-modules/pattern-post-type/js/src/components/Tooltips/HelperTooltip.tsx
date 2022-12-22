@@ -7,7 +7,7 @@ type Props = {
 	icon?: IconKey;
 };
 
-export function HelperTooltip( {
+export default function HelperTooltip( {
 	helperText,
 	helperTitle,
 	icon = 'info-outline',

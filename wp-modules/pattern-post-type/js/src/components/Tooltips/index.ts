@@ -1,2 +1,2 @@
-export * from './HelperTooltip';
-export * from './ReverseTooltip';
+export { default as HelperTooltip } from './HelperTooltip';
+export { default as ReverseTooltip } from './ReverseTooltip';
