@@ -9,7 +9,7 @@
  * @return {Array}           The sorted array.
  */
 export default function sortAlphabetically(
-	arr: string[],
+	arr: any[],
 	key: string,
 	topKey = '',
 	topString = ''
