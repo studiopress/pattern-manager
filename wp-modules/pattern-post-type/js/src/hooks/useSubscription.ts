@@ -1,21 +1,25 @@
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
+import { select, subscribe, dispatch } from '@wordpress/data';
+import { rawHandler } from '@wordpress/blocks';
+import { PostMeta } from '../types';
 
-export default function useSubscription() {
+export default function useSubscription(
+	currentPostType: string,
+	postDirty: boolean
+) {
 	useEffect( () => {
 		// Tell the parent page (fse studio) that we are loaded.
 		let fsestudioPatternEditorLoaded = false;
 		let patternDataSet = false;
-		let patternUpdatedDebounce = null;
-		wp.data.subscribe( () => {
-			if (
-				! fsestudioPatternEditorLoaded &&
-				wp.data.select( 'core/editor' ).getCurrentPostType()
-			) {
+		let patternUpdatedDebounce: null | ReturnType< typeof setTimeout > =
+			null;
+		subscribe( () => {
+			if ( ! fsestudioPatternEditorLoaded && currentPostType ) {
 				window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
 				fsestudioPatternEditorLoaded = true;
 			}
 
-			if ( wp.data.select( 'core/editor' ).isEditedPostDirty() ) {
+			if ( postDirty ) {
 				window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
 			}
 
@@ -23,17 +27,18 @@ export default function useSubscription() {
 			if ( patternDataSet ) {
 				clearTimeout( patternUpdatedDebounce );
 				patternUpdatedDebounce = setTimeout( () => {
-					const meta = wp.data
-						.select( 'core/editor' )
-						.getEditedPostAttribute( 'meta' );
+					// Get fresh meta and content for the post.
+					const meta: PostMeta =
+						select( 'core/editor' ).getEditedPostAttribute(
+							'meta'
+						);
+					const content: string =
+						select( 'core/editor' ).getEditedPostContent();
+
 					// Assemble the current blockPatternData into a single object.
 					const blockPatternData = {
-						content: wp.data
-							.select( 'core/editor' )
-							.getEditedPostContent(),
-						...wp.data
-							.select( 'core/editor' )
-							.getEditedPostAttribute( 'meta' ),
+						content,
+						...meta,
 						slug: meta.name,
 					};
 					window.parent.postMessage(
@@ -46,18 +51,23 @@ export default function useSubscription() {
 			}
 		} );
 
-		let fsestudioThemeJsonChangeDebounce = null;
+		let fsestudioThemeJsonChangeDebounce: null | ReturnType<
+			typeof setTimeout
+		> = null;
 		// If the FSE Studio app sends an instruction, listen for and do it here.
 		window.addEventListener(
 			'message',
 			( event ) => {
 				try {
-					const response = JSON.parse( event.data );
+					const response: {
+						message: string;
+						patternData?: PostMeta;
+					} = JSON.parse( event.data );
 
 					if ( response.message === 'set_initial_pattern_data' ) {
 						// Insert the block string so the blocks show up in the editor itself.
-						wp.data.dispatch( 'core/editor' ).resetEditorBlocks(
-							wp.blocks.rawHandler( {
+						dispatch( 'core/editor' ).resetEditorBlocks(
+							rawHandler( {
 								HTML: response.patternData.content,
 								mode: 'BLOCKS',
 							} )
@@ -65,16 +75,14 @@ export default function useSubscription() {
 
 						// Prevent this notice: "The backup of this post in your browser is different from the version below."
 						// Get all notices, then remove if the notice has a matching wp autosave id.
-						const notices = wp.data
-							.select( 'core/notices' )
-							.getNotices();
+						const notices = select( 'core/notices' ).getNotices();
 						notices?.forEach( ( notice ) => {
 							if (
 								notice.id.includes( 'wpEditorAutosaveRestore' )
 							) {
-								wp.data
-									.dispatch( 'core/notices' )
-									.removeNotice( notice.id );
+								dispatch( 'core/notices' ).removeNotice(
+									notice.id
+								);
 							}
 						} );
 
@@ -85,7 +93,7 @@ export default function useSubscription() {
 						delete patternMeta.content;
 
 						// Set the meta of the pattern
-						wp.data.dispatch( 'core/editor' ).editPost( {
+						dispatch( 'core/editor' ).editPost( {
 							meta: { ...patternMeta },
 						} );
 						patternDataSet = true;
@@ -98,7 +106,7 @@ export default function useSubscription() {
 						// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
 						clearTimeout( fsestudioThemeJsonChangeDebounce );
 						fsestudioThemeJsonChangeDebounce = setTimeout( () => {
-							wp.data.dispatch( 'core/notices' ).createNotice(
+							dispatch( 'core/notices' ).createNotice(
 								'warning', // Can be one of: success, info, warning, error.
 								'FSE Studio: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
 								{
@@ -123,7 +131,7 @@ export default function useSubscription() {
 						// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
 						clearTimeout( fsestudioThemeJsonChangeDebounce );
 						fsestudioThemeJsonChangeDebounce = setTimeout( () => {
-							wp.data.dispatch( 'core/notices' ).createNotice(
+							dispatch( 'core/notices' ).createNotice(
 								'warning', // Can be one of: success, info, warning, error.
 								"FSE Studio: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 								{

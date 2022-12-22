@@ -1,21 +1,13 @@
-import { useSelect } from '@wordpress/data';
-import { addFilter, removeFilter } from '@wordpress/hooks';
 import PatternEditorSidebar from '../PatternEditorSidebar';
-import useSubscription from '../../hooks/useSubscription';
-import useChangeWords from '../../hooks/useChangeWords';
-
 import usePostData from '../../hooks/usePostData';
+import useSubscription from '../../hooks/useSubscription';
+import useFilters from '../../hooks/useFilters';
 
 export default function FseStudioMetaControls() {
-	const { coreLastUpdate, postMeta, currentPostType } = usePostData();
-	const { changeWords } = useChangeWords( postMeta );
-	useSubscription();
-
-	addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
-	removeFilter(
-		'blockEditor.__unstableCanInsertBlockType',
-		'removeTemplatePartsFromInserter'
-	);
+	const { coreLastUpdate, postMeta, currentPostType, postDirty } =
+		usePostData();
+	useSubscription( currentPostType, postDirty );
+	useFilters( postMeta );
 
 	// Will only render component for post type 'fsestudio_pattern'.
 	return currentPostType === 'fsestudio_pattern' ? (
