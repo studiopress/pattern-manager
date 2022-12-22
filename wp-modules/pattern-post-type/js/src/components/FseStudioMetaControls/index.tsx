@@ -4,19 +4,18 @@ import PatternEditorSidebar from '../PatternEditorSidebar';
 import useSubscription from '../../hooks/useSubscription';
 import useChangeWords from '../../hooks/useChangeWords';
 
-import { SelectQuery } from '../../types';
+import usePostData from '../../hooks/usePostData';
 
 export default function FseStudioMetaControls() {
-	const postMeta = useSelect( ( select: SelectQuery ) => {
-		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	}, [] );
+	const {
+		coreLastUpdate,
+		postMeta,
+		currentPostType,
+	} = usePostData();
 
-	const currentPostType = useSelect( ( select: SelectQuery ) => {
-		return select( 'core/editor' ).getCurrentPostType();
-	}, [] );
-
-	const { coreLastUpdate } = useSubscription();
 	const { changeWords } = useChangeWords( postMeta );
+
+	useSubscription();
 
 	addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
 	removeFilter(

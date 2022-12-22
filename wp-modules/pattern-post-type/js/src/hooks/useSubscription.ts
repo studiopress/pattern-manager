@@ -1,8 +1,6 @@
 import { useState, useEffect } from '@wordpress/element';
 
 export default function useSubscription() {
-	const [ coreLastUpdate, setCoreLastUpdate ] = useState( '' );
-
 	useEffect( () => {
 		// Tell the parent page (fse studio) that we are loaded.
 		let fsestudioPatternEditorLoaded = false;
@@ -46,8 +44,6 @@ export default function useSubscription() {
 					);
 				}, 10 );
 			}
-
-			setCoreLastUpdate( Date.now().toString() );
 		} );
 
 		let fsestudioThemeJsonChangeDebounce = null;
@@ -151,8 +147,4 @@ export default function useSubscription() {
 			false
 		);
 	}, [] );
-
-	return {
-		coreLastUpdate,
-	};
 }
