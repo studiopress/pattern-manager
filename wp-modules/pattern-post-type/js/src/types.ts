@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 export type PostMeta = {
 	type: 'pattern' | 'template' | 'template_part';
 	title: string;
@@ -13,7 +15,20 @@ export type PostMeta = {
 	viewportWidth: string | number;
 };
 
+export type SelectQuery = ( dataStore: string ) => {
+	getEditedPostAttribute: ( postAttribute: string ) => PostMeta;
+	getPostTypes: ( {
+		per_page,
+	}: {
+		per_page?: number | string;
+	} ) => { name: string; slug: string }[];
+	getBlockPatternCategories: () => { name: string; label: string }[];
+	getBlockTypes: () => { name: string; transforms?: unknown }[];
+};
+
 export type SelectOptions = {
 	label: string;
 	value: string;
+	isFixed?: boolean;
+	transforms?: unknown;
 }[];

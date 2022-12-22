@@ -2,10 +2,10 @@ import PatternEditorSidebar from '../PatternEditorSidebar';
 import useSubscription from '../../hooks/useSubscription';
 import useChangeWords from '../../hooks/useChangeWords';
 
-import { PostMeta } from '../../types';
+import { SelectQuery } from '../../types';
 
 export default function FseStudioMetaControls() {
-	const postMeta: PostMeta = wp.data.useSelect( ( select ) => {
+	const postMeta = wp.data.useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).getEditedPostAttribute( 'meta' );
 	}, [] );
 
