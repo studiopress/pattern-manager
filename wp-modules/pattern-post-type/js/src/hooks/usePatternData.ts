@@ -1,6 +1,6 @@
 import sortAlphabetically from '../utils/sortAlphabetically';
 import { useSelect, dispatch } from '@wordpress/data';
-import { SelectOptions, SelectQuery } from '../types';
+import { SelectQuery } from '../types';
 
 export default function usePatternData( postMeta ) {
 	/**
@@ -11,7 +11,7 @@ export default function usePatternData( postMeta ) {
 	 *
 	 * @see https://developer.wordpress.org/block-editor/reference-guides/core-blocks/
 	 */
-	const postTypes: SelectOptions = useSelect( ( select: SelectQuery ) => {
+	const postTypes = useSelect( ( select: SelectQuery ) => {
 		const initialPostTypes = select( 'core' )
 			.getPostTypes( {
 				per_page: -1,
@@ -19,6 +19,7 @@ export default function usePatternData( postMeta ) {
 			?.map( ( postType ) => ( {
 				label: postType.name,
 				value: postType.slug,
+				isFixed: false,
 			} ) );
 
 		if ( initialPostTypes ) {
@@ -53,7 +54,7 @@ export default function usePatternData( postMeta ) {
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
 	 */
-	const categories: SelectOptions = useSelect( ( select: SelectQuery ) => {
+	const categories = useSelect( ( select: SelectQuery ) => {
 		return sortAlphabetically(
 			select( 'core' )
 				.getBlockPatternCategories()
@@ -69,7 +70,7 @@ export default function usePatternData( postMeta ) {
 	 * The alphabetized list of transformable block types, mapped for react-select.
 	 * Template-part types are added to support template part replacement in site editor.
 	 */
-	const blockTypes: SelectOptions = useSelect( ( select: SelectQuery ) => {
+	const blockTypes = useSelect( ( select: SelectQuery ) => {
 		const registeredBlockTypes = [
 			...select( 'core/blocks' )
 				.getBlockTypes()

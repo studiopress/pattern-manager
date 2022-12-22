@@ -29,10 +29,3 @@ export type SelectQuery = ( dataStore: string ) => {
 	getBlockPatternCategories: () => { name: string; label: string }[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 };
-
-export type SelectOptions = {
-	label: string;
-	value: string;
-	isFixed?: boolean;
-	transforms?: unknown;
-}[];
