@@ -4,16 +4,7 @@ import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 import { HelperTooltip } from '../../Tooltips';
 
-import { PostMeta, SelectOptions } from '../../../types';
-
-type Props = {
-	postMeta: PostMeta;
-	blockTypes: SelectOptions;
-	handleChange: (
-		metaKey: 'blockTypes',
-		newValue: PostMeta[ 'blockTypes' ]
-	) => void;
-};
+import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
 
 /**
  * The panel section for assigning block types to the pattern.
@@ -23,7 +14,7 @@ export default function TransformsPanel( {
 	postMeta,
 	blockTypes,
 	handleChange,
-}: Props ) {
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'blockTypes' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="fsestudio-pattern-editor-pattern-transforms"

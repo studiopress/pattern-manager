@@ -1,14 +1,12 @@
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow } from '@wordpress/components';
 
-import { PostMeta } from '../../../types';
+import type { BaseSidebarProps } from '../types';
 
-type Props = {
-	postMeta: PostMeta;
-};
-
-export default function TemplateDetails( { postMeta }: Props ) {
+export default function TemplateDetails( {
+	postMeta,
+}: Pick< BaseSidebarProps, 'postMeta' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			className="fsestudio-template-details"
@@ -16,7 +14,11 @@ export default function TemplateDetails( { postMeta }: Props ) {
 			icon="edit"
 		>
 			<PanelRow>
-				{ __( 'Template:', 'fse-studio' ) + ' ' + postMeta.title }
+				{ sprintf(
+					/* translators: %s is the post meta title */
+					__( 'Template: %s', 'fse-studio' ),
+					postMeta.title
+				) }
 			</PanelRow>
 		</PluginDocumentSettingPanel>
 	);

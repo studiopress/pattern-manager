@@ -5,18 +5,12 @@ import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import convertToSlug from '../../../../../../app/js/src/utils/convertToSlug';
 
-import { PostMeta } from '../../../types';
+import type { BaseSidebarProps } from '../types';
 
-type Props = {
-	postMeta: PostMeta;
-	handleChange: (
-		metaKey: 'title',
-		newValue: PostMeta[ 'title' ],
-		additionalMeta: { name: string; previousName: string }
-	) => void;
-};
-
-export default function TitlePanel( { postMeta, handleChange }: Props ) {
+export default function TitlePanel( {
+	postMeta,
+	handleChange,
+}: BaseSidebarProps ) {
 	const [ nameInput, setNameInput ] = useState( '' );
 	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );

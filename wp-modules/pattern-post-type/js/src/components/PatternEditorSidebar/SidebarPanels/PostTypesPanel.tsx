@@ -5,17 +5,7 @@ import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 import { HelperTooltip, ReverseTooltip } from '../../Tooltips';
 
-import { PostMeta, SelectOptions } from '../../../types';
-
-type Props = {
-	postMeta: PostMeta;
-	postTypes: SelectOptions;
-	handleChange: (
-		metaKey: 'postTypes',
-		newValue: PostMeta[ 'postTypes' ]
-	) => void;
-	children: React.ReactNode;
-};
+import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
 
 /**
  * The panel section for restricting post types for the pattern.
@@ -26,7 +16,10 @@ export default function PostTypesPanel( {
 	postTypes,
 	handleChange,
 	children,
-}: Props ) {
+}: BaseSidebarProps &
+	Pick< AdditionalSidebarProps, 'postTypes' > & {
+		children: React.ReactNode;
+	} ) {
 	/**
 	 * Boolean to catch when a template-part related block type is selected.
 	 * This is used to automatically select and disable the wp_template post type.

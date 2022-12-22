@@ -3,16 +3,7 @@ import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 
-import { PostMeta, SelectOptions } from '../../../types';
-
-type Props = {
-	postMeta: PostMeta;
-	categories: SelectOptions;
-	handleChange: (
-		metaKey: 'categories',
-		newValue: PostMeta[ 'categories' ]
-	) => void;
-};
+import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
 
 /**
  * The panel section for assigning block pattern categories to the pattern.
@@ -22,7 +13,7 @@ export default function CategoriesPanel( {
 	postMeta,
 	categories,
 	handleChange,
-}: Props ) {
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'categories' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="fsestudio-pattern-editor-pattern-categories"
