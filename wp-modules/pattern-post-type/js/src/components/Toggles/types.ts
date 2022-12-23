@@ -1,2 +1,1 @@
-import type { BaseSidebarProps } from '../PatternEditorSidebar/types';
-export type { BaseSidebarProps as BaseToggleTypes };
+export type { BaseSidebarProps as BaseToggleTypes } from '../PatternEditorSidebar/types';
