@@ -45,12 +45,15 @@ export default function TransformsPanel( {
 					} ) }
 					options={ blockTypes }
 					onChange={ ( blockTypeSelections ) => {
-						handleChange(
-							'blockTypes',
-							blockTypeSelections.map(
+						handleChange( 'blockTypes', [
+							...blockTypeSelections.map(
 								( blockTypeObject ) => blockTypeObject.value
-							)
-						);
+							),
+							// Make sure 'core/post-content' is not removed if it was in postMeta.blockTypes.
+							...( postMeta.blockTypes.includes(
+								'core/post-content'
+							) && [ 'core/post-content' ] ),
+						] );
 					} }
 					menuPlacement="auto"
 					styles={ {
