@@ -4,6 +4,7 @@ import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 import { HelperTooltip, ReverseTooltip } from '../../Tooltips';
+import flatUnorderedEquals from '../../../utils/flatUnorderedEquals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
 
@@ -54,7 +55,19 @@ export default function PostTypesPanel( {
 				'wp_template',
 			] );
 		}
-	}, [ postMeta.postTypes, templatePartBlockTypeSelected ] );
+
+		// Update postMeta with filteredPostTypes if postMeta.postTypes does not loosely match.
+		if (
+			filteredPostTypes &&
+			! flatUnorderedEquals( postMeta?.postTypes, filteredPostTypes )
+		) {
+			handleChange( 'postTypes', filteredPostTypes );
+		}
+	}, [
+		postMeta.postTypes,
+		templatePartBlockTypeSelected,
+		filteredPostTypes,
+	] );
 
 	return (
 		<PluginDocumentSettingPanel
