@@ -1,8 +1,8 @@
+import flatUnorderedEquals from '../utils/flatUnorderedEquals';
 import sortAlphabetically from '../utils/sortAlphabetically';
 import { useSelect, dispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
-import flatUnorderedEquals from '../utils/flatUnorderedEquals';
 
 export default function usePatternData( postMeta: PostMeta ) {
 	/**
