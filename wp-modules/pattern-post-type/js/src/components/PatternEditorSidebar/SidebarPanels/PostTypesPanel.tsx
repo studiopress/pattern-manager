@@ -7,6 +7,7 @@ import { HelperTooltip, ReverseTooltip } from '../../Tooltips';
 import flatUnorderedEquals from '../../../utils/flatUnorderedEquals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
+import type { ReactNode } from 'react';
 
 /**
  * The panel section for restricting post types for the pattern.
@@ -19,7 +20,7 @@ export default function PostTypesPanel( {
 	children,
 }: BaseSidebarProps &
 	Pick< AdditionalSidebarProps, 'postTypes' > & {
-		children: React.ReactNode;
+		children: ReactNode;
 	} ) {
 	/**
 	 * Boolean to catch when a template-part related block type is selected.

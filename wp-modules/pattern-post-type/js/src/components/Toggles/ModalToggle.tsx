@@ -3,12 +3,9 @@ import { useEffect } from '@wordpress/element';
 import { PanelRow, ToggleControl } from '@wordpress/components';
 import { ReverseTooltip } from '../Tooltips';
 
-import type { BaseToggleTypes } from './types';
+import type { ToggleTypes } from './types';
 
-export default function ModalToggle( {
-	postMeta,
-	handleChange,
-}: BaseToggleTypes ) {
+export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	const blockTypeForModal = 'core/post-content';
 	const isDisabled = ! postMeta.postTypes?.length;
 	const isChecked = postMeta.blockTypes?.includes( blockTypeForModal );

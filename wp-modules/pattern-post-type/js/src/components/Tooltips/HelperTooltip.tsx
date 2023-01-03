@@ -1,11 +1,11 @@
 import { Tooltip, Dashicon } from '@wordpress/components';
-import type { BaseTooltipTypes } from './types';
+import type { TooltipTypes } from './types';
 
 export default function HelperTooltip( {
 	helperText,
 	helperTitle,
 	icon = 'info-outline',
-}: BaseTooltipTypes ) {
+}: TooltipTypes ) {
 	return (
 		<div className="fsestudio-pattern-sidebar-tooltip">
 			<Tooltip text={ helperText } delay="200">
