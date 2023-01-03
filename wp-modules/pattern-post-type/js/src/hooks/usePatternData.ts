@@ -104,22 +104,7 @@ export default function usePatternData( postMeta: PostMeta ) {
 		);
 	}, [] );
 
-	function updatePostMeta(
-		metaKey: string,
-		newValue: unknown,
-		additionalMeta: { [ key: string ]: unknown } = {}
-	) {
-		dispatch( 'core/editor' ).editPost( {
-			meta: {
-				...postMeta,
-				[ metaKey ]: newValue,
-				...( Object.keys( additionalMeta ).length && {
-					...additionalMeta,
-				} ),
-			},
-		} );
-	}
-	/**
+	/*
 	 * Boolean to catch when a template-part related block type is selected.
 	 * This is used to automatically select and disable the wp_template post type.
 	 */
@@ -155,9 +140,7 @@ export default function usePatternData( postMeta: PostMeta ) {
 		}
 
 		// Update postMeta with filteredPostTypes if postMeta.postTypes does not loosely match.
-		if (
-			! flatUnorderedEquals( postMeta?.postTypes, filteredPostTypes )
-		) {
+		if ( ! flatUnorderedEquals( postMeta?.postTypes, filteredPostTypes ) ) {
 			updatePostMeta( 'postTypes', filteredPostTypes );
 		}
 	}, [
@@ -166,10 +149,28 @@ export default function usePatternData( postMeta: PostMeta ) {
 		filteredPostTypes,
 	] );
 
+	function updatePostMeta(
+		metaKey: string,
+		newValue: unknown,
+		additionalMeta: { [ key: string ]: unknown } = {}
+	) {
+		dispatch( 'core/editor' ).editPost( {
+			meta: {
+				...postMeta,
+				[ metaKey ]: newValue,
+				...( Object.keys( additionalMeta ).length && {
+					...additionalMeta,
+				} ),
+			},
+		} );
+	}
+
 	return {
+		filteredPostTypes,
 		postTypes,
 		categories,
 		blockTypes,
 		updatePostMeta,
+		templatePartBlockTypeSelected,
 	};
 }

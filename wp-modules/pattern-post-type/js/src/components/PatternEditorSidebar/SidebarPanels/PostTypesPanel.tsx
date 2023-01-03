@@ -1,28 +1,28 @@
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 import { HelperTooltip, ReverseTooltip } from '../../Tooltips';
-import flatUnorderedEquals from '../../../utils/flatUnorderedEquals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
 import type { ReactNode } from 'react';
+import usePatternData from '../../../hooks/usePatternData';
 
 /**
  * The panel section for restricting post types for the pattern.
  * Custom post types and certain core types are displayed as toggles.
  */
 export default function PostTypesPanel( {
-	postMeta,
+	children,
 	filteredPostTypes,
 	templatePartBlockTypeSelected,
 	postTypes,
 	handleChange,
-	children,
-}: BaseSidebarProps &
+}: Pick< BaseSidebarProps, 'handleChange' > &
 	Pick< AdditionalSidebarProps, 'postTypes' > & {
 		children: ReactNode;
+		filteredPostTypes: ReturnType< typeof usePatternData >[ 'filteredPostTypes' ];
+		templatePartBlockTypeSelected: ReturnType< typeof usePatternData >[ 'templatePartBlockTypeSelected' ];
 	} ) {
 	return (
 		<PluginDocumentSettingPanel
