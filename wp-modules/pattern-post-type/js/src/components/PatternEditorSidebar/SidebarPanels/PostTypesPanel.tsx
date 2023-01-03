@@ -32,11 +32,19 @@ export default function PostTypesPanel( {
 			blockType.includes( 'core/template-part' )
 		);
 
-	/**
-	 * Automatically select the wp_template postType when a template-part blockType is selected.
-	 * wp_template postType removal will also be disabled in the postType Select component.
-	 */
+	// Filter out non-existing post types that were previously saved to the pattern file.
+	// Prevents empty options from rendering in the dropdown list.
+	const filteredPostTypes = postTypes
+		?.map( ( postType ) => {
+			return postMeta?.postTypes?.includes( postType?.value )
+				? postType?.value
+				: '';
+		} )
+		.filter( Boolean );
+
 	useEffect( () => {
+		// Automatically select the wp_template postType when a template-part blockType is selected.
+		// wp_template postType removal will also be disabled in the postType Select component.
 		if (
 			templatePartBlockTypeSelected &&
 			! postMeta?.postTypes?.includes( 'wp_template' )
@@ -65,7 +73,7 @@ export default function PostTypesPanel( {
 					isMulti
 					isClearable
 					closeMenuOnSelect={ false }
-					value={ postMeta?.postTypes?.map( ( postType ) => {
+					value={ filteredPostTypes?.map( ( postType ) => {
 						return {
 							...postTypes.find(
 								( matchedPostType ) =>
