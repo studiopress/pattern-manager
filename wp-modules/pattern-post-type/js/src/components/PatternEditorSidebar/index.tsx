@@ -17,7 +17,7 @@ export default function PatternEditorSidebar( {
 	coreLastUpdate,
 	postMeta,
 }: PatternEditorSidebarProps ) {
-	const { postTypes, categories, blockTypes, updatePostMeta } =
+	const { filteredPostTypes, templatePartBlockTypeSelected, postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
 
 	return (
@@ -39,6 +39,8 @@ export default function PatternEditorSidebar( {
 						postMeta={ postMeta }
 						postTypes={ postTypes }
 						handleChange={ updatePostMeta }
+						filteredPostTypes={ filteredPostTypes }
+						templatePartBlockTypeSelected={ templatePartBlockTypeSelected }
 					>
 						<ModalToggle
 							postMeta={ postMeta }

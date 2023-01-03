@@ -15,6 +15,8 @@ import type { ReactNode } from 'react';
  */
 export default function PostTypesPanel( {
 	postMeta,
+	filteredPostTypes,
+	templatePartBlockTypeSelected,
 	postTypes,
 	handleChange,
 	children,
@@ -22,54 +24,6 @@ export default function PostTypesPanel( {
 	Pick< AdditionalSidebarProps, 'postTypes' > & {
 		children: ReactNode;
 	} ) {
-	/**
-	 * Boolean to catch when a template-part related block type is selected.
-	 * This is used to automatically select and disable the wp_template post type.
-	 */
-	const templatePartBlockTypeSelected =
-		postMeta?.blockTypes?.some(
-			( blockType ) => blockType !== 'core/post-content'
-		) &&
-		postMeta?.blockTypes?.some( ( blockType ) =>
-			blockType.includes( 'core/template-part' )
-		);
-
-	// Filter out non-existing post types that were previously saved to the pattern file.
-	// Prevents empty options from rendering in the dropdown list.
-	const filteredPostTypes = postTypes
-		?.map( ( postType ) => {
-			return postMeta?.postTypes?.includes( postType?.value )
-				? postType?.value
-				: '';
-		} )
-		.filter( Boolean );
-
-	useEffect( () => {
-		// Automatically select the wp_template postType when a template-part blockType is selected.
-		// wp_template postType removal will also be disabled in the postType Select component.
-		if (
-			templatePartBlockTypeSelected &&
-			! postMeta?.postTypes?.includes( 'wp_template' )
-		) {
-			handleChange( 'postTypes', [
-				...postMeta.postTypes,
-				'wp_template',
-			] );
-		}
-
-		// Update postMeta with filteredPostTypes if postMeta.postTypes does not loosely match.
-		if (
-			filteredPostTypes &&
-			! flatUnorderedEquals( postMeta?.postTypes, filteredPostTypes )
-		) {
-			handleChange( 'postTypes', filteredPostTypes );
-		}
-	}, [
-		postMeta.postTypes,
-		templatePartBlockTypeSelected,
-		filteredPostTypes,
-	] );
-
 	return (
 		<PluginDocumentSettingPanel
 			name="fsestudio-pattern-editor-pattern-post-types"
