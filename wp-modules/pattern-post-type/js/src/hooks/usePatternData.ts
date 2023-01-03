@@ -140,7 +140,11 @@ export default function usePatternData( postMeta: PostMeta ) {
 		}
 
 		// Update postMeta with filteredPostTypes if postMeta.postTypes does not loosely match.
-		if ( ! flatUnorderedEquals( postMeta?.postTypes, filteredPostTypes ) ) {
+		if (
+			postMeta?.postTypes &&
+			filteredPostTypes &&
+			! flatUnorderedEquals( postMeta.postTypes, filteredPostTypes )
+		) {
 			updatePostMeta( 'postTypes', filteredPostTypes );
 		}
 	}, [
