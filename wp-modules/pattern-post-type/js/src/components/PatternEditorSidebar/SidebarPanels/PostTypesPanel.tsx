@@ -21,8 +21,12 @@ export default function PostTypesPanel( {
 }: Pick< BaseSidebarProps, 'handleChange' > &
 	Pick< AdditionalSidebarProps, 'postTypes' > & {
 		children: ReactNode;
-		filteredPostTypes: ReturnType< typeof usePatternData >[ 'filteredPostTypes' ];
-		templatePartBlockTypeSelected: ReturnType< typeof usePatternData >[ 'templatePartBlockTypeSelected' ];
+		filteredPostTypes: ReturnType<
+			typeof usePatternData
+		>[ 'filteredPostTypes' ];
+		templatePartBlockTypeSelected: ReturnType<
+			typeof usePatternData
+		>[ 'templatePartBlockTypeSelected' ];
 	} ) {
 	return (
 		<PluginDocumentSettingPanel
