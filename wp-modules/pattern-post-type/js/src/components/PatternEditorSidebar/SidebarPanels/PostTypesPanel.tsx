@@ -6,7 +6,6 @@ import { HelperTooltip, ReverseTooltip } from '../../Tooltips';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
 import type { ReactNode } from 'react';
-import usePatternData from '../../../hooks/usePatternData';
 
 /**
  * The panel section for restricting post types for the pattern.
