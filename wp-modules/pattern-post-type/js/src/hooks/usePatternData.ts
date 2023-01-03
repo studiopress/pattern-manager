@@ -170,11 +170,9 @@ export default function usePatternData( postMeta: PostMeta ) {
 	}
 
 	return {
-		filteredPostTypes,
 		postTypes,
 		categories,
 		blockTypes,
 		updatePostMeta,
-		templatePartBlockTypeSelected,
 	};
 }

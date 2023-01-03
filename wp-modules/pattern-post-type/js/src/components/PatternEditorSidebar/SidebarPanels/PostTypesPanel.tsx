@@ -14,19 +14,12 @@ import usePatternData from '../../../hooks/usePatternData';
  */
 export default function PostTypesPanel( {
 	children,
-	filteredPostTypes,
-	templatePartBlockTypeSelected,
+	postMeta,
 	postTypes,
 	handleChange,
-}: Pick< BaseSidebarProps, 'handleChange' > &
+}: BaseSidebarProps &
 	Pick< AdditionalSidebarProps, 'postTypes' > & {
 		children: ReactNode;
-		filteredPostTypes: ReturnType<
-			typeof usePatternData
-		>[ 'filteredPostTypes' ];
-		templatePartBlockTypeSelected: ReturnType<
-			typeof usePatternData
-		>[ 'templatePartBlockTypeSelected' ];
 	} ) {
 	return (
 		<PluginDocumentSettingPanel
@@ -45,7 +38,7 @@ export default function PostTypesPanel( {
 					isMulti
 					isClearable
 					closeMenuOnSelect={ false }
-					value={ filteredPostTypes?.map( ( postType ) => {
+					value={ postMeta?.postTypes?.map( ( postType ) => {
 						return {
 							...postTypes.find(
 								( matchedPostType ) =>
@@ -54,7 +47,9 @@ export default function PostTypesPanel( {
 							// Conditionally make wp_template post type non-removable.
 							// Add a custom label with Tooltip.
 							...( postType === 'wp_template' &&
-								templatePartBlockTypeSelected && {
+								postMeta?.blockTypes?.some( ( blockType ) =>
+									blockType.includes( 'core/template-part' )
+								) && {
 									label: (
 										<ReverseTooltip
 											helperText={ __(
