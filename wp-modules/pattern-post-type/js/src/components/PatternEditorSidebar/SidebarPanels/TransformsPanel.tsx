@@ -50,9 +50,10 @@ export default function TransformsPanel( {
 								( blockTypeObject ) => blockTypeObject.value
 							),
 							// Make sure 'core/post-content' is not removed if it was in postMeta.blockTypes.
-							...( postMeta.blockTypes.includes(
+							...( ( postMeta?.blockTypes?.includes(
 								'core/post-content'
-							) && [ 'core/post-content' ] ),
+							) && [ 'core/post-content' ] ) ||
+								'' ),
 						] );
 					} }
 					menuPlacement="auto"
