@@ -13,7 +13,6 @@ export default function createNewTheme(
 	const themeId: string = uuidv4();
 
 	const defaultNewThemeData: Theme = {
-		id: themeId,
 		name: '',
 		dirname: '',
 		namespace: '',
