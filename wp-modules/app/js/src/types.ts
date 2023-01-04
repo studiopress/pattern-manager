@@ -109,7 +109,6 @@ export type Styles = {
 };
 
 export type Theme = {
-	id: string;
 	name: string;
 	namespace: string;
 	'index.html'?: string;
