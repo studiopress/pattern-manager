@@ -170,10 +170,10 @@ function format_pattern_data( $pattern_data, $file ) {
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
 
-	$file_contents = explode( '?>', $wp_filesystem->get_contents( $file ), 2 );
-
-	// Replace PHP calls to get_template_directory_uri with the result of calling it. This is how it is because PHP's require is cached, forcing us to use get_contents instead.
-	$pattern_data['content'] = str_replace( '<?php echo get_template_directory_uri(); ?>', get_template_directory_uri(), $file_contents[1] );
+	// The actual pattern content is the output of the file.
+	ob_start();
+	include $file;
+	$pattern_data['content'] = ob_get_clean();
 
 	if ( ! $pattern_data['content'] ) {
 		return false;
