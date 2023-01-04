@@ -79,7 +79,7 @@ function get_the_themes() {
 		foreach ( $theme_slug_parts as $theme_slug_part ) {
 			$namespace .= ucfirst( $theme_slug_part );
 		}
-		
+
 		$theme_json = $wp_filesystem->get_contents( "$theme_dir/theme.json" );
 
 		$theme_data = [
