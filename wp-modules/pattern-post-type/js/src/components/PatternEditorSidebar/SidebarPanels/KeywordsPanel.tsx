@@ -45,14 +45,13 @@ export default function KeywordsPanel( {
 					}
 
 					if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
-						// Split the keywords, then filter that array.
-						// This disallows duplicate terms.
-						const filteredKeywords = keywordInputValue
-							.toLowerCase()
-							.split( ' ' )
-							.filter(
-								( word ) => ! postMeta.keywords.includes( word )
-							);
+						// Add keywords to an array, then filter out duplicate terms.
+						const filteredKeywords = [
+							keywordInputValue.toLowerCase(),
+						].filter(
+							( newTerm ) =>
+								! postMeta.keywords.includes( newTerm )
+						);
 
 						handleChange( 'keywords', [
 							...postMeta.keywords,
