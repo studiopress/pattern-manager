@@ -25,7 +25,7 @@ export default function ThemeDetails() {
 								name: event.target.value,
 							} );
 						} }
-						required={true}
+						required={ true }
 					/>
 				</div>
 			</div>
@@ -52,7 +52,7 @@ export default function ThemeDetails() {
 								dirname: event.target.value,
 							} );
 						} }
-						required={true}
+						required={ true }
 					/>
 					{ currentTheme.isDirnameTaken() ? (
 						<span id="name-help" className="text-red-700 font-sm">

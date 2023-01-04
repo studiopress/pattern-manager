@@ -17,7 +17,7 @@ export default function CreateThemeForm( { children }: Props ) {
 		<div className="mx-auto p-8 lg:p-12">
 			<form
 				className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20"
-				onSubmit={ (event) => {
+				onSubmit={ ( event ) => {
 					event.preventDefault();
 					currentTheme.save().then( () => {
 						currentView.set( 'theme_setup' );
