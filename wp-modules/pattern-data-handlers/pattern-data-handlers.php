@@ -130,10 +130,14 @@ function format_pattern_data( $pattern_data, $file ) {
 	// For properties of type array, parse data as comma-separated.
 	foreach ( array( 'categories', 'keywords', 'blockTypes', 'postTypes' ) as $property ) {
 		if ( ! empty( $pattern_data[ $property ] ) ) {
-			$pattern_data[ $property ] = array_filter(
-				preg_split(
-					'/[\s,]+/',
-					(string) $pattern_data[ $property ]
+			$pattern_data[ $property ] = array_map(
+				// Trim whitespace at start and end of each element.
+				'trim',
+				array_filter(
+					preg_split(
+						'/[,]+/',
+						(string) $pattern_data[ $property ]
+					)
 				)
 			);
 		} else {
