@@ -124,7 +124,7 @@ export default function useThemeData(
 				method: 'POST',
 				headers: getHeaders(),
 				body: JSON.stringify( {
-					themeId,
+					themeId: themes.themes[ themeId ].dirname
 				} ),
 			} )
 				.then( ( response ) => response.json() )

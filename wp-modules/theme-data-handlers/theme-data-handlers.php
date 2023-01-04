@@ -204,9 +204,7 @@ function update_theme( $theme, $update_patterns = true ) {
 	}
 
 	// Assign a unique ID to this theme if it doesn't already have one.
-	if ( ! $theme['id'] ) {
-		$theme['id'] = wp_generate_uuid4();
-	}
+	$theme['id'] = $theme['dirname'];
 
 	// Activate this theme.
 	switch_theme( $theme['dirname'] );
