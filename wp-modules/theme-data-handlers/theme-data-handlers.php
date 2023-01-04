@@ -75,7 +75,7 @@ function get_the_themes() {
 
 		// Create a namespace from a theme slug.
 		$theme_slug_parts = explode( '-', $theme_slug );
-		$namespace        = '';
+		$namespace        = implode( '', array_map( 'ucfirst', explode( '-', $theme_slug ) ) );
 		foreach ( $theme_slug_parts as $theme_slug_part ) {
 			$namespace .= ucfirst( $theme_slug_part );
 		}
