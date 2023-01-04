@@ -79,6 +79,8 @@ function get_the_themes() {
 		foreach ( $theme_slug_parts as $theme_slug_part ) {
 			$namespace .= ucfirst( $theme_slug_part );
 		}
+		
+		$theme_json = $wp_filesystem->get_contents( "$theme_dir/theme.json" );
 
 		$theme_data = [
 			'id'                => $theme_slug,
@@ -98,7 +100,7 @@ function get_the_themes() {
 			'included_patterns' => \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir ),
 			'template_files'    => \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir ),
 			'template_parts'    => \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
-			'theme_json_file'   => json_decode( $wp_filesystem->get_contents( "$theme_dir/theme.json" ), true ),
+			'theme_json_file'   => ! $theme_json ? [] : json_decode( $theme_json, true ),
 			'styles'            => [],
 		];
 
