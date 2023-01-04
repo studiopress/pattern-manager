@@ -9,6 +9,10 @@
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@wordpress/components": "^23.0.0",
+    "@wordpress/data": "^8.0.0",
+    "@wordpress/edit-post": "^7.0.0",
+    "@wordpress/element": "^5.0.0",
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/scripts": "^24.4.0"
   },
