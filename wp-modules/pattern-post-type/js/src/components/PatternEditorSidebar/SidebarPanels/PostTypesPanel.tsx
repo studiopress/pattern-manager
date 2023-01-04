@@ -45,7 +45,7 @@ export default function PostTypesPanel( {
 							),
 							// Conditionally make wp_template post type non-removable.
 							// Add a custom label with Tooltip.
-							...( postType === 'wp_template' &&
+							...( ( postType === 'wp_template' &&
 								postMeta?.blockTypes?.some( ( blockType ) =>
 									blockType.includes( 'core/template-part' )
 								) && {
@@ -63,7 +63,8 @@ export default function PostTypesPanel( {
 										/>
 									),
 									isFixed: true,
-								} ),
+								} ) ||
+								'' ),
 						};
 					} ) }
 					options={ postTypes }
