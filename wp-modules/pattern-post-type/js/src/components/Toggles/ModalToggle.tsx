@@ -18,29 +18,25 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	}, [ isDisabled, isChecked, blockTypeForModal ] );
 
 	/**
-	 * Handler for ToggleControl component changes.
-	 * Intended to target postMeta values in an array.
+	 * Handler for ToggleControl component changes, targeting postMeta array values.
 	 *
-	 * @param {boolean} event The toggle event.
-	 * @param {string}  key   The object key to reference in postMeta.
-	 * @param {string}  value The value to update or remove from postMeta.
+	 * If the event is truthy and the value does not currently exist in the targeted
+	 * postMeta array, the value is added to a new array.
+	 *
+	 * Otherwise, the value is filtered out of a new array.
 	 */
-	function handleToggleChangeMulti( event, key, value ) {
-		let updatedValues = [];
-
-		if ( event ) {
-			updatedValues = ! postMeta[ key ]?.includes( value )
-				? postMeta[ key ]?.concat( [ value ] )
-				: postMeta[ key ];
-		} else {
-			updatedValues = postMeta[ key ]?.includes( value )
-				? postMeta[ key ]?.filter( ( item ) => {
-						return item !== value;
-				  } )
-				: postMeta[ key ];
-		}
-
-		handleChange( key, updatedValues );
+	function handleToggleChangeMulti(
+		event: boolean,
+		metaKey: string,
+		value: string
+	) {
+		handleChange( metaKey, [
+			...( event && ! postMeta[ metaKey ]?.includes( value )
+				? [ ...postMeta[ metaKey ], value ]
+				: postMeta[ metaKey ].filter(
+						( metaValue ) => metaValue !== value
+				  ) ),
+		] );
 	}
 
 	return (
