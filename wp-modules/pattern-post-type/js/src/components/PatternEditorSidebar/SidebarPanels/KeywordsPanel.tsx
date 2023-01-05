@@ -31,8 +31,8 @@ export default function KeywordsPanel( {
 				onChange={ ( newValue ) => {
 					// Handle the deletion of keywords.
 					handleChange( 'keywords', [
-						...newValue.map( ( keywordObject ) =>
-							keywordObject.value.toLowerCase()
+						...newValue.map(
+							( keywordObject ) => keywordObject.value
 						),
 					] );
 				} }
@@ -45,18 +45,16 @@ export default function KeywordsPanel( {
 					}
 
 					if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
-						// Split the keywords, then filter that array.
-						// This disallows duplicate terms.
-						const filteredKeywords = keywordInputValue
-							.toLowerCase()
-							.split( ' ' )
-							.filter(
-								( word ) => ! postMeta.keywords.includes( word )
-							);
-
 						handleChange( 'keywords', [
 							...postMeta.keywords,
-							...filteredKeywords,
+							// Add the new term if not a case-insensitive duplicate.
+							...( ! postMeta.keywords.some(
+								( term ) =>
+									term.toLowerCase() ===
+									keywordInputValue.toLowerCase()
+							)
+								? [ keywordInputValue ]
+								: [] ),
 						] );
 
 						setKeywordInputValue( '' );
