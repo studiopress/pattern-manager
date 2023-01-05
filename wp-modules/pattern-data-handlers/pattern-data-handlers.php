@@ -133,9 +133,10 @@ function format_pattern_data( $pattern_data, $file ) {
 			$pattern_data[ $property ] = array_map(
 				// Trim whitespace at start and end of each element.
 				'trim',
+				// Filter out falsy values.
 				array_filter(
-					preg_split(
-						'/[,]+/',
+					explode(
+						',',
 						(string) $pattern_data[ $property ]
 					)
 				)
