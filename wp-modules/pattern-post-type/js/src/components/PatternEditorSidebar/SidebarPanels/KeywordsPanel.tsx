@@ -32,7 +32,7 @@ export default function KeywordsPanel( {
 					// Handle the deletion of keywords.
 					handleChange( 'keywords', [
 						...newValue.map( ( keywordObject ) =>
-							keywordObject.value.toLowerCase()
+							keywordObject.value
 						),
 					] );
 				} }
@@ -45,17 +45,16 @@ export default function KeywordsPanel( {
 					}
 
 					if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
-						// Add keywords to an array, then filter out duplicate terms.
-						const filteredKeywords = [
-							keywordInputValue.toLowerCase(),
-						].filter(
-							( newTerm ) =>
-								! postMeta.keywords.includes( newTerm )
-						);
-
 						handleChange( 'keywords', [
 							...postMeta.keywords,
-							...filteredKeywords,
+							// Add the new term if not a case-insensitive duplicate.
+							...( ! postMeta.keywords.some(
+								( term ) =>
+									term.toLowerCase() ===
+									keywordInputValue.toLowerCase()
+							)
+								? [ keywordInputValue ]
+								: [] ),
 						] );
 
 						setKeywordInputValue( '' );
