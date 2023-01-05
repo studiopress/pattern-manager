@@ -31,8 +31,8 @@ export default function KeywordsPanel( {
 				onChange={ ( newValue ) => {
 					// Handle the deletion of keywords.
 					handleChange( 'keywords', [
-						...newValue.map( ( keywordObject ) =>
-							keywordObject.value
+						...newValue.map(
+							( keywordObject ) => keywordObject.value
 						),
 					] );
 				} }
