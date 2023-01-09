@@ -48,20 +48,14 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 							'Show this pattern in a modal when new posts of selected post types are created.',
 							'fse-studio'
 						) }
-						helperTitle={ __(
-							'Modal visibility',
-							'fse-studio'
-						) }
+						helperTitle={ __( 'Modal visibility', 'fse-studio' ) }
 					/>
 				}
 				disabled={ isDisabled }
 				checked={ isChecked && ! isDisabled }
 				help={
 					isChecked
-						? __(
-								'Enabled for selected post types.',
-								'fse-studio'
-							)
+						? __( 'Enabled for selected post types.', 'fse-studio' )
 						: __( 'Disabled for all post types.', 'fse-studio' )
 				}
 				onChange={ ( event ) => {
