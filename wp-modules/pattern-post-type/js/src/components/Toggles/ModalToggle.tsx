@@ -7,7 +7,7 @@ import type { ToggleTypes } from './types';
 
 export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	const blockTypeForModal = 'core/post-content';
-	const isDisabled = ! postMeta.postTypes?.length;
+	const isDisabled = ! postMeta.postTypes?.length || ! postMeta.inserter;
 	const isChecked = postMeta.blockTypes?.includes( blockTypeForModal );
 
 	// Conditionally remove blockTypeForModal from postMeta.blockTypes.
@@ -26,48 +26,46 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	 * Otherwise, the value is filtered out of a new array.
 	 */
 	function handleToggleChangeMulti(
-		event: boolean,
+		toggleEvent: boolean,
 		metaKey: string,
-		value: string
+		metaValue: string
 	) {
 		handleChange( metaKey, [
-			...( event && ! postMeta[ metaKey ]?.includes( value )
-				? [ ...postMeta[ metaKey ], value ]
+			...( toggleEvent && ! postMeta[ metaKey ]?.includes( metaValue )
+				? [ ...postMeta[ metaKey ], metaValue ]
 				: postMeta[ metaKey ].filter(
-						( metaValue ) => metaValue !== value
+						( existingValue ) => existingValue !== metaValue
 				  ) ),
 		] );
 	}
 
 	return (
-		<div className="fsestudio-post-type-modal-toggle">
-			<PanelRow key={ `fse-pattern-visibility-block-content` }>
-				<ToggleControl
-					label={
-						<ReverseTooltip
-							helperText="Show this pattern in a modal when new posts of selected post types are created."
-							helperTitle="Modal visibility"
-						/>
-					}
-					disabled={ isDisabled }
-					checked={ isChecked && ! isDisabled }
-					help={
-						isChecked
-							? __(
-									'Enabled for selected post types.',
-									'fse-studio'
-							  )
-							: __( 'Disabled for all post types.', 'fse-studio' )
-					}
-					onChange={ ( event ) => {
-						handleToggleChangeMulti(
-							event,
-							'blockTypes',
-							blockTypeForModal
-						);
-					} }
-				/>
-			</PanelRow>
-		</div>
+		<PanelRow className="fsestudio-post-type-modal-toggle">
+			<ToggleControl
+				label={
+					<ReverseTooltip
+						helperText={ __(
+							'Show this pattern in a modal when new posts of selected post types are created.',
+							'fse-studio'
+						) }
+						helperTitle={ __( 'Modal visibility', 'fse-studio' ) }
+					/>
+				}
+				disabled={ isDisabled }
+				checked={ isChecked && ! isDisabled }
+				help={
+					isChecked
+						? __( 'Enabled for selected post types.', 'fse-studio' )
+						: __( 'Disabled for all post types.', 'fse-studio' )
+				}
+				onChange={ ( value: boolean ) => {
+					handleToggleChangeMulti(
+						value,
+						'blockTypes',
+						blockTypeForModal
+					);
+				} }
+			/>
+		</PanelRow>
 	);
 }
