@@ -22,9 +22,13 @@ button.components-button.editor-post-save-draft.is-tertiary {
 }
 /* Toggle components */
 .fsestudio-post-type-modal-toggle,
-.fsestudio-pattern-editor-toggle-component {
+.fsestudio-inserter-toggle {
 	margin-top: 16px;
 	margin-bottom: -12px;
+	/* Keep label from shifting for conditional ReverseTooltip */
+	label.components-toggle-control__label {
+		height: 20px;
+	}
 }
 .fsestudio-pattern-post-name-input-outer {
 	position: relative;
@@ -97,7 +101,7 @@ button.components-button.editor-post-save-draft.is-tertiary {
 }
 .fsestudio-pattern-sidebar-reverse-tooltip #tooltip-icon-helper-text {
 	padding-right: 8px;
-	cursor: default;
+	cursor: pointer;
 }
 #fsestudio-pattern-editor-description-textarea {
 	border-color: hsl(0, 0%, 80%);
