@@ -36,8 +36,8 @@ export default function InserterToggle( {
 						? __( 'Appears in the inserter', 'fse-studio' )
 						: __( 'Hidden in the inserter', 'fse-studio' )
 				}
-				onChange={ ( event ) => {
-					handleChange( 'inserter', event );
+				onChange={ ( value: boolean ) => {
+					handleChange( 'inserter', value );
 				} }
 			/>
 		</PanelRow>

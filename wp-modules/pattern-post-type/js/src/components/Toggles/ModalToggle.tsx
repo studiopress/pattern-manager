@@ -26,15 +26,15 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	 * Otherwise, the value is filtered out of a new array.
 	 */
 	function handleToggleChangeMulti(
-		event: boolean,
+		toggleEvent: boolean,
 		metaKey: string,
-		value: string
+		metaValue: string
 	) {
 		handleChange( metaKey, [
-			...( event && ! postMeta[ metaKey ]?.includes( value )
-				? [ ...postMeta[ metaKey ], value ]
+			...( toggleEvent && ! postMeta[ metaKey ]?.includes( metaValue )
+				? [ ...postMeta[ metaKey ], metaValue ]
 				: postMeta[ metaKey ].filter(
-						( metaValue ) => metaValue !== value
+						( existingValue ) => existingValue !== metaValue
 				  ) ),
 		] );
 	}
@@ -58,9 +58,9 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 						? __( 'Enabled for selected post types.', 'fse-studio' )
 						: __( 'Disabled for all post types.', 'fse-studio' )
 				}
-				onChange={ ( event ) => {
+				onChange={ ( value: boolean ) => {
 					handleToggleChangeMulti(
-						event,
+						value,
 						'blockTypes',
 						blockTypeForModal
 					);
