@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /**
- * Get data for a single themes in the format used by FSE Theme Manager.
+ * Get data for a single themes in the format used by Theme Manager.
  *
  * @param string $theme_slug The directory name of the theme in question.
  * @return array
@@ -33,7 +33,7 @@ function get_theme( $theme_slug ) {
 }
 
 /**
- * Get data for all of the installed themes in the format used by FSE Theme Manager.
+ * Get data for all of the installed themes in the format used by Theme Manager.
  *
  * @return array
  */
