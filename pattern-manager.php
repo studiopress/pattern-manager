@@ -8,7 +8,7 @@
  * Author URI: wpengine.com
  * Text Domain: pattern-manager
  * Domain Path: languages
- * License: GPLv2
+ * License: GPLv2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 6.0
  * Requires PHP: 7.4
