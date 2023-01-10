@@ -7,58 +7,58 @@ import convertToSlug from '../../../../../../app/js/src/utils/convertToSlug';
 
 import type { BaseSidebarProps } from '../types';
 
-export default function TitlePanel( {
+export default function TitlePanel({
 	postMeta,
 	handleChange,
-}: BaseSidebarProps ) {
-	const [ nameInput, setNameInput ] = useState( '' );
-	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
-	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
-	const [ errorMessage, setErrorMessage ] = useState(
-		__( 'Please enter a unique name.', 'fse-studio' )
+}: BaseSidebarProps) {
+	const [nameInput, setNameInput] = useState('');
+	const [nameInputDisabled, setNameInputDisabled] = useState(true);
+	const [patternNameIsInvalid, setPatternNameIsInvalid] = useState(false);
+	const [errorMessage, setErrorMessage] = useState(
+		__('Please enter a unique name.', 'pattern-manager')
 	);
 
-	const previousPatternName = useRef( '' );
+	const previousPatternName = useRef('');
 
 	/**
 	 * Listener to catch name collision for patterns as they are renamed.
 	 * The targeted response should populate `errorMessage` and `patternNameIsInvalid`.
 	 */
-	useEffect( () => {
+	useEffect(() => {
 		window.addEventListener(
 			'message',
-			( event ) => {
-				const response = JSON.parse( event.data );
+			(event) => {
+				const response = JSON.parse(event.data);
 				if (
 					response.message ===
-					'fsestudio_response_is_pattern_title_taken'
+					'patternmanager_response_is_pattern_title_taken'
 				) {
 					// Hide or show notice in settings panel on name collision.
-					setPatternNameIsInvalid( response.isInvalid );
-					setErrorMessage( response.errorMessage );
+					setPatternNameIsInvalid(response.isInvalid);
+					setErrorMessage(response.errorMessage);
 				}
 			},
 			false
 		);
-	}, [] );
+	}, []);
 
 	/**
 	 * Set nameInput and inputDisabled state when the post is switched.
 	 * Mostly intended to catch switching between patterns.
 	 */
-	useEffect( () => {
+	useEffect(() => {
 		// postMeta is initially returned with empty values until the select request resolves.
 		// Try to prevent populating an empty title by only updating if the type is a pattern.
 		// Doing it this way should still catch an empty title if the user somehow passes one.
-		if ( postMeta?.type === 'pattern' ) {
-			setNameInput( postMeta.title );
-			setNameInputDisabled( true );
+		if (postMeta?.type === 'pattern') {
+			setNameInput(postMeta.title);
+			setNameInputDisabled(true);
 			// Validate the initial postMeta title.
-			checkPatternTitle( postMeta.title );
+			checkPatternTitle(postMeta.title);
 
 			previousPatternName.current = postMeta.title;
 		}
-	}, [ postMeta.title ] );
+	}, [postMeta.title]);
 
 	/**
 	 * Fire off a postMessage to validate pattern title.
@@ -66,90 +66,90 @@ export default function TitlePanel( {
 	 *
 	 * @param {string} patternTitle
 	 */
-	function checkPatternTitle( patternTitle ) {
+	function checkPatternTitle(patternTitle) {
 		window.parent.postMessage(
-			JSON.stringify( {
+			JSON.stringify({
 				message:
-					'fsestudio_pattern_editor_request_is_pattern_title_taken',
+					'patternmanager_pattern_editor_request_is_pattern_title_taken',
 				patternTitle,
-			} )
+			})
 		);
 	}
 
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-title"
-			title={ __( 'Pattern Title', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-title"
+			title={__('Pattern Title', 'pattern-manager')}
 		>
-			{ postMeta?.title && (
-				<div className="fsestudio-pattern-post-name-input-outer">
-					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
+			{postMeta?.title && (
+				<div className="patternmanager-pattern-post-name-input-outer">
+					<div onDoubleClick={() => setNameInputDisabled(false)}>
 						<TextControl
-							id="fsestudio-pattern-post-name-input-component"
-							disabled={ nameInputDisabled }
-							className="fsestudio-pattern-post-name-input"
+							id="patternmanager-pattern-post-name-input-component"
+							disabled={nameInputDisabled}
+							className="patternmanager-pattern-post-name-input"
 							aria-label="Pattern Title Name Input (used for renaming the pattern)"
-							value={ nameInput }
-							onChange={ ( value ) => {
-								setNameInput( value );
+							value={nameInput}
+							onChange={(value) => {
+								setNameInput(value);
 								// Validate the nameInput to provide immediate feedback.
-								checkPatternTitle( value );
-							} }
+								checkPatternTitle(value);
+							}}
 						/>
 					</div>
 
-					{ /* Conditionally render the "Edit" button for pattern renaming. */ }
-					{ /* If the pattern name is valid, show the "Edit" or "Done" option. */ }
-					{ ! patternNameIsInvalid && (
+					{ /* Conditionally render the "Edit" button for pattern renaming. */}
+					{ /* If the pattern name is valid, show the "Edit" or "Done" option. */}
+					{!patternNameIsInvalid && (
 						<button
 							type="button"
-							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-edit"
+							className="patternmanager-pattern-post-name-button patternmanager-pattern-post-name-button-edit"
 							aria-label="Pattern Title Edit Button (click to rename the pattern title)"
-							onClick={ () => {
+							onClick={() => {
 								if (
-									! nameInputDisabled &&
+									!nameInputDisabled &&
 									nameInput.toLowerCase() !==
-										previousPatternName.current.toLowerCase()
+									previousPatternName.current.toLowerCase()
 								) {
-									handleChange( 'title', nameInput, {
-										name: convertToSlug( nameInput ),
+									handleChange('title', nameInput, {
+										name: convertToSlug(nameInput),
 										previousName:
 											previousPatternName.current,
-									} );
+									});
 								}
 
-								setNameInputDisabled( ! nameInputDisabled );
-							} }
+								setNameInputDisabled(!nameInputDisabled);
+							}}
 						>
-							{ nameInputDisabled
-								? __( 'Edit', 'fse-studio' )
-								: __( 'Done', 'fse-studio' ) }
+							{nameInputDisabled
+								? __('Edit', 'pattern-manager')
+								: __('Done', 'pattern-manager')}
 						</button>
-					) }
+					)}
 
-					{ /* Otherwise, show the "Cancel" button to bail out. */ }
-					{ patternNameIsInvalid && (
+					{ /* Otherwise, show the "Cancel" button to bail out. */}
+					{patternNameIsInvalid && (
 						<button
 							type="button"
-							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-cancel"
+							className="patternmanager-pattern-post-name-button patternmanager-pattern-post-name-button-cancel"
 							aria-label="Pattern Title Cancel Button (click to cancel renaming)"
-							onClick={ () => {
-								setNameInput( previousPatternName?.current );
-								setNameInputDisabled( true );
-								setPatternNameIsInvalid( false );
-							} }
+							onClick={() => {
+								setNameInput(previousPatternName?.current);
+								setNameInputDisabled(true);
+								setPatternNameIsInvalid(false);
+							}}
 						>
-							{ __( 'Cancel', 'fse-studio' ) }
+							{__('Cancel', 'pattern-manager')}
 						</button>
-					) }
+					)}
 				</div>
-			) }
+			)}
 
-			<PanelRow className="components-panel__row-fsestudio-pattern-name-error">
+			<PanelRow className="components-panel__row-patternmanager-pattern-name-error">
 				<RichText.Content
 					tagName="h4"
-					className="components-panel__row-fsestudio-pattern-name-error-inner"
-					value={ patternNameIsInvalid && errorMessage }
+					className="components-panel__row-patternmanager-pattern-name-error-inner"
+					value={patternNameIsInvalid && errorMessage}
 				/>
 			</PanelRow>
 		</PluginDocumentSettingPanel>

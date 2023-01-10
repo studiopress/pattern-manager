@@ -7,7 +7,7 @@ html.wp-toolbar {
 }
 
 /* stylelint-disable */
-html body.toplevel_page_fse-studio {
+html body.toplevel_page_pattern-manager {
 	margin-top: 0 !important;
 	height: 100% !important;
 	background: #fff;
@@ -16,6 +16,7 @@ html body.toplevel_page_fse-studio {
 .interface-interface-skeleton__html-container {
 	padding-top: 0 !important;
 }
+
 /* stylelint-enable */
 
 #wpwrap {
@@ -43,21 +44,23 @@ html body.toplevel_page_fse-studio {
 
 /* stylelint-disable */
 // Temp hacks for Gutenberg style issues
-.editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > *,
-.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > *,
+.editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper>*,
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container>*,
 .wp-block {
 	max-width: initial;
 }
-.components-snackbar{
+
+.components-snackbar {
 	z-index: 999999999999;
 	position: fixed;
 	bottom: 10px;
 	left: 10px;
 	border: 1px solid #ffffff47;
 }
+
 /* stylelint-enable */
 
-#fsestudioapp {
+#patternmanagerapp {
 	z-index: 9999999999;
 	width: 100%;
 	height: 100%;
@@ -69,7 +72,7 @@ html body.toplevel_page_fse-studio {
 		box-sizing: border-box !important;
 	}
 
-	.fsestudio-pattern-editor-columns {
+	.patternmanager-pattern-editor-columns {
 		width: 100%;
 		height: calc(100vh - 64px - 32px);
 		display: grid;
@@ -92,7 +95,7 @@ html body.toplevel_page_fse-studio {
 			padding-top: 0;
 		}
 
-		.column > :last-child {
+		.column> :last-child {
 			background: #fff;
 			height: 32px;
 			border-top: 1px solid #e0e0e0;
@@ -109,15 +112,17 @@ html body.toplevel_page_fse-studio {
 		content: "";
 		display: none;
 	}
+
 	/* stylelint-disable */
 	summary::after {
 		content: url("data:image/svg+xml,%3Csvg width='14' height='8' viewBox='0 0 14 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.50002 1L7.00002 6L12.5 1' stroke='%231E1E1E' stroke-width='1.5'/%3E%3C/svg%3E");
 		display: inline-block;
 		float: right;
 	}
+
 	/* stylelint-enable */
 
-	details[open] > summary::after {
+	details[open]>summary::after {
 		transform: rotate(180deg);
 	}
 
@@ -147,12 +152,14 @@ input[type="checkbox"]:checked::before {
 
 .fses-type-boolean,
 .fses-type-string {
-	&> div {
+	&>div {
 		@apply items-center;
 	}
+
 	.fses-label {
-		@apply col-span-2; 
+		@apply col-span-2;
 	}
+
 	.fses-property {
 		@apply col-span-2;
 	}
@@ -162,6 +169,7 @@ input[type="checkbox"]:checked::before {
 	.fses-label {
 		@apply col-span-2;
 	}
+
 	.fses-property {
 		@apply col-span-2;
 	}
@@ -169,19 +177,23 @@ input[type="checkbox"]:checked::before {
 
 .fses-type-array,
 .fses-type-boolean {
-	input[type=checkbox], 
+
+	input[type=checkbox],
 	input[type=radio],
-	[type='checkbox']:checked, 
-	[type='radio']:checked {	
+	[type='checkbox']:checked,
+	[type='radio']:checked {
 		@apply w-[1.25rem] h-[1.25rem] rounded;
 	}
-	[type='checkbox']:checked, 
-	[type='radio']:checked {	
+
+	[type='checkbox']:checked,
+	[type='radio']:checked {
 		@apply bg-wp-blue;
 	}
+
 	[type='checkbox']:checked:focus {
 		@apply bg-wp-blue shadow-black;
 	}
+
 	[type='checkbox']:checked:hover {
 		@apply bg-wp-blue-hover;
 	}
@@ -192,6 +204,7 @@ input[type="checkbox"]:checked::before {
 	.fses-label {
 		@apply col-span-full;
 	}
+
 	.fses-property {
 		@apply col-span-full;
 	}
@@ -199,10 +212,11 @@ input[type="checkbox"]:checked::before {
 
 .fses-typography-font-sizes,
 .fses-typography-font-families {
-	&> div {
+	&>div {
 		@apply bg-gray-100 px-5 rounded;
 	}
-	&> div > div .grid {
+
+	&>div>div .grid {
 		@apply gap-2 py-4;
 	}
 }
@@ -213,6 +227,7 @@ input[type="checkbox"]:checked::before {
 	.fses-property {
 		@apply col-span-full;
 	}
+
 	.fses-label {
 		@apply col-span-full;
 	}
@@ -233,15 +248,19 @@ input[type="checkbox"]:checked::before {
 	li {
 		order: 10;
 	}
+
 	li:nth-child(2) {
 		order: 1;
 	}
+
 	li:nth-child(6) {
 		order: 2;
 	}
+
 	li:nth-child(4) {
 		order: 3;
 	}
+
 	li:nth-child(5) {
 		order: 4;
 	}
@@ -252,57 +271,57 @@ input[type="checkbox"]:checked::before {
 }
 
 .fses-nav ul {
-    background: #1E1E1E;
-    list-style: none;
-    margin: 0;
-    padding-left: 0;
+	background: #1E1E1E;
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
 	display: flex;
 	border-radius: 3px;
 	gap: 3px;
 }
 
 .fses-nav li {
-    color: #fff;
-    position: relative;
-    text-decoration: none;
-    transition-duration: 0.3s;
+	color: #fff;
+	position: relative;
+	text-decoration: none;
+	transition-duration: 0.3s;
 	margin: 0;
 	border-radius: 3px;
 }
 
 .fses-nav li button {
-    color: #fff;
+	color: #fff;
 	padding: 8px 16px;
 	border-radius: 3px;
 }
 
 .fses-nav li:hover,
 .fses-nav li:focus-within {
-    background: #404040;
-    cursor: pointer;
+	background: #404040;
+	cursor: pointer;
 }
 
 .fses-nav li:focus-within button {
-    outline: none;
+	outline: none;
 }
 
 .fses-nav ul li ul {
-    background: #1E1E1E;
-    visibility: hidden;
-    opacity: 0;
-    min-width: 300px;
-    position: absolute;
-    transition: all 0.5s ease;
-    margin-top: 0;
-    left: 0;
-    display: none;
+	background: #1E1E1E;
+	visibility: hidden;
+	opacity: 0;
+	min-width: 300px;
+	position: absolute;
+	transition: all 0.5s ease;
+	margin-top: 0;
+	left: 0;
+	display: none;
 	padding: 10px 0;
 	font-weight: 400;
 	gap: 0;
 }
 
 .fses-nav ul li ul li:hover {
-	background: none; 
+	background: none;
 }
 
 .fses-nav ul li ul li ul {
@@ -323,16 +342,16 @@ input[type="checkbox"]:checked::before {
 	color: #fff;
 }
 
-.fses-nav ul li:hover > ul,
-.fses-nav ul li:focus-within > ul,
+.fses-nav ul li:hover>ul,
+.fses-nav ul li:focus-within>ul,
 .fses-nav ul li ul:hover,
 .fses-nav ul li ul:focus {
-    visibility: visible;
-    opacity: 1;
-    display: block;
+	visibility: visible;
+	opacity: 1;
+	display: block;
 }
 
 .fses-nav ul li ul li {
-    clear: both;
-    width: 100%;
+	clear: both;
+	width: 100%;
 }

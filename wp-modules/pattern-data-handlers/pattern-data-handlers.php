@@ -4,12 +4,12 @@
  * Description: This module contains functions for getting and saving pattern data.
  * Namespace: PatternDataHandlers
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\PatternDataHandlers;
+namespace PatternManager\PatternDataHandlers;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,7 +53,7 @@ function get_patterns() {
 	}
 
 	// Get the custom patterns (ones created by the user, not included in the plugin).
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
 
 	$themes = glob( $wp_themes_dir . '*' );
@@ -86,13 +86,13 @@ function get_patterns() {
  * @param string $file The path to the theme pattern file.
  */
 function format_pattern_data( $pattern_data, $file ) {
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	if ( empty( $pattern_data['slug'] ) ) {
 		_doing_it_wrong(
 			'_register_theme_block_patterns',
 			sprintf(
 				/* translators: %s: file name. */
-				esc_html( __( 'Could not register file "%s" as a block pattern ("Slug" field missing)', 'fse-studio' ) ),
+				esc_html( __( 'Could not register file "%s" as a block pattern ("Slug" field missing)', 'pattern-manager' ) ),
 				esc_html( $file )
 			),
 			'6.0.0'
@@ -105,7 +105,7 @@ function format_pattern_data( $pattern_data, $file ) {
 			'_register_theme_block_patterns',
 			sprintf(
 				/* translators: %1s: file name; %2s: slug value found. */
-				esc_html( __( 'Could not register file "%1$s" as a block pattern (invalid slug "%2$s")', 'fse-studio' ) ),
+				esc_html( __( 'Could not register file "%1$s" as a block pattern (invalid slug "%2$s")', 'pattern-manager' ) ),
 				esc_html( $file ),
 				esc_html( $pattern_data['slug'] )
 			),
@@ -119,7 +119,7 @@ function format_pattern_data( $pattern_data, $file ) {
 			'_register_theme_block_patterns',
 			sprintf(
 				/* translators: %1s: file name; %2s: slug value found. */
-				esc_html( __( 'Could not register file "%s" as a block pattern ("Title" field missing)', 'fse-studio' ) ),
+				esc_html( __( 'Could not register file "%s" as a block pattern ("Title" field missing)', 'pattern-manager' ) ),
 				esc_html( $file )
 			),
 			'6.0.0'
@@ -254,7 +254,7 @@ function get_theme_patterns( $theme_path = false ) {
  * @return array
  */
 function get_theme_templates( $theme_path = false ) {
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
@@ -273,7 +273,7 @@ function get_theme_templates( $theme_path = false ) {
 		$template_data = array(
 			'type'    => 'template',
 			// Translators: The name of the theme template in question.
-			'title'   => sprintf( __( '%s Template', 'fse-studio' ), ucfirst( basename( $path, '.html' ) ) ),
+			'title'   => sprintf( __( '%s Template', 'pattern-manager' ), ucfirst( basename( $path, '.html' ) ) ),
 			'name'    => basename( $path, '.html' ),
 			'content' => $block_pattern_html,
 		);
@@ -291,7 +291,7 @@ function get_theme_templates( $theme_path = false ) {
  * @return array
  */
 function get_theme_template_parts( $theme_path = false ) {
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	if ( ! $theme_path ) {
 		$theme_path = get_template_directory();
@@ -310,7 +310,7 @@ function get_theme_template_parts( $theme_path = false ) {
 		$template_data = array(
 			'type'    => 'template_part',
 			// Translators: The name of the theme template in question.
-			'title'   => sprintf( __( '%s Template Part', 'fse-studio' ), ucfirst( basename( $path, '.html' ) ) ),
+			'title'   => sprintf( __( '%s Template Part', 'pattern-manager' ), ucfirst( basename( $path, '.html' ) ) ),
 			'name'    => basename( $path, '.html' ),
 			'content' => $block_pattern_html,
 		);
@@ -330,7 +330,7 @@ function get_theme_template_parts( $theme_path = false ) {
 function update_pattern( $pattern ) {
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
 
@@ -342,19 +342,19 @@ function update_pattern( $pattern ) {
 			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
 		}
 
-		$file_contents = contruct_pattern_php_file_contents( $pattern, 'fse-studio' );
+		$file_contents = contruct_pattern_php_file_contents( $pattern, 'pattern-manager' );
 		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 	}
 
 	if ( 'template' === $pattern['type'] ) {
 		$patterns_dir  = $wp_theme_dir . '/templates/';
-		$file_contents = contruct_template_php_file_contents( $pattern, 'fse-studio' );
+		$file_contents = contruct_template_php_file_contents( $pattern, 'pattern-manager' );
 		$file_name     = sanitize_title( $pattern['name'] ) . '.html';
 	}
 
 	if ( 'template_part' === $pattern['type'] ) {
 		$patterns_dir  = $wp_theme_dir . '/parts/';
-		$file_contents = contruct_template_php_file_contents( $pattern, 'fse-studio' );
+		$file_contents = contruct_template_php_file_contents( $pattern, 'pattern-manager' );
 		$file_name     = sanitize_title( $pattern['name'] ) . '.html';
 	}
 
@@ -378,7 +378,7 @@ function update_pattern( $pattern ) {
  */
 function delete_patterns_not_present( array $patterns ) {
 	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	if ( ! $wp_filesystem ) {
 		return;
 	}
@@ -458,13 +458,13 @@ function contruct_template_php_file_contents( $pattern, $text_domain ) {
  */
 function tree_shake_theme_images() {
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
 	$theme_dir         = get_template_directory();
-	$patterns_in_theme = \FseStudio\PatternDataHandlers\get_theme_patterns();
+	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';
@@ -528,7 +528,7 @@ function tree_shake_theme_images() {
 function move_block_images_to_theme( $pattern_html ) {
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';

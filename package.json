@@ -1,12 +1,12 @@
 {
-	"name": "fse-studio",
-	"version": "0.0.2",
-	"license": "GPL-2.0",
+	"name": "pattern-manager",
+	"version": "0.1.0",
+	"license": "GPL-2.0-or-later",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/studiopress/fse-studio"
+		"url": "https://github.com/studiopress/pattern-manager"
 	},
-	"wpps_options": "-p fse-studio -n FseStudio -t fse-studio",
+	"wpps_options": "-p pattern-manager -n PatternManager -t pattern-manager",
 	"scripts": {
 		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; else cd ../../wpps-scripts && git reset --hard && git checkout main && git pull origin main;fi;",
 		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options",

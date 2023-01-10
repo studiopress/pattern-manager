@@ -17,26 +17,26 @@ type Props = {
 	isVisible: boolean;
 };
 
-export default function ThemeSetup( { isVisible }: Props ) {
+export default function ThemeSetup({ isVisible }: Props) {
 	const { currentTheme } = useStudioContext();
 	const { displayThemeCreatedNotice } = useNoticeContext();
-	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
+	const [currentTab, setCurrentTab] = useState(Tabs.ThemeOverview);
 
-	if ( ! currentTheme.data || ! isVisible ) {
+	if (!currentTheme.data || !isVisible) {
 		return null;
 	}
 
 	return (
 		<ViewContainer
-			heading={ sprintf(
+			heading={sprintf(
 				/* translators: %1$s: The theme name */
-				__( 'Theme: %1$s', 'fse-studio' ),
+				__('Theme: %1$s', 'pattern-manager'),
 				currentTheme?.data?.name ?? ''
-			) }
-			description={ __(
+			)}
+			description={__(
 				'Here you will find everything you need to customize your full-site editing theme. Visit the Edit Theme Details tab to see advanced options.',
-				'fsestudio'
-			) }
+				'patternmanager'
+			)}
 		>
 			<>
 				<div className="bg-fses-gray">
@@ -45,53 +45,53 @@ export default function ThemeSetup( { isVisible }: Props ) {
 							<li className="m-0">
 								<button
 									type="button"
-									className={ classNames(
+									className={classNames(
 										'font-medium py-3 px-5 rounded-t',
 										currentTab === Tabs.ThemeOverview
 											? 'bg-white'
 											: 'hover:bg-white'
-									) }
-									onClick={ () => {
-										setCurrentTab( Tabs.ThemeOverview );
-									} }
+									)}
+									onClick={() => {
+										setCurrentTab(Tabs.ThemeOverview);
+									}}
 								>
-									{ __( 'Theme Overview', 'fse-studio' ) }
+									{__('Theme Overview', 'pattern-manager')}
 								</button>
 							</li>
 							<li className="m-0">
 								<button
 									type="button"
-									className={ classNames(
+									className={classNames(
 										'font-medium py-3 px-5 rounded-t',
 										currentTab === Tabs.EditThemeDetails
 											? 'bg-white'
 											: 'hover:bg-white'
-									) }
-									onClick={ () => {
-										setCurrentTab( Tabs.EditThemeDetails );
-									} }
+									)}
+									onClick={() => {
+										setCurrentTab(Tabs.EditThemeDetails);
+									}}
 								>
-									{ __( 'Edit Theme Details', 'fse-studio' ) }
+									{__('Edit Theme Details', 'pattern-manager')}
 								</button>
 							</li>
 						</ul>
 					</div>
 				</div>
 				<div className="mx-auto p-8 xl:p-0 max-w-7xl xl:mt-16 mt-8 mb-24">
-					{ currentTab === Tabs.ThemeOverview ? (
+					{currentTab === Tabs.ThemeOverview ? (
 						<>
-							{ displayThemeCreatedNotice ? (
+							{displayThemeCreatedNotice ? (
 								<ThemeCreatedNotice />
-							) : null }
+							) : null}
 							<ThemeOverview />
 						</>
-					) : null }
-					{ currentTab === Tabs.EditThemeDetails ? (
+					) : null}
+					{currentTab === Tabs.EditThemeDetails ? (
 						<>
 							<ThemeDetails />
 							<SaveTheme />
 						</>
-					) : null }
+					) : null}
 				</div>
 			</>
 		</ViewContainer>

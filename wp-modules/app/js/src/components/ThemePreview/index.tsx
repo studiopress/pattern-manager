@@ -6,29 +6,29 @@ import { useState, useEffect } from '@wordpress/element';
 import useStudioContext from '../../hooks/useStudioContext';
 
 // Globals
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 type Props = {
 	isVisible: boolean;
 };
 
-export default function ThemePreview( { isVisible }: Props ) {
+export default function ThemePreview({ isVisible }: Props) {
 	const { currentView, currentTheme } = useStudioContext();
-	const [ currentUrl, setCurrentUrl ] = useState( fsestudio.siteUrl );
+	const [currentUrl, setCurrentUrl] = useState(patternmanager.siteUrl);
 
-	useEffect( () => {
-		if ( currentTheme.fetchInProgress ) {
-			setCurrentUrl( '' );
+	useEffect(() => {
+		if (currentTheme.fetchInProgress) {
+			setCurrentUrl('');
 		}
-		if ( ! currentTheme.fetchInProgress ) {
-			setCurrentUrl( fsestudio.siteUrl + '/?timestamp=' + Date.now() );
+		if (!currentTheme.fetchInProgress) {
+			setCurrentUrl(patternmanager.siteUrl + '/?timestamp=' + Date.now());
 		}
-	}, [ currentTheme.fetchInProgress ] );
+	}, [currentTheme.fetchInProgress]);
 
 	return (
 		<div
-			style={ {
-				display: ! isVisible ? 'none' : 'block',
+			style={{
+				display: !isVisible ? 'none' : 'block',
 				position: 'absolute',
 				top: '0',
 				bottom: '0',
@@ -38,14 +38,14 @@ export default function ThemePreview( { isVisible }: Props ) {
 				height: '100vh',
 				zIndex: '9999',
 				backgroundColor: '#ffffff',
-			} }
+			}}
 		>
 			<button
-				onClick={ () => {
-					currentView.set( 'theme_setup' );
-				} }
-				style={ {
-					display: ! isVisible ? 'none' : 'block',
+				onClick={() => {
+					currentView.set('theme_setup');
+				}}
+				style={{
+					display: !isVisible ? 'none' : 'block',
 					position: 'absolute',
 					top: '0',
 					right: '0',
@@ -55,21 +55,21 @@ export default function ThemePreview( { isVisible }: Props ) {
 					color: '#fff',
 					zIndex: '9999',
 					fontWeight: 'bold',
-				} }
+				}}
 			>
 				Close Preview&nbsp;&nbsp;✖︎
 			</button>
-			{ currentUrl ? (
+			{currentUrl ? (
 				<iframe
-					title={ __( 'Theme Preview', 'fse-studio' ) }
-					style={ {
+					title={__('Theme Preview', 'pattern-manager')}
+					style={{
 						marginTop: '18px',
 						width: '100vw',
 						height: '100vh',
-					} }
-					src={ currentUrl }
+					}}
+					src={currentUrl}
 				/>
-			) : null }
+			) : null}
 		</div>
 	);
 }

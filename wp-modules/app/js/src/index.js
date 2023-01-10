@@ -4,6 +4,6 @@
 
 import ReactDOM from 'react-dom';
 
-import FseStudioApp from './components/FseStudioApp';
+import PatternManagerApp from './components/PatternManagerApp';
 
-ReactDOM.render( <FseStudioApp />, document.getElementById( 'fsestudioapp' ) );
+ReactDOM.render( <PatternManagerApp />, document.getElementById( 'patternmanagerapp' ) );

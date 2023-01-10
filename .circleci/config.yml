@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.0
-  php: circleci/php@1.1.0
+  node: circleci/node@5.0
+  php: circleci/php@1.1
 
 references:
   PLUGIN_PATH: &PLUGIN_PATH
-    plugins/fse-studio
+    plugins/pattern-manager
 
 jobs:
   lint:
@@ -70,7 +70,7 @@ jobs:
             npm run build
             npm run zip
             mkdir /tmp/artifacts
-            mv fse-studio*.zip /tmp/artifacts
+            mv pattern-manager*.zip /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
 

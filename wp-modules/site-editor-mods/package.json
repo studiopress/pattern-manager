@@ -1,5 +1,5 @@
 {
-  "name": "fsestudio-site-editor-mods",
+  "name": "patternmanager-site-editor-mods",
   "description": "Javascript that gets loaded withthe site editor page in WP core.",
   "main": "js/build/index.js",
   "scripts": {

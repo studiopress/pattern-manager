@@ -4,12 +4,12 @@
  * Description: This module enqueues custom javascript and css on the site-editor, allowing for customizations to it.
  * Namespace: SiteEditorMods
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\SiteEditorMods;
+namespace PatternManager\SiteEditorMods;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -28,7 +28,7 @@ function enqueue() {
 	}
 
 	// Only enqueue if inside the fse studio app.
-	if ( ! isset( $_GET['fsestudio_app'] ) ) { //phpcs:ignore
+	if ( ! isset( $_GET['patternmanager_app'] ) ) { //phpcs:ignore
 		return;
 	}
 
@@ -44,10 +44,10 @@ function enqueue() {
 
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'fsestudio_site_editor_style', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'patternmanager_site_editor_style', $js_url, $dependencies, $js_ver, true );
 	wp_localize_script(
-		'fsestudio_site_editor_style',
-		'fsestudio',
+		'patternmanager_site_editor_style',
+		'patternmanager',
 		array(
 			'siteUrl' => get_bloginfo( 'url' ),
 		)
@@ -55,7 +55,7 @@ function enqueue() {
 
 	$css_url = $module_dir_url . 'js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
-	wp_enqueue_style( 'fsestudio_site_editor_style', $css_url, array(), $css_ver );
+	wp_enqueue_style( 'patternmanager_site_editor_style', $css_url, array(), $css_ver );
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue' );
 

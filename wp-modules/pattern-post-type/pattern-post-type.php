@@ -4,12 +4,12 @@
  * Description: This module registers a post type to be used when editing block patterns, and sets up how things work in the block editor.
  * Namespace: PatternPostType
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\PatternPostType;
+namespace PatternManager\PatternPostType;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,26 +29,26 @@ function pattern_post_type() {
 	}
 
 	$labels = array(
-		'name'          => __( 'Patterns', 'fse-studio' ),
-		'singular_name' => __( 'Pattern', 'fse-studio' ),
+		'name'          => __( 'Patterns', 'pattern-manager' ),
+		'singular_name' => __( 'Pattern', 'pattern-manager' ),
 	);
 
 	if ( 'pattern' === $pattern_type ) {
 		$labels = array(
-			'name'          => __( 'Patterns', 'fse-studio' ),
-			'singular_name' => __( 'Pattern', 'fse-studio' ),
+			'name'          => __( 'Patterns', 'pattern-manager' ),
+			'singular_name' => __( 'Pattern', 'pattern-manager' ),
 		);
 	}
 
 	if ( 'template' === $pattern_type ) {
 		$labels = array(
-			'name'          => __( 'Templates', 'fse-studio' ),
-			'singular_name' => __( 'Template', 'fse-studio' ),
+			'name'          => __( 'Templates', 'pattern-manager' ),
+			'singular_name' => __( 'Template', 'pattern-manager' ),
 		);
 	}
 
 	register_post_type(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		array(
 			'public'       => false,
 			'has_archive'  => false,
@@ -64,7 +64,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'type',
 		array(
 			'show_in_rest' => true,
@@ -74,7 +74,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'title',
 		array(
 			'show_in_rest' => true,
@@ -84,7 +84,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'name',
 		array(
 			'show_in_rest' => true,
@@ -94,7 +94,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'previousName',
 		array(
 			'show_in_rest' => true,
@@ -110,7 +110,7 @@ function pattern_post_type() {
 	 * @see https://make.wordpress.org/core/2019/10/03/wp-5-3-supports-object-and-array-meta-types-in-the-rest-api/
 	 */
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'blockTypes',
 		array(
 			'show_in_rest' => array(
@@ -127,7 +127,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'postTypes',
 		array(
 			'show_in_rest' => array(
@@ -144,7 +144,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'fsestudio_pattern',
+		'patternmanager_pattern',
 		'keywords',
 		array(
 			'show_in_rest' => array(
@@ -168,7 +168,7 @@ add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
  */
 function disable_autosave() {
 	global $post_type;
-	if ( 'fsestudio_pattern' === $post_type ) {
+	if ( 'patternmanager_pattern' === $post_type ) {
 		wp_dequeue_script( 'autosave' );
 	}
 }
@@ -178,13 +178,13 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
  * Recieve pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
-	if ( ! isset( $_GET['fsestudio_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! isset( $_GET['patternmanager_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
-	$pattern_id = sanitize_text_field( wp_unslash( $_GET['fsestudio_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_id = sanitize_text_field( wp_unslash( $_GET['patternmanager_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \FseStudio\PatternDataHandlers\get_theme_pattern( $pattern_id );
+	$pattern = \PatternManager\PatternDataHandlers\get_theme_pattern( $pattern_id );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
@@ -225,7 +225,7 @@ function do_the_content_things( $content ) {
  * Add style and metaboxes to fse_pattern posts when editing.
  */
 function enqueue_meta_fields_in_editor() {
-	if ( 'fsestudio_pattern' !== get_post_type() ) {
+	if ( 'patternmanager_pattern' !== get_post_type() ) {
 		return;
 	}
 
@@ -239,31 +239,31 @@ function enqueue_meta_fields_in_editor() {
 		return;
 	}
 
-	// Include the js on the block editor page for the fsestudio_pattern post type.
+	// Include the js on the block editor page for the patternmanager_pattern post type.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'fsestudio_post_meta', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'patternmanager_post_meta', $js_url, $dependencies, $js_ver, true );
 
 	// Enqueue styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
-	wp_enqueue_style( 'fsestudio_post_meta_style', $css_url, array(), $css_ver );
+	wp_enqueue_style( 'patternmanager_post_meta_style', $css_url, array(), $css_ver );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
 
 /**
- * If we are on the fse-studio app page, register the patterns with WP.
+ * If we are on the pattern-manager app page, register the patterns with WP.
  *
  * @return void
  */
 function register_block_patterns() {
 	$current_screen = get_current_screen();
 
-	if ( 'fsestudio_pattern' !== $current_screen->post_type ) {
+	if ( 'patternmanager_pattern' !== $current_screen->post_type ) {
 		return;
 	}
 
-	$patterns = \FseStudio\PatternDataHandlers\get_theme_patterns();
+	$patterns = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	foreach ( $patterns as $pattern ) {
 		if ( isset( $pattern['categories'] ) ) {

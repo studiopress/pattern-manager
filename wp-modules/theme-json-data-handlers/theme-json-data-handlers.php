@@ -4,12 +4,12 @@
  * Description: This module contains functions for getting and saving theme JSON file data.
  * Namespace: ThemeJsonDataHandlers
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\ThemeJsonDataHandlers;
+namespace PatternManager\ThemeJsonDataHandlers;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,7 +32,7 @@ function update_theme_style( $style ) {
 	$style = wp_parse_args( $style, $style_default );
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
 

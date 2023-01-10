@@ -2,7 +2,7 @@
 /**
  * The data for the tour.
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 // Exit if accessed directly.
@@ -11,12 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 return [
-	'tourTitle'   => __( 'FSE Studio Tour', 'fse-studio' ),
-	'tourSlug'    => 'FseStudioTour',
+	'tourTitle'   => __( 'Pattern Manager Tour', 'pattern-manager' ),
+	'tourSlug'    => 'PatternManagerTour',
 	'stepsInTour' => [
 		[
 			'initialData' => [
-				'html' => __( 'Welcome to the FSE Studio Tour. Let\'s make a theme!', 'fse-studio' ),
+				'html' => __( 'Welcome to the Pattern Manager Tour. Let\'s make a theme!', 'pattern-manager' ),
 			],
 			'navigation'  => [
 				'backButton' => false,
@@ -26,18 +26,18 @@ return [
 		[ // Create theme.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Create a new theme', 'fse-studio' ),
+				'name' => __( 'Create a new theme', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'auto',
 			'initialData'        => [
-				'html' => __( 'Click the button to create a new theme.', 'fse-studio' ),
+				'html' => __( 'Click the button to create a new theme.', 'pattern-manager' ),
 			],
 			'completionData'     => [
 				'type'    => 'elementHasValue',
 				'element' => [
 					'role'  => 'textbox',
-					'name'  => __( 'Theme Name', 'fse-studio' ),
-					'value' => __( 'My New Theme', 'fse-studio' ),
+					'name'  => __( 'Theme Name', 'pattern-manager' ),
+					'value' => __( 'My New Theme', 'pattern-manager' ),
 				],
 			],
 			'navigation'         => [
@@ -49,21 +49,21 @@ return [
 		[ // Theme name.
 			'highlightedElement' => [
 				'role' => 'textbox',
-				'name' => __( 'Theme Name', 'fse-studio' ),
+				'name' => __( 'Theme Name', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Give your theme a unique name.', 'fse-studio' ),
+				'html' => __( 'Give your theme a unique name.', 'pattern-manager' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Your theme name looks good! When you\'re finished naming your theme, click "Next".', 'fse-studio' ),
+				'html'    => __( 'Your theme name looks good! When you\'re finished naming your theme, click "Next".', 'pattern-manager' ),
 				'type'    => 'elementDoesNotHaveValues',
 				'element' => [
 					'role'   => 'textbox',
-					'name'   => __( 'Theme Name', 'fse-studio' ),
+					'name'   => __( 'Theme Name', 'pattern-manager' ),
 					'values' => [
 						'',
-						__( 'My New Theme', 'fse-studio' ),
+						__( 'My New Theme', 'pattern-manager' ),
 					],
 				],
 			],
@@ -75,19 +75,19 @@ return [
 		[ // Theme save.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Save Theme Settings', 'fse-studio' ),
+				'name' => __( 'Save Theme Settings', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'top',
 			'initialData'        => [
-				'html' => __( 'When you\'re done editing your theme information above, click the "Save Theme Settings" button. The theme will be saved to your /themes/ folder and activated on your site.', 'fse-studio' ),
+				'html' => __( 'When you\'re done editing your theme information above, click the "Save Theme Settings" button. The theme will be saved to your /themes/ folder and activated on your site.', 'pattern-manager' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Congratulations! Your new theme was saved to your /themes/ folder and activated on your site.', 'fse-studio' ),
+				'html'    => __( 'Congratulations! Your new theme was saved to your /themes/ folder and activated on your site.', 'pattern-manager' ),
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'dialog',
 					'name' => [
-						__( 'Theme Saved', 'fse-studio' ),
+						__( 'Theme Saved', 'pattern-manager' ),
 					],
 				],
 			],
@@ -99,18 +99,18 @@ return [
 		[ // Add Patterns.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Add Patterns', 'fse-studio' ),
+				'name' => __( 'Add Patterns', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Click "Add Patterns" to add pre-made, ready to use block patterns to your theme.', 'fse-studio' ),
+				'html' => __( 'Click "Add Patterns" to add pre-made, ready to use block patterns to your theme.', 'pattern-manager' ),
 			],
 			'completionData'     => [
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'heading',
 					'name' => [
-						__( 'Add patterns to your theme', 'fse-studio' ),
+						__( 'Add patterns to your theme', 'pattern-manager' ),
 					],
 				],
 			],
@@ -123,18 +123,18 @@ return [
 		[ // Add Patterns > Browse Patterns.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Browse Patterns', 'fse-studio' ),
+				'name' => __( 'Browse Patterns', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'bottom',
 			'initialData'        => [
-				'html' => __( 'To add patterns, click the "Browse Patterns" button. There, you can select multiple patterns, then close the modal to add them to the theme.', 'fse-studio' ),
+				'html' => __( 'To add patterns, click the "Browse Patterns" button. There, you can select multiple patterns, then close the modal to add them to the theme.', 'pattern-manager' ),
 			],
 			'completionData'     => [
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'img',
 					'name' => [
-						__( 'Pattern Preview', 'fse-studio' ),
+						__( 'Pattern Preview', 'pattern-manager' ),
 					],
 				],
 			],
@@ -147,19 +147,19 @@ return [
 		[ // Add Patterns save.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Save Theme Settings', 'fse-studio' ),
+				'name' => __( 'Save Theme Settings', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'top',
 			'initialData'        => [
-				'html' => __( 'Patterns Added! Click the "Save Theme Settings" button to save patterns to your theme.', 'fse-studio' ),
+				'html' => __( 'Patterns Added! Click the "Save Theme Settings" button to save patterns to your theme.', 'pattern-manager' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Congratulations! Your theme was saved.', 'fse-studio' ),
+				'html'    => __( 'Congratulations! Your theme was saved.', 'pattern-manager' ),
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'dialog',
 					'name' => [
-						__( 'Theme Saved', 'fse-studio' ),
+						__( 'Theme Saved', 'pattern-manager' ),
 					],
 				],
 			],
@@ -171,18 +171,18 @@ return [
 		[ // Theme Template Files.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Theme Template Files', 'fse-studio' ),
+				'name' => __( 'Theme Template Files', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Click "Theme Template Files" to assign theme templates for the different types of content such as posts, pages, or attachments.', 'fse-studio' ),
+				'html' => __( 'Click "Theme Template Files" to assign theme templates for the different types of content such as posts, pages, or attachments.', 'pattern-manager' ),
 			],
 			'completionData'     => [
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'heading',
 					'name' => [
-						__( 'Template: 404.html', 'fse-studio' ),
+						__( 'Template: 404.html', 'pattern-manager' ),
 					],
 				],
 			],
@@ -195,18 +195,18 @@ return [
 		[ // Theme Template Files > Set Pattern.
 			'highlightedElement' => [
 				'role' => 'heading',
-				'name' => __( 'Template: 404.html', 'fse-studio' ),
+				'name' => __( 'Template: 404.html', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'To add a template, click the "Set Pattern" button to open the patterns modal. There, you can search for and select a pattern to use for each template.', 'fse-studio' ),
+				'html' => __( 'To add a template, click the "Set Pattern" button to open the patterns modal. There, you can search for and select a pattern to use for each template.', 'pattern-manager' ),
 			],
 			'completionData'     => [
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'button',
 					'name' => [
-						__( 'Change Pattern', 'fse-studio' ),
+						__( 'Change Pattern', 'pattern-manager' ),
 					],
 				],
 			],
@@ -218,19 +218,19 @@ return [
 		[ // Theme Template Files save.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Save Theme Settings', 'fse-studio' ),
+				'name' => __( 'Save Theme Settings', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'top',
 			'initialData'        => [
-				'html' => __( 'When you\'ve finished selecting your theme templates above, click the "Save Theme Settings" button to save templates to your theme.', 'fse-studio' ),
+				'html' => __( 'When you\'ve finished selecting your theme templates above, click the "Save Theme Settings" button to save templates to your theme.', 'pattern-manager' ),
 			],
 			'completionData'     => [
-				'html'    => __( 'Congratulations! Your theme was saved.', 'fse-studio' ),
+				'html'    => __( 'Congratulations! Your theme was saved.', 'pattern-manager' ),
 				'type'    => 'elementExists',
 				'element' => [
 					'role' => 'dialog',
 					'name' => [
-						__( 'Theme Saved', 'fse-studio' ),
+						__( 'Theme Saved', 'pattern-manager' ),
 					],
 				],
 			],
@@ -242,11 +242,11 @@ return [
 		[ // Pattern Editor.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Pattern Editor', 'fse-studio' ),
+				'name' => __( 'Pattern Editor', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Create and Edit pre-defined patterns for use in any theme you design using the Pattern Editor.', 'fse-studio' ),
+				'html' => __( 'Create and Edit pre-defined patterns for use in any theme you design using the Pattern Editor.', 'pattern-manager' ),
 			],
 			'navigation'         => [
 				'backButton' => true,
@@ -256,11 +256,11 @@ return [
 		[ // Theme.json Editor.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Theme.json Editor', 'fse-studio' ),
+				'name' => __( 'Theme.json Editor', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Create and edit theme.json files for use in any theme you design.', 'fse-studio' ),
+				'html' => __( 'Create and edit theme.json files for use in any theme you design.', 'pattern-manager' ),
 			],
 			'navigation'         => [
 				'backButton' => true,
@@ -270,11 +270,11 @@ return [
 		[ // Finish.
 			'highlightedElement' => [
 				'role' => 'button',
-				'name' => __( 'Theme.json Editor', 'fse-studio' ),
+				'name' => __( 'Theme.json Editor', 'pattern-manager' ),
 			],
 			'beaconPosition'     => 'right',
 			'initialData'        => [
-				'html' => __( 'Congratulations! You\'ve completed the FSE Studio Tour.', 'fse-studio' ),
+				'html' => __( 'Congratulations! You\'ve completed the Pattern Manager Tour.', 'pattern-manager' ),
 			],
 			'navigation'         => [
 				'backButton' => true,

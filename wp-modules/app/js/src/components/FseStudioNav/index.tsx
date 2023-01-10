@@ -2,7 +2,7 @@
 import { __ } from '@wordpress/i18n';
 import React from 'react';
 
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 // Context
 import useStudioContext from '../../hooks/useStudioContext';
@@ -17,7 +17,7 @@ import dropMenuIconRight from '../../../../img/drop-arrow-right.svg';
 
 import type { Themes } from '../../types';
 
-export default function FseStudioNav() {
+export default function PatternManagerNav() {
 	const {
 		currentView,
 		currentTheme,
@@ -34,21 +34,21 @@ export default function FseStudioNav() {
 	 * Main purpose here is to throw notice for user to refresh editor.
 	 * Currently targets pattern and template editors.
 	 */
-	function maybePostWindowMessage( message: string ) {
-		if ( patternEditorIframe?.current ) {
+	function maybePostWindowMessage(message: string) {
+		if (patternEditorIframe?.current) {
 			patternEditorIframe.current.contentWindow.postMessage(
-				JSON.stringify( {
+				JSON.stringify({
 					message,
-				} ),
+				}),
 				'*'
 			);
 		}
 
-		if ( templateEditorIframe?.current ) {
+		if (templateEditorIframe?.current) {
 			templateEditorIframe.current.contentWindow.postMessage(
-				JSON.stringify( {
+				JSON.stringify({
 					message,
-				} )
+				})
 			);
 		}
 	}
@@ -58,26 +58,26 @@ export default function FseStudioNav() {
 	 * Hide if no themes are available.
 	 */
 	function MenuOpenTheme() {
-		const listMenuOptions = ( items: Themes ) => {
-			return Object.keys( items ).map( ( key ) => {
+		const listMenuOptions = (items: Themes) => {
+			return Object.keys(items).map((key) => {
 				const name =
 					currentThemeId?.value === key
-						? `${ items[ key ]?.name } (Active)`
-						: items[ key ]?.name;
+						? `${items[key]?.name} (Active)`
+						: items[key]?.name;
 
-				return items[ key ]?.name ? (
-					<li key={ key }>
+				return items[key]?.name ? (
+					<li key={key}>
 						<button
 							type="button"
-							onClick={ () => {
-								currentThemeId?.set( key );
+							onClick={() => {
+								currentThemeId?.set(key);
 								switchThemeOnBackEnd(
-									items[ key ]?.dirname
-								).then( () => {
+									items[key]?.dirname
+								).then(() => {
 									patterns?.reloadPatternPreviews();
-								} );
+								});
 								maybePostWindowMessage(
-									'fsestudio_hotswapped_theme'
+									'patternmanager_hotswapped_theme'
 								);
 
 								/**
@@ -87,23 +87,23 @@ export default function FseStudioNav() {
 								if (
 									'create_theme' === currentView?.currentView
 								) {
-									currentView?.set( 'theme_setup' );
+									currentView?.set('theme_setup');
 								}
-							} }
+							}}
 						>
-							{ name }
+							{name}
 						</button>
 					</li>
 				) : null;
-			} );
+			});
 		};
 
 		return (
 			// In order to render the selector…
 			// There should be at least 1 theme other than the currently selected theme.
 			// Or the current theme should have been saved to disk.
-			Object.keys( themes?.themes || {} ).some(
-				( themeName ) => themeName !== currentThemeId?.value
+			Object.keys(themes?.themes || {}).some(
+				(themeName) => themeName !== currentThemeId?.value
 			) ? (
 				<>
 					<button
@@ -124,18 +124,18 @@ export default function FseStudioNav() {
 									fill="#969696"
 								/>
 							</svg>
-							{ __( 'Open Theme', 'fse-studio' ) }
+							{__('Open Theme', 'pattern-manager')}
 						</span>
 						<img
 							aria-hidden="true"
 							alt=""
 							className="ml-2"
-							src={ dropMenuIconRight }
+							src={dropMenuIconRight}
 						/>
 					</button>
 
 					<ul className="dropdown" aria-label="submenu">
-						{ listMenuOptions( themes?.themes ) }
+						{listMenuOptions(themes?.themes)}
 					</ul>
 				</>
 			) : null
@@ -147,27 +147,27 @@ export default function FseStudioNav() {
 			<ul className="font-medium">
 				<li>
 					<button aria-haspopup="true" className="flex items-center">
-						{ __( 'FSE Studio', 'fse-studio' ) }{ ' ' }
+						{__('Pattern Manager', 'pattern-manager')}{' '}
 						<img
 							aria-hidden="true"
 							alt=""
 							className="ml-2"
-							src={ dropMenuIcon }
+							src={dropMenuIcon}
 						/>
 					</button>
 					<ul className="dropdown" aria-label="submenu">
 						<li>
-							{ /* Render the theme names */ }
+							{ /* Render the theme names */}
 							<MenuOpenTheme />
 						</li>
 						<li>
 							<button
 								className="flex items-center gap-4"
 								type="button"
-								onClick={ () => {
-									createNewTheme( themes, currentThemeId );
-									currentView?.set( 'create_theme' );
-								} }
+								onClick={() => {
+									createNewTheme(themes, currentThemeId);
+									currentView?.set('create_theme');
+								}}
 							>
 								<svg
 									aria-hidden="true"
@@ -182,16 +182,16 @@ export default function FseStudioNav() {
 										fill="#969696"
 									/>
 								</svg>
-								{ __( 'Create New Theme', 'fse-studio' ) }
+								{__('Create New Theme', 'pattern-manager')}
 							</button>
 						</li>
 						<li>
 							<button
 								className="flex items-center gap-4"
 								type="button"
-								onClick={ () => {
-									window.location.href = fsestudio.adminUrl;
-								} }
+								onClick={() => {
+									window.location.href = patternmanager.adminUrl;
+								}}
 							>
 								<svg
 									aria-hidden="true"
@@ -207,32 +207,32 @@ export default function FseStudioNav() {
 										fill="#969696"
 									/>
 								</svg>
-								{ __( 'Exit to Dashboard', 'fse-studio' ) }
+								{__('Exit to Dashboard', 'pattern-manager')}
 							</button>
 						</li>
 					</ul>
 				</li>
-				{ currentView?.currentView !== 'create_theme' ? (
+				{currentView?.currentView !== 'create_theme' ? (
 					<>
 						<li>
 							<button
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue flex items-center' +
-									( currentView?.currentView === 'theme_setup'
+									(currentView?.currentView === 'theme_setup'
 										? ' bg-[#404040]'
-										: '' )
+										: '')
 								}
-								onClick={ () => {
-									currentView?.set( 'theme_setup' );
-								} }
+								onClick={() => {
+									currentView?.set('theme_setup');
+								}}
 							>
-								{ __( 'Current Theme', 'fse-studio' ) }{ ' ' }
+								{__('Current Theme', 'pattern-manager')}{' '}
 								<img
 									aria-hidden="true"
 									alt=""
 									className="ml-2"
-									src={ dropMenuIcon }
+									src={dropMenuIcon}
 								/>
 							</button>
 
@@ -242,14 +242,14 @@ export default function FseStudioNav() {
 										type="button"
 										className={
 											'focus:outline-none focus:ring-1 focus:ring-wp-blue flex items-center gap-4' +
-											( currentView?.currentView ===
-											'theme_setup'
+											(currentView?.currentView ===
+												'theme_setup'
 												? ' !text-white'
-												: '' )
+												: '')
 										}
-										onClick={ () => {
-											currentView?.set( 'theme_setup' );
-										} }
+										onClick={() => {
+											currentView?.set('theme_setup');
+										}}
 									>
 										<svg
 											aria-hidden="true"
@@ -264,16 +264,16 @@ export default function FseStudioNav() {
 												fill="#969696"
 											/>
 										</svg>
-										{ __( 'Theme Overview', 'fse-studio' ) }
+										{__('Theme Overview', 'pattern-manager')}
 									</button>
 								</li>
 								<li>
 									<button
 										className="flex items-center gap-4"
 										type="button"
-										onClick={ () => {
+										onClick={() => {
 											currentTheme?.export();
-										} }
+										}}
 									>
 										<svg
 											aria-hidden="true"
@@ -288,93 +288,93 @@ export default function FseStudioNav() {
 												fill="#969696"
 											/>
 										</svg>
-										{ __( 'Download Theme', 'fse-studio' ) }
+										{__('Download Theme', 'pattern-manager')}
 									</button>
 								</li>
 							</ul>
 						</li>
 						<li>
 							<button
-								disabled={ ! currentTheme?.data }
+								disabled={!currentTheme?.data}
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-									( currentView?.currentView ===
-									'themejson_editor'
+									(currentView?.currentView ===
+										'themejson_editor'
 										? ' bg-[#404040]'
-										: '' )
+										: '')
 								}
-								onClick={ () => {
-									currentView?.set( 'themejson_editor' );
-								} }
+								onClick={() => {
+									currentView?.set('themejson_editor');
+								}}
 							>
-								{ __( 'Styles and Settings', 'fse-studio' ) }
+								{__('Styles and Settings', 'pattern-manager')}
 							</button>
 						</li>
 						<li>
 							<button
-								disabled={ ! currentTheme?.data }
+								disabled={!currentTheme?.data}
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-									( currentView?.currentView ===
-									'theme_patterns'
+									(currentView?.currentView ===
+										'theme_patterns'
 										? ' bg-[#404040]'
-										: '' )
+										: '')
 								}
-								onClick={ () => {
-									currentView?.set( 'theme_patterns' );
-								} }
+								onClick={() => {
+									currentView?.set('theme_patterns');
+								}}
 							>
-								{ __( 'Patterns', 'fse-studio' ) }
+								{__('Patterns', 'pattern-manager')}
 							</button>
 						</li>
 						<li>
 							<button
-								disabled={ ! currentTheme.data }
+								disabled={!currentTheme.data}
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-									( currentView?.currentView ===
-									'theme_templates'
+									(currentView?.currentView ===
+										'theme_templates'
 										? ' bg-[#404040]'
-										: '' )
+										: '')
 								}
-								onClick={ () => {
-									currentView?.set( 'theme_templates' );
+								onClick={() => {
+									currentView?.set('theme_templates');
 
 									maybePostWindowMessage(
-										'fsestudio_click_templates'
+										'patternmanager_click_templates'
 									);
-								} }
+								}}
 							>
-								{ __( 'Templates', 'fse-studio' ) }
+								{__('Templates', 'pattern-manager')}
 							</button>
 						</li>
 						<li>
 							<button
-								disabled={ ! currentTheme?.data }
+								disabled={!currentTheme?.data}
 								type="button"
 								className={
 									'focus:outline-none focus:ring-1 focus:ring-wp-blue' +
-									( currentView?.currentView ===
-									'template_parts'
+									(currentView?.currentView ===
+										'template_parts'
 										? ' bg-[#404040]'
-										: '' )
+										: '')
 								}
-								onClick={ () => {
-									currentView?.set( 'template_parts' );
+								onClick={() => {
+									currentView?.set('template_parts');
 
 									maybePostWindowMessage(
-										'fsestudio_click_template_parts'
+										'patternmanager_click_template_parts'
 									);
-								} }
+								}}
 							>
-								{ __( 'Template Parts', 'fse-studio' ) }
+								{__('Template Parts', 'pattern-manager')}
 							</button>
 						</li>
 					</>
-				) : null }
+				) : null}
 			</ul>
 		</nav>
 	);

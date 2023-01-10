@@ -2,12 +2,12 @@
 /**
  * A function which allows you to get the WP Filesystem.
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\GetWpFilesystem;
+namespace PatternManager\GetWpFilesystem;
 
 use WP_Filesystem_Base;
 

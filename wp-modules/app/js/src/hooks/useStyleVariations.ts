@@ -8,21 +8,21 @@ import type { Style } from '../types';
 
 export default function useStyleVariations() {
 	const { currentTheme, currentStyleVariationId } = useStudioContext();
-	const [ newStyleName, setNewStyleName ] = useState( '' );
-	const [ updateCurrentStyle, setUpdateCurrentStyle ] = useState( false );
-	const newStyleId = useRef( '' );
-	const defaultStyleName = useRef( currentStyleVariationId.value );
+	const [newStyleName, setNewStyleName] = useState('');
+	const [updateCurrentStyle, setUpdateCurrentStyle] = useState(false);
+	const newStyleId = useRef('');
+	const defaultStyleName = useRef(currentStyleVariationId.value);
 
 	/**
 	 * This key is referenced by `Object.keys( defaultStyle )[0]` in most places the hook is used.
-	 * However, it is explicitly defined in the main FseStudioApp index file.
+	 * However, it is explicitly defined in the main PatternManagerApp index file.
 	 *
-	 * @see FseStudioApp index.js
+	 * @see PatternManagerApp index.js
 	 * @see useCurrentId currentStyleVariationId
 	 */
 	const defaultStyle = {
-		[ defaultStyleName.current ]: {
-			title: __( 'Default Style', 'fse-studio' ),
+		[defaultStyleName.current]: {
+			title: __('Default Style', 'pattern-manager'),
 			body: currentTheme?.data?.theme_json_file ?? {},
 		},
 	};
@@ -34,22 +34,22 @@ export default function useStyleVariations() {
 	 * Otherwise, upon save with 'default style' selected after creating a new style, the selecttion
 	 * unintentionally switches from default to the new style.
 	 */
-	useEffect( () => {
+	useEffect(() => {
 		if (
 			updateCurrentStyle &&
-			currentTheme?.data.styles.hasOwnProperty( newStyleId.current ) &&
+			currentTheme?.data.styles.hasOwnProperty(newStyleId.current) &&
 			currentStyleVariationId?.value !== newStyleId.current
 		) {
 			// Set the current style id.
 			// Updates dropdown selection.
-			currentStyleVariationId?.set( newStyleId.current );
+			currentStyleVariationId?.set(newStyleId.current);
 
 			// Save the theme.
 			currentTheme?.save();
 
-			setUpdateCurrentStyle( false );
+			setUpdateCurrentStyle(false);
 		}
-	}, [ currentTheme?.data ] );
+	}, [currentTheme?.data]);
 
 	/**
 	 * Handle setting up a new style object.
@@ -60,17 +60,17 @@ export default function useStyleVariations() {
 	 * @see useThemeData
 	 */
 	const handleNewStyle = () => {
-		const id = `${ convertToSlug( newStyleName ) }-${ uuidv4() }`;
+		const id = `${convertToSlug(newStyleName)}-${uuidv4()}`;
 		const currentStyleValue = currentStyleVariationId?.value ?? '';
 
 		const currentStyleBody =
 			currentStyleVariationId?.value === defaultStyleName.current
-				? defaultStyle[ defaultStyleName.current ].body
-				: currentTheme?.data.styles[ currentStyleValue ]?.body ??
-				  defaultStyle[ defaultStyleName.current ].body;
+				? defaultStyle[defaultStyleName.current].body
+				: currentTheme?.data.styles[currentStyleValue]?.body ??
+				defaultStyle[defaultStyleName.current].body;
 
 		const newStyle = {
-			[ id ]: {
+			[id]: {
 				id,
 				title: newStyleName,
 				body: currentStyleBody,
@@ -81,13 +81,13 @@ export default function useStyleVariations() {
 		newStyleId.current = id;
 
 		// Udpate local style name state to clear input.
-		setNewStyleName( '' );
+		setNewStyleName('');
 
 		// Update the 'update style' state for the useEffect hook.
-		setUpdateCurrentStyle( true );
+		setUpdateCurrentStyle(true);
 
 		// Set the new style.
-		addStyleToTheme( newStyle[ id ], id );
+		addStyleToTheme(newStyle[id], id);
 	};
 
 	/**
@@ -99,14 +99,14 @@ export default function useStyleVariations() {
 	 * @param {string} styleId
 	 * @return {void}
 	 */
-	const addStyleToTheme = ( style: Style, styleId: Style[ 'id' ] ) => {
-		currentTheme?.set( {
+	const addStyleToTheme = (style: Style, styleId: Style['id']) => {
+		currentTheme?.set({
 			...currentTheme.data,
 			styles: {
 				...currentTheme.data.styles,
-				[ styleId ]: style,
+				[styleId]: style,
 			},
-		} );
+		});
 	};
 
 	return {

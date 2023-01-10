@@ -9,63 +9,63 @@ import type { BaseSidebarProps } from '../types';
  * The panel section for assigning keywords to the pattern.
  * Keywords are searchable terms in the site editor inserter.
  */
-export default function KeywordsPanel( {
+export default function KeywordsPanel({
 	postMeta,
 	handleChange,
-}: BaseSidebarProps ) {
-	const [ keywordInputValue, setKeywordInputValue ] = useState( '' );
+}: BaseSidebarProps) {
+	const [keywordInputValue, setKeywordInputValue] = useState('');
 
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-keywords"
-			title={ __( 'Pattern Keywords', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-keywords"
+			title={__('Pattern Keywords', 'pattern-manager')}
 		>
 			<CreatableSelect
-				components={ {
+				components={{
 					DropdownIndicator: null,
-				} }
-				inputValue={ keywordInputValue }
+				}}
+				inputValue={keywordInputValue}
 				isClearable
 				isMulti
-				menuIsOpen={ false }
-				onChange={ ( newValue ) => {
+				menuIsOpen={false}
+				onChange={(newValue) => {
 					// Handle the deletion of keywords.
-					handleChange( 'keywords', [
+					handleChange('keywords', [
 						...newValue.map(
-							( keywordObject ) => keywordObject.value
+							(keywordObject) => keywordObject.value
 						),
-					] );
-				} }
-				onInputChange={ ( newValue ) =>
-					setKeywordInputValue( newValue )
+					]);
+				}}
+				onInputChange={(newValue) =>
+					setKeywordInputValue(newValue)
 				}
-				onKeyDown={ ( event ) => {
-					if ( ! keywordInputValue ) {
+				onKeyDown={(event) => {
+					if (!keywordInputValue) {
 						return;
 					}
 
-					if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
-						handleChange( 'keywords', [
+					if (['Enter', 'Tab', ','].includes(event.key)) {
+						handleChange('keywords', [
 							...postMeta.keywords,
 							// Add the new term if not a case-insensitive duplicate.
-							...( ! postMeta.keywords.some(
-								( term ) =>
+							...(!postMeta.keywords.some(
+								(term) =>
 									term.toLowerCase() ===
 									keywordInputValue.toLowerCase()
 							)
-								? [ keywordInputValue ]
-								: [] ),
-						] );
+								? [keywordInputValue]
+								: []),
+						]);
 
-						setKeywordInputValue( '' );
+						setKeywordInputValue('');
 						event.preventDefault();
 					}
-				} }
-				placeholder={ __( 'Add searchable terms…', 'fse-studio' ) }
-				value={ postMeta.keywords.map( ( keyword ) => ( {
+				}}
+				placeholder={__('Add searchable terms…', 'pattern-manager')}
+				value={postMeta.keywords.map((keyword) => ({
 					label: keyword,
 					value: keyword,
-				} ) ) }
+				}))}
 			/>
 		</PluginDocumentSettingPanel>
 	);

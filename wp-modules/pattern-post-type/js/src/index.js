@@ -1,8 +1,8 @@
 import '../../css/src/index.scss';
 import { registerPlugin } from '@wordpress/plugins';
-import FseStudioMetaControls from './components/FseStudioMetaControls';
+import PatternManagerMetaControls from './components/PatternManagerMetaControls';
 
-registerPlugin( 'fsestudio-postmeta-for-patterns', {
+registerPlugin( 'patternmanager-postmeta-for-patterns', {
 	icon: null,
-	render: FseStudioMetaControls,
+	render: PatternManagerMetaControls,
 } );

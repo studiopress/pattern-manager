@@ -4,12 +4,12 @@
  * Description: This modules makes it so that FSE database overrides are never used, and the theme files are the source of truth at all times.
  * Namespace: AlwaysUseThemeFiles
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\AlwaysUseThemeFiles;
+namespace PatternManager\AlwaysUseThemeFiles;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -50,9 +50,9 @@ add_filter( 'posts_pre_query', __NAMESPACE__ . '\ignore_db_queries', 10, 2 );
  * @param string                 $template_type  Template type: `'wp_template'` or '`wp_template_part'`.
  */
 function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
-	$theme_template_files = \FseStudio\PatternDataHandlers\get_theme_templates();
+	$theme_template_files = \PatternManager\PatternDataHandlers\get_theme_templates();
 	if ( 'wp_template_part' === $template_type ) {
-		$theme_template_files = \FseStudio\PatternDataHandlers\get_theme_template_parts();
+		$theme_template_files = \PatternManager\PatternDataHandlers\get_theme_template_parts();
 	}
 	$theme_template_name = explode( '//', $id )[1];
 	$theme_template_file = $theme_template_files[ $theme_template_name ];
@@ -90,7 +90,7 @@ function pull_wp_templates_from_disk( $block_template, $id, $template_type ) {
 
 	// Find the area from the rest request.
 	if ( 'wp_template_part' === $type ) {
-		$request_params = $fsestudio_global_rest_request->get_params();
+		$request_params = $patternmanager_global_rest_request->get_params();
 		$template->area = $request_params['area'];
 	}
 
@@ -117,13 +117,13 @@ add_filter( 'get_block_template', __NAMESPACE__ . '\pull_wp_templates_from_disk'
  * @param string              $template_type wp_template or wp_template_part.
  */
 function filter_query_when_creating_new_template( $query_result, $query, $template_type ) {
-	global $fsestudio_global_rest_request;
+	global $patternmanager_global_rest_request;
 
-	if ( ! is_object( $fsestudio_global_rest_request ) ) {
+	if ( ! is_object( $patternmanager_global_rest_request ) ) {
 		return $query_result;
 	}
 
-	$request_params = $fsestudio_global_rest_request->get_params();
+	$request_params = $patternmanager_global_rest_request->get_params();
 
 	// If we are creating a new template, the slug exists.
 	// See: https://github.com/WordPress/wordpress-develop/blob/bd08b221273b8b367a18fef8c9efb873819ac89d/src/wp-includes/rest-api/endpoints/class-wp-rest-templates-controller.php#L373.
@@ -160,7 +160,7 @@ add_filter( 'get_block_templates', __NAMESPACE__ . '\filter_query_when_creating_
  * @param WP_REST_Request $request Request used to generate the response.
  */
 function globalize_rest_request( $result, $server, $request ) {
-	global $fsestudio_global_rest_request;
-	$fsestudio_global_rest_request = $request;
+	global $patternmanager_global_rest_request;
+	$patternmanager_global_rest_request = $request;
 }
 add_filter( 'rest_pre_dispatch', __NAMESPACE__ . '\globalize_rest_request', 10, 3 );

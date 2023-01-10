@@ -4,12 +4,12 @@
  * Description: This module contains functions for getting and saving theme data.
  * Namespace: ThemeDataHandlers
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\ThemeDataHandlers;
+namespace PatternManager\ThemeDataHandlers;
 
 use WP_REST_Response;
 use function switch_theme;
@@ -41,7 +41,7 @@ function get_the_themes() {
 	$wpthemes = wp_get_themes();
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$formatted_theme_data = [];
 
@@ -97,9 +97,9 @@ function get_the_themes() {
 			'requires_php'      => $theme['RequiresPHP'],
 			'version'           => $theme['Version'],
 			'text_domain'       => $theme['TextDomain'],
-			'included_patterns' => \FseStudio\PatternDataHandlers\get_theme_patterns( $theme_dir ),
-			'template_files'    => \FseStudio\PatternDataHandlers\get_theme_templates( $theme_dir ),
-			'template_parts'    => \FseStudio\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
+			'included_patterns' => \PatternManager\PatternDataHandlers\get_theme_patterns( $theme_dir ),
+			'template_files'    => \PatternManager\PatternDataHandlers\get_theme_templates( $theme_dir ),
+			'template_parts'    => \PatternManager\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
 			'theme_json_file'   => ! $theme_json ? [] : json_decode( $theme_json, true ),
 			'styles'            => [],
 		];
@@ -118,14 +118,14 @@ function get_the_themes() {
  */
 function export_theme( $theme ) {
 	if ( ! class_exists( 'ZipArchive' ) ) {
-		return new \WP_Error( 'no_zip_archive_class', __( 'No ZipArchive class found', 'fse-studio' ) );
+		return new \WP_Error( 'no_zip_archive_class', __( 'No ZipArchive class found', 'pattern-manager' ) );
 	}
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . 'fse-studio/wp-modules/theme-boiler/theme-boiler/';
+	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . 'pattern-manager/wp-modules/theme-boiler/theme-boiler/';
 	$themes_dir       = $wp_filesystem->wp_themes_dir();
 	$new_theme_dir    = $themes_dir . trailingslashit( $theme['dirname'] );
 
@@ -148,12 +148,12 @@ function export_theme( $theme ) {
 	$zip->close();
 
 	if ( ! is_file( $zip_name ) ) {
-		return new \WP_Error( 'file_not_found', __( 'Zip file not found', 'fse-studio' ) );
+		return new \WP_Error( 'file_not_found', __( 'Zip file not found', 'pattern-manager' ) );
 	}
 
 	$zip_url = str_replace( trailingslashit( $wp_filesystem->wp_content_dir() ), trailingslashit( WP_CONTENT_URL ), $zip_name );
 
-	\FseStudio\Tracky\send_event(
+	\PatternManager\Tracky\send_event(
 		array(
 			'action'    => 'zip_created',
 			'themeName' => $theme['dirname'],
@@ -173,10 +173,10 @@ function export_theme( $theme ) {
 function update_theme( $theme, $update_patterns = true ) {
 
 	// Spin up the filesystem api.
-	$wp_filesystem = \FseStudio\GetWpFilesystem\get_wp_filesystem_api();
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/fse-studio/wp-modules/theme-boiler/theme-boiler/';
+	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/pattern-manager/wp-modules/theme-boiler/theme-boiler/';
 	$themes_dir       = $wp_filesystem->wp_themes_dir();
 	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
 
@@ -188,10 +188,10 @@ function update_theme( $theme, $update_patterns = true ) {
 	}
 
 	// Fix strings in the stylesheet.
-	\FseStudio\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
+	\PatternManager\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
 
 	// Fix strings in the functions.php file.
-	\FseStudio\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
+	\PatternManager\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
 
 	// Put the contents of the theme.json file into the theme.
 	if ( isset( $theme['theme_json_file'] ) && ! empty( $theme['theme_json_file'] ) ) {
@@ -212,27 +212,27 @@ function update_theme( $theme, $update_patterns = true ) {
 	switch_theme( $theme['dirname'] );
 
 	if ( isset( $theme['included_patterns'] ) ) {
-		\FseStudio\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
+		\PatternManager\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
 	} else {
-		$theme['included_patterns'] = \FseStudio\PatternDataHandlers\get_theme_patterns( get_template_directory() );
+		$theme['included_patterns'] = \PatternManager\PatternDataHandlers\get_theme_patterns( get_template_directory() );
 	}
 
 	// Note we do not check $update_patterns here. This is because included_patterns are treated differently than template_files and template_parts, in that they are saved WITH the theme data, while template things are saved separately in the site editor.
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		\FseStudio\PatternDataHandlers\update_pattern( $included_pattern );
+		\PatternManager\PatternDataHandlers\update_pattern( $included_pattern );
 	}
 
 	foreach ( $theme['styles'] as $style ) {
-		\FseStudio\ThemeJsonDataHandlers\update_theme_style( $style );
+		\PatternManager\ThemeJsonDataHandlers\update_theme_style( $style );
 	}
 
 	if ( $update_patterns ) {
 		if ( ! $theme['template_files'] ) {
-			$theme['template_files'] = \FseStudio\PatternDataHandlers\get_theme_templates( get_template_directory() );
+			$theme['template_files'] = \PatternManager\PatternDataHandlers\get_theme_templates( get_template_directory() );
 		}
 
 		foreach ( $theme['template_files'] as $template_name => $template_data ) {
-			\FseStudio\PatternDataHandlers\update_pattern(
+			\PatternManager\PatternDataHandlers\update_pattern(
 				array(
 					'name'    => $template_name,
 					'content' => $template_data['content'],
@@ -242,11 +242,11 @@ function update_theme( $theme, $update_patterns = true ) {
 		}
 
 		if ( ! isset( $theme['template_parts'] ) ) {
-			$theme['template_parts'] = \FseStudio\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
+			$theme['template_parts'] = \PatternManager\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
 		}
 
 		foreach ( $theme['template_parts'] as $template_name => $template_data ) {
-			\FseStudio\PatternDataHandlers\update_pattern(
+			\PatternManager\PatternDataHandlers\update_pattern(
 				array(
 					'name'    => $template_name,
 					'content' => $template_data['content'],
@@ -257,9 +257,9 @@ function update_theme( $theme, $update_patterns = true ) {
 	}
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	\FseStudio\PatternDataHandlers\tree_shake_theme_images();
+	\PatternManager\PatternDataHandlers\tree_shake_theme_images();
 
-	\FseStudio\Tracky\send_event(
+	\PatternManager\Tracky\send_event(
 		array(
 			'action'    => 'theme_saved',
 			'themeName' => $theme['dirname'],

@@ -1,9 +1,9 @@
-import { fsestudio } from '../globals';
+import { patternmanager } from '../globals';
 
 export default function getHeaders() {
 	return {
 		Accept: 'application/json',
 		'Content-Type': 'application/json',
-		'X-WP-Nonce': fsestudio.apiNonce,
+		'X-WP-Nonce': patternmanager.apiNonce,
 	};
 }

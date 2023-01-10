@@ -4,41 +4,41 @@ import { ReverseTooltip } from '../Tooltips';
 
 import type { ToggleTypes } from './types';
 
-export default function InserterToggle( {
+export default function InserterToggle({
 	postMeta,
 	handleChange,
-}: ToggleTypes ) {
+}: ToggleTypes) {
 	const isChecked = postMeta?.inserter ?? true;
 
 	return (
-		<PanelRow className="fsestudio-inserter-toggle">
+		<PanelRow className="patternmanager-inserter-toggle">
 			<ToggleControl
 				label={
-					! isChecked && postMeta?.postTypes?.length ? (
+					!isChecked && postMeta?.postTypes?.length ? (
 						<ReverseTooltip
-							helperText={ __(
+							helperText={__(
 								'Modal visibility selection also depends on this setting.',
-								'fse-studio'
-							) }
-							helperTitle={ __(
+								'pattern-manager'
+							)}
+							helperTitle={__(
 								'Display in inserter',
-								'fse-studio'
-							) }
+								'pattern-manager'
+							)}
 							icon="warning"
 						/>
 					) : (
-						__( 'Display in inserter', 'fse-studio' )
+						__('Display in inserter', 'pattern-manager')
 					)
 				}
-				checked={ isChecked }
+				checked={isChecked}
 				help={
 					isChecked
-						? __( 'Appears in the inserter', 'fse-studio' )
-						: __( 'Hidden in the inserter', 'fse-studio' )
+						? __('Appears in the inserter', 'pattern-manager')
+						: __('Hidden in the inserter', 'pattern-manager')
 				}
-				onChange={ ( value: boolean ) => {
-					handleChange( 'inserter', value );
-				} }
+				onChange={(value: boolean) => {
+					handleChange('inserter', value);
+				}}
 			/>
 		</PanelRow>
 	);
