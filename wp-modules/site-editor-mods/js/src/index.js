@@ -48,7 +48,11 @@ function changeWords( translation, text ) {
 
 	return translation;
 }
-wp.hooks.addFilter( 'i18n.gettext', 'pattern-manager/changeWords', changeWords );
+wp.hooks.addFilter(
+	'i18n.gettext',
+	'pattern-manager/changeWords',
+	changeWords
+);
 
 wp.hooks.removeFilter(
 	'blockEditor.__unstableCanInsertBlockType',

@@ -15,70 +15,79 @@ export default function ThemeOverview() {
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={__('Edit Theme Templates', 'pattern-manager')}
+						alt={ __( 'Edit Theme Templates', 'pattern-manager' ) }
 						className="w-full"
-						src={imgThemeTemplate}
+						src={ imgThemeTemplate }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{__('Theme Templates', 'pattern-manager')}
+							{ __( 'Theme Templates', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
-							{__(
+							{ __(
 								'Use theme template files to affect the layout and design of different parts of your website, like pages and posts.',
 								'pattern-manager'
-							)}
+							) }
 						</p>
 						<button
 							type="button"
 							className="text-wp-blue hover:underline font-medium"
-							onClick={() => {
-								currentView.set('theme_templates');
-							}}
+							onClick={ () => {
+								currentView.set( 'theme_templates' );
+							} }
 						>
-							{__('Edit Theme Templates →', 'pattern-manager')}
+							{ __(
+								'Edit Theme Templates →',
+								'pattern-manager'
+							) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{__('Your theme has no templates', 'pattern-manager')}
+					{ __( 'Your theme has no templates', 'pattern-manager' ) }
 				</div>
 			</div>
 
 			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={__('Edit Theme Template Parts', 'pattern-manager')}
+						alt={ __(
+							'Edit Theme Template Parts',
+							'pattern-manager'
+						) }
 						className="w-full"
-						src={imgThemeTemplateParts}
+						src={ imgThemeTemplateParts }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{__('Template Parts', 'pattern-manager')}
+							{ __( 'Template Parts', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
-							{__(
+							{ __(
 								'Template parts, such as a site header and footer, can be used as common elements across templates.',
 								'pattern-manager'
-							)}
+							) }
 						</p>
 						<button
 							type="button"
 							className="text-wp-blue hover:underline font-medium"
-							onClick={() => {
-								currentView.set('template_parts');
-							}}
+							onClick={ () => {
+								currentView.set( 'template_parts' );
+							} }
 						>
-							{__('Edit Template Parts →', 'pattern-manager')}
+							{ __( 'Edit Template Parts →', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{__('Your theme has no template parts', 'pattern-manager')}
+					{ __(
+						'Your theme has no template parts',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 
@@ -87,33 +96,33 @@ export default function ThemeOverview() {
 					<img
 						alt="Edit Theme Patterns"
 						className="w-full"
-						src={imgThemePatterns}
+						src={ imgThemePatterns }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{__('Theme Patterns', 'pattern-manager')}
+							{ __( 'Theme Patterns', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
-							{__(
+							{ __(
 								'Create, edit, and manage patterns (pre-configured designs), to be used across your theme.',
 								'pattern-manager'
-							)}
+							) }
 						</p>
 						<button
 							type="button"
 							className="text-wp-blue hover:underline font-medium"
-							onClick={() => {
-								currentView.set('theme_patterns');
-							}}
+							onClick={ () => {
+								currentView.set( 'theme_patterns' );
+							} }
 						>
-							{__('Edit Theme Patterns →', 'pattern-manager')}
+							{ __( 'Edit Theme Patterns →', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{__('Your theme has no patterns', 'pattern-manager')}
+					{ __( 'Your theme has no patterns', 'pattern-manager' ) }
 				</div>
 			</div>
 
@@ -122,33 +131,36 @@ export default function ThemeOverview() {
 					<img
 						alt="Theme.json"
 						className="w-full"
-						src={imgThemeJson}
+						src={ imgThemeJson }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{__('Styles and Settings', 'pattern-manager')}
+							{ __( 'Styles and Settings', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
-							{__(
+							{ __(
 								'Use this tool to configure the theme.json file and set your theme styles and block settings.',
 								'pattern-manager'
-							)}
+							) }
 						</p>
 						<button
 							type="button"
 							className="text-wp-blue hover:underline font-medium"
-							onClick={() => {
-								currentView.set('themejson_editor');
-							}}
+							onClick={ () => {
+								currentView.set( 'themejson_editor' );
+							} }
 						>
-							{__('Edit Theme.json →', 'pattern-manager')}
+							{ __( 'Edit Theme.json →', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{__('Your theme.json file is unedited', 'pattern-manager')}
+					{ __(
+						'Your theme.json file is unedited',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 
@@ -157,33 +169,39 @@ export default function ThemeOverview() {
 					<img
 						alt="Theme Style Variations"
 						className="w-full max-w-[260px] mx-auto"
-						src={imgThemeStyleVariations}
+						src={ imgThemeStyleVariations }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{__('Style Variations', 'pattern-manager')}
+							{ __( 'Style Variations', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
-							{__(
+							{ __(
 								'Create, edit, and save a variety of swappable theme settings and styles in your theme.json file.',
 								'pattern-manager'
-							)}
+							) }
 						</p>
 						<button
 							type="button"
 							className="text-wp-blue hover:underline font-medium"
-							onClick={() => {
-								currentView.set('themejson_editor');
-							}}
+							onClick={ () => {
+								currentView.set( 'themejson_editor' );
+							} }
 						>
-							{__('Edit Style Variations →', 'pattern-manager')}
+							{ __(
+								'Edit Style Variations →',
+								'pattern-manager'
+							) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{__('Your theme has no style variations', 'pattern-manager')}
+					{ __(
+						'Your theme has no style variations',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 
@@ -192,33 +210,36 @@ export default function ThemeOverview() {
 					<img
 						alt="Export Theme"
 						className="w-full max-w-[260px] mx-auto"
-						src={imgThemeExport}
+						src={ imgThemeExport }
 					/>
 				</div>
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{__('Download Theme Zip', 'pattern-manager')}
+							{ __( 'Download Theme Zip', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
-							{__(
+							{ __(
 								"Once you've finished editing your theme, you can export to a zip or use git to manage it.",
 								'pattern-manager'
-							)}
+							) }
 						</p>
 						<button
 							type="button"
 							className="text-wp-blue hover:underline font-medium"
-							onClick={() => {
+							onClick={ () => {
 								currentTheme.export();
-							}}
+							} }
 						>
-							{__('Download Theme', 'pattern-manager')}
+							{ __( 'Download Theme', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{__('You can also view your theme files', 'pattern-manager')}
+					{ __(
+						'You can also view your theme files',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 		</div>

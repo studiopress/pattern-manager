@@ -11,54 +11,54 @@ import type { InitialContext, Pattern, Patterns, Theme } from '../types';
 import { ThemePatternType } from '../enums';
 
 export default function useThemeData(
-	themeId: InitialContext['currentThemeId']['value'],
-	themes: InitialContext['themes'],
-	patternEditorIframe: InitialContext['patternEditorIframe'],
-	templateEditorIframe: InitialContext['templateEditorIframe'],
-	currentStyleVariationId: InitialContext['currentStyleVariationId'],
-	patterns: ReturnType<typeof usePatterns>
+	themeId: InitialContext[ 'currentThemeId' ][ 'value' ],
+	themes: InitialContext[ 'themes' ],
+	patternEditorIframe: InitialContext[ 'patternEditorIframe' ],
+	templateEditorIframe: InitialContext[ 'templateEditorIframe' ],
+	currentStyleVariationId: InitialContext[ 'currentStyleVariationId' ],
+	patterns: ReturnType< typeof usePatterns >
 ) {
 	const { setSnackBarValue } = useNoticeContext();
-	const [isSaving, setIsSaving] = useState(false);
-	const [fetchInProgress, setFetchInProgress] = useState(false);
-	const [saveCompleted, setSaveCompleted] = useState(true);
-	const themeData = themes.themes[themeId];
+	const [ isSaving, setIsSaving ] = useState( false );
+	const [ fetchInProgress, setFetchInProgress ] = useState( false );
+	const [ saveCompleted, setSaveCompleted ] = useState( true );
+	const themeData = themes.themes[ themeId ];
 
-	const defaultStyleName = useRef(currentStyleVariationId.value);
+	const defaultStyleName = useRef( currentStyleVariationId.value );
 
-	function setThemeData(newThemeData: Theme) {
-		themes.setThemes({
+	function setThemeData( newThemeData: Theme ) {
+		themes.setThemes( {
 			...themes.themes,
-			[themeId]: {
+			[ themeId ]: {
 				...newThemeData,
 			},
-		});
+		} );
 	}
 
-	const editorDirty = useRef(false);
-	const [siteEditorDirty, setSiteEditorDirty] = useState(false);
-	const [requestThemeRefresh, setRequestThemeRefresh] = useState(false);
+	const editorDirty = useRef( false );
+	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
+	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
 
 	/** Whether another theme also has the current directory name. */
 	function isDirnameTaken() {
-		const themeDirNames = Object.keys(themes.themes);
+		const themeDirNames = Object.keys( themes.themes );
 		const otherThemeDirNames = [];
 		// Remove this theme from the list of theme directories (a theme can of course have the same dirname as itself).
-		for (const themeDirnameIndex in themeDirNames) {
-			if (themeDirNames[themeDirnameIndex] !== themeData.id) {
-				otherThemeDirNames.push(themeDirNames[themeDirnameIndex]);
+		for ( const themeDirnameIndex in themeDirNames ) {
+			if ( themeDirNames[ themeDirnameIndex ] !== themeData.id ) {
+				otherThemeDirNames.push( themeDirNames[ themeDirnameIndex ] );
 			}
 		}
 
-		return otherThemeDirNames.includes(themeData.dirname);
+		return otherThemeDirNames.includes( themeData.dirname );
 	}
 
-	useEffect(() => {
+	useEffect( () => {
 		window.addEventListener(
 			'message',
-			(event) => {
-				if (event.data === 'patternmanager_site_editor_dirty') {
-					setSiteEditorDirty(true);
+			( event ) => {
+				if ( event.data === 'patternmanager_site_editor_dirty' ) {
+					setSiteEditorDirty( true );
 				}
 			},
 			false
@@ -66,34 +66,36 @@ export default function useThemeData(
 		// When a pattern or site editor is saved, refresh the theme data.
 		window.addEventListener(
 			'message',
-			(event) => {
-				if (event.data === 'patternmanager_site_editor_save_complete') {
-					setSiteEditorDirty(false);
-					setRequestThemeRefresh(true);
+			( event ) => {
+				if (
+					event.data === 'patternmanager_site_editor_save_complete'
+				) {
+					setSiteEditorDirty( false );
+					setRequestThemeRefresh( true );
 				}
 			},
 			false
 		);
 
-		window.addEventListener('beforeunload', warnIfUnsavedChanges);
+		window.addEventListener( 'beforeunload', warnIfUnsavedChanges );
 		return () => {
-			window.removeEventListener('beforeunload', warnIfUnsavedChanges);
+			window.removeEventListener( 'beforeunload', warnIfUnsavedChanges );
 		};
-	}, []);
+	}, [] );
 
-	useEffect(() => {
-		if (requestThemeRefresh) {
+	useEffect( () => {
+		if ( requestThemeRefresh ) {
 			// If something is still dirty, don't do anything yet.
-			if (siteEditorDirty) {
-				setRequestThemeRefresh(false);
+			if ( siteEditorDirty ) {
+				setRequestThemeRefresh( false );
 			} else {
-				setRequestThemeRefresh(false);
+				setRequestThemeRefresh( false );
 				// We have to do this outside the patternmanager_pattern_editor_save_complete listener because currentTheme is stale there.
 				uponSuccessfulSave();
 				getThemeData();
 			}
 		}
-	}, [requestThemeRefresh]);
+	}, [ requestThemeRefresh ] );
 
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
@@ -102,8 +104,8 @@ export default function useThemeData(
 	 *
 	 * @param {Event} event The beforeunload event.
 	 */
-	function warnIfUnsavedChanges(event: Event) {
-		if (editorDirty.current || siteEditorDirty) {
+	function warnIfUnsavedChanges( event: Event ) {
+		if ( editorDirty.current || siteEditorDirty ) {
 			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
 			// @ts-expect-error: returnvalue is deprecated.
 			event.returnValue = __(
@@ -115,114 +117,117 @@ export default function useThemeData(
 	}
 
 	function getThemeData() {
-		return new Promise((resolve) => {
-			if (!themeId || fetchInProgress) {
+		return new Promise( ( resolve ) => {
+			if ( ! themeId || fetchInProgress ) {
 				return;
 			}
-			setFetchInProgress(true);
-			fetch(patternmanager.apiEndpoints.getThemeEndpoint, {
+			setFetchInProgress( true );
+			fetch( patternmanager.apiEndpoints.getThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify({
-					themeId: themes.themes[themeId].dirname,
-				}),
-			})
-				.then((response) => response.json())
-				.then((response: Theme & { error?: string }) => {
-					setFetchInProgress(false);
+				body: JSON.stringify( {
+					themeId: themes.themes[ themeId ].dirname,
+				} ),
+			} )
+				.then( ( response ) => response.json() )
+				.then( ( response: Theme & { error?: string } ) => {
+					setFetchInProgress( false );
 					if (
 						response.error &&
 						response.error === 'theme_not_found'
 					) {
-						setThemeData(themes.themes[themeId]);
+						setThemeData( themes.themes[ themeId ] );
 					} else {
-						setThemeData(response);
-						resolve(response);
+						setThemeData( response );
+						resolve( response );
 					}
-				});
-		});
+				} );
+		} );
 	}
 
 	function saveThemeData() {
-		return new Promise((resolve) => {
-			if (themeData.name === '') {
+		return new Promise( ( resolve ) => {
+			if ( themeData.name === '' ) {
 				/* eslint-disable */
 				alert('You need to change your theme name before saving');
 				/* eslint-enable */
 				return;
 			}
-			setIsSaving(true);
-			setSaveCompleted(false);
+			setIsSaving( true );
+			setSaveCompleted( false );
 
-			fetch(patternmanager.apiEndpoints.saveThemeEndpoint, {
+			fetch( patternmanager.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify(themeData),
-			})
-				.then((response) => {
-					if (!response.ok) {
+				body: JSON.stringify( themeData ),
+			} )
+				.then( ( response ) => {
+					if ( ! response.ok ) {
 						throw response.statusText;
 					}
 					return response.json();
-				})
+				} )
 				.then(
-					(data: {
+					( data: {
 						message: string;
 						styleJsonModified: boolean;
 						themeData: Theme;
 						themeJsonModified: boolean;
-					}) => {
-						if (patternEditorIframe.current) {
+					} ) => {
+						if ( patternEditorIframe.current ) {
 							// Send a message to the iframe, telling it that the themejson has changed.
-							if (data.themeJsonModified) {
+							if ( data.themeJsonModified ) {
 								patternEditorIframe.current.contentWindow.postMessage(
-									JSON.stringify({
-										message: 'patternmanager_themejson_changed',
-									}),
+									JSON.stringify( {
+										message:
+											'patternmanager_themejson_changed',
+									} ),
 									'*'
 								);
 							}
 						}
 
-						if (templateEditorIframe.current) {
+						if ( templateEditorIframe.current ) {
 							templateEditorIframe.current.contentWindow.postMessage(
-								JSON.stringify({
+								JSON.stringify( {
 									message: 'patternmanager_save',
-								}),
+								} ),
 								'*'
 							);
 
-							if (data.themeJsonModified) {
+							if ( data.themeJsonModified ) {
 								templateEditorIframe.current.contentWindow.postMessage(
-									JSON.stringify({
-										message: 'patternmanager_themejson_changed',
-									}),
+									JSON.stringify( {
+										message:
+											'patternmanager_themejson_changed',
+									} ),
 									'*'
 								);
-							} else if (data.styleJsonModified) {
+							} else if ( data.styleJsonModified ) {
 								templateEditorIframe.current.contentWindow.postMessage(
-									JSON.stringify({
-										message: 'patternmanager_stylejson_changed',
-									}),
+									JSON.stringify( {
+										message:
+											'patternmanager_stylejson_changed',
+									} ),
 									'*'
 								);
 							}
 						}
 
-						setThemeData(data.themeData);
+						setThemeData( data.themeData );
 
-						if (!siteEditorDirty) {
+						if ( ! siteEditorDirty ) {
 							uponSuccessfulSave();
 						}
 
-						resolve(data);
+						resolve( data );
 					}
 				);
-		});
+		} );
 	}
 
 	function uponSuccessfulSave() {
-		getThemeData().then(() => {
+		getThemeData().then( () => {
 			setSnackBarValue(
 				__(
 					'Theme successfully saved and all files written to theme directory',
@@ -231,26 +236,26 @@ export default function useThemeData(
 			);
 
 			editorDirty.current = false;
-			setSiteEditorDirty(false);
-			setSaveCompleted(true);
-			setIsSaving(false);
+			setSiteEditorDirty( false );
+			setSaveCompleted( true );
+			setIsSaving( false );
 			patterns?.reloadPatternPreviews();
-		});
+		} );
 	}
 
 	function exportThemeData() {
-		return new Promise((resolve) => {
-			fetch(patternmanager.apiEndpoints.exportThemeEndpoint, {
+		return new Promise( ( resolve ) => {
+			fetch( patternmanager.apiEndpoints.exportThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify(themeData),
-			})
-				.then((response) => response.json())
-				.then((data: string) => {
-					window.location.replace(data);
-					resolve(data);
-				});
-		});
+				body: JSON.stringify( themeData ),
+			} )
+				.then( ( response ) => response.json() )
+				.then( ( data: string ) => {
+					window.location.replace( data );
+					resolve( data );
+				} );
+		} );
 	}
 
 	function setThemeJsonValue(
@@ -266,49 +271,49 @@ export default function useThemeData(
 		const jsonDataBody =
 			currentStyleValue === defaultStyleName.current
 				? themeData.theme_json_file
-				: themeData.styles[currentStyleValue]?.body;
+				: themeData.styles[ currentStyleValue ]?.body;
 
 		if (
-			!jsonDataBody[topLevelSection] ||
-			Array.isArray(jsonDataBody[topLevelSection])
+			! jsonDataBody[ topLevelSection ] ||
+			Array.isArray( jsonDataBody[ topLevelSection ] )
 		) {
-			jsonDataBody[topLevelSection] = {};
+			jsonDataBody[ topLevelSection ] = {};
 		}
 
 		// Remove any leading commas that might exist.
-		if (selectorString[0] === '.') {
-			selectorString = selectorString.substring(1);
+		if ( selectorString[ 0 ] === '.' ) {
+			selectorString = selectorString.substring( 1 );
 		}
 
 		// Split the selector string at commas
-		const keys = selectorString.split('.');
+		const keys = selectorString.split( '.' );
 
 		const modifiedData = setNestedObject(
 			value,
 			defaultValue,
-			[topLevelSection, ...keys] // Top level key with the array of keys.
-		)(jsonDataBody);
+			[ topLevelSection, ...keys ] // Top level key with the array of keys.
+		)( jsonDataBody );
 
 		editTheme(
 			// If the current style is not default, save the variation data to the styles array.
 			// Otherwise, save the modifiedData to theme.json.
 			currentStyleVariationId.value !== defaultStyleName.current
 				? {
-					...themeData,
-					styles: {
-						...themeData.styles,
-						[currentStyleVariationId.value]: {
-							...themeData.styles[
-							currentStyleVariationId.value
-							],
-							body: modifiedData,
+						...themeData,
+						styles: {
+							...themeData.styles,
+							[ currentStyleVariationId.value ]: {
+								...themeData.styles[
+									currentStyleVariationId.value
+								],
+								body: modifiedData,
+							},
 						},
-					},
-				}
+				  }
 				: {
-					...themeData,
-					theme_json_file: modifiedData,
-				}
+						...themeData,
+						theme_json_file: modifiedData,
+				  }
 		);
 	}
 
@@ -324,44 +329,44 @@ export default function useThemeData(
 		const currentStyleVariation =
 			currentStyleValue === defaultStyleName.current
 				? themeData.theme_json_file
-				: themeData?.styles[currentStyleValue]?.body ??
-				// Edge case fallback: intermittent crash on switching themes.
-				// Recreate by quoting out fallback, selecting a style variation, then switching themes.
-				themeData.theme_json_file;
+				: themeData?.styles[ currentStyleValue ]?.body ??
+				  // Edge case fallback: intermittent crash on switching themes.
+				  // Recreate by quoting out fallback, selecting a style variation, then switching themes.
+				  themeData.theme_json_file;
 
 		// Remove any leading commas that might exist.
-		if (selectorString[0] === '.') {
-			selectorString = selectorString.substring(1);
+		if ( selectorString[ 0 ] === '.' ) {
+			selectorString = selectorString.substring( 1 );
 		}
 
 		// Split the selector string at commas
-		const keys = selectorString.split('.');
+		const keys = selectorString.split( '.' );
 
 		return (
-			getNestedValue(currentStyleVariation[topLevelSection], keys) ??
+			getNestedValue( currentStyleVariation[ topLevelSection ], keys ) ??
 			defaultValue
 		);
 	}
 
-	function createPattern(patternData: Pattern) {
-		return new Promise((resolve) => {
+	function createPattern( patternData: Pattern ) {
+		return new Promise( ( resolve ) => {
 			const newThemeData = {
 				...themeData,
-				[ThemePatternType[patternData.type]]: {
-					...themeData[ThemePatternType[patternData.type]],
-					[patternData.name]: patternData,
+				[ ThemePatternType[ patternData.type ] ]: {
+					...themeData[ ThemePatternType[ patternData.type ] ],
+					[ patternData.name ]: patternData,
 				},
 			};
 
-			setThemeData(newThemeData);
-			resolve(newThemeData);
-		});
+			setThemeData( newThemeData );
+			resolve( newThemeData );
+		} );
 	}
 
-	function deletePattern(patternName: Pattern['name']) {
+	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		if (
 			/* eslint-disable no-alert */
-			!window.confirm(
+			! window.confirm(
 				__(
 					'Are you sure you want to delete this pattern?',
 					'pattern-manager'
@@ -372,14 +377,14 @@ export default function useThemeData(
 		}
 
 		const {
-			[patternName]: { },
+			[ patternName ]: {},
 			...newIncludedPatterns
-		} = (themeData.included_patterns as Patterns) ?? {};
+		} = ( themeData.included_patterns as Patterns ) ?? {};
 
-		setThemeData({
+		setThemeData( {
 			...themeData,
 			included_patterns: newIncludedPatterns,
-		});
+		} );
 	}
 
 	/**
@@ -390,9 +395,9 @@ export default function useThemeData(
 	 *
 	 * @param {Theme} newThemeData
 	 */
-	function editTheme(newThemeData: Theme) {
+	function editTheme( newThemeData: Theme ) {
 		editorDirty.current = true;
-		setThemeData(newThemeData);
+		setThemeData( newThemeData );
 	}
 
 	return {

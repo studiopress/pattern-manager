@@ -22,19 +22,19 @@ type Props = {
 	isVisible: boolean;
 };
 
-export default function ThemePatterns({ isVisible }: Props) {
+export default function ThemePatterns( { isVisible }: Props ) {
 	const { currentTheme, currentView, currentPatternId } = useStudioContext();
 
-	if (!isVisible || !currentTheme.data) {
+	if ( ! isVisible || ! currentTheme.data ) {
 		return null;
 	}
 
 	return (
-		<div hidden={!isVisible} className="w-full">
+		<div hidden={ ! isVisible } className="w-full">
 			<div className="bg-fses-gray p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
-						{__('Patterns', 'pattern-manager')}
+						{ __( 'Patterns', 'pattern-manager' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						Add patterns to your theme. You can create patterns from
@@ -49,11 +49,11 @@ export default function ThemePatterns({ isVisible }: Props) {
 					<div className="flex-initial w-full md:w-2/3">
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
-								{Object.entries(
+								{ Object.entries(
 									currentTheme?.data?.included_patterns ?? {}
 								).length === 0 ? (
 									<div className="bg-fses-gray p-10 text-center w-full col-span-2 rounded">
-										{createInterpolateElement(
+										{ createInterpolateElement(
 											__(
 												'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
 												'pattern-manager'
@@ -61,78 +61,78 @@ export default function ThemePatterns({ isVisible }: Props) {
 											{
 												span: (
 													<strong>
-														{__(
+														{ __(
 															'Create New Pattern',
 															'pattern-manager'
-														)}
+														) }
 													</strong>
 												),
 											}
-										)}
+										) }
 									</div>
-								) : null}
-								{Object.entries(
+								) : null }
+								{ Object.entries(
 									currentTheme?.data?.included_patterns ?? {}
 								).map(
-									([patternName, patternData]: [
+									( [ patternName, patternData ]: [
 										string,
 										Pattern
-									]) => {
+									] ) => {
 										return (
 											<div
-												key={patternName}
+												key={ patternName }
 												className="min-h-[300px] bg-gray-100 flex flex-col justify-between border border-gray-200 rounded relative group"
 											>
 												<button
 													type="button"
 													className="absolute top-2 right-2 z-50"
-													aria-label={__(
+													aria-label={ __(
 														'Delete pattern',
 														'pattern-manager'
-													)}
-													onClick={() => {
+													) }
+													onClick={ () => {
 														currentTheme.deletePattern(
 															patternName
 														);
-													}}
+													} }
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={close}
-														size={30}
+														icon={ close }
+														size={ 30 }
 													/>
 												</button>
 												<button
 													type="button"
 													className="absolute top-2 left-2 z-50"
-													aria-label={__(
+													aria-label={ __(
 														'Edit Pattern',
 														'pattern-manager'
-													)}
-													onClick={() => {
+													) }
+													onClick={ () => {
 														currentPatternId.set(
 															patternName
 														);
 														currentView.set(
 															'pattern_editor'
 														);
-													}}
+													} }
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={edit}
-														size={30}
+														icon={ edit }
+														size={ 30 }
 													/>
 												</button>
 
 												<button
 													type="button"
 													className="absolute bottom-16 left-2 z-50"
-													aria-label={__(
+													aria-label={ __(
 														'Duplicate Pattern',
 														'pattern-manager'
-													)}
-													onClick={() => {
+													) }
+													onClick={ () => {
 														const newPattern =
 															getDuplicatePattern(
 																patternData,
@@ -140,50 +140,50 @@ export default function ThemePatterns({ isVisible }: Props) {
 																	currentTheme
 																		.data
 																		?.included_patterns ??
-																	{}
+																		{}
 																)
 															);
 														currentTheme
 															.createPattern(
 																newPattern
 															)
-															.then(() => {
+															.then( () => {
 																currentPatternId.set(
 																	newPattern.slug
 																);
 																currentView.set(
 																	'pattern_editor'
 																);
-															});
-													}}
+															} );
+													} }
 												>
 													<Icon
 														className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 opacity-0 group-hover:opacity-100"
-														icon={copy}
-														size={30}
+														icon={ copy }
+														size={ 30 }
 													/>
 												</button>
 
 												<div className="p-3 flex flex-grow items-center z-0">
 													<PatternPreview
-														key={patternName}
+														key={ patternName }
 														url={
 															patternmanager.siteUrl +
 															'?patternmanager_pattern_preview=' +
 															patternData.name
 														}
-														scale={0.2}
+														scale={ 0.2 }
 													/>
 												</div>
 												<div>
 													<h2 className="text-sm bg-white p-4 rounded-b">
-														{patternData.title}
+														{ patternData.title }
 													</h2>
 												</div>
 											</div>
 										);
 									}
-								)}
+								) }
 							</div>
 						</>
 					</div>
@@ -192,7 +192,10 @@ export default function ThemePatterns({ isVisible }: Props) {
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
 								<h2 className="sr-only">
-									{__('Pattern Creation', 'pattern-manager')}
+									{ __(
+										'Pattern Creation',
+										'pattern-manager'
+									) }
 								</h2>
 								<h3 className="mb-2 font-medium">
 									Create new patterns
@@ -204,7 +207,7 @@ export default function ThemePatterns({ isVisible }: Props) {
 								</p>
 								<button
 									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={() => {
+									onClick={ () => {
 										// Get the new pattern title and slug.
 										const { patternTitle, patternSlug } =
 											getNextPatternIds(
@@ -213,7 +216,7 @@ export default function ThemePatterns({ isVisible }: Props) {
 											);
 
 										currentTheme
-											.createPattern({
+											.createPattern( {
 												type: 'pattern',
 												title: patternTitle,
 												name: patternSlug,
@@ -226,8 +229,8 @@ export default function ThemePatterns({ isVisible }: Props) {
 												description: '',
 												viewportWidth: '',
 												content: '',
-											})
-											.then(() => {
+											} )
+											.then( () => {
 												// Switch to the newly created theme.
 												currentPatternId.set(
 													patternSlug
@@ -235,10 +238,13 @@ export default function ThemePatterns({ isVisible }: Props) {
 												currentView.set(
 													'pattern_editor'
 												);
-											});
-									}}
+											} );
+									} }
 								>
-									{__('Create New Pattern', 'pattern-manager')}
+									{ __(
+										'Create New Pattern',
+										'pattern-manager'
+									) }
 								</button>
 							</div>
 						</div>
@@ -246,7 +252,7 @@ export default function ThemePatterns({ isVisible }: Props) {
 						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h2 className="sr-only">
-									{__('Documentation', 'pattern-manager')}
+									{ __( 'Documentation', 'pattern-manager' ) }
 								</h2>
 								<h3 className="mb-2 font-medium">
 									Working with patterns
@@ -267,88 +273,88 @@ export default function ThemePatterns({ isVisible }: Props) {
 									<li>
 										<a
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={__(
+											aria-label={ __(
 												'Exploring Block Patterns Video (link opens in a new tab)',
 												'pattern-manager'
-											)}
+											) }
 											href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/"
 											target="_blank"
 											rel="noopener"
 										>
-											{__(
+											{ __(
 												'Exploring Block Patterns Video',
 												'pattern-manager'
-											)}
+											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={external}
-												size={26}
+												icon={ external }
+												size={ 26 }
 											/>
 										</a>
 									</li>
 									<li>
 										<a
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={__(
+											aria-label={ __(
 												'Block Theme Overview (link opens in a new tab)',
 												'pattern-manager'
-											)}
+											) }
 											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
 											target="_blank"
 											rel="noopener"
 										>
-											{__(
+											{ __(
 												'Block Theme Overview',
 												'pattern-manager'
-											)}
+											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={external}
-												size={26}
+												icon={ external }
+												size={ 26 }
 											/>
 										</a>
 									</li>
 									<li>
 										<a
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={__(
+											aria-label={ __(
 												'Block Editor Handbook (link opens in a new tab)',
 												'pattern-manager'
-											)}
+											) }
 											href="https://developer.wordpress.org/block-editor/"
 											target="_blank"
 											rel="noopener"
 										>
-											{__(
+											{ __(
 												'Block Editor Handbook',
 												'pattern-manager'
-											)}
+											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={external}
-												size={26}
+												icon={ external }
+												size={ 26 }
 											/>
 										</a>
 									</li>
 									<li>
 										<a
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={__(
+											aria-label={ __(
 												'Block Builder Basics Video (link opens in a new tab)',
 												'pattern-manager'
-											)}
+											) }
 											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
 											target="_blank"
 											rel="noopener"
 										>
-											{__(
+											{ __(
 												'Block Builder Basics Video',
 												'pattern-manager'
-											)}
+											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={external}
-												size={26}
+												icon={ external }
+												size={ 26 }
 											/>
 										</a>
 									</li>

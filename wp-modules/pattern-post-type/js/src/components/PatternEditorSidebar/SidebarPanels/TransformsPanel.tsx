@@ -10,63 +10,66 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
  * The panel section for assigning block types to the pattern.
  * Block types in the pattern file are primarily used for transforming blocks.
  */
-export default function TransformsPanel({
+export default function TransformsPanel( {
 	postMeta,
 	blockTypes,
 	handleChange,
-}: BaseSidebarProps & Pick<AdditionalSidebarProps, 'blockTypes'>) {
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'blockTypes' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-transforms"
-			title={__('Transforms (Block Types)', 'pattern-manager')}
+			title={ __( 'Transforms (Block Types)', 'pattern-manager' ) }
 		>
 			<HelperTooltip
-				helperText={__(
+				helperText={ __(
 					'Select the blocks that users can transform into this pattern.',
 					'pattern-manager'
-				)}
-				helperTitle={__('Blocks for transformation', 'pattern-manager')}
+				) }
+				helperTitle={ __(
+					'Blocks for transformation',
+					'pattern-manager'
+				) }
 			/>
-			{blockTypes ? (
+			{ blockTypes ? (
 				<Select
 					isMulti
 					isClearable
-					closeMenuOnSelect={false}
-					value={postMeta?.blockTypes?.map((blockType) => {
+					closeMenuOnSelect={ false }
+					value={ postMeta?.blockTypes?.map( ( blockType ) => {
 						// Hide block type related to the post type modal.
-						if (blockType === 'core/post-content') {
+						if ( blockType === 'core/post-content' ) {
 							return null;
 						}
 
 						return blockTypes.find(
-							(matchedBlocktype) =>
+							( matchedBlocktype ) =>
 								matchedBlocktype.value === blockType
 						);
-					})}
-					options={blockTypes}
-					onChange={(blockTypeSelections) => {
-						handleChange('blockTypes', [
+					} ) }
+					options={ blockTypes }
+					onChange={ ( blockTypeSelections ) => {
+						handleChange( 'blockTypes', [
 							...blockTypeSelections.map(
-								(blockTypeObject) => blockTypeObject.value
+								( blockTypeObject ) => blockTypeObject.value
 							),
 							// Make sure 'core/post-content' is not removed if it was in postMeta.blockTypes.
-							...((postMeta?.blockTypes?.includes(
+							...( ( postMeta?.blockTypes?.includes(
 								'core/post-content'
-							) && ['core/post-content']) ||
-								''),
-						]);
-					}}
+							) && [ 'core/post-content' ] ) ||
+								'' ),
+						] );
+					} }
 					menuPlacement="auto"
-					styles={{
-						menu: (base) => ({
+					styles={ {
+						menu: ( base ) => ( {
 							...base,
 							zIndex: 100,
-						}),
-					}}
+						} ),
+					} }
 				/>
 			) : (
 				<Spinner />
-			)}
+			) }
 		</PluginDocumentSettingPanel>
 	);
 }

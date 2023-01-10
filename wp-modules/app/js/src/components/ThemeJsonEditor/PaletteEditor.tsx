@@ -8,17 +8,17 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 type Props = {
 	properties: {
-		name: { [key: string]: string };
-		slug: { [key: string]: string };
-		color: { [key: string]: string };
+		name: { [ key: string ]: string };
+		slug: { [ key: string ]: string };
+		color: { [ key: string ]: string };
 	};
 	schemaPosition: string;
 };
 
-export default function PaletteEditor({ properties, schemaPosition }: Props) {
-	const [popoverOpen, setPopoverOpen] = useState(false);
+export default function PaletteEditor( { properties, schemaPosition }: Props ) {
+	const [ popoverOpen, setPopoverOpen ] = useState( false );
 	const { currentTheme } = useStudioContext();
-	const inputId = useInstanceId(PaletteEditor);
+	const inputId = useInstanceId( PaletteEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
@@ -42,90 +42,90 @@ export default function PaletteEditor({ properties, schemaPosition }: Props) {
 				<div className="flex flex-col gap-5 w-full lg:w-1/2">
 					<div className="name flex flex-col space-y-1">
 						<label
-							htmlFor={`palette-name-${inputId}`}
+							htmlFor={ `palette-name-${ inputId }` }
 							className="font-semibold"
 						>
-							{__('Name', 'pattern-manager')}
+							{ __( 'Name', 'pattern-manager' ) }
 						</label>
-						<span>{properties.name.description}</span>
+						<span>{ properties.name.description }</span>
 						<input
 							type="text"
-							id={`palette-name-${inputId}`}
-							value={nameValue}
-							onChange={(event) => {
+							id={ `palette-name-${ inputId }` }
+							value={ nameValue }
+							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.name',
 									event.target.value
 								);
-							}}
+							} }
 						/>
 					</div>
 					<div className="slug flex flex-col space-y-1">
 						<label
-							htmlFor={`palette-slug-${inputId}`}
+							htmlFor={ `palette-slug-${ inputId }` }
 							className="font-semibold"
 						>
-							{__('Slug', 'pattern-manager')}
+							{ __( 'Slug', 'pattern-manager' ) }
 						</label>
-						<span>{properties.slug.description}</span>
+						<span>{ properties.slug.description }</span>
 						<input
 							type="text"
-							id={`palette-slug-${inputId}`}
-							value={slugValue}
-							onChange={(event) => {
+							id={ `palette-slug-${ inputId }` }
+							value={ slugValue }
+							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.slug',
 									event.target.value
 								);
-							}}
+							} }
 						/>
 					</div>
 				</div>
 				<div className="palette w-full lg:w-1/2">
 					<div>
 						<button
-							onClick={() => {
-								setPopoverOpen(true);
-							}}
+							onClick={ () => {
+								setPopoverOpen( true );
+							} }
 							className="bg-white rounded-md shadow-sm p-4 hover:shadow transition ease-in-out hover:cursor-pointer w-full"
 						>
 							<div className="flex items-center gap-3">
 								<span
 									className="h-10 w-10 rounded-full inline-block border border-gray-200"
-									style={{
+									style={ {
 										backgroundColor: colorValue,
-									}}
+									} }
 								></span>
 								<span className="font-semibold text-left">
-									{__('Choose Color', 'pattern-manager')}{' '}
+									{ __( 'Choose Color', 'pattern-manager' ) }{ ' ' }
 									<br />
 									<small className="text-gray-500">
-										{colorValue ? colorValue : null}
+										{ colorValue ? colorValue : null }
 									</small>
 								</span>
-								{popoverOpen ? (
+								{ popoverOpen ? (
 									<Popover
-										onFocusOutside={() => {
-											setPopoverOpen(false);
-										}}
+										onFocusOutside={ () => {
+											setPopoverOpen( false );
+										} }
 									>
 										<ColorPicker
-											color={colorValue}
+											color={ colorValue }
 											// @ts-ignore The declaration file is wrong.
-											onChange={(newValue) => {
+											onChange={ ( newValue ) => {
 												currentTheme.setThemeJsonValue(
 													'settings',
 													schemaPosition + '.color',
 													newValue
 												);
-											}}
+											} }
 											enableAlpha
 											defaultValue="#000"
 										/>
 									</Popover>
-								) : null}
+								) : null }
 							</div>
 						</button>
 					</div>
@@ -134,7 +134,7 @@ export default function PaletteEditor({ properties, schemaPosition }: Props) {
 			<div className="text-right border-t border-dotted border-gray-300 pt-3 mt-5">
 				<button
 					className="text-red-700 hover:text-red-800"
-					onClick={(e) => {
+					onClick={ ( e ) => {
 						e.preventDefault();
 						if (
 							/* eslint-disable */
@@ -151,9 +151,9 @@ export default function PaletteEditor({ properties, schemaPosition }: Props) {
 								schemaPosition
 							);
 						}
-					}}
+					} }
 				>
-					{__('Delete Color Palette Option', 'pattern-manager')}
+					{ __( 'Delete Color Palette Option', 'pattern-manager' ) }
 				</button>
 			</div>
 		</div>

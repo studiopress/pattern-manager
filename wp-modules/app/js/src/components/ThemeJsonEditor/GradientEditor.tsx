@@ -7,19 +7,19 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 type Props = {
 	properties: {
-		name: { [key: string]: string };
-		slug: { [key: string]: string };
-		gradient: { [key: string]: string };
+		name: { [ key: string ]: string };
+		slug: { [ key: string ]: string };
+		gradient: { [ key: string ]: string };
 	};
 	schemaPosition: string;
 };
 
-export default function GradientEditor({
+export default function GradientEditor( {
 	properties,
 	schemaPosition,
-}: Props) {
+}: Props ) {
 	const { currentTheme } = useStudioContext();
-	const inputId = useInstanceId(GradientEditor);
+	const inputId = useInstanceId( GradientEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
@@ -43,58 +43,58 @@ export default function GradientEditor({
 				<div className="flex flex-col gap-5 w-full lg:w-1/2">
 					<div className="name flex flex-col space-y-1">
 						<label
-							htmlFor={`gradient-name-${inputId}`}
+							htmlFor={ `gradient-name-${ inputId }` }
 							className="font-semibold"
 						>
-							{__('Name', 'pattern-manager')}
+							{ __( 'Name', 'pattern-manager' ) }
 						</label>
-						<span>{properties.name.description}</span>
+						<span>{ properties.name.description }</span>
 						<input
 							type="text"
-							id={`gradient-name-${inputId}`}
-							value={nameValue}
-							onChange={(event) => {
+							id={ `gradient-name-${ inputId }` }
+							value={ nameValue }
+							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.name',
 									event.target.value
 								);
-							}}
+							} }
 						/>
 					</div>
 					<div className="slug flex flex-col space-y-1">
 						<label
-							htmlFor={`gradient-slug-${inputId}`}
+							htmlFor={ `gradient-slug-${ inputId }` }
 							className="font-semibold"
 						>
-							{__('Slug', 'pattern-manager')}
+							{ __( 'Slug', 'pattern-manager' ) }
 						</label>
-						<span>{properties.slug.description}</span>
+						<span>{ properties.slug.description }</span>
 						<input
 							type="text"
-							id={`gradient-slug-${inputId}`}
-							value={slugValue}
-							onChange={(event) => {
+							id={ `gradient-slug-${ inputId }` }
+							value={ slugValue }
+							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.slug',
 									event.target.value
 								);
-							}}
+							} }
 						/>
 					</div>
 				</div>
 				<div className="gradient w-full lg:w-1/2">
 					<div>
 						<CustomGradientPicker
-							value={gradientValue}
-							onChange={(newValue) => {
+							value={ gradientValue }
+							onChange={ ( newValue ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.gradient',
 									newValue
 								);
-							}}
+							} }
 						/>
 					</div>
 				</div>
@@ -102,7 +102,7 @@ export default function GradientEditor({
 			<div className="text-right border-t border-dotted border-gray-300 pt-3 mt-5">
 				<button
 					className="text-red-700 hover:text-red-800"
-					onClick={(e) => {
+					onClick={ ( e ) => {
 						e.preventDefault();
 						if (
 							/* eslint-disable */
@@ -119,9 +119,9 @@ export default function GradientEditor({
 								schemaPosition
 							);
 						}
-					}}
+					} }
 				>
-					{__('Delete Gradient', 'pattern-manager')}
+					{ __( 'Delete Gradient', 'pattern-manager' ) }
 				</button>
 			</div>
 		</div>

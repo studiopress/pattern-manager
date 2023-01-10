@@ -8,18 +8,18 @@ import useStudioContext from '../../hooks/useStudioContext';
 
 type Props = {
 	properties: {
-		name: { [key: string]: string };
-		slug: { [key: string]: string };
-		colors: { [key: string]: unknown };
+		name: { [ key: string ]: string };
+		slug: { [ key: string ]: string };
+		colors: { [ key: string ]: unknown };
 	};
 	schemaPosition: string;
 };
 
-export default function DuotoneEditor({ properties, schemaPosition }: Props) {
-	const [popover1Open, setPopover1Open] = useState(false);
-	const [popover2Open, setPopover2Open] = useState(false);
+export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
+	const [ popover1Open, setPopover1Open ] = useState( false );
+	const [ popover2Open, setPopover2Open ] = useState( false );
 	const { currentTheme } = useStudioContext();
-	const inputId = useInstanceId(DuotoneEditor);
+	const inputId = useInstanceId( DuotoneEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
 		'settings',
@@ -48,131 +48,132 @@ export default function DuotoneEditor({ properties, schemaPosition }: Props) {
 				<div className="flex flex-col gap-5 w-full lg:w-1/2">
 					<div className="name flex flex-col space-y-1">
 						<label
-							htmlFor={`duotone-name-${inputId}`}
+							htmlFor={ `duotone-name-${ inputId }` }
 							className="font-semibold"
 						>
-							{__('Name', 'pattern-manager')}
+							{ __( 'Name', 'pattern-manager' ) }
 						</label>
-						<span>{properties.name.description}</span>
+						<span>{ properties.name.description }</span>
 						<input
 							type="text"
-							id={`duotone-name-${inputId}`}
-							value={nameValue}
-							onChange={(event) => {
+							id={ `duotone-name-${ inputId }` }
+							value={ nameValue }
+							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.name',
 									event.target.value
 								);
-							}}
+							} }
 						/>
 					</div>
 					<div className="slug flex flex-col space-y-1">
 						<label
-							htmlFor={`duotone-slug-${inputId}`}
+							htmlFor={ `duotone-slug-${ inputId }` }
 							className="font-semibold"
 						>
-							{__('Slug', 'pattern-manager')}
+							{ __( 'Slug', 'pattern-manager' ) }
 						</label>
-						<span>{properties.slug.description}</span>
+						<span>{ properties.slug.description }</span>
 						<input
 							type="text"
-							id={`duotone-slug-${inputId}`}
-							value={slugValue}
-							onChange={(event) => {
+							id={ `duotone-slug-${ inputId }` }
+							value={ slugValue }
+							onChange={ ( event ) => {
 								currentTheme.setThemeJsonValue(
 									'settings',
 									schemaPosition + '.slug',
 									event.target.value
 								);
-							}}
+							} }
 						/>
 					</div>
 				</div>
 				<div className="duotone flex flex-col gap-6 w-full lg:w-1/2">
 					<button
-						onClick={() => {
-							setPopover1Open(true);
-						}}
+						onClick={ () => {
+							setPopover1Open( true );
+						} }
 						className="bg-white rounded-md shadow-sm p-4 hover:shadow transition ease-in-out hover:cursor-pointer"
 					>
 						<div className="flex items-center gap-3">
 							<span
 								className="h-10 w-10 rounded-full inline-block border border-gray-200"
-								style={{
+								style={ {
 									backgroundColor: color1Value,
-								}}
+								} }
 							></span>
 							<span className="font-semibold text-left">
-								{__('Duotone Highlight', 'pattern-manager')}{' '}
+								{ __( 'Duotone Highlight', 'pattern-manager' ) }{ ' ' }
 								<br />
 								<small className="text-gray-500">
-									{color1Value ? color1Value : null}
+									{ color1Value ? color1Value : null }
 								</small>
 							</span>
-							{popover1Open ? (
+							{ popover1Open ? (
 								<Popover
-									onFocusOutside={() => {
-										setPopover1Open(false);
-									}}
+									onFocusOutside={ () => {
+										setPopover1Open( false );
+									} }
 								>
 									<ColorPicker
-										color={color1Value}
+										color={ color1Value }
 										// @ts-ignore The declaration file is wrong.
-										onChange={(newValue) => {
+										onChange={ ( newValue ) => {
 											currentTheme.setThemeJsonValue(
 												'settings',
 												schemaPosition + '.colors.0',
 												newValue
 											);
-										}}
+										} }
 										enableAlpha
 										defaultValue="#000"
 									/>
 								</Popover>
-							) : null}
+							) : null }
 						</div>
 					</button>
 					<button
-						onClick={() => {
-							setPopover2Open(true);
-						}}
+						onClick={ () => {
+							setPopover2Open( true );
+						} }
 						className="bg-white rounded-md shadow-sm p-4 hover:shadow transition ease-in-out hover:cursor-pointer"
 					>
 						<div className="flex items-center gap-3">
 							<span
 								className="h-10 w-10 rounded-full inline-block border border-gray-200"
-								style={{
+								style={ {
 									backgroundColor: color2Value,
-								}}
+								} }
 							></span>
 							<span className="font-semibold text-left">
-								{__('Duotone Shadow', 'pattern-manager')} <br />
+								{ __( 'Duotone Shadow', 'pattern-manager' ) }{ ' ' }
+								<br />
 								<small className="text-gray-500">
-									{color2Value ? color2Value : null}
+									{ color2Value ? color2Value : null }
 								</small>
 							</span>
-							{popover2Open ? (
+							{ popover2Open ? (
 								<Popover
-									onFocusOutside={() => {
-										setPopover2Open(false);
-									}}
+									onFocusOutside={ () => {
+										setPopover2Open( false );
+									} }
 								>
 									<ColorPicker
-										color={color2Value}
+										color={ color2Value }
 										// @ts-ignore The declaration file is wrong.
-										onChange={(newValue) => {
+										onChange={ ( newValue ) => {
 											currentTheme.setThemeJsonValue(
 												'settings',
 												schemaPosition + '.colors.1',
 												newValue
 											);
-										}}
+										} }
 										enableAlpha
 										defaultValue="#000"
 									/>
 								</Popover>
-							) : null}
+							) : null }
 						</div>
 					</button>
 				</div>
@@ -180,7 +181,7 @@ export default function DuotoneEditor({ properties, schemaPosition }: Props) {
 			<div className="text-right border-t border-dotted border-gray-300 pt-3 mt-5">
 				<button
 					className="text-red-700 hover:text-red-800"
-					onClick={(e) => {
+					onClick={ ( e ) => {
 						e.preventDefault();
 						if (
 							/* eslint-disable */
@@ -197,9 +198,9 @@ export default function DuotoneEditor({ properties, schemaPosition }: Props) {
 								schemaPosition
 							);
 						}
-					}}
+					} }
 				>
-					{__('Delete Duotone Option', 'pattern-manager')}
+					{ __( 'Delete Duotone Option', 'pattern-manager' ) }
 				</button>
 			</div>
 		</div>

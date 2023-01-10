@@ -11,12 +11,12 @@ export default function TemplateEditor() {
 
 	return (
 		<iframe
-			title={__('Template Editor', 'pattern-manager')}
-			ref={templateEditorIframe}
-			style={{
+			title={ __( 'Template Editor', 'pattern-manager' ) }
+			ref={ templateEditorIframe }
+			style={ {
 				width: '100%',
 				height: 'calc(100vh - 80px)',
-			}}
+			} }
 			src={
 				patternmanager.siteUrl +
 				'/wp-admin/site-editor.php?postType=wp_template&patternmanager_app=1'

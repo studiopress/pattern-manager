@@ -1,17 +1,17 @@
 import { Tooltip, Dashicon } from '@wordpress/components';
 import type { TooltipTypes } from './types';
 
-export default function ReverseTooltip({
+export default function ReverseTooltip( {
 	helperText,
 	helperTitle,
 	icon = 'info-outline',
-}: TooltipTypes) {
+}: TooltipTypes ) {
 	return (
 		<div className="patternmanager-pattern-sidebar-reverse-tooltip">
-			<Tooltip text={helperText} delay="200">
+			<Tooltip text={ helperText } delay="200">
 				<div>
-					<span id="tooltip-icon-helper-text">{helperTitle}</span>
-					<Dashicon icon={icon} />
+					<span id="tooltip-icon-helper-text">{ helperTitle }</span>
+					<Dashicon icon={ icon } />
 				</div>
 			</Tooltip>
 		</div>

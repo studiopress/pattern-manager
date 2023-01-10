@@ -6,4 +6,7 @@ import ReactDOM from 'react-dom';
 
 import PatternManagerApp from './components/PatternManagerApp';
 
-ReactDOM.render( <PatternManagerApp />, document.getElementById( 'patternmanagerapp' ) );
+ReactDOM.render(
+	<PatternManagerApp />,
+	document.getElementById( 'patternmanagerapp' )
+);

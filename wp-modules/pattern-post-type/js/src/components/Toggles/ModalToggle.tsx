@@ -5,17 +5,17 @@ import { ReverseTooltip } from '../Tooltips';
 
 import type { ToggleTypes } from './types';
 
-export default function ModalToggle({ postMeta, handleChange }: ToggleTypes) {
+export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	const blockTypeForModal = 'core/post-content';
-	const isDisabled = !postMeta.postTypes?.length || !postMeta.inserter;
-	const isChecked = postMeta.blockTypes?.includes(blockTypeForModal);
+	const isDisabled = ! postMeta.postTypes?.length || ! postMeta.inserter;
+	const isChecked = postMeta.blockTypes?.includes( blockTypeForModal );
 
 	// Conditionally remove blockTypeForModal from postMeta.blockTypes.
-	useEffect(() => {
-		if (isDisabled && isChecked) {
-			handleToggleChangeMulti(false, 'blockTypes', blockTypeForModal);
+	useEffect( () => {
+		if ( isDisabled && isChecked ) {
+			handleToggleChangeMulti( false, 'blockTypes', blockTypeForModal );
 		}
-	}, [isDisabled, isChecked, blockTypeForModal]);
+	}, [ isDisabled, isChecked, blockTypeForModal ] );
 
 	/**
 	 * Handler for ToggleControl component changes, targeting postMeta array values.
@@ -30,13 +30,13 @@ export default function ModalToggle({ postMeta, handleChange }: ToggleTypes) {
 		metaKey: string,
 		metaValue: string
 	) {
-		handleChange(metaKey, [
-			...(toggleEvent && !postMeta[metaKey]?.includes(metaValue)
-				? [...postMeta[metaKey], metaValue]
-				: postMeta[metaKey].filter(
-					(existingValue) => existingValue !== metaValue
-				)),
-		]);
+		handleChange( metaKey, [
+			...( toggleEvent && ! postMeta[ metaKey ]?.includes( metaValue )
+				? [ ...postMeta[ metaKey ], metaValue ]
+				: postMeta[ metaKey ].filter(
+						( existingValue ) => existingValue !== metaValue
+				  ) ),
+		] );
 	}
 
 	return (
@@ -44,27 +44,36 @@ export default function ModalToggle({ postMeta, handleChange }: ToggleTypes) {
 			<ToggleControl
 				label={
 					<ReverseTooltip
-						helperText={__(
+						helperText={ __(
 							'Show this pattern in a modal when new posts of selected post types are created.',
 							'pattern-manager'
-						)}
-						helperTitle={__('Modal visibility', 'pattern-manager')}
+						) }
+						helperTitle={ __(
+							'Modal visibility',
+							'pattern-manager'
+						) }
 					/>
 				}
-				disabled={isDisabled}
-				checked={isChecked && !isDisabled}
+				disabled={ isDisabled }
+				checked={ isChecked && ! isDisabled }
 				help={
 					isChecked
-						? __('Enabled for selected post types.', 'pattern-manager')
-						: __('Disabled for all post types.', 'pattern-manager')
+						? __(
+								'Enabled for selected post types.',
+								'pattern-manager'
+						  )
+						: __(
+								'Disabled for all post types.',
+								'pattern-manager'
+						  )
 				}
-				onChange={(value: boolean) => {
+				onChange={ ( value: boolean ) => {
 					handleToggleChangeMulti(
 						value,
 						'blockTypes',
 						blockTypeForModal
 					);
-				}}
+				} }
 			/>
 		</PanelRow>
 	);

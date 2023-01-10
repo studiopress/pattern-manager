@@ -43,21 +43,21 @@ export default function PatternManagerApp() {
 	const providerValue = useSnackbar();
 
 	return (
-		<PatternManagerSnackbarContext.Provider value={providerValue}>
+		<PatternManagerSnackbarContext.Provider value={ providerValue }>
 			<PatternManagerContextHydrator />
 		</PatternManagerSnackbarContext.Provider>
 	);
 }
 
 function PatternManagerContextHydrator() {
-	const currentView = useCurrentView('theme_setup');
-	const patternEditorIframe = useRef<HTMLIFrameElement | null>(null);
-	const templateEditorIframe = useRef<HTMLIFrameElement | null>(null);
-	const themes = useThemes(patternmanager.themes);
+	const currentView = useCurrentView( 'theme_setup' );
+	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
+	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
+	const themes = useThemes( patternmanager.themes );
 	const patterns = usePatterns();
 
-	const currentStyleVariationId = useCurrentId('default-style'); // Initial value also used as defaultStyleName.
-	const currentThemeId = useCurrentId(patternmanager.initialTheme);
+	const currentStyleVariationId = useCurrentId( 'default-style' ); // Initial value also used as defaultStyleName.
+	const currentThemeId = useCurrentId( patternmanager.initialTheme );
 	const currentTheme = useThemeData(
 		currentThemeId.value,
 		themes,
@@ -67,11 +67,11 @@ function PatternManagerContextHydrator() {
 		patterns
 	);
 
-	const currentPatternId = useCurrentId('');
+	const currentPatternId = useCurrentId( '' );
 
 	let currentPattern: Pattern | null = null;
 
-	if (currentPatternId?.value) {
+	if ( currentPatternId?.value ) {
 		// If the pattern name is found in the theme's included_patterns object.
 		if (
 			currentTheme?.data?.included_patterns?.hasOwnProperty(
@@ -79,7 +79,7 @@ function PatternManagerContextHydrator() {
 			)
 		) {
 			currentPattern =
-				currentTheme.data.included_patterns[currentPatternId?.value];
+				currentTheme.data.included_patterns[ currentPatternId?.value ];
 		}
 		// If the pattern name is found in the theme's template_files object.
 		if (
@@ -88,7 +88,7 @@ function PatternManagerContextHydrator() {
 			)
 		) {
 			currentPattern =
-				currentTheme.data.template_files[currentPatternId?.value];
+				currentTheme.data.template_files[ currentPatternId?.value ];
 		}
 		// If the pattern name is found in the theme's template_parts object.
 		if (
@@ -97,7 +97,7 @@ function PatternManagerContextHydrator() {
 			)
 		) {
 			currentPattern =
-				currentTheme.data.template_parts[currentPatternId?.value];
+				currentTheme.data.template_parts[ currentPatternId?.value ];
 		}
 	}
 
@@ -118,7 +118,7 @@ function PatternManagerContextHydrator() {
 	};
 
 	return (
-		<PatternManagerContext.Provider value={providerValue}>
+		<PatternManagerContext.Provider value={ providerValue }>
 			<PatternManager />
 		</PatternManagerContext.Provider>
 	);
@@ -130,34 +130,37 @@ function PatternManager() {
 
 	return (
 		<>
-			{snackBarValue ? (
+			{ snackBarValue ? (
 				<Snackbar
-					onRemove={() => {
-						setSnackBarValue(null);
-					}}
+					onRemove={ () => {
+						setSnackBarValue( null );
+					} }
 				>
-					{snackBarValue}
+					{ snackBarValue }
 				</Snackbar>
-			) : null}
+			) : null }
 			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
 				<div className="flex-1 flex">
 					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
 						<div className="flex lg:flex-row flex-col gap-4 lg:gap-12">
-							{ /* Nav options for opening and creating themes, along with standard view actions */}
+							{ /* Nav options for opening and creating themes, along with standard view actions */ }
 							<PatternManagerNav />
 						</div>
 
 						<div className="flex flex-wrap gap-2">
-							{currentView?.currentView !== 'create_theme' ? (
+							{ currentView?.currentView !== 'create_theme' ? (
 								<>
 									<button
 										type="button"
 										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={() => {
-											currentView.set('theme_preview');
-										}}
+										onClick={ () => {
+											currentView.set( 'theme_preview' );
+										} }
 									>
-										{__('Preview Theme', 'pattern-manager')}
+										{ __(
+											'Preview Theme',
+											'pattern-manager'
+										) }
 									</button>
 									<button
 										type="button"
@@ -165,30 +168,33 @@ function PatternManager() {
 											currentTheme.fetchInProgress
 										}
 										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={() => {
+										onClick={ () => {
 											currentTheme.save();
-										}}
+										} }
 									>
-										{currentTheme.isSaving ? (
+										{ currentTheme.isSaving ? (
 											<>
 												<Spinner />
-												{__(
+												{ __(
 													'Saving Theme',
 													'pattern-manager'
-												)}
+												) }
 											</>
 										) : (
-											__('Save Theme', 'pattern-manager')
-										)}
+											__(
+												'Save Theme',
+												'pattern-manager'
+											)
+										) }
 									</button>
 								</>
-							) : null}
+							) : null }
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{currentTheme?.data ? (
+			{ currentTheme?.data ? (
 				<>
 					<CreateTheme
 						isVisible={
@@ -196,7 +202,7 @@ function PatternManager() {
 						}
 					/>
 					<ThemeSetup
-						isVisible={'theme_setup' === currentView.currentView}
+						isVisible={ 'theme_setup' === currentView.currentView }
 					/>
 					<ThemePreview
 						isVisible={
@@ -217,7 +223,7 @@ function PatternManager() {
 						<TemplateEditor />
 					</div>
 					<PatternEditor
-						visible={'pattern_editor' === currentView.currentView}
+						visible={ 'pattern_editor' === currentView.currentView }
 					/>
 					<ThemeJsonEditor
 						visible={
@@ -232,7 +238,7 @@ function PatternManager() {
 				</>
 			) : (
 				<GettingStarted />
-			)}
+			) }
 		</>
 	);
 }

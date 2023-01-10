@@ -12,7 +12,10 @@ export default function GettingStarted() {
 					<div className="flex">
 						<div className="grow">
 							<h1 className="text-4xl mb-3">
-								{__('Welcome to Pattern Manager', 'pattern-manager')}
+								{ __(
+									'Welcome to Pattern Manager',
+									'pattern-manager'
+								) }
 							</h1>
 							<p className="text-lg max-w-2xl">
 								Build your full site editing themes faster and
@@ -24,15 +27,15 @@ export default function GettingStarted() {
 							<button
 								type="button"
 								className="inline-flex self-center items-center px-4 py-2 border-4 border-transparent text-lg font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-								onClick={() => {
-									createNewTheme(themes, currentThemeId);
-									currentView?.set('create_theme');
-								}}
+								onClick={ () => {
+									createNewTheme( themes, currentThemeId );
+									currentView?.set( 'create_theme' );
+								} }
 							>
-								{__(
+								{ __(
 									'Start Creating Your Theme',
 									'pattern-manager'
-								)}{' '}
+								) }{ ' ' }
 								&rarr;
 							</button>
 						</div>
@@ -47,10 +50,10 @@ export default function GettingStarted() {
 							width="1280"
 							height="720"
 							src="https://www.youtube.com/embed/LmvPkQkjq9I?cc_load_policy=1&cc_lang_pref=en"
-							title={__(
+							title={ __(
 								'Pattern Manager Demo Video',
 								'pattern-manager'
-							)}
+							) }
 							frameBorder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowFullScreen

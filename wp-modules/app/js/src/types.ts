@@ -20,20 +20,20 @@ export type PatternManagerViews =
 	| 'themejson_editor'
 	| 'pattern_manager_help';
 
-export type NoticeContext = ReturnType<typeof useNotice>;
+export type NoticeContext = ReturnType< typeof useNotice >;
 
 export type InitialContext = {
-	currentView: ReturnType<typeof useCurrentView>;
-	currentPatternId: ReturnType<typeof useCurrentId>;
+	currentView: ReturnType< typeof useCurrentView >;
+	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern: Pattern;
-	themes: ReturnType<typeof useThemes>;
-	currentThemeId: ReturnType<typeof useCurrentId>;
-	currentTheme: ReturnType<typeof useThemeData>;
-	currentStyleVariationId: ReturnType<typeof useCurrentId>;
-	siteUrl: InitialPatternManager['siteUrl'];
-	apiEndpoints: InitialPatternManager['apiEndpoints'];
-	blockEditorSettings: InitialPatternManager['blockEditorSettings'];
-	patterns: ReturnType<typeof usePatterns>;
+	themes: ReturnType< typeof useThemes >;
+	currentThemeId: ReturnType< typeof useCurrentId >;
+	currentTheme: ReturnType< typeof useThemeData >;
+	currentStyleVariationId: ReturnType< typeof useCurrentId >;
+	siteUrl: InitialPatternManager[ 'siteUrl' ];
+	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
+	blockEditorSettings: InitialPatternManager[ 'blockEditorSettings' ];
+	patterns: ReturnType< typeof usePatterns >;
 	patternEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
 	>;
@@ -57,7 +57,7 @@ export type InitialPatternManager = {
 	};
 	blockEditorSettings: {
 		__unstableResolvedAssets?: { styles: string };
-		styles?: { [key: string]: unknown }[];
+		styles?: { [ key: string ]: unknown }[];
 	};
 	initialTheme: string;
 	patterns: Patterns;
@@ -70,7 +70,7 @@ export type InitialPatternManager = {
 				settingsPropertiesComplete: {
 					allOf: {
 						properties: {
-							[key: string]: unknown;
+							[ key: string ]: unknown;
 						};
 					}[];
 				};
@@ -95,17 +95,17 @@ export type Pattern = {
 };
 
 export type Patterns = {
-	[key: string]: Pattern;
+	[ key: string ]: Pattern;
 };
 
 export type Style = {
 	id: string;
 	title: string;
-	body: { [key: string]: unknown };
+	body: { [ key: string ]: unknown };
 };
 
 export type Styles = {
-	[key: string]: Style;
+	[ key: string ]: Style;
 };
 
 export type Theme = {
@@ -125,17 +125,17 @@ export type Theme = {
 	requires_php: string;
 	requires_wp: string;
 	rest_route?: string;
-	styles: { [key: string]: Style };
+	styles: { [ key: string ]: Style };
 	tags: string;
 	template_files?: string[];
 	template_parts?: string[];
 	tested_up_to: string;
 	text_domain: string;
-	theme_json_file?: { [key: string]: unknown };
+	theme_json_file?: { [ key: string ]: unknown };
 	uri: string;
 	version: string;
 };
 
 export type Themes = {
-	[key: string]: Theme;
+	[ key: string ]: Theme;
 };

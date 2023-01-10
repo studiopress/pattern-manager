@@ -7,20 +7,20 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 export default function ThemeCreatedNotice() {
 	const { currentView } = useStudioContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();
-	const buttonRef = useRef<HTMLButtonElement | null>(null);
+	const buttonRef = useRef< HTMLButtonElement | null >( null );
 
-	useEffect(() => {
+	useEffect( () => {
 		buttonRef.current.focus();
 
 		return () => {
 			// If you navigate away from the menu item or tab that shows this notice,
 			// this notice shouldn't show when you come back.
-			setDisplayThemeCreatedNotice(false);
+			setDisplayThemeCreatedNotice( false );
 		};
-	}, []);
+	}, [] );
 
 	// Explicitly dismiss the notice.
-	const onDismiss = () => setDisplayThemeCreatedNotice(false);
+	const onDismiss = () => setDisplayThemeCreatedNotice( false );
 
 	return (
 		<div className="text-base flex flex-row mb-12 border border-[#008B24] rounded-md border-l-8 bg-[#EEF5EE]">
@@ -49,41 +49,41 @@ export default function ThemeCreatedNotice() {
 			<span
 				className="p-6 self-center bg-white rounded-r-md"
 				role="dialog"
-				aria-label={__('Theme Saved', 'pattern-manager')}
+				aria-label={ __( 'Theme Saved', 'pattern-manager' ) }
 			>
 				<p className="font-bold text-base mb-2">
-					{__('Theme successfully created!', 'pattern-manager')}
+					{ __( 'Theme successfully created!', 'pattern-manager' ) }
 				</p>
 				<p className="text-base">
-					{__(
+					{ __(
 						'Your theme has been created, saved to your theme directory, and activated on this site! Continue customizing your theme by heading to Themes and Styles.',
 						'pattern-manager'
-					)}
+					) }
 				</p>
 				<button
-					ref={buttonRef}
+					ref={ buttonRef }
 					type="button"
 					className="font-bold mt-2 inline-block hover:cursor-pointer hover:text-wp-black underline text-[#008B24]"
-					onClick={() => {
-						currentView.set('themejson_editor');
-					}}
+					onClick={ () => {
+						currentView.set( 'themejson_editor' );
+					} }
 				>
-					{__('Go to Styles and Settings →', 'pattern-manager')}
+					{ __( 'Go to Styles and Settings →', 'pattern-manager' ) }
 				</button>
 			</span>
 			<span className="flex flex-col rounded-r-md p-3 bg-white">
 				<button
 					className="bg-white"
-					aria-label={__(
+					aria-label={ __(
 						'Dismiss the theme created notice',
 						'pattern-manager'
-					)}
-					onClick={onDismiss}
+					) }
+					onClick={ onDismiss }
 				>
 					<Icon
 						className="text-black fill-current p-1 bg-white shadow-sm rounded hover:text-red-500 ease-in-out duration-300 group-hover:opacity-100"
-						icon={close}
-						size={30}
+						icon={ close }
+						size={ 30 }
 					/>
 				</button>
 			</span>
