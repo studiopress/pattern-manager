@@ -5,7 +5,7 @@ import React from 'react';
 import { patternmanager } from '../../globals';
 
 // Context
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Utils
 import createNewTheme from '../../utils/createNewTheme';
@@ -26,7 +26,7 @@ export default function PatternManagerNav() {
 		patterns,
 		patternEditorIframe,
 		templateEditorIframe,
-	} = useStudioContext();
+	} = usePmContext();
 
 	/**
 	 * Post a window message in certain conditions.

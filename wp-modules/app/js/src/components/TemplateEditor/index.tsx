@@ -1,13 +1,13 @@
 import { __ } from '@wordpress/i18n';
 
 // Hooks
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Globals
 import { patternmanager } from '../../globals';
 
 export default function TemplateEditor() {
-	const { templateEditorIframe } = useStudioContext();
+	const { templateEditorIframe } = usePmContext();
 
 	return (
 		<iframe

@@ -4,7 +4,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	properties: {
@@ -17,7 +17,7 @@ type Props = {
 
 export default function PaletteEditor( { properties, schemaPosition }: Props ) {
 	const [ popoverOpen, setPopoverOpen ] = useState( false );
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const inputId = useInstanceId( PaletteEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(

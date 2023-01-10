@@ -9,7 +9,7 @@ import {
 } from '@wordpress/element';
 
 // Hooks
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Globals
 import { patternmanager } from '../../globals';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function PatternEditor( { visible }: Props ) {
-	const { currentPatternId } = useStudioContext();
+	const { currentPatternId } = usePmContext();
 
 	return (
 		<div hidden={ ! visible } className="patternmanager-pattern-work-area">
@@ -38,7 +38,7 @@ export function BlockEditor() {
 		currentPatternId,
 		patternEditorIframe,
 		currentTheme,
-	} = useStudioContext();
+	} = usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );

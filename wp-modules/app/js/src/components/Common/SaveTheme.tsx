@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	displayCancelButton?: boolean;
@@ -9,7 +9,7 @@ type Props = {
 
 export default function SaveTheme( { displayCancelButton }: Props ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
-		useStudioContext();
+		usePmContext();
 
 	return (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">

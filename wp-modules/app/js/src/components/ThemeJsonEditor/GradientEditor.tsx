@@ -3,7 +3,7 @@ import { CustomGradientPicker } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	properties: {
@@ -18,7 +18,7 @@ export default function GradientEditor( {
 	properties,
 	schemaPosition,
 }: Props ) {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const inputId = useInstanceId( GradientEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(

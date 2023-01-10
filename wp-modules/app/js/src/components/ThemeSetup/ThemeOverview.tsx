@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import imgThemeTemplate from '../../../../img/theme-templates.svg';
 import imgThemeTemplateParts from '../../../../img/theme-template-parts.svg';
 import imgThemePatterns from '../../../../img/theme-patterns.svg';
@@ -8,7 +8,7 @@ import imgThemeStyleVariations from '../../../../img/theme-style-variations.svg'
 import imgThemeExport from '../../../../img/theme-export.svg';
 
 export default function ThemeOverview() {
-	const { currentTheme, currentView } = useStudioContext();
+	const { currentTheme, currentView } = usePmContext();
 
 	return (
 		<div className="grid grid-cols-1 gap-y-10 gap-x-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">

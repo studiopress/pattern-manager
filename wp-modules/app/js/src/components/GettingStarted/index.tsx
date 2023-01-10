@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import createNewTheme from '../../utils/createNewTheme';
 
 export default function GettingStarted() {
-	const { themes, currentThemeId, currentView } = useStudioContext();
+	const { themes, currentThemeId, currentView } = usePmContext();
 
 	return (
 		<>

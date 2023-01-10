@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { ReactNode } from 'react';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import ThemeDetails from './ThemeDetails';
 
@@ -10,7 +10,7 @@ type Props = {
 
 export default function CreateThemeForm( { children }: Props ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
-		useStudioContext();
+		usePmContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();
 
 	return (

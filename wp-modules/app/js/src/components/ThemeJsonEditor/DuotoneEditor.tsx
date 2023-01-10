@@ -4,7 +4,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	properties: {
@@ -18,7 +18,7 @@ type Props = {
 export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 	const [ popover1Open, setPopover1Open ] = useState( false );
 	const [ popover2Open, setPopover2Open ] = useState( false );
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const inputId = useInstanceId( DuotoneEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
