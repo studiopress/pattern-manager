@@ -222,7 +222,7 @@ function do_the_content_things( $content ) {
 }
 
 /**
- * Add style and metaboxes to fse_pattern posts when editing.
+ * Add style and metaboxes to pm_pattern posts when editing.
  */
 function enqueue_meta_fields_in_editor() {
 	if ( 'pm_pattern' !== get_post_type() ) {
