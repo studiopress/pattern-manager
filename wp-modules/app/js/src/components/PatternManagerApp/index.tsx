@@ -1,7 +1,3 @@
-/**
- * Fse Studio
- */
-
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
