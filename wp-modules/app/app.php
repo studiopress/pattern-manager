@@ -92,8 +92,8 @@ function pattern_manager_app() {
  */
 function patternmanager_adminmenu_page() {
 	add_menu_page(
-		__( 'Pattern Manager', 'pattern-manager' ),
-		__( 'Pattern Manager', 'pattern-manager' ),
+		__( 'Patterns', 'pattern-manager' ),
+		__( 'Patterns', 'pattern-manager' ),
 		'administrator',
 		'pattern-manager',
 		__NAMESPACE__ . '\pattern_manager_app',
