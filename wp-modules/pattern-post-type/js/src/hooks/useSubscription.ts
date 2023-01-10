@@ -15,16 +15,12 @@ export default function useSubscription(
 			null;
 		subscribe( () => {
 			if ( ! patternmanagerPatternEditorLoaded && currentPostType ) {
-				window.parent.postMessage(
-					'patternmanager_pattern_editor_loaded'
-				);
+				window.parent.postMessage( 'pm_pattern_editor_loaded' );
 				patternmanagerPatternEditorLoaded = true;
 			}
 
 			if ( postDirty ) {
-				window.parent.postMessage(
-					'patternmanager_pattern_editor_dirty'
-				);
+				window.parent.postMessage( 'pm_pattern_editor_dirty' );
 			}
 
 			// Whenever the block editor fires that a change happened, pass it up to the parent Pattern Manager app state.
@@ -101,9 +97,7 @@ export default function useSubscription(
 							meta: { ...patternMeta },
 						} );
 						patternDataSet = true;
-						window.parent.postMessage(
-							'patternmanager_pattern_data_set'
-						);
+						window.parent.postMessage( 'pm_pattern_data_set' );
 					}
 
 					if (

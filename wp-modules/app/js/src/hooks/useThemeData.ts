@@ -90,7 +90,7 @@ export default function useThemeData(
 				setRequestThemeRefresh( false );
 			} else {
 				setRequestThemeRefresh( false );
-				// We have to do this outside the patternmanager_pattern_editor_save_complete listener because currentTheme is stale there.
+				// We have to do this outside the pm_pattern_editor_save_complete listener because currentTheme is stale there.
 				uponSuccessfulSave();
 				getThemeData();
 			}

@@ -69,8 +69,7 @@ export default function TitlePanel( {
 	function checkPatternTitle( patternTitle ) {
 		window.parent.postMessage(
 			JSON.stringify( {
-				message:
-					'patternmanager_pattern_editor_request_is_pattern_title_taken',
+				message: 'pm_pattern_editor_request_is_pattern_title_taken',
 				patternTitle,
 			} )
 		);
