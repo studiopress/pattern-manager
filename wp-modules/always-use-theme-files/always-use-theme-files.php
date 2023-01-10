@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Hook into the posts query to make sure we never use an post type, and thus always pull from files directly.
+ * Hook into the posts query to make sure we never use an FSE post type, and thus always pull from files directly.
  *
  * @param WP_Post[]|int[]|null $posts Return an array of post data to short-circuit WP's query,
  * or null to allow WP to run its normal queries.
