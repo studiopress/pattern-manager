@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function send_event( $event_data ) {
 	// If this user should not be tracked, do nothing.
-	if ( defined( 'FSESTUDIO_DO_NOT_TRACK' ) && FSESTUDIO_DO_NOT_TRACK ) {
+	if ( defined( 'PATTERN_MANAGER_DO_NOT_TRACK' ) && PATTERNMANAGER_DO_NOT_TRACK ) {
 		return;
 	}
 
