@@ -12,7 +12,7 @@ export default function ThemeOverview() {
 
 	return (
 		<div className="grid grid-cols-1 gap-y-10 gap-x-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
 						alt={ __( 'Edit Theme Templates', 'pattern-manager' ) }
@@ -50,7 +50,7 @@ export default function ThemeOverview() {
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
 						alt={ __(
@@ -91,7 +91,7 @@ export default function ThemeOverview() {
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
 						alt="Edit Theme Patterns"
@@ -126,7 +126,7 @@ export default function ThemeOverview() {
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
 						alt="Theme.json"
@@ -164,7 +164,7 @@ export default function ThemeOverview() {
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
 						alt="Theme Style Variations"
@@ -205,7 +205,7 @@ export default function ThemeOverview() {
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
 						alt="Export Theme"

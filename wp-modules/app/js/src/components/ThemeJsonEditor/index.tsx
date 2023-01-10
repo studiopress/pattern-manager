@@ -85,7 +85,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 
 	return (
 		<div hidden={ ! visible } className="patternmanager-theme-manager">
-			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
+			<div className="bg-pm-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
 						{ __( 'Styles and Settings', 'pattern-manager' ) }
@@ -144,7 +144,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 					</div>
 
 					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
+						<div className="bg-pm-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
 							<div className="flex flex-col gap-5">
 								<div>
 									<h2 className="sr-only">
@@ -185,7 +185,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 						</div>
 
 						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
-							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+							<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
 								<div className="flex flex-col gap-5">
 									<h3 className="mb-2 font-medium">
 										{ __(
@@ -265,7 +265,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 
 						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
 							<div
-								className="bg-fses-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded"
+								className="bg-pm-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded"
 								role="alert"
 							>
 								<div className="flex flex-col gap-5">
@@ -279,7 +279,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 							</div>
 						</div>
 
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h2 className="sr-only">
 									{ __( 'Documentation', 'pattern-manager' ) }
@@ -495,7 +495,7 @@ function SettingsView( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible }>
 			<div className="flex flex-col gap-14">
-				<ul className="w-full inline-flex flex-wrap text-base fses-json-nav">
+				<ul className="w-full inline-flex flex-wrap text-base pm-json-nav">
 					{ tabs.map( ( item ) => (
 						<li key={ item.name }>
 							<button
@@ -515,7 +515,7 @@ function SettingsView( { isVisible } ) {
 						</li>
 					) ) }
 				</ul>
-				<div className="w-full fses-settings-wrap">{ rendered }</div>
+				<div className="w-full pm-settings-wrap">{ rendered }</div>
 			</div>
 		</div>
 	);
@@ -534,15 +534,15 @@ function RenderProperties( {
 			<div
 				key={ propertyName }
 				hidden={ ! isVisible }
-				className={ `fses-${ convertToCssClass(
+				className={ `pm-${ convertToCssClass(
 					propertyName
-				) } fses-type-${
+				) } pm-type-${
 					convertToCssClass( properties[ propertyName ].type ) ||
 					'boolean'
 				}` }
 			>
 				<div className="grid grid-cols-4 gap-6 py-6 items-top">
-					<div className="block font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]">
+					<div className="block font-medium text-gray-700 sm:col-span-1 pm-label max-w-[500px]">
 						<h2 id={ convertToCssClass( propertyName ) }>
 							{ convertToUpperCase( propertyName ) }
 						</h2>
@@ -551,7 +551,7 @@ function RenderProperties( {
 						</p>
 					</div>
 					<div
-						className={ `mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${ convertToCssClass(
+						className={ `mt-1 sm:mt-0 sm:col-span-3 space-y-5 pm-property pm-${ convertToCssClass(
 							schemaPosition + '.' + propertyName
 						) }` }
 					>
@@ -573,7 +573,7 @@ function RenderProperties( {
 
 	return (
 		<div
-			className={ `divide-y divide-gray-200 fses-${ convertToCssClass(
+			className={ `divide-y divide-gray-200 pm-${ convertToCssClass(
 				schemaPosition
 			) }` }
 		>

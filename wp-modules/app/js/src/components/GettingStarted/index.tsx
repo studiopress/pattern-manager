@@ -7,7 +7,7 @@ export default function GettingStarted() {
 
 	return (
 		<>
-			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
+			<div className="bg-pm-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<div className="flex">
 						<div className="grow">

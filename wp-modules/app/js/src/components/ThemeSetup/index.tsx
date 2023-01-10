@@ -39,7 +39,7 @@ export default function ThemeSetup( { isVisible }: Props ) {
 			) }
 		>
 			<>
-				<div className="bg-fses-gray">
+				<div className="bg-pm-gray">
 					<div className="mx-auto max-w-7xl">
 						<ul className="flex m-0 gap-2 px-8 xl:p-0">
 							<li className="m-0">

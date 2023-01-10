@@ -31,7 +31,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 
 	return (
 		<div hidden={ ! isVisible } className="w-full">
-			<div className="bg-fses-gray p-8 lg:p-12 w-full">
+			<div className="bg-pm-gray p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
 						{ __( 'Patterns', 'pattern-manager' ) }
@@ -52,7 +52,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 								{ Object.entries(
 									currentTheme?.data?.included_patterns ?? {}
 								).length === 0 ? (
-									<div className="bg-fses-gray p-10 text-center w-full col-span-2 rounded">
+									<div className="bg-pm-gray p-10 text-center w-full col-span-2 rounded">
 										{ createInterpolateElement(
 											__(
 												'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
@@ -189,7 +189,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					</div>
 
 					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
+						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
 								<h2 className="sr-only">
 									{ __(
@@ -249,7 +249,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 							</div>
 						</div>
 
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h2 className="sr-only">
 									{ __( 'Documentation', 'pattern-manager' ) }

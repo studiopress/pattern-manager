@@ -143,7 +143,7 @@ export default function PatternManagerNav() {
 	}
 
 	return (
-		<nav className="fses-nav" aria-label="Main Menu">
+		<nav className="pm-nav" aria-label="Main Menu">
 			<ul className="font-medium">
 				<li>
 					<button aria-haspopup="true" className="flex items-center">
