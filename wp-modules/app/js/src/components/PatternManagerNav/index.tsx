@@ -54,7 +54,7 @@ export default function PatternManagerNav() {
 	}
 
 	/**
-	 * Render a list of FSES themes for selection.
+	 * Render a list of themes for selection.
 	 * Hide if no themes are available.
 	 */
 	function MenuOpenTheme() {
@@ -81,7 +81,7 @@ export default function PatternManagerNav() {
 								);
 
 								/**
-								 * Existing FSES theme was selected from nav in SaveTheme.
+								 * Existing theme was selected from nav in SaveTheme.
 								 * This action should effectively act as a cancel.
 								 */
 								if (

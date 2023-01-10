@@ -39,7 +39,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					<p className="text-lg max-w-2xl">
 						Add patterns to your theme. You can create patterns from
 						scratch using the Create New Pattern button, and you can
-						also duplicate Studio patterns as a start.
+						also duplicate patterns as a start.
 					</p>
 				</div>
 			</div>

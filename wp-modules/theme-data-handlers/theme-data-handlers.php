@@ -167,7 +167,7 @@ function export_theme( $theme ) {
  * Update a single theme.
  *
  * @param array $theme Data about the theme.
- * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the FSES UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option exists.
+ * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option exists.
  * @return array
  */
 function update_theme( $theme, $update_patterns = true ) {
