@@ -48,7 +48,7 @@ function pattern_post_type() {
 	}
 
 	register_post_type(
-		'patternmanager_pattern',
+		'pm_pattern',
 		array(
 			'public'       => false,
 			'has_archive'  => false,
@@ -64,7 +64,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'type',
 		array(
 			'show_in_rest' => true,
@@ -74,7 +74,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'title',
 		array(
 			'show_in_rest' => true,
@@ -84,7 +84,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'name',
 		array(
 			'show_in_rest' => true,
@@ -94,7 +94,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'previousName',
 		array(
 			'show_in_rest' => true,
@@ -110,7 +110,7 @@ function pattern_post_type() {
 	 * @see https://make.wordpress.org/core/2019/10/03/wp-5-3-supports-object-and-array-meta-types-in-the-rest-api/
 	 */
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'blockTypes',
 		array(
 			'show_in_rest' => array(
@@ -127,7 +127,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'postTypes',
 		array(
 			'show_in_rest' => array(
@@ -144,7 +144,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'patternmanager_pattern',
+		'pm_pattern',
 		'keywords',
 		array(
 			'show_in_rest' => array(
@@ -168,7 +168,7 @@ add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
  */
 function disable_autosave() {
 	global $post_type;
-	if ( 'patternmanager_pattern' === $post_type ) {
+	if ( 'pm_pattern' === $post_type ) {
 		wp_dequeue_script( 'autosave' );
 	}
 }
@@ -178,11 +178,11 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
  * Recieve pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
-	if ( ! isset( $_GET['patternmanager_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! isset( $_GET['pm_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
-	$pattern_id = sanitize_text_field( wp_unslash( $_GET['patternmanager_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_id = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	$pattern = \PatternManager\PatternDataHandlers\get_theme_pattern( $pattern_id );
 
@@ -225,7 +225,7 @@ function do_the_content_things( $content ) {
  * Add style and metaboxes to fse_pattern posts when editing.
  */
 function enqueue_meta_fields_in_editor() {
-	if ( 'patternmanager_pattern' !== get_post_type() ) {
+	if ( 'pm_pattern' !== get_post_type() ) {
 		return;
 	}
 
@@ -239,7 +239,7 @@ function enqueue_meta_fields_in_editor() {
 		return;
 	}
 
-	// Include the js on the block editor page for the patternmanager_pattern post type.
+	// Include the js on the block editor page for the pm_pattern post type.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
 	wp_enqueue_script( 'patternmanager_post_meta', $js_url, $dependencies, $js_ver, true );
@@ -259,7 +259,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
 function register_block_patterns() {
 	$current_screen = get_current_screen();
 
-	if ( 'patternmanager_pattern' !== $current_screen->post_type ) {
+	if ( 'pm_pattern' !== $current_screen->post_type ) {
 		return;
 	}
 
