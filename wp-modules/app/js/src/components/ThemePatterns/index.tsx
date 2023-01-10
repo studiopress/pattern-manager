@@ -169,7 +169,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 														key={ patternName }
 														url={
 															patternmanager.siteUrl +
-															'?patternmanager_pattern_preview=' +
+															'?pm_pattern_preview=' +
 															patternData.name
 														}
 														scale={ 0.2 }

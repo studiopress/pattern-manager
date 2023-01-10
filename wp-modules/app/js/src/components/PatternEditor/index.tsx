@@ -78,7 +78,7 @@ export function BlockEditor() {
 			// Listening for input from pattern-post-type.
 			if (
 				response.message ===
-					'patternmanager_pattern_editor_request_is_pattern_title_taken' &&
+					'pm_pattern_editor_request_is_pattern_title_taken' &&
 				patternEditorIframe?.current
 			) {
 				const isTaken = nameTaken(
@@ -101,11 +101,11 @@ export function BlockEditor() {
 		} catch ( e ) {
 			// Message posted was not JSON. Handle those here.
 			switch ( event.data ) {
-				case 'patternmanager_pattern_editor_loaded':
+				case 'pm_pattern_editor_loaded':
 					setBlockEditorLoaded( true );
 					setInitialData( patternEditorIframe );
 					break;
-				case 'patternmanager_pattern_data_set':
+				case 'pm_pattern_data_set':
 					// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
 					setPatternDataSet( true );
 					break;
@@ -171,7 +171,7 @@ export function BlockEditor() {
 						} }
 						src={
 							patternmanager.siteUrl +
-							'/wp-admin/post-new.php?post_type=patternmanager_pattern'
+							'/wp-admin/post-new.php?post_type=pm_pattern'
 						}
 					/>
 				</div>

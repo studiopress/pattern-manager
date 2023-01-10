@@ -9,8 +9,8 @@ export default function PatternManagerMetaControls() {
 	useSubscription( currentPostType, postDirty );
 	useFilters( postMeta );
 
-	// Will only render component for post type 'patternmanager_pattern'.
-	return currentPostType === 'patternmanager_pattern' ? (
+	// Will only render component for post type 'pm_pattern'.
+	return currentPostType === 'pm_pattern' ? (
 		<PatternEditorSidebar
 			coreLastUpdate={ coreLastUpdate }
 			postMeta={ postMeta }
