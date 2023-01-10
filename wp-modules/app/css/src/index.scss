@@ -150,33 +150,33 @@ input[type="checkbox"]:checked::before {
 
 /* Settings UI */
 
-.fses-type-boolean,
-.fses-type-string {
+.pm-type-boolean,
+.pm-type-string {
 	&>div {
 		@apply items-center;
 	}
 
-	.fses-label {
+	.pm-label {
 		@apply col-span-2;
 	}
 
-	.fses-property {
-		@apply col-span-2;
-	}
-}
-
-.fses-type-array {
-	.fses-label {
-		@apply col-span-2;
-	}
-
-	.fses-property {
+	.pm-property {
 		@apply col-span-2;
 	}
 }
 
-.fses-type-array,
-.fses-type-boolean {
+.pm-type-array {
+	.pm-label {
+		@apply col-span-2;
+	}
+
+	.pm-property {
+		@apply col-span-2;
+	}
+}
+
+.pm-type-array,
+.pm-type-boolean {
 
 	input[type=checkbox],
 	input[type=radio],
@@ -199,19 +199,19 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
-.fses-font-sizes,
-.fses-font-families {
-	.fses-label {
+.pm-font-sizes,
+.pm-font-families {
+	.pm-label {
 		@apply col-span-full;
 	}
 
-	.fses-property {
+	.pm-property {
 		@apply col-span-full;
 	}
 }
 
-.fses-typography-font-sizes,
-.fses-typography-font-families {
+.pm-typography-font-sizes,
+.pm-typography-font-families {
 	&>div {
 		@apply bg-gray-100 px-5 rounded;
 	}
@@ -221,14 +221,14 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
-.fses-duotone,
-.fses-gradients,
-.fses-palette {
-	.fses-property {
+.pm-duotone,
+.pm-gradients,
+.pm-palette {
+	.pm-property {
 		@apply col-span-full;
 	}
 
-	.fses-label {
+	.pm-label {
 		@apply col-span-full;
 	}
 }
@@ -244,7 +244,7 @@ input[type="checkbox"]:checked::before {
 	width: 1px;
 }
 
-.fses-json-nav {
+.pm-json-nav {
 	li {
 		order: 10;
 	}
@@ -266,11 +266,11 @@ input[type="checkbox"]:checked::before {
 	}
 }
 
-.fses-nav button:disabled {
+.pm-nav button:disabled {
 	opacity: .6;
 }
 
-.fses-nav ul {
+.pm-nav ul {
 	background: #1E1E1E;
 	list-style: none;
 	margin: 0;
@@ -280,7 +280,7 @@ input[type="checkbox"]:checked::before {
 	gap: 3px;
 }
 
-.fses-nav li {
+.pm-nav li {
 	color: #fff;
 	position: relative;
 	text-decoration: none;
@@ -289,23 +289,23 @@ input[type="checkbox"]:checked::before {
 	border-radius: 3px;
 }
 
-.fses-nav li button {
+.pm-nav li button {
 	color: #fff;
 	padding: 8px 16px;
 	border-radius: 3px;
 }
 
-.fses-nav li:hover,
-.fses-nav li:focus-within {
+.pm-nav li:hover,
+.pm-nav li:focus-within {
 	background: #404040;
 	cursor: pointer;
 }
 
-.fses-nav li:focus-within button {
+.pm-nav li:focus-within button {
 	outline: none;
 }
 
-.fses-nav ul li ul {
+.pm-nav ul li ul {
 	background: #1E1E1E;
 	visibility: hidden;
 	opacity: 0;
@@ -320,17 +320,17 @@ input[type="checkbox"]:checked::before {
 	gap: 0;
 }
 
-.fses-nav ul li ul li:hover {
+.pm-nav ul li ul li:hover {
 	background: none;
 }
 
-.fses-nav ul li ul li ul {
+.pm-nav ul li ul li ul {
 	left: 300px;
 	top: -10px;
 	background: #2f2f2f;
 }
 
-.fses-nav ul li ul li button {
+.pm-nav ul li ul li button {
 	width: 100%;
 	text-align: left;
 	color: #c6c6c6;
@@ -338,20 +338,20 @@ input[type="checkbox"]:checked::before {
 	padding: 11px 16px;
 }
 
-.fses-nav ul li ul li button:hover {
+.pm-nav ul li ul li button:hover {
 	color: #fff;
 }
 
-.fses-nav ul li:hover>ul,
-.fses-nav ul li:focus-within>ul,
-.fses-nav ul li ul:hover,
-.fses-nav ul li ul:focus {
+.pm-nav ul li:hover>ul,
+.pm-nav ul li:focus-within>ul,
+.pm-nav ul li ul:hover,
+.pm-nav ul li ul:focus {
 	visibility: visible;
 	opacity: 1;
 	display: block;
 }
 
-.fses-nav ul li ul li {
+.pm-nav ul li ul li {
 	clear: both;
 	width: 100%;
 }
