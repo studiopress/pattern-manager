@@ -89,16 +89,16 @@ function permission_check() {
  * @return array
  */
 function save_request_args() {
-	$return_args = array(
+	return array(
 		'patterns' => array(
 			'required'          => true,
 			'type'              => 'object',
 			'description'       => __( 'The patterns', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
+			'validate_callback' => function( $to_validate ) {
+				return is_array( $to_validate );
+			},
 		),
 	);
-
-	return $return_args;
 }
 
 /**
@@ -125,19 +125,6 @@ function validate_arg_is_string( $value, $request, $param ) {
 	}
 
 	// If we got this far then the data is valid.
-	return true;
-}
-
-
-/**
- * Validation callback for simple string parameters.
- *
- * @param mixed           $value   Value of the the parameter.
- * @param WP_REST_Request $request Current request object.
- * @param string          $param   The name of the parameter.
- */
-function validate_arg_is_object( $value, $request, $param ) {
-	// TODO: add logic that validates the object is what we expect.
 	return true;
 }
 
