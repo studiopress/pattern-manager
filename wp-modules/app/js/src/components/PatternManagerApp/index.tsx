@@ -24,7 +24,6 @@ import useSnackbar from '../../hooks/useNotice';
 // Components
 import ThemePatterns from '../ThemePatterns';
 import PatternEditor from '../PatternEditor';
-import GettingStarted from '../GettingStarted';
 
 import type { InitialContext, Pattern } from '../../types';
 
@@ -189,9 +188,7 @@ function PatternManager() {
 						visible={ 'pattern_editor' === currentView.currentView }
 					/>
 				</>
-			) : (
-				<GettingStarted />
-			) }
+			) : null }
 		</>
 	);
 }
