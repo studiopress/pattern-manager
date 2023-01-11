@@ -207,10 +207,9 @@ function get_theme_pattern( $pattern_id, $theme_path = false ) {
 /**
  * Get the pattern data for all patterns in a theme.
  *
- * @param string $theme_path The path to the theme. Defaults to the current active theme.
  * @return array
  */
-function get_theme_patterns( $theme_path = false ) {
+function get_theme_patterns() {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
