@@ -14,7 +14,6 @@ import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
 import useCurrentId from '../../hooks/useCurrentId';
-import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
@@ -41,23 +40,20 @@ function PatternManagerContextHydrator() {
 	const currentView = useCurrentView( 'theme_patterns' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const patterns = usePatterns();
-
-	const currentTheme = useThemeData( patternmanager.patterns, patterns );
+	const patterns = usePatterns( patternmanager.patterns );
 
 	const currentPatternId = useCurrentId( '' );
 
 	let currentPattern: Pattern | null = null;
 
 	if ( currentPatternId?.value ) {
-		currentPattern = currentTheme.data?.[ currentPatternId?.value ] ?? null;
+		currentPattern = patterns.data?.[ currentPatternId?.value ] ?? null;
 	}
 
 	const providerValue: InitialContext = {
 		currentView,
 		currentPatternId,
 		currentPattern,
-		currentTheme,
 		patterns,
 		siteUrl: patternmanager.siteUrl,
 		apiEndpoints: patternmanager.apiEndpoints,
@@ -73,7 +69,7 @@ function PatternManagerContextHydrator() {
 }
 
 function PatternManager() {
-	const { currentPatternId, currentView, currentTheme } = usePmContext();
+	const { currentPatternId, currentView, patterns } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (
@@ -93,13 +89,13 @@ function PatternManager() {
 						<div className="flex flex-wrap gap-2">
 							<button
 								type="button"
-								disabled={ currentTheme?.fetchInProgress }
+								disabled={ patterns?.fetchInProgress }
 								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
-									currentTheme.save();
+									patterns.save();
 								} }
 							>
-								{ currentTheme.isSaving ? (
+								{ patterns.isSaving ? (
 									<>
 										<Spinner />
 										{ __( 'Saving', 'pattern-manager' ) }
@@ -113,9 +109,9 @@ function PatternManager() {
 								onClick={ () => {
 									// Get the new pattern title and slug.
 									const { patternTitle, patternSlug } =
-										getNextPatternIds( currentTheme?.data );
+										getNextPatternIds( patterns?.data );
 
-									currentTheme
+									patterns
 										.createPattern( {
 											title: patternTitle,
 											name: patternSlug,
@@ -142,7 +138,7 @@ function PatternManager() {
 				</div>
 			</div>
 
-			{ currentTheme?.data ? (
+			{ patterns?.data ? (
 				<>
 					<ThemePatterns
 						isVisible={
