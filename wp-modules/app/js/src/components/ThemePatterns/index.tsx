@@ -30,19 +30,6 @@ export default function ThemePatterns( { isVisible }: Props ) {
 
 	return (
 		<div hidden={ ! isVisible } className="w-full">
-			<div className="bg-pm-gray p-8 lg:p-12 w-full">
-				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">
-						{ __( 'Patterns', 'pattern-manager' ) }
-					</h1>
-					<p className="text-lg max-w-2xl">
-						Add patterns to your theme. You can create patterns from
-						scratch using the Create New Pattern button, and you can
-						also duplicate patterns as a start.
-					</p>
-				</div>
-			</div>
-
 			<div className="mx-auto p-8 lg:p-12">
 				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
