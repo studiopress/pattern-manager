@@ -88,8 +88,6 @@ function get_theme() {
 		'version'           => $theme['Version'],
 		'text_domain'       => $theme['TextDomain'],
 		'included_patterns' => \PatternManager\PatternDataHandlers\get_theme_patterns( $theme_dir ),
-		'template_files'    => \PatternManager\PatternDataHandlers\get_theme_templates( $theme_dir ),
-		'template_parts'    => \PatternManager\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
 		'theme_json_file'   => ! $theme_json ? [] : json_decode( $theme_json, true ),
 		'styles'            => [],
 	];
@@ -149,36 +147,6 @@ function update_theme( $theme, $update_patterns = true ) {
 	// Note we do not check $update_patterns here. This is because included_patterns are treated differently than template_files and template_parts, in that they are saved WITH the theme data, while template things are saved separately in the site editor.
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\PatternManager\PatternDataHandlers\update_pattern( $included_pattern );
-	}
-
-	if ( $update_patterns ) {
-		if ( ! $theme['template_files'] ) {
-			$theme['template_files'] = \PatternManager\PatternDataHandlers\get_theme_templates( get_template_directory() );
-		}
-
-		foreach ( $theme['template_files'] as $template_name => $template_data ) {
-			\PatternManager\PatternDataHandlers\update_pattern(
-				array(
-					'name'    => $template_name,
-					'content' => $template_data['content'],
-					'type'    => 'template',
-				)
-			);
-		}
-
-		if ( ! isset( $theme['template_parts'] ) ) {
-			$theme['template_parts'] = \PatternManager\PatternDataHandlers\get_theme_template_parts( get_template_directory() );
-		}
-
-		foreach ( $theme['template_parts'] as $template_name => $template_data ) {
-			\PatternManager\PatternDataHandlers\update_pattern(
-				array(
-					'name'    => $template_name,
-					'content' => $template_data['content'],
-					'type'    => 'template_part',
-				)
-			);
-		}
 	}
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
