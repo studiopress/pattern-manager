@@ -39,7 +39,7 @@ export default function PatternManagerApp() {
 }
 
 function PatternManagerContextHydrator() {
-	const currentView = useCurrentView( 'theme_setup' );
+	const currentView = useCurrentView( 'theme_patterns' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const themes = useThemes( patternmanager.themes );
