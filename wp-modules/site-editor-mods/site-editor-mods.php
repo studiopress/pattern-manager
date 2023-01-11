@@ -17,49 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Enqueue custom JS and CSS for Site Editor.
- */
-function enqueue() {
-	$current_screen = get_current_screen();
-
-	// Only enqueue on the site editor.
-	if ( strpos( $current_screen->base, 'edit-site' ) === false && 'site-editor' !== $current_screen->base ) {
-		return;
-	}
-
-	// Only enqueue if inside the app.
-	if ( ! isset( $_GET['patternmanager_app'] ) ) { //phpcs:ignore
-		return;
-	}
-
-	$module_dir_path = module_dir_path( __FILE__ );
-	$module_dir_url  = module_dir_url( __FILE__ );
-
-	if ( file_exists( $module_dir_path . 'js/build/index.asset.php' ) ) {
-		$dependencies = require $module_dir_path . 'js/build/index.asset.php';
-		$dependencies = $dependencies['dependencies'];
-	} else {
-		return;
-	}
-
-	$js_url = $module_dir_url . 'js/build/index.js';
-	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'patternmanager_site_editor_style', $js_url, $dependencies, $js_ver, true );
-	wp_localize_script(
-		'patternmanager_site_editor_style',
-		'patternmanager',
-		array(
-			'siteUrl' => get_bloginfo( 'url' ),
-		)
-	);
-
-	$css_url = $module_dir_url . 'js/build/index.css';
-	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
-	wp_enqueue_style( 'patternmanager_site_editor_style', $css_url, array(), $css_ver );
-}
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\enqueue' );
-
-/**
  * Modify certain words when editing a pattern.
  *
  * @param string $translation The translated or modified string.

@@ -50,41 +50,6 @@ function register_routes() {
 			'schema' => 'response_item_schema',
 		)
 	);
-	register_rest_route(
-		$namespace,
-		'/export-theme',
-		array(
-			array(
-				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\export_theme',
-				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => save_request_args(),
-			),
-			'schema' => 'response_item_schema',
-		)
-	);
-	register_rest_route(
-		$namespace,
-		'/switch-theme',
-		array(
-			array(
-				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\switch_to_theme',
-				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => array(
-					'dirname' => array(
-						'required'          => true,
-						'type'              => 'string',
-						'description'       => __( 'The dirname, or slug, of the theme', 'pattern-manager' ),
-						'validate_callback' => function( $param ) {
-							return is_string( $param );
-						},
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-				),
-			),
-		)
-	);
 }
 
 /**
@@ -141,33 +106,6 @@ function save_theme( $request ) {
 			200
 		);
 	}
-}
-
-/**
- * Export a theme's data to a zip file.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Request
- */
-function export_theme( $request ) {
-	$theme_data = $request->get_params();
-
-	$result = \PatternManager\ThemeDataHandlers\export_theme( $theme_data );
-
-	if ( is_wp_error( $result ) ) {
-		return new \WP_REST_Response( $result, 400 );
-	} else {
-		return new \WP_REST_Response( $result, 200 );
-	}
-}
-
-/**
- * Switch to a given theme.
- *
- * @param WP_REST_Request $request Full data about the request.
- */
-function switch_to_theme( WP_REST_Request $request ) {
-	\PatternManager\ThemeDataHandlers\switch_to_theme( $request->get_params()['dirname'] ?? '' );
 }
 
 /**

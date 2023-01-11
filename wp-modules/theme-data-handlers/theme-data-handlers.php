@@ -154,9 +154,6 @@ function update_theme( $theme, $update_patterns = true ) {
 	// Assign a unique ID to this theme if it doesn't already have one.
 	$theme['id'] = $theme['dirname'];
 
-	// Activate this theme.
-	switch_theme( $theme['dirname'] );
-
 	if ( isset( $theme['included_patterns'] ) ) {
 		\PatternManager\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
 	} else {
@@ -166,10 +163,6 @@ function update_theme( $theme, $update_patterns = true ) {
 	// Note we do not check $update_patterns here. This is because included_patterns are treated differently than template_files and template_parts, in that they are saved WITH the theme data, while template things are saved separately in the site editor.
 	foreach ( $theme['included_patterns'] as $included_pattern ) {
 		\PatternManager\PatternDataHandlers\update_pattern( $included_pattern );
-	}
-
-	foreach ( $theme['styles'] as $style ) {
-		\PatternManager\ThemeJsonDataHandlers\update_theme_style( $style );
 	}
 
 	if ( $update_patterns ) {
