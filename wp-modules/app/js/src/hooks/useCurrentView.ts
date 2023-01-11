@@ -9,6 +9,6 @@ export default function useCurrentView( initialView: PatternManagerViews ) {
 
 	return {
 		currentView,
-		set: setCurrentView
+		set: setCurrentView,
 	};
 }

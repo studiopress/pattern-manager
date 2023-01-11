@@ -4,13 +4,11 @@ import React from 'react';
 import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
-import useCurrentTheme from './hooks/useThemeData'
+import useCurrentTheme from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
-export type PatternManagerViews =
-	| 'theme_patterns'
-	| 'pattern_editor';
+export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type NoticeContext = ReturnType< typeof useNotice >;
 

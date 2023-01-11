@@ -1,8 +1,5 @@
 node_modules
-.parcel-cache
 .DS_Store
 build
 /vendor
-/wp-modules-external
-/wpps-scripts
 *.zip

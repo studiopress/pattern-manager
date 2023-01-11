@@ -123,9 +123,7 @@ function PatternManager() {
 						<div className="flex flex-wrap gap-2">
 							<button
 								type="button"
-								disabled={
-									currentTheme?.fetchInProgress
-								}
+								disabled={ currentTheme?.fetchInProgress }
 								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
 									currentTheme.save();
@@ -134,10 +132,7 @@ function PatternManager() {
 								{ currentTheme.isSaving ? (
 									<>
 										<Spinner />
-										{ __(
-											'Saving',
-											'pattern-manager'
-										) }
+										{ __( 'Saving', 'pattern-manager' ) }
 									</>
 								) : (
 									__( 'Save', 'pattern-manager' )
@@ -147,13 +142,11 @@ function PatternManager() {
 								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 								onClick={ () => {
 									// Get the new pattern title and slug.
-									const {
-										patternTitle,
-										patternSlug,
-									} = getNextPatternIds(
-										currentTheme?.data
-											?.included_patterns
-									);
+									const { patternTitle, patternSlug } =
+										getNextPatternIds(
+											currentTheme?.data
+												?.included_patterns
+										);
 
 									currentTheme
 										.createPattern( {
@@ -171,19 +164,12 @@ function PatternManager() {
 											content: '',
 										} )
 										.then( () => {
-											currentPatternId.set(
-												patternSlug
-											);
-											currentView.set(
-												'pattern_editor'
-											);
+											currentPatternId.set( patternSlug );
+											currentView.set( 'pattern_editor' );
 										} );
 								} }
 							>
-								{ __(
-									'Add New Pattern',
-									'pattern-manager'
-								) }
+								{ __( 'Add New Pattern', 'pattern-manager' ) }
 							</button>
 						</div>
 					</div>

@@ -6,7 +6,13 @@ import getHeaders from '../utils/getHeaders';
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
 
-import type { InitialContext, InitialPatternManager, Pattern, Patterns, Theme } from '../types';
+import type {
+	InitialContext,
+	InitialPatternManager,
+	Pattern,
+	Patterns,
+	Theme,
+} from '../types';
 import { ThemePatternType } from '../enums';
 
 export default function useThemeData(
