@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Get data for a single themes in the format used by Theme Manager.
  *
- * @param string $theme_slug The directory name of the theme in question.
  * @return array
  */
 function get_theme() {
