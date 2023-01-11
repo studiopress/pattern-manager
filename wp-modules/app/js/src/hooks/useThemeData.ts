@@ -111,7 +111,7 @@ export default function useThemeData(
 			fetch( patternmanager.apiEndpoints.savePatternsEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify( patternsData ),
+				body: JSON.stringify( { patterns: patternsData } ),
 			} )
 				.then( ( response ) => {
 					if ( ! response.ok ) {
