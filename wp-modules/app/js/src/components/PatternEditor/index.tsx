@@ -33,12 +33,8 @@ export default function PatternEditor( { visible }: Props ) {
 }
 
 export function BlockEditor() {
-	const {
-		currentPattern,
-		currentPatternId,
-		patternEditorIframe,
-		patterns,
-	} = usePmContext();
+	const { currentPattern, currentPatternId, patternEditorIframe, patterns } =
+		usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
