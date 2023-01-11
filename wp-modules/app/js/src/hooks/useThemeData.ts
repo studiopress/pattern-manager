@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternmanager } from '../globals';
 import getHeaders from '../utils/getHeaders';
-import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
@@ -15,16 +14,12 @@ export default function useThemeData(
 	themes: InitialContext[ 'themes' ],
 	patternEditorIframe: InitialContext[ 'patternEditorIframe' ],
 	templateEditorIframe: InitialContext[ 'templateEditorIframe' ],
-	currentStyleVariationId: InitialContext[ 'currentStyleVariationId' ],
 	patterns: ReturnType< typeof usePatterns >
 ) {
 	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [ saveCompleted, setSaveCompleted ] = useState( true );
 	const themeData = themes.themes[ themeId ];
-
-	const defaultStyleName = useRef( currentStyleVariationId.value );
 
 	function setThemeData( newThemeData: Theme ) {
 		themes.setThemes( {
@@ -38,20 +33,6 @@ export default function useThemeData(
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
 	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
-
-	/** Whether another theme also has the current directory name. */
-	function isDirnameTaken() {
-		const themeDirNames = Object.keys( themes.themes );
-		const otherThemeDirNames = [];
-		// Remove this theme from the list of theme directories (a theme can of course have the same dirname as itself).
-		for ( const themeDirnameIndex in themeDirNames ) {
-			if ( themeDirNames[ themeDirnameIndex ] !== themeData.id ) {
-				otherThemeDirNames.push( themeDirNames[ themeDirnameIndex ] );
-			}
-		}
-
-		return otherThemeDirNames.includes( themeData.dirname );
-	}
 
 	useEffect( () => {
 		window.addEventListener(
@@ -154,7 +135,6 @@ export default function useThemeData(
 				return;
 			}
 			setIsSaving( true );
-			setSaveCompleted( false );
 
 			fetch( patternmanager.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
@@ -231,121 +211,15 @@ export default function useThemeData(
 			setSnackBarValue(
 				__(
 					'Theme successfully saved and all files written to theme directory',
-					'patternmanager'
+					'pattern-manager'
 				)
 			);
 
 			editorDirty.current = false;
 			setSiteEditorDirty( false );
-			setSaveCompleted( true );
 			setIsSaving( false );
 			patterns?.reloadPatternPreviews();
 		} );
-	}
-
-	function exportThemeData() {
-		return new Promise( ( resolve ) => {
-			fetch( patternmanager.apiEndpoints.exportThemeEndpoint, {
-				method: 'POST',
-				headers: getHeaders(),
-				body: JSON.stringify( themeData ),
-			} )
-				.then( ( response ) => response.json() )
-				.then( ( data: string ) => {
-					window.location.replace( data );
-					resolve( data );
-				} );
-		} );
-	}
-
-	function setThemeJsonValue(
-		topLevelSection = 'settings',
-		selectorString: string,
-		value: unknown = null,
-		defaultValue: unknown = null
-	) {
-		const currentStyleValue = currentStyleVariationId?.value;
-
-		// Use theme_json_file if current style variation is default.
-		// Otherwise, use the current style variation body.
-		const jsonDataBody =
-			currentStyleValue === defaultStyleName.current
-				? themeData.theme_json_file
-				: themeData.styles[ currentStyleValue ]?.body;
-
-		if (
-			! jsonDataBody[ topLevelSection ] ||
-			Array.isArray( jsonDataBody[ topLevelSection ] )
-		) {
-			jsonDataBody[ topLevelSection ] = {};
-		}
-
-		// Remove any leading commas that might exist.
-		if ( selectorString[ 0 ] === '.' ) {
-			selectorString = selectorString.substring( 1 );
-		}
-
-		// Split the selector string at commas
-		const keys = selectorString.split( '.' );
-
-		const modifiedData = setNestedObject(
-			value,
-			defaultValue,
-			[ topLevelSection, ...keys ] // Top level key with the array of keys.
-		)( jsonDataBody );
-
-		editTheme(
-			// If the current style is not default, save the variation data to the styles array.
-			// Otherwise, save the modifiedData to theme.json.
-			currentStyleVariationId.value !== defaultStyleName.current
-				? {
-						...themeData,
-						styles: {
-							...themeData.styles,
-							[ currentStyleVariationId.value ]: {
-								...themeData.styles[
-									currentStyleVariationId.value
-								],
-								body: modifiedData,
-							},
-						},
-				  }
-				: {
-						...themeData,
-						theme_json_file: modifiedData,
-				  }
-		);
-	}
-
-	function getThemeJsonValue(
-		topLevelSection = 'settings',
-		selectorString: string,
-		defaultValue?: unknown
-	) {
-		const currentStyleValue = currentStyleVariationId?.value ?? '';
-
-		// Use theme_json_file if current style variation is default.
-		// Otherwise, use the current style variation body.
-		const currentStyleVariation =
-			currentStyleValue === defaultStyleName.current
-				? themeData.theme_json_file
-				: themeData?.styles[ currentStyleValue ]?.body ??
-				  // Edge case fallback: intermittent crash on switching themes.
-				  // Recreate by quoting out fallback, selecting a style variation, then switching themes.
-				  themeData.theme_json_file;
-
-		// Remove any leading commas that might exist.
-		if ( selectorString[ 0 ] === '.' ) {
-			selectorString = selectorString.substring( 1 );
-		}
-
-		// Split the selector string at commas
-		const keys = selectorString.split( '.' );
-
-		return (
-			getNestedValue( currentStyleVariation[ topLevelSection ], keys ) ??
-			defaultValue
-		);
 	}
 
 	function createPattern( patternData: Pattern ) {
@@ -403,16 +277,10 @@ export default function useThemeData(
 	return {
 		data: themeData,
 		set: editTheme,
-		getThemeJsonValue,
-		setThemeJsonValue,
 		createPattern,
 		deletePattern,
-		get: getThemeData,
 		save: saveThemeData,
-		export: exportThemeData,
-		saveCompleted,
 		isSaving,
-		isDirnameTaken,
 		fetchInProgress,
 	};
 }

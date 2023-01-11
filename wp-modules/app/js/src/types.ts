@@ -4,21 +4,12 @@ import React from 'react';
 import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
-import useThemes from './hooks/useThemes';
-import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
 export type PatternManagerViews =
-	| 'theme_setup'
-	| 'create_theme'
-	| 'theme_preview'
 	| 'theme_patterns'
-	| 'theme_templates'
-	| 'template_parts'
-	| 'pattern_editor'
-	| 'themejson_editor'
-	| 'pattern_manager_help';
+	| 'pattern_editor';
 
 export type NoticeContext = ReturnType< typeof useNotice >;
 
@@ -26,10 +17,6 @@ export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern: Pattern;
-	themes: ReturnType< typeof useThemes >;
-	currentThemeId: ReturnType< typeof useCurrentId >;
-	currentTheme: ReturnType< typeof useThemeData >;
-	currentStyleVariationId: ReturnType< typeof useCurrentId >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	blockEditorSettings: InitialPatternManager[ 'blockEditorSettings' ];

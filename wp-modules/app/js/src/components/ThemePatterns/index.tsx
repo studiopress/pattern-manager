@@ -23,9 +23,9 @@ type Props = {
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentTheme, currentView, currentPatternId } = usePmContext();
+	const { currentView, currentPatternId } = usePmContext();
 
-	if ( ! isVisible || ! currentTheme.data ) {
+	if ( ! isVisible ) {
 		return null;
 	}
 
