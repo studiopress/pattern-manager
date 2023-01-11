@@ -13,8 +13,8 @@ import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeCo
 import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
-import useThemeData from '../../hooks/useThemeData';
 import useCurrentId from '../../hooks/useCurrentId';
+import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
