@@ -22,16 +22,9 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
 
 // Components
-import CreateTheme from '../CreateTheme';
-import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
-import ThemePreview from '../ThemePreview';
-import TemplateEditor from '../TemplateEditor';
 import PatternEditor from '../PatternEditor';
-import ThemeJsonEditor from '../ThemeJsonEditor';
-import PatternManagerHelp from '../PatternManagerHelp';
 import GettingStarted from '../GettingStarted';
-import PatternManagerNav from '../PatternManagerNav';
 
 import type { InitialContext, Pattern } from '../../types';
 
@@ -138,11 +131,6 @@ function PatternManager() {
 			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
 				<div className="flex-1 flex">
 					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
-						<div className="flex lg:flex-row flex-col gap-4 lg:gap-12">
-							{ /* Nav options for opening and creating themes, along with standard view actions */ }
-							<PatternManagerNav />
-						</div>
-
 						<div className="flex flex-wrap gap-2">
 							{ currentView?.currentView !== 'create_theme' ? (
 								<>
@@ -192,44 +180,13 @@ function PatternManager() {
 
 			{ currentTheme?.data ? (
 				<>
-					<CreateTheme
-						isVisible={
-							'create_theme' === currentView?.currentView
-						}
-					/>
-					<ThemeSetup
-						isVisible={ 'theme_setup' === currentView.currentView }
-					/>
-					<ThemePreview
-						isVisible={
-							'theme_preview' === currentView.currentView
-						}
-					/>
 					<ThemePatterns
 						isVisible={
 							'theme_patterns' === currentView.currentView
 						}
 					/>
-					<div
-						hidden={
-							'theme_templates' !== currentView.currentView &&
-							'template_parts' !== currentView.currentView
-						}
-					>
-						<TemplateEditor />
-					</div>
 					<PatternEditor
 						visible={ 'pattern_editor' === currentView.currentView }
-					/>
-					<ThemeJsonEditor
-						visible={
-							'themejson_editor' === currentView.currentView
-						}
-					/>
-					<PatternManagerHelp
-						visible={
-							'pattern_manager_help' === currentView.currentView
-						}
 					/>
 				</>
 			) : (
