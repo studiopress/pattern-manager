@@ -13,7 +13,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
-	const [ requestThemeRefresh, setRequestThemeRefresh ] = useState( false );
+	const [ requestPatternRefresh, setRequestPatternRefresh ] = useState( false );
 	const refs = useRef< { [ key: string ]: HTMLIFrameElement } >( {} );
 
 	const addRef = ( key: string, newRef: HTMLIFrameElement ) => {
@@ -35,7 +35,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 			},
 			false
 		);
-		// When a pattern or site editor is saved, refresh the theme data.
+		// When a pattern or site editor is saved, refresh the pattern data.
 		window.addEventListener(
 			'message',
 			( event ) => {
@@ -43,7 +43,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 					event.data === 'patternmanager_site_editor_save_complete'
 				) {
 					setSiteEditorDirty( false );
-					setRequestThemeRefresh( true );
+					setRequestPatternRefresh( true );
 				}
 			},
 			false
@@ -56,18 +56,18 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}, [] );
 
 	useEffect( () => {
-		if ( requestThemeRefresh ) {
+		if ( requestPatternRefresh ) {
 			// If something is still dirty, don't do anything yet.
 			if ( siteEditorDirty ) {
-				setRequestThemeRefresh( false );
+				setRequestPatternRefresh( false );
 			} else {
-				setRequestThemeRefresh( false );
+				setRequestPatternRefresh( false );
 				// We have to do this outside the pm_pattern_editor_save_complete listener because patterns is stale there.
 				uponSuccessfulSave();
 				getThemeData();
 			}
 		}
-	}, [ requestThemeRefresh ] );
+	}, [ requestPatternRefresh ] );
 
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
@@ -185,9 +185,9 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	/**
-	 * Allows the user to edit the theme.
+	 * Allows the user to edit the patterns.
 	 *
-	 * A separate function from setThemeData(), as this sets the 'dirty'
+	 * A separate function from setPatternsData(), as this sets the 'dirty'
 	 * state of the editor.
 	 */
 	function editPatterns( newPatterns: Patterns ) {
