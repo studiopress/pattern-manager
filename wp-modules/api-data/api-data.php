@@ -102,33 +102,6 @@ function save_request_args() {
 }
 
 /**
- * Validation callback for simple string parameters.
- *
- * @param mixed           $value   Value of the the parameter.
- * @param WP_REST_Request $request Current request object.
- * @param string          $param   The name of the parameter.
- */
-function validate_arg_is_string( $value, $request, $param ) {
-	$attributes = $request->get_attributes();
-
-	if ( isset( $attributes['args'][ $param ] ) ) {
-		$argument = $attributes['args'][ $param ];
-		// Check to make sure our argument is a string.
-
-		if ( 'string' === $argument['type'] && ! is_string( $value ) ) {
-			// Translators: 1: The name of the paramater in question. 2: The required variable type.
-			return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%1$s is not of type %2$s', 'pattern-manager' ), $param, 'string' ), array( 'status' => 400 ) );
-		}
-	} else {
-		// Translators: The name of the paramater which was passed, but not registered.
-		return new WP_Error( 'rest_invalid_param', sprintf( esc_html__( '%s was not registered as a request argument.', 'pattern-manager' ), $param ), array( 'status' => 400 ) );
-	}
-
-	// If we got this far then the data is valid.
-	return true;
-}
-
-/**
  * Initialize the REST route.
  *
  * @since 1.0.0
