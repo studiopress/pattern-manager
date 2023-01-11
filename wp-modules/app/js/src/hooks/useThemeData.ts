@@ -24,7 +24,7 @@ export default function useThemeData(
 	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [ patternsData, setPatternsData ] = useState( theme );
+	const [ themeData, setThemeData ] = useState( theme );
 
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
@@ -96,7 +96,7 @@ export default function useThemeData(
 				return;
 			}
 			setFetchInProgress( true );
-			fetch( patternmanager.apiEndpoints.getPatternsEndpoint, {
+			fetch( patternmanager.apiEndpoints.getThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 			} )
@@ -107,23 +107,29 @@ export default function useThemeData(
 						response.error &&
 						response.error === 'theme_not_found'
 					) {
-						setPatternsData( patternsData );
+						setThemeData( themeData );
 					} else {
-						setPatternsData( response );
+						setThemeData( response );
 						resolve( response );
 					}
 				} );
 		} );
 	}
 
-	function savePatternsData() {
+	function saveThemeData() {
 		return new Promise( ( resolve ) => {
+			if ( themeData.name === '' ) {
+				/* eslint-disable */
+				alert('You need to change your theme name before saving');
+				/* eslint-enable */
+				return;
+			}
 			setIsSaving( true );
 
 			fetch( patternmanager.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify( patternsData ),
+				body: JSON.stringify( themeData ),
 			} )
 				.then( ( response ) => {
 					if ( ! response.ok ) {
@@ -133,7 +139,10 @@ export default function useThemeData(
 				} )
 				.then(
 					( data: {
-						patterns: patternsData;
+						message: string;
+						styleJsonModified: boolean;
+						themeData: Theme;
+						themeJsonModified: boolean;
 					} ) => {
 						if ( patternEditorIframe.current ) {
 							// Send a message to the iframe, telling it that the themejson has changed.
@@ -148,7 +157,34 @@ export default function useThemeData(
 							}
 						}
 
-						setPatternsData( data.patterns );
+						if ( templateEditorIframe.current ) {
+							templateEditorIframe.current.contentWindow.postMessage(
+								JSON.stringify( {
+									message: 'patternmanager_save',
+								} ),
+								'*'
+							);
+
+							if ( data.themeJsonModified ) {
+								templateEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message:
+											'patternmanager_themejson_changed',
+									} ),
+									'*'
+								);
+							} else if ( data.styleJsonModified ) {
+								templateEditorIframe.current.contentWindow.postMessage(
+									JSON.stringify( {
+										message:
+											'patternmanager_stylejson_changed',
+									} ),
+									'*'
+								);
+							}
+						}
+
+						setThemeData( data.themeData );
 
 						if ( ! siteEditorDirty ) {
 							uponSuccessfulSave();
@@ -176,15 +212,18 @@ export default function useThemeData(
 		} );
 	}
 
-	function createPattern( newPattern: Pattern ) {
+	function createPattern( patternData: Pattern ) {
 		return new Promise( ( resolve ) => {
-			const newPatternsData = {
-				...patternsData,
-				[ newPattern.name ]: newPattern,
+			const newThemeData = {
+				...themeData,
+				[ ThemePatternType[ patternData.type ] ]: {
+					...themeData[ ThemePatternType[ patternData.type ] ],
+					[ patternData.name ]: patternData,
+				},
 			};
 
-			setPatternsData( newPatternsData );
-			resolve( newPatternsData );
+			setThemeData( newThemeData );
+			resolve( newThemeData );
 		} );
 	}
 
@@ -203,10 +242,13 @@ export default function useThemeData(
 
 		const {
 			[ patternName ]: {},
-			...newPatterns
-		} = patternsData;
+			...newIncludedPatterns
+		} = ( themeData.included_patterns as Patterns ) ?? {};
 
-		setPatternsData( newPatterns );
+		setThemeData( {
+			...themeData,
+			included_patterns: newIncludedPatterns,
+		} );
 	}
 
 	/**
@@ -215,17 +257,17 @@ export default function useThemeData(
 	 * A separate function from setThemeData(), as this sets the 'dirty'
 	 * state of the editor.
 	 */
-	function editPatterns( newPatterns: Patterns ) {
+	function editTheme( newThemeData: Theme ) {
 		editorDirty.current = true;
-		setPatternsData( newPatterns );
+		setThemeData( newThemeData );
 	}
 
 	return {
-		data: patternsData,
-		set: editPatterns,
+		data: themeData,
+		set: editTheme,
 		createPattern,
 		deletePattern,
-		save: savePatternsData,
+		save: saveThemeData,
 		isSaving,
 		fetchInProgress,
 	};
