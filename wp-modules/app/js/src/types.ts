@@ -4,6 +4,7 @@ import React from 'react';
 import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
+import useCurrentTheme from './hooks/useThemeData'
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
@@ -14,6 +15,7 @@ export type PatternManagerViews =
 export type NoticeContext = ReturnType< typeof useNotice >;
 
 export type InitialContext = {
+	currentTheme: ReturnType< typeof useCurrentTheme >;
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern: Pattern;
@@ -46,11 +48,10 @@ export type InitialPatternManager = {
 		__unstableResolvedAssets?: { styles: string };
 		styles?: { [ key: string ]: unknown }[];
 	};
-	initialTheme: string;
 	patterns: Patterns;
 	siteUrl: string;
 	adminUrl: string;
-	themes: Themes;
+	theme: Theme;
 	schemas: {
 		themejson: {
 			definitions: {
@@ -85,16 +86,6 @@ export type Patterns = {
 	[ key: string ]: Pattern;
 };
 
-export type Style = {
-	id: string;
-	title: string;
-	body: { [ key: string ]: unknown };
-};
-
-export type Styles = {
-	[ key: string ]: Style;
-};
-
 export type Theme = {
 	name: string;
 	namespace: string;
@@ -121,8 +112,4 @@ export type Theme = {
 	theme_json_file?: { [ key: string ]: unknown };
 	uri: string;
 	version: string;
-};
-
-export type Themes = {
-	[ key: string ]: Theme;
 };

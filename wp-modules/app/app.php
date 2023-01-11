@@ -25,15 +25,12 @@ function get_app_state() {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$current_theme_data = null;
-
 	// Make sure the theme WP thinks is active actually exists.
 	$current_theme_data = \PatternManager\ThemeDataHandlers\get_theme( $current_theme_dir );
 
 	return array(
 		'patterns'           => \PatternManager\PatternDataHandlers\get_patterns(),
-		'initialTheme'       => isset( $current_theme_data['id'] ) ? $current_theme_data['id'] : null,
-		'themes'             => \PatternManager\ThemeDataHandlers\get_the_themes(),
+		'theme'             => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
 		'schemas'            => array(
 			'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/pattern-manager/wp-modules/schemas/json/theme.json' ),
 		),

@@ -13,7 +13,7 @@ import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeCo
 import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
-import useThemeData from '../../hooks/useThemData';
+import useThemeData from '../../hooks/useThemeData';
 import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
 import useCurrentView from '../../hooks/useCurrentView';
@@ -42,13 +42,10 @@ function PatternManagerContextHydrator() {
 	const currentView = useCurrentView( 'theme_patterns' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const themes = useThemes( patternmanager.themes );
 	const patterns = usePatterns();
 
-	const currentThemeId = useCurrentId( patternmanager.initialTheme );
 	const currentTheme = useThemeData(
-		currentThemeId.value,
-		themes,
+		patternmanager.theme,
 		patternEditorIframe,
 		templateEditorIframe,
 		patterns
@@ -91,6 +88,7 @@ function PatternManagerContextHydrator() {
 		currentView,
 		currentPatternId,
 		currentPattern,
+		currentTheme,
 		patterns,
 		siteUrl: patternmanager.siteUrl,
 		apiEndpoints: patternmanager.apiEndpoints,

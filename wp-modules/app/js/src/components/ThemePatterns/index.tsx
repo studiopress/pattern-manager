@@ -15,7 +15,6 @@ import { patternmanager } from '../../globals';
 
 // Utils
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
-import getNextPatternIds from '../../utils/getNextPatternIds';
 import { Pattern } from '../../types';
 
 type Props = {
@@ -23,7 +22,7 @@ type Props = {
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentView, currentPatternId } = usePmContext();
+	const { currentView, currentPatternId, currentTheme } = usePmContext();
 
 	if ( ! isVisible ) {
 		return null;

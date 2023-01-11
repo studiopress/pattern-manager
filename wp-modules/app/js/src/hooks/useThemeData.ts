@@ -6,12 +6,11 @@ import getHeaders from '../utils/getHeaders';
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
 
-import type { InitialContext, Pattern, Patterns, Theme } from '../types';
+import type { InitialContext, InitialPatternManager, Pattern, Patterns, Theme } from '../types';
 import { ThemePatternType } from '../enums';
 
 export default function useThemeData(
-	themeId: InitialContext[ 'currentThemeId' ][ 'value' ],
-	themes: InitialContext[ 'themes' ],
+	theme: InitialPatternManager[ 'theme' ],
 	patternEditorIframe: InitialContext[ 'patternEditorIframe' ],
 	templateEditorIframe: InitialContext[ 'templateEditorIframe' ],
 	patterns: ReturnType< typeof usePatterns >
@@ -19,16 +18,7 @@ export default function useThemeData(
 	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const themeData = themes.themes[ themeId ];
-
-	function setThemeData( newThemeData: Theme ) {
-		themes.setThemes( {
-			...themes.themes,
-			[ themeId ]: {
-				...newThemeData,
-			},
-		} );
-	}
+	const [ themeData, setThemeData ] = useState( theme );
 
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
