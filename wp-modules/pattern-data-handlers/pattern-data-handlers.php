@@ -222,10 +222,7 @@ function get_theme_patterns() {
 		'inserter'      => 'Inserter',
 	);
 
-	if ( ! $theme_path ) {
-		$theme_path = get_template_directory();
-	}
-
+	$theme_path      = get_template_directory();
 	$module_dir_path = module_dir_path( __FILE__ );
 
 	// Grab all of the patterns in this theme.
