@@ -49,6 +49,7 @@ function PatternManagerContextHydrator() {
 		templateEditorIframe,
 		patterns
 	);
+
 	const currentPatternId = useCurrentId( '' );
 
 	let currentPattern: Pattern | null = null;

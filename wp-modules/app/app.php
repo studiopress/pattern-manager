@@ -31,7 +31,6 @@ function get_app_state() {
 		'theme'        => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
-			'getAppState'       => get_rest_url( false, 'patternmanager/v1/get-app-state/' ),
 			'getThemeEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-theme/' ),
 			'saveThemeEndpoint' => get_rest_url( false, 'patternmanager/v1/save-theme/' ),
 		),
