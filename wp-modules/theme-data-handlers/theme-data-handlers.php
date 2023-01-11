@@ -95,61 +95,21 @@ function get_theme() {
 /**
  * Update a single theme.
  *
- * @param array $theme Data about the theme.
+ * @param array $patterns The new patterns.
  * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option exists.
  * @return array
  */
-function update_theme( $theme, $update_patterns = true ) {
+function update_patterns( $patterns ) {
+	\PatternManager\PatternDataHandlers\delete_patterns_not_present( $patterns );
 
-	// Spin up the filesystem api.
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
-	// Build the files for the theme, located in wp-content/themes/.
-	$theme_boiler_dir = $wp_filesystem->wp_plugins_dir() . '/pattern-manager/wp-modules/theme-boiler/theme-boiler/';
-	$themes_dir       = $wp_filesystem->wp_themes_dir();
-	$new_theme_dir    = $themes_dir . $theme['dirname'] . '/';
-
-	// Create the new theme directory, if it does not already exist.
-	if ( ! $wp_filesystem->exists( $new_theme_dir ) ) {
-		$wp_filesystem->mkdir( $new_theme_dir );
-		// Copy the boiler theme into it.
-		copy_dir( $theme_boiler_dir, $new_theme_dir );
-	}
-
-	// Fix strings in the stylesheet.
-	\PatternManager\StringFixer\fix_theme_stylesheet_strings( $new_theme_dir . 'style.css', $theme );
-
-	// Fix strings in the functions.php file.
-	\PatternManager\StringFixer\fix_theme_functions_strings( $new_theme_dir . 'functions.php', $theme );
-
-	// Put the contents of the theme.json file into the theme.
-	if ( isset( $theme['theme_json_file'] ) && ! empty( $theme['theme_json_file'] ) ) {
-		$wp_filesystem->put_contents(
-			$new_theme_dir . '/theme.json',
-			wp_json_encode(
-				$theme['theme_json_file'],
-				JSON_PRETTY_PRINT
-			),
-			FS_CHMOD_FILE
-		);
-	}
-
-	// Assign a unique ID to this theme if it doesn't already have one.
-	$theme['id'] = $theme['dirname'];
-
-	if ( isset( $theme['included_patterns'] ) ) {
-		\PatternManager\PatternDataHandlers\delete_patterns_not_present( $theme['included_patterns'] );
-	} else {
-		$theme['included_patterns'] = \PatternManager\PatternDataHandlers\get_theme_patterns( get_template_directory() );
-	}
 
 	// Note we do not check $update_patterns here. This is because included_patterns are treated differently than template_files and template_parts, in that they are saved WITH the theme data, while template things are saved separately in the site editor.
-	foreach ( $theme['included_patterns'] as $included_pattern ) {
-		\PatternManager\PatternDataHandlers\update_pattern( $included_pattern );
+	foreach ( $patterns as $pattern_name => $pattern ) {
+		\PatternManager\PatternDataHandlers\update_pattern( $pattern );
 	}
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
 	\PatternManager\PatternDataHandlers\tree_shake_theme_images();
 
-	return $theme;
+	return $patterns;
 }

@@ -31,8 +31,8 @@ function get_app_state() {
 		'theme'        => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
-			'getThemeEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-theme/' ),
-			'saveThemeEndpoint' => get_rest_url( false, 'patternmanager/v1/save-theme/' ),
+			'getPatternsEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-patterns/' ),
+			'savePatternsEndpoint' => get_rest_url( false, 'patternmanager/v1/save-patterns/' ),
 		),
 		'siteUrl'      => get_bloginfo( 'url' ),
 		'adminUrl'     => admin_url(),

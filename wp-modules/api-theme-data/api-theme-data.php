@@ -26,7 +26,7 @@ function register_routes() {
 	$namespace = 'patternmanager/v' . $version;
 	register_rest_route(
 		$namespace,
-		'/get-theme',
+		'/get-patterns',
 		array(
 			array(
 				'methods'             => 'POST',
@@ -50,27 +50,6 @@ function register_routes() {
 			'schema' => 'response_item_schema',
 		)
 	);
-}
-
-/**
- * Get a theme's data.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Request
- */
-function get_theme( $request ) {
-	$theme_data = \PatternManager\ThemeDataHandlers\get_theme();
-
-	if ( ! $theme_data ) {
-		return new \WP_REST_Response(
-			array(
-				'error' => 'theme_not_found',
-			),
-			200
-		);
-	} else {
-		return new \WP_REST_Response( $theme_data, 200 );
-	}
 }
 
 /**
