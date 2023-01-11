@@ -62,7 +62,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 				setRequestThemeRefresh( false );
 			} else {
 				setRequestThemeRefresh( false );
-				// We have to do this outside the pm_pattern_editor_save_complete listener because currentTheme is stale there.
+				// We have to do this outside the pm_pattern_editor_save_complete listener because patterns is stale there.
 				uponSuccessfulSave();
 				getThemeData();
 			}

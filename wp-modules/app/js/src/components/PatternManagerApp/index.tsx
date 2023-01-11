@@ -109,7 +109,7 @@ function PatternManager() {
 								onClick={ () => {
 									// Get the new pattern title and slug.
 									const { patternTitle, patternSlug } =
-										getNextPatternIds( patterns?.data );
+										getNextPatternIds( patterns.data );
 
 									patterns
 										.createPattern( {

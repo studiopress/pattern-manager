@@ -37,7 +37,7 @@ export function BlockEditor() {
 		currentPattern,
 		currentPatternId,
 		patternEditorIframe,
-		currentTheme,
+		patterns,
 	} = usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
@@ -45,7 +45,7 @@ export function BlockEditor() {
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	const nameTaken = ( newSlug: string ) => {
-		return Object.values( currentTheme?.data ).some( ( pattern ) => {
+		return Object.values( patterns?.data ).some( ( pattern ) => {
 			return (
 				pattern.slug === newSlug && currentPatternId?.value !== newSlug
 			);
@@ -63,8 +63,8 @@ export function BlockEditor() {
 
 			// When the pattern block editor tells us it has something new, put it into the pattern data.
 			if ( response.message === 'patternmanager_block_pattern_updated' ) {
-				currentTheme?.set( {
-					...currentTheme.data,
+				patterns?.set( {
+					...patterns.data,
 					[ currentPatternId.value ]: response.blockPatternData,
 				} );
 			}

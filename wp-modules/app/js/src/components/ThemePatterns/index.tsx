@@ -22,9 +22,9 @@ type Props = {
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentTheme, currentView, currentPatternId } = usePmContext();
+	const { patterns, currentView, currentPatternId } = usePmContext();
 
-	if ( ! isVisible || ! currentTheme.data ) {
+	if ( ! isVisible || ! patterns.data ) {
 		return null;
 	}
 
@@ -35,7 +35,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					<div className="flex-initial w-full md:w-2/3">
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
-								{ Object.entries( currentTheme?.data ?? {} )
+								{ Object.entries( patterns?.data ?? {} )
 									.length === 0 ? (
 									<div className="bg-pm-gray p-10 text-center w-full col-span-2 rounded">
 										{ createInterpolateElement(
@@ -56,9 +56,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 										) }
 									</div>
 								) : null }
-								{ Object.entries(
-									currentTheme?.data ?? {}
-								).map(
+								{ Object.entries( patterns?.data ?? {} ).map(
 									( [ patternName, patternData ]: [
 										string,
 										Pattern
@@ -76,7 +74,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 														'pattern-manager'
 													) }
 													onClick={ () => {
-														currentTheme.deletePattern(
+														patterns.deletePattern(
 															patternName
 														);
 													} }
@@ -122,11 +120,11 @@ export default function ThemePatterns( { isVisible }: Props ) {
 															getDuplicatePattern(
 																patternData,
 																Object.values(
-																	currentTheme.data ??
+																	patterns.data ??
 																		{}
 																)
 															);
-														currentTheme
+														patterns
 															.createPattern(
 																newPattern
 															)
