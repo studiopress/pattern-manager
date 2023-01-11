@@ -250,35 +250,20 @@ function get_theme_patterns() {
  * @return bool
  */
 function update_pattern( $pattern ) {
-
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$wp_theme_dir = get_template_directory();
 
-	if ( ! isset( $pattern['type'] ) || 'pattern' === $pattern['type'] ) {
-		$patterns_dir     = $wp_theme_dir . '/patterns/';
-		$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
-		if ( $name_was_changed ) {
-			// Delete the previous pattern file, as the file name should change on changing the name.
-			$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
-		}
-
-		$file_contents = contruct_pattern_php_file_contents( $pattern, 'pattern-manager' );
-		$file_name     = sanitize_title( $pattern['name'] ) . '.php';
+	$patterns_dir     = $wp_theme_dir . '/patterns/';
+	$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
+	if ( $name_was_changed ) {
+		// Delete the previous pattern file, as the file name should change on changing the name.
+		$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
 	}
 
-	if ( 'template' === $pattern['type'] ) {
-		$patterns_dir  = $wp_theme_dir . '/templates/';
-		$file_contents = contruct_template_php_file_contents( $pattern, 'pattern-manager' );
-		$file_name     = sanitize_title( $pattern['name'] ) . '.html';
-	}
-
-	if ( 'template_part' === $pattern['type'] ) {
-		$patterns_dir  = $wp_theme_dir . '/parts/';
-		$file_contents = contruct_template_php_file_contents( $pattern, 'pattern-manager' );
-		$file_name     = sanitize_title( $pattern['name'] ) . '.html';
-	}
+	$file_contents = contruct_pattern_php_file_contents( $pattern, 'pattern-manager' );
+	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 
 	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
 		$wp_filesystem->mkdir( $patterns_dir );
