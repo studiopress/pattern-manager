@@ -136,18 +136,6 @@ function PatternManager() {
 								<>
 									<button
 										type="button"
-										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											currentView.set( 'theme_preview' );
-										} }
-									>
-										{ __(
-											'Preview Theme',
-											'pattern-manager'
-										) }
-									</button>
-									<button
-										type="button"
 										disabled={
 											currentTheme.fetchInProgress
 										}
@@ -160,57 +148,56 @@ function PatternManager() {
 											<>
 												<Spinner />
 												{ __(
-													'Saving Theme',
+													'Saving',
 													'pattern-manager'
 												) }
 											</>
 										) : (
-											__(
-												'Save Theme',
-												'pattern-manager'
-											)
+											__( 'Save', 'pattern-manager' )
 										) }
 									</button>
 									<button
-									className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										// Get the new pattern title and slug.
-										const { patternTitle, patternSlug } =
-											getNextPatternIds(
+										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+										onClick={ () => {
+											// Get the new pattern title and slug.
+											const {
+												patternTitle,
+												patternSlug,
+											} = getNextPatternIds(
 												currentTheme?.data
 													?.included_patterns
 											);
 
-										currentTheme
-											.createPattern( {
-												type: 'pattern',
-												title: patternTitle,
-												name: patternSlug,
-												slug: patternSlug,
-												categories: [],
-												keywords: [],
-												blockTypes: [],
-												postTypes: [],
-												inserter: true,
-												description: '',
-												viewportWidth: '',
-												content: '',
-											} )
-											.then( () => {
-												currentPatternId.set(
-													patternSlug
-												);
-												currentView.set(
-													'pattern_editor'
-												);
-											} );
-									} }
-								>
-									{ __(
-										'Add New Pattern',
-										'pattern-manager'
-									) }
-								</button>
+											currentTheme
+												.createPattern( {
+													type: 'pattern',
+													title: patternTitle,
+													name: patternSlug,
+													slug: patternSlug,
+													categories: [],
+													keywords: [],
+													blockTypes: [],
+													postTypes: [],
+													inserter: true,
+													description: '',
+													viewportWidth: '',
+													content: '',
+												} )
+												.then( () => {
+													currentPatternId.set(
+														patternSlug
+													);
+													currentView.set(
+														'pattern_editor'
+													);
+												} );
+										} }
+									>
+										{ __(
+											'Add New Pattern',
+											'pattern-manager'
+										) }
+									</button>
 								</>
 							) : null }
 						</div>
