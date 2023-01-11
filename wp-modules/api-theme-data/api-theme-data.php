@@ -26,11 +26,11 @@ function register_routes() {
 	$namespace = 'patternmanager/v' . $version;
 	register_rest_route(
 		$namespace,
-		'/get-theme',
+		'/get-patterns',
 		array(
 			array(
 				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\get_theme',
+				'callback'            => 'PatternManager\PatternDataHandlers\get_theme_patterns',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => array(),
 			),
@@ -39,11 +39,11 @@ function register_routes() {
 	);
 	register_rest_route(
 		$namespace,
-		'/save-theme',
+		'/save-patterns',
 		array(
 			array(
 				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\save_theme',
+				'callback'            => 'PatternManager\PatternDataHandlers\get_theme_patterns',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => save_request_args(),
 			),
@@ -116,120 +116,10 @@ function permission_check() {
  */
 function save_request_args() {
 	$return_args = array(
-		'name'              => array(
-			'required'          => true,
-			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'id'                => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The id of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'dirname'           => array(
-			'required'          => true,
-			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'namespace'         => array(
-			'required'          => true,
-			'type'              => 'string',
-			'description'       => __( 'The namespace of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'uri'               => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The URI of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'author'            => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The author of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'author_uri'        => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The author URI of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'description'       => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The description of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'tags'              => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-		),
-		'tested_up_to'      => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The WP version this theme has been tested up to', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'requires_wp'       => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'requires_php'      => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The tags for the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-
-		'version'           => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'text_domain'       => array(
-			'required'          => false,
-			'type'              => 'string',
-			'description'       => __( 'The name of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-		'theme_json_file'   => array(
-			'required'          => false,
-			'type'              => 'object',
-			'description'       => __( 'The contents of the theme.json file', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-		),
-		'included_patterns' => array(
+		'patterns' => array(
 			'required'          => false,
 			'type'              => 'object',
 			'description'       => __( 'The name of the theme', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
-		),
-		'template_files'    => array(
-			'required'          => false,
-			'type'              => 'object',
-			'description'       => __( 'The block pattern to use for index.html', 'pattern-manager' ),
 			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_object',
 		),
 	);
