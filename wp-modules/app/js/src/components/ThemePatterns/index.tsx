@@ -35,9 +35,8 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					<div className="flex-initial w-full md:w-2/3">
 						<>
 							<div className="grid w-full grid-cols-2 gap-5">
-								{ Object.entries(
-									currentTheme?.data ?? {}
-								).length === 0 ? (
+								{ Object.entries( currentTheme?.data ?? {} )
+									.length === 0 ? (
 									<div className="bg-pm-gray p-10 text-center w-full col-span-2 rounded">
 										{ createInterpolateElement(
 											__(
@@ -123,8 +122,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 															getDuplicatePattern(
 																patternData,
 																Object.values(
-																	currentTheme
-																		.data ??
+																	currentTheme.data ??
 																		{}
 																)
 															);

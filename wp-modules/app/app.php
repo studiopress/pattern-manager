@@ -23,9 +23,6 @@ function get_app_state() {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	// Make sure the theme WP thinks is active actually exists.
-	$current_theme_data = \PatternManager\ThemeDataHandlers\get_theme();
-
 	return array(
 		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),

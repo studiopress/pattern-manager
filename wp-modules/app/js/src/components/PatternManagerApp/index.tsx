@@ -43,18 +43,14 @@ function PatternManagerContextHydrator() {
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const patterns = usePatterns();
 
-	const currentTheme = useThemeData(
-		patternmanager.patterns,
-		patterns
-	);
+	const currentTheme = useThemeData( patternmanager.patterns, patterns );
 
 	const currentPatternId = useCurrentId( '' );
 
 	let currentPattern: Pattern | null = null;
 
 	if ( currentPatternId?.value ) {
-		currentPattern =
-			currentTheme.data?.[ currentPatternId?.value ] ?? null;
+		currentPattern = currentTheme.data?.[ currentPatternId?.value ] ?? null;
 	}
 
 	const providerValue: InitialContext = {

@@ -244,6 +244,26 @@ function get_theme_patterns() {
 }
 
 /**
+ * Update a single theme.
+ *
+ * @param array $patterns The new patterns.
+ * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option exists.
+ * @return array
+ */
+function update_patterns( $patterns ) {
+	delete_patterns_not_present( $patterns );
+
+	foreach ( $patterns as $pattern_name => $pattern ) {
+		update_pattern( $pattern );
+	}
+
+	// Now that all patterns have been saved, remove any images no longer needed in the theme.
+	tree_shake_theme_images();
+
+	return $patterns;
+}
+
+/**
  * Update a single pattern.
  *
  * @param array $pattern Data about the pattern.
@@ -262,7 +282,7 @@ function update_pattern( $pattern ) {
 		$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
 	}
 
-	$file_contents = contruct_pattern_php_file_contents( $pattern, 'pattern-manager' );
+	$file_contents = construct_pattern_php_file_contents( $pattern, 'pattern-manager' );
 	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 
 	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
@@ -322,7 +342,7 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
  * @param string $text_domain The text domain to use for any localization required.
  * @return bool
  */
-function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
+function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
@@ -353,7 +373,7 @@ function contruct_pattern_php_file_contents( $pattern, $text_domain ) {
  * @param string $text_domain The text domain to use for any localization required.
  * @return bool
  */
-function contruct_template_php_file_contents( $pattern, $text_domain ) {
+function construct_template_php_file_contents( $pattern, $text_domain ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	return $pattern['content'];
 }

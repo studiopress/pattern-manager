@@ -119,20 +119,15 @@ export default function useThemeData(
 					}
 					return response.json();
 				} )
-				.then(
-					( data: {
-						patterns: Patterns;
-					} ) => {
+				.then( ( data: { patterns: Patterns } ) => {
+					setPatternsData( data.patterns );
 
-						setPatternsData( data.patterns );
-
-						if ( ! siteEditorDirty ) {
-							uponSuccessfulSave();
-						}
-
-						resolve( data );
+					if ( ! siteEditorDirty ) {
+						uponSuccessfulSave();
 					}
-				);
+
+					resolve( data );
+				} );
 		} );
 	}
 

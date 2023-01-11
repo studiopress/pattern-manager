@@ -45,14 +45,11 @@ export function BlockEditor() {
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	const nameTaken = ( newSlug: string ) => {
-		return Object.values( currentTheme?.data ).some(
-			( pattern ) => {
-				return (
-					pattern.slug === newSlug &&
-					currentPatternId?.value !== newSlug
-				);
-			}
-		);
+		return Object.values( currentTheme?.data ).some( ( pattern ) => {
+			return (
+				pattern.slug === newSlug && currentPatternId?.value !== newSlug
+			);
+		} );
 	};
 
 	const patternListenerCallbacks = ( event: MessageEvent< string > ) => {
