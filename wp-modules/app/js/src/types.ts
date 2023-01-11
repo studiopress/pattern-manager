@@ -4,7 +4,7 @@ import React from 'react';
 import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
-import useCurrentTheme from './hooks/useThemeData';
+import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
@@ -16,7 +16,7 @@ export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern: Pattern;
-	currentTheme: ReturnType< typeof useCurrentTheme >;
+	currentTheme: ReturnType< typeof useThemeData >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	patterns: ReturnType< typeof usePatterns >;
