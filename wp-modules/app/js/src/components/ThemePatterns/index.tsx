@@ -15,7 +15,6 @@ import { patternmanager } from '../../globals';
 
 // Utils
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
-import getNextPatternIds from '../../utils/getNextPatternIds';
 import { Pattern } from '../../types';
 
 type Props = {
@@ -31,19 +30,6 @@ export default function ThemePatterns( { isVisible }: Props ) {
 
 	return (
 		<div hidden={ ! isVisible } className="w-full">
-			<div className="bg-pm-gray p-8 lg:p-12 w-full">
-				<div className="max-w-7xl mx-auto">
-					<h1 className="text-4xl mb-3">
-						{ __( 'Patterns', 'pattern-manager' ) }
-					</h1>
-					<p className="text-lg max-w-2xl">
-						Add patterns to your theme. You can create patterns from
-						scratch using the Create New Pattern button, and you can
-						also duplicate patterns as a start.
-					</p>
-				</div>
-			</div>
-
 			<div className="mx-auto p-8 lg:p-12">
 				<div className="max-w-7xl mx-auto flex flex-wrap justify-between gap-10 lg:gap-20">
 					<div className="flex-initial w-full md:w-2/3">
@@ -186,181 +172,6 @@ export default function ThemePatterns( { isVisible }: Props ) {
 								) }
 							</div>
 						</>
-					</div>
-
-					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<h2 className="sr-only">
-									{ __(
-										'Pattern Creation',
-										'pattern-manager'
-									) }
-								</h2>
-								<h3 className="mb-2 font-medium">
-									Create new patterns
-								</h3>
-								<p className="text-base mb-5">
-									Create new patterns for your theme using the
-									button below. Patterns will appear on this
-									page as you create them.
-								</p>
-								<button
-									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										// Get the new pattern title and slug.
-										const { patternTitle, patternSlug } =
-											getNextPatternIds(
-												currentTheme?.data
-													?.included_patterns
-											);
-
-										currentTheme
-											.createPattern( {
-												type: 'pattern',
-												title: patternTitle,
-												name: patternSlug,
-												slug: patternSlug,
-												categories: [],
-												keywords: [],
-												blockTypes: [],
-												postTypes: [],
-												inserter: true,
-												description: '',
-												viewportWidth: '',
-												content: '',
-											} )
-											.then( () => {
-												// Switch to the newly created theme.
-												currentPatternId.set(
-													patternSlug
-												);
-												currentView.set(
-													'pattern_editor'
-												);
-											} );
-									} }
-								>
-									{ __(
-										'Create New Pattern',
-										'pattern-manager'
-									) }
-								</button>
-							</div>
-						</div>
-
-						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
-							<div>
-								<h2 className="sr-only">
-									{ __( 'Documentation', 'pattern-manager' ) }
-								</h2>
-								<h3 className="mb-2 font-medium">
-									Working with patterns
-								</h3>
-								<p className="text-base">
-									Block patterns are predefined block layouts
-									that make up your website. A pattern can be
-									something as small as a feature box, or it
-									can be the header of your site. Patterns
-									help you quickly build out your website.
-								</p>
-							</div>
-							<div>
-								<h3 className="mb-2 font-medium">
-									Helpful Documentation
-								</h3>
-								<ul>
-									<li>
-										<a
-											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={ __(
-												'Exploring Block Patterns Video (link opens in a new tab)',
-												'pattern-manager'
-											) }
-											href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/"
-											target="_blank"
-											rel="noopener"
-										>
-											{ __(
-												'Exploring Block Patterns Video',
-												'pattern-manager'
-											) }
-											<Icon
-												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={ external }
-												size={ 26 }
-											/>
-										</a>
-									</li>
-									<li>
-										<a
-											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={ __(
-												'Block Theme Overview (link opens in a new tab)',
-												'pattern-manager'
-											) }
-											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
-											target="_blank"
-											rel="noopener"
-										>
-											{ __(
-												'Block Theme Overview',
-												'pattern-manager'
-											) }
-											<Icon
-												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={ external }
-												size={ 26 }
-											/>
-										</a>
-									</li>
-									<li>
-										<a
-											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={ __(
-												'Block Editor Handbook (link opens in a new tab)',
-												'pattern-manager'
-											) }
-											href="https://developer.wordpress.org/block-editor/"
-											target="_blank"
-											rel="noopener"
-										>
-											{ __(
-												'Block Editor Handbook',
-												'pattern-manager'
-											) }
-											<Icon
-												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={ external }
-												size={ 26 }
-											/>
-										</a>
-									</li>
-									<li>
-										<a
-											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
-											aria-label={ __(
-												'Block Builder Basics Video (link opens in a new tab)',
-												'pattern-manager'
-											) }
-											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
-											target="_blank"
-											rel="noopener"
-										>
-											{ __(
-												'Block Builder Basics Video',
-												'pattern-manager'
-											) }
-											<Icon
-												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
-												icon={ external }
-												size={ 26 }
-											/>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

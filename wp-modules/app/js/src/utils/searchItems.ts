@@ -74,7 +74,7 @@ export default function searchItems(
 	items: Item[] = [],
 	searchInput = '',
 	config: Config = {}
-): unknown[] {
+) {
 	const normalizedSearchTerms = getNormalizedSearchTerms( searchInput );
 	if ( normalizedSearchTerms.length === 0 ) {
 		return items;

@@ -10,9 +10,9 @@ import { patternmanager } from '../../globals';
 
 import PatternManagerContext from '../../contexts/PatternManagerContext';
 import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeContext';
+import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
-import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
 import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
@@ -22,16 +22,8 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
 
 // Components
-import CreateTheme from '../CreateTheme';
-import ThemeSetup from '../ThemeSetup';
 import ThemePatterns from '../ThemePatterns';
-import ThemePreview from '../ThemePreview';
-import TemplateEditor from '../TemplateEditor';
 import PatternEditor from '../PatternEditor';
-import ThemeJsonEditor from '../ThemeJsonEditor';
-import PatternManagerHelp from '../PatternManagerHelp';
-import GettingStarted from '../GettingStarted';
-import PatternManagerNav from '../PatternManagerNav';
 
 import type { InitialContext, Pattern } from '../../types';
 
@@ -46,20 +38,15 @@ export default function PatternManagerApp() {
 }
 
 function PatternManagerContextHydrator() {
-	const currentView = useCurrentView( 'theme_setup' );
+	const currentView = useCurrentView( 'theme_patterns' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const themes = useThemes( patternmanager.themes );
 	const patterns = usePatterns();
 
-	const currentStyleVariationId = useCurrentId( 'default-style' ); // Initial value also used as defaultStyleName.
-	const currentThemeId = useCurrentId( patternmanager.initialTheme );
 	const currentTheme = useThemeData(
-		currentThemeId.value,
-		themes,
+		patternmanager.theme,
 		patternEditorIframe,
 		templateEditorIframe,
-		currentStyleVariationId,
 		patterns
 	);
 
@@ -101,14 +88,10 @@ function PatternManagerContextHydrator() {
 		currentView,
 		currentPatternId,
 		currentPattern,
-		themes,
-		currentThemeId,
 		currentTheme,
-		currentStyleVariationId,
 		patterns,
 		siteUrl: patternmanager.siteUrl,
 		apiEndpoints: patternmanager.apiEndpoints,
-		blockEditorSettings: patternmanager.blockEditorSettings,
 		patternEditorIframe,
 		templateEditorIframe,
 	};
@@ -121,7 +104,7 @@ function PatternManagerContextHydrator() {
 }
 
 function PatternManager() {
-	const { currentView, currentTheme } = usePmContext();
+	const { currentPatternId, currentView, currentTheme } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (
@@ -138,53 +121,57 @@ function PatternManager() {
 			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
 				<div className="flex-1 flex">
 					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
-						<div className="flex lg:flex-row flex-col gap-4 lg:gap-12">
-							{ /* Nav options for opening and creating themes, along with standard view actions */ }
-							<PatternManagerNav />
-						</div>
-
 						<div className="flex flex-wrap gap-2">
-							{ currentView?.currentView !== 'create_theme' ? (
-								<>
-									<button
-										type="button"
-										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											currentView.set( 'theme_preview' );
-										} }
-									>
-										{ __(
-											'Preview Theme',
-											'pattern-manager'
-										) }
-									</button>
-									<button
-										type="button"
-										disabled={
-											currentTheme.fetchInProgress
-										}
-										className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-										onClick={ () => {
-											currentTheme.save();
-										} }
-									>
-										{ currentTheme.isSaving ? (
-											<>
-												<Spinner />
-												{ __(
-													'Saving Theme',
-													'pattern-manager'
-												) }
-											</>
-										) : (
-											__(
-												'Save Theme',
-												'pattern-manager'
-											)
-										) }
-									</button>
-								</>
-							) : null }
+							<button
+								type="button"
+								disabled={ currentTheme?.fetchInProgress }
+								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+								onClick={ () => {
+									currentTheme.save();
+								} }
+							>
+								{ currentTheme.isSaving ? (
+									<>
+										<Spinner />
+										{ __( 'Saving', 'pattern-manager' ) }
+									</>
+								) : (
+									__( 'Save', 'pattern-manager' )
+								) }
+							</button>
+							<button
+								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+								onClick={ () => {
+									// Get the new pattern title and slug.
+									const { patternTitle, patternSlug } =
+										getNextPatternIds(
+											currentTheme?.data
+												?.included_patterns
+										);
+
+									currentTheme
+										.createPattern( {
+											type: 'pattern',
+											title: patternTitle,
+											name: patternSlug,
+											slug: patternSlug,
+											categories: [],
+											keywords: [],
+											blockTypes: [],
+											postTypes: [],
+											inserter: true,
+											description: '',
+											viewportWidth: '',
+											content: '',
+										} )
+										.then( () => {
+											currentPatternId.set( patternSlug );
+											currentView.set( 'pattern_editor' );
+										} );
+								} }
+							>
+								{ __( 'Add New Pattern', 'pattern-manager' ) }
+							</button>
 						</div>
 					</div>
 				</div>
@@ -192,49 +179,16 @@ function PatternManager() {
 
 			{ currentTheme?.data ? (
 				<>
-					<CreateTheme
-						isVisible={
-							'create_theme' === currentView?.currentView
-						}
-					/>
-					<ThemeSetup
-						isVisible={ 'theme_setup' === currentView.currentView }
-					/>
-					<ThemePreview
-						isVisible={
-							'theme_preview' === currentView.currentView
-						}
-					/>
 					<ThemePatterns
 						isVisible={
 							'theme_patterns' === currentView.currentView
 						}
 					/>
-					<div
-						hidden={
-							'theme_templates' !== currentView.currentView &&
-							'template_parts' !== currentView.currentView
-						}
-					>
-						<TemplateEditor />
-					</div>
 					<PatternEditor
 						visible={ 'pattern_editor' === currentView.currentView }
 					/>
-					<ThemeJsonEditor
-						visible={
-							'themejson_editor' === currentView.currentView
-						}
-					/>
-					<PatternManagerHelp
-						visible={
-							'pattern_manager_help' === currentView.currentView
-						}
-					/>
 				</>
-			) : (
-				<GettingStarted />
-			) }
+			) : null }
 		</>
 	);
 }

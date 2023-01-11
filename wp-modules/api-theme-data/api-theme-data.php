@@ -32,7 +32,7 @@ function register_routes() {
 				'methods'             => 'POST',
 				'callback'            => __NAMESPACE__ . '\get_theme',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => get_request_args(),
+				'args'                => array(),
 			),
 			'schema' => 'response_item_schema',
 		)
@@ -50,41 +50,6 @@ function register_routes() {
 			'schema' => 'response_item_schema',
 		)
 	);
-	register_rest_route(
-		$namespace,
-		'/export-theme',
-		array(
-			array(
-				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\export_theme',
-				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => save_request_args(),
-			),
-			'schema' => 'response_item_schema',
-		)
-	);
-	register_rest_route(
-		$namespace,
-		'/switch-theme',
-		array(
-			array(
-				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\switch_to_theme',
-				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => array(
-					'dirname' => array(
-						'required'          => true,
-						'type'              => 'string',
-						'description'       => __( 'The dirname, or slug, of the theme', 'pattern-manager' ),
-						'validate_callback' => function( $param ) {
-							return is_string( $param );
-						},
-						'sanitize_callback' => 'sanitize_text_field',
-					),
-				),
-			),
-		)
-	);
 }
 
 /**
@@ -94,15 +59,7 @@ function register_routes() {
  * @return WP_Error|WP_REST_Request
  */
 function get_theme( $request ) {
-	$params = $request->get_params();
-
-	$theme_id = $params['themeId'];
-
-	$theme_data = \PatternManager\ThemeDataHandlers\get_theme( $theme_id );
-
-	if ( $theme_data['dirname'] ) {
-		switch_theme( $theme_data['dirname'] );
-	}
+	$theme_data = \PatternManager\ThemeDataHandlers\get_theme();
 
 	if ( ! $theme_data ) {
 		return new \WP_REST_Response(
@@ -124,7 +81,7 @@ function get_theme( $request ) {
  */
 function save_theme( $request ) {
 	$theme_data       = $request->get_params();
-	$prior_theme_data = \PatternManager\ThemeDataHandlers\get_theme( $theme_data['id'] );
+	$prior_theme_data = \PatternManager\ThemeDataHandlers\get_theme();
 
 	$result = \PatternManager\ThemeDataHandlers\update_theme( $theme_data, false );
 
@@ -144,58 +101,12 @@ function save_theme( $request ) {
 }
 
 /**
- * Export a theme's data to a zip file.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Request
- */
-function export_theme( $request ) {
-	$theme_data = $request->get_params();
-
-	$result = \PatternManager\ThemeDataHandlers\export_theme( $theme_data );
-
-	if ( is_wp_error( $result ) ) {
-		return new \WP_REST_Response( $result, 400 );
-	} else {
-		return new \WP_REST_Response( $result, 200 );
-	}
-}
-
-/**
- * Switch to a given theme.
- *
- * @param WP_REST_Request $request Full data about the request.
- */
-function switch_to_theme( WP_REST_Request $request ) {
-	\PatternManager\ThemeDataHandlers\switch_to_theme( $request->get_params()['dirname'] ?? '' );
-}
-
-/**
  * Check the permissions required to take this action.
  *
  * @return bool
  */
 function permission_check() {
 	return current_user_can( 'manage_options' );
-}
-
-/**
- * Required args for a get request.
- *
- * @return array
- */
-function get_request_args() {
-	$return_args = array(
-		'themeId' => array(
-			'required'          => true,
-			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme in question', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-	);
-
-	return $return_args;
 }
 
 /**

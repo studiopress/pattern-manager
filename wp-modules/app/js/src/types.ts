@@ -4,21 +4,11 @@ import React from 'react';
 import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
-import useThemes from './hooks/useThemes';
 import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
-export type PatternManagerViews =
-	| 'theme_setup'
-	| 'create_theme'
-	| 'theme_preview'
-	| 'theme_patterns'
-	| 'theme_templates'
-	| 'template_parts'
-	| 'pattern_editor'
-	| 'themejson_editor'
-	| 'pattern_manager_help';
+export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type NoticeContext = ReturnType< typeof useNotice >;
 
@@ -26,13 +16,9 @@ export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern: Pattern;
-	themes: ReturnType< typeof useThemes >;
-	currentThemeId: ReturnType< typeof useCurrentId >;
 	currentTheme: ReturnType< typeof useThemeData >;
-	currentStyleVariationId: ReturnType< typeof useCurrentId >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
-	blockEditorSettings: InitialPatternManager[ 'blockEditorSettings' ];
 	patterns: ReturnType< typeof usePatterns >;
 	patternEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
@@ -45,38 +31,12 @@ export type InitialContext = {
 export type InitialPatternManager = {
 	apiNonce: string;
 	apiEndpoints: {
-		getAppState: string;
-		getPatternEndpoint: string;
 		getThemeEndpoint: string;
-		getThemeJsonFileEndpoint: string;
-		savePatternEndpoint: string;
 		saveThemeEndpoint: string;
-		switchThemeEndpoint: string;
-		saveThemeJsonFileEndpoint: string;
-		exportThemeEndpoint: string;
 	};
-	blockEditorSettings: {
-		__unstableResolvedAssets?: { styles: string };
-		styles?: { [ key: string ]: unknown }[];
-	};
-	initialTheme: string;
-	patterns: Patterns;
 	siteUrl: string;
 	adminUrl: string;
-	themes: Themes;
-	schemas: {
-		themejson: {
-			definitions: {
-				settingsPropertiesComplete: {
-					allOf: {
-						properties: {
-							[ key: string ]: unknown;
-						};
-					}[];
-				};
-			};
-		};
-	};
+	theme: Theme;
 };
 
 export type Pattern = {
@@ -98,16 +58,6 @@ export type Patterns = {
 	[ key: string ]: Pattern;
 };
 
-export type Style = {
-	id: string;
-	title: string;
-	body: { [ key: string ]: unknown };
-};
-
-export type Styles = {
-	[ key: string ]: Style;
-};
-
 export type Theme = {
 	name: string;
 	namespace: string;
@@ -125,7 +75,6 @@ export type Theme = {
 	requires_php: string;
 	requires_wp: string;
 	rest_route?: string;
-	styles: { [ key: string ]: Style };
 	tags: string;
 	template_files?: string[];
 	template_parts?: string[];
@@ -134,8 +83,4 @@ export type Theme = {
 	theme_json_file?: { [ key: string ]: unknown };
 	uri: string;
 	version: string;
-};
-
-export type Themes = {
-	[ key: string ]: Theme;
 };
