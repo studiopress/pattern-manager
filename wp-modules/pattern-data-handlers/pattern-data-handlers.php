@@ -322,6 +322,19 @@ function delete_patterns_not_present( array $patterns ) {
 }
 
 /**
+ * WordPress's template part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
+ * This function removes that attribute from any template part blocks in a pattern's content.
+ *
+ * @param string $pattern_content The HTML content for a pattern..
+ * @return string
+ */
+function remove_theme_name_from_template_parts( $pattern_content ) {
+
+	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
+	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
+}
+
+/**
  * Returns a string containing the code for a pattern file.
  *
  * @param array  $pattern Data about the pattern.
@@ -504,3 +517,62 @@ function move_block_images_to_theme( $pattern_html ) {
 
 	return $pattern_html;
 }
+
+/**
+ * When a wp_template post is saved, save it to the theme file.
+ *
+ * @param WP_Post         $post The Post that was updated.
+ * @param WP_REST_Request $request The Post that was updated.
+ * @param bool            $creating True when creating a post, false when updating.
+ */
+function handle_wp_template_save( $post, $request, $creating ) {
+	if ( ! $request->get_param( 'id' ) ) {
+		return;
+	}
+
+	$template_name    = explode( '//', $request->get_param( 'id' ) )[1];
+	$template_content = $request->get_param( 'content' );
+
+	$block_pattern_data = array(
+		'type'          => 'template',
+		'title'         => $template_name,
+		'name'          => $template_name,
+		'categories'    => array(),
+		'blockTypes'    => array(),
+		'postTypes'     => array(),
+		'viewportWidth' => 1280,
+		'content'       => $template_content,
+	);
+
+	update_pattern( $block_pattern_data );
+}
+add_action( 'rest_after_insert_wp_template', __NAMESPACE__ . '\handle_wp_template_save', 10, 3 );
+
+
+/**
+ * When a wp_template_part post is saved, save it to the theme file.
+ *
+ * @param WP_Post         $post The Post that was updated.
+ * @param WP_REST_Request $request The Post that was updated.
+ * @param bool            $creating True when creating a post, false when updating.
+ */
+function handle_wp_template_part_save( $post, $request, $creating ) {
+	if ( $request->get_param( 'id' ) ) {
+		$template_name = explode( '//', $request->get_param( 'id' ) )[1];
+	} else {
+		$template_name = $request->get_param( 'title' );
+	}
+	$template_content = $request->get_param( 'content' );
+
+	$block_pattern_data = array(
+		'type'          => 'template_part',
+		'title'         => $template_name,
+		'name'          => $template_name,
+		'categories'    => array(),
+		'viewportWidth' => 1280,
+		'content'       => $template_content,
+	);
+
+	update_pattern( $block_pattern_data );
+}
+add_action( 'rest_after_insert_wp_template_part', __NAMESPACE__ . '\handle_wp_template_part_save', 10, 3 );
