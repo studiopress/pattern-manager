@@ -13,10 +13,10 @@ export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 export type NoticeContext = ReturnType< typeof useNotice >;
 
 export type InitialContext = {
-	currentTheme: ReturnType< typeof useCurrentTheme >;
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern: Pattern;
+	currentTheme: ReturnType< typeof useCurrentTheme >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	patterns: ReturnType< typeof usePatterns >;
