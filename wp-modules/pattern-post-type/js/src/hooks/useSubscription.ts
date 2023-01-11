@@ -8,7 +8,7 @@ export default function useSubscription(
 	postDirty: boolean
 ) {
 	useEffect( () => {
-		// Tell the parent page (fse studio) that we are loaded.
+		// Tell the parent page that we are loaded.
 		let patternmanagerPatternEditorLoaded = false;
 		let patternDataSet = false;
 		let patternUpdatedDebounce: null | ReturnType< typeof setTimeout > =

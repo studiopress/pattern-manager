@@ -1,8 +1,8 @@
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 export default function ThemeDetails() {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 
 	return (
 		<>

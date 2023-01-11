@@ -3,7 +3,7 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 // Hooks
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Globals
 import { patternmanager } from '../../globals';
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function ThemePreview( { isVisible }: Props ) {
-	const { currentView, currentTheme } = useStudioContext();
+	const { currentView, currentTheme } = usePmContext();
 	const [ currentUrl, setCurrentUrl ] = useState( patternmanager.siteUrl );
 
 	useEffect( () => {

@@ -1,7 +1,3 @@
-/**
- * Fse Studio
- */
-
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
@@ -21,7 +17,7 @@ import useCurrentId from '../../hooks/useCurrentId';
 import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
 
@@ -125,7 +121,7 @@ function PatternManagerContextHydrator() {
 }
 
 function PatternManager() {
-	const { currentView, currentTheme } = useStudioContext();
+	const { currentView, currentTheme } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (

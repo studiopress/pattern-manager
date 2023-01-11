@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { Icon, external } from '@wordpress/icons';
 import { Spinner } from '@wordpress/components';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useStyleVariations from '../../hooks/useStyleVariations';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
@@ -28,7 +28,7 @@ type Props = {
 };
 
 export default function ThemeJsonEditor( { visible }: Props ) {
-	const { currentTheme, currentStyleVariationId } = useStudioContext();
+	const { currentTheme, currentStyleVariationId } = usePmContext();
 	const { defaultStyle, newStyleName, setNewStyleName, handleNewStyle } =
 		useStyleVariations();
 
@@ -589,7 +589,7 @@ function RenderProperty( {
 	schemaPosition,
 	topLevelSettingName,
 } ): JSX.Element | null {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const currentValue: any = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition,

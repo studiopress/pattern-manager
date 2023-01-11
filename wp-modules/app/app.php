@@ -76,7 +76,7 @@ function pattern_manager_app() {
 	// Enqueue sass and Tailwind styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
-	wp_enqueue_style( 'fsethememanger_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
+	wp_enqueue_style( 'theme_manager_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 
 	wp_localize_script(
 		'patternmanager',

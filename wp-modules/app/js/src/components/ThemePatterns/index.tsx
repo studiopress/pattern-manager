@@ -5,7 +5,7 @@ import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, close, copy, edit, external } from '@wordpress/icons';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Components
 import PatternPreview from '../PatternPreview';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentTheme, currentView, currentPatternId } = useStudioContext();
+	const { currentTheme, currentView, currentPatternId } = usePmContext();
 
 	if ( ! isVisible || ! currentTheme.data ) {
 		return null;
@@ -39,7 +39,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					<p className="text-lg max-w-2xl">
 						Add patterns to your theme. You can create patterns from
 						scratch using the Create New Pattern button, and you can
-						also duplicate Studio patterns as a start.
+						also duplicate patterns as a start.
 					</p>
 				</div>
 			</div>

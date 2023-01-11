@@ -1,7 +1,7 @@
 <?php
 /**
  * Module Name: Always use theme files.
- * Description: This modules makes it so that FSE database overrides are never used, and the theme files are the source of truth at all times.
+ * Description: This modules makes it so that database overrides are never used, and the theme files are the source of truth at all times.
  * Namespace: AlwaysUseThemeFiles
  *
  * @package pattern-manager

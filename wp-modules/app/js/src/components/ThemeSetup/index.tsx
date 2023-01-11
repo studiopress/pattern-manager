@@ -2,7 +2,7 @@
 import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import classNames from '../../utils/classNames';
 import ViewContainer from '../Common/ViewContainer';
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function ThemeSetup( { isVisible }: Props ) {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const { displayThemeCreatedNotice } = useNoticeContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 

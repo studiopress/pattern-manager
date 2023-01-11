@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	url: string;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function PatternPreview( { url, scale }: Props ) {
-	const { patterns } = useStudioContext();
+	const { patterns } = usePmContext();
 	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
 		useState( 10 );
 	const [ iframeRef, setIframeRef ] = useState<

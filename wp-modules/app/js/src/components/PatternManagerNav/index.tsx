@@ -5,7 +5,7 @@ import React from 'react';
 import { patternmanager } from '../../globals';
 
 // Context
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Utils
 import createNewTheme from '../../utils/createNewTheme';
@@ -26,7 +26,7 @@ export default function PatternManagerNav() {
 		patterns,
 		patternEditorIframe,
 		templateEditorIframe,
-	} = useStudioContext();
+	} = usePmContext();
 
 	/**
 	 * Post a window message in certain conditions.
@@ -54,7 +54,7 @@ export default function PatternManagerNav() {
 	}
 
 	/**
-	 * Render a list of FSES themes for selection.
+	 * Render a list of themes for selection.
 	 * Hide if no themes are available.
 	 */
 	function MenuOpenTheme() {
@@ -81,7 +81,7 @@ export default function PatternManagerNav() {
 								);
 
 								/**
-								 * Existing FSES theme was selected from nav in SaveTheme.
+								 * Existing theme was selected from nav in SaveTheme.
 								 * This action should effectively act as a cancel.
 								 */
 								if (

@@ -27,7 +27,7 @@ function enqueue() {
 		return;
 	}
 
-	// Only enqueue if inside the fse studio app.
+	// Only enqueue if inside the app.
 	if ( ! isset( $_GET['patternmanager_app'] ) ) { //phpcs:ignore
 		return;
 	}
