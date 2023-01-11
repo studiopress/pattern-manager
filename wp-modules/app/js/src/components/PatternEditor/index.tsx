@@ -45,7 +45,7 @@ export function BlockEditor() {
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	const nameTaken = ( newSlug: string ) => {
-		return Object.values( currentTheme?.data.included_patterns ).some(
+		return Object.values( currentTheme?.data ).some(
 			( pattern ) => {
 				return (
 					pattern.slug === newSlug &&
@@ -64,14 +64,11 @@ export function BlockEditor() {
 				patternTitle?: string;
 			} = JSON.parse( event.data );
 
-			// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
+			// When the pattern block editor tells us it has something new, put it into the pattern data.
 			if ( response.message === 'patternmanager_block_pattern_updated' ) {
 				currentTheme?.set( {
 					...currentTheme.data,
-					included_patterns: {
-						...currentTheme.data.included_patterns,
-						[ currentPatternId.value ]: response.blockPatternData,
-					},
+					[ currentPatternId.value ]: response.blockPatternData,
 				} );
 			}
 

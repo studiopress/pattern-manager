@@ -6,25 +6,16 @@ import getHeaders from '../utils/getHeaders';
 import useNoticeContext from './useNoticeContext';
 import usePatterns from './usePatterns';
 
-import type {
-	InitialContext,
-	InitialPatternManager,
-	Pattern,
-	Patterns,
-	Theme,
-} from '../types';
-import { ThemePatternType } from '../enums';
+import type { Pattern, Patterns } from '../types';
 
 export default function useThemeData(
-	theme: InitialPatternManager[ 'theme' ],
-	patternEditorIframe: InitialContext[ 'patternEditorIframe' ],
-	templateEditorIframe: InitialContext[ 'templateEditorIframe' ],
+	initialPatterns: Patterns,
 	patterns: ReturnType< typeof usePatterns >
 ) {
 	const { setSnackBarValue } = useNoticeContext();
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
-	const [ patternsData, setPatternsData ] = useState( theme );
+	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
@@ -101,12 +92,9 @@ export default function useThemeData(
 				headers: getHeaders(),
 			} )
 				.then( ( response ) => response.json() )
-				.then( ( response: Theme & { error?: string } ) => {
+				.then( ( response: Patterns & { error?: string } ) => {
 					setFetchInProgress( false );
-					if (
-						response.error &&
-						response.error === 'theme_not_found'
-					) {
+					if ( response.error ) {
 						setPatternsData( patternsData );
 					} else {
 						setPatternsData( response );
@@ -120,7 +108,7 @@ export default function useThemeData(
 		return new Promise( ( resolve ) => {
 			setIsSaving( true );
 
-			fetch( patternmanager.apiEndpoints.saveThemeEndpoint, {
+			fetch( patternmanager.apiEndpoints.savePatternsEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 				body: JSON.stringify( patternsData ),
@@ -133,20 +121,8 @@ export default function useThemeData(
 				} )
 				.then(
 					( data: {
-						patterns: patternsData;
+						patterns: Patterns;
 					} ) => {
-						if ( patternEditorIframe.current ) {
-							// Send a message to the iframe, telling it that the themejson has changed.
-							if ( data.themeJsonModified ) {
-								patternEditorIframe.current.contentWindow.postMessage(
-									JSON.stringify( {
-										message:
-											'patternmanager_themejson_changed',
-									} ),
-									'*'
-								);
-							}
-						}
 
 						setPatternsData( data.patterns );
 

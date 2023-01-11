@@ -44,9 +44,7 @@ function PatternManagerContextHydrator() {
 	const patterns = usePatterns();
 
 	const currentTheme = useThemeData(
-		patternmanager.theme,
-		patternEditorIframe,
-		templateEditorIframe,
+		patternmanager.patterns,
 		patterns
 	);
 
@@ -55,33 +53,8 @@ function PatternManagerContextHydrator() {
 	let currentPattern: Pattern | null = null;
 
 	if ( currentPatternId?.value ) {
-		// If the pattern name is found in the theme's included_patterns object.
-		if (
-			currentTheme?.data?.included_patterns?.hasOwnProperty(
-				currentPatternId?.value
-			)
-		) {
-			currentPattern =
-				currentTheme.data.included_patterns[ currentPatternId?.value ];
-		}
-		// If the pattern name is found in the theme's template_files object.
-		if (
-			currentTheme?.data?.template_files?.hasOwnProperty(
-				currentPatternId?.value
-			)
-		) {
-			currentPattern =
-				currentTheme.data.template_files[ currentPatternId?.value ];
-		}
-		// If the pattern name is found in the theme's template_parts object.
-		if (
-			currentTheme?.data?.template_parts?.hasOwnProperty(
-				currentPatternId?.value
-			)
-		) {
-			currentPattern =
-				currentTheme.data.template_parts[ currentPatternId?.value ];
-		}
+		currentPattern =
+			currentTheme.data?.[ currentPatternId?.value ] ?? null;
 	}
 
 	const providerValue: InitialContext = {
@@ -144,14 +117,10 @@ function PatternManager() {
 								onClick={ () => {
 									// Get the new pattern title and slug.
 									const { patternTitle, patternSlug } =
-										getNextPatternIds(
-											currentTheme?.data
-												?.included_patterns
-										);
+										getNextPatternIds( currentTheme?.data );
 
 									currentTheme
 										.createPattern( {
-											type: 'pattern',
 											title: patternTitle,
 											name: patternSlug,
 											slug: patternSlug,

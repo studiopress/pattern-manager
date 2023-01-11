@@ -28,7 +28,6 @@ function get_app_state() {
 
 	return array(
 		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
-		'theme'        => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
 			'getPatternsEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-patterns/' ),

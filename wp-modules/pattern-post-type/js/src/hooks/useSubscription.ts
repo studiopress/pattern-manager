@@ -126,35 +126,6 @@ export default function useSubscription(
 							200
 						);
 					}
-
-					if (
-						response.message ===
-							'patternmanager_themejson_changed' ||
-						response.message === 'patternmanager_stylejson_changed'
-					) {
-						// If the Pattern Manager apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
-						clearTimeout( patternmanagerThemeJsonChangeDebounce );
-						patternmanagerThemeJsonChangeDebounce = setTimeout(
-							() => {
-								dispatch( 'core/notices' ).createNotice(
-									'warning', // Can be one of: success, info, warning, error.
-									"Pattern Manager: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
-									{
-										id: 'pattern-manager-refresh-pattern-editor-theme-json-notice',
-										isDismissible: false, // Whether the user can dismiss the notice.
-										// Any actions the user can perform.
-										actions: [
-											{
-												url: '',
-												label: 'Refresh Editor',
-											},
-										],
-									}
-								);
-							},
-							200
-						);
-					}
 				} catch ( e ) {
 					// Message posted was not JSON, so do nothing.
 				}
