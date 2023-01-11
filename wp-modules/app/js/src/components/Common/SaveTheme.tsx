@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	displayCancelButton?: boolean;
@@ -9,7 +9,7 @@ type Props = {
 
 export default function SaveTheme( { displayCancelButton }: Props ) {
 	const { currentTheme, currentThemeId, themes, currentView } =
-		useStudioContext();
+		usePmContext();
 
 	return (
 		<div className="py-5 text-xl flex items-center sticky bottom-0 bg-[rgba(255,255,255,.8)] backdrop-blur-sm">
@@ -22,7 +22,7 @@ export default function SaveTheme( { displayCancelButton }: Props ) {
 							type="submit"
 							className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
 						>
-							{ __( 'Save Theme', 'fse-studio' ) }
+							{ __( 'Save Theme', 'pattern-manager' ) }
 						</button>
 						{ displayCancelButton &&
 						Object.keys( themes.themes ).length > 1 ? (
@@ -43,7 +43,7 @@ export default function SaveTheme( { displayCancelButton }: Props ) {
 									currentView?.set( 'theme_setup' );
 								} }
 							>
-								{ __( 'Cancel', 'fse-studio' ) }
+								{ __( 'Cancel', 'pattern-manager' ) }
 							</button>
 						) : null }
 					</div>

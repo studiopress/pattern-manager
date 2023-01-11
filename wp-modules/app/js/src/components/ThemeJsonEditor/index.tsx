@@ -8,12 +8,12 @@ import { __ } from '@wordpress/i18n';
 import { Icon, external } from '@wordpress/icons';
 import { Spinner } from '@wordpress/components';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useStyleVariations from '../../hooks/useStyleVariations';
 
 import getBlankArrayFromSchema from '../../utils/getBlankSetOfProperties';
 
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 import GradientEditor from './GradientEditor';
 import PaletteEditor from './PaletteEditor';
@@ -28,7 +28,7 @@ type Props = {
 };
 
 export default function ThemeJsonEditor( { visible }: Props ) {
-	const { currentTheme, currentStyleVariationId } = useStudioContext();
+	const { currentTheme, currentStyleVariationId } = usePmContext();
 	const { defaultStyle, newStyleName, setNewStyleName, handleNewStyle } =
 		useStyleVariations();
 
@@ -84,16 +84,16 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 	}
 
 	return (
-		<div hidden={ ! visible } className="fsestudio-theme-manager">
-			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
+		<div hidden={ ! visible } className="patternmanager-theme-manager">
+			<div className="bg-pm-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
-						{ __( 'Styles and Settings', 'fse-studio' ) }
+						{ __( 'Styles and Settings', 'pattern-manager' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						{ __(
 							"All of the settings below belong to your theme's theme.json file, where you can configure site-wide settings and styles available to your theme.",
-							'fse-studio'
+							'pattern-manager'
 						) }
 					</p>
 				</div>
@@ -111,7 +111,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 									<p className="text-sm m-0">
 										{ __(
 											'This theme.json file can be found in your active theme.',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</p>
 								</div>
@@ -128,11 +128,14 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 												<Spinner />
 												{ __(
 													'Saving Theme',
-													'fse-studio'
+													'pattern-manager'
 												) }
 											</>
 										) : (
-											__( 'Save Theme', 'fse-studio' )
+											__(
+												'Save Theme',
+												'pattern-manager'
+											)
 										) }
 									</button>
 								</div>
@@ -141,25 +144,25 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 					</div>
 
 					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-fses-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
+						<div className="bg-pm-gray mb-8 md:mb-5 p-8 gap-6 flex flex-col rounded">
 							<div className="flex flex-col gap-5">
 								<div>
 									<h2 className="sr-only">
 										{ __(
 											'Style Variations',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</h2>
 									<h3 className="mb-2 font-medium">
 										{ __(
 											'Current Style Variation',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</h3>
 									<p className="text-base">
 										{ __(
 											'Select the style variation you would like to work on.',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</p>
 								</div>
@@ -172,7 +175,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 										>
 											{ __(
 												'Choose a style variation',
-												'fse-studio'
+												'pattern-manager'
 											) }
 										</label>
 										{ <StyleSelector /> }
@@ -182,24 +185,24 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 						</div>
 
 						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
-							<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+							<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
 								<div className="flex flex-col gap-5">
 									<h3 className="mb-2 font-medium">
 										{ __(
 											'Create a style variation',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</h3>
 									<p className="text-base">
 										{ __(
 											'Style variations are alternate design variations for a theme, enabling you to quickly apply a new look and feel to your site.',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</p>
 									<p className="text-base">
 										{ __(
 											"Create a new variation by adding a variation name and clicking Save. Once saved, you can use the select menu to choose which variation you're working on.",
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</p>
 								</div>
@@ -211,7 +214,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 									>
 										{ __(
 											'Enter a style variation name',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</label>
 									<input
@@ -234,7 +237,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 												alert(
 													__(
 														'Please enter a new name.',
-														'fse-studio'
+														'pattern-manager'
 													)
 												);
 												return;
@@ -244,7 +247,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 												alert(
 													__(
 														'The style name should not include the word "default".',
-														'fse-studio'
+														'pattern-manager'
 													)
 												);
 												setNewStyleName( '' );
@@ -254,7 +257,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 											handleNewStyle();
 										} }
 									>
-										{ __( 'Save', 'fse-studio' ) }
+										{ __( 'Save', 'pattern-manager' ) }
 									</button>
 								</div>
 							</div>
@@ -262,24 +265,24 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 
 						<div className="mb-8 md:mb-5 flex-1 w-full text-base">
 							<div
-								className="bg-fses-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded"
+								className="bg-pm-gray border-l-8 md:border-l-4 border-wp-blue p-8 gap-6 flex flex-col rounded"
 								role="alert"
 							>
 								<div className="flex flex-col gap-5">
 									<p className="text-base">
 										{ __(
 											'Style variations are an experimental Gutenberg feature, and some settings may not behave as expected.',
-											'fse-studio'
+											'pattern-manager'
 										) }
 									</p>
 								</div>
 							</div>
 						</div>
 
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h2 className="sr-only">
-									{ __( 'Documentation', 'fse-studio' ) }
+									{ __( 'Documentation', 'pattern-manager' ) }
 								</h2>
 								<h3 className="mb-2 font-medium">
 									Working with theme.json
@@ -306,7 +309,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Working with theme.json (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-json/"
 											target="_blank"
@@ -314,7 +317,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 										>
 											{ __(
 												'Working with theme.json',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -328,7 +331,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Block Theme Overview (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
 											target="_blank"
@@ -336,7 +339,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 										>
 											{ __(
 												'Block Theme Overview',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -350,7 +353,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Block Editor Handbook (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://developer.wordpress.org/block-editor/"
 											target="_blank"
@@ -358,7 +361,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 										>
 											{ __(
 												'Block Editor Handbook',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -372,7 +375,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Block Builder Basics Video (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
 											target="_blank"
@@ -380,7 +383,7 @@ export default function ThemeJsonEditor( { visible }: Props ) {
 										>
 											{ __(
 												'Block Builder Basics Video',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -403,9 +406,9 @@ function getSettingsFromThemeJsonSchema() {
 	const listOfSettingsInSchema = {};
 
 	const propertiesComplete =
-		fsestudio.schemas.themejson.definitions.settingsPropertiesComplete;
+		patternmanager.schemas.themejson.definitions.settingsPropertiesComplete;
 
-	for ( const setting in fsestudio.schemas.themejson.definitions ) {
+	for ( const setting in patternmanager.schemas.themejson.definitions ) {
 		// Skip schemas that are not settings.
 		if (
 			setting === 'settingsPropertiesComplete' ||
@@ -415,7 +418,8 @@ function getSettingsFromThemeJsonSchema() {
 		}
 
 		// Get the data for this setting from the schema.
-		const settingData = fsestudio.schemas.themejson.definitions[ setting ];
+		const settingData =
+			patternmanager.schemas.themejson.definitions[ setting ];
 
 		// Loop through each property in each setting in the schema.
 		for ( const propertyName in settingData.properties ) {
@@ -426,7 +430,7 @@ function getSettingsFromThemeJsonSchema() {
 				continue;
 			}
 
-			// FSE Studio does not yet handle the "blocks"
+			// Pattern Manager does not yet handle the "blocks"
 			if (
 				! ( propertyName in propertiesComplete.allOf[ 1 ].properties )
 			) {
@@ -491,7 +495,7 @@ function SettingsView( { isVisible } ) {
 	return (
 		<div hidden={ ! isVisible }>
 			<div className="flex flex-col gap-14">
-				<ul className="w-full inline-flex flex-wrap text-base fses-json-nav">
+				<ul className="w-full inline-flex flex-wrap text-base pm-json-nav">
 					{ tabs.map( ( item ) => (
 						<li key={ item.name }>
 							<button
@@ -511,7 +515,7 @@ function SettingsView( { isVisible } ) {
 						</li>
 					) ) }
 				</ul>
-				<div className="w-full fses-settings-wrap">{ rendered }</div>
+				<div className="w-full pm-settings-wrap">{ rendered }</div>
 			</div>
 		</div>
 	);
@@ -530,15 +534,15 @@ function RenderProperties( {
 			<div
 				key={ propertyName }
 				hidden={ ! isVisible }
-				className={ `fses-${ convertToCssClass(
+				className={ `pm-${ convertToCssClass(
 					propertyName
-				) } fses-type-${
+				) } pm-type-${
 					convertToCssClass( properties[ propertyName ].type ) ||
 					'boolean'
 				}` }
 			>
 				<div className="grid grid-cols-4 gap-6 py-6 items-top">
-					<div className="block font-medium text-gray-700 sm:col-span-1 fses-label max-w-[500px]">
+					<div className="block font-medium text-gray-700 sm:col-span-1 pm-label max-w-[500px]">
 						<h2 id={ convertToCssClass( propertyName ) }>
 							{ convertToUpperCase( propertyName ) }
 						</h2>
@@ -547,7 +551,7 @@ function RenderProperties( {
 						</p>
 					</div>
 					<div
-						className={ `mt-1 sm:mt-0 sm:col-span-3 space-y-5 fses-property fses-${ convertToCssClass(
+						className={ `mt-1 sm:mt-0 sm:col-span-3 space-y-5 pm-property pm-${ convertToCssClass(
 							schemaPosition + '.' + propertyName
 						) }` }
 					>
@@ -569,7 +573,7 @@ function RenderProperties( {
 
 	return (
 		<div
-			className={ `divide-y divide-gray-200 fses-${ convertToCssClass(
+			className={ `divide-y divide-gray-200 pm-${ convertToCssClass(
 				schemaPosition
 			) }` }
 		>
@@ -585,7 +589,7 @@ function RenderProperty( {
 	schemaPosition,
 	topLevelSettingName,
 } ): JSX.Element | null {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const currentValue: any = currentTheme.getThemeJsonValue(
 		'settings',
 		schemaPosition,
@@ -678,7 +682,7 @@ function RenderProperty( {
 					} }
 					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
 				>
-					{ __( 'Add One', 'fse-studio' ) }
+					{ __( 'Add One', 'pattern-manager' ) }
 				</button>
 			);
 		}
@@ -733,7 +737,7 @@ function RenderProperty( {
 										window.confirm(
 											__(
 												'Are you sure you want to delete this item?',
-												'fse-studio'
+												'pattern-manager'
 											)
 										)
 									) {
@@ -744,7 +748,7 @@ function RenderProperty( {
 									}
 								} }
 							>
-								{ __( 'Delete', 'fse-studio' ) }
+								{ __( 'Delete', 'pattern-manager' ) }
 							</button>
 						</div>
 					);
@@ -794,7 +798,7 @@ function RenderProperty( {
 					} }
 					className="inline-flex items-center px-4 py-2 border border-4 border-transparent text-sm font-medium rounded-sm shadow-sm text-white bg-wp-gray hover:bg-[#4c5a60] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue my-5"
 				>
-					{ __( 'Add Another', 'fse-studio' ) }
+					{ __( 'Add Another', 'pattern-manager' ) }
 				</button>
 			</div>
 		);

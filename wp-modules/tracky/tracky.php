@@ -4,12 +4,12 @@
  * Description: This module contains functions to help with event tracking.
  * Namespace: Tracky
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\Tracky;
+namespace PatternManager\Tracky;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,18 +23,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function send_event( $event_data ) {
 	// If this user should not be tracked, do nothing.
-	if ( defined( 'FSESTUDIO_DO_NOT_TRACK' ) && FSESTUDIO_DO_NOT_TRACK ) {
+	if ( defined( 'PATTERN_MANAGER_DO_NOT_TRACK' ) && PATTERNMANAGER_DO_NOT_TRACK ) {
 		return;
 	}
 
 	$current_user = wp_get_current_user();
 
-	// Instead of anonymously tracking, FSE Studio is now tracking user emails with every action taken.
+	// Instead of anonymously tracking, Pattern Manager is now tracking user emails with every action taken.
 	$user_identifier = $current_user->user_email;
 
 	// Send an event to WP Engine.
 	$result = wp_remote_post(
-		'https://fsestudiodata.wpengine.com/wp-json/tracky/v1/log-event',
+		'https://patternmanagerdata.wpengine.com/wp-json/tracky/v1/log-event',
 		array(
 			'method'  => 'POST',
 			'headers' => array(),

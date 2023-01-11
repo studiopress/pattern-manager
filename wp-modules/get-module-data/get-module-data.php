@@ -3,7 +3,7 @@
  * Module Name: Get Module Data
  * Description: This module contains functions to help you get data about another module.
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
@@ -38,4 +38,3 @@ if ( ! function_exists( 'module_dir_url' ) ) {
 		return plugins_url( $output_array[0][0] );
 	}
 }
-

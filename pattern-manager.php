@@ -1,25 +1,25 @@
 <?php
 /**
- * Plugin Name: FSE Studio
+ * Plugin Name: Pattern Manager
  * Plugin URI: wpengine.com
- * Description: An app for creating and maintaining FSE Themes.
- * Version: 0.0.2
+ * Description: Create and maintain patterns.
+ * Version: 0.1.0
  * Author: WP Engine
  * Author URI: wpengine.com
- * Text Domain: fse-studio
+ * Text Domain: pattern-manager
  * Domain Path: languages
- * License: GPLv2
+ * License: GPLv2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Network:
  * Update URI:
- * Namespace: FseStudio
+ * Namespace: PatternManager
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
-namespace FseStudio;
+namespace PatternManager;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -44,7 +44,7 @@ function include_custom_modules() {
 			require $filepath;
 		} else {
 			// Translators: The name of the module, and the filename that needs to exist inside that module.
-			echo esc_html( sprintf( __( 'The module called "%1$s" has a problem. It needs a file called "%2$s" to exist in its root directory.', 'fse-studio' ), $module_name, $filename ) );
+			echo esc_html( sprintf( __( 'The module called "%1$s" has a problem. It needs a file called "%2$s" to exist in its root directory.', 'pattern-manager' ), $module_name, $filename ) );
 			exit;
 		}
 	}

@@ -2,7 +2,7 @@
 /**
  * Class GetModuleDataTest
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 /**
@@ -14,7 +14,7 @@ class GetModuleDataTest extends WP_UnitTestCase {
 	 * Gets the dir path.
 	 */
 	public function test_module_dir_path() {
-		$expected = '/var/www/html/wp-content/plugins/fse-studio/wp-modules/get-module-data/';
+		$expected = '/var/www/html/wp-content/plugins/pattern-manager/wp-modules/get-module-data/';
 		$result   = module_dir_path( __FILE__ );
 
 		$this->assertSame( $expected, $result );
@@ -24,7 +24,7 @@ class GetModuleDataTest extends WP_UnitTestCase {
 	 * Gets the dir url.
 	 */
 	public function test_module_dir_url() {
-		$expected = 'http://localhost:1001/wp-content/plugins/fse-studio/wp-modules/get-module-data/';
+		$expected = 'http://localhost:1001/wp-content/plugins/pattern-manager/wp-modules/get-module-data/';
 		$result   = module_dir_url( __FILE__ );
 
 		$this->assertSame( $expected, $result );

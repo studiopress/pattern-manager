@@ -8,22 +8,22 @@ export default function useSubscription(
 	postDirty: boolean
 ) {
 	useEffect( () => {
-		// Tell the parent page (fse studio) that we are loaded.
-		let fsestudioPatternEditorLoaded = false;
+		// Tell the parent page that we are loaded.
+		let patternmanagerPatternEditorLoaded = false;
 		let patternDataSet = false;
 		let patternUpdatedDebounce: null | ReturnType< typeof setTimeout > =
 			null;
 		subscribe( () => {
-			if ( ! fsestudioPatternEditorLoaded && currentPostType ) {
-				window.parent.postMessage( 'fsestudio_pattern_editor_loaded' );
-				fsestudioPatternEditorLoaded = true;
+			if ( ! patternmanagerPatternEditorLoaded && currentPostType ) {
+				window.parent.postMessage( 'pm_pattern_editor_loaded' );
+				patternmanagerPatternEditorLoaded = true;
 			}
 
 			if ( postDirty ) {
-				window.parent.postMessage( 'fsestudio_pattern_editor_dirty' );
+				window.parent.postMessage( 'pm_pattern_editor_dirty' );
 			}
 
-			// Whenever the block editor fires that a change happened, pass it up to the parent FSE Studio app state.
+			// Whenever the block editor fires that a change happened, pass it up to the parent Pattern Manager app state.
 			if ( patternDataSet ) {
 				clearTimeout( patternUpdatedDebounce );
 				patternUpdatedDebounce = setTimeout( () => {
@@ -43,7 +43,7 @@ export default function useSubscription(
 					};
 					window.parent.postMessage(
 						JSON.stringify( {
-							message: 'fsestudio_block_pattern_updated',
+							message: 'patternmanager_block_pattern_updated',
 							blockPatternData,
 						} )
 					);
@@ -51,10 +51,10 @@ export default function useSubscription(
 			}
 		} );
 
-		let fsestudioThemeJsonChangeDebounce: null | ReturnType<
+		let patternmanagerThemeJsonChangeDebounce: null | ReturnType<
 			typeof setTimeout
 		> = null;
-		// If the FSE Studio app sends an instruction, listen for and do it here.
+		// If the Pattern Manager app sends an instruction, listen for and do it here.
 		window.addEventListener(
 			'message',
 			( event ) => {
@@ -97,56 +97,63 @@ export default function useSubscription(
 							meta: { ...patternMeta },
 						} );
 						patternDataSet = true;
-						window.parent.postMessage(
-							'fsestudio_pattern_data_set'
-						);
-					}
-
-					if ( response.message === 'fsestudio_hotswapped_theme' ) {
-						// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
-						clearTimeout( fsestudioThemeJsonChangeDebounce );
-						fsestudioThemeJsonChangeDebounce = setTimeout( () => {
-							dispatch( 'core/notices' ).createNotice(
-								'warning', // Can be one of: success, info, warning, error.
-								'FSE Studio: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
-								{
-									id: 'fse-studio-refresh-pattern-editor-hotswap-notice',
-									isDismissible: false, // Whether the user can dismiss the notice.
-									// Any actions the user can perform.
-									actions: [
-										{
-											url: '',
-											label: 'Refresh Editor',
-										},
-									],
-								}
-							);
-						}, 200 );
+						window.parent.postMessage( 'pm_pattern_data_set' );
 					}
 
 					if (
-						response.message === 'fsestudio_themejson_changed' ||
-						response.message === 'fsestudio_stylejson_changed'
+						response.message === 'patternmanager_hotswapped_theme'
 					) {
-						// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
-						clearTimeout( fsestudioThemeJsonChangeDebounce );
-						fsestudioThemeJsonChangeDebounce = setTimeout( () => {
-							dispatch( 'core/notices' ).createNotice(
-								'warning', // Can be one of: success, info, warning, error.
-								"FSE Studio: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
-								{
-									id: 'fse-studio-refresh-pattern-editor-theme-json-notice',
-									isDismissible: false, // Whether the user can dismiss the notice.
-									// Any actions the user can perform.
-									actions: [
-										{
-											url: '',
-											label: 'Refresh Editor',
-										},
-									],
-								}
-							);
-						}, 200 );
+						// If the Pattern Manager apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+						clearTimeout( patternmanagerThemeJsonChangeDebounce );
+						patternmanagerThemeJsonChangeDebounce = setTimeout(
+							() => {
+								dispatch( 'core/notices' ).createNotice(
+									'warning', // Can be one of: success, info, warning, error.
+									'Pattern Manager: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
+									{
+										id: 'pattern-manager-refresh-pattern-editor-hotswap-notice',
+										isDismissible: false, // Whether the user can dismiss the notice.
+										// Any actions the user can perform.
+										actions: [
+											{
+												url: '',
+												label: 'Refresh Editor',
+											},
+										],
+									}
+								);
+							},
+							200
+						);
+					}
+
+					if (
+						response.message ===
+							'patternmanager_themejson_changed' ||
+						response.message === 'patternmanager_stylejson_changed'
+					) {
+						// If the Pattern Manager apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+						clearTimeout( patternmanagerThemeJsonChangeDebounce );
+						patternmanagerThemeJsonChangeDebounce = setTimeout(
+							() => {
+								dispatch( 'core/notices' ).createNotice(
+									'warning', // Can be one of: success, info, warning, error.
+									"Pattern Manager: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
+									{
+										id: 'pattern-manager-refresh-pattern-editor-theme-json-notice',
+										isDismissible: false, // Whether the user can dismiss the notice.
+										// Any actions the user can perform.
+										actions: [
+											{
+												url: '',
+												label: 'Refresh Editor',
+											},
+										],
+									}
+								);
+							},
+							200
+						);
 					}
 				} catch ( e ) {
 					// Message posted was not JSON, so do nothing.

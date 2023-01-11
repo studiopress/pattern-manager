@@ -16,8 +16,8 @@ export default function CategoriesPanel( {
 }: BaseSidebarProps & Pick< AdditionalSidebarProps, 'categories' > ) {
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-categories"
-			title={ __( 'Pattern Categories', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-categories"
+			title={ __( 'Pattern Categories', 'pattern-manager' ) }
 		>
 			{ categories ? (
 				<Select

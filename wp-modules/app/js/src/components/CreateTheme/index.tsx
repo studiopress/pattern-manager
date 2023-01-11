@@ -16,10 +16,10 @@ export default function CreateTheme( { isVisible }: Props ) {
 
 	return (
 		<ViewContainer
-			heading={ __( 'Create Your Theme', 'fse-studio' ) }
+			heading={ __( 'Create Your Theme', 'pattern-manager' ) }
 			description={ __(
 				'To get started, enter a theme name and click Save Theme. Once your theme is created, you can move on to building and customizing your theme.',
-				'fsestudio'
+				'patternmanager'
 			) }
 		>
 			<CreateThemeForm>

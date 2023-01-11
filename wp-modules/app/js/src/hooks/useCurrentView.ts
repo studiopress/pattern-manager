@@ -1,17 +1,17 @@
 import { useState } from '@wordpress/element';
-import { FseStudioViews } from '../types';
+import { PatternManagerViews } from '../types';
 
 type PatternsView = 'theme_patterns' | 'pattern_editor';
 type TemplatesView = 'theme_templates' | 'pattern_editor';
 
-export default function useCurrentView( initialView: FseStudioViews ) {
+export default function useCurrentView( initialView: PatternManagerViews ) {
 	const [ currentView, setCurrentView ] = useState( initialView );
 	const [ currentPatternsView, setCurrentPatternsView ] =
 		useState< PatternsView >( 'theme_patterns' );
 	const [ currentTemplatesView, setCurrentTemplatesView ] =
 		useState< TemplatesView >( 'theme_templates' );
 
-	function setCurrentViewConditions( newView: FseStudioViews ) {
+	function setCurrentViewConditions( newView: PatternManagerViews ) {
 		// When going from theme_patterns to pattern_editor, remember that theme_patterns is currently showing the pattern_editor.
 		if (
 			newView === 'pattern_editor' &&

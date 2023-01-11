@@ -17,8 +17,8 @@ export default function KeywordsPanel( {
 
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-keywords"
-			title={ __( 'Pattern Keywords', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-keywords"
+			title={ __( 'Pattern Keywords', 'pattern-manager' ) }
 		>
 			<CreatableSelect
 				components={ {
@@ -61,7 +61,7 @@ export default function KeywordsPanel( {
 						event.preventDefault();
 					}
 				} }
-				placeholder={ __( 'Add searchable terms…', 'fse-studio' ) }
+				placeholder={ __( 'Add searchable terms…', 'pattern-manager' ) }
 				value={ postMeta.keywords.map( ( keyword ) => ( {
 					label: keyword,
 					value: keyword,

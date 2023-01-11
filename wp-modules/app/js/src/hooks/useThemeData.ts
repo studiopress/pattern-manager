@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { fsestudio } from '../globals';
+import { patternmanager } from '../globals';
 import getHeaders from '../utils/getHeaders';
 import { getNestedValue, setNestedObject } from '../utils/nestedObjectUtility';
 
@@ -57,7 +57,7 @@ export default function useThemeData(
 		window.addEventListener(
 			'message',
 			( event ) => {
-				if ( event.data === 'fsestudio_site_editor_dirty' ) {
+				if ( event.data === 'patternmanager_site_editor_dirty' ) {
 					setSiteEditorDirty( true );
 				}
 			},
@@ -67,7 +67,9 @@ export default function useThemeData(
 		window.addEventListener(
 			'message',
 			( event ) => {
-				if ( event.data === 'fsestudio_site_editor_save_complete' ) {
+				if (
+					event.data === 'patternmanager_site_editor_save_complete'
+				) {
 					setSiteEditorDirty( false );
 					setRequestThemeRefresh( true );
 				}
@@ -88,7 +90,7 @@ export default function useThemeData(
 				setRequestThemeRefresh( false );
 			} else {
 				setRequestThemeRefresh( false );
-				// We have to do this outside the fsestudio_pattern_editor_save_complete listener because currentTheme is stale there.
+				// We have to do this outside the pm_pattern_editor_save_complete listener because currentTheme is stale there.
 				uponSuccessfulSave();
 				getThemeData();
 			}
@@ -108,7 +110,7 @@ export default function useThemeData(
 			// @ts-expect-error: returnvalue is deprecated.
 			event.returnValue = __(
 				'Are you sure you want to leave the editor? There are unsaved changes.',
-				'fse-studio'
+				'pattern-manager'
 			);
 			event.preventDefault();
 		}
@@ -120,7 +122,7 @@ export default function useThemeData(
 				return;
 			}
 			setFetchInProgress( true );
-			fetch( fsestudio.apiEndpoints.getThemeEndpoint, {
+			fetch( patternmanager.apiEndpoints.getThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 				body: JSON.stringify( {
@@ -147,14 +149,14 @@ export default function useThemeData(
 		return new Promise( ( resolve ) => {
 			if ( themeData.name === '' ) {
 				/* eslint-disable */
-				alert( 'You need to change your theme name before saving' );
+				alert('You need to change your theme name before saving');
 				/* eslint-enable */
 				return;
 			}
 			setIsSaving( true );
 			setSaveCompleted( false );
 
-			fetch( fsestudio.apiEndpoints.saveThemeEndpoint, {
+			fetch( patternmanager.apiEndpoints.saveThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 				body: JSON.stringify( themeData ),
@@ -177,7 +179,8 @@ export default function useThemeData(
 							if ( data.themeJsonModified ) {
 								patternEditorIframe.current.contentWindow.postMessage(
 									JSON.stringify( {
-										message: 'fsestudio_themejson_changed',
+										message:
+											'patternmanager_themejson_changed',
 									} ),
 									'*'
 								);
@@ -187,7 +190,7 @@ export default function useThemeData(
 						if ( templateEditorIframe.current ) {
 							templateEditorIframe.current.contentWindow.postMessage(
 								JSON.stringify( {
-									message: 'fsestudio_save',
+									message: 'patternmanager_save',
 								} ),
 								'*'
 							);
@@ -195,14 +198,16 @@ export default function useThemeData(
 							if ( data.themeJsonModified ) {
 								templateEditorIframe.current.contentWindow.postMessage(
 									JSON.stringify( {
-										message: 'fsestudio_themejson_changed',
+										message:
+											'patternmanager_themejson_changed',
 									} ),
 									'*'
 								);
 							} else if ( data.styleJsonModified ) {
 								templateEditorIframe.current.contentWindow.postMessage(
 									JSON.stringify( {
-										message: 'fsestudio_stylejson_changed',
+										message:
+											'patternmanager_stylejson_changed',
 									} ),
 									'*'
 								);
@@ -226,7 +231,7 @@ export default function useThemeData(
 			setSnackBarValue(
 				__(
 					'Theme successfully saved and all files written to theme directory',
-					'fsestudio'
+					'patternmanager'
 				)
 			);
 
@@ -240,7 +245,7 @@ export default function useThemeData(
 
 	function exportThemeData() {
 		return new Promise( ( resolve ) => {
-			fetch( fsestudio.apiEndpoints.exportThemeEndpoint, {
+			fetch( patternmanager.apiEndpoints.exportThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 				body: JSON.stringify( themeData ),
@@ -364,7 +369,7 @@ export default function useThemeData(
 			! window.confirm(
 				__(
 					'Are you sure you want to delete this pattern?',
-					'fse-studio'
+					'pattern-manager'
 				)
 			)
 		) {

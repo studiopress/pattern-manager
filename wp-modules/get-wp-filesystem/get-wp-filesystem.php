@@ -4,12 +4,12 @@
  * Description: A one-line function get the the WP Filesystem API up and running, which lets you manage files on the server.
  * Namespace: GetWpFilesystem
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\GetWpFilesystem;
+namespace PatternManager\GetWpFilesystem;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

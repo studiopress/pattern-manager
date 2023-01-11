@@ -1,6 +1,6 @@
 {
-  "name": "fsestudio-app",
-  "description": "The frontend react app for FSE Studio",
+  "name": "patternmanager-app",
+  "description": "The frontend react app for Pattern Manager",
   "main": "js/build/index.js",
   "scripts": {
     "build": "wp-scripts build js/src/index.js --output-path=js/build/",

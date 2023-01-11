@@ -13,12 +13,15 @@ export default function DescriptionPanel( {
 }: BaseSidebarProps ) {
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-description"
-			title={ __( 'Expanded Description', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-description"
+			title={ __( 'Expanded Description', 'pattern-manager' ) }
 		>
 			<TextareaControl
-				id="fsestudio-pattern-editor-description-textarea"
-				help={ __( 'Optionally describe the pattern.', 'fse-studio' ) }
+				id="patternmanager-pattern-editor-description-textarea"
+				help={ __(
+					'Optionally describe the pattern.',
+					'pattern-manager'
+				) }
 				value={ postMeta?.description }
 				onChange={ ( newValue ) => {
 					handleChange( 'description', newValue );

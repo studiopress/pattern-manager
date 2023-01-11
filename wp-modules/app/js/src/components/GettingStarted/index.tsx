@@ -1,22 +1,25 @@
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import createNewTheme from '../../utils/createNewTheme';
 
 export default function GettingStarted() {
-	const { themes, currentThemeId, currentView } = useStudioContext();
+	const { themes, currentThemeId, currentView } = usePmContext();
 
 	return (
 		<>
-			<div className="bg-fses-gray mx-auto p-8 lg:p-12 w-full">
+			<div className="bg-pm-gray mx-auto p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<div className="flex">
 						<div className="grow">
 							<h1 className="text-4xl mb-3">
-								{ __( 'Welcome to FSE Studio', 'fse-studio' ) }
+								{ __(
+									'Welcome to Pattern Manager',
+									'pattern-manager'
+								) }
 							</h1>
 							<p className="text-lg max-w-2xl">
 								Build your full site editing themes faster and
-								easier with FSE Studio! Check out the video
+								easier with Pattern Manager! Check out the video
 								below to learn how to get started.
 							</p>
 						</div>
@@ -31,7 +34,7 @@ export default function GettingStarted() {
 							>
 								{ __(
 									'Start Creating Your Theme',
-									'fse-studio'
+									'pattern-manager'
 								) }{ ' ' }
 								&rarr;
 							</button>
@@ -48,8 +51,8 @@ export default function GettingStarted() {
 							height="720"
 							src="https://www.youtube.com/embed/LmvPkQkjq9I?cc_load_policy=1&cc_lang_pref=en"
 							title={ __(
-								'FSE Studio Demo Video',
-								'fse-studio'
+								'Pattern Manager Demo Video',
+								'pattern-manager'
 							) }
 							frameBorder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

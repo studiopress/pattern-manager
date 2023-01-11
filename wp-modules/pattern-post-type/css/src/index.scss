@@ -4,68 +4,82 @@
 .edit-post-fullscreen-mode-close {
 	display: none !important;
 }
+
 /* Hide tags for templates */
-.fsestudio-template-details ~ * {
-	display:none!important;
+.patternmanager-template-details~* {
+	display: none !important;
 }
+
 /* Hide the publish/save button in the pattern editor, as the save theme button handles it. */
 .editor-post-publish-panel__toggle {
-	display:none!important;
+	display: none !important;
 }
+
 /* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
 button.components-button.editor-post-save-draft.is-tertiary {
 	display: none;
-} 
-/* Hide the snackbar on the pattern editor, as the fse-studio app has its own snackbar. */
-.components-snackbar{
-	display:none!important;
 }
+
+/* Hide the snackbar on the pattern editor, as the pattern-manager app has its own snackbar. */
+.components-snackbar {
+	display: none !important;
+}
+
 /* Toggle components */
-.fsestudio-post-type-modal-toggle,
-.fsestudio-inserter-toggle {
+.patternmanager-post-type-modal-toggle,
+.patternmanager-inserter-toggle {
 	margin-top: 16px;
 	margin-bottom: -12px;
+
 	/* Keep label from shifting for conditional ReverseTooltip */
 	label.components-toggle-control__label {
 		height: 20px;
 	}
 }
-.fsestudio-pattern-post-name-input-outer {
+
+.patternmanager-pattern-post-name-input-outer {
 	position: relative;
 }
+
 @media only screen and (max-width: 781.25px) {
-	.fsestudio-pattern-post-name-input input {
+	.patternmanager-pattern-post-name-input input {
 		height: 50px;
 		padding-right: 75px;
 	}
+
 	/* Pattern name input button */
-	.fsestudio-pattern-post-name-button {
+	.patternmanager-pattern-post-name-button {
 		height: 50px;
 		width: 80px;
 	}
 }
+
 @media only screen and (min-width: 781.25px) {
-	.fsestudio-pattern-post-name-input input {
+	.patternmanager-pattern-post-name-input input {
 		height: 40px;
 	}
+
 	/* Pattern name input button */
-	.fsestudio-pattern-post-name-button {
+	.patternmanager-pattern-post-name-button {
 		height: 30px;
 		width: 60px;
 	}
 }
-#fsestudio-pattern-post-name-input-component {
+
+#patternmanager-pattern-post-name-input-component {
 	border-color: hsl(0, 0%, 80%);
 	border-radius: 4px;
 	border-width: 1px;
+
 	&:focus {
 		box-shadow: 0 0 1px #2684FF;
 		border-color: #2684FF;
 		border-width: 2px;
 	}
 }
+
 /* Pattern name input button */
-.fsestudio-pattern-post-name-button {
+.patternmanager-pattern-post-name-button {
 	color: white;
 	border: 0;
 	padding: 0 !important;
@@ -75,38 +89,47 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	border-radius: 0.125rem;
 	align-items: center;
 	cursor: pointer;
+
 	&-edit {
 		background: #0074ad;
 	}
+
 	&-cancel {
 		background: #5d7179;
 	}
 }
+
 /* Pattern name input error section */
-.components-panel__row-fsestudio-pattern-name-error {
+.components-panel__row-patternmanager-pattern-name-error {
 	min-height: auto;
+
 	&-inner {
 		color: red;
 		margin-top: 0;
 		margin-bottom: 0;
 	}
 }
-.fsestudio-pattern-sidebar-tooltip {
+
+.patternmanager-pattern-sidebar-tooltip {
 	margin-top: 5px;
 	margin-bottom: 15px;
 }
-.fsestudio-pattern-sidebar-tooltip #tooltip-icon-helper-text {
+
+.patternmanager-pattern-sidebar-tooltip #tooltip-icon-helper-text {
 	padding-left: 8px;
 	cursor: default;
 }
-.fsestudio-pattern-sidebar-reverse-tooltip #tooltip-icon-helper-text {
+
+.patternmanager-pattern-sidebar-reverse-tooltip #tooltip-icon-helper-text {
 	padding-right: 8px;
 	cursor: pointer;
 }
-#fsestudio-pattern-editor-description-textarea {
+
+#patternmanager-pattern-editor-description-textarea {
 	border-color: hsl(0, 0%, 80%);
 	border-radius: 4px;
 	border-width: 1px;
+
 	&:focus {
 		box-shadow: 0 0 1px #2684FF;
 		border-color: #2684FF;

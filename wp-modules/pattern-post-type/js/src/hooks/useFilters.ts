@@ -7,7 +7,7 @@ export default function useFilters( postMeta: PostMeta ) {
 	const { changeWords } = useChangeWords( postMeta );
 
 	useEffect( () => {
-		addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
+		addFilter( 'i18n.gettext', 'pattern-manager/changeWords', changeWords );
 		removeFilter(
 			'blockEditor.__unstableCanInsertBlockType',
 			'removeTemplatePartsFromInserter'

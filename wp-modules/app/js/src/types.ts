@@ -9,7 +9,7 @@ import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
 import { PatternType } from './enums';
 
-export type FseStudioViews =
+export type PatternManagerViews =
 	| 'theme_setup'
 	| 'create_theme'
 	| 'theme_preview'
@@ -18,7 +18,7 @@ export type FseStudioViews =
 	| 'template_parts'
 	| 'pattern_editor'
 	| 'themejson_editor'
-	| 'fse_studio_help';
+	| 'pattern_manager_help';
 
 export type NoticeContext = ReturnType< typeof useNotice >;
 
@@ -30,9 +30,9 @@ export type InitialContext = {
 	currentThemeId: ReturnType< typeof useCurrentId >;
 	currentTheme: ReturnType< typeof useThemeData >;
 	currentStyleVariationId: ReturnType< typeof useCurrentId >;
-	siteUrl: InitialFseStudio[ 'siteUrl' ];
-	apiEndpoints: InitialFseStudio[ 'apiEndpoints' ];
-	blockEditorSettings: InitialFseStudio[ 'blockEditorSettings' ];
+	siteUrl: InitialPatternManager[ 'siteUrl' ];
+	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
+	blockEditorSettings: InitialPatternManager[ 'blockEditorSettings' ];
 	patterns: ReturnType< typeof usePatterns >;
 	patternEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
@@ -42,7 +42,7 @@ export type InitialContext = {
 	>;
 };
 
-export type InitialFseStudio = {
+export type InitialPatternManager = {
 	apiNonce: string;
 	apiEndpoints: {
 		getAppState: string;

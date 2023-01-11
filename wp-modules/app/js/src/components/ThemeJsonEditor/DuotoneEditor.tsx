@@ -4,7 +4,7 @@ import { useInstanceId } from '@wordpress/compose';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	properties: {
@@ -18,7 +18,7 @@ type Props = {
 export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 	const [ popover1Open, setPopover1Open ] = useState( false );
 	const [ popover2Open, setPopover2Open ] = useState( false );
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const inputId = useInstanceId( DuotoneEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
@@ -51,7 +51,7 @@ export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 							htmlFor={ `duotone-name-${ inputId }` }
 							className="font-semibold"
 						>
-							{ __( 'Name', 'fse-studio' ) }
+							{ __( 'Name', 'pattern-manager' ) }
 						</label>
 						<span>{ properties.name.description }</span>
 						<input
@@ -72,7 +72,7 @@ export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 							htmlFor={ `duotone-slug-${ inputId }` }
 							className="font-semibold"
 						>
-							{ __( 'Slug', 'fse-studio' ) }
+							{ __( 'Slug', 'pattern-manager' ) }
 						</label>
 						<span>{ properties.slug.description }</span>
 						<input
@@ -104,7 +104,7 @@ export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 								} }
 							></span>
 							<span className="font-semibold text-left">
-								{ __( 'Duotone Highlight', 'fse-studio' ) }{ ' ' }
+								{ __( 'Duotone Highlight', 'pattern-manager' ) }{ ' ' }
 								<br />
 								<small className="text-gray-500">
 									{ color1Value ? color1Value : null }
@@ -147,7 +147,8 @@ export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 								} }
 							></span>
 							<span className="font-semibold text-left">
-								{ __( 'Duotone Shadow', 'fse-studio' ) } <br />
+								{ __( 'Duotone Shadow', 'pattern-manager' ) }{ ' ' }
+								<br />
 								<small className="text-gray-500">
 									{ color2Value ? color2Value : null }
 								</small>
@@ -187,7 +188,7 @@ export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 							window.confirm(
 								__(
 									'Are you sure you want to delete this item?',
-									'fse-studio'
+									'pattern-manager'
 								)
 							)
 							/* eslint-enable */
@@ -199,7 +200,7 @@ export default function DuotoneEditor( { properties, schemaPosition }: Props ) {
 						}
 					} }
 				>
-					{ __( 'Delete Duotone Option', 'fse-studio' ) }
+					{ __( 'Delete Duotone Option', 'pattern-manager' ) }
 				</button>
 			</div>
 		</div>

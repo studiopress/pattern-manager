@@ -5,13 +5,13 @@ import { createInterpolateElement } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { Icon, close, copy, edit, external } from '@wordpress/icons';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Components
 import PatternPreview from '../PatternPreview';
 
 // Globals
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 // Utils
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentTheme, currentView, currentPatternId } = useStudioContext();
+	const { currentTheme, currentView, currentPatternId } = usePmContext();
 
 	if ( ! isVisible || ! currentTheme.data ) {
 		return null;
@@ -31,15 +31,15 @@ export default function ThemePatterns( { isVisible }: Props ) {
 
 	return (
 		<div hidden={ ! isVisible } className="w-full">
-			<div className="bg-fses-gray p-8 lg:p-12 w-full">
+			<div className="bg-pm-gray p-8 lg:p-12 w-full">
 				<div className="max-w-7xl mx-auto">
 					<h1 className="text-4xl mb-3">
-						{ __( 'Patterns', 'fse-studio' ) }
+						{ __( 'Patterns', 'pattern-manager' ) }
 					</h1>
 					<p className="text-lg max-w-2xl">
 						Add patterns to your theme. You can create patterns from
 						scratch using the Create New Pattern button, and you can
-						also duplicate Studio patterns as a start.
+						also duplicate patterns as a start.
 					</p>
 				</div>
 			</div>
@@ -52,18 +52,18 @@ export default function ThemePatterns( { isVisible }: Props ) {
 								{ Object.entries(
 									currentTheme?.data?.included_patterns ?? {}
 								).length === 0 ? (
-									<div className="bg-fses-gray p-10 text-center w-full col-span-2 rounded">
+									<div className="bg-pm-gray p-10 text-center w-full col-span-2 rounded">
 										{ createInterpolateElement(
 											__(
 												'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
-												'fse-studio'
+												'pattern-manager'
 											),
 											{
 												span: (
 													<strong>
 														{ __(
 															'Create New Pattern',
-															'fse-studio'
+															'pattern-manager'
 														) }
 													</strong>
 												),
@@ -88,7 +88,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 													className="absolute top-2 right-2 z-50"
 													aria-label={ __(
 														'Delete pattern',
-														'fse-studio'
+														'pattern-manager'
 													) }
 													onClick={ () => {
 														currentTheme.deletePattern(
@@ -107,7 +107,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 													className="absolute top-2 left-2 z-50"
 													aria-label={ __(
 														'Edit Pattern',
-														'fse-studio'
+														'pattern-manager'
 													) }
 													onClick={ () => {
 														currentPatternId.set(
@@ -130,7 +130,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 													className="absolute bottom-16 left-2 z-50"
 													aria-label={ __(
 														'Duplicate Pattern',
-														'fse-studio'
+														'pattern-manager'
 													) }
 													onClick={ () => {
 														const newPattern =
@@ -168,8 +168,8 @@ export default function ThemePatterns( { isVisible }: Props ) {
 													<PatternPreview
 														key={ patternName }
 														url={
-															fsestudio.siteUrl +
-															'?fsestudio_pattern_preview=' +
+															patternmanager.siteUrl +
+															'?pm_pattern_preview=' +
 															patternData.name
 														}
 														scale={ 0.2 }
@@ -189,10 +189,13 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					</div>
 
 					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded mb-5">
+						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded mb-5">
 							<div>
 								<h2 className="sr-only">
-									{ __( 'Pattern Creation', 'fse-studio' ) }
+									{ __(
+										'Pattern Creation',
+										'pattern-manager'
+									) }
 								</h2>
 								<h3 className="mb-2 font-medium">
 									Create new patterns
@@ -238,15 +241,18 @@ export default function ThemePatterns( { isVisible }: Props ) {
 											} );
 									} }
 								>
-									{ __( 'Create New Pattern', 'fse-studio' ) }
+									{ __(
+										'Create New Pattern',
+										'pattern-manager'
+									) }
 								</button>
 							</div>
 						</div>
 
-						<div className="bg-fses-gray p-8 gap-6 flex flex-col rounded">
+						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded">
 							<div>
 								<h2 className="sr-only">
-									{ __( 'Documentation', 'fse-studio' ) }
+									{ __( 'Documentation', 'pattern-manager' ) }
 								</h2>
 								<h3 className="mb-2 font-medium">
 									Working with patterns
@@ -269,7 +275,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Exploring Block Patterns Video (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://wordpress.tv/2022/06/13/nick-diego-builder-basics-everything-you-need-to-know-about-patterns/"
 											target="_blank"
@@ -277,7 +283,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 										>
 											{ __(
 												'Exploring Block Patterns Video',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -291,7 +297,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Block Theme Overview (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://developer.wordpress.org/block-editor/how-to-guides/themes/block-theme-overview/"
 											target="_blank"
@@ -299,7 +305,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 										>
 											{ __(
 												'Block Theme Overview',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -313,7 +319,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Block Editor Handbook (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://developer.wordpress.org/block-editor/"
 											target="_blank"
@@ -321,7 +327,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 										>
 											{ __(
 												'Block Editor Handbook',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"
@@ -335,7 +341,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 											className="text-wp-blue hover:text-wp-blue-hover hover:underline ease-in-out duration-300"
 											aria-label={ __(
 												'Block Builder Basics Video (link opens in a new tab)',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											href="https://wordpress.tv/2022/03/28/nick-diego-builder-basics-exploring-block-layout-alignment-dimensions-and-spac/"
 											target="_blank"
@@ -343,7 +349,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 										>
 											{ __(
 												'Block Builder Basics Video',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											<Icon
 												className="inline text-wp-blue fill-current p-1 group-hover:fill-wp-blue-hover ease-in-out duration-300"

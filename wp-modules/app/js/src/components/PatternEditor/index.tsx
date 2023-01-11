@@ -9,10 +9,10 @@ import {
 } from '@wordpress/element';
 
 // Hooks
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Globals
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 // Utils
 import convertToSlug from '../../utils/convertToSlug';
@@ -23,10 +23,10 @@ type Props = {
 };
 
 export default function PatternEditor( { visible }: Props ) {
-	const { currentPatternId } = useStudioContext();
+	const { currentPatternId } = usePmContext();
 
 	return (
-		<div hidden={ ! visible } className="fsestudio-pattern-work-area">
+		<div hidden={ ! visible } className="patternmanager-pattern-work-area">
 			{ currentPatternId?.value ? <BlockEditor /> : null }
 		</div>
 	);
@@ -38,7 +38,7 @@ export function BlockEditor() {
 		currentPatternId,
 		patternEditorIframe,
 		currentTheme,
-	} = useStudioContext();
+	} = usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
@@ -65,7 +65,7 @@ export function BlockEditor() {
 			} = JSON.parse( event.data );
 
 			// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
-			if ( response.message === 'fsestudio_block_pattern_updated' ) {
+			if ( response.message === 'patternmanager_block_pattern_updated' ) {
 				currentTheme?.set( {
 					...currentTheme.data,
 					included_patterns: {
@@ -78,19 +78,20 @@ export function BlockEditor() {
 			// Listening for input from pattern-post-type.
 			if (
 				response.message ===
-					'fsestudio_pattern_editor_request_is_pattern_title_taken' &&
+					'pm_pattern_editor_request_is_pattern_title_taken' &&
 				patternEditorIframe?.current
 			) {
 				const isTaken = nameTaken(
 					convertToSlug( response.patternTitle )
 				);
 				const errorMessage = isTaken
-					? __( 'This name is already taken.', 'fse-studio' )
-					: __( 'The name cannot be blank.', 'fse-studio' );
+					? __( 'This name is already taken.', 'pattern-manager' )
+					: __( 'The name cannot be blank.', 'pattern-manager' );
 
 				patternEditorIframe.current.contentWindow.postMessage(
 					JSON.stringify( {
-						message: 'fsestudio_response_is_pattern_title_taken',
+						message:
+							'patternmanager_response_is_pattern_title_taken',
 						isInvalid:
 							isTaken || ! response.patternTitle.trim().length,
 						errorMessage,
@@ -100,11 +101,11 @@ export function BlockEditor() {
 		} catch ( e ) {
 			// Message posted was not JSON. Handle those here.
 			switch ( event.data ) {
-				case 'fsestudio_pattern_editor_loaded':
+				case 'pm_pattern_editor_loaded':
 					setBlockEditorLoaded( true );
 					setInitialData( patternEditorIframe );
 					break;
-				case 'fsestudio_pattern_data_set':
+				case 'pm_pattern_data_set':
 					// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
 					setPatternDataSet( true );
 					break;
@@ -137,9 +138,9 @@ export function BlockEditor() {
 	}
 
 	return (
-		<div className="fsestudio-pattern-editor">
-			<div className="fsestudio-pattern-editor-body">
-				<div className="fsestudio-pattern-editor-view">
+		<div className="patternmanager-pattern-editor">
+			<div className="patternmanager-pattern-editor-body">
+				<div className="patternmanager-pattern-editor-view">
 					{ ! patternDataSet ? (
 						<div className="h-screen min-h-full w-screen items-center justify-center">
 							<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
@@ -147,7 +148,7 @@ export function BlockEditor() {
 								{ createInterpolateElement(
 									__(
 										'Loading blocks for <span></span> into block editor…',
-										'fse-studio'
+										'pattern-manager'
 									),
 									{
 										span: (
@@ -161,7 +162,7 @@ export function BlockEditor() {
 						</div>
 					) : null }
 					<iframe
-						title={ __( 'Pattern Editor', 'fse-studio' ) }
+						title={ __( 'Pattern Editor', 'pattern-manager' ) }
 						ref={ patternEditorIframe }
 						hidden={ ! blockEditorLoaded }
 						style={ {
@@ -169,8 +170,8 @@ export function BlockEditor() {
 							height: 'calc( 100vh - 64px )',
 						} }
 						src={
-							fsestudio.siteUrl +
-							'/wp-admin/post-new.php?post_type=fsestudio_pattern'
+							patternmanager.siteUrl +
+							'/wp-admin/post-new.php?post_type=pm_pattern'
 						}
 					/>
 				</div>

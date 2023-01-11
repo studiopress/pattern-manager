@@ -22,15 +22,15 @@ export default function PostTypesPanel( {
 	} ) {
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-post-types"
-			title={ __( 'Post Types', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-post-types"
+			title={ __( 'Post Types', 'pattern-manager' ) }
 		>
 			<HelperTooltip
 				helperText={ __(
 					'With no selections, this pattern will be available in the block inserter for all post types.',
-					'fse-studio'
+					'pattern-manager'
 				) }
-				helperTitle={ __( 'Allowed post types', 'fse-studio' ) }
+				helperTitle={ __( 'Allowed post types', 'pattern-manager' ) }
 			/>
 			{ postTypes ? (
 				<Select
@@ -53,11 +53,11 @@ export default function PostTypesPanel( {
 										<ReverseTooltip
 											helperText={ __(
 												'Required for "core/template-part" transforms (block types).',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											helperTitle={ __(
 												'Templates',
-												'fse-studio'
+												'pattern-manager'
 											) }
 											icon="lock"
 										/>

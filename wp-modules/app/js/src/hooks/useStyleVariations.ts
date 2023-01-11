@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import useStudioContext from './useStudioContext';
+import usePmContext from './usePmContext';
 import convertToSlug from '../utils/convertToSlug';
 import { v4 as uuidv4 } from 'uuid';
 
 import type { Style } from '../types';
 
 export default function useStyleVariations() {
-	const { currentTheme, currentStyleVariationId } = useStudioContext();
+	const { currentTheme, currentStyleVariationId } = usePmContext();
 	const [ newStyleName, setNewStyleName ] = useState( '' );
 	const [ updateCurrentStyle, setUpdateCurrentStyle ] = useState( false );
 	const newStyleId = useRef( '' );
@@ -15,14 +15,14 @@ export default function useStyleVariations() {
 
 	/**
 	 * This key is referenced by `Object.keys( defaultStyle )[0]` in most places the hook is used.
-	 * However, it is explicitly defined in the main FseStudioApp index file.
+	 * However, it is explicitly defined in the main PatternManagerApp index file.
 	 *
-	 * @see FseStudioApp index.js
+	 * @see PatternManagerApp index.js
 	 * @see useCurrentId currentStyleVariationId
 	 */
 	const defaultStyle = {
 		[ defaultStyleName.current ]: {
-			title: __( 'Default Style', 'fse-studio' ),
+			title: __( 'Default Style', 'pattern-manager' ),
 			body: currentTheme?.data?.theme_json_file ?? {},
 		},
 	};

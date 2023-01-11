@@ -40,23 +40,32 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 	}
 
 	return (
-		<PanelRow className="fsestudio-post-type-modal-toggle">
+		<PanelRow className="patternmanager-post-type-modal-toggle">
 			<ToggleControl
 				label={
 					<ReverseTooltip
 						helperText={ __(
 							'Show this pattern in a modal when new posts of selected post types are created.',
-							'fse-studio'
+							'pattern-manager'
 						) }
-						helperTitle={ __( 'Modal visibility', 'fse-studio' ) }
+						helperTitle={ __(
+							'Modal visibility',
+							'pattern-manager'
+						) }
 					/>
 				}
 				disabled={ isDisabled }
 				checked={ isChecked && ! isDisabled }
 				help={
 					isChecked
-						? __( 'Enabled for selected post types.', 'fse-studio' )
-						: __( 'Disabled for all post types.', 'fse-studio' )
+						? __(
+								'Enabled for selected post types.',
+								'pattern-manager'
+						  )
+						: __(
+								'Disabled for all post types.',
+								'pattern-manager'
+						  )
 				}
 				onChange={ ( value: boolean ) => {
 					handleToggleChangeMulti(

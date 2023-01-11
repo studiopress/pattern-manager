@@ -9,14 +9,14 @@ export default function TemplateDetails( {
 }: Pick< BaseSidebarProps, 'postMeta' > ) {
 	return (
 		<PluginDocumentSettingPanel
-			className="fsestudio-template-details"
-			title={ __( 'Template Details', 'fse-studio' ) }
+			className="patternmanager-template-details"
+			title={ __( 'Template Details', 'pattern-manager' ) }
 			icon="edit"
 		>
 			<PanelRow>
 				{ sprintf(
 					/* translators: %s is the post meta title */
-					__( 'Template: %s', 'fse-studio' ),
+					__( 'Template: %s', 'pattern-manager' ),
 					postMeta.title
 				) }
 			</PanelRow>

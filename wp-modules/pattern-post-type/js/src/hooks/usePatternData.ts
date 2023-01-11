@@ -35,13 +35,13 @@ export default function usePatternData( postMeta: PostMeta ) {
 			  'wp_template',
 			  'wp_template_part',
 			  'wp_navigation',
-			  'fsestudio_pattern',
+			  'pm_pattern',
 			 */
 			const corePostTypesToRemove = [
 				'attachment',
 				'nav_menu_item',
 				'wp_navigation',
-				'fsestudio_pattern',
+				'pm_pattern',
 			];
 
 			const filteredPostTypes = initialPostTypes.filter( ( postType ) => {

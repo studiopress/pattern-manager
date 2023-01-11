@@ -1,8 +1,8 @@
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 export default function ThemeDetails() {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 
 	return (
 		<>
@@ -11,7 +11,7 @@ export default function ThemeDetails() {
 					htmlFor="theme-name"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Theme Name', 'fse-studio' ) }
+					{ __( 'Theme Name', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -34,7 +34,7 @@ export default function ThemeDetails() {
 					htmlFor="theme-directory-name"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Theme Directory Name', 'fse-studio' ) }
+					{ __( 'Theme Directory Name', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -58,7 +58,7 @@ export default function ThemeDetails() {
 						<span id="name-help" className="text-red-700 font-sm">
 							{ __(
 								'This theme directory name is taken in wp-content. If you save, it will overwrite your other theme.',
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</span>
 					) : null }
@@ -69,7 +69,7 @@ export default function ThemeDetails() {
 					htmlFor="text-domain"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Text Domain', 'fse-studio' ) }
+					{ __( 'Text Domain', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -91,7 +91,7 @@ export default function ThemeDetails() {
 					htmlFor="uri"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Theme URI', 'fse-studio' ) }
+					{ __( 'Theme URI', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -113,7 +113,7 @@ export default function ThemeDetails() {
 					htmlFor="author"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Author', 'fse-studio' ) }
+					{ __( 'Author', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -135,7 +135,7 @@ export default function ThemeDetails() {
 					htmlFor="author-uri"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Author URI', 'fse-studio' ) }
+					{ __( 'Author URI', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -157,7 +157,7 @@ export default function ThemeDetails() {
 					htmlFor="description"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Description', 'fse-studio' ) }
+					{ __( 'Description', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -179,7 +179,7 @@ export default function ThemeDetails() {
 					htmlFor="tags"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Tags (comma separated)', 'fse-studio' ) }
+					{ __( 'Tags (comma separated)', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -201,7 +201,7 @@ export default function ThemeDetails() {
 					htmlFor="tested"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Tested up to (WP Version)', 'fse-studio' ) }
+					{ __( 'Tested up to (WP Version)', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -223,7 +223,7 @@ export default function ThemeDetails() {
 					htmlFor="minimum-wp"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Minimum WP Version', 'fse-studio' ) }
+					{ __( 'Minimum WP Version', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -245,7 +245,7 @@ export default function ThemeDetails() {
 					htmlFor="minimum-php"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Minimum PHP Version', 'fse-studio' ) }
+					{ __( 'Minimum PHP Version', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -267,7 +267,7 @@ export default function ThemeDetails() {
 					htmlFor="version"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Version', 'fse-studio' ) }
+					{ __( 'Version', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input
@@ -292,7 +292,7 @@ export default function ThemeDetails() {
 					htmlFor="text-domain"
 					className="block font-medium text-gray-700 sm:col-span-1"
 				>
-					{ __( 'Text Domain', 'fse-studio' ) }
+					{ __( 'Text Domain', 'pattern-manager' ) }
 				</label>
 				<div className="mt-1 sm:mt-0 sm:col-span-2">
 					<input

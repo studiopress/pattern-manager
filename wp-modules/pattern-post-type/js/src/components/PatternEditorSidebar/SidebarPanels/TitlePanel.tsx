@@ -15,7 +15,7 @@ export default function TitlePanel( {
 	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
-		__( 'Please enter a unique name.', 'fse-studio' )
+		__( 'Please enter a unique name.', 'pattern-manager' )
 	);
 
 	const previousPatternName = useRef( '' );
@@ -31,7 +31,7 @@ export default function TitlePanel( {
 				const response = JSON.parse( event.data );
 				if (
 					response.message ===
-					'fsestudio_response_is_pattern_title_taken'
+					'patternmanager_response_is_pattern_title_taken'
 				) {
 					// Hide or show notice in settings panel on name collision.
 					setPatternNameIsInvalid( response.isInvalid );
@@ -69,8 +69,7 @@ export default function TitlePanel( {
 	function checkPatternTitle( patternTitle ) {
 		window.parent.postMessage(
 			JSON.stringify( {
-				message:
-					'fsestudio_pattern_editor_request_is_pattern_title_taken',
+				message: 'pm_pattern_editor_request_is_pattern_title_taken',
 				patternTitle,
 			} )
 		);
@@ -78,16 +77,16 @@ export default function TitlePanel( {
 
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-title"
-			title={ __( 'Pattern Title', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-title"
+			title={ __( 'Pattern Title', 'pattern-manager' ) }
 		>
 			{ postMeta?.title && (
-				<div className="fsestudio-pattern-post-name-input-outer">
+				<div className="patternmanager-pattern-post-name-input-outer">
 					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
 						<TextControl
-							id="fsestudio-pattern-post-name-input-component"
+							id="patternmanager-pattern-post-name-input-component"
 							disabled={ nameInputDisabled }
-							className="fsestudio-pattern-post-name-input"
+							className="patternmanager-pattern-post-name-input"
 							aria-label="Pattern Title Name Input (used for renaming the pattern)"
 							value={ nameInput }
 							onChange={ ( value ) => {
@@ -103,7 +102,7 @@ export default function TitlePanel( {
 					{ ! patternNameIsInvalid && (
 						<button
 							type="button"
-							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-edit"
+							className="patternmanager-pattern-post-name-button patternmanager-pattern-post-name-button-edit"
 							aria-label="Pattern Title Edit Button (click to rename the pattern title)"
 							onClick={ () => {
 								if (
@@ -122,8 +121,8 @@ export default function TitlePanel( {
 							} }
 						>
 							{ nameInputDisabled
-								? __( 'Edit', 'fse-studio' )
-								: __( 'Done', 'fse-studio' ) }
+								? __( 'Edit', 'pattern-manager' )
+								: __( 'Done', 'pattern-manager' ) }
 						</button>
 					) }
 
@@ -131,7 +130,7 @@ export default function TitlePanel( {
 					{ patternNameIsInvalid && (
 						<button
 							type="button"
-							className="fsestudio-pattern-post-name-button fsestudio-pattern-post-name-button-cancel"
+							className="patternmanager-pattern-post-name-button patternmanager-pattern-post-name-button-cancel"
 							aria-label="Pattern Title Cancel Button (click to cancel renaming)"
 							onClick={ () => {
 								setNameInput( previousPatternName?.current );
@@ -139,16 +138,16 @@ export default function TitlePanel( {
 								setPatternNameIsInvalid( false );
 							} }
 						>
-							{ __( 'Cancel', 'fse-studio' ) }
+							{ __( 'Cancel', 'pattern-manager' ) }
 						</button>
 					) }
 				</div>
 			) }
 
-			<PanelRow className="components-panel__row-fsestudio-pattern-name-error">
+			<PanelRow className="components-panel__row-patternmanager-pattern-name-error">
 				<RichText.Content
 					tagName="h4"
-					className="components-panel__row-fsestudio-pattern-name-error-inner"
+					className="components-panel__row-patternmanager-pattern-name-error-inner"
 					value={ patternNameIsInvalid && errorMessage }
 				/>
 			</PanelRow>

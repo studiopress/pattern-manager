@@ -7,7 +7,7 @@ export default function HelperTooltip( {
 	icon = 'info-outline',
 }: TooltipTypes ) {
 	return (
-		<div className="fsestudio-pattern-sidebar-tooltip">
+		<div className="patternmanager-pattern-sidebar-tooltip">
 			<Tooltip text={ helperText } delay="200">
 				<div>
 					<Dashicon icon={ icon } />

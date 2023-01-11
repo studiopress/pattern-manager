@@ -4,12 +4,12 @@
  * Description: This module contains the code for the tippy tour
  * Namespace: TippyTour
  *
- * @package fse-studio
+ * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace FseStudio\TippyTour;
+namespace PatternManager\TippyTour;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

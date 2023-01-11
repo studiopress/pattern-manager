@@ -17,15 +17,18 @@ export default function TransformsPanel( {
 }: BaseSidebarProps & Pick< AdditionalSidebarProps, 'blockTypes' > ) {
 	return (
 		<PluginDocumentSettingPanel
-			name="fsestudio-pattern-editor-pattern-transforms"
-			title={ __( 'Transforms (Block Types)', 'fse-studio' ) }
+			name="patternmanager-pattern-editor-pattern-transforms"
+			title={ __( 'Transforms (Block Types)', 'pattern-manager' ) }
 		>
 			<HelperTooltip
 				helperText={ __(
 					'Select the blocks that users can transform into this pattern.',
-					'fse-studio'
+					'pattern-manager'
 				) }
-				helperTitle={ __( 'Blocks for transformation', 'fse-studio' ) }
+				helperTitle={ __(
+					'Blocks for transformation',
+					'pattern-manager'
+				) }
 			/>
 			{ blockTypes ? (
 				<Select

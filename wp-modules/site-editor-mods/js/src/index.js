@@ -1,4 +1,4 @@
-/* global fsestudio */
+/* global patternmanager */
 import '../../css/src/index.scss';
 
 // Change the word "Publish" to "Save Pattern"
@@ -48,14 +48,18 @@ function changeWords( translation, text ) {
 
 	return translation;
 }
-wp.hooks.addFilter( 'i18n.gettext', 'fse-studio/changeWords', changeWords );
+wp.hooks.addFilter(
+	'i18n.gettext',
+	'pattern-manager/changeWords',
+	changeWords
+);
 
 wp.hooks.removeFilter(
 	'blockEditor.__unstableCanInsertBlockType',
 	'removeTemplatePartsFromInserter'
 );
 
-let fsestudioSiteEditorIsUnsaved = false;
+let patternmanagerSiteEditorIsUnsaved = false;
 wp.data.subscribe( () => {
 	// Force the sidebar navigation to remain closed.
 	if ( wp.data.select( 'core/edit-site' ).isNavigationOpened() ) {
@@ -69,35 +73,35 @@ wp.data.subscribe( () => {
 		wp.data.select( 'core' ).__experimentalGetDirtyEntityRecords().length >
 		0
 	) {
-		window.parent.postMessage( 'fsestudio_site_editor_dirty' );
-		fsestudioSiteEditorIsUnsaved = true;
+		window.parent.postMessage( 'patternmanager_site_editor_dirty' );
+		patternmanagerSiteEditorIsUnsaved = true;
 	}
 
-	// If saving was just completed, trigger message to fsestudio app.
+	// If saving was just completed, trigger message to patternmanager app.
 	if (
 		wp.data.select( 'core' ).__experimentalGetDirtyEntityRecords()
 			.length === 0 &&
-		fsestudioSiteEditorIsUnsaved
+		patternmanagerSiteEditorIsUnsaved
 	) {
-		// If a successful save was just completed, send a message to the fsestudio app in the parent iframe.
-		fsestudioSiteEditorIsUnsaved = false;
-		window.parent.postMessage( 'fsestudio_site_editor_save_complete' );
+		// If a successful save was just completed, send a message to the patternmanager app in the parent iframe.
+		patternmanagerSiteEditorIsUnsaved = false;
+		window.parent.postMessage( 'patternmanager_site_editor_save_complete' );
 	}
 } );
 
-let fsestudioSaveDebounce = null;
-let fsestudioThemeJsonChangeDebounce = null;
-// If the FSE Studio app sends an instruction, listen for and do it here.
+let patternmanagerSaveDebounce = null;
+let patternmanagerThemeJsonChangeDebounce = null;
+// If the Pattern Manager app sends an instruction, listen for and do it here.
 window.addEventListener(
 	'message',
 	( event ) => {
 		try {
 			const response = JSON.parse( event.data );
 
-			if ( response.message === 'fsestudio_save' ) {
-				// If the FSE Studio apps tells us to save the current post, do it:
-				clearTimeout( fsestudioSaveDebounce );
-				fsestudioSaveDebounce = setTimeout( () => {
+			if ( response.message === 'patternmanager_save' ) {
+				// If the Pattern Manager apps tells us to save the current post, do it:
+				clearTimeout( patternmanagerSaveDebounce );
+				patternmanagerSaveDebounce = setTimeout( () => {
 					// Trigger a click event on the "Save" button in the site editor.
 					const element = document.getElementsByClassName(
 						'edit-site-save-button__button'
@@ -120,15 +124,15 @@ window.addEventListener(
 				}, 200 );
 			}
 
-			if ( response.message === 'fsestudio_hotswapped_theme' ) {
-				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
-				clearTimeout( fsestudioThemeJsonChangeDebounce );
-				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
+			if ( response.message === 'patternmanager_hotswapped_theme' ) {
+				// If the Pattern Manager apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+				clearTimeout( patternmanagerThemeJsonChangeDebounce );
+				patternmanagerThemeJsonChangeDebounce = setTimeout( () => {
 					wp.data.dispatch( 'core/notices' ).createNotice(
 						'warning', // Can be one of: success, info, warning, error.
-						'FSE Studio: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
+						'Pattern Manager: The theme selection has changed. To display accurate style options, please refresh this editor.', // Text string to display.
 						{
-							id: 'fse-studio-refresh-site-editor-hotswap-notice',
+							id: 'pattern-manager-refresh-site-editor-hotswap-notice',
 							isDismissible: false, // Whether the user can dismiss the notice.
 							// Any actions the user can perform.
 							actions: [
@@ -143,17 +147,17 @@ window.addEventListener(
 			}
 
 			if (
-				response.message === 'fsestudio_themejson_changed' ||
-				response.message === 'fsestudio_stylejson_changed'
+				response.message === 'patternmanager_themejson_changed' ||
+				response.message === 'patternmanager_stylejson_changed'
 			) {
-				// If the FSE Studio apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
-				clearTimeout( fsestudioThemeJsonChangeDebounce );
-				fsestudioThemeJsonChangeDebounce = setTimeout( () => {
+				// If the Pattern Manager apps tells us the themejson file has been updated, put a notice that the editor should be refreshed.
+				clearTimeout( patternmanagerThemeJsonChangeDebounce );
+				patternmanagerThemeJsonChangeDebounce = setTimeout( () => {
 					wp.data.dispatch( 'core/notices' ).createNotice(
 						'warning', // Can be one of: success, info, warning, error.
-						"FSE Studio: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
+						"Pattern Manager: The values in this theme's theme.json or style variation files have changed. To experience them accurately, you will need to refresh this editor.", // Text string to display.
 						{
-							id: 'fse-studio-refresh-site-editor-theme-json-notice',
+							id: 'pattern-manager-refresh-site-editor-theme-json-notice',
 							isDismissible: false, // Whether the user can dismiss the notice.
 							// Any actions the user can perform.
 							actions: [
@@ -167,13 +171,13 @@ window.addEventListener(
 				}, 200 );
 			}
 
-			if ( response.message === 'fsestudio_click_template_parts' ) {
+			if ( response.message === 'patternmanager_click_template_parts' ) {
 				// Trigger a click event on the "Template Parts" button in the site editor.
 				const element = document.querySelectorAll(
 					"a[href='" +
-						fsestudio.siteUrl +
-						"/wp-admin/site-editor.php?postType=wp_template_part&fsestudio_app=1']"
-					//"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template_part&fsestudio_app=1']"
+						patternmanager.siteUrl +
+						"/wp-admin/site-editor.php?postType=wp_template_part&patternmanager_app=1']"
+					//"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template_part&patternmanager_app=1']"
 				);
 
 				if ( element.item( 0 ) ) {
@@ -181,13 +185,13 @@ window.addEventListener(
 				}
 			}
 
-			if ( response.message === 'fsestudio_click_templates' ) {
+			if ( response.message === 'patternmanager_click_templates' ) {
 				// Trigger a click event on the "Template Parts" button in the site editor.
 				const element = document.querySelectorAll(
 					"a[href='" +
-						fsestudio.siteUrl +
-						"/wp-admin/site-editor.php?postType=wp_template&fsestudio_app=1']"
-					//"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&fsestudio_app=1']"
+						patternmanager.siteUrl +
+						"/wp-admin/site-editor.php?postType=wp_template&patternmanager_app=1']"
+					//"/wp-admin/themes.php?page=gutenberg-edit-site&postType=wp_template&patternmanager_app=1']"
 				);
 
 				if ( element.item( 0 ) ) {

@@ -2,10 +2,10 @@
 import { __ } from '@wordpress/i18n';
 import React from 'react';
 
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 // Context
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Utils
 import createNewTheme from '../../utils/createNewTheme';
@@ -17,7 +17,7 @@ import dropMenuIconRight from '../../../../img/drop-arrow-right.svg';
 
 import type { Themes } from '../../types';
 
-export default function FseStudioNav() {
+export default function PatternManagerNav() {
 	const {
 		currentView,
 		currentTheme,
@@ -26,7 +26,7 @@ export default function FseStudioNav() {
 		patterns,
 		patternEditorIframe,
 		templateEditorIframe,
-	} = useStudioContext();
+	} = usePmContext();
 
 	/**
 	 * Post a window message in certain conditions.
@@ -54,7 +54,7 @@ export default function FseStudioNav() {
 	}
 
 	/**
-	 * Render a list of FSES themes for selection.
+	 * Render a list of themes for selection.
 	 * Hide if no themes are available.
 	 */
 	function MenuOpenTheme() {
@@ -77,11 +77,11 @@ export default function FseStudioNav() {
 									patterns?.reloadPatternPreviews();
 								} );
 								maybePostWindowMessage(
-									'fsestudio_hotswapped_theme'
+									'patternmanager_hotswapped_theme'
 								);
 
 								/**
-								 * Existing FSES theme was selected from nav in SaveTheme.
+								 * Existing theme was selected from nav in SaveTheme.
 								 * This action should effectively act as a cancel.
 								 */
 								if (
@@ -124,7 +124,7 @@ export default function FseStudioNav() {
 									fill="#969696"
 								/>
 							</svg>
-							{ __( 'Open Theme', 'fse-studio' ) }
+							{ __( 'Open Theme', 'pattern-manager' ) }
 						</span>
 						<img
 							aria-hidden="true"
@@ -143,11 +143,11 @@ export default function FseStudioNav() {
 	}
 
 	return (
-		<nav className="fses-nav" aria-label="Main Menu">
+		<nav className="pm-nav" aria-label="Main Menu">
 			<ul className="font-medium">
 				<li>
 					<button aria-haspopup="true" className="flex items-center">
-						{ __( 'FSE Studio', 'fse-studio' ) }{ ' ' }
+						{ __( 'Pattern Manager', 'pattern-manager' ) }{ ' ' }
 						<img
 							aria-hidden="true"
 							alt=""
@@ -182,7 +182,7 @@ export default function FseStudioNav() {
 										fill="#969696"
 									/>
 								</svg>
-								{ __( 'Create New Theme', 'fse-studio' ) }
+								{ __( 'Create New Theme', 'pattern-manager' ) }
 							</button>
 						</li>
 						<li>
@@ -190,7 +190,8 @@ export default function FseStudioNav() {
 								className="flex items-center gap-4"
 								type="button"
 								onClick={ () => {
-									window.location.href = fsestudio.adminUrl;
+									window.location.href =
+										patternmanager.adminUrl;
 								} }
 							>
 								<svg
@@ -207,7 +208,7 @@ export default function FseStudioNav() {
 										fill="#969696"
 									/>
 								</svg>
-								{ __( 'Exit to Dashboard', 'fse-studio' ) }
+								{ __( 'Exit to Dashboard', 'pattern-manager' ) }
 							</button>
 						</li>
 					</ul>
@@ -227,7 +228,7 @@ export default function FseStudioNav() {
 									currentView?.set( 'theme_setup' );
 								} }
 							>
-								{ __( 'Current Theme', 'fse-studio' ) }{ ' ' }
+								{ __( 'Current Theme', 'pattern-manager' ) }{ ' ' }
 								<img
 									aria-hidden="true"
 									alt=""
@@ -264,7 +265,10 @@ export default function FseStudioNav() {
 												fill="#969696"
 											/>
 										</svg>
-										{ __( 'Theme Overview', 'fse-studio' ) }
+										{ __(
+											'Theme Overview',
+											'pattern-manager'
+										) }
 									</button>
 								</li>
 								<li>
@@ -288,7 +292,10 @@ export default function FseStudioNav() {
 												fill="#969696"
 											/>
 										</svg>
-										{ __( 'Download Theme', 'fse-studio' ) }
+										{ __(
+											'Download Theme',
+											'pattern-manager'
+										) }
 									</button>
 								</li>
 							</ul>
@@ -308,7 +315,10 @@ export default function FseStudioNav() {
 									currentView?.set( 'themejson_editor' );
 								} }
 							>
-								{ __( 'Styles and Settings', 'fse-studio' ) }
+								{ __(
+									'Styles and Settings',
+									'pattern-manager'
+								) }
 							</button>
 						</li>
 						<li>
@@ -326,7 +336,7 @@ export default function FseStudioNav() {
 									currentView?.set( 'theme_patterns' );
 								} }
 							>
-								{ __( 'Patterns', 'fse-studio' ) }
+								{ __( 'Patterns', 'pattern-manager' ) }
 							</button>
 						</li>
 						<li>
@@ -344,11 +354,11 @@ export default function FseStudioNav() {
 									currentView?.set( 'theme_templates' );
 
 									maybePostWindowMessage(
-										'fsestudio_click_templates'
+										'patternmanager_click_templates'
 									);
 								} }
 							>
-								{ __( 'Templates', 'fse-studio' ) }
+								{ __( 'Templates', 'pattern-manager' ) }
 							</button>
 						</li>
 						<li>
@@ -366,11 +376,11 @@ export default function FseStudioNav() {
 									currentView?.set( 'template_parts' );
 
 									maybePostWindowMessage(
-										'fsestudio_click_template_parts'
+										'patternmanager_click_template_parts'
 									);
 								} }
 							>
-								{ __( 'Template Parts', 'fse-studio' ) }
+								{ __( 'Template Parts', 'pattern-manager' ) }
 							</button>
 						</li>
 					</>

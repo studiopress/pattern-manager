@@ -1,11 +1,11 @@
 import { useEffect, useRef } from '@wordpress/element';
 import { Icon, close } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 
 export default function ThemeCreatedNotice() {
-	const { currentView } = useStudioContext();
+	const { currentView } = usePmContext();
 	const { setDisplayThemeCreatedNotice } = useNoticeContext();
 	const buttonRef = useRef< HTMLButtonElement | null >( null );
 
@@ -49,15 +49,15 @@ export default function ThemeCreatedNotice() {
 			<span
 				className="p-6 self-center bg-white rounded-r-md"
 				role="dialog"
-				aria-label={ __( 'Theme Saved', 'fse-studio' ) }
+				aria-label={ __( 'Theme Saved', 'pattern-manager' ) }
 			>
 				<p className="font-bold text-base mb-2">
-					{ __( 'Theme successfully created!', 'fse-studio' ) }
+					{ __( 'Theme successfully created!', 'pattern-manager' ) }
 				</p>
 				<p className="text-base">
 					{ __(
 						'Your theme has been created, saved to your theme directory, and activated on this site! Continue customizing your theme by heading to Themes and Styles.',
-						'fse-studio'
+						'pattern-manager'
 					) }
 				</p>
 				<button
@@ -68,7 +68,7 @@ export default function ThemeCreatedNotice() {
 						currentView.set( 'themejson_editor' );
 					} }
 				>
-					{ __( 'Go to Styles and Settings →', 'fse-studio' ) }
+					{ __( 'Go to Styles and Settings →', 'pattern-manager' ) }
 				</button>
 			</span>
 			<span className="flex flex-col rounded-r-md p-3 bg-white">
@@ -76,7 +76,7 @@ export default function ThemeCreatedNotice() {
 					className="bg-white"
 					aria-label={ __(
 						'Dismiss the theme created notice',
-						'fse-studio'
+						'pattern-manager'
 					) }
 					onClick={ onDismiss }
 				>

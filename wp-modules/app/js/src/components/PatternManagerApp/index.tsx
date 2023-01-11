@@ -1,7 +1,3 @@
-/**
- * Fse Studio
- */
-
 import '../../../../css/src/index.scss';
 import '../../../../css/src/tailwind.css';
 
@@ -10,10 +6,10 @@ import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import React from 'react';
 
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
-import FseStudioContext from '../../contexts/FseStudioContext';
-import FseStudioSnackbarContext from '../../contexts/FseStudioNoticeContext';
+import PatternManagerContext from '../../contexts/PatternManagerContext';
+import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeContext';
 
 // Hooks
 import useThemes from '../../hooks/useThemes';
@@ -21,7 +17,7 @@ import useCurrentId from '../../hooks/useCurrentId';
 import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import useSnackbar from '../../hooks/useNotice';
 
@@ -33,31 +29,31 @@ import ThemePreview from '../ThemePreview';
 import TemplateEditor from '../TemplateEditor';
 import PatternEditor from '../PatternEditor';
 import ThemeJsonEditor from '../ThemeJsonEditor';
-import FseStudioHelp from '../FseStudioHelp';
+import PatternManagerHelp from '../PatternManagerHelp';
 import GettingStarted from '../GettingStarted';
-import FseStudioNav from '../FseStudioNav';
+import PatternManagerNav from '../PatternManagerNav';
 
 import type { InitialContext, Pattern } from '../../types';
 
-export default function FseStudioApp() {
+export default function PatternManagerApp() {
 	const providerValue = useSnackbar();
 
 	return (
-		<FseStudioSnackbarContext.Provider value={ providerValue }>
-			<FseStudioContextHydrator />
-		</FseStudioSnackbarContext.Provider>
+		<PatternManagerSnackbarContext.Provider value={ providerValue }>
+			<PatternManagerContextHydrator />
+		</PatternManagerSnackbarContext.Provider>
 	);
 }
 
-function FseStudioContextHydrator() {
+function PatternManagerContextHydrator() {
 	const currentView = useCurrentView( 'theme_setup' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const themes = useThemes( fsestudio.themes );
+	const themes = useThemes( patternmanager.themes );
 	const patterns = usePatterns();
 
 	const currentStyleVariationId = useCurrentId( 'default-style' ); // Initial value also used as defaultStyleName.
-	const currentThemeId = useCurrentId( fsestudio.initialTheme );
+	const currentThemeId = useCurrentId( patternmanager.initialTheme );
 	const currentTheme = useThemeData(
 		currentThemeId.value,
 		themes,
@@ -110,22 +106,22 @@ function FseStudioContextHydrator() {
 		currentTheme,
 		currentStyleVariationId,
 		patterns,
-		siteUrl: fsestudio.siteUrl,
-		apiEndpoints: fsestudio.apiEndpoints,
-		blockEditorSettings: fsestudio.blockEditorSettings,
+		siteUrl: patternmanager.siteUrl,
+		apiEndpoints: patternmanager.apiEndpoints,
+		blockEditorSettings: patternmanager.blockEditorSettings,
 		patternEditorIframe,
 		templateEditorIframe,
 	};
 
 	return (
-		<FseStudioContext.Provider value={ providerValue }>
-			<FseStudio />
-		</FseStudioContext.Provider>
+		<PatternManagerContext.Provider value={ providerValue }>
+			<PatternManager />
+		</PatternManagerContext.Provider>
 	);
 }
 
-function FseStudio() {
-	const { currentView, currentTheme } = useStudioContext();
+function PatternManager() {
+	const { currentView, currentTheme } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (
@@ -144,7 +140,7 @@ function FseStudio() {
 					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
 						<div className="flex lg:flex-row flex-col gap-4 lg:gap-12">
 							{ /* Nav options for opening and creating themes, along with standard view actions */ }
-							<FseStudioNav />
+							<PatternManagerNav />
 						</div>
 
 						<div className="flex flex-wrap gap-2">
@@ -157,7 +153,10 @@ function FseStudio() {
 											currentView.set( 'theme_preview' );
 										} }
 									>
-										{ __( 'Preview Theme', 'fse-studio' ) }
+										{ __(
+											'Preview Theme',
+											'pattern-manager'
+										) }
 									</button>
 									<button
 										type="button"
@@ -174,11 +173,14 @@ function FseStudio() {
 												<Spinner />
 												{ __(
 													'Saving Theme',
-													'fse-studio'
+													'pattern-manager'
 												) }
 											</>
 										) : (
-											__( 'Save Theme', 'fse-studio' )
+											__(
+												'Save Theme',
+												'pattern-manager'
+											)
 										) }
 									</button>
 								</>
@@ -224,9 +226,9 @@ function FseStudio() {
 							'themejson_editor' === currentView.currentView
 						}
 					/>
-					<FseStudioHelp
+					<PatternManagerHelp
 						visible={
-							'fse_studio_help' === currentView.currentView
+							'pattern_manager_help' === currentView.currentView
 						}
 					/>
 				</>

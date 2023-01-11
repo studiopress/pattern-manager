@@ -2,7 +2,7 @@
 import { useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
 import classNames from '../../utils/classNames';
 import ViewContainer from '../Common/ViewContainer';
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function ThemeSetup( { isVisible }: Props ) {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const { displayThemeCreatedNotice } = useNoticeContext();
 	const [ currentTab, setCurrentTab ] = useState( Tabs.ThemeOverview );
 
@@ -30,16 +30,16 @@ export default function ThemeSetup( { isVisible }: Props ) {
 		<ViewContainer
 			heading={ sprintf(
 				/* translators: %1$s: The theme name */
-				__( 'Theme: %1$s', 'fse-studio' ),
+				__( 'Theme: %1$s', 'pattern-manager' ),
 				currentTheme?.data?.name ?? ''
 			) }
 			description={ __(
 				'Here you will find everything you need to customize your full-site editing theme. Visit the Edit Theme Details tab to see advanced options.',
-				'fsestudio'
+				'patternmanager'
 			) }
 		>
 			<>
-				<div className="bg-fses-gray">
+				<div className="bg-pm-gray">
 					<div className="mx-auto max-w-7xl">
 						<ul className="flex m-0 gap-2 px-8 xl:p-0">
 							<li className="m-0">
@@ -55,7 +55,10 @@ export default function ThemeSetup( { isVisible }: Props ) {
 										setCurrentTab( Tabs.ThemeOverview );
 									} }
 								>
-									{ __( 'Theme Overview', 'fse-studio' ) }
+									{ __(
+										'Theme Overview',
+										'pattern-manager'
+									) }
 								</button>
 							</li>
 							<li className="m-0">
@@ -71,7 +74,10 @@ export default function ThemeSetup( { isVisible }: Props ) {
 										setCurrentTab( Tabs.EditThemeDetails );
 									} }
 								>
-									{ __( 'Edit Theme Details', 'fse-studio' ) }
+									{ __(
+										'Edit Theme Details',
+										'pattern-manager'
+									) }
 								</button>
 							</li>
 						</ul>

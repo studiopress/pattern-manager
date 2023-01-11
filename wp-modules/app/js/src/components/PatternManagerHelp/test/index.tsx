@@ -1,13 +1,13 @@
 import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import FseStudioHelp from '..';
+import PatternManagerHelp from '..';
 
-describe( 'FseStudioHelp', () => {
+describe( 'PatternManagerHelp', () => {
 	it( 'should have the right heading', () => {
-		render( <FseStudioHelp visible={ true } /> );
+		render( <PatternManagerHelp visible={ true } /> );
 
 		expect(
-			screen.getByText( /welcome to fse studio/i )
+			screen.getByText( /welcome to pattern manager/i )
 		).toBeInTheDocument();
 	} );
 } );

@@ -1,4 +1,4 @@
-# Fse Studio
+# Pattern Manager
 Requires at least: 6.0
 Tested up to: 6.1
 Requires PHP: 7.4

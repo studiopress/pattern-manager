@@ -3,7 +3,7 @@ import { CustomGradientPicker } from '@wordpress/components';
 import { useInstanceId } from '@wordpress/compose';
 import { __ } from '@wordpress/i18n';
 
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	properties: {
@@ -18,7 +18,7 @@ export default function GradientEditor( {
 	properties,
 	schemaPosition,
 }: Props ) {
-	const { currentTheme } = useStudioContext();
+	const { currentTheme } = usePmContext();
 	const inputId = useInstanceId( GradientEditor );
 
 	const nameValue = currentTheme.getThemeJsonValue(
@@ -46,7 +46,7 @@ export default function GradientEditor( {
 							htmlFor={ `gradient-name-${ inputId }` }
 							className="font-semibold"
 						>
-							{ __( 'Name', 'fse-studio' ) }
+							{ __( 'Name', 'pattern-manager' ) }
 						</label>
 						<span>{ properties.name.description }</span>
 						<input
@@ -67,7 +67,7 @@ export default function GradientEditor( {
 							htmlFor={ `gradient-slug-${ inputId }` }
 							className="font-semibold"
 						>
-							{ __( 'Slug', 'fse-studio' ) }
+							{ __( 'Slug', 'pattern-manager' ) }
 						</label>
 						<span>{ properties.slug.description }</span>
 						<input
@@ -109,7 +109,7 @@ export default function GradientEditor( {
 							window.confirm(
 								__(
 									'Are you sure you want to delete this item?',
-									'fse-studio'
+									'pattern-manager'
 								)
 							)
 							/* eslint-enable */
@@ -121,7 +121,7 @@ export default function GradientEditor( {
 						}
 					} }
 				>
-					{ __( 'Delete Gradient', 'fse-studio' ) }
+					{ __( 'Delete Gradient', 'pattern-manager' ) }
 				</button>
 			</div>
 		</div>

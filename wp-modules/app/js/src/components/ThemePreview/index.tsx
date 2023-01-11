@@ -3,25 +3,27 @@ import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 
 // Hooks
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 
 // Globals
-import { fsestudio } from '../../globals';
+import { patternmanager } from '../../globals';
 
 type Props = {
 	isVisible: boolean;
 };
 
 export default function ThemePreview( { isVisible }: Props ) {
-	const { currentView, currentTheme } = useStudioContext();
-	const [ currentUrl, setCurrentUrl ] = useState( fsestudio.siteUrl );
+	const { currentView, currentTheme } = usePmContext();
+	const [ currentUrl, setCurrentUrl ] = useState( patternmanager.siteUrl );
 
 	useEffect( () => {
 		if ( currentTheme.fetchInProgress ) {
 			setCurrentUrl( '' );
 		}
 		if ( ! currentTheme.fetchInProgress ) {
-			setCurrentUrl( fsestudio.siteUrl + '/?timestamp=' + Date.now() );
+			setCurrentUrl(
+				patternmanager.siteUrl + '/?timestamp=' + Date.now()
+			);
 		}
 	}, [ currentTheme.fetchInProgress ] );
 
@@ -61,7 +63,7 @@ export default function ThemePreview( { isVisible }: Props ) {
 			</button>
 			{ currentUrl ? (
 				<iframe
-					title={ __( 'Theme Preview', 'fse-studio' ) }
+					title={ __( 'Theme Preview', 'pattern-manager' ) }
 					style={ {
 						marginTop: '18px',
 						width: '100vw',

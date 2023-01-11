@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import useStudioContext from '../../hooks/useStudioContext';
+import usePmContext from '../../hooks/usePmContext';
 import imgThemeTemplate from '../../../../img/theme-templates.svg';
 import imgThemeTemplateParts from '../../../../img/theme-template-parts.svg';
 import imgThemePatterns from '../../../../img/theme-patterns.svg';
@@ -8,14 +8,14 @@ import imgThemeStyleVariations from '../../../../img/theme-style-variations.svg'
 import imgThemeExport from '../../../../img/theme-export.svg';
 
 export default function ThemeOverview() {
-	const { currentTheme, currentView } = useStudioContext();
+	const { currentTheme, currentView } = usePmContext();
 
 	return (
 		<div className="grid grid-cols-1 gap-y-10 gap-x-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-12">
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={ __( 'Edit Theme Templates', 'fse-studio' ) }
+						alt={ __( 'Edit Theme Templates', 'pattern-manager' ) }
 						className="w-full"
 						src={ imgThemeTemplate }
 					/>
@@ -23,12 +23,12 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{ __( 'Theme Templates', 'fse-studio' ) }
+							{ __( 'Theme Templates', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
 							{ __(
 								'Use theme template files to affect the layout and design of different parts of your website, like pages and posts.',
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</p>
 						<button
@@ -38,19 +38,25 @@ export default function ThemeOverview() {
 								currentView.set( 'theme_templates' );
 							} }
 						>
-							{ __( 'Edit Theme Templates →', 'fse-studio' ) }
+							{ __(
+								'Edit Theme Templates →',
+								'pattern-manager'
+							) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{ __( 'Your theme has no templates', 'fse-studio' ) }
+					{ __( 'Your theme has no templates', 'pattern-manager' ) }
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
-						alt={ __( 'Edit Theme Template Parts', 'fse-studio' ) }
+						alt={ __(
+							'Edit Theme Template Parts',
+							'pattern-manager'
+						) }
 						className="w-full"
 						src={ imgThemeTemplateParts }
 					/>
@@ -58,12 +64,12 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{ __( 'Template Parts', 'fse-studio' ) }
+							{ __( 'Template Parts', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
 							{ __(
 								'Template parts, such as a site header and footer, can be used as common elements across templates.',
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</p>
 						<button
@@ -73,16 +79,19 @@ export default function ThemeOverview() {
 								currentView.set( 'template_parts' );
 							} }
 						>
-							{ __( 'Edit Template Parts →', 'fse-studio' ) }
+							{ __( 'Edit Template Parts →', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{ __( 'Your theme has no template parts', 'fse-studio' ) }
+					{ __(
+						'Your theme has no template parts',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
 						alt="Edit Theme Patterns"
@@ -93,12 +102,12 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{ __( 'Theme Patterns', 'fse-studio' ) }
+							{ __( 'Theme Patterns', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
 							{ __(
 								'Create, edit, and manage patterns (pre-configured designs), to be used across your theme.',
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</p>
 						<button
@@ -108,16 +117,16 @@ export default function ThemeOverview() {
 								currentView.set( 'theme_patterns' );
 							} }
 						>
-							{ __( 'Edit Theme Patterns →', 'fse-studio' ) }
+							{ __( 'Edit Theme Patterns →', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{ __( 'Your theme has no patterns', 'fse-studio' ) }
+					{ __( 'Your theme has no patterns', 'pattern-manager' ) }
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue pb-0">
 					<img
 						alt="Theme.json"
@@ -128,12 +137,12 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{ __( 'Styles and Settings', 'fse-studio' ) }
+							{ __( 'Styles and Settings', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
 							{ __(
 								'Use this tool to configure the theme.json file and set your theme styles and block settings.',
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</p>
 						<button
@@ -143,16 +152,19 @@ export default function ThemeOverview() {
 								currentView.set( 'themejson_editor' );
 							} }
 						>
-							{ __( 'Edit Theme.json →', 'fse-studio' ) }
+							{ __( 'Edit Theme.json →', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{ __( 'Your theme.json file is unedited', 'fse-studio' ) }
+					{ __(
+						'Your theme.json file is unedited',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
 						alt="Theme Style Variations"
@@ -163,12 +175,12 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{ __( 'Style Variations', 'fse-studio' ) }
+							{ __( 'Style Variations', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
 							{ __(
 								'Create, edit, and save a variety of swappable theme settings and styles in your theme.json file.',
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</p>
 						<button
@@ -178,16 +190,22 @@ export default function ThemeOverview() {
 								currentView.set( 'themejson_editor' );
 							} }
 						>
-							{ __( 'Edit Style Variations →', 'fse-studio' ) }
+							{ __(
+								'Edit Style Variations →',
+								'pattern-manager'
+							) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{ __( 'Your theme has no style variations', 'fse-studio' ) }
+					{ __(
+						'Your theme has no style variations',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 
-			<div className="group bg-fses-gray rounded-md flex justify-between flex-col">
+			<div className="group bg-pm-gray rounded-md flex justify-between flex-col">
 				<div className="w-full p-10 rounded-t-md overflow-hidden bg-wp-blue">
 					<img
 						alt="Export Theme"
@@ -198,12 +216,12 @@ export default function ThemeOverview() {
 				<div className="flex justify-between p-10 text-center">
 					<div className="flex flex-col gap-5">
 						<h2 className="text-2xl font-semibold">
-							{ __( 'Download Theme Zip', 'fse-studio' ) }
+							{ __( 'Download Theme Zip', 'pattern-manager' ) }
 						</h2>
 						<p className="text-base">
 							{ __(
 								"Once you've finished editing your theme, you can export to a zip or use git to manage it.",
-								'fse-studio'
+								'pattern-manager'
 							) }
 						</p>
 						<button
@@ -213,12 +231,15 @@ export default function ThemeOverview() {
 								currentTheme.export();
 							} }
 						>
-							{ __( 'Download Theme', 'fse-studio' ) }
+							{ __( 'Download Theme', 'pattern-manager' ) }
 						</button>
 					</div>
 				</div>
 				<div className="bg-[#E9E8E8] text-center p-4 text-gray-500 rounded-b-md hidden">
-					{ __( 'You can also view your theme files', 'fse-studio' ) }
+					{ __(
+						'You can also view your theme files',
+						'pattern-manager'
+					) }
 				</div>
 			</div>
 		</div>
