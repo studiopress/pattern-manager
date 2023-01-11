@@ -20,34 +20,23 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Get the values needed to render/hydrate the app.
  */
 function get_app_state() {
-	$current_theme_dir = get_template();
-
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Make sure the theme WP thinks is active actually exists.
-	$current_theme_data = \PatternManager\ThemeDataHandlers\get_theme( $current_theme_dir );
+	$current_theme_data = \PatternManager\ThemeDataHandlers\get_theme();
 
 	return array(
-		'patterns'           => \PatternManager\PatternDataHandlers\get_patterns(),
-		'theme'             => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
-		'schemas'            => array(
-			'themejson' => wp_json_file_decode( $wp_filesystem->wp_plugins_dir() . '/pattern-manager/wp-modules/schemas/json/theme.json' ),
+		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
+		'theme'        => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
+		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
+		'apiEndpoints' => array(
+			'getAppState'       => get_rest_url( false, 'patternmanager/v1/get-app-state/' ),
+			'getThemeEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-theme/' ),
+			'saveThemeEndpoint' => get_rest_url( false, 'patternmanager/v1/save-theme/' ),
 		),
-		'frontendPreviewUrl' => null,
-		'apiNonce'           => wp_create_nonce( 'wp_rest' ),
-		'apiEndpoints'       => array(
-			'getAppState'               => get_rest_url( false, 'patternmanager/v1/get-app-state/' ),
-			'getThemeEndpoint'          => get_rest_url( false, 'patternmanager/v1/get-theme/' ),
-			'saveThemeEndpoint'         => get_rest_url( false, 'patternmanager/v1/save-theme/' ),
-			'exportThemeEndpoint'       => get_rest_url( false, 'patternmanager/v1/export-theme/' ),
-			'switchThemeEndpoint'       => get_rest_url( false, 'patternmanager/v1/switch-theme/' ),
-			'getThemeJsonFileEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-themejson-file/' ),
-			'saveThemeJsonFileEndpoint' => get_rest_url( false, 'patternmanager/v1/save-themejson-file/' ),
-		),
-		'siteUrl'            => get_bloginfo( 'url' ),
-		'adminUrl'           => admin_url(),
-		'defaultPostId'      => null,
+		'siteUrl'      => get_bloginfo( 'url' ),
+		'adminUrl'     => admin_url(),
 	);
 }
 

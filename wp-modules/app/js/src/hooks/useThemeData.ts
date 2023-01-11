@@ -89,16 +89,13 @@ export default function useThemeData(
 
 	function getThemeData() {
 		return new Promise( ( resolve ) => {
-			if ( ! themeId || fetchInProgress ) {
+			if ( fetchInProgress ) {
 				return;
 			}
 			setFetchInProgress( true );
 			fetch( patternmanager.apiEndpoints.getThemeEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify( {
-					themeId: themes.themes[ themeId ].dirname,
-				} ),
 			} )
 				.then( ( response ) => response.json() )
 				.then( ( response: Theme & { error?: string } ) => {
@@ -107,7 +104,7 @@ export default function useThemeData(
 						response.error &&
 						response.error === 'theme_not_found'
 					) {
-						setThemeData( themes.themes[ themeId ] );
+						setThemeData( themeData );
 					} else {
 						setThemeData( response );
 						resolve( response );

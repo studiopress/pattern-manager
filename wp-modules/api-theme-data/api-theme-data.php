@@ -32,7 +32,7 @@ function register_routes() {
 				'methods'             => 'POST',
 				'callback'            => __NAMESPACE__ . '\get_theme',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => get_request_args(),
+				'args'                => array(),
 			),
 			'schema' => 'response_item_schema',
 		)
@@ -59,15 +59,7 @@ function register_routes() {
  * @return WP_Error|WP_REST_Request
  */
 function get_theme( $request ) {
-	$params = $request->get_params();
-
-	$theme_id = $params['themeId'];
-
-	$theme_data = \PatternManager\ThemeDataHandlers\get_theme( $theme_id );
-
-	if ( $theme_data['dirname'] ) {
-		switch_theme( $theme_data['dirname'] );
-	}
+	$theme_data = \PatternManager\ThemeDataHandlers\get_theme();
 
 	if ( ! $theme_data ) {
 		return new \WP_REST_Response(
@@ -115,25 +107,6 @@ function save_theme( $request ) {
  */
 function permission_check() {
 	return current_user_can( 'manage_options' );
-}
-
-/**
- * Required args for a get request.
- *
- * @return array
- */
-function get_request_args() {
-	$return_args = array(
-		'themeId' => array(
-			'required'          => true,
-			'type'              => 'string',
-			'description'       => __( 'The directory name of the theme in question', 'pattern-manager' ),
-			'validate_callback' => __NAMESPACE__ . '\validate_arg_is_string',
-			'sanitize_callback' => 'sanitize_text_field',
-		),
-	);
-
-	return $return_args;
 }
 
 /**

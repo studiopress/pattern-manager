@@ -21,7 +21,6 @@ export type InitialContext = {
 	currentPattern: Pattern;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
-	blockEditorSettings: InitialPatternManager[ 'blockEditorSettings' ];
 	patterns: ReturnType< typeof usePatterns >;
 	patternEditorIframe: React.MutableRefObject<
 		HTMLIFrameElement | undefined
@@ -35,36 +34,12 @@ export type InitialPatternManager = {
 	apiNonce: string;
 	apiEndpoints: {
 		getAppState: string;
-		getPatternEndpoint: string;
 		getThemeEndpoint: string;
-		getThemeJsonFileEndpoint: string;
-		savePatternEndpoint: string;
 		saveThemeEndpoint: string;
-		switchThemeEndpoint: string;
-		saveThemeJsonFileEndpoint: string;
-		exportThemeEndpoint: string;
 	};
-	blockEditorSettings: {
-		__unstableResolvedAssets?: { styles: string };
-		styles?: { [ key: string ]: unknown }[];
-	};
-	patterns: Patterns;
 	siteUrl: string;
 	adminUrl: string;
 	theme: Theme;
-	schemas: {
-		themejson: {
-			definitions: {
-				settingsPropertiesComplete: {
-					allOf: {
-						properties: {
-							[ key: string ]: unknown;
-						};
-					}[];
-				};
-			};
-		};
-	};
 };
 
 export type Pattern = {
@@ -103,7 +78,6 @@ export type Theme = {
 	requires_php: string;
 	requires_wp: string;
 	rest_route?: string;
-	styles: { [ key: string ]: Style };
 	tags: string;
 	template_files?: string[];
 	template_parts?: string[];

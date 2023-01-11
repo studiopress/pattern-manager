@@ -14,7 +14,6 @@ import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
 import useThemeData from '../../hooks/useThemeData';
-import useThemes from '../../hooks/useThemes';
 import useCurrentId from '../../hooks/useCurrentId';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
@@ -92,7 +91,6 @@ function PatternManagerContextHydrator() {
 		patterns,
 		siteUrl: patternmanager.siteUrl,
 		apiEndpoints: patternmanager.apiEndpoints,
-		blockEditorSettings: patternmanager.blockEditorSettings,
 		patternEditorIframe,
 		templateEditorIframe,
 	};

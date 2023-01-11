@@ -25,10 +25,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $theme_slug The directory name of the theme in question.
  * @return array
  */
-function get_theme( $theme_slug ) {
-	$themes_data = get_the_themes();
-
-	return $themes_data[ $theme_slug ];
+function get_theme() {
+	return get_the_themes()[ get_template() ];
 }
 
 /**
