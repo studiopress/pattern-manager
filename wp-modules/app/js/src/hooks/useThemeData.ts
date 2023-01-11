@@ -78,13 +78,10 @@ export default function useThemeData(
 	 * Warns the user if there are unsaved changes before leaving.
 	 *
 	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
-	 *
-	 * @param {Event} event The beforeunload event.
 	 */
 	function warnIfUnsavedChanges( event: Event ) {
 		if ( editorDirty.current || siteEditorDirty ) {
-			// returnValue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
-			// @ts-expect-error: returnvalue is deprecated.
+			// @ts-expect-error: returnvalue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
 			event.returnValue = __(
 				'Are you sure you want to leave the editor? There are unsaved changes.',
 				'pattern-manager'
@@ -259,8 +256,6 @@ export default function useThemeData(
 	 *
 	 * A separate function from setThemeData(), as this sets the 'dirty'
 	 * state of the editor.
-	 *
-	 * @param {Theme} newThemeData
 	 */
 	function editTheme( newThemeData: Theme ) {
 		editorDirty.current = true;
