@@ -203,7 +203,7 @@ export default function useThemeData(
 		getThemeData().then( () => {
 			setSnackBarValue(
 				__(
-					'Theme successfully saved and all files written to theme directory',
+					'Pattern successfully saved to theme directory',
 					'pattern-manager'
 				)
 			);
