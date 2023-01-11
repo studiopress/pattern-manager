@@ -10,6 +10,7 @@ import { patternmanager } from '../../globals';
 
 import PatternManagerContext from '../../contexts/PatternManagerContext';
 import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeContext';
+import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
 import useThemes from '../../hooks/useThemes';
@@ -113,7 +114,7 @@ function PatternManagerContextHydrator() {
 }
 
 function PatternManager() {
-	const { currentView, currentTheme } = usePmContext();
+	const { currentPatternId, currentView, currentTheme } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (
@@ -170,6 +171,46 @@ function PatternManager() {
 											)
 										) }
 									</button>
+									<button
+									className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
+									onClick={ () => {
+										// Get the new pattern title and slug.
+										const { patternTitle, patternSlug } =
+											getNextPatternIds(
+												currentTheme?.data
+													?.included_patterns
+											);
+
+										currentTheme
+											.createPattern( {
+												type: 'pattern',
+												title: patternTitle,
+												name: patternSlug,
+												slug: patternSlug,
+												categories: [],
+												keywords: [],
+												blockTypes: [],
+												postTypes: [],
+												inserter: true,
+												description: '',
+												viewportWidth: '',
+												content: '',
+											} )
+											.then( () => {
+												currentPatternId.set(
+													patternSlug
+												);
+												currentView.set(
+													'pattern_editor'
+												);
+											} );
+									} }
+								>
+									{ __(
+										'Add New Pattern',
+										'pattern-manager'
+									) }
+								</button>
 								</>
 							) : null }
 						</div>

@@ -187,68 +187,6 @@ export default function ThemePatterns( { isVisible }: Props ) {
 							</div>
 						</>
 					</div>
-
-					<div className="flex-1 w-full md:w-1/3 text-base">
-						<div className="bg-pm-gray p-8 gap-6 flex flex-col rounded mb-5">
-							<div>
-								<h2 className="sr-only">
-									{ __(
-										'Pattern Creation',
-										'pattern-manager'
-									) }
-								</h2>
-								<h3 className="mb-2 font-medium">
-									Create new patterns
-								</h3>
-								<p className="text-base mb-5">
-									Create new patterns for your theme using the
-									button below. Patterns will appear on this
-									page as you create them.
-								</p>
-								<button
-									className="w-full items-center px-4 py-2 border-4 border-transparent font-medium text-center rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-									onClick={ () => {
-										// Get the new pattern title and slug.
-										const { patternTitle, patternSlug } =
-											getNextPatternIds(
-												currentTheme?.data
-													?.included_patterns
-											);
-
-										currentTheme
-											.createPattern( {
-												type: 'pattern',
-												title: patternTitle,
-												name: patternSlug,
-												slug: patternSlug,
-												categories: [],
-												keywords: [],
-												blockTypes: [],
-												postTypes: [],
-												inserter: true,
-												description: '',
-												viewportWidth: '',
-												content: '',
-											} )
-											.then( () => {
-												// Switch to the newly created theme.
-												currentPatternId.set(
-													patternSlug
-												);
-												currentView.set(
-													'pattern_editor'
-												);
-											} );
-									} }
-								>
-									{ __(
-										'Create New Pattern',
-										'pattern-manager'
-									) }
-								</button>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
