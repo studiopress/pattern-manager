@@ -55,10 +55,6 @@ function get_theme() {
 	$theme_slug = get_template();
 	$theme_data = $wpthemes[ $theme_slug ];
 
-	if ( ! isset( $wpthemes[ $theme_slug ] ) ) {
-		return;
-	}
-
 	$theme_root = get_theme_root( $theme_slug );
 	$theme_dir  = "$theme_root/$theme_slug";
 
