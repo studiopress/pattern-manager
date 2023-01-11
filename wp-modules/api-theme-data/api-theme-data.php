@@ -81,7 +81,7 @@ function get_theme( $request ) {
  */
 function save_theme( $request ) {
 	$theme_data       = $request->get_params();
-	$prior_theme_data = \PatternManager\ThemeDataHandlers\get_theme( $theme_data['id'] );
+	$prior_theme_data = \PatternManager\ThemeDataHandlers\get_theme();
 
 	$result = \PatternManager\ThemeDataHandlers\update_theme( $theme_data, false );
 

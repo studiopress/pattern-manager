@@ -26,15 +26,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function get_theme() {
-	return get_the_themes()[ get_template() ];
-}
-
-/**
- * Get data for all of the installed themes in the format used by Theme Manager.
- *
- * @return array
- */
-function get_the_themes() {
 	$wpthemes = wp_get_themes();
 
 	// Spin up the filesystem api.
@@ -61,50 +52,51 @@ function get_the_themes() {
 		'UpdateURI'   => 'Update URI',
 	);
 
-	foreach ( $wpthemes as $theme_slug => $theme_data ) {
-		$theme_root = get_theme_root( $theme_slug );
-		$theme_dir  = "$theme_root/$theme_slug";
+	$theme_slug = get_template();
+	$theme_data = $wpthemes[ $theme_slug ];
 
-		$theme = get_file_data( $theme_dir . '/style.css', $file_headers, 'theme' );
-
-		/** This filter is documented in wp-includes/theme.php */
-		$theme_dir = apply_filters( 'template_directory', $theme_dir, $theme_slug, $theme_root ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-
-		// Create a namespace from a theme slug.
-		$theme_slug_parts = explode( '-', $theme_slug );
-		$namespace        = implode( '', array_map( 'ucfirst', explode( '-', $theme_slug ) ) );
-		foreach ( $theme_slug_parts as $theme_slug_part ) {
-			$namespace .= ucfirst( $theme_slug_part );
-		}
-
-		$theme_json = $wp_filesystem->get_contents( "$theme_dir/theme.json" );
-
-		$theme_data = [
-			'id'                => $theme_slug,
-			'name'              => $theme['Name'],
-			'dirname'           => $theme_slug,
-			'namespace'         => $namespace,
-			'uri'               => $theme['ThemeURI'],
-			'author'            => $theme['Author'],
-			'author_uri'        => $theme['AuthorURI'],
-			'description'       => $theme['Description'],
-			'tags'              => $theme['Tags'],
-			'tested_up_to'      => $theme['Description'],
-			'requires_wp'       => $theme['RequiresWP'],
-			'requires_php'      => $theme['RequiresPHP'],
-			'version'           => $theme['Version'],
-			'text_domain'       => $theme['TextDomain'],
-			'included_patterns' => \PatternManager\PatternDataHandlers\get_theme_patterns( $theme_dir ),
-			'template_files'    => \PatternManager\PatternDataHandlers\get_theme_templates( $theme_dir ),
-			'template_parts'    => \PatternManager\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
-			'theme_json_file'   => ! $theme_json ? [] : json_decode( $theme_json, true ),
-			'styles'            => [],
-		];
-
-		$formatted_theme_data[ $theme_data['id'] ] = $theme_data;
+	if ( ! isset( $wpthemes[ $theme_slug ] ) ) {
+		return;
 	}
 
-	return $formatted_theme_data;
+	$theme_root = get_theme_root( $theme_slug );
+	$theme_dir  = "$theme_root/$theme_slug";
+
+	$theme = get_file_data( $theme_dir . '/style.css', $file_headers, 'theme' );
+
+	/** This filter is documented in wp-includes/theme.php */
+	$theme_dir = apply_filters( 'template_directory', $theme_dir, $theme_slug, $theme_root ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+	// Create a namespace from a theme slug.
+	$theme_slug_parts = explode( '-', $theme_slug );
+	$namespace        = implode( '', array_map( 'ucfirst', explode( '-', $theme_slug ) ) );
+	foreach ( $theme_slug_parts as $theme_slug_part ) {
+		$namespace .= ucfirst( $theme_slug_part );
+	}
+
+	$theme_json = $wp_filesystem->get_contents( "$theme_dir/theme.json" );
+
+	return [
+		'id'                => $theme_slug,
+		'name'              => $theme['Name'],
+		'dirname'           => $theme_slug,
+		'namespace'         => $namespace,
+		'uri'               => $theme['ThemeURI'],
+		'author'            => $theme['Author'],
+		'author_uri'        => $theme['AuthorURI'],
+		'description'       => $theme['Description'],
+		'tags'              => $theme['Tags'],
+		'tested_up_to'      => $theme['Description'],
+		'requires_wp'       => $theme['RequiresWP'],
+		'requires_php'      => $theme['RequiresPHP'],
+		'version'           => $theme['Version'],
+		'text_domain'       => $theme['TextDomain'],
+		'included_patterns' => \PatternManager\PatternDataHandlers\get_theme_patterns( $theme_dir ),
+		'template_files'    => \PatternManager\PatternDataHandlers\get_theme_templates( $theme_dir ),
+		'template_parts'    => \PatternManager\PatternDataHandlers\get_theme_template_parts( $theme_dir ),
+		'theme_json_file'   => ! $theme_json ? [] : json_decode( $theme_json, true ),
+		'styles'            => [],
+	];
 }
 
 /**
@@ -195,13 +187,6 @@ function update_theme( $theme, $update_patterns = true ) {
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
 	\PatternManager\PatternDataHandlers\tree_shake_theme_images();
-
-	\PatternManager\Tracky\send_event(
-		array(
-			'action'    => 'theme_saved',
-			'themeName' => $theme['dirname'],
-		)
-	);
 
 	return $theme;
 }
