@@ -27,10 +27,7 @@ html body.toplevel_page_pattern-manager {
 #wpbody-content {
 	margin: 0 !important;
 	padding: 0 !important;
-}
-
-#adminmenumain {
-	display: none !important;
+	height: 100%;
 }
 
 #wpfooter {
@@ -39,6 +36,7 @@ html body.toplevel_page_pattern-manager {
 
 #wpbody {
 	padding-top: 0;
+	height: 100%;
 }
 
 
@@ -62,14 +60,244 @@ html body.toplevel_page_pattern-manager {
 
 #patternmanagerapp {
 	z-index: 9999999999;
-	width: 100%;
+	position: relative;
+	width: calc(100% - 160px); // 160px is the width of the admin menu
+	left: 160px;
 	height: 100%;
 	box-sizing: border-box;
-	background: #fff;
+	background: #f1f1f1;
 	font-size: 16px;
 
 	* {
 		box-sizing: border-box !important;
+	}
+
+	.patternmanager-nav-container {
+		z-index: 10;
+		position: sticky;
+		display: flex;
+		flex: 1 1 0%;
+		justify-content: flex-end;
+		align-items: center;
+		width: 100%;
+		gap: 1.5rem;
+		top: 0;
+		flex-shrink: 0;
+		flex-wrap: wrap;
+		background: #fff;
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+		margin-left: auto;
+		margin-right: auto;
+		padding: 2rem;
+
+		@media (min-width: 1024px) {
+			padding-top: 1rem;
+			padding-bottom: 1rem;
+			padding-left: 3rem;
+			padding-right: 3rem;
+		}
+
+		.nav-container-inner {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0.5rem;
+
+			.nav-button {
+				display: inline-flex;
+				padding-top: 0.5rem;
+				padding-bottom: 0.5rem;
+				padding-left: 1rem;
+				padding-right: 1rem;
+				font-size: 0.875rem;
+				line-height: 20px;
+				font-weight: 500;
+				align-items: center;
+				border-radius: 0.125rem;
+				border-width: 4px;
+				border-color: transparent;
+				color: #fff;
+				background-color: #0074ad;
+				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+				cursor: pointer;
+
+				&:hover {
+					background-color: #006ba1;
+					// hover:bg-wp-blue-hover
+					// focus:outline-none
+					// focus:ring-2
+					// focus:ring-offset-2
+					// focus:ring-wp-blue
+				}
+			}
+		}
+	}
+
+	.patternmanager-theme-patterns {
+		width: 100%;
+
+		.patterns-container {
+			margin-left: auto;
+			margin-right: auto;
+			padding: 2rem;
+
+			@media (min-width: 1024px) {
+				padding: 3rem;
+			}
+
+			.container-outer-flex {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				max-width: 80rem;
+				gap: 2.5rem;
+
+				@media (min-width: 1024px) {
+					gap: 5rem;
+				}
+
+				.container-inner {
+					flex: 0 1 auto;
+					width: 100%;
+
+					@media (min-width: 768px) {
+						width: 66.666667%;
+					}
+
+					.inner-grid {
+						display: grid;
+						width: 100%;
+						gap: 1.25rem;
+						grid-template-columns: repeat(1, minmax(0, 1fr));
+
+						@media (min-width: 768px) {
+							grid-template-columns: repeat(3, minmax(0, 1fr));
+						}
+
+						.grid-empty {
+							position: relative;
+							padding: 2.5rem;
+							width: 100%;
+							text-align: center;
+							background: #fff;
+							border-radius: 0.25rem;
+							grid-column: span 2 / span 2;
+
+							@media (min-width: 768px) {
+								left: 25%;
+							}
+						}
+
+						.grid-item {
+							display: flex;
+							position: relative;
+							background-color: #d9d9d9;
+							flex-direction: column;
+							justify-content: space-between;
+
+							// Show the svg icons on hover.
+							&:hover .item-inner svg {
+								opacity: 1;
+							}
+
+							.item-inner {
+								height: 100%;
+								border-radius: 0.25rem;
+								border-width: 1px;
+								border-color: #e5e7eb;
+
+								.item-icon {
+									padding: 0.25rem;
+									background-color: #fff;
+									transition-duration: 300ms;
+									transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+									color: #000;
+									border-radius: 0.25rem;
+									fill: currentcolor;
+									box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+									opacity: 0;
+
+									&:hover {
+										color: #ef4444;
+									}
+								}
+
+								.item-delete-button {
+									position: absolute;
+									top: 0.5rem;
+									right: 0.5rem;
+									z-index: 50;
+									background: transparent;
+									border: none;
+									cursor: pointer;
+								}
+
+								.item-edit-button {
+									position: absolute;
+									top: 0.5rem;
+									left: 0.5rem;
+									z-index: 50;
+									background: transparent;
+									border: none;
+									cursor: pointer;
+								}
+
+								.item-duplicate-button {
+									position: absolute;
+									left: 0.5rem;
+									bottom: 6rem;
+									z-index: 50;
+									background: transparent;
+									border: none;
+									cursor: pointer;
+								}
+
+								.item-pattern-preview {
+									display: flex;
+									z-index: 0;
+									padding: 0.75rem;
+									flex-grow: 1;
+									align-items: center;
+								}
+							}
+
+							.item-pattern-preview-heading {
+								display: flex;
+								justify-content: center;
+								background: #f1f1f1;
+								padding: 1rem;
+								font-size: 0.875rem;
+								line-height: 20px;
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+
+	.patternmanager-pattern-editor-loading-outer {
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		min-height: 100%;
+
+		.patternmanager-pattern-editor-loading-inner {
+			display: flex;
+			margin-left: auto;
+			margin-right: auto;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100vh;
+			min-height: 100%;
+
+			span {
+				padding-left: 0.25rem;
+				padding-right: 0.25rem;
+				font-weight: 600;
+			}
+		}
 	}
 
 	.patternmanager-pattern-editor-columns {

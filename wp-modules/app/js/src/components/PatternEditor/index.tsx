@@ -142,8 +142,8 @@ export function BlockEditor() {
 			<div className="patternmanager-pattern-editor-body">
 				<div className="patternmanager-pattern-editor-view">
 					{ ! patternDataSet ? (
-						<div className="h-screen min-h-full w-screen items-center justify-center">
-							<div className="flex justify-center h-screen min-h-full w-full mx-auto items-center">
+						<div className="patternmanager-pattern-editor-loading-outer">
+							<div className="patternmanager-pattern-editor-loading-inner">
 								<Spinner />
 								{ createInterpolateElement(
 									__(
@@ -152,7 +152,7 @@ export function BlockEditor() {
 									),
 									{
 										span: (
-											<span className="px-1 font-semibold">
+											<span>
 												{ currentPattern?.title }
 											</span>
 										),
