@@ -269,6 +269,30 @@ html body.toplevel_page_pattern-manager {
 		}
 	}
 
+	.patternmanager-pattern-editor-loading-outer {
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		min-height: 100%;
+
+		.patternmanager-pattern-editor-loading-inner {
+			display: flex;
+			margin-left: auto;
+			margin-right: auto;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 100vh;
+			min-height: 100%;
+
+			span {
+				padding-left: 0.25rem;
+				padding-right: 0.25rem;
+				font-weight: 600;
+			}
+		}
+	}
+
 	.patternmanager-pattern-editor-columns {
 		width: 100%;
 		height: calc(100vh - 64px - 32px);
