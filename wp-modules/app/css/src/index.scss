@@ -192,7 +192,7 @@ html body.toplevel_page_pattern-manager {
 						.grid-item {
 							display: flex;
 							position: relative;
-							background-color: #f3f4f6;
+							background-color: #d9d9d9;
 							flex-direction: column;
 							justify-content: space-between;
 
@@ -228,6 +228,8 @@ html body.toplevel_page_pattern-manager {
 									top: 0.5rem;
 									right: 0.5rem;
 									z-index: 50;
+									background: transparent;
+									border: none;
 								}
 
 								.item-edit-button {
@@ -235,6 +237,8 @@ html body.toplevel_page_pattern-manager {
 									top: 0.5rem;
 									left: 0.5rem;
 									z-index: 50;
+									background: transparent;
+									border: none;
 								}
 
 								.item-duplicate-button {
@@ -242,6 +246,8 @@ html body.toplevel_page_pattern-manager {
 									left: 0.5rem;
 									bottom: 4rem;
 									z-index: 50;
+									background: transparent;
+									border: none;
 								}
 
 								.item-pattern-preview {
