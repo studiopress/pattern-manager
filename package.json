@@ -20,8 +20,5 @@
 		"lint:css:fix": "cd ../../wpps-scripts; sh lint-css.sh $npm_package_wpps_options -f 1;",
 		"test:js": "cd ../../wpps-scripts; sh test-js.sh $npm_package_wpps_options;",
 		"zip": "cd ../../wpps-scripts; sh zip.sh $npm_package_wpps_options"
-	},
-	"dependencies": {
-		"@wordpress/plugins": "^4.4.0"
 	}
 }
