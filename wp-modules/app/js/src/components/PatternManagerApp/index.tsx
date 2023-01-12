@@ -119,11 +119,11 @@ function PatternManager() {
 				</Snackbar>
 			) : null }
 			<div className="patternmanager-nav-container">
-				<div className="patternmanager-nav-container-inner">
+				<div className="nav-container-inner">
 					<button
 						type="button"
 						disabled={ currentTheme?.fetchInProgress }
-						className="patternmanager-nav-button"
+						className="nav-button"
 						onClick={ () => {
 							currentTheme.save();
 						} }
@@ -138,7 +138,7 @@ function PatternManager() {
 						) }
 					</button>
 					<button
-						className="patternmanager-nav-button"
+						className="nav-button"
 						onClick={ () => {
 							// Get the new pattern title and slug.
 							const { patternTitle, patternSlug } =
