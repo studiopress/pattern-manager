@@ -143,8 +143,7 @@ function PatternManager() {
 							// Get the new pattern title and slug.
 							const { patternTitle, patternSlug } =
 								getNextPatternIds(
-									currentTheme?.data
-										?.included_patterns
+									currentTheme?.data?.included_patterns
 								);
 
 							currentTheme
