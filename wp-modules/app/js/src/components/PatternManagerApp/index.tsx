@@ -1,5 +1,4 @@
 import '../../../../css/src/index.scss';
-import '../../../../css/src/tailwind.css';
 
 import { useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
