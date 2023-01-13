@@ -287,7 +287,7 @@ function delete_patterns_not_present( array $patterns ) {
 
 	foreach ( $pattern_file_paths as $pattern_file ) {
 		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
-			$result = $wp_filesystem->delete( $pattern_file );
+			$wp_filesystem->delete( $pattern_file );
 		}
 	}
 }
