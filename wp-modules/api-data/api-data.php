@@ -101,16 +101,7 @@ function save_request_args() {
 	);
 }
 
-/**
- * Initialize the REST route.
- *
- * @since 1.0.0
- * @return void
- */
-function instantiate_rest_api_routes() {
-	register_routes();
-}
-add_action( 'rest_api_init', __NAMESPACE__ . '\instantiate_rest_api_routes', 11 );
+add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
 
 /**
  * Retrieves the item's schema, conforming to JSON Schema.
