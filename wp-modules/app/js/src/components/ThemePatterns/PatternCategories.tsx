@@ -1,3 +1,6 @@
+// WP dependencies
+import { TabbableContainer } from '@wordpress/components';
+
 // Types
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -23,7 +26,7 @@ export default function PatternCategories( {
 				].join( ' ' );
 
 				return (
-					<div
+					<TabbableContainer
 						key={ category.name }
 						className={ classes }
 						onClick={ () =>
@@ -33,7 +36,7 @@ export default function PatternCategories( {
 						<span className="category-name">
 							{ category.label }
 						</span>
-					</div>
+					</TabbableContainer>
 				);
 			} ) }
 		</div>
