@@ -1,5 +1,4 @@
 import '../../../../css/src/index.scss';
-import '../../../../css/src/tailwind.css';
 
 import { useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
@@ -83,58 +82,54 @@ function PatternManager() {
 					{ snackBarValue }
 				</Snackbar>
 			) : null }
-			<div className="md:sticky top-0 z-10 flex-shrink-0 flex min-h-[5rem] bg-wp-black shadow">
-				<div className="flex-1 flex">
-					<div className="flex flex-wrap w-full gap-6 mx-auto justify-between items-center py-8 lg:py-4 px-8 lg:px-12">
-						<div className="flex flex-wrap gap-2">
-							<button
-								type="button"
-								disabled={ patterns?.fetchInProgress }
-								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-								onClick={ () => {
-									patterns.save();
-								} }
-							>
-								{ patterns.isSaving ? (
-									<>
-										<Spinner />
-										{ __( 'Saving', 'pattern-manager' ) }
-									</>
-								) : (
-									__( 'Save', 'pattern-manager' )
-								) }
-							</button>
-							<button
-								className="inline-flex items-center leading-5 text-sm px-4 py-2 border border-4 border-transparent font-medium rounded-sm shadow-sm text-white bg-wp-blue hover:bg-wp-blue-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-wp-blue"
-								onClick={ () => {
-									// Get the new pattern title and slug.
-									const { patternTitle, patternSlug } =
-										getNextPatternIds( patterns.data );
+			<div className="patternmanager-nav-container">
+				<div className="nav-container-inner">
+					<button
+						type="button"
+						disabled={ patterns?.fetchInProgress }
+						className="nav-button"
+						onClick={ () => {
+							patterns.save();
+						} }
+					>
+						{ patterns.isSaving ? (
+							<>
+								<Spinner />
+								{ __( 'Saving', 'pattern-manager' ) }
+							</>
+						) : (
+							__( 'Save', 'pattern-manager' )
+						) }
+					</button>
+					<button
+						className="nav-button"
+						onClick={ () => {
+							// Get the new pattern title and slug.
+							const { patternTitle, patternSlug } =
+								getNextPatternIds( patterns?.data );
 
-									patterns
-										.createPattern( {
-											title: patternTitle,
-											name: patternSlug,
-											slug: patternSlug,
-											categories: [],
-											keywords: [],
-											blockTypes: [],
-											postTypes: [],
-											inserter: true,
-											description: '',
-											viewportWidth: '',
-											content: '',
-										} )
-										.then( () => {
-											currentPatternId.set( patternSlug );
-											currentView.set( 'pattern_editor' );
-										} );
-								} }
-							>
-								{ __( 'Add New Pattern', 'pattern-manager' ) }
-							</button>
-						</div>
-					</div>
+							patterns
+								.createPattern( {
+									title: patternTitle,
+									name: patternSlug,
+									slug: patternSlug,
+									categories: [],
+									keywords: [],
+									blockTypes: [],
+									postTypes: [],
+									inserter: true,
+									description: '',
+									viewportWidth: '',
+									content: '',
+								} )
+								.then( () => {
+									currentPatternId.set( patternSlug );
+									currentView.set( 'pattern_editor' );
+								} );
+						} }
+					>
+						{ __( 'Add New Pattern', 'pattern-manager' ) }
+					</button>
 				</div>
 			</div>
 

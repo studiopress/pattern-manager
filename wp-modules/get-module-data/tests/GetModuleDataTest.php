@@ -8,7 +8,7 @@
 /**
  * Test this module's functions.
  */
-class GetModuleDataTest extends WP_UnitTestCase {
+class PatternManagerGetModuleDataTest extends WP_UnitTestCase {
 
 	/**
 	 * Gets the dir path.

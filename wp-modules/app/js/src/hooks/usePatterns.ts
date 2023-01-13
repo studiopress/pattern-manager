@@ -13,7 +13,8 @@ export default function usePatterns( initialPatterns: Patterns ) {
 
 	const editorDirty = useRef( false );
 	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
-	const [ requestPatternRefresh, setRequestPatternRefresh ] = useState( false );
+	const [ requestPatternRefresh, setRequestPatternRefresh ] =
+		useState( false );
 	const refs = useRef< { [ key: string ]: HTMLIFrameElement } >( {} );
 
 	const addRef = ( key: string, newRef: HTMLIFrameElement ) => {
