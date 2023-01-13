@@ -240,6 +240,7 @@ html body.toplevel_page_pattern-manager {
 					margin-bottom: 50px;
 					height: 450px;
 					width: 450px;
+					border: 1px solid transparent;
 
 					&::before {
 						content: "";
@@ -319,10 +320,16 @@ html body.toplevel_page_pattern-manager {
 						}
 					}
 
-					// Show the item-action buttons on hover.
-					&:hover .item-actions {
-						opacity: 1;
+					&:hover {
+						border: 1px solid #006ba1;
+						border-radius: 2px;
 						transition: all 0.2s ease;
+
+						// Show the item-action buttons.
+						.item-actions {
+							opacity: 1;
+							transition: all 0.2s ease;
+						}
 					}
 
 					.item-pattern-preview-heading {
