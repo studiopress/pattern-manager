@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 
 export type PostMeta = {
-	type: 'pattern' | 'template' | 'template_part';
 	title: string;
 	slug: string;
 	name: string;

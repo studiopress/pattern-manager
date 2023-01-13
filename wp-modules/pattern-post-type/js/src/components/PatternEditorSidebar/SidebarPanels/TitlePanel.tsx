@@ -42,15 +42,12 @@ export default function TitlePanel( {
 		);
 	}, [] );
 
-	/**
+	/*
 	 * Set nameInput and inputDisabled state when the post is switched.
 	 * Mostly intended to catch switching between patterns.
 	 */
 	useEffect( () => {
-		// postMeta is initially returned with empty values until the select request resolves.
-		// Try to prevent populating an empty title by only updating if the type is a pattern.
-		// Doing it this way should still catch an empty title if the user somehow passes one.
-		if ( postMeta?.type === 'pattern' ) {
+		if ( postMeta.title ) {
 			setNameInput( postMeta.title );
 			setNameInputDisabled( true );
 			// Validate the initial postMeta title.
@@ -63,10 +60,8 @@ export default function TitlePanel( {
 	/**
 	 * Fire off a postMessage to validate pattern title.
 	 * String is validated in PatternEditor component.
-	 *
-	 * @param {string} patternTitle
 	 */
-	function checkPatternTitle( patternTitle ) {
+	function checkPatternTitle( patternTitle: string ) {
 		window.parent.postMessage(
 			JSON.stringify( {
 				message: 'pm_pattern_editor_request_is_pattern_title_taken',
