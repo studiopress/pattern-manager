@@ -51,6 +51,7 @@ function register_routes() {
 		)
 	);
 }
+add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
 
 /**
  * Save a theme's data.
@@ -100,8 +101,6 @@ function save_request_args() {
 		),
 	);
 }
-
-add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
 
 /**
  * Retrieves the item's schema, conforming to JSON Schema.
