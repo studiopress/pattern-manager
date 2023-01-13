@@ -123,7 +123,7 @@ function PatternManager() {
 								} );
 						} }
 					>
-						{ __( 'Add New Pattern', 'pattern-manager' ) }
+						{ __( 'Create New Pattern', 'pattern-manager' ) }
 					</button>
 				</div>
 			</div>
