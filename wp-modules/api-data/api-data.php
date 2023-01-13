@@ -130,9 +130,9 @@ function response_item_schema() {
 
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
-			'themeData' => array(
-				'description' => esc_html__( 'The theme data in question', 'pattern-manager' ),
-				'type'        => 'string',
+			'patterns' => array(
+				'description' => esc_html__( 'The pattern data', 'pattern-manager' ),
+				'type'        => 'object',
 				'readonly'    => true,
 			),
 		),

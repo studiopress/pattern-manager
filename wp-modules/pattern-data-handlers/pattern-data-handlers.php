@@ -34,45 +34,22 @@ function get_patterns() {
 		'inserter'      => 'Inserter',
 	);
 
-	$module_dir_path = module_dir_path( __FILE__ );
-
-	/**
-	 * Scan Patterns directory and auto require all PHP files, and register them as block patterns.
-	 */
-	$pattern_file_paths = glob( $module_dir_path . '/pattern-files/*.php' );
-
 	$patterns = array();
 
+	// Get the custom patterns (ones created by the user, not included in the plugin).
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+
+	// Grab all of the pattrns in this theme.
+	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
 		if ( ! $pattern_data ) {
 			continue;
 		}
-		$pattern_data['name']                  = basename( $path, '.php' );
+		$pattern_data['name'] = basename( $path, '.php' );
+		$pattern_data['type'] = 'pattern';
+
 		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
-	}
-
-	// Get the custom patterns (ones created by the user, not included in the plugin).
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-	$wp_themes_dir = $wp_filesystem->wp_themes_dir();
-
-	$themes = glob( $wp_themes_dir . '*' );
-
-	foreach ( $themes as $theme ) {
-
-		// Grab all of the pattrns in this theme.
-		$pattern_file_paths = glob( $theme . '/patterns/*.php' );
-
-		foreach ( $pattern_file_paths as $path ) {
-			$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
-			if ( ! $pattern_data ) {
-				continue;
-			}
-			$pattern_data['name'] = basename( $path, '.php' );
-			$pattern_data['type'] = 'pattern';
-
-			$patterns[ basename( $path, '.php' ) ] = $pattern_data;
-		}
 	}
 
 	return $patterns;
@@ -195,13 +172,7 @@ function format_pattern_data( $pattern_data, $file ) {
  */
 function get_theme_pattern( $pattern_id, $theme_path = false ) {
 	$patterns_data = get_theme_patterns( $theme_path );
-	if ( ! isset( $patterns_data[ $pattern_id ] ) ) {
-		return [];
-	}
-
-	$pattern_data = $patterns_data[ $pattern_id ];
-
-	return $pattern_data;
+	return $patterns_data[ $pattern_id ] ?? [];
 }
 
 /**
@@ -229,7 +200,6 @@ function get_theme_patterns() {
 	$pattern_file_paths = glob( $theme_path . '/patterns/*.php' );
 
 	$patterns = array();
-
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
 		if ( ! $pattern_data ) {
@@ -317,7 +287,7 @@ function delete_patterns_not_present( array $patterns ) {
 
 	foreach ( $pattern_file_paths as $pattern_file ) {
 		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
-			$wp_filesystem->delete( $pattern_file );
+			$result = $wp_filesystem->delete( $pattern_file );
 		}
 	}
 }
