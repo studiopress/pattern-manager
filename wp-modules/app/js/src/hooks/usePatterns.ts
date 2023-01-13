@@ -198,12 +198,12 @@ export default function usePatterns( initialPatterns: Patterns ) {
 
 	return {
 		addRef,
-		data: patternsData,
-		set: editPatterns,
 		createPattern,
+		data: patternsData,
 		deletePattern,
-		save: savePatternsData,
-		isSaving,
 		fetchInProgress,
+		isSaving,
+		save: savePatternsData,
+		set: editPatterns,
 	};
 }
