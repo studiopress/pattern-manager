@@ -65,7 +65,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 				setRequestPatternRefresh( false );
 				// We have to do this outside the pm_pattern_editor_save_complete listener because patterns is stale there.
 				uponSuccessfulSave();
-				getThemeData();
+				getPatternData();
 			}
 		}
 	}, [ requestPatternRefresh ] );
@@ -86,7 +86,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		}
 	}
 
-	function getThemeData() {
+	function getPatternData() {
 		return new Promise( ( resolve ) => {
 			if ( fetchInProgress ) {
 				return;
@@ -137,7 +137,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	function uponSuccessfulSave() {
-		getThemeData().then( () => {
+		getPatternData().then( () => {
 			setSnackBarValue(
 				__(
 					'Pattern successfully saved to theme directory',

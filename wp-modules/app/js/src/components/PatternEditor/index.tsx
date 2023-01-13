@@ -59,7 +59,7 @@ export function BlockEditor() {
 
 			// When the pattern block editor tells us it has something new, put it into the pattern data.
 			if ( response.message === 'patternmanager_block_pattern_updated' ) {
-				patterns?.set( {
+				patterns.set( {
 					...patterns.data,
 					[ currentPatternId.value ]: response.blockPatternData,
 				} );

@@ -15,7 +15,7 @@ export default function PatternPreview( { url, scale }: Props ) {
 	const [ iframeRef, setIframeRef ] = useState<
 		HTMLIFrameElement | undefined
 	>( undefined );
-	patterns?.addRef( url, iframeRef );
+	patterns.addRef( url, iframeRef );
 	const scaleMultiplier = 10 / ( scale * 10 );
 
 	return (

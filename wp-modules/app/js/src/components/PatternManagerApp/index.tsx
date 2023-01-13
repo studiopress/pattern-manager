@@ -81,7 +81,7 @@ function PatternManager() {
 				<div className="nav-container-inner">
 					<button
 						type="button"
-						disabled={ patterns?.fetchInProgress }
+						disabled={ patterns.fetchInProgress }
 						className="nav-button"
 						onClick={ () => {
 							patterns.save();
