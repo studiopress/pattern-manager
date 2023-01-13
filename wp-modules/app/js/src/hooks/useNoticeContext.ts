@@ -1,5 +1,5 @@
 import { useContext } from '@wordpress/element';
-import NoticeContext from '../contexts/PatternManagerNoticeContext';
+import NoticeContext from '../contexts/NoticeContext';
 
 export default function useNoticeContext() {
 	const context = useContext( NoticeContext );

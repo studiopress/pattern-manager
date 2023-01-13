@@ -8,7 +8,7 @@ import React from 'react';
 import { patternmanager } from '../../globals';
 
 import PatternManagerContext from '../../contexts/PatternManagerContext';
-import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeContext';
+import NoticeContext from '../../contexts/NoticeContext';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
@@ -29,9 +29,9 @@ export default function PatternManagerApp() {
 	const providerValue = useSnackbar();
 
 	return (
-		<PatternManagerSnackbarContext.Provider value={ providerValue }>
+		<NoticeContext.Provider value={ providerValue }>
 			<PatternManagerContextHydrator />
-		</PatternManagerSnackbarContext.Provider>
+		</NoticeContext.Provider>
 	);
 }
 
