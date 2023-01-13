@@ -10,8 +10,8 @@
 	"scripts": {
 		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone -b try/allow-wpps-scripts-to-be-anywhere https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; else cd ../../wpps-scripts && git reset --hard && git checkout main && git pull origin main;fi;",
 		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options -p $OLDPWD;",
-		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options -p $OLDPWD; ",
-		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options;",
+		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options -p $OLDPWD;",
+		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options -p $OLDPWD;",
 		"lint:php": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p $OLDPWD;",
 		"lint:php:fix": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p $OLDPWD -f 1;",
 		"lint:js": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options -p $OLDPWD",
