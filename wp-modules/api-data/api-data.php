@@ -111,9 +111,9 @@ function save_request_args() {
 function response_item_schema() {
 	return array(
 		// This tells the spec of JSON Schema we are using which is draft 4.
-		'$schema' => 'https://json-schema.org/draft-04/schema#',
+		'$schema'    => 'https://json-schema.org/draft-04/schema#',
 		// The title property marks the identity of the resource.
-		'type'    => 'object',
+		'type'       => 'object',
 
 		// These define the items which will actually be returned by the endpoint.
 		'properties' => array(
