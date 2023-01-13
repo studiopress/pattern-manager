@@ -213,10 +213,9 @@ function get_theme_patterns() {
 }
 
 /**
- * Update a single theme.
+ * Update the patterns.
  *
  * @param array $patterns The new patterns.
- * @param bool $update_patterns Whether we should update patterns as part of this, or not. Note that when in the UI/App, patterns will save themselves after this is done, so we don't need to save patterns here, which is why this boolean option exists.
  * @return array
  */
 function update_patterns( $patterns ) {
