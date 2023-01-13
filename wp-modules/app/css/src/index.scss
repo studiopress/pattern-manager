@@ -93,7 +93,27 @@ html body.toplevel_page_pattern-manager {
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 		margin-left: auto;
 		margin-right: auto;
-		padding: 1rem 4rem 1rem 4rem;
+		padding: 1rem 5rem 1rem 4rem;
+
+		.nav-container-logo {
+			position: relative;
+			margin-right: auto;
+			text-align: center;
+			display: table;
+
+			.logo-svg {
+				height: 30px;
+				width: 30px;
+			}
+
+			.logo-title {
+				display: table-cell;
+				vertical-align: middle;
+				padding-left: 10px;
+				padding-bottom: 4px;
+				font-weight: 600;
+			}
+		}
 
 		.nav-container-inner {
 			display: flex;
@@ -107,11 +127,9 @@ html body.toplevel_page_pattern-manager {
 				padding-left: 1rem;
 				padding-right: 1rem;
 				font-size: 0.875rem;
-				line-height: 20px;
 				font-weight: 500;
 				align-items: center;
 				border-radius: 0.125rem;
-				border-width: 4px;
 				border-color: transparent;
 				color: #fff;
 				background-color: #0074ad;

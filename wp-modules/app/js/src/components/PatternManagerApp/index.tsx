@@ -1,4 +1,5 @@
 import '../../../../css/src/index.scss';
+import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 import { useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
@@ -118,6 +119,16 @@ function PatternManager() {
 				</Snackbar>
 			) : null }
 			<div className="patternmanager-nav-container">
+				<div className="nav-container-logo">
+					<img
+						className="logo-svg"
+						aria-hidden="true"
+						alt=""
+						src={ wpeLogoDefaultCropped }
+					/>
+					<span className="logo-title">Pattern Manager</span>
+				</div>
+
 				<div className="nav-container-inner">
 					<button
 						type="button"
@@ -136,6 +147,7 @@ function PatternManager() {
 							__( 'Save', 'pattern-manager' )
 						) }
 					</button>
+
 					<button
 						className="nav-button"
 						onClick={ () => {
