@@ -41,7 +41,7 @@ export function BlockEditor() {
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	const nameTaken = ( newSlug: string ) => {
-		return Object.values( patterns?.data ).some( ( pattern ) => {
+		return Object.values( patterns.data ).some( ( pattern ) => {
 			return (
 				pattern.slug === newSlug && currentPatternId?.value !== newSlug
 			);

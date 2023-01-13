@@ -35,7 +35,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					<div className="container-inner">
 						<>
 							<div className="inner-grid">
-								{ Object.entries( patterns?.data ?? {} )
+								{ Object.entries( patterns.data ?? {} )
 									.length === 0 ? (
 									<div className="grid-empty">
 										{ createInterpolateElement(
@@ -56,7 +56,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 										) }
 									</div>
 								) : null }
-								{ Object.entries( patterns?.data ?? {} ).map(
+								{ Object.entries( patterns.data ?? {} ).map(
 									( [ patternName, patternData ]: [
 										string,
 										Pattern
