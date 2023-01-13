@@ -22,10 +22,7 @@ export default function PatternEditorSidebar( {
 
 	return (
 		<div id={ coreLastUpdate }>
-			<TitlePanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
-			/>
+			<TitlePanel postMeta={ postMeta } handleChange={ updatePostMeta } />
 			<CategoriesPanel
 				postMeta={ postMeta }
 				categories={ categories }
