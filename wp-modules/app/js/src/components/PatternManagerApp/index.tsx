@@ -43,11 +43,9 @@ function PatternManagerContextHydrator() {
 
 	const currentPatternId = useCurrentId( '' );
 
-	let currentPattern: Pattern | null = null;
-
-	if ( currentPatternId?.value ) {
-		currentPattern = patterns.data?.[ currentPatternId?.value ] ?? null;
-	}
+	const currentPattern = currentPatternId?.value && patterns.data?.[ currentPatternId?.value ]
+		? patterns.data?.[ currentPatternId?.value ]
+		: null;
 
 	const providerValue: InitialContext = {
 		currentView,
