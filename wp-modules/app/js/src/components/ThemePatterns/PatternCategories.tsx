@@ -19,7 +19,7 @@ export default function PatternCategories( {
 					'category',
 					...( currentCategory === category.name
 						? [ 'category-selected' ]
-						: [] )
+						: [] ),
 				].join( ' ' );
 
 				return (
