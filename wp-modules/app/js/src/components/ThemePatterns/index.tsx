@@ -1,181 +1,124 @@
-import React from 'react';
-
-// WP Dependencies.
-import { createInterpolateElement } from '@wordpress/element';
+// WP dependencies
 import { __ } from '@wordpress/i18n';
-import { Icon, close, copy, edit, external } from '@wordpress/icons';
+import { createInterpolateElement, useState } from '@wordpress/element';
 
+// Context
 import usePmContext from '../../hooks/usePmContext';
 
 // Components
-import PatternPreview from '../PatternPreview';
-
-// Globals
-import { patternmanager } from '../../globals';
+import PatternCategories from './PatternCategories';
+import PatternGrid from './PatternGrid';
 
 // Utils
-import getDuplicatePattern from '../../utils/getDuplicatePattern';
-import { Pattern } from '../../types';
+import convertToUpperCase from '../../utils/convertToUpperCase';
+import sortAlphabetically from '../../utils/sortAlphabetically';
+
+// Types
+import type { Patterns } from '../../types';
 
 type Props = {
 	isVisible: boolean;
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentTheme, currentView, currentPatternId } = usePmContext();
+	const { currentTheme } = usePmContext();
+	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 
 	if ( ! isVisible || ! currentTheme.data ) {
 		return null;
 	}
 
+	/** Object for included_patterns that includes an 'uncategorized' category. */
+	const themePatterns: Patterns = Object.keys(
+		currentTheme.data.included_patterns
+	).reduce(
+		( acc, patternName ) => ( {
+			...acc,
+			[ patternName ]: {
+				...currentTheme.data.included_patterns[ patternName ],
+				categories: [
+					// Spread in the categories, or 'uncategorized' if empty.
+					...( currentTheme.data.included_patterns[ patternName ]
+						.categories?.length
+						? currentTheme.data.included_patterns[ patternName ]
+								.categories
+						: [ 'uncategorized' ] ),
+				],
+			},
+		} ),
+		{}
+	);
+
+	/** Mapped array of categories present in patterns for the active theme. */
+	const patternCategories = [
+		// Keep all-patterns at top of list.
+		{
+			label: 'All Patterns',
+			name: 'all-patterns',
+		},
+		...sortAlphabetically(
+			[
+				// Array of unique category names.
+				...Object.keys( themePatterns )
+					.reduce( ( acc, patternName ) => {
+						return [
+							...acc,
+							...themePatterns[ patternName ]?.categories?.filter(
+								( category ) => {
+									return ! acc.includes( category );
+								}
+							),
+						];
+					}, [] )
+					// Map the array to expected object shape.
+					.map( ( category ) => ( {
+						label: convertToUpperCase(
+							category.replace( /[-_]/g, ' ' )
+						),
+						name: category,
+					} ) ),
+			],
+			// Sort by name property.
+			'name'
+		),
+	];
+
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
-			<div className="patterns-container">
-				<div className="container-outer-flex">
-					<div className="container-inner">
-						<>
-							<div className="inner-grid">
-								{ Object.entries(
-									currentTheme?.data?.included_patterns ?? {}
-								).length === 0 ? (
-									<div className="grid-empty">
-										{ createInterpolateElement(
-											__(
-												'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
-												'pattern-manager'
-											),
-											{
-												span: (
-													<strong>
-														{ __(
-															'Create New Pattern',
-															'pattern-manager'
-														) }
-													</strong>
-												),
-											}
+			<div className="patterns-container-inner">
+				{ Object.entries( themePatterns ?? {} ).length === 0 ? (
+					<div className="grid-empty">
+						{ createInterpolateElement(
+							__(
+								'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
+								'pattern-manager'
+							),
+							{
+								span: (
+									<strong>
+										{ __(
+											'Add New Pattern',
+											'pattern-manager'
 										) }
-									</div>
-								) : null }
-								{ Object.entries(
-									currentTheme?.data?.included_patterns ?? {}
-								).map(
-									( [ patternName, patternData ]: [
-										string,
-										Pattern
-									] ) => {
-										return (
-											<div
-												key={ patternName }
-												className="grid-item"
-											>
-												<div className="item-inner">
-													<button
-														type="button"
-														className="item-delete-button"
-														aria-label={ __(
-															'Delete pattern',
-															'pattern-manager'
-														) }
-														onClick={ () => {
-															currentTheme.deletePattern(
-																patternName
-															);
-														} }
-													>
-														<Icon
-															className="item-icon"
-															icon={ close }
-															size={ 30 }
-														/>
-													</button>
-													<button
-														type="button"
-														className="item-edit-button"
-														aria-label={ __(
-															'Edit Pattern',
-															'pattern-manager'
-														) }
-														onClick={ () => {
-															currentPatternId.set(
-																patternName
-															);
-															currentView.set(
-																'pattern_editor'
-															);
-														} }
-													>
-														<Icon
-															className="item-icon"
-															icon={ edit }
-															size={ 30 }
-														/>
-													</button>
-
-													<button
-														type="button"
-														className="item-duplicate-button"
-														aria-label={ __(
-															'Duplicate Pattern',
-															'pattern-manager'
-														) }
-														onClick={ () => {
-															const newPattern =
-																getDuplicatePattern(
-																	patternData,
-																	Object.values(
-																		currentTheme
-																			.data
-																			?.included_patterns ??
-																			{}
-																	)
-																);
-															currentTheme
-																.createPattern(
-																	newPattern
-																)
-																.then( () => {
-																	currentPatternId.set(
-																		newPattern.slug
-																	);
-																	currentView.set(
-																		'pattern_editor'
-																	);
-																} );
-														} }
-													>
-														<Icon
-															className="item-icon"
-															icon={ copy }
-															size={ 30 }
-														/>
-													</button>
-
-													<div className="item-pattern-preview">
-														<PatternPreview
-															key={ patternName }
-															url={
-																patternmanager.siteUrl +
-																'?pm_pattern_preview=' +
-																patternData.name
-															}
-															scale={ 0.2 }
-														/>
-													</div>
-												</div>
-												<div className="item-pattern-preview-heading">
-													<h2>
-														{ patternData.title }
-													</h2>
-												</div>
-											</div>
-										);
-									}
-								) }
-							</div>
-						</>
+									</strong>
+								),
+							}
+						) }
 					</div>
-				</div>
+				) : (
+					<>
+						<PatternCategories
+							categories={ patternCategories }
+							currentCategory={ currentCategory }
+							setCurrentCategory={ setCurrentCategory }
+						/>
+						<PatternGrid
+							themePatterns={ themePatterns }
+							currentCategory={ currentCategory }
+							categoryToAlwaysInclude={ 'all-patterns' }
+						/>
+					</>
+				) }
 			</div>
 		</div>
 	);
