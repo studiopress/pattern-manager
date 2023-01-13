@@ -57,7 +57,7 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
  * Save a theme's data.
  *
  * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Request
+ * @return WP_REST_Response
  */
 function save_patterns( $request ) {
 	$result = \PatternManager\PatternDataHandlers\update_patterns( $request->get_params()['patterns'] );
@@ -105,8 +105,6 @@ function save_request_args() {
 /**
  * Retrieves the item's schema, conforming to JSON Schema.
  * The properties value is what you can expect to see in a successful return/response from this endpoint.
- *
- * @since 1.0.0
  *
  * @return array Item schema data.
  */
