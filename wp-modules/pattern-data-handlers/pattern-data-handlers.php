@@ -335,18 +335,6 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 }
 
 /**
- * Returns a string containing the code for a template file.
- *
- * @param array  $pattern Data about the pattern.
- * @param string $text_domain The text domain to use for any localization required.
- * @return bool
- */
-function construct_template_php_file_contents( $pattern, $text_domain ) {
-	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
-	return $pattern['content'];
-}
-
-/**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
  * @param array $patterns_in_theme The patterns in the theme.
