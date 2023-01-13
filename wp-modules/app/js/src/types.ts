@@ -13,7 +13,7 @@ export type NoticeContext = ReturnType< typeof useNotice >;
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
-	currentPattern: Pattern;
+	currentPattern?: Pattern;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	patterns: ReturnType< typeof usePatterns >;
