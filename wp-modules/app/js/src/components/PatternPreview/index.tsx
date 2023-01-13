@@ -10,8 +10,6 @@ type Props = {
 
 export default function PatternPreview( { url, scale }: Props ) {
 	const { patterns } = usePmContext();
-	const [ iframeInnerContentHeight, setIframeInnerContentHeight ] =
-		useState( 10 );
 	const [ iframeRef, setIframeRef ] = useState<
 		HTMLIFrameElement | undefined
 	>( undefined );
@@ -20,10 +18,8 @@ export default function PatternPreview( { url, scale }: Props ) {
 
 	return (
 		<div
+			className="pattern-preview-iframe-outer"
 			style={ {
-				position: 'relative',
-				width: '100%',
-				height: iframeInnerContentHeight / scaleMultiplier,
 				pointerEvents: 'none',
 			} }
 		>
@@ -32,21 +28,6 @@ export default function PatternPreview( { url, scale }: Props ) {
 				title={ __( 'Pattern Preview', 'pattern-manager' ) }
 				role={ 'img' }
 				ref={ setIframeRef }
-				onLoad={ () => {
-					if (
-						iframeRef?.contentWindow?.document?.body?.scrollHeight
-					) {
-						if (
-							iframeRef.contentWindow.document.body.scrollHeight >
-							0
-						) {
-							setIframeInnerContentHeight(
-								iframeRef.contentWindow.document.body
-									.scrollHeight
-							);
-						}
-					}
-				} }
 				style={ {
 					position: 'absolute',
 					top: '0',
@@ -56,7 +37,6 @@ export default function PatternPreview( { url, scale }: Props ) {
 					display: 'block',
 					transform: 'scale(' + scale + ')',
 					transformOrigin: 'top left',
-					overflow: 'hidden',
 					pointerEvents: 'none',
 				} }
 			/>

@@ -93,14 +93,7 @@ html body.toplevel_page_pattern-manager {
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 		margin-left: auto;
 		margin-right: auto;
-		padding: 2rem;
-
-		@media (min-width: 1024px) {
-			padding-top: 1rem;
-			padding-bottom: 1rem;
-			padding-left: 3rem;
-			padding-right: 3rem;
-		}
+		padding: 1rem 4rem 1rem 4rem;
 
 		.nav-container-inner {
 			display: flex;
@@ -205,7 +198,7 @@ html body.toplevel_page_pattern-manager {
 					}
 				}
 
-				@media (min-width: 1536px) and (max-width: 1920px) {
+				@media (min-width: 1536px) and (max-width: 1728px) {
 					grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
 
 					.grid-item {
@@ -214,7 +207,16 @@ html body.toplevel_page_pattern-manager {
 					}
 				}
 
-				@media (min-width: 1920px) and (max-width: 2560px) {
+				@media (min-width: 1728px) and (max-width: 1920px) {
+					grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+
+					.grid-item {
+						height: 325px !important;
+						width: 325px !important;
+					}
+				}
+
+				@media (min-width: 1920px) and (max-width: 2160px) {
 					grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
 
 					.grid-item {
@@ -223,12 +225,21 @@ html body.toplevel_page_pattern-manager {
 					}
 				}
 
+				@media (min-width: 2160px) and (max-width: 2560px) {
+					grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+
+					.grid-item {
+						height: 375px !important;
+						width: 375px !important;
+					}
+				}
+
 				@media (min-width: 2560px) {
 					grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
 
 					.grid-item {
-						height: 350px !important;
-						width: 350px !important;
+						height: 400px !important;
+						width: 400px !important;
 					}
 				}
 
@@ -248,6 +259,7 @@ html body.toplevel_page_pattern-manager {
 					}
 
 					.item-inner {
+						display: flex;
 						position: absolute;
 						top: 0;
 						left: 0;
@@ -260,6 +272,49 @@ html body.toplevel_page_pattern-manager {
 							padding: 0.75rem;
 							flex-grow: 1;
 							align-items: center;
+
+							.pattern-preview-iframe-outer {
+								position: relative;
+								// Default grid-item height/width is 450px
+								width: 425px;
+								height: 425px;
+
+								@media (min-width: 1280px) and (max-width: 1536px) {
+									// grid-item height/width 350px
+									width: 325px;
+									height: 325px;
+								}
+
+								@media (min-width: 1536px) and (max-width: 1728px) {
+									// grid-item height/width 300px
+									width: 275px;
+									height: 275px;
+								}
+
+								@media (min-width: 1728px) and (max-width: 1920px) {
+									// grid-item height/width 325px
+									width: 300px;
+									height: 300px;
+								}
+
+								@media (min-width: 1920px) and (max-width: 2160px) {
+									// grid-item height/width 350px
+									width: 325px;
+									height: 325px;
+								}
+
+								@media (min-width: 2160px) and (max-width: 2560px) {
+									// grid-item height/width 375px
+									width: 350px;
+									height: 350px;
+								}
+
+								@media (min-width: 2560px) {
+									// grid-item height/width 400px
+									width: 375px;
+									height: 375px;
+								}
+							}
 						}
 					}
 
