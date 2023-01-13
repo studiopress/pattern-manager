@@ -200,11 +200,6 @@ html body.toplevel_page_pattern-manager {
 					background-color: #d9d9d9;
 					box-sizing: border-box;
 
-					// Show the svg icons on hover.
-					&:hover .item-inner svg {
-						opacity: 1;
-					}
-
 					&::before {
 						content: "";
 						display: block;
@@ -218,52 +213,6 @@ html body.toplevel_page_pattern-manager {
 						height: 100%;
 						width: 100%;
 
-						.item-icon {
-							padding: 0.25rem;
-							background-color: #fff;
-							transition-duration: 300ms;
-							transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-							color: #000;
-							border-radius: 0.25rem;
-							fill: currentcolor;
-							box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-							opacity: 0;
-
-							&:hover {
-								color: #ef4444;
-							}
-						}
-
-						.item-delete-button {
-							position: absolute;
-							top: 0.5rem;
-							right: 0.5rem;
-							z-index: 50;
-							background: transparent;
-							border: none;
-							cursor: pointer;
-						}
-
-						.item-edit-button {
-							position: absolute;
-							top: 0.5rem;
-							left: 0.5rem;
-							z-index: 50;
-							background: transparent;
-							border: none;
-							cursor: pointer;
-						}
-
-						.item-duplicate-button {
-							position: absolute;
-							left: 0.5rem;
-							bottom: 6rem;
-							z-index: 50;
-							background: transparent;
-							border: none;
-							cursor: pointer;
-						}
-
 						.item-pattern-preview {
 							display: flex;
 							z-index: 0;
@@ -271,6 +220,68 @@ html body.toplevel_page_pattern-manager {
 							flex-grow: 1;
 							align-items: center;
 						}
+					}
+
+					.item-actions {
+						display: flex;
+						flex-direction: row;
+						background: #1e1e1e;
+						border-radius: 6px;
+						width: fit-content;
+						position: relative;
+						margin-left: auto;
+						margin-right: auto;
+						bottom: 2rem;
+						padding: 2px;
+						opacity: 0;
+
+						.item-action-button {
+							z-index: 50;
+							background: transparent;
+							border: none;
+							cursor: pointer;
+							color: #fff;
+
+							&:hover {
+								color: #ef4444;
+							}
+
+							.item-action-icon {
+								padding: 0.25rem;
+								border-radius: 0.25rem;
+								fill: currentcolor;
+								box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+								width: 25px;
+								height: 25px;
+							}
+
+							.item-action-button-text {
+								display: inline-block;
+								position: relative;
+								bottom: 0.5rem;
+								padding-right: 0.25rem;
+								font-size: x-small;
+							}
+						}
+
+						.item-action-button-separator {
+							position: relative;
+
+							&::after {
+								content: "";
+								position: absolute;
+								right: 0;
+								border-right: 1px solid #595959;
+								top: 10%;
+								bottom: 10%;
+							}
+						}
+					}
+
+					// Show the item-action buttons on hover.
+					&:hover .item-actions {
+						opacity: 1;
+						transition: all 0.2s ease;
 					}
 
 					.item-pattern-preview-heading {

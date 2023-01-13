@@ -1,9 +1,5 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
-import { Icon, close, copy, edit } from '@wordpress/icons';
-
-// Context
-import usePmContext from '../../hooks/usePmContext';
 
 // Globals
 import { patternmanager } from '../../globals';
@@ -12,8 +8,8 @@ import { patternmanager } from '../../globals';
 import PatternPreview from '../PatternPreview';
 
 // Utils
-import getDuplicatePattern from '../../utils/getDuplicatePattern';
 import { Patterns, Pattern } from '../../types';
+import PatternGridActions from './PatternGridActions';
 
 type props = {
 	themePatterns: Patterns;
@@ -26,8 +22,6 @@ export default function PatternGrid( {
 	currentCategory,
 	categoryToAlwaysInclude,
 }: props ) {
-	const { currentTheme, currentView, currentPatternId } = usePmContext();
-
 	return (
 		<div className="inner-grid">
 			{ Object.entries( themePatterns ?? {} ).map(
@@ -44,75 +38,6 @@ export default function PatternGrid( {
 					return (
 						<div key={ patternName } className="grid-item">
 							<div className="item-inner">
-								<button
-									type="button"
-									className="item-delete-button"
-									aria-label={ __(
-										'Delete pattern',
-										'pattern-manager'
-									) }
-									onClick={ () => {
-										currentTheme.deletePattern(
-											patternName
-										);
-									} }
-								>
-									<Icon
-										className="item-icon"
-										icon={ close }
-										size={ 30 }
-									/>
-								</button>
-								<button
-									type="button"
-									className="item-edit-button"
-									aria-label={ __(
-										'Edit Pattern',
-										'pattern-manager'
-									) }
-									onClick={ () => {
-										currentPatternId.set( patternName );
-										currentView.set( 'pattern_editor' );
-									} }
-								>
-									<Icon
-										className="item-icon"
-										icon={ edit }
-										size={ 30 }
-									/>
-								</button>
-
-								<button
-									type="button"
-									className="item-duplicate-button"
-									aria-label={ __(
-										'Duplicate Pattern',
-										'pattern-manager'
-									) }
-									onClick={ () => {
-										const newPattern = getDuplicatePattern(
-											patternData,
-											Object.values( themePatterns ?? {} )
-										);
-										currentTheme
-											.createPattern( newPattern )
-											.then( () => {
-												currentPatternId.set(
-													newPattern.slug
-												);
-												currentView.set(
-													'pattern_editor'
-												);
-											} );
-									} }
-								>
-									<Icon
-										className="item-icon"
-										icon={ copy }
-										size={ 30 }
-									/>
-								</button>
-
 								<div className="item-pattern-preview">
 									<PatternPreview
 										key={ patternName }
@@ -125,6 +50,13 @@ export default function PatternGrid( {
 									/>
 								</div>
 							</div>
+
+							<PatternGridActions
+								themePatterns={ themePatterns }
+								patternName={ patternName }
+								patternData={ patternData }
+							/>
+
 							<div className="item-pattern-preview-heading">
 								<span>{ patternData.title }</span>
 							</div>
