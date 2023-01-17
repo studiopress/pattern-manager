@@ -75,26 +75,29 @@ export default function TitlePanel( {
 			title={ __( 'Pattern Title', 'pattern-manager' ) }
 		>
 			{ postMeta?.title && (
-				<div className="patternmanager-pattern-post-name-input-outer">
-					<TextControl
-						id="patternmanager-pattern-post-name-input-component"
-						className="patternmanager-pattern-post-name-input"
-						aria-label="Pattern Title Name Input (used for renaming the pattern)"
-						value={ nameInput }
-						onChange={ ( value ) => {
-							setNameInput( value );
-							// Validate the nameInput to provide immediate feedback.
-							checkPatternTitle( value );
-						} }
-						onBlur={ () => {
-							handleChange( 'title', nameInput, {
-								name: convertToSlug( nameInput ),
-								previousName:
-									previousPatternName.current,
-							} );
-						} }
-					/>
-				</div>
+				<TextControl
+					id="patternmanager-pattern-post-name-input-component"
+					aria-label="Pattern Title Name Input (used for renaming the pattern)"
+					value={ nameInput }
+					onChange={ ( value ) => {
+						setNameInput( value );
+						// Validate the nameInput to provide immediate feedback.
+						checkPatternTitle( value );
+					} }
+					onBlur={ () => {
+						// Do not allow an empty title to be saved to postMeta.
+						if ( ! nameInput.length ) {
+							setNameInput( previousPatternName.current );
+							setPatternNameIsInvalid( false );
+							return;
+						}
+
+						handleChange( 'title', nameInput, {
+							name: convertToSlug( nameInput ),
+							previousName: previousPatternName.current,
+						} );
+					} }
+				/>
 			) }
 
 			<PanelRow className="components-panel__row-patternmanager-pattern-name-error">

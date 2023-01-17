@@ -37,65 +37,24 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	}
 }
 
-.patternmanager-pattern-post-name-input-outer {
-	position: relative;
-}
-
-@media only screen and (max-width: 781.25px) {
-	.patternmanager-pattern-post-name-input input {
-		height: 50px;
-		padding-right: 75px;
-	}
-
-	/* Pattern name input button */
-	.patternmanager-pattern-post-name-button {
-		height: 50px;
-		width: 80px;
-	}
-}
-
-@media only screen and (min-width: 781.25px) {
-	.patternmanager-pattern-post-name-input input {
+/* Name input component */
+#patternmanager-pattern-post-name-input-component {
+	background-color: hsl(0, 0%, 100%);
+	border-color: hsl(0, 0%, 80%);
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	box-sizing: border-box;
+	height: 50px;
+	
+	@media only screen and (min-width: 781.25px) {
 		height: 40px;
 	}
 
-	/* Pattern name input button */
-	.patternmanager-pattern-post-name-button {
-		height: 30px;
-		width: 60px;
-	}
-}
-
-#patternmanager-pattern-post-name-input-component {
-	border-color: hsl(0, 0%, 80%);
-	border-radius: 4px;
-	border-width: 1px;
-
 	&:focus {
-		box-shadow: 0 0 1px #2684FF;
-		border-color: #2684FF;
-		border-width: 2px;
-	}
-}
-
-/* Pattern name input button */
-.patternmanager-pattern-post-name-button {
-	color: white;
-	border: 0;
-	padding: 0 !important;
-	top: 5px;
-	right: 4px;
-	position: absolute;
-	border-radius: 0.125rem;
-	align-items: center;
-	cursor: pointer;
-
-	&-edit {
-		background: #0074ad;
-	}
-
-	&-cancel {
-		background: #5d7179;
+		border-color: #2684ff;
+		transition: all 100ms;
+		box-shadow: 0 0 0 1px #2684ff;
 	}
 }
 
@@ -110,6 +69,7 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	}
 }
 
+/* Tooltip components */
 .patternmanager-pattern-sidebar-tooltip {
 	margin-top: 5px;
 	margin-bottom: 15px;
@@ -125,14 +85,18 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	cursor: pointer;
 }
 
+/* Description component */
 #patternmanager-pattern-editor-description-textarea {
+	background-color: hsl(0, 0%, 100%);
 	border-color: hsl(0, 0%, 80%);
 	border-radius: 4px;
+	border-style: solid;
 	border-width: 1px;
+	box-sizing: border-box;
 
 	&:focus {
-		box-shadow: 0 0 1px #2684FF;
-		border-color: #2684FF;
-		border-width: 2px;
+		border-color: #2684ff;
+		transition: all 100ms;
+		box-shadow: 0 0 0 1px #2684ff;
 	}
 }
