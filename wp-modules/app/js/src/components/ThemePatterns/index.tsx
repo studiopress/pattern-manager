@@ -53,7 +53,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	const patternCategories = [
 		// Keep all-patterns at top of list.
 		{
-			label: 'All Patterns',
+			label: __( 'All Patterns', 'pattern-manager' ),
 			name: 'all-patterns',
 		},
 		...sortAlphabetically(

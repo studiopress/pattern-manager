@@ -126,7 +126,9 @@ function PatternManager() {
 						alt=""
 						src={ wpeLogoDefaultCropped }
 					/>
-					<span className="logo-title">Pattern Manager</span>
+					<span className="logo-title">
+						{ __( 'Pattern Manager', 'pattern-manager' ) }
+					</span>
 				</div>
 
 				<div className="nav-container-inner">
