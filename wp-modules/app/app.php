@@ -60,8 +60,8 @@ function pattern_manager_app() {
 	wp_enqueue_style( 'theme_manager_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 
 	wp_localize_script(
-		'patternmanager',
-		'patternmanager',
+		'patternManager',
+		'patternManager',
 		get_app_state()
 	);
 

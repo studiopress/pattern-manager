@@ -1,9 +1,9 @@
-import { patternmanager } from '../globals';
+import { patternManager } from '../globals';
 
 export default function getHeaders() {
 	return {
 		Accept: 'application/json',
 		'Content-Type': 'application/json',
-		'X-WP-Nonce': patternmanager.apiNonce,
+		'X-WP-Nonce': patternManager.apiNonce,
 	};
 }

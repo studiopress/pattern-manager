@@ -2,7 +2,7 @@
 import { __ } from '@wordpress/i18n';
 
 // Globals
-import { patternmanager } from '../../globals';
+import { patternManager } from '../../globals';
 
 // Components
 import PatternPreview from '../PatternPreview';
@@ -44,7 +44,7 @@ export default function PatternGrid( {
 									<PatternPreview
 										key={ patternName }
 										url={
-											patternmanager.siteUrl +
+											patternManager.siteUrl +
 											'?pm_pattern_preview=' +
 											patternData.name
 										}

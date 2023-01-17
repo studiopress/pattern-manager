@@ -1,4 +1,4 @@
 import type { InitialPatternManager } from '../types';
-export const { patternmanager } = window as typeof window & {
-	patternmanager: InitialPatternManager;
+export const { patternManager } = window as typeof window & {
+	patternManager: InitialPatternManager;
 };
