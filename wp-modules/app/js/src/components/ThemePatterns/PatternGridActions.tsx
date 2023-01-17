@@ -8,11 +8,20 @@ import usePmContext from '../../hooks/usePmContext';
 // Utils
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
 
+// Types
+import { Pattern, Patterns } from '../../types';
+
+type Props = {
+	themePatterns: Patterns;
+	patternName: string;
+	patternData: Pattern;
+};
+
 export default function PatternGridActions( {
 	themePatterns,
 	patternName,
 	patternData,
-} ) {
+}: Props ) {
 	const { currentTheme, currentView, currentPatternId } = usePmContext();
 
 	return (
