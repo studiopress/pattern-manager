@@ -43,8 +43,8 @@ export default function TitlePanel( {
 	}, [] );
 
 	/*
-	 * Set nameInput and inputDisabled state when the post is switched.
-	 * Mostly intended to catch switching between patterns.
+	 * Set nameInput and inputDisabled state when postMeta is loaded.
+	 * Also intended to catch switching between patterns.
 	 */
 	useEffect( () => {
 		if ( postMeta.title ) {
