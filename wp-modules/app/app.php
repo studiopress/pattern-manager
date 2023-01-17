@@ -52,7 +52,7 @@ function pattern_manager_app() {
 	// Include the app.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'patternmanager', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'pattern-manager', $js_url, $dependencies, $js_ver, true );
 
 	// Enqueue sass and Tailwind styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'js/build/index.css';
@@ -60,7 +60,7 @@ function pattern_manager_app() {
 	wp_enqueue_style( 'theme_manager_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 
 	wp_localize_script(
-		'patternManager',
+		'pattern-manager',
 		'patternManager',
 		get_app_state()
 	);
