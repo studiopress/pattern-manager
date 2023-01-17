@@ -20,7 +20,7 @@ import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
-import useSnackbar from '../../hooks/useNotice';
+import useNotice from '../../hooks/useNotice';
 
 // Components
 import ThemePatterns from '../ThemePatterns';
@@ -30,10 +30,10 @@ import PatternEditor from '../PatternEditor';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Types
-import type { InitialContext, Pattern } from '../../types';
+import type { InitialContext } from '../../types';
 
 export default function PatternManagerApp() {
-	const providerValue = useSnackbar();
+	const providerValue = useNotice();
 
 	return (
 		<NoticeContext.Provider value={ providerValue }>
