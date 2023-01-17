@@ -23,16 +23,12 @@ function get_app_state() {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	// Make sure the theme WP thinks is active actually exists.
-	$current_theme_data = \PatternManager\ThemeDataHandlers\get_theme();
-
 	return array(
 		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
-		'theme'        => \PatternManager\ThemeDataHandlers\get_theme( $current_theme_data['id'] ?? null ),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
-			'getThemeEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-theme/' ),
-			'saveThemeEndpoint' => get_rest_url( false, 'patternmanager/v1/save-theme/' ),
+			'getPatternsEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-patterns/' ),
+			'savePatternsEndpoint' => get_rest_url( false, 'patternmanager/v1/save-patterns/' ),
 		),
 		'siteUrl'      => get_bloginfo( 'url' ),
 		'adminUrl'     => admin_url(),

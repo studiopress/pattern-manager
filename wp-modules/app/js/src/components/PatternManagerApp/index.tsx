@@ -12,11 +12,10 @@ import { patternmanager } from '../../globals';
 
 // Contexts
 import PatternManagerContext from '../../contexts/PatternManagerContext';
-import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeContext';
+import NoticeContext from '../../contexts/NoticeContext';
 
 // Hooks
 import useCurrentId from '../../hooks/useCurrentId';
-import useThemeData from '../../hooks/useThemeData';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
@@ -37,9 +36,9 @@ export default function PatternManagerApp() {
 	const providerValue = useSnackbar();
 
 	return (
-		<PatternManagerSnackbarContext.Provider value={ providerValue }>
+		<NoticeContext.Provider value={ providerValue }>
 			<PatternManagerContextHydrator />
-		</PatternManagerSnackbarContext.Provider>
+		</NoticeContext.Provider>
 	);
 }
 
@@ -47,54 +46,15 @@ function PatternManagerContextHydrator() {
 	const currentView = useCurrentView( 'theme_patterns' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const patterns = usePatterns();
-
-	const currentTheme = useThemeData(
-		patternmanager.theme,
-		patternEditorIframe,
-		templateEditorIframe,
-		patterns
-	);
+	const patterns = usePatterns( patternmanager.patterns );
 
 	const currentPatternId = useCurrentId( '' );
-
-	let currentPattern: Pattern | null = null;
-
-	if ( currentPatternId?.value ) {
-		// If the pattern name is found in the theme's included_patterns object.
-		if (
-			currentTheme?.data?.included_patterns?.hasOwnProperty(
-				currentPatternId?.value
-			)
-		) {
-			currentPattern =
-				currentTheme.data.included_patterns[ currentPatternId?.value ];
-		}
-		// If the pattern name is found in the theme's template_files object.
-		if (
-			currentTheme?.data?.template_files?.hasOwnProperty(
-				currentPatternId?.value
-			)
-		) {
-			currentPattern =
-				currentTheme.data.template_files[ currentPatternId?.value ];
-		}
-		// If the pattern name is found in the theme's template_parts object.
-		if (
-			currentTheme?.data?.template_parts?.hasOwnProperty(
-				currentPatternId?.value
-			)
-		) {
-			currentPattern =
-				currentTheme.data.template_parts[ currentPatternId?.value ];
-		}
-	}
+	const currentPattern = patterns.data?.[ currentPatternId.value ] ?? null;
 
 	const providerValue: InitialContext = {
 		currentView,
 		currentPatternId,
 		currentPattern,
-		currentTheme,
 		patterns,
 		siteUrl: patternmanager.siteUrl,
 		apiEndpoints: patternmanager.apiEndpoints,
@@ -110,7 +70,7 @@ function PatternManagerContextHydrator() {
 }
 
 function PatternManager() {
-	const { currentPatternId, currentView, currentTheme } = usePmContext();
+	const { currentPatternId, currentView, patterns } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
 	return (
@@ -140,13 +100,13 @@ function PatternManager() {
 				<div className="nav-container-inner">
 					<button
 						type="button"
-						disabled={ currentTheme?.fetchInProgress }
+						disabled={ patterns.fetchInProgress }
 						className="nav-button"
 						onClick={ () => {
-							currentTheme.save();
+							patterns.save();
 						} }
 					>
-						{ currentTheme.isSaving ? (
+						{ patterns.isSaving ? (
 							<>
 								<Spinner />
 								{ __( 'Saving', 'pattern-manager' ) }
@@ -161,13 +121,10 @@ function PatternManager() {
 						onClick={ () => {
 							// Get the new pattern title and slug.
 							const { patternTitle, patternSlug } =
-								getNextPatternIds(
-									currentTheme?.data?.included_patterns
-								);
+								getNextPatternIds( patterns.data );
 
-							currentTheme
+							patterns
 								.createPattern( {
-									type: 'pattern',
 									title: patternTitle,
 									name: patternSlug,
 									slug: patternSlug,
@@ -186,12 +143,12 @@ function PatternManager() {
 								} );
 						} }
 					>
-						{ __( 'Add New Pattern', 'pattern-manager' ) }
+						{ __( 'Create New Pattern', 'pattern-manager' ) }
 					</button>
 				</div>
 			</div>
 
-			{ currentTheme?.data ? (
+			{ patterns.data ? (
 				<>
 					<ThemePatterns
 						isVisible={

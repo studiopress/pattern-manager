@@ -35,26 +35,19 @@ export default function PatternEditor( { visible }: Props ) {
 }
 
 export function BlockEditor() {
-	const {
-		currentPattern,
-		currentPatternId,
-		patternEditorIframe,
-		currentTheme,
-	} = usePmContext();
+	const { currentPattern, currentPatternId, patternEditorIframe, patterns } =
+		usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
 	const [ patternDataSet, setPatternDataSet ] = useState( false );
 
 	const nameTaken = ( newSlug: string ) => {
-		return Object.values( currentTheme?.data.included_patterns ).some(
-			( pattern ) => {
-				return (
-					pattern.slug === newSlug &&
-					currentPatternId?.value !== newSlug
-				);
-			}
-		);
+		return Object.values( patterns.data ).some( ( pattern ) => {
+			return (
+				pattern.slug === newSlug && currentPatternId?.value !== newSlug
+			);
+		} );
 	};
 
 	const patternListenerCallbacks = ( event: MessageEvent< string > ) => {
@@ -66,14 +59,11 @@ export function BlockEditor() {
 				patternTitle?: string;
 			} = JSON.parse( event.data );
 
-			// When the pattern block editor tells us it has something new, put it into the theme's pattern data (included_patterns).
+			// When the pattern block editor tells us it has something new, put it into the pattern data.
 			if ( response.message === 'patternmanager_block_pattern_updated' ) {
-				currentTheme?.set( {
-					...currentTheme.data,
-					included_patterns: {
-						...currentTheme.data.included_patterns,
-						[ currentPatternId.value ]: response.blockPatternData,
-					},
+				patterns.set( {
+					...patterns.data,
+					[ currentPatternId.value ]: response.blockPatternData,
 				} );
 			}
 

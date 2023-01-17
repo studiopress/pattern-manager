@@ -22,7 +22,7 @@ export default function PatternGridActions( {
 	patternName,
 	patternData,
 }: Props ) {
-	const { currentTheme, currentView, currentPatternId } = usePmContext();
+	const { patterns, currentView, currentPatternId } = usePmContext();
 
 	return (
 		<div className="item-actions">
@@ -50,7 +50,7 @@ export default function PatternGridActions( {
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					currentTheme.createPattern( newPattern ).then( () => {
+					patterns.createPattern( newPattern ).then( () => {
 						currentPatternId.set( newPattern.slug );
 						currentView.set( 'pattern_editor' );
 					} );
@@ -67,7 +67,7 @@ export default function PatternGridActions( {
 				className="item-action-button"
 				aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
 				onClick={ () => {
-					currentTheme.deletePattern( patternName );
+					patterns.deletePattern( patternName );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ close } size={ 30 } />

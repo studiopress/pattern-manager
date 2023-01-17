@@ -4,9 +4,7 @@ import React from 'react';
 import useNotice from './hooks/useNotice';
 import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
-import useThemeData from './hooks/useThemeData';
 import usePatterns from './hooks/usePatterns';
-import { PatternType } from './enums';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
@@ -15,8 +13,7 @@ export type NoticeContext = ReturnType< typeof useNotice >;
 export type InitialContext = {
 	currentView: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
-	currentPattern: Pattern;
-	currentTheme: ReturnType< typeof useThemeData >;
+	currentPattern?: Pattern;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	patterns: ReturnType< typeof usePatterns >;
@@ -31,16 +28,15 @@ export type InitialContext = {
 export type InitialPatternManager = {
 	apiNonce: string;
 	apiEndpoints: {
-		getThemeEndpoint: string;
-		saveThemeEndpoint: string;
+		getPatternsEndpoint: string;
+		savePatternsEndpoint: string;
 	};
 	siteUrl: string;
 	adminUrl: string;
-	theme: Theme;
+	patterns: Patterns;
 };
 
 export type Pattern = {
-	type: PatternType;
 	content: string;
 	name: string;
 	title: string;
@@ -56,31 +52,4 @@ export type Pattern = {
 
 export type Patterns = {
 	[ key: string ]: Pattern;
-};
-
-export type Theme = {
-	name: string;
-	namespace: string;
-	'index.html'?: string;
-	'404.html'?: string;
-	'archive.html'?: string;
-	'single.html'?: string;
-	'page.html'?: string;
-	'search.html'?: string;
-	author: string;
-	author_uri: string;
-	description: string;
-	dirname: string;
-	included_patterns?: Patterns;
-	requires_php: string;
-	requires_wp: string;
-	rest_route?: string;
-	tags: string;
-	template_files?: string[];
-	template_parts?: string[];
-	tested_up_to: string;
-	text_domain: string;
-	theme_json_file?: { [ key: string ]: unknown };
-	uri: string;
-	version: string;
 };

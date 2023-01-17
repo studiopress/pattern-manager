@@ -21,27 +21,23 @@ type Props = {
 };
 
 export default function ThemePatterns( { isVisible }: Props ) {
-	const { currentTheme } = usePmContext();
+	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 
-	if ( ! isVisible || ! currentTheme.data ) {
+	if ( ! isVisible || ! patterns.data ) {
 		return null;
 	}
 
 	/** Object for included_patterns that includes an 'uncategorized' category. */
-	const themePatterns: Patterns = Object.keys(
-		currentTheme.data.included_patterns
-	).reduce(
+	const themePatterns: Patterns = Object.keys( patterns.data ).reduce(
 		( acc, patternName ) => ( {
 			...acc,
 			[ patternName ]: {
-				...currentTheme.data.included_patterns[ patternName ],
+				...patterns.data[ patternName ],
 				categories: [
 					// Spread in the categories, or 'uncategorized' if empty.
-					...( currentTheme.data.included_patterns[ patternName ]
-						.categories?.length
-						? currentTheme.data.included_patterns[ patternName ]
-								.categories
+					...( patterns.data[ patternName ].categories?.length
+						? patterns.data[ patternName ].categories
 						: [ 'uncategorized' ] ),
 				],
 			},
