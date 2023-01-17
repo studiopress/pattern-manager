@@ -4,7 +4,7 @@ import { TabbableContainer } from '@wordpress/components';
 // Types
 import type { Dispatch, SetStateAction } from 'react';
 
-type props = {
+type Props = {
 	categories: { label: string; name: string }[];
 	currentCategory: string;
 	setCurrentCategory: Dispatch< SetStateAction< string > >;
@@ -14,7 +14,7 @@ export default function PatternCategories( {
 	categories,
 	currentCategory,
 	setCurrentCategory,
-}: props ) {
+}: Props ) {
 	return (
 		<div className="inner-categories">
 			{ categories.map( ( category ) => {
