@@ -25,7 +25,7 @@ export default function PatternGrid( {
 	return (
 		<div className="inner-grid">
 			{ Object.entries( themePatterns ?? {} ).map(
-				( [ patternName, patternData ]: [ string, Pattern ] ) => {
+				( [ patternName, patternData ] ) => {
 					if (
 						! patternData?.categories?.includes(
 							currentCategory
