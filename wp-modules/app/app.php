@@ -85,6 +85,14 @@ function patternmanager_adminmenu_page() {
 		'dashicons-text',
 		$position = 2,
 	);
+
+	add_submenu_page(
+		'pattern-manager',
+		'', // No additional page should be created.
+		'Add New',
+		'administrator',
+		'patternmanager-add-new-pattern',
+	);
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\patternmanager_adminmenu_page' );
 
