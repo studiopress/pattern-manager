@@ -11,7 +11,7 @@ import {
 import usePmContext from '../../hooks/usePmContext';
 
 // Globals
-import { patternmanager } from '../../globals';
+import { patternManager } from '../../globals';
 
 // Utils
 import convertToSlug from '../../utils/convertToSlug';
@@ -162,7 +162,7 @@ export function BlockEditor() {
 							height: 'calc( 100vh - 64px )',
 						} }
 						src={
-							patternmanager.siteUrl +
+							patternManager.siteUrl +
 							'/wp-admin/post-new.php?post_type=pm_pattern'
 						}
 					/>

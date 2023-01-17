@@ -8,7 +8,7 @@ import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 // Globals
-import { patternmanager } from '../../globals';
+import { patternManager } from '../../globals';
 
 // Contexts
 import PatternManagerContext from '../../contexts/PatternManagerContext';
@@ -20,7 +20,7 @@ import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
 import useNoticeContext from '../../hooks/useNoticeContext';
-import useSnackbar from '../../hooks/useNotice';
+import useNotice from '../../hooks/useNotice';
 
 // Components
 import ThemePatterns from '../ThemePatterns';
@@ -30,10 +30,10 @@ import PatternEditor from '../PatternEditor';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Types
-import type { InitialContext, Pattern } from '../../types';
+import type { InitialContext } from '../../types';
 
 export default function PatternManagerApp() {
-	const providerValue = useSnackbar();
+	const providerValue = useNotice();
 
 	return (
 		<NoticeContext.Provider value={ providerValue }>
@@ -46,7 +46,7 @@ function PatternManagerContextHydrator() {
 	const currentView = useCurrentView( 'theme_patterns' );
 	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
 	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const patterns = usePatterns( patternmanager.patterns );
+	const patterns = usePatterns( patternManager.patterns );
 
 	const currentPatternId = useCurrentId( '' );
 	const currentPattern = patterns.data?.[ currentPatternId.value ] ?? null;
@@ -56,8 +56,8 @@ function PatternManagerContextHydrator() {
 		currentPatternId,
 		currentPattern,
 		patterns,
-		siteUrl: patternmanager.siteUrl,
-		apiEndpoints: patternmanager.apiEndpoints,
+		siteUrl: patternManager.siteUrl,
+		apiEndpoints: patternManager.apiEndpoints,
 		patternEditorIframe,
 		templateEditorIframe,
 	};

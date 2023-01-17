@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { patternmanager } from '../globals';
+import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
 import useNoticeContext from './useNoticeContext';
 import { Pattern, Patterns } from '../types';
@@ -92,7 +92,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 				return;
 			}
 			setFetchInProgress( true );
-			fetch( patternmanager.apiEndpoints.getPatternsEndpoint, {
+			fetch( patternManager.apiEndpoints.getPatternsEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 			} )
@@ -113,7 +113,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		return new Promise( ( resolve ) => {
 			setIsSaving( true );
 
-			fetch( patternmanager.apiEndpoints.savePatternsEndpoint, {
+			fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
 				body: JSON.stringify( { patterns: patternsData } ),
