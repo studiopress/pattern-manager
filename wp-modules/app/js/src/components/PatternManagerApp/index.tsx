@@ -1,15 +1,18 @@
+//  Assets
 import '../../../../css/src/index.scss';
+import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
+// WP dependencies
 import { useRef } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import React from 'react';
 
+// Globals
 import { patternmanager } from '../../globals';
 
+// Contexts
 import PatternManagerContext from '../../contexts/PatternManagerContext';
 import PatternManagerSnackbarContext from '../../contexts/PatternManagerNoticeContext';
-import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Hooks
 import useCurrentId from '../../hooks/useCurrentId';
@@ -24,6 +27,10 @@ import useSnackbar from '../../hooks/useNotice';
 import ThemePatterns from '../ThemePatterns';
 import PatternEditor from '../PatternEditor';
 
+// Utils
+import getNextPatternIds from '../../utils/getNextPatternIds';
+
+// Types
 import type { InitialContext, Pattern } from '../../types';
 
 export default function PatternManagerApp() {
@@ -118,6 +125,18 @@ function PatternManager() {
 				</Snackbar>
 			) : null }
 			<div className="patternmanager-nav-container">
+				<div className="nav-container-logo">
+					<img
+						className="logo-svg"
+						aria-hidden="true"
+						alt=""
+						src={ wpeLogoDefaultCropped }
+					/>
+					<span className="logo-title">
+						{ __( 'Pattern Manager', 'pattern-manager' ) }
+					</span>
+				</div>
+
 				<div className="nav-container-inner">
 					<button
 						type="button"
@@ -136,6 +155,7 @@ function PatternManager() {
 							__( 'Save', 'pattern-manager' )
 						) }
 					</button>
+
 					<button
 						className="nav-button"
 						onClick={ () => {

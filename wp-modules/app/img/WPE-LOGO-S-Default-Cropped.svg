@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg id="WPE-LOGO-S-Default" width="112.992" height="151.475" viewBox="-0.068 0.006 108.127 108.11" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0ecad4;
+      }
+
+      .cls-2 {
+        fill: #002838;
+      }
+    </style>
+  </defs>
+  <g id="logomark">
+    <path id="Path_82" data-name="Path 82" class="cls-1" d="M259.4,423.609h34.729v-26.42l-8.307-8.308H267.705l-8.3,8.306Z" transform="translate(-222.718 -315.513)"/>
+    <path id="Path_83" data-name="Path 83" class="cls-1" d="M365.182,291.4l-8.309,8.309v18.115l8.309,8.306H391.6V291.4Z" transform="translate(-283.51 -254.716)"/>
+    <path id="Path_84" data-name="Path 84" class="cls-1" d="M294.131,193.92H259.4v26.424l8.306,8.306h18.115l8.308-8.306Z" transform="translate(-222.718 -193.92)"/>
+    <path id="Path_85" data-name="Path 85" class="cls-1" d="M391.6,423.609v-26.42L383.3,388.88H356.876v34.728Z" transform="translate(-283.511 -315.513)"/>
+    <path id="Path_86" data-name="Path 86" class="cls-1" d="M170.226,193.922l-8.306,8.309V228.65h34.729V193.922Z" transform="translate(-161.921 -193.921)"/>
+    <path id="Path_87" data-name="Path 87" class="cls-1" d="M356.876,193.92v26.424l8.309,8.306H391.6V193.92Z" transform="translate(-283.511 -193.92)"/>
+    <path id="Path_88" data-name="Path 88" class="cls-1" d="M297.292,334.276a4.975,4.975,0,1,1,4.975-4.975,4.975,4.975,0,0,1-4.975,4.975" transform="translate(-243.245 -275.253)"/>
+    <path id="Path_89" data-name="Path 89" class="cls-1" d="M196.65,291.4H161.921v34.73h26.421l8.308-8.306Z" transform="translate(-161.921 -254.716)"/>
+    <path id="Path_90" data-name="Path 90" class="cls-1" d="M196.65,397.184l-8.308-8.308H161.921v34.73h26.421l8.308-8.3Z" transform="translate(-161.921 -315.511)"/>
+  </g>
+</svg>
