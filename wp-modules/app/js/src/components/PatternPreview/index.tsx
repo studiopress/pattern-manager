@@ -1,6 +1,8 @@
-import React from 'react';
+// WP dependencies
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+
+// Hooks
 import usePmContext from '../../hooks/usePmContext';
 
 type Props = {

@@ -8,8 +8,10 @@ import { patternmanager } from '../../globals';
 import PatternPreview from '../PatternPreview';
 
 // Utils
-import { Patterns, Pattern } from '../../types';
 import PatternGridActions from './PatternGridActions';
+
+// Types
+import type { Patterns } from '../../types';
 
 type props = {
 	themePatterns: Patterns;

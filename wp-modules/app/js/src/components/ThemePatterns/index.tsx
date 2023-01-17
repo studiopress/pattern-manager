@@ -2,7 +2,7 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
 
-// Context
+// Hooks
 import usePmContext from '../../hooks/usePmContext';
 
 // Components

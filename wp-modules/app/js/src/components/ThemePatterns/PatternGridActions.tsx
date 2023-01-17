@@ -9,7 +9,7 @@ import usePmContext from '../../hooks/usePmContext';
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
 
 // Types
-import { Pattern, Patterns } from '../../types';
+import type { Pattern, Patterns } from '../../types';
 
 type Props = {
 	themePatterns: Patterns;
