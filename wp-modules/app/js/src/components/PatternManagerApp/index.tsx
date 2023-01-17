@@ -3,7 +3,7 @@ import '../../../../css/src/index.scss';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 // WP dependencies
-import { useRef } from '@wordpress/element';
+import { useRef, useEffect } from '@wordpress/element';
 import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
@@ -113,6 +113,44 @@ function PatternManager() {
 	const { currentPatternId, currentView, currentTheme } = usePmContext();
 	const { snackBarValue, setSnackBarValue } = useNoticeContext();
 
+	const createNewPattern = () => {
+		// Get the new pattern title and slug.
+		const { patternTitle, patternSlug } = getNextPatternIds(
+			currentTheme?.data?.included_patterns
+		);
+
+		currentTheme
+			.createPattern( {
+				type: 'pattern',
+				title: patternTitle,
+				name: patternSlug,
+				slug: patternSlug,
+				categories: [],
+				keywords: [],
+				blockTypes: [],
+				postTypes: [],
+				inserter: true,
+				description: '',
+				viewportWidth: '',
+				content: '',
+			} )
+			.then( () => {
+				currentPatternId.set( patternSlug );
+				currentView.set( 'pattern_editor' );
+			} );
+	};
+
+	useEffect( () => {
+		const addPatternSubmenuNode = document.querySelector(
+			'[href="patternmanager-add-new-pattern"]'
+		);
+
+		addPatternSubmenuNode.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			createNewPattern();
+		} );
+	}, [] );
+
 	return (
 		<>
 			{ snackBarValue ? (
@@ -156,36 +194,7 @@ function PatternManager() {
 						) }
 					</button>
 
-					<button
-						className="nav-button"
-						onClick={ () => {
-							// Get the new pattern title and slug.
-							const { patternTitle, patternSlug } =
-								getNextPatternIds(
-									currentTheme?.data?.included_patterns
-								);
-
-							currentTheme
-								.createPattern( {
-									type: 'pattern',
-									title: patternTitle,
-									name: patternSlug,
-									slug: patternSlug,
-									categories: [],
-									keywords: [],
-									blockTypes: [],
-									postTypes: [],
-									inserter: true,
-									description: '',
-									viewportWidth: '',
-									content: '',
-								} )
-								.then( () => {
-									currentPatternId.set( patternSlug );
-									currentView.set( 'pattern_editor' );
-								} );
-						} }
-					>
+					<button className="nav-button" onClick={ createNewPattern }>
 						{ __( 'Add New Pattern', 'pattern-manager' ) }
 					</button>
 				</div>
