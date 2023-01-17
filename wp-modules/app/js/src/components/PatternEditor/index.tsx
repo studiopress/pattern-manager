@@ -1,5 +1,4 @@
-import React from 'react';
-
+// WP dependencies
 import { __ } from '@wordpress/i18n';
 import { Spinner } from '@wordpress/components';
 import {
@@ -17,6 +16,9 @@ import { patternmanager } from '../../globals';
 // Utils
 import convertToSlug from '../../utils/convertToSlug';
 import { Pattern } from '../../types';
+
+// Types
+import type { MutableRefObject } from 'react';
 
 type Props = {
 	visible: boolean;
@@ -117,7 +119,7 @@ export function BlockEditor() {
 	}, [ currentPatternId?.value, patternEditorIframe ] );
 
 	function setInitialData(
-		iframeRef: React.MutableRefObject< HTMLIFrameElement >
+		iframeRef: MutableRefObject< HTMLIFrameElement >
 	) {
 		iframeRef?.current.contentWindow.postMessage(
 			JSON.stringify( {
