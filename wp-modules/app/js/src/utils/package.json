@@ -1,0 +1,5 @@
+{
+  "name": "@pattern-manager/utils",
+  "version": "0.0.1",
+  "description": "Common utils to be accessed from other wp-modules."
+}
