@@ -1,6 +1,11 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement, useState, useRef } from '@wordpress/element';
+import {
+	createInterpolateElement,
+	useState,
+	useRef,
+	useEffect,
+} from '@wordpress/element';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
@@ -25,25 +30,38 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ themePatterns, setThemePatterns ] = useState< Patterns >(
-		// Object for included_patterns that includes an 'uncategorized' category.
-		Object.keys( patterns.data ).reduce(
+		createPatternsWithUncategorized( patterns )
+	);
+
+	const patternsRef = useRef( themePatterns );
+
+	/** Catch pattern deletion since themePatterns is no longer derived. */
+	useEffect( () => {
+		const updatedPatternData = createPatternsWithUncategorized( patterns );
+		setThemePatterns( updatedPatternData );
+		patternsRef.current = updatedPatternData;
+	}, [ patterns.data ] );
+
+	/** Create an object for included_patterns that includes an 'uncategorized' category. */
+	function createPatternsWithUncategorized( {
+		data: patternData,
+	}: typeof patterns ): Patterns {
+		return Object.keys( patternData ).reduce(
 			( acc, patternName ) => ( {
 				...acc,
 				[ patternName ]: {
-					...patterns.data[ patternName ],
+					...patternData[ patternName ],
 					categories: [
 						// Spread in the categories, or 'uncategorized' if empty.
-						...( patterns.data[ patternName ].categories?.length
-							? patterns.data[ patternName ].categories
+						...( patternData[ patternName ].categories?.length
+							? patternData[ patternName ].categories
 							: [ 'uncategorized' ] ),
 					],
 				},
 			} ),
 			{}
-		)
-	);
-
-	const patternsRef = useRef( themePatterns );
+		);
+	}
 
 	if ( ! isVisible || ! patterns.data ) {
 		return null;
