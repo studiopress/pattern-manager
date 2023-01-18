@@ -1,7 +1,10 @@
 import { useSelect, dispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
-import { flatUnorderedEquals, sortAlphabetically } from '@pattern-manager/utils';
+import {
+	flatUnorderedEquals,
+	sortAlphabetically,
+} from '@pattern-manager/utils';
 import { PostMeta, SelectQuery } from '../types';
 
 export default function usePatternData( postMeta: PostMeta ) {
