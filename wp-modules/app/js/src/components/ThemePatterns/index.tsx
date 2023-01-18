@@ -1,6 +1,6 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
-import { createInterpolateElement, useState } from '@wordpress/element';
+import { createInterpolateElement, useState, useRef } from '@wordpress/element';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
@@ -8,6 +8,7 @@ import usePmContext from '../../hooks/usePmContext';
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
+import PatternSearch from './PatternSearch';
 
 // Utils
 import convertToUpperCase from '../../utils/convertToUpperCase';
@@ -23,27 +24,30 @@ type Props = {
 export default function ThemePatterns( { isVisible }: Props ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
+	const [ themePatterns, setThemePatterns ] = useState< Patterns >(
+		// Object for included_patterns that includes an 'uncategorized' category.
+		Object.keys( patterns.data ).reduce(
+			( acc, patternName ) => ( {
+				...acc,
+				[ patternName ]: {
+					...patterns.data[ patternName ],
+					categories: [
+						// Spread in the categories, or 'uncategorized' if empty.
+						...( patterns.data[ patternName ].categories?.length
+							? patterns.data[ patternName ].categories
+							: [ 'uncategorized' ] ),
+					],
+				},
+			} ),
+			{}
+		)
+	);
+
+	const patternsRef = useRef( themePatterns );
 
 	if ( ! isVisible || ! patterns.data ) {
 		return null;
 	}
-
-	/** Object for included_patterns that includes an 'uncategorized' category. */
-	const themePatterns: Patterns = Object.keys( patterns.data ).reduce(
-		( acc, patternName ) => ( {
-			...acc,
-			[ patternName ]: {
-				...patterns.data[ patternName ],
-				categories: [
-					// Spread in the categories, or 'uncategorized' if empty.
-					...( patterns.data[ patternName ].categories?.length
-						? patterns.data[ patternName ].categories
-						: [ 'uncategorized' ] ),
-				],
-			},
-		} ),
-		{}
-	);
 
 	/** Mapped array of categories present in patterns for the active theme. */
 	const patternCategories = [
@@ -82,7 +86,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ Object.entries( themePatterns ?? {} ).length === 0 ? (
+				{ Object.entries( patternsRef.current ?? {} ).length === 0 ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(
@@ -103,16 +107,24 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					</div>
 				) : (
 					<>
-						<PatternCategories
-							categories={ patternCategories }
-							currentCategory={ currentCategory }
-							setCurrentCategory={ setCurrentCategory }
-						/>
-						<PatternGrid
-							themePatterns={ themePatterns }
-							currentCategory={ currentCategory }
-							categoryToAlwaysInclude={ 'all-patterns' }
-						/>
+						<div className="inner-sidebar">
+							<PatternSearch
+								patternsRefCurrent={ patternsRef.current }
+								setThemePatterns={ setThemePatterns }
+							/>
+							<PatternCategories
+								categories={ patternCategories }
+								currentCategory={ currentCategory }
+								setCurrentCategory={ setCurrentCategory }
+							/>
+						</div>
+						<div className="inner-grid">
+							<PatternGrid
+								themePatterns={ themePatterns }
+								currentCategory={ currentCategory }
+								categoryToAlwaysInclude={ 'all-patterns' }
+							/>
+						</div>
 					</>
 				) }
 			</div>
