@@ -7,7 +7,6 @@ import {
 	TransformsPanel,
 	KeywordsPanel,
 	DescriptionPanel,
-	TemplateDetails,
 } from './SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
