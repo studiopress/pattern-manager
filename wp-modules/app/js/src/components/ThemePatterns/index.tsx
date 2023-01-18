@@ -86,7 +86,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ Object.entries( patternsRef.current ?? {} ).length === 0 ? (
+				{ ! Object.entries( patternsRef.current ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(

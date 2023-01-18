@@ -25,7 +25,11 @@ export default function PatternGrid( {
 }: Props ) {
 	return (
 		<>
-			{ Object.entries( themePatterns ?? {} ).length ? (
+			{ ! Object.entries( themePatterns ?? {} ).length ? (
+				<div className="grid-no-patterns-found">
+					{ __( 'No patterns found.', 'pattern-manager' ) }
+				</div>
+			) : (
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						if (
@@ -66,10 +70,6 @@ export default function PatternGrid( {
 						);
 					}
 				)
-			) : (
-				<div className="grid-no-patterns-found">
-					{ __( 'No patterns found.', 'pattern-manager' ) }
-				</div>
 			) }
 		</>
 	);
