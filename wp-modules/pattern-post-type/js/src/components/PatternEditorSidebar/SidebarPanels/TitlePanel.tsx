@@ -3,7 +3,8 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
-import convertToSlug from '../../../../../../app/js/src/utils/convertToSlug';
+
+import { convertToSlug } from '@pattern-manager/utils';
 
 import type { BaseSidebarProps } from '../types';
 
