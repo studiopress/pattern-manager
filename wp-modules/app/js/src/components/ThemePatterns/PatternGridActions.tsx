@@ -2,7 +2,7 @@
 import { __ } from '@wordpress/i18n';
 import { Icon, close, copy, edit } from '@wordpress/icons';
 
-// Context
+// Hooks
 import usePmContext from '../../hooks/usePmContext';
 
 // Utils
