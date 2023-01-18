@@ -10,13 +10,14 @@ type Props = {
 	setCurrentCategory: Dispatch< SetStateAction< string > >;
 };
 
+/** Render the list of pattern categories with a conditional 'category-selected' class. */
 export default function PatternCategories( {
 	categories,
 	currentCategory,
 	setCurrentCategory,
 }: Props ) {
 	return (
-		<div className="inner-categories">
+		<>
 			{ categories.map( ( category ) => {
 				const classes = [
 					'category',
@@ -39,6 +40,6 @@ export default function PatternCategories( {
 					</TabbableContainer>
 				);
 			} ) }
-		</div>
+		</>
 	);
 }
