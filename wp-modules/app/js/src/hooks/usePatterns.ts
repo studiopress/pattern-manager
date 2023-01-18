@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
-import getHeaders from '../utils/getHeaders';
 import useNoticeContext from './useNoticeContext';
+
+import { getHeaders } from '../utils';
 import { Pattern, Patterns } from '../types';
 
 export default function usePatterns( initialPatterns: Patterns ) {

@@ -14,10 +14,10 @@ import usePmContext from '../../hooks/usePmContext';
 import { patternManager } from '../../globals';
 
 // Utils
-import convertToSlug from '../../utils/convertToSlug';
-import { Pattern } from '../../types';
+import { convertToSlug } from '../../utils';
 
 // Types
+import type { Pattern } from '../../types';
 import type { MutableRefObject } from 'react';
 
 type Props = {

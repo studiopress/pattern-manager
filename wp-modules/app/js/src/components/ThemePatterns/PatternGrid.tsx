@@ -6,8 +6,6 @@ import { patternManager } from '../../globals';
 
 // Components
 import PatternPreview from '../PatternPreview';
-
-// Utils
 import PatternGridActions from './PatternGridActions';
 
 // Types

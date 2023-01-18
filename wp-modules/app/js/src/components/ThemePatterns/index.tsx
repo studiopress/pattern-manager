@@ -10,8 +10,7 @@ import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 
 // Utils
-import convertToUpperCase from '../../utils/convertToUpperCase';
-import sortAlphabetically from '../../utils/sortAlphabetically';
+import { convertToUpperCase, sortAlphabetically } from '../../utils';
 
 // Types
 import type { Patterns } from '../../types';

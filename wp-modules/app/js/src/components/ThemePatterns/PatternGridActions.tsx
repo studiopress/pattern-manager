@@ -6,7 +6,7 @@ import { Icon, close, copy, edit } from '@wordpress/icons';
 import usePmContext from '../../hooks/usePmContext';
 
 // Utils
-import getDuplicatePattern from '../../utils/getDuplicatePattern';
+import { getDuplicatePattern } from '../../utils';
 
 // Types
 import type { Pattern, Patterns } from '../../types';
