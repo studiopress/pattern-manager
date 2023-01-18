@@ -13,7 +13,6 @@ export default function TitlePanel( {
 	handleChange,
 }: BaseSidebarProps ) {
 	const [ nameInput, setNameInput ] = useState( '' );
-	const [ nameInputDisabled, setNameInputDisabled ] = useState( true );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'pattern-manager' )
@@ -44,13 +43,12 @@ export default function TitlePanel( {
 	}, [] );
 
 	/*
-	 * Set nameInput and inputDisabled state when the post is switched.
-	 * Mostly intended to catch switching between patterns.
+	 * Set nameInput and inputDisabled state when postMeta is loaded.
+	 * Also intended to catch switching between patterns.
 	 */
 	useEffect( () => {
 		if ( postMeta.title ) {
 			setNameInput( postMeta.title );
-			setNameInputDisabled( true );
 			// Validate the initial postMeta title.
 			checkPatternTitle( postMeta.title );
 
@@ -77,67 +75,29 @@ export default function TitlePanel( {
 			title={ __( 'Pattern Title', 'pattern-manager' ) }
 		>
 			{ postMeta?.title && (
-				<div className="patternmanager-pattern-post-name-input-outer">
-					<div onDoubleClick={ () => setNameInputDisabled( false ) }>
-						<TextControl
-							id="patternmanager-pattern-post-name-input-component"
-							disabled={ nameInputDisabled }
-							className="patternmanager-pattern-post-name-input"
-							aria-label="Pattern Title Name Input (used for renaming the pattern)"
-							value={ nameInput }
-							onChange={ ( value ) => {
-								setNameInput( value );
-								// Validate the nameInput to provide immediate feedback.
-								checkPatternTitle( value );
-							} }
-						/>
-					</div>
+				<TextControl
+					id="patternmanager-pattern-post-name-input-component"
+					aria-label="Pattern Title Name Input (used for renaming the pattern)"
+					value={ nameInput }
+					onChange={ ( value ) => {
+						setNameInput( value );
+						// Validate the nameInput to provide immediate feedback.
+						checkPatternTitle( value );
+					} }
+					onBlur={ () => {
+						// Do not allow an empty title to be saved to postMeta.
+						if ( ! nameInput.length ) {
+							setNameInput( previousPatternName.current );
+							setPatternNameIsInvalid( false );
+							return;
+						}
 
-					{ /* Conditionally render the "Edit" button for pattern renaming. */ }
-					{ /* If the pattern name is valid, show the "Edit" or "Done" option. */ }
-					{ ! patternNameIsInvalid && (
-						<button
-							type="button"
-							className="patternmanager-pattern-post-name-button patternmanager-pattern-post-name-button-edit"
-							aria-label="Pattern Title Edit Button (click to rename the pattern title)"
-							onClick={ () => {
-								if (
-									! nameInputDisabled &&
-									nameInput.toLowerCase() !==
-										previousPatternName.current.toLowerCase()
-								) {
-									handleChange( 'title', nameInput, {
-										name: convertToSlug( nameInput ),
-										previousName:
-											previousPatternName.current,
-									} );
-								}
-
-								setNameInputDisabled( ! nameInputDisabled );
-							} }
-						>
-							{ nameInputDisabled
-								? __( 'Edit', 'pattern-manager' )
-								: __( 'Done', 'pattern-manager' ) }
-						</button>
-					) }
-
-					{ /* Otherwise, show the "Cancel" button to bail out. */ }
-					{ patternNameIsInvalid && (
-						<button
-							type="button"
-							className="patternmanager-pattern-post-name-button patternmanager-pattern-post-name-button-cancel"
-							aria-label="Pattern Title Cancel Button (click to cancel renaming)"
-							onClick={ () => {
-								setNameInput( previousPatternName?.current );
-								setNameInputDisabled( true );
-								setPatternNameIsInvalid( false );
-							} }
-						>
-							{ __( 'Cancel', 'pattern-manager' ) }
-						</button>
-					) }
-				</div>
+						handleChange( 'title', nameInput, {
+							name: convertToSlug( nameInput ),
+							previousName: previousPatternName.current,
+						} );
+					} }
+				/>
 			) }
 
 			<PanelRow className="components-panel__row-patternmanager-pattern-name-error">
