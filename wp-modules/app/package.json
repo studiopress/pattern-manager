@@ -1,5 +1,5 @@
 {
-  "name": "patternmanager-app",
+  "name": "@pattern-manager/app",
   "description": "The frontend react app for Pattern Manager",
   "main": "js/build/index.js",
   "scripts": {
@@ -19,7 +19,6 @@
     "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^9.13.0",
-    "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-select": "^5.2.2"
