@@ -4,7 +4,8 @@
   "main": "js/build/index.js",
   "scripts": {
     "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+    "dev": "wp-scripts start js/src/index.js --output-path=js/build/",
+    "preinstall": "npm install file:../app/js/src/utils"
   },
   "author": "",
   "license": "GPL-2.0-or-later",
@@ -17,6 +18,7 @@
     "@wordpress/scripts": "^24.4.0"
   },
   "dependencies": {
+    "@pattern-manager/utils": "file:../app/js/src/utils",
     "react-select": "^5.7.0"
   }
 }
