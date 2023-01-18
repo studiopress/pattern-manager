@@ -17,6 +17,7 @@ type Props = {
 	patternData: Pattern;
 };
 
+/** Render the pattern action buttons. */
 export default function PatternGridActions( {
 	themePatterns,
 	patternName,
