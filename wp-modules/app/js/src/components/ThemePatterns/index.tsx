@@ -82,15 +82,13 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		...sortAlphabetically(
 			[
 				// Array of unique category names.
-				...Object.keys( filteredPatterns )
-					.reduce( ( acc, patternName ) => {
+				...Object.entries( filteredPatterns )
+					.reduce( ( acc, [ , { categories } ] ) => {
 						return [
 							...acc,
-							...filteredPatterns[
-								patternName
-							]?.categories?.filter( ( category ) => {
-								return ! acc.includes( category );
-							} ),
+							...categories?.filter(
+								( category ) => ! acc.includes( category )
+							),
 						];
 					}, [] )
 					// Map the array to expected object shape.
