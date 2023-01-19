@@ -33,35 +33,37 @@ export default function ThemePatterns( { isVisible }: Props ) {
 
 	const filteredPatterns = searchTerm.trim()
 		? Object.entries(
-			createPatternsWithUncategorized( patterns.data )
-			).reduce( ( acc, [ patternName , currentPattern ] ) => {
-				const match = [ 'title', 'keywords', 'description' ].some( ( key ) => {
-					return currentPattern[ key ]
-						?.toString()
-						.toLowerCase()
-						.includes( searchTerm.toString().toLowerCase() );
-				} );
+				createPatternsWithUncategorized( patterns.data )
+		  ).reduce( ( acc, [ patternName, currentPattern ] ) => {
+				const match = [ 'title', 'keywords', 'description' ].some(
+					( key ) => {
+						return currentPattern[ key ]
+							?.toString()
+							.toLowerCase()
+							.includes( searchTerm.toString().toLowerCase() );
+					}
+				);
 
 				return match
 					? {
 							...acc,
-							[ patternName ]: currentPattern
-						}
+							[ patternName ]: currentPattern,
+					  }
 					: acc;
-			}, {} )
-		: createPatternsWithUncategorized( patterns.data )
+		  }, {} )
+		: createPatternsWithUncategorized( patterns.data );
 
 	/** Create an object for included_patterns that includes an 'uncategorized' category. */
-	function createPatternsWithUncategorized( patterns: Patterns ) {
-		return Object.keys( patterns ).reduce(
+	function createPatternsWithUncategorized( ownPatterns: Patterns ) {
+		return Object.keys( ownPatterns ).reduce(
 			( acc, patternName ) => ( {
 				...acc,
 				[ patternName ]: {
-					...patterns[ patternName ],
+					...ownPatterns[ patternName ],
 					categories: [
 						// Spread in the categories, or 'uncategorized' if empty.
-						...( patterns[ patternName ].categories?.length
-							? patterns[ patternName ].categories
+						...( ownPatterns[ patternName ].categories?.length
+							? ownPatterns[ patternName ].categories
 							: [ 'uncategorized' ] ),
 					],
 				},
@@ -88,11 +90,11 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					.reduce( ( acc, patternName ) => {
 						return [
 							...acc,
-							...filteredPatterns[ patternName ]?.categories?.filter(
-								( category ) => {
-									return ! acc.includes( category );
-								}
-							),
+							...filteredPatterns[
+								patternName
+							]?.categories?.filter( ( category ) => {
+								return ! acc.includes( category );
+							} ),
 						];
 					}, [] )
 					// Map the array to expected object shape.
@@ -133,7 +135,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 				) : (
 					<>
 						<div className="inner-sidebar">
-						<PatternSearch
+							<PatternSearch
 								patternsRefCurrent={ filteredPatterns }
 								searchTerm={ searchTerm }
 								setSearchTerm={ setSearchTerm }
