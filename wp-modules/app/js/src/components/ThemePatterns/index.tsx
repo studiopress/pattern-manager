@@ -1,4 +1,5 @@
 // WP dependencies
+import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import {
 	createInterpolateElement,
@@ -11,7 +12,6 @@ import usePmContext from '../../hooks/usePmContext';
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
-import PatternSearch from './PatternSearch';
 
 // Utils
 import convertToUpperCase from '../../utils/convertToUpperCase';
@@ -111,7 +111,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ ! Object.entries( filteredPatterns ?? {} ).length ? (
+				{ ! Object.entries( patterns.data ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(
@@ -133,12 +133,14 @@ export default function ThemePatterns( { isVisible }: Props ) {
 				) : (
 					<>
 						<div className="inner-sidebar">
-							<PatternSearch
-								patternsRefCurrent={ filteredPatterns }
-								searchTerm={ searchTerm }
-								setSearchTerm={ setSearchTerm }
-							/>
-							<PatternCategories
+						<SearchControl
+							className="pattern-search"
+							value={ searchTerm }
+							onChange={ ( newSearchTerm: string ) => {
+								setSearchTerm( newSearchTerm );
+							} }
+						/>
+						<PatternCategories
 								categories={ patternCategories }
 								currentCategory={ currentCategory }
 								setCurrentCategory={ setCurrentCategory }
