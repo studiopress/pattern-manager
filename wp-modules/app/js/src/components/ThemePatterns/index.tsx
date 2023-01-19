@@ -1,11 +1,7 @@
 // WP dependencies
+import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import {
-	createInterpolateElement,
-	useState,
-	useRef,
-	useEffect,
-} from '@wordpress/element';
+import { createInterpolateElement, useState } from '@wordpress/element';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
@@ -13,7 +9,6 @@ import usePmContext from '../../hooks/usePmContext';
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
-import PatternSearch from './PatternSearch';
 
 // Utils
 import convertToUpperCase from '../../utils/convertToUpperCase';
@@ -29,32 +24,41 @@ type Props = {
 export default function ThemePatterns( { isVisible }: Props ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
-	const [ themePatterns, setThemePatterns ] = useState< Patterns >(
-		createPatternsWithUncategorized( patterns )
-	);
+	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	const patternsRef = useRef( themePatterns );
+	const filteredPatterns = searchTerm.trim()
+		? Object.entries(
+				createPatternsWithUncategorized( patterns.data )
+		  ).reduce( ( acc, [ patternName, currentPattern ] ) => {
+				const match = [ 'title', 'keywords', 'description' ].some(
+					( key ) => {
+						return currentPattern[ key ]
+							?.toString()
+							.toLowerCase()
+							.includes( searchTerm.toString().toLowerCase() );
+					}
+				);
 
-	/** Catch pattern deletion since themePatterns is no longer derived. */
-	useEffect( () => {
-		const updatedPatternData = createPatternsWithUncategorized( patterns );
-		setThemePatterns( updatedPatternData );
-		patternsRef.current = updatedPatternData;
-	}, [ patterns.data ] );
+				return match
+					? {
+							...acc,
+							[ patternName ]: currentPattern,
+					  }
+					: acc;
+		  }, {} )
+		: createPatternsWithUncategorized( patterns.data );
 
 	/** Create an object for included_patterns that includes an 'uncategorized' category. */
-	function createPatternsWithUncategorized( {
-		data: patternData,
-	}: typeof patterns ): Patterns {
-		return Object.keys( patternData ).reduce(
+	function createPatternsWithUncategorized( ownPatterns: Patterns ) {
+		return Object.keys( ownPatterns ).reduce(
 			( acc, patternName ) => ( {
 				...acc,
 				[ patternName ]: {
-					...patternData[ patternName ],
+					...ownPatterns[ patternName ],
 					categories: [
 						// Spread in the categories, or 'uncategorized' if empty.
-						...( patternData[ patternName ].categories?.length
-							? patternData[ patternName ].categories
+						...( ownPatterns[ patternName ].categories?.length
+							? ownPatterns[ patternName ].categories
 							: [ 'uncategorized' ] ),
 					],
 				},
@@ -77,15 +81,15 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		...sortAlphabetically(
 			[
 				// Array of unique category names.
-				...Object.keys( themePatterns )
+				...Object.keys( filteredPatterns )
 					.reduce( ( acc, patternName ) => {
 						return [
 							...acc,
-							...themePatterns[ patternName ]?.categories?.filter(
-								( category ) => {
-									return ! acc.includes( category );
-								}
-							),
+							...filteredPatterns[
+								patternName
+							]?.categories?.filter( ( category ) => {
+								return ! acc.includes( category );
+							} ),
 						];
 					}, [] )
 					// Map the array to expected object shape.
@@ -104,7 +108,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ ! Object.entries( patternsRef.current ?? {} ).length ? (
+				{ ! Object.entries( patterns.data ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(
@@ -126,9 +130,12 @@ export default function ThemePatterns( { isVisible }: Props ) {
 				) : (
 					<>
 						<div className="inner-sidebar">
-							<PatternSearch
-								patternsRefCurrent={ patternsRef.current }
-								setThemePatterns={ setThemePatterns }
+							<SearchControl
+								className="pattern-search"
+								value={ searchTerm }
+								onChange={ ( newSearchTerm: string ) => {
+									setSearchTerm( newSearchTerm );
+								} }
 							/>
 							<PatternCategories
 								categories={ patternCategories }
@@ -138,7 +145,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 						</div>
 						<div className="inner-grid">
 							<PatternGrid
-								themePatterns={ themePatterns }
+								themePatterns={ filteredPatterns }
 								currentCategory={ currentCategory }
 								categoryToAlwaysInclude={ 'all-patterns' }
 							/>
