@@ -10,8 +10,8 @@
 	display: none !important;
 }
 
-/* Hide the publish/save button in the pattern editor, as the save theme button handles it. */
-.editor-post-publish-panel__toggle {
+/* When the save button is clicked, hide the pre-publish panel that pops open, as we handle saving in PM. */
+.editor-post-publish-panel {
 	display: none !important;
 }
 

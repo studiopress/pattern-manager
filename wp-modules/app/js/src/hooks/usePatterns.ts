@@ -10,11 +10,11 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
+	const [ makeItSaveStaleWorkaround, setMakeItSaveStaleWorkaround ] =
+		useState( false );
 
 	const editorDirty = useRef( false );
-	const [ siteEditorDirty, setSiteEditorDirty ] = useState( false );
-	const [ requestPatternRefresh, setRequestPatternRefresh ] =
-		useState( false );
+
 	const refs = useRef< { [ key: string ]: HTMLIFrameElement } >( {} );
 
 	const addRef = ( key: string, newRef: HTMLIFrameElement ) => {
@@ -30,21 +30,8 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		window.addEventListener(
 			'message',
 			( event ) => {
-				if ( event.data === 'patternmanager_site_editor_dirty' ) {
-					setSiteEditorDirty( true );
-				}
-			},
-			false
-		);
-		// When a pattern or site editor is saved, refresh the pattern data.
-		window.addEventListener(
-			'message',
-			( event ) => {
-				if (
-					event.data === 'patternmanager_site_editor_save_complete'
-				) {
-					setSiteEditorDirty( false );
-					setRequestPatternRefresh( true );
+				if ( event.data === 'pattern_manager_save_current_pattern' ) {
+					setMakeItSaveStaleWorkaround( true );
 				}
 			},
 			false
@@ -56,19 +43,15 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		};
 	}, [] );
 
+	/**
+	 * Because pattern_manager_save_current_pattern is called inside an event listener, the patterns object is stale. Doing it this way makes it non-stale.
+	 */
 	useEffect( () => {
-		if ( requestPatternRefresh ) {
-			// If something is still dirty, don't do anything yet.
-			if ( siteEditorDirty ) {
-				setRequestPatternRefresh( false );
-			} else {
-				setRequestPatternRefresh( false );
-				// We have to do this outside the pm_pattern_editor_save_complete listener because patterns is stale there.
-				uponSuccessfulSave();
-				getPatternData();
-			}
+		if ( makeItSaveStaleWorkaround ) {
+			savePatternsData();
+			setMakeItSaveStaleWorkaround( false );
 		}
-	}, [ requestPatternRefresh ] );
+	}, [ makeItSaveStaleWorkaround ] );
 
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
@@ -76,7 +59,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
 	 */
 	function warnIfUnsavedChanges( event: Event ) {
-		if ( editorDirty.current || siteEditorDirty ) {
+		if ( editorDirty.current ) {
 			// @ts-expect-error: returnvalue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
 			event.returnValue = __(
 				'Are you sure you want to leave the editor? There are unsaved changes.',
@@ -127,9 +110,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 				.then( ( data: { patterns: Patterns } ) => {
 					setPatternsData( data.patterns );
 
-					if ( ! siteEditorDirty ) {
-						uponSuccessfulSave();
-					}
+					uponSuccessfulSave();
 
 					resolve( data );
 				} );
@@ -146,7 +127,6 @@ export default function usePatterns( initialPatterns: Patterns ) {
 			);
 
 			editorDirty.current = false;
-			setSiteEditorDirty( false );
 			setIsSaving( false );
 			reloadPatternPreviews();
 		} );
