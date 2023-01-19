@@ -164,11 +164,21 @@ html body.toplevel_page_pattern-manager {
 			margin: 1rem;
 			font-size: 14px;
 
-			.inner-categories {
+			.inner-sidebar {
+				display: flex;
+				flex-direction: column;
 				width: calc(100% / 4 * 1);
+				margin-right: 4rem;
+
+				.pattern-search {
+					margin-bottom: 2.5rem;
+
+					input {
+						background: #fff;
+					}
+				}
 
 				.category {
-					margin-right: 4rem;
 					border: 1.5px solid transparent;
 					cursor: pointer;
 
@@ -412,6 +422,10 @@ html body.toplevel_page_pattern-manager {
 						background: #f1f1f1;
 						padding: 1rem;
 					}
+				}
+
+				.grid-no-patterns-found {
+					font-weight: 400;
 				}
 			}
 		}
