@@ -15,7 +15,7 @@ import convertToUpperCase from '../../utils/convertToUpperCase';
 import sortAlphabetically from '../../utils/sortAlphabetically';
 
 // Types
-import type { Patterns } from '../../types';
+import type { Pattern, Patterns } from '../../types';
 
 type Props = {
 	isVisible: boolean;
@@ -32,7 +32,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		  ).reduce( ( acc, [ patternName, currentPattern ] ) => {
 				// Add pattern header keys to the arr below to include in search.
 				const match = [ 'title', 'keywords', 'description' ].some(
-					( key ) => {
+					( key: keyof Pattern ) => {
 						return currentPattern[ key ]
 							?.toString()
 							.toLowerCase()
