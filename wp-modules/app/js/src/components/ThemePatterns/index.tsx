@@ -30,6 +30,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		? Object.entries(
 				createPatternsWithUncategorized( patterns.data )
 		  ).reduce( ( acc, [ patternName, currentPattern ] ) => {
+				// Add pattern header keys to the arr below to include in search.
 				const match = [ 'title', 'keywords', 'description' ].some(
 					( key ) => {
 						return currentPattern[ key ]
@@ -49,7 +50,9 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		: createPatternsWithUncategorized( patterns.data );
 
 	/** Create an object for included_patterns that includes an 'uncategorized' category. */
-	function createPatternsWithUncategorized( ownPatterns: Patterns ) {
+	function createPatternsWithUncategorized(
+		ownPatterns: Patterns
+	): Patterns {
 		return Object.keys( ownPatterns ).reduce(
 			( acc, patternName ) => ( {
 				...acc,
