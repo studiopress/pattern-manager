@@ -50,12 +50,14 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		: createPatternsWithUncategorized( patterns.data );
 
 	/** Create a Patterns object that includes an 'uncategorized' category. */
-	function createPatternsWithUncategorized( ownPatterns: Patterns ) {
+	function createPatternsWithUncategorized(
+		ownPatterns: Patterns
+	): Patterns {
 		return Object.entries( ownPatterns ).reduce(
 			( acc, [ patternId, { categories } ] ) => ( {
 				...acc,
 				[ patternId ]: {
-					...acc[ patternId ],
+					...ownPatterns[ patternId ],
 					categories: [
 						// Spread in the categories, or 'uncategorized' if empty.
 						...( categories?.length
@@ -64,7 +66,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 					],
 				},
 			} ),
-			ownPatterns
+			{}
 		);
 	}
 
