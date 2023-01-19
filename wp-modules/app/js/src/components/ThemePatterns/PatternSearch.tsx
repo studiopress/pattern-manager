@@ -8,44 +8,21 @@ import type { MutableRefObject, Dispatch, SetStateAction } from 'react';
 
 type Props = {
 	patternsRefCurrent: MutableRefObject< Patterns >[ 'current' ];
-	setThemePatterns: Dispatch< SetStateAction< Patterns > >;
-	keysToSearch?: Partial< keyof Pattern >[];
+	searchTerm: string;
+	setSearchTerm: ( newSearchTerm: string ) => void;
 };
 
 /** Component for searching the patterns by term, filtered by header/object key. */
 export default function PatternSearch( {
-	patternsRefCurrent,
-	setThemePatterns,
-	keysToSearch = [ 'title', 'keywords', 'description' ],
+	searchTerm,
+	setSearchTerm,
 }: Props ) {
-	const [ searchInput, setSearchInput ] = useState( '' );
-
 	return (
 		<SearchControl
 			className="pattern-search"
-			value={ searchInput }
-			onChange={ ( searchTerm ) => {
-				const matchedPatterns = Object.keys(
-					patternsRefCurrent
-				).reduce( ( acc, currentPattern ) => {
-					const match = keysToSearch.some( ( key ) => {
-						return patternsRefCurrent[ currentPattern ][ key ]
-							?.toString()
-							.toLowerCase()
-							.includes( searchTerm.toString().toLowerCase() );
-					} );
-
-					return match
-						? {
-								...acc,
-								[ currentPattern ]:
-									patternsRefCurrent[ currentPattern ],
-						  }
-						: acc;
-				}, {} );
-
-				setThemePatterns( matchedPatterns );
-				setSearchInput( searchTerm );
+			value={ searchTerm }
+			onChange={ ( newSearchTerm: string ) => {
+				setSearchTerm( newSearchTerm )
 			} }
 		/>
 	);

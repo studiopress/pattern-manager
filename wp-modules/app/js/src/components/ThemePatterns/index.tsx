@@ -29,13 +29,27 @@ type Props = {
 export default function ThemePatterns( { isVisible }: Props ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
-	const [ filteredPatterns, setFilteredPatterns ] = useState( createPatternsWithUncategorized( patterns.data ) );
+	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	function setNewFilteredPatterns( newPatterns: Patterns ) {
-		setFilteredPatterns( createPatternsWithUncategorized( newPatterns ) );
-	}
+	const filteredPatterns = searchTerm.trim()
+		? Object.entries(
+			createPatternsWithUncategorized( patterns.data )
+			).reduce( ( acc, [ patternName , currentPattern ] ) => {
+				const match = [ 'title', 'keywords', 'description' ].some( ( key ) => {
+					return currentPattern[ key ]
+						?.toString()
+						.toLowerCase()
+						.includes( searchTerm.toString().toLowerCase() );
+				} );
 
-	/** Catch pattern deletion since themePatterns is no longer derived. */
+				return match
+					? {
+							...acc,
+							[ patternName ]: currentPattern
+						}
+					: acc;
+			}, {} )
+		: createPatternsWithUncategorized( patterns.data )
 
 	/** Create an object for included_patterns that includes an 'uncategorized' category. */
 	function createPatternsWithUncategorized( patterns: Patterns ) {
@@ -121,9 +135,8 @@ export default function ThemePatterns( { isVisible }: Props ) {
 						<div className="inner-sidebar">
 						<PatternSearch
 								patternsRefCurrent={ filteredPatterns }
-								setThemePatterns={ ( newFilteredPatterns: Patterns ) => {
-										setNewFilteredPatterns( newFilteredPatterns );
-								} }
+								searchTerm={ searchTerm }
+								setSearchTerm={ setSearchTerm }
 							/>
 							<PatternCategories
 								categories={ patternCategories }
