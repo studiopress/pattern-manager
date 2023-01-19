@@ -49,24 +49,22 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		  }, {} )
 		: createPatternsWithUncategorized( patterns.data );
 
-	/** Create an object for included_patterns that includes an 'uncategorized' category. */
-	function createPatternsWithUncategorized(
-		ownPatterns: Patterns
-	): Patterns {
-		return Object.keys( ownPatterns ).reduce(
-			( acc, patternName ) => ( {
+	/** Create a Patterns object that includes an 'uncategorized' category. */
+	function createPatternsWithUncategorized( ownPatterns: Patterns ) {
+		return Object.entries( ownPatterns ).reduce(
+			( acc, [ patternId, { categories } ] ) => ( {
 				...acc,
-				[ patternName ]: {
-					...ownPatterns[ patternName ],
+				[ patternId ]: {
+					...acc[ patternId ],
 					categories: [
 						// Spread in the categories, or 'uncategorized' if empty.
-						...( ownPatterns[ patternName ].categories?.length
-							? ownPatterns[ patternName ].categories
+						...( categories?.length
+							? categories
 							: [ 'uncategorized' ] ),
 					],
 				},
 			} ),
-			{}
+			ownPatterns
 		);
 	}
 
