@@ -1,13 +1,8 @@
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
-import { useState } from '@wordpress/element';
 
 // Types
-import type { Pattern, Patterns } from '../../types';
-import type { MutableRefObject, Dispatch, SetStateAction } from 'react';
-
 type Props = {
-	patternsRefCurrent: MutableRefObject< Patterns >[ 'current' ];
 	searchTerm: string;
 	setSearchTerm: ( newSearchTerm: string ) => void;
 };

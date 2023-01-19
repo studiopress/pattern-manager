@@ -3,8 +3,6 @@ import { __ } from '@wordpress/i18n';
 import {
 	createInterpolateElement,
 	useState,
-	useRef,
-	useEffect,
 } from '@wordpress/element';
 
 // Hooks
