@@ -1,10 +1,7 @@
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import {
-	createInterpolateElement,
-	useState,
-} from '@wordpress/element';
+import { createInterpolateElement, useState } from '@wordpress/element';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
@@ -133,14 +130,14 @@ export default function ThemePatterns( { isVisible }: Props ) {
 				) : (
 					<>
 						<div className="inner-sidebar">
-						<SearchControl
-							className="pattern-search"
-							value={ searchTerm }
-							onChange={ ( newSearchTerm: string ) => {
-								setSearchTerm( newSearchTerm );
-							} }
-						/>
-						<PatternCategories
+							<SearchControl
+								className="pattern-search"
+								value={ searchTerm }
+								onChange={ ( newSearchTerm: string ) => {
+									setSearchTerm( newSearchTerm );
+								} }
+							/>
+							<PatternCategories
 								categories={ patternCategories }
 								currentCategory={ currentCategory }
 								setCurrentCategory={ setCurrentCategory }
