@@ -26,28 +26,30 @@ export default function getFilteredPatterns(
 		: createPatternsWithUncategorized( patterns );
 
 	return searchTerm.trim()
-		? Object.entries( filteredByCategory ).reduce(
-				( acc, [ patternName, pattern ] ) => {
-					// Add pattern header keys to the arr below to include in search.
-					const match = [ 'title', 'keywords', 'description' ].some(
-						( key: keyof Pattern ) => {
-							return pattern[ key ]
-								?.toString()
-								.toLowerCase()
-								.includes(
-									searchTerm.toString().toLowerCase()
-								);
-						}
-					);
-
-					return match
-						? {
-								...acc,
-								[ patternName ]: pattern,
-						  }
-						: acc;
-				},
-				{}
-		  )
+		? getPatternsBySearchTerm( patterns, searchTerm )
 		: filteredByCategory;
+}
+
+function getPatternsBySearchTerm( patterns, searchTerm ) {
+	return Object.entries( patterns ).reduce(
+		( acc, [ patternName, pattern ] ) => {
+			// Add pattern header keys to the arr below to include in search.
+			const match = [ 'title', 'keywords', 'description' ].some(
+				( key: keyof Pattern ) => {
+					return pattern[ key ]
+						?.toString()
+						.toLowerCase()
+						.includes( searchTerm.toString().toLowerCase() );
+				}
+			);
+
+			return match
+				? {
+						...acc,
+						[ patternName ]: pattern,
+				  }
+				: acc;
+		},
+		{}
+	);
 }
