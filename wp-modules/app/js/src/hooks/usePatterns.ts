@@ -76,7 +76,6 @@ export default function usePatterns( initialPatterns: Patterns ) {
 			}
 			setFetchInProgress( true );
 			fetch( patternManager.apiEndpoints.getPatternsEndpoint, {
-				method: 'POST',
 				headers: getHeaders(),
 			} )
 				.then( ( response ) => response.json() )

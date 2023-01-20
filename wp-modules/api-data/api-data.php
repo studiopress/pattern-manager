@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PatternManager\ApiData;
 
 use WP_REST_Request;
+use WP_REST_Server;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,7 +30,7 @@ function register_routes() {
 		'/get-patterns',
 		array(
 			array(
-				'methods'             => 'POST',
+				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => 'PatternManager\PatternDataHandlers\get_theme_patterns',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => array(),
@@ -42,7 +43,7 @@ function register_routes() {
 		'/save-patterns',
 		array(
 			array(
-				'methods'             => 'POST',
+				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => __NAMESPACE__ . '\save_patterns',
 				'permission_callback' => __NAMESPACE__ . '\permission_check',
 				'args'                => save_request_args(),
