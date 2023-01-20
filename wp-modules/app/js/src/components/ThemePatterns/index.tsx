@@ -11,11 +11,9 @@ import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 
 // Utils
+import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import convertToUpperCase from '../../utils/convertToUpperCase';
 import sortAlphabetically from '../../utils/sortAlphabetically';
-
-// Types
-import type { Pattern, Patterns } from '../../types';
 
 type Props = {
 	isVisible: boolean;
@@ -26,53 +24,11 @@ export default function ThemePatterns( { isVisible }: Props ) {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	const filteredPatterns = searchTerm.trim()
-		? Object.entries(
-				createPatternsWithUncategorized( patterns.data )
-		  ).reduce( ( acc, [ patternName, currentPattern ] ) => {
-				// Add pattern header keys to the arr below to include in search.
-				const match = [ 'title', 'keywords', 'description' ].some(
-					( key: keyof Pattern ) => {
-						return currentPattern[ key ]
-							?.toString()
-							.toLowerCase()
-							.includes( searchTerm.toString().toLowerCase() );
-					}
-				);
-
-				return match
-					? {
-							...acc,
-							[ patternName ]: currentPattern,
-					  }
-					: acc;
-		  }, {} )
-		: createPatternsWithUncategorized( patterns.data );
-
-	/** Create a Patterns object that includes an 'uncategorized' category. */
-	function createPatternsWithUncategorized(
-		ownPatterns: Patterns
-	): Patterns {
-		return Object.entries( ownPatterns ).reduce(
-			( acc, [ patternId, { categories } ] ) => ( {
-				...acc,
-				[ patternId ]: {
-					...ownPatterns[ patternId ],
-					categories: [
-						// Spread in the categories, or 'uncategorized' if empty.
-						...( categories?.length
-							? categories
-							: [ 'uncategorized' ] ),
-					],
-				},
-			} ),
-			{}
-		);
-	}
-
 	if ( ! isVisible || ! patterns.data ) {
 		return null;
 	}
+
+	const filteredPatterns = getFilteredPatterns( patterns.data, searchTerm );
 
 	/** Mapped array of categories present in patterns for the active theme. */
 	const patternCategories = [
