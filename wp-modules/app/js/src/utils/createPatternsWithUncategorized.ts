@@ -1,3 +1,6 @@
+/**
+ * Internal dependencies
+ */
 import { Patterns } from '../types';
 
 /** Create a Patterns object that includes an 'uncategorized' category. */

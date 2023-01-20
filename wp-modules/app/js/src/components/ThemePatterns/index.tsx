@@ -11,8 +11,8 @@ import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 
 // Utils
-import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import convertToUpperCase from '../../utils/convertToUpperCase';
+import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import sortAlphabetically from '../../utils/sortAlphabetically';
 
 type Props = {
