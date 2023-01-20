@@ -105,11 +105,7 @@ export default function ThemePatterns( { isVisible }: Props ) {
 							/>
 						</div>
 						<div className="inner-grid">
-							<PatternGrid
-								themePatterns={ filteredPatterns }
-								currentCategory={ currentCategory }
-								categoryToAlwaysInclude={ 'all-patterns' }
-							/>
+							<PatternGrid themePatterns={ filteredPatterns } />
 						</div>
 					</>
 				) }
