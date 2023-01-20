@@ -1,8 +1,8 @@
 /**
  * Internal dependencies
  */
-import type { Patterns } from '../../types';
 import getFilteredPatterns from '../getFilteredPatterns';
+import type { Patterns } from '../../types';
 
 describe( 'getFilteredPatterns', () => {
 	it.each< [ Patterns, string, string, Patterns ] >( [
