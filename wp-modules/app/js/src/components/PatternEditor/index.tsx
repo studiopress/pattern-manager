@@ -14,7 +14,7 @@ import usePmContext from '../../hooks/usePmContext';
 import { patternManager } from '../../globals';
 
 // Utils
-import { convertToSlug } from '../../utils';
+import { convertToSlug } from '@pattern-manager/js-utils';
 
 // Types
 import type { Pattern } from '../../types';

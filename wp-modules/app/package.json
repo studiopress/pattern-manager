@@ -4,7 +4,8 @@
   "main": "js/build/index.js",
   "scripts": {
     "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+    "dev": "wp-scripts start js/src/index.js --output-path=js/build/",
+    "preinstall": "npm install file:../js-utils; npm install file:./js/src/utils"
   },
   "author": "",
   "license": "GPL-2.0-or-later",
@@ -15,6 +16,8 @@
     "prettier": "^2.5.1"
   },
   "dependencies": {
+    "@pattern-manager/app-utils": "file:js/src/utils",
+    "@pattern-manager/js-utils": "file:../js-utils",
     "@wordpress/components": "^19.4.0",
     "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.3.1",

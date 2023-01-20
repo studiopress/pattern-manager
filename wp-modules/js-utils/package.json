@@ -1,0 +1,8 @@
+{
+  "name": "@pattern-manager/js-utils",
+  "version": "0.1.0",
+  "description": "Common JavaScript utilities to be accessed from other wp-modules.",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}

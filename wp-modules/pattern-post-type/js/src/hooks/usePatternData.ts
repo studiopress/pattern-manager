@@ -4,7 +4,7 @@ import { useEffect } from '@wordpress/element';
 import {
 	flatUnorderedEquals,
 	sortAlphabetically,
-} from '@pattern-manager/utils';
+} from '@pattern-manager/js-utils';
 import { PostMeta, SelectQuery } from '../types';
 
 export default function usePatternData( postMeta: PostMeta ) {

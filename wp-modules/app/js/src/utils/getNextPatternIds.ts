@@ -1,6 +1,8 @@
-import convertToPascalCase from './convertToPascalCase';
-import convertToSlug from './convertToSlug';
-import convertToUpperCase from './convertToUpperCase';
+import {
+	convertToPascalCase,
+	convertToSlug,
+	convertToUpperCase,
+} from '@pattern-manager/js-utils';
 
 import { Patterns } from '../types';
 

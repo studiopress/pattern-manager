@@ -10,7 +10,7 @@ import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 
 // Utils
-import { convertToUpperCase, sortAlphabetically } from '../../utils';
+import { convertToUpperCase, sortAlphabetically } from '@pattern-manager/js-utils';
 
 // Types
 import type { Patterns } from '../../types';

@@ -1,8 +1,5 @@
 {
-  "name": "@pattern-manager/utils",
+  "name": "@pattern-manager/app-utils",
   "version": "0.1.0",
-  "description": "Common utils to be accessed from other wp-modules.",
-  "dependencies": {
-    "lodash": "^4.17.21"
-  }
+  "description": "App-specific utils to be accessed from within the app directory."
 }

@@ -27,7 +27,7 @@ import ThemePatterns from '../ThemePatterns';
 import PatternEditor from '../PatternEditor';
 
 // Utils
-import { getNextPatternIds } from '../../utils';
+import { getNextPatternIds } from '@pattern-manager/app-utils';
 
 // Types
 import type { InitialContext } from '../../types';
