@@ -28,7 +28,11 @@ export default function ThemePatterns( { isVisible }: Props ) {
 		return null;
 	}
 
-	const filteredPatterns = getFilteredPatterns( patterns.data, searchTerm );
+	const filteredPatterns = getFilteredPatterns(
+		patterns.data,
+		searchTerm,
+		currentCategory
+	);
 
 	/** Mapped array of categories present in patterns for the active theme. */
 	const patternCategories = [

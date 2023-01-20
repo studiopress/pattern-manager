@@ -19,6 +19,7 @@ describe( 'getFilteredPatterns', () => {
 				},
 			},
 			'',
+			'',
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
@@ -36,11 +37,44 @@ describe( 'getFilteredPatterns', () => {
 				},
 			},
 		],
+		[
+			{
+				'example-pattern': {
+					title: 'Example Pattern',
+					name: 'example-pattern',
+					slug: 'example-pattern',
+					content: 'This is example content',
+					categories: [ 'sports' ],
+				},
+				'another-pattern': {
+					title: 'Another Pattern',
+					name: 'another-pattern',
+					slug: 'another-pattern',
+					content: 'Here is example content',
+					categories: [ 'theatre' ],
+				},
+			},
+			'',
+			'sports',
+			{
+				'example-pattern': {
+					title: 'Example Pattern',
+					name: 'example-pattern',
+					slug: 'example-pattern',
+					content: 'This is example content',
+					categories: [ 'sports' ],
+				},
+			},
+		],
 	] )(
 		'should get the filtered patterns',
-		( patternsToFilter, searchTerm, expected ) => {
+		( patternsToFilter, searchTerm, categoryName, expected ) => {
 			expect(
-				getFilteredPatterns( patternsToFilter, searchTerm )
+				getFilteredPatterns(
+					patternsToFilter,
+					searchTerm,
+					categoryName
+				)
 			).toEqual( expected );
 		}
 	);
