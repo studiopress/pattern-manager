@@ -11,9 +11,8 @@ import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 
 // Utils
-import convertToUpperCase from '../../utils/convertToUpperCase';
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
-import sortAlphabetically from '../../utils/sortAlphabetically';
+import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
 type Props = {
 	isVisible: boolean;
@@ -34,37 +33,7 @@ export default function Patterns( { isVisible }: Props ) {
 		currentCategory
 	);
 
-	/** Mapped array of categories present in patterns for the active theme. */
-	const patternCategories = [
-		// Keep all-patterns at top of list.
-		{
-			label: __( 'All Patterns', 'pattern-manager' ),
-			name: 'all-patterns',
-		},
-		...sortAlphabetically(
-			[
-				// Array of unique category names.
-				...Object.entries( filteredPatterns )
-					.reduce( ( acc, [ , { categories } ] ) => {
-						return [
-							...acc,
-							...categories?.filter(
-								( category ) => ! acc.includes( category )
-							),
-						];
-					}, [] )
-					// Map the array to expected object shape.
-					.map( ( category ) => ( {
-						label: convertToUpperCase(
-							category.replace( /[-_]/g, ' ' )
-						),
-						name: category,
-					} ) ),
-			],
-			// Sort by name property.
-			'name'
-		),
-	];
+	const patternCategories = getUniquePatternCategories( filteredPatterns );
 
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
