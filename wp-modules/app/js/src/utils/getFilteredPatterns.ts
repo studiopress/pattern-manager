@@ -18,30 +18,32 @@ export default function getFilteredPatterns(
 	);
 }
 
-function getPatternsBySearchTerm( patterns, searchTerm ) {
+function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 	return searchTerm
 		? Object.entries( patterns ).reduce(
-			( acc, [ patternName, pattern ] ) => {
-				// Add pattern header keys to the arr below to include in search.
-				const match = [ 'title', 'keywords', 'description' ].some(
-					( key: keyof Pattern ) => {
-						return pattern[ key ]
-							?.toString()
-							.toLowerCase()
-							.includes( searchTerm.toString().toLowerCase() );
-					}
-				);
-
-				return match
-					? {
-							...acc,
-							[ patternName ]: pattern,
+				( acc, [ patternName, pattern ] ) => {
+					// Add pattern header keys to the arr below to include in search.
+					const match = [ 'title', 'keywords', 'description' ].some(
+						( key: keyof Pattern ) => {
+							return pattern[ key ]
+								?.toString()
+								.toLowerCase()
+								.includes(
+									searchTerm.toString().toLowerCase()
+								);
 						}
-					: acc;
-			},
-			{}
-		)
-	: patterns;
+					);
+
+					return match
+						? {
+								...acc,
+								[ patternName ]: pattern,
+						  }
+						: acc;
+				},
+				{}
+		  )
+		: patterns;
 }
 
 function getPatternsByCategory( patterns: Patterns, categoryName: string ) {
@@ -49,16 +51,16 @@ function getPatternsByCategory( patterns: Patterns, categoryName: string ) {
 
 	return categoryName
 		? Object.entries( patterns ).reduce(
-			( accumulator, [ patternName, pattern ] ) => {
-				return pattern.categories?.includes( categoryName ) ||
-					categoryName === categoryToAlwaysInclude
-					? {
-							...accumulator,
-							[ patternName ]: pattern,
-						}
-					: accumulator;
-			},
-			{}
-		)
+				( accumulator, [ patternName, pattern ] ) => {
+					return pattern.categories?.includes( categoryName ) ||
+						categoryName === categoryToAlwaysInclude
+						? {
+								...accumulator,
+								[ patternName ]: pattern,
+						  }
+						: accumulator;
+				},
+				{}
+		  )
 		: patterns;
 }
