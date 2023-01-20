@@ -47,6 +47,35 @@ describe( 'getFilteredPatterns', () => {
 					name: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
+					categories: [ 'sports' ],
+				},
+				'another-pattern': {
+					title: 'Another Pattern',
+					name: 'another-pattern',
+					slug: 'another-pattern',
+					content: 'Here is some content',
+					categories: [ 'theatre' ],
+				},
+			},
+			'example',
+			'',
+			{
+				'example-pattern': {
+					title: 'Example Pattern',
+					name: 'example-pattern',
+					slug: 'example-pattern',
+					content: 'This is example content',
+					categories: [ 'sports' ],
+				},
+			},
+		],
+		[
+			{
+				'example-pattern': {
+					title: 'Example Pattern',
+					name: 'example-pattern',
+					slug: 'example-pattern',
+					content: 'This is example content',
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
@@ -71,35 +100,6 @@ describe( 'getFilteredPatterns', () => {
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'uncategorized' ],
-				},
-			},
-		],
-		[
-			{
-				'example-pattern': {
-					title: 'Example Pattern',
-					name: 'example-pattern',
-					slug: 'example-pattern',
-					content: 'This is example content',
-					categories: [ 'sports' ],
-				},
-				'another-pattern': {
-					title: 'Another Pattern',
-					name: 'another-pattern',
-					slug: 'another-pattern',
-					content: 'Here is some content',
-					categories: [ 'theatre' ],
-				},
-			},
-			'example',
-			'',
-			{
-				'example-pattern': {
-					title: 'Example Pattern',
-					name: 'example-pattern',
-					slug: 'example-pattern',
-					content: 'This is example content',
-					categories: [ 'sports' ],
 				},
 			},
 		],
