@@ -117,30 +117,25 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	function uponSuccessfulSave() {
-		getPatternData().then( () => {
-			setSnackBarValue(
-				__(
-					'Pattern successfully saved to theme directory',
-					'pattern-manager'
-				)
-			);
+		setSnackBarValue(
+			__(
+				'Pattern successfully saved to theme directory',
+				'pattern-manager'
+			)
+		);
 
-			editorDirty.current = false;
-			setIsSaving( false );
-			reloadPatternPreviews();
-		} );
+		editorDirty.current = false;
+		setIsSaving( false );
+		reloadPatternPreviews();
 	}
 
 	function createPattern( newPattern: Pattern ) {
-		return new Promise( ( resolve ) => {
-			const newPatternsData = {
-				...patternsData,
-				[ newPattern.name ]: newPattern,
-			};
+		const newPatternsData = {
+			...patternsData,
+			[ newPattern.name ]: newPattern,
+		};
 
-			setPatternsData( newPatternsData );
-			resolve( newPatternsData );
-		} );
+		setPatternsData( newPatternsData );
 	}
 
 	function deletePattern( patternName: Pattern[ 'name' ] ) {
