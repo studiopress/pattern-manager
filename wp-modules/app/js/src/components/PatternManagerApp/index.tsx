@@ -23,7 +23,7 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 import useNotice from '../../hooks/useNotice';
 
 // Components
-import ThemePatterns from '../Patterns';
+import Patterns from '../Patterns';
 import PatternEditor from '../PatternEditor';
 
 // Utils
@@ -150,7 +150,7 @@ function PatternManager() {
 
 			{ patterns.data ? (
 				<>
-					<ThemePatterns
+					<Patterns
 						isVisible={
 							'theme_patterns' === currentView.currentView
 						}
