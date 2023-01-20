@@ -1,8 +1,5 @@
 import ReactDOM from 'react-dom';
 
-import PatternManagerApp from './components/App';
+import App from './components/App';
 
-ReactDOM.render(
-	<PatternManagerApp />,
-	document.getElementById( 'patternmanagerapp' )
-);
+ReactDOM.render( <App />, document.getElementById( 'pattern-manager-app' ) );

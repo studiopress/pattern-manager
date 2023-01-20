@@ -64,7 +64,7 @@ function pattern_manager_app() {
 		get_app_state()
 	);
 
-	echo '<div id="patternmanagerapp"></div>';
+	echo '<div id="pattern-manager-app"></div>';
 }
 
 /**

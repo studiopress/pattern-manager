@@ -5,7 +5,10 @@ import getHeaders from '../utils/getHeaders';
 import { Pattern, Patterns } from '../types';
 import type useNotice from './useNotice';
 
-export default function usePatterns( initialPatterns: Patterns, notice: ReturnType< typeof useNotice > ) {
+export default function usePatterns(
+	initialPatterns: Patterns,
+	notice: ReturnType< typeof useNotice >
+) {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
