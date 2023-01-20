@@ -18,9 +18,12 @@ export default function getUniquePatternCategories( patterns: Patterns ) {
 					.reduce( ( acc, [ , { categories } ] ) => {
 						return [
 							...acc,
-							...categories?.filter(
-								( category ) => ! acc.includes( category )
-							),
+							...( categories
+								? categories?.filter(
+										( category ) =>
+											! acc.includes( category )
+								  )
+								: [] ),
 						];
 					}, [] )
 					// Map the array to expected object shape.
