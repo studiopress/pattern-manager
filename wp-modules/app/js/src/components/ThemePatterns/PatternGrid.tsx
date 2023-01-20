@@ -13,16 +13,10 @@ import type { Patterns } from '../../types';
 
 type Props = {
 	themePatterns: Patterns;
-	currentCategory: string;
-	categoryToAlwaysInclude: string;
 };
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
-export default function PatternGrid( {
-	themePatterns,
-	currentCategory,
-	categoryToAlwaysInclude,
-}: Props ) {
+export default function PatternGrid( { themePatterns }: Props ) {
 	return (
 		<>
 			{ ! Object.entries( themePatterns ?? {} ).length ? (
@@ -32,15 +26,6 @@ export default function PatternGrid( {
 			) : (
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
-						if (
-							! patternData?.categories?.includes(
-								currentCategory
-							) &&
-							currentCategory !== categoryToAlwaysInclude
-						) {
-							return null;
-						}
-
 						return (
 							<div key={ patternName } className="grid-item">
 								<div className="item-inner">
