@@ -19,7 +19,7 @@ export default function getFilteredPatterns(
 }
 
 function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
-	return searchTerm.trim()
+	return searchTerm
 		? Object.entries( patterns ).reduce(
 				( acc, [ patternName, pattern ] ) => {
 					// Add pattern header keys to the arr below to include in search.
