@@ -21,7 +21,7 @@ type Props = {
 	isVisible: boolean;
 };
 
-export default function ThemePatterns( { isVisible }: Props ) {
+export default function Patterns( { isVisible }: Props ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
