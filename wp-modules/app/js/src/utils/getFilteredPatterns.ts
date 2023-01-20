@@ -9,52 +9,56 @@ export default function getFilteredPatterns(
 	searchTerm: string,
 	categoryName: string
 ) {
-	const patternsWithUncategorized = createPatternsWithUncategorized( patterns );
-	const filteredByCategory = categoryName
-		? getPatternsByCategory( patternsWithUncategorized, categoryName )
-		: createPatternsWithUncategorized( patternsWithUncategorized );
-
-	return searchTerm.trim()
-		? getPatternsBySearchTerm( patterns, searchTerm )
-		: filteredByCategory;
+	return getPatternsBySearchTerm(
+		getPatternsByCategory(
+			createPatternsWithUncategorized( patterns ),
+			categoryName
+		),
+		searchTerm.trim()
+	);
 }
 
 function getPatternsBySearchTerm( patterns, searchTerm ) {
-	return Object.entries( patterns ).reduce(
-		( acc, [ patternName, pattern ] ) => {
-			// Add pattern header keys to the arr below to include in search.
-			const match = [ 'title', 'keywords', 'description' ].some(
-				( key: keyof Pattern ) => {
-					return pattern[ key ]
-						?.toString()
-						.toLowerCase()
-						.includes( searchTerm.toString().toLowerCase() );
-				}
-			);
+	return searchTerm
+		? Object.entries( patterns ).reduce(
+			( acc, [ patternName, pattern ] ) => {
+				// Add pattern header keys to the arr below to include in search.
+				const match = [ 'title', 'keywords', 'description' ].some(
+					( key: keyof Pattern ) => {
+						return pattern[ key ]
+							?.toString()
+							.toLowerCase()
+							.includes( searchTerm.toString().toLowerCase() );
+					}
+				);
 
-			return match
-				? {
-						...acc,
-						[ patternName ]: pattern,
-				  }
-				: acc;
-		},
-		{}
-	);
+				return match
+					? {
+							...acc,
+							[ patternName ]: pattern,
+						}
+					: acc;
+			},
+			{}
+		)
+	: patterns;
 }
 
 function getPatternsByCategory( patterns: Patterns, categoryName: string ) {
 	const categoryToAlwaysInclude = 'all-patterns';
-	return Object.entries( patterns ).reduce(
-		( accumulator, [ patternName, pattern ] ) => {
-			return pattern.categories?.includes( categoryName ) ||
-				categoryName === categoryToAlwaysInclude
-				? {
-						...accumulator,
-						[ patternName ]: pattern,
-					}
-				: accumulator;
-		},
-		{}
-	)
+
+	return categoryName
+		? Object.entries( patterns ).reduce(
+			( accumulator, [ patternName, pattern ] ) => {
+				return pattern.categories?.includes( categoryName ) ||
+					categoryName === categoryToAlwaysInclude
+					? {
+							...accumulator,
+							[ patternName ]: pattern,
+						}
+					: accumulator;
+			},
+			{}
+		)
+		: patterns;
 }
