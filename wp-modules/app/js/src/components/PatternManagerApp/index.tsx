@@ -23,7 +23,7 @@ import useNoticeContext from '../../hooks/useNoticeContext';
 import useNotice from '../../hooks/useNotice';
 
 // Components
-import ThemePatterns from '../ThemePatterns';
+import ThemePatterns from '../Patterns';
 import PatternEditor from '../PatternEditor';
 
 // Utils
