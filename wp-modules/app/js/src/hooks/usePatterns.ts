@@ -2,11 +2,10 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
-import useNoticeContext from './useNoticeContext';
 import { Pattern, Patterns } from '../types';
+import type useNotice from './useNotice';
 
-export default function usePatterns( initialPatterns: Patterns ) {
-	const { setSnackBarValue } = useNoticeContext();
+export default function usePatterns( initialPatterns: Patterns, notice: ReturnType< typeof useNotice > ) {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
@@ -95,7 +94,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	function uponSuccessfulSave() {
-		setSnackBarValue(
+		notice.setSnackBarValue(
 			__(
 				'Pattern successfully saved to theme directory',
 				'pattern-manager'
