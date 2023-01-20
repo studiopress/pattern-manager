@@ -9,21 +9,10 @@ export default function getFilteredPatterns(
 	searchTerm: string,
 	categoryName: string
 ) {
-	const categoryToAlwaysInclude = 'all-patterns';
+	const patternsWithUncategorized = createPatternsWithUncategorized( patterns );
 	const filteredByCategory = categoryName
-		? Object.entries( createPatternsWithUncategorized( patterns ) ).reduce(
-				( accumulator, [ patternName, pattern ] ) => {
-					return pattern.categories?.includes( categoryName ) ||
-						categoryName === categoryToAlwaysInclude
-						? {
-								...accumulator,
-								[ patternName ]: pattern,
-						  }
-						: accumulator;
-				},
-				{}
-		  )
-		: createPatternsWithUncategorized( patterns );
+		? getPatternsByCategory( patternsWithUncategorized, categoryName )
+		: createPatternsWithUncategorized( patternsWithUncategorized );
 
 	return searchTerm.trim()
 		? getPatternsBySearchTerm( patterns, searchTerm )
@@ -52,4 +41,20 @@ function getPatternsBySearchTerm( patterns, searchTerm ) {
 		},
 		{}
 	);
+}
+
+function getPatternsByCategory( patterns: Patterns, categoryName: string ) {
+	const categoryToAlwaysInclude = 'all-patterns';
+	return Object.entries( patterns ).reduce(
+		( accumulator, [ patternName, pattern ] ) => {
+			return pattern.categories?.includes( categoryName ) ||
+				categoryName === categoryToAlwaysInclude
+				? {
+						...accumulator,
+						[ patternName ]: pattern,
+					}
+				: accumulator;
+		},
+		{}
+	)
 }
