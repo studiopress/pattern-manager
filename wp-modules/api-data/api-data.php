@@ -24,20 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function register_routes() {
 	$version   = '1';
-	$namespace = 'patternmanager/v' . $version;
-	register_rest_route(
-		$namespace,
-		'/get-patterns',
-		array(
-			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => 'PatternManager\PatternDataHandlers\get_theme_patterns',
-				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => array(),
-			),
-			'schema' => 'response_item_schema',
-		)
-	);
+	$namespace = 'pattern-manager/v' . $version;
 	register_rest_route(
 		$namespace,
 		'/save-patterns',

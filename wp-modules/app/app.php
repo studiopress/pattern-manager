@@ -27,8 +27,7 @@ function get_app_state() {
 		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
-			'getPatternsEndpoint'  => get_rest_url( false, 'patternmanager/v1/get-patterns/' ),
-			'savePatternsEndpoint' => get_rest_url( false, 'patternmanager/v1/save-patterns/' ),
+			'savePatternsEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-patterns/' ),
 		),
 		'siteUrl'      => get_bloginfo( 'url' ),
 		'adminUrl'     => admin_url(),

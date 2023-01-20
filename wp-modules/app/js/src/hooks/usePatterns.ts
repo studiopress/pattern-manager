@@ -69,28 +69,6 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		}
 	}
 
-	function getPatternData() {
-		return new Promise( ( resolve ) => {
-			if ( fetchInProgress ) {
-				return;
-			}
-			setFetchInProgress( true );
-			fetch( patternManager.apiEndpoints.getPatternsEndpoint, {
-				headers: getHeaders(),
-			} )
-				.then( ( response ) => response.json() )
-				.then( ( response: Patterns & { error?: string } ) => {
-					setFetchInProgress( false );
-					if ( response.error ) {
-						setPatternsData( patternsData );
-					} else {
-						setPatternsData( response );
-						resolve( response );
-					}
-				} );
-		} );
-	}
-
 	function savePatternsData() {
 		return new Promise( ( resolve ) => {
 			setIsSaving( true );
@@ -130,12 +108,10 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	function createPattern( newPattern: Pattern ) {
-		const newPatternsData = {
+		setPatternsData( {
 			...patternsData,
 			[ newPattern.name ]: newPattern,
-		};
-
-		setPatternsData( newPatternsData );
+		} );
 	}
 
 	function deletePattern( patternName: Pattern[ 'name' ] ) {
