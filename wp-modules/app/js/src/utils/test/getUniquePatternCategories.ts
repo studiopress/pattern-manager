@@ -5,7 +5,7 @@ import getUniquePatternCategories from '../getUniquePatternCategories';
 import type { Patterns } from '../../types';
 
 describe( 'getUniquePatternCategories', () => {
-	it.each< [ Patterns, { label: string; name: string } ] >( [
+	it.each< [ Patterns, { label: string; name: string }[] ] >( [
 		[
 			{
 				'example-pattern': {
