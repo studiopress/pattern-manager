@@ -1,4 +1,11 @@
+/**
+ * WordPress dependencies
+ */
 import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
 import convertToUpperCase from './convertToUpperCase';
 import sortAlphabetically from './sortAlphabetically';
 import { Patterns } from '../types';
