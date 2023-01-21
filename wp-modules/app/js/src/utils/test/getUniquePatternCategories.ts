@@ -223,7 +223,12 @@ describe( 'getUniquePatternCategories', () => {
 				},
 			],
 		],
-	] )( 'should return unique pattern categories', ( patterns, expected ) => {
-		expect( getUniquePatternCategories( patterns ) ).toEqual( expected );
-	} );
+	] )(
+		'should return unique pattern categories',
+		( patterns: Patterns, expected: { label: string; name: string }[] ) => {
+			expect( getUniquePatternCategories( patterns ) ).toEqual(
+				expected
+			);
+		}
+	);
 } );
