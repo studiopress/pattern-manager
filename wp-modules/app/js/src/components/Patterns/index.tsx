@@ -11,6 +11,7 @@ import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 
 // Utils
+import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
@@ -33,7 +34,12 @@ export default function Patterns( { isVisible }: Props ) {
 		currentCategory
 	);
 
-	const patternCategories = getUniquePatternCategories( filteredPatterns );
+	const filteredCategories = getUniquePatternCategories(
+		searchTerm
+			? filteredPatterns
+			: // Get a fresh set of patterns with 'uncategorized'.
+			  createPatternsWithUncategorized( patterns.data )
+	);
 
 	return (
 		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
@@ -68,7 +74,7 @@ export default function Patterns( { isVisible }: Props ) {
 								} }
 							/>
 							<PatternCategories
-								categories={ patternCategories }
+								categories={ filteredCategories }
 								currentCategory={ currentCategory }
 								setCurrentCategory={ setCurrentCategory }
 							/>
