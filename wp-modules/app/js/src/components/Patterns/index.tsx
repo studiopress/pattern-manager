@@ -15,18 +15,10 @@ import convertToUpperCase from '../../utils/convertToUpperCase';
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import sortAlphabetically from '../../utils/sortAlphabetically';
 
-type Props = {
-	isVisible: boolean;
-};
-
-export default function Patterns( { isVisible }: Props ) {
+export default function Patterns() {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
-
-	if ( ! isVisible || ! patterns.data ) {
-		return null;
-	}
 
 	const filteredPatterns = getFilteredPatterns(
 		patterns.data,
@@ -67,7 +59,7 @@ export default function Patterns( { isVisible }: Props ) {
 	];
 
 	return (
-		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
+		<div className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
 				{ ! Object.entries( patterns.data ?? {} ).length ? (
 					<div className="grid-empty">

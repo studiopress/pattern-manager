@@ -147,18 +147,11 @@ function PatternManager() {
 					</button>
 				</div>
 			</div>
-
-			{ patterns.data ? (
-				<>
-					<Patterns
-						isVisible={
-							'theme_patterns' === currentView.currentView
-						}
-					/>
-					<PatternEditor
-						visible={ 'pattern_editor' === currentView.currentView }
-					/>
-				</>
+			{ 'theme_patterns' === currentView.currentView ? (
+				<Patterns />
+			) : null }
+			{ 'pattern_editor' === currentView.currentView ? (
+				<PatternEditor />
 			) : null }
 		</>
 	);
