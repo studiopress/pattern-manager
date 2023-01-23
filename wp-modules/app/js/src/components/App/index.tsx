@@ -126,7 +126,10 @@ function PatternManager() {
 									currentView.set( 'pattern_editor' );
 								} }
 							>
-								{ __( 'Create New Pattern', 'pattern-manager' ) }
+								{ __(
+									'Create New Pattern',
+									'pattern-manager'
+								) }
 							</button>
 						</div>
 					</div>
