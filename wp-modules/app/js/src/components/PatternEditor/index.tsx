@@ -31,8 +31,13 @@ export default function PatternEditor() {
 }
 
 export function BlockEditor() {
-	const { currentPattern, currentPatternId, patternEditorIframe, patterns } =
-		usePmContext();
+	const {
+		currentPattern,
+		currentPatternId,
+		patternEditorIframe,
+		patterns,
+		currentView,
+	} = usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
 	const [ blockEditorLoaded, setBlockEditorLoaded ] = useState( false );
@@ -96,6 +101,9 @@ export function BlockEditor() {
 				case 'pm_pattern_data_set':
 					// The iframed block editor will send a message to let us know when the pattern data has been inserted into the block editor.
 					setPatternDataSet( true );
+					break;
+				case 'pm_back_to_patterns':
+					currentView.set( 'theme_patterns' );
 					break;
 			}
 		}

@@ -1,4 +1,6 @@
-import { Fill } from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { wordpress } from '@wordpress/icons';
+import { Button, Fill, Icon } from '@wordpress/components';
 import PatternEditorSidebar from '../PatternEditorSidebar';
 import usePostData from '../../hooks/usePostData';
 import useSubscription from '../../hooks/useSubscription';
@@ -20,7 +22,15 @@ export default function PatternManagerMetaControls() {
 				postMeta={ postMeta }
 			/>
 			<Fill name="__experimentalMainDashboardButton">
-				Here is something!!!
+				<Button
+					label={ __( 'Back to Patterns', 'pattern-manager' ) }
+					showTooltip={ true }
+					onClick={ () => {
+						window.parent.postMessage( 'pm_back_to_patterns' );
+					} }
+				>
+					<Icon size="36px" icon={ wordpress } />
+				</Button>
 			</Fill>
 		</>
 	) : null;
