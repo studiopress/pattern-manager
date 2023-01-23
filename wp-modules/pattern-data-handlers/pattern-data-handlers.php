@@ -228,7 +228,7 @@ function update_patterns( $patterns ) {
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
 	tree_shake_theme_images();
 
-	return $patterns;
+	return get_theme_patterns();
 }
 
 /**
