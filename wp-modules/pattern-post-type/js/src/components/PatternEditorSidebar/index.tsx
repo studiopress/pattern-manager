@@ -11,6 +11,7 @@ import {
 } from './SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
+import useToggleSidebarPanels from '../../hooks/useToggleSidebarPanels';
 import type { PatternEditorSidebarProps } from '../PatternEditorSidebar/types';
 
 export default function PatternEditorSidebar( {
@@ -20,12 +21,25 @@ export default function PatternEditorSidebar( {
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
 
+	useToggleSidebarPanels( {
+		isOpen: [ 'title', 'categories' ],
+		isClosed: [ 'keywords', 'description', 'post-types', 'transforms' ],
+	} );
+
 	return (
 		<div id={ coreLastUpdate }>
 			<TitlePanel postMeta={ postMeta } handleChange={ updatePostMeta } />
 			<CategoriesPanel
 				postMeta={ postMeta }
 				categories={ categories }
+				handleChange={ updatePostMeta }
+			/>
+			<KeywordsPanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+			/>
+			<DescriptionPanel
+				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
 			/>
 			<PostTypesPanel
@@ -45,14 +59,6 @@ export default function PatternEditorSidebar( {
 			<TransformsPanel
 				postMeta={ postMeta }
 				blockTypes={ blockTypes }
-				handleChange={ updatePostMeta }
-			/>
-			<KeywordsPanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
-			/>
-			<DescriptionPanel
-				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
 			/>
 		</div>
