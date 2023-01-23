@@ -226,7 +226,7 @@ function update_patterns( $patterns ) {
 	}
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	//tree_shake_theme_images();
+	tree_shake_theme_images();
 
 	return $patterns;
 }
@@ -312,7 +312,7 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
  */
 function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
-	//$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
+	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
 	// phpcs:ignore
 	$file_contents = "<?php
