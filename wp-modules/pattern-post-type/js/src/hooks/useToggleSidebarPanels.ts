@@ -13,12 +13,12 @@ type SidebarPanelName =
 	| 'transforms';
 
 /** Overrides the initial open/closed state of given sidebar panels. */
-export default function useToggleSidebarPanels( {
+export default function useToggleSidebarPanels< T extends SidebarPanelName >( {
 	isOpen,
 	isClosed,
 }: {
-	isOpen: SidebarPanelName[];
-	isClosed: SidebarPanelName[];
+	isOpen: T[];
+	isClosed: Exclude< SidebarPanelName, T >[];
 } ) {
 	const namespace = 'patternmanager-postmeta-for-patterns';
 	const panelNamePrefix = 'patternmanager-pattern-editor-pattern';
@@ -35,15 +35,17 @@ export default function useToggleSidebarPanels( {
 		toggleEditorPanelOpened: ( arg: string ) => Promise< void >;
 	} = dispatch( 'core/edit-post' );
 
-	useEffect( () => {
-		[ ...isOpen, ...isClosed ].forEach( ( panelName ) => {
+	return useEffect( () => {
+		[ ...isOpen, ...isClosed ].forEach( ( panelName: SidebarPanelName ) => {
 			const currentPanel = `${ namespace }/${ panelNamePrefix }-${ panelName }`;
 
 			if (
 				( ! isEditorPanelOpened( currentPanel ) &&
-					isOpen.includes( panelName ) ) ||
+					isOpen.includes( panelName as T ) ) ||
 				( isEditorPanelOpened( currentPanel ) &&
-					isClosed.includes( panelName ) )
+					isClosed.includes(
+						panelName as Exclude< SidebarPanelName, T >
+					) )
 			) {
 				toggleEditorPanelOpened( currentPanel );
 			}
