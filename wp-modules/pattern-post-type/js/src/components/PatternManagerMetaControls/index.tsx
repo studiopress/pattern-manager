@@ -1,3 +1,4 @@
+import { Fill } from '@wordpress/components';
 import PatternEditorSidebar from '../PatternEditorSidebar';
 import usePostData from '../../hooks/usePostData';
 import useSubscription from '../../hooks/useSubscription';
@@ -13,9 +14,14 @@ export default function PatternManagerMetaControls() {
 
 	// Will only render component for post type 'pm_pattern'.
 	return currentPostType === 'pm_pattern' ? (
-		<PatternEditorSidebar
-			coreLastUpdate={ coreLastUpdate }
-			postMeta={ postMeta }
-		/>
+		<>
+			<PatternEditorSidebar
+				coreLastUpdate={ coreLastUpdate }
+				postMeta={ postMeta }
+			/>
+			<Fill name="__experimentalMainDashboardButton">
+				Here is something!!!
+			</Fill>
+		</>
 	) : null;
 }
