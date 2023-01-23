@@ -12,7 +12,7 @@ type SidebarPanelName =
 	| 'post-types'
 	| 'transforms';
 
-/** Override the initial open/closed state of given sidebar panels. */
+/** Overrides the initial open/closed state of given sidebar panels. */
 export default function useToggleSidebarPanels( {
 	isOpen,
 	isClosed,
