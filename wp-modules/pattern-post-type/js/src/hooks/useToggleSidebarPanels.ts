@@ -1,3 +1,6 @@
+/**
+ * WP dependencies
+ */
 import { select, dispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
@@ -9,6 +12,7 @@ type SidebarPanelName =
 	| 'post-types'
 	| 'transforms';
 
+/** Override the initial open/closed state of given sidebar panels. */
 export default function useToggleSidebarPanels( {
 	isOpen,
 	isClosed,
