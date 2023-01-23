@@ -36,7 +36,11 @@ export default function PatternGridActions( {
 					currentView.set( 'pattern_editor' );
 				} }
 			>
-				<Icon className="item-action-icon" icon={ settings } size={ 30 } />
+				<Icon
+					className="item-action-icon"
+					icon={ settings }
+					size={ 30 }
+				/>
 				<span className="item-action-button-text">Edit</span>
 			</button>
 
