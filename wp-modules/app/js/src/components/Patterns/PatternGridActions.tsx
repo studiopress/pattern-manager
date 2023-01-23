@@ -51,10 +51,9 @@ export default function PatternGridActions( {
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					patterns.createPattern( newPattern ).then( () => {
-						currentPatternId.set( newPattern.slug );
-						currentView.set( 'pattern_editor' );
-					} );
+					patterns.createPattern( newPattern );
+					currentPatternId.set( newPattern.slug );
+					currentView.set( 'pattern_editor' );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
