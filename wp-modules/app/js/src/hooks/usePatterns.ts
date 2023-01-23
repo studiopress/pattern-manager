@@ -2,11 +2,13 @@ import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
-import useNoticeContext from './useNoticeContext';
 import { Pattern, Patterns } from '../types';
+import type useNotice from './useNotice';
 
-export default function usePatterns( initialPatterns: Patterns ) {
-	const { setSnackBarValue } = useNoticeContext();
+export default function usePatterns(
+	initialPatterns: Patterns,
+	notice: ReturnType< typeof useNotice >
+) {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
@@ -69,29 +71,6 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		}
 	}
 
-	function getPatternData() {
-		return new Promise( ( resolve ) => {
-			if ( fetchInProgress ) {
-				return;
-			}
-			setFetchInProgress( true );
-			fetch( patternManager.apiEndpoints.getPatternsEndpoint, {
-				method: 'POST',
-				headers: getHeaders(),
-			} )
-				.then( ( response ) => response.json() )
-				.then( ( response: Patterns & { error?: string } ) => {
-					setFetchInProgress( false );
-					if ( response.error ) {
-						setPatternsData( patternsData );
-					} else {
-						setPatternsData( response );
-						resolve( response );
-					}
-				} );
-		} );
-	}
-
 	function savePatternsData() {
 		return new Promise( ( resolve ) => {
 			setIsSaving( true );
@@ -118,29 +97,22 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	function uponSuccessfulSave() {
-		getPatternData().then( () => {
-			setSnackBarValue(
-				__(
-					'Pattern successfully saved to theme directory',
-					'pattern-manager'
-				)
-			);
+		notice.setSnackBarValue(
+			__(
+				'Pattern successfully saved to theme directory',
+				'pattern-manager'
+			)
+		);
 
-			editorDirty.current = false;
-			setIsSaving( false );
-			reloadPatternPreviews();
-		} );
+		editorDirty.current = false;
+		setIsSaving( false );
+		reloadPatternPreviews();
 	}
 
 	function createPattern( newPattern: Pattern ) {
-		return new Promise( ( resolve ) => {
-			const newPatternsData = {
-				...patternsData,
-				[ newPattern.name ]: newPattern,
-			};
-
-			setPatternsData( newPatternsData );
-			resolve( newPatternsData );
+		setPatternsData( {
+			...patternsData,
+			[ newPattern.name ]: newPattern,
 		} );
 	}
 

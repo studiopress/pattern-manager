@@ -12,14 +12,12 @@ import { patternManager } from '../../globals';
 
 // Contexts
 import PatternManagerContext from '../../contexts/PatternManagerContext';
-import NoticeContext from '../../contexts/NoticeContext';
 
 // Hooks
 import useCurrentId from '../../hooks/useCurrentId';
 import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
-import useNoticeContext from '../../hooks/useNoticeContext';
 import useNotice from '../../hooks/useNotice';
 
 // Components
@@ -32,34 +30,21 @@ import getNextPatternIds from '../../utils/getNextPatternIds';
 // Types
 import type { InitialContext } from '../../types';
 
-export default function PatternManagerApp() {
-	const providerValue = useNotice();
-
-	return (
-		<NoticeContext.Provider value={ providerValue }>
-			<PatternManagerContextHydrator />
-		</NoticeContext.Provider>
-	);
-}
-
-function PatternManagerContextHydrator() {
-	const currentView = useCurrentView( 'theme_patterns' );
-	const patternEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const templateEditorIframe = useRef< HTMLIFrameElement | null >( null );
-	const patterns = usePatterns( patternManager.patterns );
-
+export default function App() {
 	const currentPatternId = useCurrentId( '' );
-	const currentPattern = patterns.data?.[ currentPatternId.value ] ?? null;
+	const notice = useNotice();
+	const patterns = usePatterns( patternManager.patterns, notice );
 
 	const providerValue: InitialContext = {
-		currentView,
-		currentPatternId,
-		currentPattern,
+		notice,
 		patterns,
+		currentPatternId,
+		currentView: useCurrentView( 'theme_patterns' ),
+		currentPattern: patterns.data?.[ currentPatternId.value ],
 		siteUrl: patternManager.siteUrl,
 		apiEndpoints: patternManager.apiEndpoints,
-		patternEditorIframe,
-		templateEditorIframe,
+		patternEditorIframe: useRef< HTMLIFrameElement >(),
+		templateEditorIframe: useRef< HTMLIFrameElement >(),
 	};
 
 	return (
@@ -70,18 +55,17 @@ function PatternManagerContextHydrator() {
 }
 
 function PatternManager() {
-	const { currentPatternId, currentView, patterns } = usePmContext();
-	const { snackBarValue, setSnackBarValue } = useNoticeContext();
+	const { currentPatternId, currentView, notice, patterns } = usePmContext();
 
 	return (
 		<>
-			{ snackBarValue ? (
+			{ notice.snackBarValue ? (
 				<Snackbar
 					onRemove={ () => {
-						setSnackBarValue( null );
+						notice.setSnackBarValue( null );
 					} }
 				>
-					{ snackBarValue }
+					{ notice.snackBarValue }
 				</Snackbar>
 			) : null }
 			<div className="patternmanager-nav-container">
@@ -123,24 +107,21 @@ function PatternManager() {
 							const { patternTitle, patternSlug } =
 								getNextPatternIds( patterns.data );
 
-							patterns
-								.createPattern( {
-									title: patternTitle,
-									name: patternSlug,
-									slug: patternSlug,
-									categories: [],
-									keywords: [],
-									blockTypes: [],
-									postTypes: [],
-									inserter: true,
-									description: '',
-									viewportWidth: '',
-									content: '',
-								} )
-								.then( () => {
-									currentPatternId.set( patternSlug );
-									currentView.set( 'pattern_editor' );
-								} );
+							patterns.createPattern( {
+								title: patternTitle,
+								name: patternSlug,
+								slug: patternSlug,
+								categories: [],
+								keywords: [],
+								blockTypes: [],
+								postTypes: [],
+								inserter: true,
+								description: '',
+								viewportWidth: '',
+								content: '',
+							} );
+							currentPatternId.set( patternSlug );
+							currentView.set( 'pattern_editor' );
 						} }
 					>
 						{ __( 'Create New Pattern', 'pattern-manager' ) }
