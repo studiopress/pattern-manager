@@ -1,13 +1,6 @@
 import { select, dispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 
-type SelectIsEditorPanelOpened = {
-	isEditorPanelOpened: ( arg: string ) => boolean;
-};
-type DispatchToggleEditorPanel = {
-	toggleEditorPanelOpened: ( arg: string ) => Promise< void >;
-};
-
 type SidebarPanelName =
 	| 'title'
 	| 'categories'
@@ -26,11 +19,17 @@ export default function useToggleSidebarPanels( {
 	const namespace = 'patternmanager-postmeta-for-patterns';
 	const panelNamePrefix = 'patternmanager-pattern-editor-pattern';
 
-	const { isEditorPanelOpened }: SelectIsEditorPanelOpened =
-		select( 'core/edit-post' );
+	const {
+		isEditorPanelOpened,
+	}: {
+		isEditorPanelOpened: ( arg: string ) => boolean;
+	} = select( 'core/edit-post' );
 
-	const { toggleEditorPanelOpened }: DispatchToggleEditorPanel =
-		dispatch( 'core/edit-post' );
+	const {
+		toggleEditorPanelOpened,
+	}: {
+		toggleEditorPanelOpened: ( arg: string ) => Promise< void >;
+	} = dispatch( 'core/edit-post' );
 
 	useEffect( () => {
 		[ ...isOpen, ...isClosed ].forEach( ( panelName ) => {
