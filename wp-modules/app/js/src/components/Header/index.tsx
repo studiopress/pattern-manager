@@ -18,6 +18,7 @@ export default function Header() {
 		<div className="pattern-manager-header-container">
 			<div className="header-container-logo">
 				<img
+					alt={ __( 'WP Engine logo', 'pattern-manager' ) }
 					className="logo-svg"
 					aria-hidden="true"
 					src={ wpeLogoDefaultCropped }
@@ -26,7 +27,6 @@ export default function Header() {
 					{ __( 'Pattern Manager', 'pattern-manager' ) }
 				</span>
 			</div>
-
 			<div className="header-container-inner">
 				<button
 					type="button"
@@ -45,7 +45,6 @@ export default function Header() {
 						__( 'Save', 'pattern-manager' )
 					) }
 				</button>
-
 				<button
 					className="header-button"
 					onClick={ () => {
