@@ -9,6 +9,7 @@ import usePmContext from '../../hooks/usePmContext';
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
+import SearchCount from './SearchCount';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
@@ -65,11 +66,20 @@ export default function Patterns() {
 									setSearchTerm( newSearchTerm );
 								} }
 							/>
-							<PatternCategories
-								categories={ filteredCategories }
-								currentCategory={ currentCategory }
-								setCurrentCategory={ setCurrentCategory }
-							/>
+							{ searchTerm ? (
+								<SearchCount
+									resultsLength={
+										Object.keys( filteredPatterns ).length
+									}
+									searchTerm={ searchTerm }
+								/>
+							) : (
+								<PatternCategories
+									categories={ filteredCategories }
+									currentCategory={ currentCategory }
+									setCurrentCategory={ setCurrentCategory }
+								/>
+							) }
 						</div>
 						<div className="inner-grid">
 							<PatternGrid themePatterns={ filteredPatterns } />
