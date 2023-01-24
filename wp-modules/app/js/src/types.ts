@@ -6,10 +6,10 @@ import useCurrentView from './hooks/useCurrentView';
 import useCurrentId from './hooks/useCurrentId';
 import usePatterns from './hooks/usePatterns';
 
-export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
+export type PatternManagerViews = 'patterns' | 'editor';
 
 export type InitialContext = {
-	currentView: ReturnType< typeof useCurrentView >;
+	view: ReturnType< typeof useCurrentView >;
 	currentPatternId: ReturnType< typeof useCurrentId >;
 	currentPattern?: Pattern;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];

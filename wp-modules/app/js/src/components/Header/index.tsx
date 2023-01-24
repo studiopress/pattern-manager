@@ -12,7 +12,7 @@ import usePmContext from '../../hooks/usePmContext';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 export default function Header() {
-	const { currentPatternId, currentView, patterns } = usePmContext();
+	const { currentPatternId, view, patterns } = usePmContext();
 
 	return (
 		<div className="pattern-manager-header-container">
@@ -67,7 +67,7 @@ export default function Header() {
 							content: '',
 						} );
 						currentPatternId.set( patternSlug );
-						currentView.set( 'pattern_editor' );
+						view.set( 'editor' );
 					} }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }

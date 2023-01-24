@@ -36,7 +36,7 @@ export default function App() {
 		notice,
 		patterns,
 		currentPatternId,
-		currentView: useCurrentView( 'theme_patterns' ),
+		view: useCurrentView( 'patterns' ),
 		currentPattern: patterns.data?.[ currentPatternId.value ],
 		siteUrl: patternManager.siteUrl,
 		apiEndpoints: patternManager.apiEndpoints,
@@ -52,7 +52,7 @@ export default function App() {
 }
 
 function PatternManager() {
-	const { currentView, notice } = usePmContext();
+	const { view, notice } = usePmContext();
 
 	return (
 		<>
@@ -65,13 +65,9 @@ function PatternManager() {
 					{ notice.snackBarValue }
 				</Snackbar>
 			) : null }
-			{ 'theme_patterns' === currentView.currentView ? <Header /> : null }
-			<Patterns
-				isVisible={ 'theme_patterns' === currentView.currentView }
-			/>
-			<PatternEditor
-				isVisible={ 'pattern_editor' === currentView.currentView }
-			/>
+			{ 'patterns' === view.currentView ? <Header /> : null }
+			<Patterns isVisible={ 'patterns' === view.currentView } />
+			<PatternEditor isVisible={ 'editor' === view.currentView } />
 		</>
 	);
 }

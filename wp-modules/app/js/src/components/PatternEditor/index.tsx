@@ -43,7 +43,7 @@ export function BlockEditor() {
 		currentPatternId,
 		patternEditorIframe,
 		patterns,
-		currentView,
+		view,
 	} = usePmContext();
 
 	// Pattern Data is forced into the empty block editor, which is why both blockEditorLoaded (step 1) and patternDataSet (step 2) need to exist.
@@ -110,7 +110,7 @@ export function BlockEditor() {
 					setPatternDataSet( true );
 					break;
 				case 'pm_back_to_patterns':
-					currentView.set( 'theme_patterns' );
+					view.set( 'patterns' );
 					break;
 			}
 		}

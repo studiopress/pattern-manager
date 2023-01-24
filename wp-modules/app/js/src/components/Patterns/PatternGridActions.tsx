@@ -23,7 +23,7 @@ export default function PatternGridActions( {
 	patternName,
 	patternData,
 }: Props ) {
-	const { patterns, currentView, currentPatternId } = usePmContext();
+	const { patterns, view, currentPatternId } = usePmContext();
 
 	return (
 		<div className="item-actions">
@@ -33,7 +33,7 @@ export default function PatternGridActions( {
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
 				onClick={ () => {
 					currentPatternId.set( patternName );
-					currentView.set( 'pattern_editor' );
+					view.set( 'editor' );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ edit } size={ 30 } />
@@ -53,7 +53,7 @@ export default function PatternGridActions( {
 					);
 					patterns.createPattern( newPattern );
 					currentPatternId.set( newPattern.slug );
-					currentView.set( 'pattern_editor' );
+					view.set( 'editor' );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
