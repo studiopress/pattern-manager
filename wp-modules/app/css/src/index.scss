@@ -77,7 +77,7 @@ html body.toplevel_page_pattern-manager {
 		box-sizing: border-box !important;
 	}
 
-	.patternmanager-nav-container {
+	.pattern-manager-header-container {
 		z-index: 10;
 		position: sticky;
 		display: flex;
@@ -95,7 +95,7 @@ html body.toplevel_page_pattern-manager {
 		margin-right: auto;
 		padding: 1rem 5rem 1rem 4rem;
 
-		.nav-container-logo {
+		.header-container-logo {
 			position: relative;
 			margin-right: auto;
 			text-align: center;
@@ -115,12 +115,12 @@ html body.toplevel_page_pattern-manager {
 			}
 		}
 
-		.nav-container-inner {
+		.header-container-inner {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 0.5rem;
 
-			.nav-button {
+			.header-button {
 				display: inline-flex;
 				padding-top: 0.5rem;
 				padding-bottom: 0.5rem;
