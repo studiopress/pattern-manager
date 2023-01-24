@@ -20,11 +20,18 @@ import { Pattern } from '../../types';
 // Types
 import type { MutableRefObject } from 'react';
 
-export default function PatternEditor() {
+type Props = {
+	isVisible: boolean;
+};
+
+export default function PatternEditor( { isVisible }: Props ) {
 	const { currentPatternId } = usePmContext();
 
 	return (
-		<div className="patternmanager-pattern-work-area">
+		<div
+			hidden={ ! isVisible }
+			className="patternmanager-pattern-work-area"
+		>
 			{ currentPatternId.value ? <BlockEditor /> : null }
 		</div>
 	);

@@ -15,7 +15,11 @@ import createPatternsWithUncategorized from '../../utils/createPatternsWithUncat
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
-export default function Patterns() {
+type Props = {
+	isVisible: boolean;
+};
+
+export default function Patterns( { isVisible }: Props ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
@@ -34,7 +38,7 @@ export default function Patterns() {
 	);
 
 	return (
-		<div className="patternmanager-theme-patterns">
+		<div hidden={ ! isVisible } className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
 				{ ! Object.entries( patterns.data ?? {} ).length ? (
 					<div className="grid-empty">

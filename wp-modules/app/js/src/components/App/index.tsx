@@ -65,15 +65,13 @@ function PatternManager() {
 					{ notice.snackBarValue }
 				</Snackbar>
 			) : null }
-			{ 'theme_patterns' === currentView.currentView ? (
-				<>
-					<Header />
-					<Patterns />
-				</>
-			) : null }
-			{ 'pattern_editor' === currentView.currentView ? (
-				<PatternEditor />
-			) : null }
+			{ 'theme_patterns' === currentView.currentView ? <Header /> : null }
+			<Patterns
+				isVisible={ 'theme_patterns' === currentView.currentView }
+			/>
+			<PatternEditor
+				isVisible={ 'pattern_editor' === currentView.currentView }
+			/>
 		</>
 	);
 }
