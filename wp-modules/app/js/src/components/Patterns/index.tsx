@@ -9,6 +9,7 @@ import usePmContext from '../../hooks/usePmContext';
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
+import SearchCount from './SearchCount';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
@@ -20,17 +21,18 @@ export default function Patterns() {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
+	const patternsWithUncategorized = createPatternsWithUncategorized(
+		patterns.data
+	);
+
 	const filteredPatterns = getFilteredPatterns(
-		patterns.data,
+		patternsWithUncategorized,
 		searchTerm,
 		currentCategory
 	);
 
-	const filteredCategories = getUniquePatternCategories(
-		searchTerm
-			? filteredPatterns
-			: // Get a fresh set of patterns with 'uncategorized'.
-			  createPatternsWithUncategorized( patterns.data )
+	const uniqueCategories = getUniquePatternCategories(
+		patternsWithUncategorized
 	);
 
 	return (
@@ -65,11 +67,20 @@ export default function Patterns() {
 									setSearchTerm( newSearchTerm );
 								} }
 							/>
-							<PatternCategories
-								categories={ filteredCategories }
-								currentCategory={ currentCategory }
-								setCurrentCategory={ setCurrentCategory }
-							/>
+							{ searchTerm ? (
+								<SearchCount
+									resultsLength={
+										Object.keys( filteredPatterns ).length
+									}
+									searchTerm={ searchTerm }
+								/>
+							) : (
+								<PatternCategories
+									categories={ uniqueCategories }
+									currentCategory={ currentCategory }
+									setCurrentCategory={ setCurrentCategory }
+								/>
+							) }
 						</div>
 						<div className="inner-grid">
 							<PatternGrid themePatterns={ filteredPatterns } />

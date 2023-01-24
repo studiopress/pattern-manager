@@ -29,14 +29,12 @@ describe( 'getFilteredPatterns', () => {
 					name: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
-					categories: [ 'uncategorized' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
 					name: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
-					categories: [ 'uncategorized' ],
 				},
 			},
 		],
@@ -76,6 +74,7 @@ describe( 'getFilteredPatterns', () => {
 					name: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
+					categories: [ 'something-random' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
@@ -92,6 +91,23 @@ describe( 'getFilteredPatterns', () => {
 					name: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
+					categories: [ 'something-random' ],
+				},
+				'another-pattern': {
+					title: 'Another Pattern',
+					name: 'another-pattern',
+					slug: 'another-pattern',
+					content: 'Here is some content',
+				},
+			},
+		],
+		[
+			{
+				'example-pattern': {
+					title: 'Example Pattern',
+					name: 'example-pattern',
+					slug: 'example-pattern',
+					content: 'This is example content',
 					categories: [ 'uncategorized' ],
 				},
 				'another-pattern': {
@@ -99,6 +115,24 @@ describe( 'getFilteredPatterns', () => {
 					name: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
+					categories: [ 'category-that-is-ignored' ],
+				},
+				'third-pattern': {
+					title: 'Third Pattern',
+					name: 'third-pattern',
+					slug: 'third-pattern',
+					content: 'Here is even more content',
+					categories: [ 'category-that-is-ignored' ],
+				},
+			},
+			'example pattern',
+			'category-that-is-ignored',
+			{
+				'example-pattern': {
+					title: 'Example Pattern',
+					name: 'example-pattern',
+					slug: 'example-pattern',
+					content: 'This is example content',
 					categories: [ 'uncategorized' ],
 				},
 			},

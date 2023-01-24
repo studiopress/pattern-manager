@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import createPatternsWithUncategorized from './createPatternsWithUncategorized';
 import type { Pattern, Patterns } from '../types';
 
+/** Return patterns filtered either by search term or category. */
 export default function getFilteredPatterns(
 	patterns: Patterns,
 	searchTerm: string,
@@ -11,8 +11,9 @@ export default function getFilteredPatterns(
 ) {
 	return getPatternsBySearchTerm(
 		getPatternsByCategory(
-			createPatternsWithUncategorized( patterns ),
-			categoryName
+			patterns,
+			// Ignore the selected category when searching.
+			searchTerm ? 'all-patterns' : categoryName
 		),
 		searchTerm.trim()
 	);
@@ -21,7 +22,7 @@ export default function getFilteredPatterns(
 function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 	return searchTerm
 		? Object.entries( patterns ).reduce(
-				( acc, [ patternName, pattern ] ) => {
+				( accumulator, [ patternName, pattern ] ) => {
 					// Add pattern header keys to the arr below to include in search.
 					const match = [ 'title', 'keywords', 'description' ].some(
 						( key: keyof Pattern ) => {
@@ -36,10 +37,10 @@ function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 
 					return match
 						? {
-								...acc,
+								...accumulator,
 								[ patternName ]: pattern,
 						  }
-						: acc;
+						: accumulator;
 				},
 				{}
 		  )
