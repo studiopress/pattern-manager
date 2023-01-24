@@ -27,6 +27,7 @@ export default function PatternPreview( { url, scale }: Props ) {
 		>
 			<iframe
 				src={ url }
+				loading="lazy"
 				title={ __( 'Pattern Preview', 'pattern-manager' ) }
 				role={ 'img' }
 				ref={ setIframeRef }
