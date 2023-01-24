@@ -9,6 +9,7 @@ export default function BackButton() {
 	return (
 		<Fill name="__experimentalMainDashboardButton">
 			<Button
+				className="edit-post-fullscreen-mode-close"
 				label={ __( 'Back to Patterns', 'pattern-manager' ) }
 				showTooltip={ true }
 				onClick={ () => {
