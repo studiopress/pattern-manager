@@ -22,7 +22,7 @@ export default function getFilteredPatterns(
 function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 	return searchTerm
 		? Object.entries( patterns ).reduce(
-				( acc, [ patternName, pattern ] ) => {
+				( accumulator, [ patternName, pattern ] ) => {
 					// Add pattern header keys to the arr below to include in search.
 					const match = [ 'title', 'keywords', 'description' ].some(
 						( key: keyof Pattern ) => {
@@ -37,10 +37,10 @@ function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 
 					return match
 						? {
-								...acc,
+								...accumulator,
 								[ patternName ]: pattern,
 						  }
-						: acc;
+						: accumulator;
 				},
 				{}
 		  )
