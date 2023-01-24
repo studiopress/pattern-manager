@@ -1,10 +1,9 @@
 //  Assets
 import '../../../../css/src/index.scss';
-import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 // WP dependencies
 import { useRef } from '@wordpress/element';
-import { Snackbar, Spinner } from '@wordpress/components';
+import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 // Globals
@@ -22,10 +21,8 @@ import useNotice from '../../hooks/useNotice';
 
 // Components
 import Patterns from '../Patterns';
+import PatternsNav from '../PatternsNav';
 import PatternEditor from '../PatternEditor';
-
-// Utils
-import getNextPatternIds from '../../utils/getNextPatternIds';
 
 // Types
 import type { InitialContext } from '../../types';
@@ -55,7 +52,7 @@ export default function App() {
 }
 
 function PatternManager() {
-	const { currentPatternId, currentView, notice, patterns } = usePmContext();
+	const { currentView, notice } = usePmContext();
 
 	return (
 		<>
@@ -70,69 +67,7 @@ function PatternManager() {
 			) : null }
 			{ 'theme_patterns' === currentView.currentView ? (
 				<>
-					<div className="patternmanager-nav-container">
-						<div className="nav-container-logo">
-							<img
-								className="logo-svg"
-								aria-hidden="true"
-								alt=""
-								src={ wpeLogoDefaultCropped }
-							/>
-							<span className="logo-title">
-								{ __( 'Pattern Manager', 'pattern-manager' ) }
-							</span>
-						</div>
-
-						<div className="nav-container-inner">
-							<button
-								type="button"
-								disabled={ patterns.fetchInProgress }
-								className="nav-button"
-								onClick={ () => {
-									patterns.save();
-								} }
-							>
-								{ patterns.isSaving ? (
-									<>
-										<Spinner />
-										{ __( 'Saving', 'pattern-manager' ) }
-									</>
-								) : (
-									__( 'Save', 'pattern-manager' )
-								) }
-							</button>
-
-							<button
-								className="nav-button"
-								onClick={ () => {
-									// Get the new pattern title and slug.
-									const { patternTitle, patternSlug } =
-										getNextPatternIds( patterns.data );
-
-									patterns.createPattern( {
-										title: patternTitle,
-										name: patternSlug,
-										slug: patternSlug,
-										categories: [],
-										keywords: [],
-										blockTypes: [],
-										postTypes: [],
-										inserter: true,
-										description: '',
-										viewportWidth: '',
-										content: '',
-									} );
-									currentPatternId.set( patternSlug );
-									currentView.set( 'pattern_editor' );
-								} }
-							>
-								{ __(
-									'Create New Pattern',
-									'pattern-manager'
-								) }
-							</button>
-						</div>
-					</div>
+					<PatternsNav />
 					<Patterns />
 				</>
 			) : null }
