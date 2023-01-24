@@ -11,7 +11,6 @@ import {
 } from './SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
-import useToggleSidebarPanels from '../../hooks/useToggleSidebarPanels';
 import type { PatternEditorSidebarProps } from '../PatternEditorSidebar/types';
 
 export default function PatternEditorSidebar( {
@@ -20,11 +19,6 @@ export default function PatternEditorSidebar( {
 }: PatternEditorSidebarProps ) {
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
-
-	useToggleSidebarPanels( {
-		isOpen: [ 'title', 'categories' ],
-		isClosed: [ 'keywords', 'description', 'post-types', 'transforms' ],
-	} );
 
 	return (
 		<div id={ coreLastUpdate }>
