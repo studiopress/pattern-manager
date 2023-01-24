@@ -20,7 +20,6 @@ export default function Header() {
 				<img
 					className="logo-svg"
 					aria-hidden="true"
-					alt=""
 					src={ wpeLogoDefaultCropped }
 				/>
 				<span className="logo-title">
