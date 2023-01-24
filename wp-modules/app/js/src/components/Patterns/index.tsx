@@ -24,7 +24,8 @@ export default function Patterns() {
 	const filteredPatterns = getFilteredPatterns(
 		patterns.data,
 		searchTerm,
-		currentCategory
+		// Ignore the selected category when searching.
+		searchTerm ? 'all-patterns' : currentCategory
 	);
 
 	const filteredCategories = getUniquePatternCategories(
