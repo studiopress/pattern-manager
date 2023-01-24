@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-import createPatternsWithUncategorized from './createPatternsWithUncategorized';
 import type { Pattern, Patterns } from '../types';
 
+/** Return patterns filtered either by search term or category. */
 export default function getFilteredPatterns(
 	patterns: Patterns,
 	searchTerm: string,
@@ -11,8 +11,9 @@ export default function getFilteredPatterns(
 ) {
 	return getPatternsBySearchTerm(
 		getPatternsByCategory(
-			createPatternsWithUncategorized( patterns ),
-			categoryName
+			patterns,
+			// Ignore the selected category when searching.
+			searchTerm ? 'all-patterns' : categoryName
 		),
 		searchTerm.trim()
 	);
