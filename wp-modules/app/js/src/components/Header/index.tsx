@@ -15,8 +15,8 @@ export default function Header() {
 	const { currentPatternId, currentView, patterns } = usePmContext();
 
 	return (
-		<div className="patternmanager-nav-container">
-			<div className="nav-container-logo">
+		<div className="pattern-manager-header-container">
+			<div className="header-container-logo">
 				<img
 					className="logo-svg"
 					aria-hidden="true"
@@ -28,11 +28,11 @@ export default function Header() {
 				</span>
 			</div>
 
-			<div className="nav-container-inner">
+			<div className="header-container-inner">
 				<button
 					type="button"
 					disabled={ patterns.fetchInProgress }
-					className="nav-button"
+					className="header-button"
 					onClick={ () => {
 						patterns.save();
 					} }
@@ -48,7 +48,7 @@ export default function Header() {
 				</button>
 
 				<button
-					className="nav-button"
+					className="header-button"
 					onClick={ () => {
 						// Get the new pattern title and slug.
 						const { patternTitle, patternSlug } = getNextPatternIds(
