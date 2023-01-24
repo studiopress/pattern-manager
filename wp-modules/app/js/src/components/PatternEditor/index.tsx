@@ -29,7 +29,7 @@ export default function PatternEditor( { visible }: Props ) {
 
 	return (
 		<div hidden={ ! visible } className="patternmanager-pattern-work-area">
-			{ currentPatternId?.value ? <BlockEditor /> : null }
+			{ currentPatternId.value ? <BlockEditor /> : null }
 		</div>
 	);
 }
@@ -45,7 +45,7 @@ export function BlockEditor() {
 	const nameTaken = ( newSlug: string ) => {
 		return Object.values( patterns.data ).some( ( pattern ) => {
 			return (
-				pattern.slug === newSlug && currentPatternId?.value !== newSlug
+				pattern.slug === newSlug && currentPatternId.value !== newSlug
 			);
 		} );
 	};
@@ -116,7 +116,7 @@ export function BlockEditor() {
 		return () => {
 			window.removeEventListener( 'message', patternListenerCallbacks );
 		};
-	}, [ currentPatternId?.value, patternEditorIframe ] );
+	}, [ currentPatternId.value, patternEditorIframe ] );
 
 	function setInitialData(
 		iframeRef: MutableRefObject< HTMLIFrameElement >
@@ -145,7 +145,7 @@ export function BlockEditor() {
 									{
 										span: (
 											<span>
-												{ currentPattern?.title }
+												{ currentPattern.title }
 											</span>
 										),
 									}
