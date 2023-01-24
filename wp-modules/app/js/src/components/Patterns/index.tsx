@@ -21,18 +21,18 @@ export default function Patterns() {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	const filteredPatterns = getFilteredPatterns(
-		patterns.data,
-		searchTerm,
-		// Ignore the selected category when searching.
-		searchTerm ? 'all-patterns' : currentCategory
+	const patternsWithUncategorized = createPatternsWithUncategorized(
+		patterns.data
 	);
 
-	const filteredCategories = getUniquePatternCategories(
-		searchTerm
-			? filteredPatterns
-			: // Get a fresh set of patterns with 'uncategorized'.
-			  createPatternsWithUncategorized( patterns.data )
+	const filteredPatterns = getFilteredPatterns(
+		patternsWithUncategorized,
+		searchTerm,
+		currentCategory
+	);
+
+	const uniqueCategories = getUniquePatternCategories(
+		patternsWithUncategorized
 	);
 
 	return (
@@ -76,7 +76,7 @@ export default function Patterns() {
 								/>
 							) : (
 								<PatternCategories
-									categories={ filteredCategories }
+									categories={ uniqueCategories }
 									currentCategory={ currentCategory }
 									setCurrentCategory={ setCurrentCategory }
 								/>
