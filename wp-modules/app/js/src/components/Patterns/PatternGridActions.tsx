@@ -1,6 +1,6 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
-import { Icon, close, copy, edit } from '@wordpress/icons';
+import { Icon, trash, copy, settings } from '@wordpress/icons';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
@@ -36,7 +36,11 @@ export default function PatternGridActions( {
 					currentView.set( 'pattern_editor' );
 				} }
 			>
-				<Icon className="item-action-icon" icon={ edit } size={ 30 } />
+				<Icon
+					className="item-action-icon"
+					icon={ settings }
+					size={ 30 }
+				/>
 				<span className="item-action-button-text">Edit</span>
 			</button>
 
@@ -70,7 +74,7 @@ export default function PatternGridActions( {
 					patterns.deletePattern( patternName );
 				} }
 			>
-				<Icon className="item-action-icon" icon={ close } size={ 30 } />
+				<Icon className="item-action-icon" icon={ trash } size={ 30 } />
 				<span className="item-action-button-text">Delete</span>
 			</button>
 		</div>
