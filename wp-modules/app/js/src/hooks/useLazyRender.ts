@@ -22,7 +22,9 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  * ```jsx
  * return (
  *   <div ref={ lazyContainerRef }>
- *     { lazyIsIntersecting ? <img/> : null }
+ *     <div hidden={ ! lazyIsIntersecting }>
+ *       <img src="arbitrary-image" />
+ *     </div>
  *   </div>
  * );
  * ```
@@ -32,7 +34,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  * ```jsx
  * return (
  *   <div ref={ lazyContainerRef }>
- *     { lazyHasIntersected ? <iframe/> : null }
+ *     { lazyHasIntersected ? <iframe src="arbitrary-url" /> : null }
  *   </div>
  * );
  * ```
