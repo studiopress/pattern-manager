@@ -242,12 +242,17 @@ function enqueue_meta_fields_in_editor() {
 	// Include the js on the block editor page for the pm_pattern post type.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'patternmanager_post_meta', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'pattern_manager_post_meta', $js_url, $dependencies, $js_ver, true );
+	wp_localize_script(
+		'pattern_manager_post_meta',
+		'patternManager',
+		[ 'patterns' => \PatternManager\PatternDataHandlers\get_patterns(), ]
+	);
 
 	// Enqueue styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
-	wp_enqueue_style( 'patternmanager_post_meta_style', $css_url, array(), $css_ver );
+	wp_enqueue_style( 'pattern_manager_post_meta_style', $css_url, array(), $css_ver );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
 

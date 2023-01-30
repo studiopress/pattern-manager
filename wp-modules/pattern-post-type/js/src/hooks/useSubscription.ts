@@ -1,3 +1,5 @@
+/* global patternManager */
+
 import { useEffect } from '@wordpress/element';
 import { select, subscribe, dispatch } from '@wordpress/data';
 import { rawHandler } from '@wordpress/blocks';
@@ -8,11 +10,41 @@ export default function useSubscription(
 	postDirty: boolean
 ) {
 	useEffect( () => {
+		const patternData =
+			patternManager.patterns?.[
+				new URL( location.href ).searchParams.get( 'name' )
+			];
+		// Insert the block string so the blocks show up in the editor itself.
+		dispatch( 'core/editor' ).resetEditorBlocks(
+			rawHandler( {
+				HTML: patternData.content,
+				mode: 'BLOCKS',
+			} )
+		);
+
+		// Prevent this notice: "The backup of this post in your browser is different from the version below."
+		// Get all notices, then remove if the notice has a matching wp autosave id.
+		const notices = select( 'core/notices' ).getNotices();
+		notices?.forEach( ( notice ) => {
+			if ( notice.id.includes( 'wpEditorAutosaveRestore' ) ) {
+				dispatch( 'core/notices' ).removeNotice( notice.id );
+			}
+		} );
+
+		// TODO: Set the categories. They can found at: response.patternData.categories
+
+		// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
+		const patternMeta = { ...patternData };
+		delete patternMeta.content;
+
+		// Set the meta of the pattern
+		dispatch( 'core/editor' ).editPost( {
+			meta: { ...patternMeta },
+		} );
+	}, [] );
+	useEffect( () => {
 		// Tell the parent page that we are loaded.
 		let patternmanagerPatternEditorLoaded = false;
-		let patternDataSet = false;
-		let patternUpdatedDebounce: null | ReturnType< typeof setTimeout > =
-			null;
 		subscribe( () => {
 			if ( ! patternmanagerPatternEditorLoaded && currentPostType ) {
 				window.parent.postMessage( 'pm_pattern_editor_loaded' );
@@ -21,33 +53,6 @@ export default function useSubscription(
 
 			if ( postDirty ) {
 				window.parent.postMessage( 'pm_pattern_editor_dirty' );
-			}
-
-			// Whenever the block editor fires that a change happened, pass it up to the parent Pattern Manager app state.
-			if ( patternDataSet ) {
-				clearTimeout( patternUpdatedDebounce );
-				patternUpdatedDebounce = setTimeout( () => {
-					// Get fresh meta and content for the post.
-					const meta: PostMeta =
-						select( 'core/editor' ).getEditedPostAttribute(
-							'meta'
-						);
-					const content: string =
-						select( 'core/editor' ).getEditedPostContent();
-
-					// Assemble the current blockPatternData into a single object.
-					const blockPatternData = {
-						content,
-						...meta,
-						slug: meta.name,
-					};
-					window.parent.postMessage(
-						JSON.stringify( {
-							message: 'patternmanager_block_pattern_updated',
-							blockPatternData,
-						} )
-					);
-				}, 10 );
 			}
 		} );
 
@@ -63,42 +68,6 @@ export default function useSubscription(
 						message: string;
 						patternData?: PostMeta;
 					} = JSON.parse( event.data );
-
-					if ( response.message === 'set_initial_pattern_data' ) {
-						// Insert the block string so the blocks show up in the editor itself.
-						dispatch( 'core/editor' ).resetEditorBlocks(
-							rawHandler( {
-								HTML: response.patternData.content,
-								mode: 'BLOCKS',
-							} )
-						);
-
-						// Prevent this notice: "The backup of this post in your browser is different from the version below."
-						// Get all notices, then remove if the notice has a matching wp autosave id.
-						const notices = select( 'core/notices' ).getNotices();
-						notices?.forEach( ( notice ) => {
-							if (
-								notice.id.includes( 'wpEditorAutosaveRestore' )
-							) {
-								dispatch( 'core/notices' ).removeNotice(
-									notice.id
-								);
-							}
-						} );
-
-						// TODO: Set the categories. They can found at: response.patternData.categories
-
-						// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
-						const patternMeta = { ...response.patternData };
-						delete patternMeta.content;
-
-						// Set the meta of the pattern
-						dispatch( 'core/editor' ).editPost( {
-							meta: { ...patternMeta },
-						} );
-						patternDataSet = true;
-						window.parent.postMessage( 'pm_pattern_data_set' );
-					}
 
 					if (
 						response.message === 'patternmanager_hotswapped_theme'
