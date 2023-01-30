@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useRef } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
@@ -14,7 +14,11 @@ export default function TitlePanel( {
 	postMeta,
 	handleChange,
 }: BaseSidebarProps ) {
-	const [ nameInput, setNameInput ] = useState( postMeta.title );
+	const pattern =
+	patternManager.patterns?.[
+		new URL( location.href ).searchParams.get( 'name' )
+	];
+	const [ nameInput, setNameInput ] = useState( pattern.title );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'pattern-manager' )
@@ -24,9 +28,7 @@ export default function TitlePanel( {
 	function doesNameExist( patternTitle: string, patterns: Patterns ) {
 		const newSlug = convertToSlug( patternTitle );
 		return Object.values( patterns ).some( ( pattern ) => {
-				return (
-					newSlug === pattern.slug && postMeta.slug !== newSlug
-				);
+			return newSlug === pattern.slug && postMeta.slug !== newSlug;
 		} );
 	}
 
@@ -41,12 +43,12 @@ export default function TitlePanel( {
 					aria-label="Pattern Title Name Input (used for renaming the pattern)"
 					value={ nameInput }
 					onChange={ ( value ) => {
+						setNameInput( value );
+
 						// Validate the nameInput to provide immediate feedback.
 						if ( doesNameExist( value, patternManager.patterns ) ) {
 							setPatternNameIsInvalid( true );
 							setErrorMessage( errorMessage );
-						} else {
-							setNameInput( value );
 						}
 					} }
 					onBlur={ () => {

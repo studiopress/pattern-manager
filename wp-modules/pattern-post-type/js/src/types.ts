@@ -49,4 +49,4 @@ export type Patterns = {
 
 export type InitialPatternManager = {
 	patterns: Patterns;
-}
+};
