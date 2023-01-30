@@ -12,9 +12,7 @@ export default function BackButton() {
 				className="edit-post-fullscreen-mode-close"
 				label={ __( 'Back to Patterns', 'pattern-manager' ) }
 				showTooltip={ true }
-				onClick={ () => {
-					window.parent.postMessage( 'pm_back_to_patterns' );
-				} }
+				href="/wp-admin/admin.php?page=pattern-manager"
 			>
 				<Icon size="36px" icon={ wordpress } />
 			</Button>
