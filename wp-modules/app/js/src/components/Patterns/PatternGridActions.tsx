@@ -23,18 +23,17 @@ export default function PatternGridActions( {
 	patternName,
 	patternData,
 }: Props ) {
-	const { patterns, currentView, currentPatternId } = usePmContext();
+	const { patterns, currentView, currentPatternId, siteUrl } = usePmContext();
+	// TODO: make this dynamic.
+	const postId = 0;
 
 	return (
 		<div className="item-actions">
-			<button
+			<a
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				onClick={ () => {
-					currentPatternId.set( patternName );
-					currentView.set( 'pattern_editor' );
-				} }
+				href={ `${ siteUrl }/wp-admin/post-new.php?post_type=pm_pattern&?post=${ postId }` }
 			>
 				<Icon
 					className="item-action-icon"
@@ -42,7 +41,7 @@ export default function PatternGridActions( {
 					size={ 30 }
 				/>
 				<span className="item-action-button-text">Edit</span>
-			</button>
+			</a>
 
 			<div className="item-action-button-separator"></div>
 
