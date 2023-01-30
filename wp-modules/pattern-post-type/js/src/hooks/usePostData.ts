@@ -17,7 +17,6 @@ export default function usePostData() {
 					select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
 				currentPostType: select( 'core/editor' ).getCurrentPostType(),
 				postContent: select( 'core/editor' ).getEditedPostContent(),
-				postDirty: select( 'core/editor' ).isEditedPostDirty(),
 			} ),
 			[]
 		),

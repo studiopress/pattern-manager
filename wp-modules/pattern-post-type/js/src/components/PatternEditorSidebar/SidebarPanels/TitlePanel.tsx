@@ -15,9 +15,9 @@ export default function TitlePanel( {
 	handleChange,
 }: BaseSidebarProps ) {
 	const pattern =
-	patternManager.patterns?.[
-		new URL( location.href ).searchParams.get( 'name' )
-	];
+		patternManager.patterns?.[
+			new URL( location.href ).searchParams.get( 'name' )
+		];
 	const [ nameInput, setNameInput ] = useState( pattern.title );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
@@ -27,8 +27,8 @@ export default function TitlePanel( {
 	const previousPatternName = useRef( '' );
 	function doesNameExist( patternTitle: string, patterns: Patterns ) {
 		const newSlug = convertToSlug( patternTitle );
-		return Object.values( patterns ).some( ( pattern ) => {
-			return newSlug === pattern.slug && postMeta.slug !== newSlug;
+		return Object.values( patterns ).some( ( ownPattern ) => {
+			return newSlug === ownPattern.slug && postMeta.slug !== newSlug;
 		} );
 	}
 

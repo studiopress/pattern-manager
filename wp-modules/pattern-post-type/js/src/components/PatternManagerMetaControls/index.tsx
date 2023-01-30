@@ -1,21 +1,19 @@
 import PatternEditorSidebar from '../PatternEditorSidebar';
 import usePostData from '../../hooks/usePostData';
-import useSubscription from '../../hooks/useSubscription';
+import useSetup from '../../hooks/useSetup';
 import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
 import useFilters from '../../hooks/useFilters';
 
 export default function PatternManagerMetaControls() {
-	const { coreLastUpdate, postMeta, currentPostType, postDirty } =
-		usePostData();
-	useSubscription( currentPostType, postDirty );
+	const { coreLastUpdate, postMeta, currentPostType } = usePostData();
+	useSetup();
 	useSaveButtonInterrupter();
 	useFilters( postMeta );
 
-	// Will only render component for post type 'pm_pattern'.
-	return currentPostType === 'pm_pattern' ? (
+	return (
 		<PatternEditorSidebar
 			coreLastUpdate={ coreLastUpdate }
 			postMeta={ postMeta }
 		/>
-	) : null;
+	);
 }
