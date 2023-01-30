@@ -40,7 +40,7 @@ export default function TitlePanel( {
 			{ postMeta?.title && (
 				<TextControl
 					id="patternmanager-pattern-post-name-input-component"
-					aria-label="Pattern Title Name Input (used for renaming the pattern)"
+					aria-label={ __( 'Pattern Title Name Input (used for renaming the pattern)', 'pattern-manager' ) }
 					value={ nameInput }
 					onChange={ ( value ) => {
 						setNameInput( value );
