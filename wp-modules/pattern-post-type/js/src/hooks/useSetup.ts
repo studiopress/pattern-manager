@@ -1,14 +1,14 @@
 import { useEffect } from '@wordpress/element';
-import { select, dispatch } from '@wordpress/data';
+import { dispatch, select, useSelect } from '@wordpress/data';
 import { rawHandler } from '@wordpress/blocks';
-import { patternManager } from '../globals';
+import { Pattern, Patterns, PostMeta, SelectQuery } from '../types';
 
-export default function useSetup() {
+export default function useSetup(
+	patternName: Pattern[ 'name' ],
+	pattern: Pattern,
+	setPatterns: ( newPattern: Patterns ) => void
+) {
 	useEffect( () => {
-		const pattern =
-			patternManager.patterns?.[
-				new URL( location.href ).searchParams.get( 'name' )
-			];
 		// Insert the block string so the blocks show up in the editor itself.
 		dispatch( 'core/editor' ).resetEditorBlocks(
 			rawHandler( {
@@ -36,4 +36,21 @@ export default function useSetup() {
 			meta: patternMeta,
 		} );
 	}, [] );
+
+	const content: string = useSelect( ( ownSelect: SelectQuery ) => {
+		return ownSelect( 'core/editor' ).getEditedPostContent();
+	}, [] );
+	const meta: PostMeta = useSelect( ( ownSelect: SelectQuery ) => {
+		return ownSelect( 'core/editor' ).getEditedPostAttribute( 'meta' );
+	}, [] );
+
+	useEffect( () => {
+		const blockPatternData = {
+			content,
+			...meta,
+			slug: meta.name,
+		};
+
+		setPatterns( { [ patternName ]: blockPatternData } );
+	}, [ content, meta ] );
 }

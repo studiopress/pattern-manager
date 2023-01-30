@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import { ModalToggle, InserterToggle } from '../Toggles';
 import {
 	TitlePanel,
@@ -16,13 +17,23 @@ import type { PatternEditorSidebarProps } from '../PatternEditorSidebar/types';
 export default function PatternEditorSidebar( {
 	coreLastUpdate,
 	postMeta,
-}: PatternEditorSidebarProps ) {
+	patternName,
+	setPatternName,
+}: PatternEditorSidebarProps & {
+	patternName: string;
+	setPatternName: ( newName: string ) => void;
+} ) {
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
 
 	return (
 		<div id={ coreLastUpdate }>
-			<TitlePanel postMeta={ postMeta } handleChange={ updatePostMeta } />
+			<TitlePanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+				patternName={ patternName }
+				setPatternName={ setPatternName }
+			/>
 			<CategoriesPanel
 				postMeta={ postMeta }
 				categories={ categories }

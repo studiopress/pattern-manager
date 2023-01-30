@@ -13,12 +13,12 @@ import { patternManager } from '../../../globals';
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
-}: BaseSidebarProps ) {
-	const pattern =
-		patternManager.patterns?.[
-			new URL( location.href ).searchParams.get( 'name' )
-		];
-	const [ nameInput, setNameInput ] = useState( pattern.title );
+	patternName,
+	setPatternName,
+}: BaseSidebarProps & {
+	patternName: string;
+	setPatternName: ( newName: string ) => void;
+} ) {
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'pattern-manager' )
@@ -40,10 +40,13 @@ export default function TitlePanel( {
 			{ postMeta?.title && (
 				<TextControl
 					id="patternmanager-pattern-post-name-input-component"
-					aria-label={ __( 'Pattern Title Name Input (used for renaming the pattern)', 'pattern-manager' ) }
-					value={ nameInput }
+					aria-label={ __(
+						'Pattern Title Name Input (used for renaming the pattern)',
+						'pattern-manager'
+					) }
+					value={ patternName }
 					onChange={ ( value ) => {
-						setNameInput( value );
+						setPatternName( value );
 
 						// Validate the nameInput to provide immediate feedback.
 						if ( doesNameExist( value, patternManager.patterns ) ) {
@@ -53,14 +56,14 @@ export default function TitlePanel( {
 					} }
 					onBlur={ () => {
 						// Do not allow an empty title to be saved to postMeta.
-						if ( ! nameInput.length ) {
-							setNameInput( previousPatternName.current );
+						if ( ! patternName.length ) {
+							setPatternName( previousPatternName.current );
 							setPatternNameIsInvalid( false );
 							return;
 						}
 
-						handleChange( 'title', nameInput, {
-							name: convertToSlug( nameInput ),
+						handleChange( 'title', patternName, {
+							name: convertToSlug( patternName ),
 							previousName: previousPatternName.current,
 						} );
 					} }
