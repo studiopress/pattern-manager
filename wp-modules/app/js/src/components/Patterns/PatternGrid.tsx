@@ -1,12 +1,9 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
-
-// Globals
-import { patternManager } from '../../globals';
+import { lazy, Suspense } from '@wordpress/element';
 
 // Components
-import PatternPreview from '../PatternPreview';
-import PatternGridActions from './PatternGridActions';
+const PatternGridItem = lazy( () => import( './PatternGridItem' ) );
 
 // Types
 import type { Patterns } from '../../types';
@@ -27,31 +24,13 @@ export default function PatternGrid( { themePatterns }: Props ) {
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						return (
-							<div key={ patternName } className="grid-item">
-								<div className="item-inner">
-									<div className="item-pattern-preview">
-										<PatternPreview
-											key={ patternName }
-											url={
-												patternManager.siteUrl +
-												'?pm_pattern_preview=' +
-												patternData.name
-											}
-											scale={ 0.2 }
-										/>
-									</div>
-								</div>
-
-								<PatternGridActions
+							<Suspense key={ patternName } fallback={ null }>
+								<PatternGridItem
 									themePatterns={ themePatterns }
 									patternName={ patternName }
 									patternData={ patternData }
 								/>
-
-								<div className="item-pattern-preview-heading">
-									<span>{ patternData.title }</span>
-								</div>
-							</div>
+							</Suspense>
 						);
 					}
 				)
