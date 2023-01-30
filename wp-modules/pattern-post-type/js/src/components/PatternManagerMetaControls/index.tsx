@@ -13,7 +13,6 @@ import {
 import usePatternData from '../../hooks/usePatternData';
 import useSetup from '../../hooks/useSetup';
 import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
-import useFilters from '../../hooks/useFilters';
 import { patternManager } from '../../globals';
 import { Patterns } from '../../types';
 import usePostData from '../../hooks/usePostData';
@@ -34,7 +33,6 @@ export default function PatternManagerMetaControls() {
 
 	useSetup( patternName, pattern, updatePatterns, postContent, postMeta );
 	useSaveButtonInterrupter( patterns, updatePatterns );
-	useFilters( postMeta );
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );

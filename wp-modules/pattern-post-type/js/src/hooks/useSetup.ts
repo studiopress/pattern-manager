@@ -21,7 +21,6 @@ export default function useSetup(
 	}, [ postContent, postMeta ] );
 
 	useEffect( () => {
-		// Insert the block string so the blocks show up in the editor itself.
 		dispatch( 'core/editor' ).resetEditorBlocks(
 			rawHandler( {
 				HTML: pattern.content,
@@ -39,11 +38,8 @@ export default function useSetup(
 		} );
 
 		// TODO: Set the categories. They can found at: response.patternData.categories
-
-		// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
 		const { content, ...patternMeta } = pattern;
 
-		// Set the meta of the pattern
 		dispatch( 'core/editor' ).editPost( {
 			meta: patternMeta,
 		} );
