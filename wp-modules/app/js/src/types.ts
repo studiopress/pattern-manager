@@ -1,9 +1,4 @@
-/* eslint-disable camelcase */
-
-import React from 'react';
 import useNotice from './hooks/useNotice';
-import useCurrentView from './hooks/useCurrentView';
-import useCurrentId from './hooks/useCurrentId';
 import usePatterns from './hooks/usePatterns';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
