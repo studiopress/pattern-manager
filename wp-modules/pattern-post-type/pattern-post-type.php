@@ -246,7 +246,14 @@ function enqueue_meta_fields_in_editor() {
 	wp_localize_script(
 		'pattern_manager_post_meta',
 		'patternManager',
-		[ 'patterns' => \PatternManager\PatternDataHandlers\get_patterns(), ]
+		[
+			'apiEndpoints' => array(
+				'savePatternsEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-patterns/' ),
+			),
+			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
+			'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
+			'siteUrl'      => get_bloginfo( 'url' ),
+		]
 	);
 
 	// Enqueue styles, combined automatically using PostCSS in wp-scripts.

@@ -48,5 +48,10 @@ export type Patterns = {
 };
 
 export type InitialPatternManager = {
+	apiNonce: string;
+	apiEndpoints: {
+		savePatternsEndpoint: string;
+	};
 	patterns: Patterns;
+	siteUrl: string;
 };

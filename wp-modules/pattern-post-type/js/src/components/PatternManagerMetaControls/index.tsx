@@ -22,7 +22,7 @@ export default function PatternManagerMetaControls() {
 	}
 
 	useSetup( patternName, pattern, updatePatterns );
-	useSaveButtonInterrupter();
+	useSaveButtonInterrupter( patterns, updatePatterns );
 	useFilters( postMeta );
 
 	return (

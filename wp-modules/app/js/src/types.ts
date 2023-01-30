@@ -12,9 +12,6 @@ export type InitialContext = {
 
 export type InitialPatternManager = {
 	apiNonce: string;
-	apiEndpoints: {
-		savePatternsEndpoint: string;
-	};
 	siteUrl: string;
 	adminUrl: string;
 	patterns: Patterns;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
-import getHeaders from '../utils/getHeaders';
+import getHeaders from '../../../../pattern-post-type/js/src/utils/getHeaders';
 import { Pattern, Patterns } from '../types';
 import type useNotice from './useNotice';
 
@@ -42,44 +42,6 @@ export default function usePatterns(
 			);
 			event.preventDefault();
 		}
-	}
-
-	function savePatternsData() {
-		return new Promise( ( resolve ) => {
-			setIsSaving( true );
-
-			fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
-				method: 'POST',
-				headers: getHeaders(),
-				body: JSON.stringify( { patterns: patternsData } ),
-			} )
-				.then( ( response ) => {
-					if ( ! response.ok ) {
-						throw response.statusText;
-					}
-					return response.json();
-				} )
-				.then( ( data: { patterns: Patterns } ) => {
-					setPatternsData( data.patterns );
-
-					uponSuccessfulSave();
-
-					resolve( data );
-				} );
-		} );
-	}
-
-	function uponSuccessfulSave() {
-		notice.setSnackBarValue(
-			__(
-				'Pattern successfully saved to theme directory',
-				'pattern-manager'
-			)
-		);
-
-		editorDirty.current = false;
-		setIsSaving( false );
-		reloadPatternPreviews();
 	}
 
 	function createPattern( newPattern: Pattern ) {
@@ -128,7 +90,6 @@ export default function usePatterns(
 		deletePattern,
 		fetchInProgress,
 		isSaving,
-		save: savePatternsData,
 		set: editPatterns,
 	};
 }
