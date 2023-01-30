@@ -7,66 +7,27 @@ import { RichText } from '@wordpress/block-editor';
 import convertToSlug from '../../../utils/convertToSlug';
 
 import type { BaseSidebarProps } from '../types';
+import type { Patterns } from '../../../types';
+import { patternManager } from '../../../globals';
 
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
 }: BaseSidebarProps ) {
-	const [ nameInput, setNameInput ] = useState( '' );
+	const [ nameInput, setNameInput ] = useState( postMeta.title );
 	const [ patternNameIsInvalid, setPatternNameIsInvalid ] = useState( false );
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'pattern-manager' )
 	);
 
 	const previousPatternName = useRef( '' );
-
-	/**
-	 * Listener to catch name collision for patterns as they are renamed.
-	 * The targeted response should populate `errorMessage` and `patternNameIsInvalid`.
-	 */
-	useEffect( () => {
-		window.addEventListener(
-			'message',
-			( event ) => {
-				const response = JSON.parse( event.data );
-				if (
-					response.message ===
-					'patternmanager_response_is_pattern_title_taken'
-				) {
-					// Hide or show notice in settings panel on name collision.
-					setPatternNameIsInvalid( response.isInvalid );
-					setErrorMessage( response.errorMessage );
-				}
-			},
-			false
-		);
-	}, [] );
-
-	/*
-	 * Set nameInput and inputDisabled state when postMeta is loaded.
-	 * Also intended to catch switching between patterns.
-	 */
-	useEffect( () => {
-		if ( postMeta.title ) {
-			setNameInput( postMeta.title );
-			// Validate the initial postMeta title.
-			checkPatternTitle( postMeta.title );
-
-			previousPatternName.current = postMeta.title;
-		}
-	}, [ postMeta.title ] );
-
-	/**
-	 * Fire off a postMessage to validate pattern title.
-	 * String is validated in PatternEditor component.
-	 */
-	function checkPatternTitle( patternTitle: string ) {
-		window.parent.postMessage(
-			JSON.stringify( {
-				message: 'pm_pattern_editor_request_is_pattern_title_taken',
-				patternTitle,
-			} )
-		);
+	function doesNameExist( patternTitle: string, patterns: Patterns ) {
+		const newSlug = convertToSlug( patternTitle );
+		return Object.values( patterns ).some( ( pattern ) => {
+				return (
+					newSlug === pattern.slug && postMeta.slug !== newSlug
+				);
+		} );
 	}
 
 	return (
@@ -80,9 +41,13 @@ export default function TitlePanel( {
 					aria-label="Pattern Title Name Input (used for renaming the pattern)"
 					value={ nameInput }
 					onChange={ ( value ) => {
-						setNameInput( value );
 						// Validate the nameInput to provide immediate feedback.
-						checkPatternTitle( value );
+						if ( doesNameExist( value, patternManager.patterns ) ) {
+							setPatternNameIsInvalid( true );
+							setErrorMessage( errorMessage );
+						} else {
+							setNameInput( value );
+						}
 					} }
 					onBlur={ () => {
 						// Do not allow an empty title to be saved to postMeta.
