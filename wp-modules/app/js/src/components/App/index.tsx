@@ -13,8 +13,6 @@ import { patternManager } from '../../globals';
 import PatternManagerContext from '../../contexts/PatternManagerContext';
 
 // Hooks
-import useCurrentId from '../../hooks/useCurrentId';
-import useCurrentView from '../../hooks/useCurrentView';
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
 import useNotice from '../../hooks/useNotice';
@@ -22,26 +20,19 @@ import useNotice from '../../hooks/useNotice';
 // Components
 import Header from '../Header';
 import Patterns from '../Patterns';
-import PatternEditor from '../PatternEditor';
 
 // Types
 import type { InitialContext } from '../../types';
 
 export default function App() {
-	const currentPatternId = useCurrentId( '' );
 	const notice = useNotice();
 	const patterns = usePatterns( patternManager.patterns, notice );
 
 	const providerValue: InitialContext = {
 		notice,
 		patterns,
-		currentPatternId,
-		currentView: useCurrentView( 'theme_patterns' ),
-		currentPattern: patterns.data?.[ currentPatternId.value ],
 		siteUrl: patternManager.siteUrl,
 		apiEndpoints: patternManager.apiEndpoints,
-		patternEditorIframe: useRef< HTMLIFrameElement >(),
-		templateEditorIframe: useRef< HTMLIFrameElement >(),
 	};
 
 	return (
@@ -52,7 +43,7 @@ export default function App() {
 }
 
 function PatternManager() {
-	const { currentView, notice } = usePmContext();
+	const { notice } = usePmContext();
 
 	return (
 		<>
@@ -65,15 +56,8 @@ function PatternManager() {
 					{ notice.snackBarValue }
 				</Snackbar>
 			) : null }
-			{ 'theme_patterns' === currentView.currentView ? (
-				<>
-					<Header />
-					<Patterns />
-				</>
-			) : null }
-			{ 'pattern_editor' === currentView.currentView ? (
-				<PatternEditor />
-			) : null }
+			<Header />
+			<Patterns />
 		</>
 	);
 }

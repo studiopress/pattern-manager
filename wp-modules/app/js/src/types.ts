@@ -9,19 +9,10 @@ import usePatterns from './hooks/usePatterns';
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
-	currentView: ReturnType< typeof useCurrentView >;
-	currentPatternId: ReturnType< typeof useCurrentId >;
-	currentPattern?: Pattern;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	notice: ReturnType< typeof useNotice >;
 	patterns: ReturnType< typeof usePatterns >;
-	patternEditorIframe: React.MutableRefObject<
-		HTMLIFrameElement | undefined
-	>;
-	templateEditorIframe: React.MutableRefObject<
-		HTMLIFrameElement | undefined
-	>;
 };
 
 export type InitialPatternManager = {

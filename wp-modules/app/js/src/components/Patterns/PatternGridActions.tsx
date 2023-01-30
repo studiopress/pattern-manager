@@ -23,7 +23,7 @@ export default function PatternGridActions( {
 	patternName,
 	patternData,
 }: Props ) {
-	const { patterns, currentView, currentPatternId, siteUrl } = usePmContext();
+	const { patterns, siteUrl } = usePmContext();
 	// TODO: make this dynamic.
 	const postId = 0;
 
@@ -33,7 +33,7 @@ export default function PatternGridActions( {
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				href={ `${ siteUrl }/wp-admin/post-new.php?post_type=pm_pattern&?post=${ postId }` }
+				href={ `${ siteUrl }/wp-admin/post-new.php?post_type=pm_pattern&post=${ postId }` }
 			>
 				<Icon
 					className="item-action-icon"
@@ -55,8 +55,7 @@ export default function PatternGridActions( {
 						Object.values( themePatterns ?? {} )
 					);
 					patterns.createPattern( newPattern );
-					currentPatternId.set( newPattern.slug );
-					currentView.set( 'pattern_editor' );
+					// TODO: Maybe prompt to save, then go to the URL of the editor URL.
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
