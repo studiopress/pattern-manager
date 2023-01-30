@@ -24,10 +24,13 @@ function get_app_state() {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	return array(
-		'patterns' => \PatternManager\PatternDataHandlers\get_patterns(),
-		'apiNonce' => wp_create_nonce( 'wp_rest' ),
-		'siteUrl'  => get_bloginfo( 'url' ),
-		'adminUrl' => admin_url(),
+		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
+		'apiEndpoints' => array(
+			'savePatternsEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-patterns/' ),
+		),
+		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
+		'siteUrl'      => get_bloginfo( 'url' ),
+		'adminUrl'     => admin_url(),
 	);
 }
 

@@ -4,7 +4,10 @@ import { Patterns } from '../types';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 
-export default function useSaveButtonInterrupter( patterns: Patterns, updatePatterns: ( newPatterns: Patterns ) => void ) {
+export default function useSaveButtonInterrupter(
+	patterns: Patterns,
+	updatePatterns: ( newPatterns: Patterns ) => void
+) {
 	function savePatterns() {
 		fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
 			method: 'POST',

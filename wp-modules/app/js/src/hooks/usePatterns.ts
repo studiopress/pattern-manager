@@ -44,6 +44,44 @@ export default function usePatterns(
 		}
 	}
 
+	function savePatternsData() {
+		return new Promise( ( resolve ) => {
+			setIsSaving( true );
+
+			fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
+				method: 'POST',
+				headers: getHeaders(),
+				body: JSON.stringify( { patterns: patternsData } ),
+			} )
+				.then( ( response ) => {
+					if ( ! response.ok ) {
+						throw response.statusText;
+					}
+					return response.json();
+				} )
+				.then( ( data: { patterns: Patterns } ) => {
+					setPatternsData( data.patterns );
+
+					uponSuccessfulSave();
+
+					resolve( data );
+				} );
+		} );
+	}
+
+	function uponSuccessfulSave() {
+		notice.setSnackBarValue(
+			__(
+				'Pattern successfully saved to theme directory',
+				'pattern-manager'
+			)
+		);
+
+		editorDirty.current = false;
+		setIsSaving( false );
+		reloadPatternPreviews();
+	}
+
 	function createPattern( newPattern: Pattern ) {
 		setPatternsData( {
 			...patternsData,
