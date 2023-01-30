@@ -28,33 +28,6 @@ export default function usePatterns(
 		} );
 	};
 
-	useEffect( () => {
-		window.addEventListener(
-			'message',
-			( event ) => {
-				if ( event.data === 'pattern_manager_save_current_pattern' ) {
-					setMakeItSaveStaleWorkaround( true );
-				}
-			},
-			false
-		);
-
-		window.addEventListener( 'beforeunload', warnIfUnsavedChanges );
-		return () => {
-			window.removeEventListener( 'beforeunload', warnIfUnsavedChanges );
-		};
-	}, [] );
-
-	/**
-	 * Because pattern_manager_save_current_pattern is called inside an event listener, the patterns object is stale. Doing it this way makes it non-stale.
-	 */
-	useEffect( () => {
-		if ( makeItSaveStaleWorkaround ) {
-			savePatternsData();
-			setMakeItSaveStaleWorkaround( false );
-		}
-	}, [ makeItSaveStaleWorkaround ] );
-
 	/**
 	 * Warns the user if there are unsaved changes before leaving.
 	 *
