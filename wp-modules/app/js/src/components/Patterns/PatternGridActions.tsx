@@ -24,16 +24,13 @@ export default function PatternGridActions( {
 	patternData,
 }: Props ) {
 	const { patterns, siteUrl } = usePmContext();
-	// TODO: make this dynamic.
-	const postId = 0;
-
 	return (
 		<div className="item-actions">
 			<a
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				href={ `${ siteUrl }/wp-admin/post-new.php?post_type=pm_pattern&post=${ postId }` }
+				href={ `${ siteUrl }/wp-admin/post-new.php?post_type=pm_pattern&name=${ patternName }` }
 			>
 				<Icon
 					className="item-action-icon"
