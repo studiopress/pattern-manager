@@ -42,6 +42,7 @@ function PreviewIframe( { url, scale }: Props ) {
 
 	return (
 		<iframe
+			loading="lazy"
 			src={ url }
 			title={ __( 'Pattern Preview', 'pattern-manager' ) }
 			role={ 'img' }
