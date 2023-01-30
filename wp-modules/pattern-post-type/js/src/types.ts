@@ -28,3 +28,25 @@ export type SelectQuery = ( dataStore: string ) => {
 	getBlockPatternCategories: () => { name: string; label: string }[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 };
+
+export type Pattern = {
+	content: string;
+	name: string;
+	title: string;
+	slug: string;
+	description?: string;
+	categories?: string[];
+	keywords?: string[];
+	blockTypes?: string[];
+	postTypes?: string[];
+	inserter?: boolean;
+	viewportWidth?: string | number;
+};
+
+export type Patterns = {
+	[ key: string ]: Pattern;
+};
+
+export type InitialPatternManager = {
+	patterns: Patterns;
+}

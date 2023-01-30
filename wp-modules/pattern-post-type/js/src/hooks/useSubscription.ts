@@ -1,8 +1,7 @@
-/* global patternManager */
-
 import { useEffect } from '@wordpress/element';
 import { select, subscribe, dispatch } from '@wordpress/data';
 import { rawHandler } from '@wordpress/blocks';
+import { patternManager } from '../globals';
 import { PostMeta } from '../types';
 
 export default function useSubscription(
@@ -10,14 +9,14 @@ export default function useSubscription(
 	postDirty: boolean
 ) {
 	useEffect( () => {
-		const patternData =
+		const pattern =
 			patternManager.patterns?.[
 				new URL( location.href ).searchParams.get( 'name' )
 			];
 		// Insert the block string so the blocks show up in the editor itself.
 		dispatch( 'core/editor' ).resetEditorBlocks(
 			rawHandler( {
-				HTML: patternData.content,
+				HTML: pattern.content,
 				mode: 'BLOCKS',
 			} )
 		);
@@ -34,7 +33,7 @@ export default function useSubscription(
 		// TODO: Set the categories. They can found at: response.patternData.categories
 
 		// Get all of the pattern meta (and remove anything that is not specifically "pattern meta" here).
-		const patternMeta = { ...patternData };
+		const patternMeta = { ...pattern };
 		delete patternMeta.content;
 
 		// Set the meta of the pattern
