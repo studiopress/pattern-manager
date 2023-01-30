@@ -16,11 +16,12 @@ import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
 import { patternManager } from '../../globals';
 import { Patterns } from '../../types';
 import usePostData from '../../hooks/usePostData';
+import convertToSlug from '../../utils/convertToSlug';
 
 export default function PatternManagerMetaControls() {
 	const { postContent, postMeta } = usePostData();
 	const [ patternName, setPatternName ] = useState(
-		new URL( location.href ).searchParams.get( 'name' )
+		decodeURIComponent( new URL( location.href ).searchParams.get( 'name' ) )
 	);
 	const [ patterns, setPatterns ] = useState( patternManager.patterns );
 	const pattern = patterns?.[ patternName ];
@@ -42,7 +43,7 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
-				patternName={ patternName }
+				patternTitle={ pattern.title }
 				patterns={ patterns }
 				setPatternName={ setPatternName }
 			/>

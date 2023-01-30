@@ -19,11 +19,11 @@ function doesTitleExist( patternTitle: string, patterns: Patterns ) {
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
-	patternName,
+	patternTitle,
 	patterns,
 	setPatternName,
 }: BaseSidebarProps & {
-	patternName: string;
+	patternTitle: string;
 	patterns: Patterns;
 	setPatternName: ( newName: string ) => void;
 } ) {
@@ -31,7 +31,7 @@ export default function TitlePanel( {
 	const [ errorMessage, setErrorMessage ] = useState(
 		__( 'Please enter a unique name.', 'pattern-manager' )
 	);
-	const [ titleInput, setTitleInput ] = useState( patternName );
+	const [ titleInput, setTitleInput ] = useState( patternTitle );
 	const previousPatternName = useRef( '' );
 
 	return (
@@ -61,14 +61,14 @@ export default function TitlePanel( {
 					} }
 					onBlur={ () => {
 						// Do not allow an empty title to be saved to postMeta.
-						if ( ! patternName.length ) {
+						if ( ! titleInput ) {
 							setPatternName( previousPatternName.current );
 							setPatternNameIsInvalid( false );
 							return;
 						}
 
-						handleChange( 'title', patternName, {
-							name: convertToSlug( patternName ),
+						handleChange( 'title', titleInput, {
+							name: convertToSlug( titleInput ),
 							previousName: previousPatternName.current,
 						} );
 					} }

@@ -14,24 +14,22 @@ import type { Pattern, Patterns } from '../../types';
 
 type Props = {
 	themePatterns: Patterns;
-	patternName: string;
 	patternData: Pattern;
 };
 
 /** Render the pattern action buttons. */
 export default function PatternGridActions( {
 	themePatterns,
-	patternName,
 	patternData,
 }: Props ) {
-	const { patterns, siteUrl } = usePmContext();
+	const { patterns } = usePmContext();
 	return (
 		<div className="item-actions">
 			<a
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				href={ getEditorUrl( patternName ) }
+				href={ getEditorUrl( patternData.slug ) }
 			>
 				<Icon
 					className="item-action-icon"

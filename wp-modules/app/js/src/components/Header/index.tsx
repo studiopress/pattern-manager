@@ -13,7 +13,7 @@ import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.sv
 import getEditorUrl from '../../utils/getEditorUrl';
 
 export default function Header() {
-	const { currentPatternId, currentView, patterns } = usePmContext();
+	const { patterns } = usePmContext();
 
 	return (
 		<div className="pattern-manager-header-container">
