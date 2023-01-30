@@ -6,8 +6,20 @@ import { Pattern, Patterns, PostMeta, SelectQuery } from '../types';
 export default function useSetup(
 	patternName: Pattern[ 'name' ],
 	pattern: Pattern,
-	setPatterns: ( newPattern: Patterns ) => void
+	setPatterns: ( newPattern: Patterns ) => void,
+	postContent: string,
+	postMeta: PostMeta
 ) {
+	useEffect( () => {
+		setPatterns( {
+			[ patternName ]: {
+				content: postContent,
+				...postMeta,
+				slug: postMeta.name,
+			},
+		} );
+	}, [ postContent, postMeta ] );
+
 	useEffect( () => {
 		// Insert the block string so the blocks show up in the editor itself.
 		dispatch( 'core/editor' ).resetEditorBlocks(
@@ -36,21 +48,4 @@ export default function useSetup(
 			meta: patternMeta,
 		} );
 	}, [] );
-
-	const content: string = useSelect( ( ownSelect: SelectQuery ) => {
-		return ownSelect( 'core/editor' ).getEditedPostContent();
-	}, [] );
-	const meta: PostMeta = useSelect( ( ownSelect: SelectQuery ) => {
-		return ownSelect( 'core/editor' ).getEditedPostAttribute( 'meta' );
-	}, [] );
-
-	useEffect( () => {
-		const blockPatternData = {
-			content,
-			...meta,
-			slug: meta.name,
-		};
-
-		setPatterns( { [ patternName ]: blockPatternData } );
-	}, [ content, meta ] );
 }

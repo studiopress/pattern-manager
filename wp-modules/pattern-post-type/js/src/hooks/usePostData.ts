@@ -3,14 +3,7 @@ import { useSelect } from '@wordpress/data';
 import { SelectQuery } from '../types';
 
 export default function usePostData() {
-	const [ coreLastUpdate, setCoreLastUpdate ] = useState( '' );
-
-	useEffect( () => {
-		setCoreLastUpdate( Date.now().toString() );
-	}, [] );
-
 	return {
-		coreLastUpdate,
 		...useSelect(
 			( select: SelectQuery ) => ( {
 				postMeta:
