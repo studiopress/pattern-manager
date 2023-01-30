@@ -1,5 +1,5 @@
 // WP dependencies
-import { useState } from '@wordpress/element';
+import { useState, useRef, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // Hooks
@@ -7,16 +7,35 @@ import usePmContext from '../../hooks/usePmContext';
 
 type Props = {
 	url: string;
-	scale: number;
+	viewportWidth: number;
 };
 
-export default function PatternPreview( { url, scale }: Props ) {
+type BoundingClientRect = {
+	width: number;
+	height: number;
+};
+
+export default function PatternPreview( { url, viewportWidth }: Props ) {
 	const { patterns } = usePmContext();
+	const [ previewContainerSize, setPreviewContainerSize ] =
+		useState< BoundingClientRect >();
 	const [ iframeRef, setIframeRef ] = useState<
 		HTMLIFrameElement | undefined
 	>( undefined );
+	const previewContainer = useRef< HTMLDivElement >();
 	patterns.addRef( url, iframeRef );
-	const scaleMultiplier = 10 / ( scale * 10 );
+
+	useEffect( () => {
+		if ( previewContainer?.current ) {
+			setPreviewContainerSize(
+				previewContainer?.current?.getBoundingClientRect()
+			);
+		}
+	}, [ previewContainer ] );
+
+	const scale = previewContainerSize
+		? previewContainerSize?.width / viewportWidth
+		: 0.2;
 
 	return (
 		<div
@@ -24,6 +43,7 @@ export default function PatternPreview( { url, scale }: Props ) {
 			style={ {
 				pointerEvents: 'none',
 			} }
+			ref={ previewContainer }
 		>
 			<iframe
 				src={ url }
@@ -34,8 +54,8 @@ export default function PatternPreview( { url, scale }: Props ) {
 					position: 'absolute',
 					top: '0',
 					left: '0',
-					width: `${ 100 * scaleMultiplier }%`,
-					height: `${ 100 * scaleMultiplier }%`,
+					width: viewportWidth,
+					height: previewContainerSize?.height / scale,
 					display: 'block',
 					transform: 'scale(' + scale + ')',
 					transformOrigin: 'top left',
