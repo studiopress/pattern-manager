@@ -21,7 +21,9 @@ import convertToSlug from '../../utils/convertToSlug';
 export default function PatternManagerMetaControls() {
 	const { postContent, postMeta } = usePostData();
 	const [ patternName, setPatternName ] = useState(
-		decodeURIComponent( new URL( location.href ).searchParams.get( 'name' ) )
+		decodeURIComponent(
+			new URL( location.href ).searchParams.get( 'name' )
+		)
 	);
 	const [ patterns, setPatterns ] = useState( patternManager.patterns );
 	const pattern = patterns?.[ patternName ];
