@@ -3,17 +3,10 @@ import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../../../../pattern-post-type/js/src/utils/getHeaders';
 import { Pattern, Patterns } from '../types';
-import type useNotice from './useNotice';
 
-export default function usePatterns(
-	initialPatterns: Patterns,
-	notice: ReturnType< typeof useNotice >
-) {
+export default function usePatterns( initialPatterns: Patterns ) {
 	const [ isSaving, setIsSaving ] = useState( false );
-	const [ fetchInProgress, setFetchInProgress ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
-	const [ makeItSaveStaleWorkaround, setMakeItSaveStaleWorkaround ] =
-		useState( false );
 
 	const editorDirty = useRef( false );
 
@@ -27,22 +20,6 @@ export default function usePatterns(
 			ref?.contentWindow?.location.reload();
 		} );
 	};
-
-	/**
-	 * Warns the user if there are unsaved changes before leaving.
-	 *
-	 * Forked from Gutenberg: https://github.com/WordPress/gutenberg/blob/5d5e97abd5e082050fdbb88bb1c93f9dbe10a23b/packages/editor/src/components/unsaved-changes-warning/index.js
-	 */
-	function warnIfUnsavedChanges( event: Event ) {
-		if ( editorDirty.current ) {
-			// @ts-expect-error: returnvalue is deprecated, but preventDefault() isn't always enough to prevent navigating away from the page.
-			event.returnValue = __(
-				'Are you sure you want to leave the editor? There are unsaved changes.',
-				'pattern-manager'
-			);
-			event.preventDefault();
-		}
-	}
 
 	function savePatternsData() {
 		return new Promise( ( resolve ) => {
@@ -70,13 +47,6 @@ export default function usePatterns(
 	}
 
 	function uponSuccessfulSave() {
-		notice.setSnackBarValue(
-			__(
-				'Pattern successfully saved to theme directory',
-				'pattern-manager'
-			)
-		);
-
 		editorDirty.current = false;
 		setIsSaving( false );
 		reloadPatternPreviews();
@@ -126,8 +96,8 @@ export default function usePatterns(
 		createPattern,
 		data: patternsData,
 		deletePattern,
-		fetchInProgress,
 		isSaving,
+		save: savePatternsData,
 		set: editPatterns,
 	};
 }

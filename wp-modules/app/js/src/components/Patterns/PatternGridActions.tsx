@@ -7,6 +7,7 @@ import usePmContext from '../../hooks/usePmContext';
 
 // Utils
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
+import getEditorUrl from '../../utils/getEditorUrl';
 
 // Types
 import type { Pattern, Patterns } from '../../types';
@@ -30,7 +31,7 @@ export default function PatternGridActions( {
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				href={ `${ siteUrl }/wp-admin/post-new.php?post_type=pm_pattern&name=${ patternName }` }
+				href={ getEditorUrl( patternName ) }
 			>
 				<Icon
 					className="item-action-icon"
@@ -46,13 +47,14 @@ export default function PatternGridActions( {
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
-				onClick={ () => {
+				onClick={ async () => {
 					const newPattern = getDuplicatePattern(
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
 					patterns.createPattern( newPattern );
-					// TODO: Maybe prompt to save, then go to the URL of the editor URL.
+					await patterns.save();
+					location.href = getEditorUrl( patternData.slug );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
@@ -67,6 +69,7 @@ export default function PatternGridActions( {
 				aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
 				onClick={ () => {
 					patterns.deletePattern( patternName );
+					patterns.save();
 				} }
 			>
 				<Icon className="item-action-icon" icon={ trash } size={ 30 } />

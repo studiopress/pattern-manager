@@ -10,6 +10,7 @@ import { Spinner } from '@wordpress/components';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 import usePmContext from '../../hooks/usePmContext';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
+import getEditorUrl from '../../utils/getEditorUrl';
 
 export default function Header() {
 	const { currentPatternId, currentView, patterns } = usePmContext();
@@ -29,25 +30,8 @@ export default function Header() {
 			</div>
 			<div className="header-container-inner">
 				<button
-					type="button"
-					disabled={ patterns.fetchInProgress }
 					className="header-button"
-					onClick={ () => {
-						patterns.save();
-					} }
-				>
-					{ patterns.isSaving ? (
-						<>
-							<Spinner />
-							{ __( 'Saving', 'pattern-manager' ) }
-						</>
-					) : (
-						__( 'Save', 'pattern-manager' )
-					) }
-				</button>
-				<button
-					className="header-button"
-					onClick={ () => {
+					onClick={ async () => {
 						// Get the new pattern title and slug.
 						const { patternTitle, patternSlug } = getNextPatternIds(
 							patterns.data
@@ -66,8 +50,8 @@ export default function Header() {
 							viewportWidth: '',
 							content: '',
 						} );
-						currentPatternId.set( patternSlug );
-						currentView.set( 'pattern_editor' );
+						await patterns.save();
+						location.href = getEditorUrl( patternSlug );
 					} }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }

@@ -15,7 +15,6 @@ import PatternManagerContext from '../../contexts/PatternManagerContext';
 // Hooks
 import usePatterns from '../../hooks/usePatterns';
 import usePmContext from '../../hooks/usePmContext';
-import useNotice from '../../hooks/useNotice';
 
 // Components
 import Header from '../Header';
@@ -25,11 +24,9 @@ import Patterns from '../Patterns';
 import type { InitialContext } from '../../types';
 
 export default function App() {
-	const notice = useNotice();
-	const patterns = usePatterns( patternManager.patterns, notice );
+	const patterns = usePatterns( patternManager.patterns );
 
 	const providerValue: InitialContext = {
-		notice,
 		patterns,
 		siteUrl: patternManager.siteUrl,
 		apiEndpoints: patternManager.apiEndpoints,
@@ -37,27 +34,8 @@ export default function App() {
 
 	return (
 		<PatternManagerContext.Provider value={ providerValue }>
-			<PatternManager />
-		</PatternManagerContext.Provider>
-	);
-}
-
-function PatternManager() {
-	const { notice } = usePmContext();
-
-	return (
-		<>
-			{ notice.snackBarValue ? (
-				<Snackbar
-					onRemove={ () => {
-						notice.setSnackBarValue( null );
-					} }
-				>
-					{ notice.snackBarValue }
-				</Snackbar>
-			) : null }
 			<Header />
 			<Patterns />
-		</>
+		</PatternManagerContext.Provider>
 	);
 }
