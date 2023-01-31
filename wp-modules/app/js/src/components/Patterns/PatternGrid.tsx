@@ -37,7 +37,11 @@ export default function PatternGrid( { themePatterns }: Props ) {
 												'?pm_pattern_preview=' +
 												patternData.name
 											}
-											scale={ 0.2 }
+											viewportWidth={
+												Number(
+													patternData?.viewportWidth
+												) || 1280
+											}
 										/>
 									</div>
 								</div>
