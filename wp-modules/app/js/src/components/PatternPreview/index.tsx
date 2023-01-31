@@ -9,10 +9,13 @@ import loadable from '@loadable/component';
 import useLazyRender from '../../hooks/useLazyRender';
 
 // Components
-const PreviewIframe = loadable( async () => import( './PreviewIframe' ) );
+const PreviewIframe: PreviewIframeType = loadable(
+	async () => import( './PreviewIframe' )
+);
 
 // Types
 import type { PatternPreviewProps, BoundingClientRect } from './types';
+import type { PreviewIframeType } from './PreviewIframe';
 
 export default function PatternPreview( {
 	url,

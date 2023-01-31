@@ -40,3 +40,5 @@ export default function PreviewIframe( {
 		/>
 	);
 }
+
+export type PreviewIframeType = typeof PreviewIframe;
