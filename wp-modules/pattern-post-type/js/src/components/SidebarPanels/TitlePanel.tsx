@@ -47,7 +47,11 @@ export default function TitlePanel( {
 							__( 'Please enter a title.', 'pattern-manager' )
 						);
 					} else if (
-						doesTitleExist( newValue, postMeta.slug, patternManager.patternSlugs )
+						doesTitleExist(
+							newValue,
+							postMeta.slug,
+							patternManager.patternSlugs
+						)
 					) {
 						setErrorMessage(
 							__(

@@ -27,10 +27,7 @@ export default function PatternManagerMetaControls() {
 
 	return (
 		<div>
-			<TitlePanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
-			/>
+			<TitlePanel postMeta={ postMeta } handleChange={ updatePostMeta } />
 			<CategoriesPanel
 				postMeta={ postMeta }
 				categories={ categories }
