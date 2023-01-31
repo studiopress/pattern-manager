@@ -2,31 +2,28 @@
 import { useState, useRef, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
+// External dependencies
+import loadable from '@loadable/component';
+
 // Hooks
-import usePmContext from '../../hooks/usePmContext';
 import useLazyRender from '../../hooks/useLazyRender';
 
-type Props = {
-	url: string;
-	viewportWidth: number;
-};
+// Components
+const PreviewIframe = loadable( async () => import( './PreviewIframe' ) );
 
-type BoundingClientRect = {
-	width: number;
-	height: number;
-};
+// Types
+import type { PatternPreviewProps, BoundingClientRect } from './types';
 
-export type PatternPreviewType = typeof PatternPreview;
-
-export default function PatternPreview( { url, viewportWidth }: Props ) {
-	const { patterns } = usePmContext();
+export default function PatternPreview( {
+	url,
+	viewportWidth,
+}: PatternPreviewProps ) {
 	const [ previewContainerSize, setPreviewContainerSize ] =
 		useState< BoundingClientRect >();
-	const [ iframeRef, setIframeRef ] = useState<
-		HTMLIFrameElement | undefined
-	>( undefined );
-	const previewContainer = useRef< HTMLDivElement >();
-	patterns.addRef( url, iframeRef );
+	const previewContainer = useRef< HTMLDivElement | null >( null );
+	const { lazyHasIntersected } = useLazyRender( previewContainer, {
+		threshold: [ 0.3, 0.6, 1.0 ],
+	} );
 
 	useEffect( () => {
 		if ( previewContainer?.current ) {
@@ -48,23 +45,16 @@ export default function PatternPreview( { url, viewportWidth }: Props ) {
 			} }
 			ref={ previewContainer }
 		>
-			<iframe
-				src={ url }
-				title={ __( 'Pattern Preview', 'pattern-manager' ) }
-				role={ 'img' }
-				ref={ setIframeRef }
-				style={ {
-					position: 'absolute',
-					top: '0',
-					left: '0',
-					width: viewportWidth,
-					height: previewContainerSize?.height / scale,
-					display: 'block',
-					transform: 'scale(' + scale + ')',
-					transformOrigin: 'top left',
-					pointerEvents: 'none',
-				} }
-			/>
+			{ lazyHasIntersected ? (
+				<PreviewIframe
+					url={ url }
+					scale={ scale }
+					viewportWidth={ viewportWidth }
+					previewContainerSize={ previewContainerSize }
+				/>
+			) : null }
 		</div>
 	);
 }
+
+export type PatternPreviewType = typeof PatternPreview;
