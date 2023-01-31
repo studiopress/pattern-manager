@@ -19,11 +19,8 @@ import convertToSlug from '../../utils/convertToSlug';
 
 export default function PatternManagerMetaControls() {
 	const { postContent, postMeta } = usePostData();
-	const patternName = decodeURIComponent(
-		new URL( location.href ).searchParams.get( 'name' )
-	);
-	const [ patterns, setPatterns ] = useState( patternManager.patterns );
-	const pattern = patterns?.[ patternName ];
+	const patternSlugs = patternManager.patternSlugs;
+	const [ pattern, setPattern ] = useState( patternManager.pattern );
 	function updatePatterns( newPatterns: Patterns ) {
 		setPatterns( {
 			...patterns,
@@ -31,8 +28,8 @@ export default function PatternManagerMetaControls() {
 		} );
 	}
 
-	useSetup( patternName, pattern, updatePatterns, postContent, postMeta );
-	useSaveButtonInterrupter( patterns, updatePatterns );
+	useSetup( pattern );
+	useSaveButtonInterrupter( pattern );
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
@@ -42,7 +39,7 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
-				patterns={ patterns }
+				patternSlugs={ patternSlugs }
 			/>
 			<CategoriesPanel
 				postMeta={ postMeta }

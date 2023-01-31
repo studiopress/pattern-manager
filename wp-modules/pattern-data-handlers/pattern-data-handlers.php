@@ -56,6 +56,26 @@ function get_patterns() {
 }
 
 /**
+ * Get a pattern by the slug in the query param.
+ *
+ * @return array The pattern.
+ */
+function get_pattern() {
+	$slug = filter_input( INPUT_GET, 'slug' );
+	return get_patterns()[ $slug ] ?? [];
+}
+
+/**
+ * Get a pattern by the slug in the query param.
+ *
+ * @param string $slug The pattern slug.
+ * @return array The pattern slugs.
+ */
+function get_pattern_slugs() {
+	return array_column( get_patterns(), 'slug' );
+}
+
+/**
  * This function validates and standardizes the data retrieved from a theme pattern file's php header.
  * It is taken/modified from Gutenberg's https://github.com/WordPress/gutenberg/blob/b3cac2c86e3a364a8c52970c25db5f00ed3e9fb6/lib/compat/wordpress-6.0/block-patterns.php#L77
  *

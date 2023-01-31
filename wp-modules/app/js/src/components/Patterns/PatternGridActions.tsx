@@ -66,7 +66,7 @@ export default function PatternGridActions( {
 				className="item-action-button"
 				aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
 				onClick={ () => {
-					patterns.deletePattern( patternName );
+					patterns.deletePattern( patternData.name );
 					patterns.save();
 				} }
 			>

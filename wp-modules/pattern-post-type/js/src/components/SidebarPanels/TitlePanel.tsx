@@ -7,25 +7,25 @@ import { RichText } from '@wordpress/block-editor';
 import convertToSlug from '../../utils/convertToSlug';
 
 import type { BaseSidebarProps } from './types';
-import type { Patterns } from '../../types';
+import type { Pattern } from '../../types';
 
-function doesTitleExist( patternTitle: string, currentSlug: string, patterns: Patterns ) {
+function doesTitleExist(
+	patternTitle: string,
+	currentSlug: string,
+	allSlugs: Array< Pattern[ 'slug' ] >
+) {
 	const newSlug = convertToSlug( patternTitle );
-	return Object.values( patterns ).some( ( ownPattern ) => {
-		return newSlug === ownPattern.slug && newSlug !== currentSlug;
-	} );
+	return allSlugs.includes( newSlug ) && newSlug !== currentSlug;
 }
 
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
-	patterns,
+	patternSlugs,
 }: BaseSidebarProps & {
-	patterns: Patterns;
+	patternSlugs: Array< Pattern[ 'slug' ] >;
 } ) {
-	const [ errorMessage, setErrorMessage ] = useState(
-		__( 'Please enter a unique title.', 'pattern-manager' )
-	);
+	const [ errorMessage, setErrorMessage ] = useState( '' );
 
 	return (
 		<PluginDocumentSettingPanel
@@ -45,9 +45,18 @@ export default function TitlePanel( {
 					} );
 
 					if ( ! newValue ) {
-						setErrorMessage( __( 'Please enter a title.', 'pattern-manager' ) );
-					} else if ( doesTitleExist( newValue, postMeta.slug, patterns ) ) {
-						setErrorMessage( __( 'Please enter a unique name.', 'pattern-manager' ) );
+						setErrorMessage(
+							__( 'Please enter a title.', 'pattern-manager' )
+						);
+					} else if (
+						doesTitleExist( newValue, postMeta.slug, patternSlugs )
+					) {
+						setErrorMessage(
+							__(
+								'Please enter a unique title.',
+								'pattern-manager'
+							)
+						);
 					} else {
 						setErrorMessage( '' );
 					}

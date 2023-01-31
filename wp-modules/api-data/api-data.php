@@ -26,22 +26,96 @@ function register_routes() {
 	$namespace = 'pattern-manager/v' . $version;
 	register_rest_route(
 		$namespace,
+		'/save-pattern',
+		[
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\save_pattern',
+			'permission_callback' => __NAMESPACE__ . '\permission_check',
+			'args'                => [
+				'pattern' => [
+					'required'          => true,
+					'type'              => 'object',
+					'description'       => __( 'The patterns', 'pattern-manager' ),
+					'validate_callback' => function( $to_validate ) {
+						return is_array( $to_validate );
+					},
+				],
+			],
+			'schema'              => [
+				// This tells the spec of JSON Schema we are using which is draft 4.
+				'$schema'    => 'https://json-schema.org/draft-04/schema#',
+				// The title property marks the identity of the resource.
+				'type'       => 'object',
+
+				// These define the items which will actually be returned by the endpoint.
+				'properties' => [
+					'pattern' => [
+						'description' => esc_html__( 'The pattern data', 'pattern-manager' ),
+						'type'        => 'object',
+						'readonly'    => true,
+					],
+				],
+			],
+		]
+	);
+
+	register_rest_route(
+		$namespace,
 		'/save-patterns',
-		array(
-			array(
-				'methods'             => 'POST',
-				'callback'            => __NAMESPACE__ . '\save_patterns',
-				'permission_callback' => __NAMESPACE__ . '\permission_check',
-				'args'                => save_request_args(),
-			),
-			'schema' => 'response_item_schema',
-		)
+		[
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\save_patterns',
+			'permission_callback' => __NAMESPACE__ . '\permission_check',
+			'args'                => [
+				'patterns' => [
+					'required'          => true,
+					'type'              => 'object',
+					'description'       => __( 'The patterns', 'pattern-manager' ),
+					'validate_callback' => function( $to_validate ) {
+						return is_array( $to_validate );
+					},
+				],
+			],
+			'schema'              => [
+				// This tells the spec of JSON Schema we are using which is draft 4.
+				'$schema'    => 'https://json-schema.org/draft-04/schema#',
+				// The title property marks the identity of the resource.
+				'type'       => 'object',
+
+				// These define the items which will actually be returned by the endpoint.
+				'properties' => [
+					'patterns' => [
+						'description' => esc_html__( 'The patterns data', 'pattern-manager' ),
+						'type'        => 'object',
+						'readonly'    => true,
+					],
+				],
+			],
+		]
 	);
 }
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
 
 /**
- * Save a theme's data.
+ * Saves a single pattern.
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_REST_Response
+ */
+function save_pattern( $request ) {
+	$result = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
+
+	return $result
+		? new \WP_REST_Response(
+			array(
+				'message' => __( 'Patterns saved to disk', 'pattern-manager' ),
+			),
+			200
+		)
+		: new \WP_REST_Response( $result, 400 );
+}
+
+/**
+ * Saves patterns.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
@@ -49,17 +123,15 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
 function save_patterns( $request ) {
 	$result = \PatternManager\PatternDataHandlers\update_patterns( $request->get_params()['patterns'] );
 
-	if ( is_wp_error( $result ) ) {
-		return new \WP_REST_Response( $result, 400 );
-	} else {
-		return new \WP_REST_Response(
+	return is_wp_error( $result )
+		? new \WP_REST_Response( $result, 400 )
+		: new \WP_REST_Response(
 			array(
-				'message'  => __( 'Patterns successfully saved to disk', 'pattern-manager' ),
+				'message'  => __( 'Patterns saved to disk', 'pattern-manager' ),
 				'patterns' => $result,
 			),
 			200
 		);
-	}
 }
 
 /**

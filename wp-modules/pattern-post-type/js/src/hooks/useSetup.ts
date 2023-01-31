@@ -1,25 +1,9 @@
 import { useEffect } from '@wordpress/element';
-import { dispatch, select, useSelect } from '@wordpress/data';
+import { dispatch, select } from '@wordpress/data';
 import { rawHandler } from '@wordpress/blocks';
-import { Pattern, Patterns, PostMeta, SelectQuery } from '../types';
+import { Pattern } from '../types';
 
-export default function useSetup(
-	patternName: Pattern[ 'name' ],
-	pattern: Pattern,
-	setPatterns: ( newPattern: Patterns ) => void,
-	postContent: string,
-	postMeta: PostMeta
-) {
-	useEffect( () => {
-		setPatterns( {
-			[ patternName ]: {
-				content: postContent,
-				...postMeta,
-				slug: postMeta.name,
-			},
-		} );
-	}, [ postContent, postMeta ] );
-
+export default function useSetup( pattern: Pattern ) {
 	useEffect( () => {
 		dispatch( 'core/editor' ).resetEditorBlocks(
 			rawHandler( {

@@ -1,33 +1,21 @@
 import { useEffect } from '@wordpress/element';
 import { select, subscribe } from '@wordpress/data';
-import { Patterns } from '../types';
+import { Pattern } from '../types';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 
-export default function useSaveButtonInterrupter(
-	patterns: Patterns,
-	updatePatterns: ( newPatterns: Patterns ) => void
-) {
-	function savePatterns() {
-		fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
+export default function useSaveButtonInterrupter( pattern: Pattern ) {
+	function savePattern() {
+		fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
 			headers: getHeaders(),
-			body: JSON.stringify( { patterns } ),
-		} )
-			.then( ( response ) => {
-				if ( ! response.ok ) {
-					throw response.statusText;
-				}
-				return response.json();
-			} )
-			.then( ( data: { patterns: Patterns } ) => {
-				updatePatterns( data.patterns );
-			} );
+			body: JSON.stringify( { pattern } ),
+		} );
 	}
 
 	function handleSave( event ) {
 		event.preventDefault();
-		savePatterns();
+		savePattern();
 	}
 
 	useEffect( () => {
@@ -42,7 +30,7 @@ export default function useSaveButtonInterrupter(
 		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
 		subscribe( () => {
 			if ( select( 'core/editor' ).isSavingPost() ) {
-				savePatterns();
+				savePattern();
 			}
 		} );
 	}, [] );

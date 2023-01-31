@@ -248,10 +248,11 @@ function enqueue_meta_fields_in_editor() {
 		'patternManager',
 		[
 			'apiEndpoints' => array(
-				'savePatternsEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-patterns/' ),
+				'savePatternEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),
 			),
 			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
+			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern(),
+			'patternSlugs' => \PatternManager\PatternDataHandlers\get_pattern_slugs(),
 			'siteUrl'      => get_bloginfo( 'url' ),
 		]
 	);
