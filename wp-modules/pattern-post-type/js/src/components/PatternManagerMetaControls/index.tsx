@@ -7,7 +7,6 @@ import {
 	TransformsPanel,
 	KeywordsPanel,
 	DescriptionPanel,
-	TemplateDetails,
 } from '../SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
@@ -20,10 +19,8 @@ import convertToSlug from '../../utils/convertToSlug';
 
 export default function PatternManagerMetaControls() {
 	const { postContent, postMeta } = usePostData();
-	const [ patternName, setPatternName ] = useState(
-		decodeURIComponent(
-			new URL( location.href ).searchParams.get( 'name' )
-		)
+	const patternName = decodeURIComponent(
+		new URL( location.href ).searchParams.get( 'name' )
 	);
 	const [ patterns, setPatterns ] = useState( patternManager.patterns );
 	const pattern = patterns?.[ patternName ];
@@ -45,9 +42,7 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
-				patternTitle={ pattern.title }
 				patterns={ patterns }
-				setPatternName={ setPatternName }
 			/>
 			<CategoriesPanel
 				postMeta={ postMeta }

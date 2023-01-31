@@ -5,7 +5,6 @@ export type PostMeta = {
 	slug: string;
 	name: string;
 	content: string;
-	previousName: string;
 	description: string;
 	postTypes: string[];
 	blockTypes: string[];
@@ -17,7 +16,6 @@ export type PostMeta = {
 
 export type SelectQuery = ( dataStore: string ) => {
 	getEditedPostAttribute: ( postAttribute: string ) => PostMeta;
-	getCurrentPostType: () => string;
 	getEditedPostContent: () => string;
 	isEditedPostDirty: () => boolean;
 	getPostTypes: ( {
