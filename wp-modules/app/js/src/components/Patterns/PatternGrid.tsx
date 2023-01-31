@@ -39,7 +39,7 @@ export default function PatternGrid( { themePatterns }: Props ) {
 											}
 											viewportWidth={ Number(
 												patternData?.viewportWidth
-											) }
+											) || 1280 }
 										/>
 									</div>
 								</div>
