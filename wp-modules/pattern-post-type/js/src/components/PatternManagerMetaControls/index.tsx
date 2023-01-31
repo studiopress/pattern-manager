@@ -15,21 +15,12 @@ import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
 import { patternManager } from '../../globals';
 import { Patterns } from '../../types';
 import usePostData from '../../hooks/usePostData';
-import convertToSlug from '../../utils/convertToSlug';
 
 export default function PatternManagerMetaControls() {
-	const { postContent, postMeta } = usePostData();
-	const patternSlugs = patternManager.patternSlugs;
-	const [ pattern, setPattern ] = useState( patternManager.pattern );
-	function updatePatterns( newPatterns: Patterns ) {
-		setPatterns( {
-			...patterns,
-			...newPatterns,
-		} );
-	}
+	const { postMeta } = usePostData();
 
-	useSetup( pattern );
-	useSaveButtonInterrupter( pattern );
+	useSetup( patternManager.pattern );
+	useSaveButtonInterrupter( postMeta );
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
@@ -39,7 +30,6 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
-				patternSlugs={ patternSlugs }
 			/>
 			<CategoriesPanel
 				postMeta={ postMeta }

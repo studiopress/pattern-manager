@@ -1,15 +1,17 @@
 import { useEffect } from '@wordpress/element';
 import { select, subscribe } from '@wordpress/data';
-import { Pattern } from '../types';
+import { Pattern, PostMeta } from '../types';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 
-export default function useSaveButtonInterrupter( pattern: Pattern ) {
+export default function useSaveButtonInterrupter( postMeta: PostMeta ) {
 	function savePattern() {
 		fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
 			headers: getHeaders(),
-			body: JSON.stringify( { pattern } ),
+			body: JSON.stringify( {
+				pattern: postMeta,
+			} ),
 		} );
 	}
 

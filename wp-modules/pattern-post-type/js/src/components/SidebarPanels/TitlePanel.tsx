@@ -5,6 +5,7 @@ import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
 import convertToSlug from '../../utils/convertToSlug';
+import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps } from './types';
 import type { Pattern } from '../../types';
@@ -21,10 +22,7 @@ function doesTitleExist(
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
-	patternSlugs,
-}: BaseSidebarProps & {
-	patternSlugs: Array< Pattern[ 'slug' ] >;
-} ) {
+}: BaseSidebarProps ) {
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 
 	return (
@@ -49,7 +47,7 @@ export default function TitlePanel( {
 							__( 'Please enter a title.', 'pattern-manager' )
 						);
 					} else if (
-						doesTitleExist( newValue, postMeta.slug, patternSlugs )
+						doesTitleExist( newValue, postMeta.slug, patternManager.patternSlugs )
 					) {
 						setErrorMessage(
 							__(
