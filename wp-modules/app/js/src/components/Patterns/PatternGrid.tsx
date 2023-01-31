@@ -1,16 +1,24 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
-import { lazy, Suspense } from '@wordpress/element';
+
+// External dependencies
+import loadable from '@loadable/component';
 
 // Globals
 import { patternManager } from '../../globals';
 
 // Components
-const PatternPreview = lazy( () => import( '../PatternPreview' ) );
-import PatternGridActions from './PatternGridActions';
+const PatternPreview: PatternPreviewType = loadable(
+	async () => import( '../PatternPreview' )
+);
+const PatternGridActions: PatternGridActionsType = loadable(
+	async () => import( './PatternGridActions' )
+);
 
 // Types
 import type { Patterns } from '../../types';
+import type { PatternPreviewType } from '../PatternPreview';
+import type { PatternGridActionsType } from './PatternGridActions';
 
 type Props = {
 	themePatterns: Patterns;
@@ -28,33 +36,31 @@ export default function PatternGrid( { themePatterns }: Props ) {
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						return (
-							<Suspense key={ patternName } fallback={ null }>
-								<div className="grid-item">
-									<div className="item-inner">
-										<div className="item-pattern-preview">
-											<PatternPreview
-												key={ patternName }
-												url={
-													patternManager.siteUrl +
-													'?pm_pattern_preview=' +
-													patternData.name
-												}
-												scale={ 0.2 }
-											/>
-										</div>
-									</div>
-
-									<PatternGridActions
-										themePatterns={ themePatterns }
-										patternName={ patternName }
-										patternData={ patternData }
-									/>
-
-									<div className="item-pattern-preview-heading">
-										<span>{ patternData.title }</span>
+							<div key={ patternName } className="grid-item">
+								<div className="item-inner">
+									<div className="item-pattern-preview">
+										<PatternPreview
+											key={ patternName }
+											url={
+												patternManager.siteUrl +
+												'?pm_pattern_preview=' +
+												patternData.name
+											}
+											scale={ 0.2 }
+										/>
 									</div>
 								</div>
-							</Suspense>
+
+								<PatternGridActions
+									themePatterns={ themePatterns }
+									patternName={ patternName }
+									patternData={ patternData }
+								/>
+
+								<div className="item-pattern-preview-heading">
+									<span>{ patternData.title }</span>
+								</div>
+							</div>
 						);
 					}
 				)
