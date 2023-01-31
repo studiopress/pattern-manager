@@ -1,7 +1,12 @@
 /**
  * WordPress dependencies
  */
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
+
+/**
+ * External dependencies
+ */
+import type { MutableRefObject } from 'react';
 
 /**
  * Delay the rendering of a child element until its containing parent is in view.
@@ -10,11 +15,11 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  *
  * ---
  *
- * To use the hook, destructure the return values on invocation:
+ * To use the hook, pass a ref to the hook and destructure the return values:
  *
  * ```jsx
- * const { lazyContainerRef, lazyIsIntersecting, lazyHasIntersected } =
- *   useLazyRender< HTMLDivElement >();
+ * const { lazyIsIntersecting, lazyHasIntersected } =
+ *   useLazyRender< HTMLDivElement >( lazyContainerRef );
  *```
  *
  * Then render a child element only if the ref is currently in view:
@@ -40,6 +45,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
  * ```
  */
 export default function useLazyRender< T extends Element >(
+	lazyContainerRef: MutableRefObject< T >,
 	// Param type is equivalent to `IntersectionObserverInit`.
 	observerOptions: {
 		root?: Element | null;
@@ -47,7 +53,6 @@ export default function useLazyRender< T extends Element >(
 		threshold?: number | number[];
 	} = {}
 ) {
-	const lazyContainerRef = useRef< T | null >( null );
 	const [ lazyIsIntersecting, setLazyIsIntersecting ] = useState( false );
 	const [ lazyHasIntersected, setLazyHasIntersected ] = useState( false );
 
@@ -72,7 +77,6 @@ export default function useLazyRender< T extends Element >(
 	}, [ lazyContainerRef ] );
 
 	return {
-		lazyContainerRef,
 		lazyIsIntersecting:
 			// Ignore conditional rendering if IntersectionObserver isn't supported.
 			'IntersectionObserver' in window ? lazyIsIntersecting : true,
