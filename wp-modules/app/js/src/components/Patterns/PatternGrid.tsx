@@ -2,8 +2,12 @@
 import { __ } from '@wordpress/i18n';
 import { lazy, Suspense } from '@wordpress/element';
 
+// Globals
+import { patternManager } from '../../globals';
+
 // Components
-const PatternGridItem = lazy( () => import( './PatternGridItem' ) );
+const PatternPreview = lazy( () => import( '../PatternPreview' ) );
+import PatternGridActions from './PatternGridActions';
 
 // Types
 import type { Patterns } from '../../types';
@@ -24,12 +28,32 @@ export default function PatternGrid( { themePatterns }: Props ) {
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						return (
-							<Suspense key={ patternName } fallback={ null }>
-								<PatternGridItem
-									themePatterns={ themePatterns }
-									patternName={ patternName }
-									patternData={ patternData }
-								/>
+							<Suspense key={ patternName }  fallback={ null }>
+								<div className="grid-item">
+									<div className="item-inner">
+										<div className="item-pattern-preview">
+											<PatternPreview
+												key={ patternName }
+												url={
+													patternManager.siteUrl +
+													'?pm_pattern_preview=' +
+													patternData.name
+												}
+												scale={ 0.2 }
+											/>
+										</div>
+									</div>
+
+									<PatternGridActions
+										themePatterns={ themePatterns }
+										patternName={ patternName }
+										patternData={ patternData }
+									/>
+
+									<div className="item-pattern-preview-heading">
+										<span>{ patternData.title }</span>
+									</div>
+								</div>
 							</Suspense>
 						);
 					}
