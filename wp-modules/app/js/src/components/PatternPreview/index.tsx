@@ -11,6 +11,8 @@ type Props = {
 	scale: number;
 };
 
+export type PatternPreviewType = typeof PatternPreview;
+
 export default function PatternPreview( { url, scale }: Props ) {
 	const { lazyContainerRef, lazyHasIntersected } =
 		useLazyRender< HTMLDivElement >( {
