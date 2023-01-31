@@ -28,7 +28,7 @@ export default function PatternGrid( { themePatterns }: Props ) {
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						return (
-							<Suspense key={ patternName }  fallback={ null }>
+							<Suspense key={ patternName } fallback={ null }>
 								<div className="grid-item">
 									<div className="item-inner">
 										<div className="item-pattern-preview">
