@@ -43,6 +43,11 @@ import type { MutableRefObject } from 'react';
  *   </div>
  * );
  * ```
+ *
+ * ---
+ *
+ * __*Tip:*__ on refresh, if the ref is on-screen but hook values return `false`,
+ * adjust `threshold` in `observerOptions`.
  */
 export default function useLazyRender< T extends Element >(
 	lazyContainerRef: MutableRefObject< T >,
