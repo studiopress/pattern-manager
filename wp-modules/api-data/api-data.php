@@ -26,7 +26,7 @@ function register_routes() {
 	$namespace = 'pattern-manager/v' . $version;
 	register_rest_route(
 		$namespace,
-		'/save-pattern',
+		'/get-pattern-names',
 		array(
 			'methods'             => 'GET',
 			'callback'            => __NAMESPACE__ . '\get_pattern_names',
@@ -36,7 +36,6 @@ function register_routes() {
 				'$schema'    => 'https://json-schema.org/draft-04/schema#',
 				// The title property marks the identity of the resource.
 				'type'       => 'object',
-
 				// These define the items which will actually be returned by the endpoint.
 				'properties' => array(
 					'patternNames' => array(
@@ -67,12 +66,8 @@ function register_routes() {
 				),
 			),
 			'schema'              => array(
-				// This tells the spec of JSON Schema we are using which is draft 4.
 				'$schema'    => 'https://json-schema.org/draft-04/schema#',
-				// The title property marks the identity of the resource.
 				'type'       => 'object',
-
-				// These define the items which will actually be returned by the endpoint.
 				'properties' => array(
 					'pattern' => array(
 						'description' => esc_html__( 'The pattern data', 'pattern-manager' ),
@@ -102,12 +97,8 @@ function register_routes() {
 				),
 			),
 			'schema'              => array(
-				// This tells the spec of JSON Schema we are using which is draft 4.
 				'$schema'    => 'https://json-schema.org/draft-04/schema#',
-				// The title property marks the identity of the resource.
 				'type'       => 'object',
-
-				// These define the items which will actually be returned by the endpoint.
 				'properties' => array(
 					'patterns' => array(
 						'description' => esc_html__( 'The patterns data', 'pattern-manager' ),
