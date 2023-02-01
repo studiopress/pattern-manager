@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 
 export default function changeWords( translation: string, text: string ) {
 	// Doesn't have a textdomain argument so that it will use the Core textdomain.
-	// This filter should get receive translations from Core, not this plugin.
+	// This filter should receive translations from Core, not this plugin.
 	if ( text === __( 'Publish' ) ) {
 		return __( 'Save pattern to theme', 'pattern-manager' );
 	}

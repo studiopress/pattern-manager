@@ -1,4 +1,4 @@
-import { patternManager } from '../../../../app/js/src/globals';
+import { patternManager } from '../globals';
 
 export default function getHeaders() {
 	return {

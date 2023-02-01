@@ -13,6 +13,12 @@ export default function useSaveButtonInterrupter() {
 	const { editPost } = useDispatch( 'core/editor' );
 
 	useEffect( () => {
+		if ( isSavingPost ) {
+			handleSave();
+		}
+	}, [ isSavingPost ] );
+
+	useEffect( () => {
 		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
 		Object.values(
 			document.getElementsByClassName(
@@ -22,12 +28,6 @@ export default function useSaveButtonInterrupter() {
 			saveButton.addEventListener( 'click', handleSave, false );
 		} );
 	}, [] );
-
-	useEffect( () => {
-		if ( isSavingPost ) {
-			handleSave();
-		}
-	}, [ isSavingPost ] );
 
 	function handleSave( event?: Event ) {
 		event?.preventDefault();
