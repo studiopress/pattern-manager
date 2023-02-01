@@ -4,7 +4,9 @@ import { rawHandler } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import type { InitialPatternManager, SelectQuery } from '../types';
 
-export default function useSetup( pattern: InitialPatternManager[ 'pattern' ] ) {
+export default function useSetup(
+	pattern: InitialPatternManager[ 'pattern' ]
+) {
 	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
 	const { editPost, resetEditorBlocks } = useDispatch( 'core/editor' );
 	const notices = useSelect( ( select: SelectQuery ) => {
@@ -13,7 +15,7 @@ export default function useSetup( pattern: InitialPatternManager[ 'pattern' ] ) 
 
 	useEffect( () => {
 		if ( ! pattern ) {
-			createErrorNotice( 
+			createErrorNotice(
 				__(
 					'No patterns found. Is this the right URL?',
 					'pattern-manager'

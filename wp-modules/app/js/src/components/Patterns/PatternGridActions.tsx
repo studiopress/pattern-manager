@@ -24,7 +24,7 @@ export default function PatternGridActions( {
 	themePatterns,
 	patternData,
 }: Props ) {
-	const { patterns } = usePmContext();
+	const { notice, patterns } = usePmContext();
 	return (
 		<div className="item-actions">
 			<a
@@ -49,6 +49,9 @@ export default function PatternGridActions( {
 				className="item-action-button"
 				aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
 				onClick={ async () => {
+					notice.set(
+						__( 'Duplicating your pattern…', 'pattern-manager' )
+					);
 					const newPattern = getDuplicatePattern(
 						patternData,
 						Object.values( themePatterns ?? {} )
