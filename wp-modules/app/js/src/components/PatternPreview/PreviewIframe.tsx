@@ -14,17 +14,11 @@ export default function PreviewIframe( {
 	viewportWidth,
 	previewContainerSize,
 }: PreviewIframeProps ) {
-	const { patterns } = usePmContext();
-	const [ iframeRef, setIframeRef ] = useState<
-		HTMLIFrameElement | undefined
-	>( undefined );
-
 	return (
 		<iframe
 			src={ url }
 			title={ __( 'Pattern Preview', 'pattern-manager' ) }
-			role={ 'img' }
-			ref={ setIframeRef }
+			role="img"
 			style={ {
 				position: 'absolute',
 				top: '0',
