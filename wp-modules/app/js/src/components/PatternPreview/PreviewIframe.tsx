@@ -18,7 +18,6 @@ export default function PreviewIframe( {
 	const [ iframeRef, setIframeRef ] = useState<
 		HTMLIFrameElement | undefined
 	>( undefined );
-	patterns.addRef( url, iframeRef );
 
 	return (
 		<iframe
