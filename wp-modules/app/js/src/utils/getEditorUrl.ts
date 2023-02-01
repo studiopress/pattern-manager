@@ -1,9 +1,9 @@
 import { patternManager } from '../globals';
 
-export default function getEditorUrl( patternSlug: string ) {
+export default function getEditorUrl( patternName: string ) {
 	return `${
 		patternManager.siteUrl
-	}/wp-admin/post-new.php?post_type=pm_pattern&slug=${ encodeURIComponent(
-		patternSlug
+	}/wp-admin/post-new.php?post_type=pm_pattern&name=${ encodeURIComponent(
+		patternName
 	) }`;
 }

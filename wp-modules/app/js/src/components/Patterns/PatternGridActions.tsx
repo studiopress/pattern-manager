@@ -29,7 +29,7 @@ export default function PatternGridActions( {
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				href={ getEditorUrl( patternData.slug ) }
+				href={ getEditorUrl( patternData.name ) }
 			>
 				<Icon
 					className="item-action-icon"
@@ -52,7 +52,7 @@ export default function PatternGridActions( {
 					);
 					patterns.createPattern( newPattern );
 					await patterns.save();
-					location.href = getEditorUrl( patternData.slug );
+					location.href = getEditorUrl( patternData.name );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />

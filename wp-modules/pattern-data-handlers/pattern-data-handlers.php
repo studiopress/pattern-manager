@@ -56,17 +56,19 @@ function get_patterns() {
 }
 
 /**
- * Get a pattern by the slug in the query param.
+ * Gets a pattern by the name in the query param.
  *
- * @return array The pattern.
+ * @return array The pattern for the editor.
  */
 function get_pattern() {
-	$slug = filter_input( INPUT_GET, 'slug' );
-	return get_patterns()[ $slug ] ?? [];
+	$name = filter_input( INPUT_GET, 'name' );
+	return $name
+		? get_patterns()[ urldecode( $name ) ] ?? []
+		: [];
 }
 
 /**
- * Get a pattern by the slug in the query param.
+ * Gets a pattern by the slug in the query param.
  *
  * @param string $slug The pattern slug.
  * @return array The pattern slugs.
