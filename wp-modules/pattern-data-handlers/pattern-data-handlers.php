@@ -22,6 +22,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function get_patterns() {
+	$patterns = array();
+
+	// Grab all of the patterns in this theme.
+	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
+
+	foreach ( $pattern_file_paths as $path ) {
+		$pattern = get_pattern_by_path( $path );
+		if ( $pattern ) {
+			$patterns[ $pattern['name'] ] = $pattern;
+		}
+	}
+
+	return $patterns;
+}
+
+/**
+ * Gets a pattern by its path in the filesystem.
+ *
+ * @param string $path The pattern path.
+ * @return array|false The pattern.
+ */
+function get_pattern_by_path( $path ) {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
@@ -34,25 +56,24 @@ function get_patterns() {
 		'inserter'      => 'Inserter',
 	);
 
-	$patterns = array();
-
-	// Get the custom patterns (ones created by the user, not included in the plugin).
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
-	// Grab all of the pattrns in this theme.
-	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
-	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
-		if ( ! $pattern_data ) {
-			continue;
-		}
-		$pattern_data['name'] = basename( $path, '.php' );
-		$pattern_data['type'] = 'pattern';
-
-		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
+	$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+	if ( ! $pattern_data ) {
+		return false;
 	}
+	$pattern_data['name'] = basename( $path, '.php' );
+	$pattern_data['type'] = 'pattern';
 
-	return $patterns;
+	return $pattern_data;
+}
+
+/**
+ * Gets a pattern by its name.
+ *
+ * @param string $name The pattern name.
+ * @return array|false
+ */
+function get_pattern_by_name( $name ) {
+	return get_pattern_by_path( get_template_directory() . "/patterns/{$name}.php" );
 }
 
 /**
@@ -60,18 +81,17 @@ function get_patterns() {
  *
  * @return array The pattern for the editor.
  */
-function get_pattern() {
+function get_pattern_from_query_param() {
 	$name = filter_input( INPUT_GET, 'name' );
 	return $name
-		? get_patterns()[ urldecode( $name ) ] ?? []
+		? get_pattern_by_name( urldecode( wp_kses_stripslashes( $name ) ) )
 		: [];
 }
 
 /**
- * Gets a pattern by the slug in the query param.
+ * Gets all the pattern names.
  *
- * @param string $slug The pattern slug.
- * @return array The pattern slugs.
+ * @return array The pattern names.
  */
 function get_pattern_names() {
 	return array_map(
