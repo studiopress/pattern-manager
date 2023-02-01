@@ -39,7 +39,7 @@ export default function useSaveButtonInterrupter(
 			return;
 		}
 
-		// If the pattern name changed, update URL query param 'name'.
+		// If the pattern name changed, update the URL query param 'name'.
 		// That query param gets the pattern data.
 		if ( meta.previousName && meta.previousName !== meta.name ) {
 			const url = new URL( location.href );
@@ -47,14 +47,12 @@ export default function useSaveButtonInterrupter(
 			window.history.pushState( {}, '', url );
 		}
 
-		const previousName = meta?.name;
-
 		await savePattern();
 		await updatePatternNames();
 		editPost( {
 			meta: {
 				...meta,
-				previousName,
+				previousName: meta.name
 			},
 		} );
 	}
