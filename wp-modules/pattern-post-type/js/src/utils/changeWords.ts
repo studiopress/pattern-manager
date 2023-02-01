@@ -12,7 +12,7 @@ export default function changeWords( translation: string, text: string ) {
 		return 'Pattern Categories';
 	}
 	if ( text === 'Saved' ) {
-		return 'Saved to your theme directory' ;
+		return 'Saved to your theme directory';
 	}
 
 	return translation;

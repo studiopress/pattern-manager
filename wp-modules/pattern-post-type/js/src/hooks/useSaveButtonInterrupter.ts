@@ -3,9 +3,11 @@ import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
-import type { SelectQuery } from '../types';
+import type { Pattern, SelectQuery } from '../types';
 
-export default function useSaveButtonInterrupter() {
+export default function useSaveButtonInterrupter(
+	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
+) {
 	const isSavingPost = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).isSavingPost();
 	}, [] );
@@ -29,13 +31,14 @@ export default function useSaveButtonInterrupter() {
 		} );
 	}, [] );
 
-	function handleSave( event?: Event ) {
+	async function handleSave( event?: Event ) {
 		event?.preventDefault();
 
 		const meta = editor.getEditedPostAttribute( 'meta' );
 		const previousName = meta?.name;
 
-		savePattern();
+		await savePattern();
+		await updatePatternNames();
 		editPost( {
 			meta: {
 				...meta,
@@ -44,8 +47,8 @@ export default function useSaveButtonInterrupter() {
 		} );
 	}
 
-	function savePattern() {
-		fetch( patternManager.apiEndpoints.savePatternEndpoint, {
+	async function savePattern() {
+		await fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
 			headers: getHeaders(),
 			body: JSON.stringify( {
@@ -55,5 +58,19 @@ export default function useSaveButtonInterrupter() {
 				},
 			} ),
 		} );
+	}
+
+	async function updatePatternNames() {
+		const response = await fetch(
+			patternManager.apiEndpoints.getPatternNamesEndpoint,
+			{
+				method: 'GET',
+				headers: getHeaders(),
+			}
+		);
+
+		if ( response.ok ) {
+			setPatternNames( await response.json() );
+		}
 	}
 }

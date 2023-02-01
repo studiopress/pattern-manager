@@ -13,16 +13,17 @@ import type { Pattern } from '../../types';
 function doesTitleExist(
 	patternTitle: string,
 	currentSlug: string,
-	allSlugs: Array< Pattern[ 'slug' ] >
+	patternNames: Array< Pattern[ 'name' ] >
 ) {
 	const newSlug = convertToSlug( patternTitle );
-	return allSlugs.includes( newSlug ) && newSlug !== currentSlug;
+	return patternNames.includes( newSlug ) && newSlug !== currentSlug;
 }
 
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
-}: BaseSidebarProps ) {
+	patternNames,
+}: BaseSidebarProps & { patternNames: Array< Pattern[ 'name' ] > } ) {
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 
 	return (
@@ -47,11 +48,7 @@ export default function TitlePanel( {
 							__( 'Please enter a title.', 'pattern-manager' )
 						);
 					} else if (
-						doesTitleExist(
-							newValue,
-							postMeta.slug,
-							patternManager.patternNames
-						)
+						doesTitleExist( newValue, postMeta.slug, patternNames )
 					) {
 						setErrorMessage(
 							__(

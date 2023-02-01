@@ -51,6 +51,7 @@ export type Patterns = {
 export type InitialPatternManager = {
 	apiNonce: string;
 	apiEndpoints: {
+		getPatternNamesEndpoint: string;
 		savePatternEndpoint: string;
 	};
 	pattern: Pattern;

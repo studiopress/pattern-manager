@@ -16,17 +16,24 @@ import { patternManager } from '../../globals';
 import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
+	const [ patternNames, setPatternNames ] = useState(
+		patternManager.patternNames
+	);
 	const { postMeta } = usePostData();
 
 	useSetup( patternManager.pattern );
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
-	useSaveButtonInterrupter();
+	useSaveButtonInterrupter( setPatternNames );
 
 	return (
 		<div>
-			<TitlePanel postMeta={ postMeta } handleChange={ updatePostMeta } />
+			<TitlePanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+				patternNames={ patternNames }
+			/>
 			<CategoriesPanel
 				postMeta={ postMeta }
 				categories={ categories }
