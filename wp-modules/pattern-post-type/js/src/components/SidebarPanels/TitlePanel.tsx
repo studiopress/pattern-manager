@@ -1,16 +1,15 @@
 import { __ } from '@wordpress/i18n';
-import { useState, useRef } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
 import convertToSlug from '../../utils/convertToSlug';
-import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps } from './types';
 import type { Pattern } from '../../types';
 
-function doesTitleExist(
+function isTitleTaken(
 	patternTitle: string,
 	currentSlug: string,
 	patternNames: Array< Pattern[ 'name' ] >
@@ -38,17 +37,17 @@ export default function TitlePanel( {
 					'pattern-manager'
 				) }
 				value={ postMeta.title }
-				onChange={ ( newValue: string ) => {
-					handleChange( 'title', newValue, {
-						name: convertToSlug( newValue ),
+				onChange={ ( newTitle: Pattern[ 'title' ] ) => {
+					handleChange( 'title', newTitle, {
+						name: convertToSlug( newTitle ),
 					} );
 
-					if ( ! newValue ) {
+					if ( ! newTitle ) {
 						setErrorMessage(
 							__( 'Please enter a title.', 'pattern-manager' )
 						);
 					} else if (
-						doesTitleExist( newValue, postMeta.slug, patternNames )
+						isTitleTaken( newTitle, postMeta.slug, patternNames )
 					) {
 						setErrorMessage(
 							__(
