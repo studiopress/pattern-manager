@@ -6,7 +6,6 @@ import { Icon, trash, copy, settings } from '@wordpress/icons';
 import usePmContext from '../../hooks/usePmContext';
 
 // Utils
-import addPattern from '../../utils/addPattern';
 import deletePattern from '../../utils/deletePattern';
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
 import getEditorUrl from '../../utils/getEditorUrl';
@@ -50,15 +49,16 @@ export default function PatternGridActions( {
 				aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
 				onClick={ async () => {
 					notice.set(
-						__( 'Duplicating your pattern and opening the editor for it…', 'pattern-manager' )
+						__(
+							'Duplicating your pattern and opening the editor for it…',
+							'pattern-manager'
+						)
 					);
 					const newPattern = getDuplicatePattern(
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					await patterns.save(
-						addPattern( newPattern, patterns.data )
-					);
+					await patterns.savePattern( newPattern );
 					location.href = getEditorUrl( newPattern.name );
 				} }
 			>
@@ -87,7 +87,7 @@ export default function PatternGridActions( {
 							patterns.data
 						);
 						patterns.set( newPatterns );
-						patterns.save( newPatterns );
+						patterns.savePatterns( newPatterns );
 					}
 				} }
 			>
