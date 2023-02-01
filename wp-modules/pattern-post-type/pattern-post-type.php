@@ -182,9 +182,9 @@ function display_block_pattern_preview() {
 		return;
 	}
 
-	$pattern_id = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_theme_pattern( $pattern_id );
+	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
@@ -277,7 +277,7 @@ function register_block_patterns() {
 		return;
 	}
 
-	$patterns = \PatternManager\PatternDataHandlers\get_theme_patterns();
+	$patterns = \PatternManager\PatternDataHandlers\get_theme_pattersn();
 
 	foreach ( $patterns as $pattern ) {
 		if ( isset( $pattern['categories'] ) ) {

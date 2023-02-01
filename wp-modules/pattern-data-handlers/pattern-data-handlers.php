@@ -39,7 +39,7 @@ function get_pattern_file_paths() {
  *
  * @return array
  */
-function get_patterns() {
+function get_theme_pattersn() {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
@@ -90,17 +90,27 @@ function get_pattern_by_path( $path ) {
  */
 function get_pattern_from_query_param() {
 	$pattern_name = filter_input( INPUT_GET, 'name' );
-	$pattern_path = get_patterns_directory() . urldecode( wp_kses_stripslashes( $pattern_name ) ) . '.php';
+	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
+}
+
+/**
+ * Gets a pattern by its name.
+ *
+ * @param string $name The pattern name.
+ * @return array|false
+ */
+function get_pattern_by_name( $name ) {
+	$pattern_path = get_patterns_directory() . $name . '.php';
 
 	return file_exists( $pattern_path )
 		? get_pattern_by_path( $pattern_path )
-		: null;
+		: false;
 }
 
 /**
  * Gets all the pattern names.
  *
- * @return array The pattern names.
+ * @return string[] The pattern names.
  */
 function get_pattern_names() {
 	return array_map(
@@ -217,52 +227,6 @@ function format_pattern_data( $pattern_data, $file ) {
 		return false;
 	}
 	return $pattern_data;
-}
-
-/**
- * Get the pattern data for a specific pattern from a specific theme.
- *
- * @param string $pattern_id The name of the pattern to get.
- * @param string $theme_path The path to the theme. Defaults to the current active theme.
- * @return array
- */
-function get_theme_pattern( $pattern_id, $theme_path = false ) {
-	return get_theme_patterns( $theme_path )[ $pattern_id ] ?? [];
-}
-
-/**
- * Get the pattern data for all patterns in a theme.
- *
- * @return array
- */
-function get_theme_patterns() {
-	$default_headers = array(
-		'title'         => 'Title',
-		'slug'          => 'Slug',
-		'description'   => 'Description',
-		'viewportWidth' => 'Viewport Width',
-		'categories'    => 'Categories',
-		'keywords'      => 'Keywords',
-		'blockTypes'    => 'Block Types',
-		'postTypes'     => 'Post Types',
-		'inserter'      => 'Inserter',
-	);
-
-	// Grab all of the patterns in this theme.
-	$pattern_file_paths = get_pattern_file_paths();
-
-	$patterns = array();
-	foreach ( $pattern_file_paths as $path ) {
-		$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
-		if ( ! $pattern_data ) {
-			continue;
-		}
-		$pattern_data['name']                  = basename( $path, '.php' );
-		$pattern_data['type']                  = 'pattern';
-		$patterns[ basename( $path, '.php' ) ] = $pattern_data;
-	}
-
-	return $patterns;
 }
 
 /**
@@ -401,7 +365,7 @@ function tree_shake_theme_images() {
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
 	$theme_dir         = get_template_directory();
-	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
+	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_pattersn();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';
