@@ -2,12 +2,12 @@ import type { Pattern, Patterns } from '../types';
 
 export default function deletePattern(
 	nameToDelete: Pattern[ 'name' ],
-	patterns: Patterns
+	existingPatterns: Patterns
 ) {
 	const {
 		[ nameToDelete ]: {},
 		...newPatterns
-	} = patterns;
+	} = existingPatterns;
 
 	return newPatterns;
 }
