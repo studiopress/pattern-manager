@@ -53,7 +53,9 @@ export default function PatternGridActions( {
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					await patterns.save( addPattern( newPattern, patterns.data ) );
+					await patterns.save(
+						addPattern( newPattern, patterns.data )
+					);
 					location.href = getEditorUrl( newPattern.name );
 				} }
 			>
@@ -77,11 +79,12 @@ export default function PatternGridActions( {
 							)
 						)
 					) {
-						const newPatterns = deletePattern( patternData.name, patterns.data );
-						patterns.set( newPatterns );
-						patterns.save(
-							newPatterns
+						const newPatterns = deletePattern(
+							patternData.name,
+							patterns.data
 						);
+						patterns.set( newPatterns );
+						patterns.save( newPatterns );
 					}
 				} }
 			>

@@ -1,10 +1,13 @@
 import type { Pattern, Patterns } from '../types';
 
-export default function deletePattern( nameToDelete: Pattern[ 'name' ], patterns: Patterns ) {
-    const {
-        [ nameToDelete ]: {},
-        ...newPatterns
-    } = patterns;
+export default function deletePattern(
+	nameToDelete: Pattern[ 'name' ],
+	patterns: Patterns
+) {
+	const {
+		[ nameToDelete ]: {},
+		...newPatterns
+	} = patterns;
 
-    return newPatterns;
+	return newPatterns;
 }

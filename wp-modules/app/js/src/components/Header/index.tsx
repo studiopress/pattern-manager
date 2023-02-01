@@ -38,12 +38,15 @@ export default function Header() {
 						);
 
 						await patterns.save(
-							addPattern( {
-								title: patternTitle,
-								name: patternSlug,
-								slug: patternSlug,
-								content: '',
-							}, patterns.data )
+							addPattern(
+								{
+									title: patternTitle,
+									name: patternSlug,
+									slug: patternSlug,
+									content: '',
+								},
+								patterns.data
+							)
 						);
 						location.href = getEditorUrl( patternSlug );
 					} }
