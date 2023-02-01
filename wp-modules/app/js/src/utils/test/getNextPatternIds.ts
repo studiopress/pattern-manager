@@ -1,5 +1,5 @@
-import { Patterns } from '../../types';
 import getNextPatternIds from '../getNextPatternIds';
+import type { Patterns } from '../../types';
 
 type Expected = {
 	patternNumber: number;

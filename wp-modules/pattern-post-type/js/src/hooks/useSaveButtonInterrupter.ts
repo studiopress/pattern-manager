@@ -52,7 +52,7 @@ export default function useSaveButtonInterrupter(
 		editPost( {
 			meta: {
 				...meta,
-				previousName: meta.name
+				previousName: meta.name,
 			},
 		} );
 	}

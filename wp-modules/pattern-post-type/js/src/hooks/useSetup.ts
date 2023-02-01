@@ -17,7 +17,7 @@ export default function useSetup(
 		if ( ! pattern ) {
 			createErrorNotice(
 				__(
-					'No patterns found. Is this the right URL?',
+					'No pattern found. Is this the right URL?',
 					'pattern-manager'
 				)
 			);
