@@ -50,7 +50,7 @@ export default function PatternGridActions( {
 				aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
 				onClick={ async () => {
 					notice.set(
-						__( 'Duplicating your pattern…', 'pattern-manager' )
+						__( 'Duplicating your pattern and opening the editor for it…', 'pattern-manager' )
 					);
 					const newPattern = getDuplicatePattern(
 						patternData,
