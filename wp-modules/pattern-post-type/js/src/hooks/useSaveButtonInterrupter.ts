@@ -1,19 +1,21 @@
+import { store as editorStore } from '@wordpress/editor';
 import { useEffect } from '@wordpress/element';
-import { useDispatch, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 
 export default function useSaveButtonInterrupter() {
 	const { editPost } = useDispatch( 'core/editor' );
+	const editor = useSelect( editorStore, [] );
 
-	function savePattern () {
+	function savePattern() {
 		fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
 			headers: getHeaders(),
 			body: JSON.stringify( {
 				pattern: {
-					...select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
-					content: select( 'core/editor' ).getEditedPostContent(),
+					...editor.getEditedPostAttribute( 'meta' ),
+					content: editor.getEditedPostContent(),
 				},
 			} ),
 		} );
