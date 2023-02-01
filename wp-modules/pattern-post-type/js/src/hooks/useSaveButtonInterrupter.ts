@@ -28,7 +28,7 @@ export default function useSaveButtonInterrupter() {
 		const previousName = meta?.name;
 
 		savePattern();
-		editPost( { 
+		editPost( {
 			meta: {
 				...meta,
 				previousName,
