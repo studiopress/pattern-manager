@@ -80,3 +80,5 @@ export default function PatternGridActions( {
 		</div>
 	);
 }
+
+export type PatternGridActionsType = typeof PatternGridActions;

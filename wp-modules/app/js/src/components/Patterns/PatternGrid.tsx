@@ -1,15 +1,24 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
 
+// External dependencies
+import loadable from '@loadable/component';
+
 // Globals
 import { patternManager } from '../../globals';
 
 // Components
-import PatternPreview from '../PatternPreview';
-import PatternGridActions from './PatternGridActions';
+const PatternPreview: PatternPreviewType = loadable(
+	async () => import( '../PatternPreview' )
+);
+const PatternGridActions: PatternGridActionsType = loadable(
+	async () => import( './PatternGridActions' )
+);
 
 // Types
 import type { Patterns } from '../../types';
+import type { PatternPreviewType } from '../PatternPreview';
+import type { PatternGridActionsType } from './PatternGridActions';
 
 type Props = {
 	themePatterns: Patterns;
