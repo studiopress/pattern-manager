@@ -252,7 +252,7 @@ function enqueue_meta_fields_in_editor() {
 			),
 			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern(),
-			'patternSlugs' => \PatternManager\PatternDataHandlers\get_pattern_slugs(),
+			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
 			'siteUrl'      => get_bloginfo( 'url' ),
 		]
 	);

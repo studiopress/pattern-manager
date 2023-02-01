@@ -73,8 +73,13 @@ function get_pattern() {
  * @param string $slug The pattern slug.
  * @return array The pattern slugs.
  */
-function get_pattern_slugs() {
-	return array_column( get_patterns(), 'slug' );
+function get_pattern_names() {
+	return array_map(
+		function( $path ) {
+			return basename( $path, '.php' );
+		},
+		glob( get_template_directory() . '/patterns/*.php' ),
+	);
 }
 
 /**

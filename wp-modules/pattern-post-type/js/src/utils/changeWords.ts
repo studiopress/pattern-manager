@@ -1,22 +1,18 @@
-import { __ } from '@wordpress/i18n';
-
 export default function changeWords( translation: string, text: string ) {
-	// Doesn't have a textdomain argument so that it will use the Core textdomain.
-	// This filter should receive translations from Core, not this plugin.
-	if ( text === __( 'Publish' ) ) {
-		return __( 'Save pattern to theme', 'pattern-manager' );
+	if ( text === 'Publish' ) {
+		return 'Save pattern to theme';
 	}
-	if ( text === __( 'Post published.' ) || text === __( 'Post updated.' ) ) {
-		return __( 'Pattern saved to theme', 'pattern-manager' );
+	if ( text === 'Post published.' || text === 'Post updated.' ) {
+		return 'Pattern saved to theme';
 	}
-	if ( text === __( 'Update' ) || text === __( 'Post updated.' ) ) {
-		return __( 'Update Pattern', 'pattern-manager' );
+	if ( text === 'Update' || text === 'Post updated.' ) {
+		return 'Update Pattern';
 	}
-	if ( text === __( 'Add New Tag' ) ) {
-		return __( 'Pattern Categories', 'pattern-manager' );
+	if ( text === 'Add New Tag' ) {
+		return 'Pattern Categories';
 	}
-	if ( text === __( 'Saved' ) ) {
-		return __( 'Saved to your theme directory', 'pattern-manager' );
+	if ( text === 'Saved' ) {
+		return 'Saved to your theme directory' ;
 	}
 
 	return translation;

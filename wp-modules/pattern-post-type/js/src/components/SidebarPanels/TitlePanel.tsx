@@ -50,7 +50,7 @@ export default function TitlePanel( {
 						doesTitleExist(
 							newValue,
 							postMeta.slug,
-							patternManager.patternSlugs
+							patternManager.patternNames
 						)
 					) {
 						setErrorMessage(
