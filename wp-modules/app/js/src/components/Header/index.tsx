@@ -9,6 +9,7 @@ import { __ } from '@wordpress/i18n';
 import getNextPatternIds from '../../utils/getNextPatternIds';
 import usePmContext from '../../hooks/usePmContext';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
+import addPattern from '../../utils/addPattern';
 import getEditorUrl from '../../utils/getEditorUrl';
 
 export default function Header() {
@@ -37,12 +38,12 @@ export default function Header() {
 						);
 
 						await patterns.save(
-							patterns.addPattern( {
+							addPattern( {
 								title: patternTitle,
 								name: patternSlug,
 								slug: patternSlug,
 								content: '',
-							} )
+							}, patterns.data )
 						);
 						location.href = getEditorUrl( patternSlug );
 					} }

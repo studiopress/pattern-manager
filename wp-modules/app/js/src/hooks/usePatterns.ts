@@ -2,7 +2,7 @@ import { useState, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
-import type { Pattern, Patterns } from '../types';
+import type { Patterns } from '../types';
 
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ isSaving, setIsSaving ] = useState( false );
@@ -43,41 +43,9 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		} );
 	}
 
-	function addPattern( newPattern: Pattern ) {
-		const defaultPattern = {
-			categories: [],
-			keywords: [],
-			blockTypes: [],
-			postTypes: [],
-			inserter: true,
-			description: '',
-			viewportWidth: '',
-			content: '',
-		};
-
-		return {
-			...patternsData,
-			[ newPattern.name ]: {
-				...defaultPattern,
-				...newPattern,
-			},
-		};
-	}
-
-	function deletePattern( patternName: Pattern[ 'name' ] ) {
-		const {
-			[ patternName ]: {},
-			...newPatterns
-		} = patternsData;
-
-		return newPatterns;
-	}
-
 	return {
-		addPattern,
 		addRef,
 		data: patternsData,
-		deletePattern,
 		isSaving,
 		save: savePatternsData,
 	};

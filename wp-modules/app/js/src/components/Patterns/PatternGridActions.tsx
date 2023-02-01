@@ -6,6 +6,8 @@ import { Icon, trash, copy, settings } from '@wordpress/icons';
 import usePmContext from '../../hooks/usePmContext';
 
 // Utils
+import addPattern from '../../utils/addPattern';
+import deletePattern from '../../utils/deletePattern';
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
 import getEditorUrl from '../../utils/getEditorUrl';
 
@@ -51,7 +53,7 @@ export default function PatternGridActions( {
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					await patterns.save( patterns.addPattern( newPattern ) );
+					await patterns.save( addPattern( newPattern, patterns.data ) );
 					location.href = getEditorUrl( newPattern.name );
 				} }
 			>
@@ -76,7 +78,7 @@ export default function PatternGridActions( {
 						)
 					) {
 						patterns.save(
-							patterns.deletePattern( patternData.name )
+							deletePattern( patternData.name, patterns.data )
 						);
 					}
 				} }
