@@ -23,7 +23,17 @@ export default function useSaveButtonInterrupter() {
 
 	function handleSave( event: Event ) {
 		event.preventDefault();
+
+		const meta = editor.getEditedPostAttribute( 'meta' )?.name;
+		const previousName = meta?.name;
+
 		savePattern();
+		editPost( { 
+			meta: {
+				...meta,
+				previousName,
+			},
+		} );
 	}
 
 	useEffect( () => {
