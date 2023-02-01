@@ -5,7 +5,6 @@ import getHeaders from '../utils/getHeaders';
 import type { Patterns } from '../types';
 
 export default function usePatterns( initialPatterns: Patterns ) {
-	const [ isSaving, setIsSaving ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
 	const refs = useRef< { [ key: string ]: HTMLIFrameElement } >( {} );
@@ -19,34 +18,28 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		} );
 	};
 
-	function savePatternsData( patternsToSave: Patterns ) {
-		return new Promise( ( resolve ) => {
-			setIsSaving( true );
-
-			fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
-				method: 'POST',
-				headers: getHeaders(),
-				body: JSON.stringify( { patterns: patternsToSave } ),
+	async function savePatternsData( patternsToSave: Patterns ) {
+		return fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
+			method: 'POST',
+			headers: getHeaders(),
+			body: JSON.stringify( { patterns: patternsToSave } ),
+		} )
+			.then( ( response ) => {
+				if ( ! response.ok ) {
+					throw response.statusText;
+				}
+				return response.json();
 			} )
-				.then( ( response ) => {
-					if ( ! response.ok ) {
-						throw response.statusText;
-					}
-					return response.json();
-				} )
-				.then( ( data: { patterns: Patterns } ) => {
-					setPatternsData( data.patterns );
-					setIsSaving( false );
-					reloadPatternPreviews();
-					resolve( data );
-				} );
-		} );
+			.then( ( data: { patterns: Patterns } ) => {
+				setPatternsData( data.patterns );
+				reloadPatternPreviews();
+			} );
 	}
 
 	return {
 		addRef,
 		data: patternsData,
-		isSaving,
 		save: savePatternsData,
+		set: setPatternsData,
 	};
 }

@@ -77,8 +77,10 @@ export default function PatternGridActions( {
 							)
 						)
 					) {
+						const newPatterns = deletePattern( patternData.name, patterns.data );
+						patterns.set( newPatterns );
 						patterns.save(
-							deletePattern( patternData.name, patterns.data )
+							newPatterns
 						);
 					}
 				} }
