@@ -5,9 +5,10 @@ import { Pattern } from '../types';
 
 export default function useSetup( pattern: Pattern ) {
 	useEffect( () => {
+		const { content, ...meta } = pattern;
 		dispatch( 'core/editor' ).resetEditorBlocks(
 			rawHandler( {
-				HTML: pattern.content,
+				HTML: content,
 				mode: 'BLOCKS',
 			} )
 		);
@@ -22,10 +23,8 @@ export default function useSetup( pattern: Pattern ) {
 		} );
 
 		// TODO: Set the categories. They can found at: response.patternData.categories
-		const { content, ...patternMeta } = pattern;
-
 		dispatch( 'core/editor' ).editPost( {
-			meta: patternMeta,
+			meta,
 		} );
 	}, [] );
 }

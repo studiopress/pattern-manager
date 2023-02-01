@@ -35,7 +35,7 @@ function register_routes() {
 				'pattern' => [
 					'required'          => true,
 					'type'              => 'object',
-					'description'       => __( 'The patterns', 'pattern-manager' ),
+					'description'       => __( 'The pattern', 'pattern-manager' ),
 					'validate_callback' => function( $to_validate ) {
 						return is_array( $to_validate );
 					},

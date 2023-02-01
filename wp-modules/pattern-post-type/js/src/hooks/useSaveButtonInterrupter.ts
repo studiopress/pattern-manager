@@ -1,21 +1,23 @@
 import { useEffect } from '@wordpress/element';
 import { select, subscribe } from '@wordpress/data';
-import { Pattern, PostMeta } from '../types';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 
-export default function useSaveButtonInterrupter( postMeta: PostMeta ) {
+export default function useSaveButtonInterrupter() {
 	function savePattern() {
 		fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
 			headers: getHeaders(),
 			body: JSON.stringify( {
-				pattern: postMeta,
+				pattern: {
+					...select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
+					content: select( 'core/editor' ).getEditedPostContent()
+				}
 			} ),
 		} );
 	}
 
-	function handleSave( event ) {
+	function handleSave( event: Event ) {
 		event.preventDefault();
 		savePattern();
 	}

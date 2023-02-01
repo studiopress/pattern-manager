@@ -13,14 +13,13 @@ import usePatternData from '../../hooks/usePatternData';
 import useSetup from '../../hooks/useSetup';
 import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
 import { patternManager } from '../../globals';
-import { Patterns } from '../../types';
 import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
 	const { postMeta } = usePostData();
 
 	useSetup( patternManager.pattern );
-	useSaveButtonInterrupter( postMeta );
+	useSaveButtonInterrupter();
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
