@@ -13,13 +13,13 @@ export default function useSaveButtonInterrupter() {
 	const { editPost } = useDispatch( 'core/editor' );
 
 	useEffect( () => {
-		const saveButtons = document.getElementsByClassName(
-			'editor-post-publish-panel__toggle'
-		);
-
-		for ( let i = 0; i < saveButtons.length; i++ ) {
-			saveButtons[ i ].addEventListener( 'click', handleSave, false );
-		}
+		Object.values(
+			document.getElementsByClassName(
+				'editor-post-publish-panel__toggle'
+			)
+		).forEach( ( saveButton ) => {
+			saveButton.addEventListener( 'click', handleSave, false );
+		} );
 	}, [] );
 
 	useEffect( () => {

@@ -19,16 +19,6 @@ export default function useSetup( pattern: Pattern ) {
 			} )
 		);
 
-		// Prevent this notice: "The backup of this post in your browser is different from the version below."
-		// Get all notices, then remove if the notice has a matching wp autosave id.
-
-		notices?.forEach( ( notice ) => {
-			if ( notice.id.includes( 'wpEditorAutosaveRestore' ) ) {
-				removeNotice( notice.id );
-			}
-		} );
-
-		// TODO: Set the categories. They can found at: response.patternData.categories
 		editPost( {
 			meta: {
 				...meta,
@@ -36,4 +26,14 @@ export default function useSetup( pattern: Pattern ) {
 			},
 		} );
 	}, [] );
+
+	useEffect( () => {
+		// Prevent this notice: "The backup of this post in your browser is different from the version below."
+		// Get all notices, then remove if the notice has a matching wp autosave id.
+		notices?.forEach( ( notice ) => {
+			if ( notice.id.includes( 'wpEditorAutosaveRestore' ) ) {
+				removeNotice( notice.id );
+			}
+		} );
+	}, [ notices ] );
 }
