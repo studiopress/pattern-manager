@@ -37,6 +37,10 @@ export default function useSaveButtonInterrupter(
 		const meta = editor.getEditedPostAttribute( 'meta' );
 		const previousName = meta?.name;
 
+		if ( ! meta.title ) {
+			return;
+		}
+
 		await savePattern();
 		await updatePatternNames();
 		editPost( {
