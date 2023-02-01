@@ -24,7 +24,10 @@ export default function useSetup( pattern: Pattern ) {
 
 		// TODO: Set the categories. They can found at: response.patternData.categories
 		dispatch( 'core/editor' ).editPost( {
-			meta,
+			meta: {
+				...meta,
+				previousName: pattern.name,
+			},
 		} );
 	}, [] );
 }

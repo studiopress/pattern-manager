@@ -19,10 +19,10 @@ export default function PatternManagerMetaControls() {
 	const { postMeta } = usePostData();
 
 	useSetup( patternManager.pattern );
-	useSaveButtonInterrupter();
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
+	useSaveButtonInterrupter( postMeta, updatePostMeta );
 
 	return (
 		<div>
