@@ -98,7 +98,7 @@ html body.toplevel_page_pattern-manager {
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 		margin-left: auto;
 		margin-right: auto;
-		padding: 1rem 5rem 1rem 4rem;
+		padding: 1rem 3rem 1rem 3rem;
 
 		.header-container-logo {
 			position: relative;
@@ -245,10 +245,14 @@ html body.toplevel_page_pattern-manager {
 
 				.grid-item {
 					position: relative;
-					background-color: #efefef;
 					box-sizing: border-box;
 					margin-bottom: 50px;
 					border: 1px solid transparent;
+					border: solid 1px #dcdcdc;
+					border-bottom-width: 2px;
+					border-bottom-color: #eaeaea;
+					border-radius: 5px;
+					background: #f4f4f4;
 
 					&::before {
 						content: "";
@@ -267,10 +271,10 @@ html body.toplevel_page_pattern-manager {
 						.item-pattern-preview {
 							display: flex;
 							z-index: 0;
-							padding: 10%;
 							flex-grow: 1;
-							align-items: center;
 							position: relative;
+							border-radius: 5px;
+							overflow: hidden;
 
 							&::before {
 								display: block;
@@ -297,13 +301,48 @@ html body.toplevel_page_pattern-manager {
 								}
 							}
 
+							@keyframes fadein {
+
+								0% {
+									opacity: 0;
+								}
+
+								70% {
+									opacity: 0;
+								}
+
+								100% {
+									opacity: 1;
+								}
+
+							}
+
+							@-webkit-keyframes fadein {
+
+								0% {
+									opacity: 0;
+								}
+
+								70% {
+									opacity: 0;
+								}
+
+								100% {
+									opacity: 1;
+								}
+
+							}
+
 							.pattern-preview-iframe-outer {
 								position: relative;
 								width: 100%;
 								height: 100%;
-								max-height: 500px;
 								border-radius: 2px;
 								overflow: hidden;
+							}
+
+							iframe {
+								animation: 0.6s ease 0s normal forwards 1 fadein;
 							}
 						}
 					}
@@ -368,13 +407,13 @@ html body.toplevel_page_pattern-manager {
 
 					&:hover {
 						border: 1px solid #006ba1;
-						border-radius: 2px;
-						transition: all 0.2s ease;
+						border-radius: 5px;
+						transition: all 0.2s ease-in-out;
 
 						// Show the item-action buttons.
 						.item-actions {
 							opacity: 1;
-							transition: all 0.2s ease;
+							transition: all 0.2s ease-in-out;
 						}
 					}
 
