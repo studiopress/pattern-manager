@@ -75,7 +75,9 @@ export default function PatternGridActions( {
 							)
 						)
 					) {
-						patterns.save( patterns.removePattern( patternData.name ) );
+						patterns.save(
+							patterns.deletePattern( patternData.name )
+						);
 					}
 				} }
 			>

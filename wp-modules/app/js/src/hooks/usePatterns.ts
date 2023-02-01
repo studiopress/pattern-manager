@@ -2,13 +2,11 @@ import { useState, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
-import { Pattern, Patterns } from '../types';
+import type { Pattern, Patterns } from '../types';
 
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ isSaving, setIsSaving ] = useState( false );
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
-
-	const editorDirty = useRef( false );
 
 	const refs = useRef< { [ key: string ]: HTMLIFrameElement } >( {} );
 
@@ -38,28 +36,35 @@ export default function usePatterns( initialPatterns: Patterns ) {
 				} )
 				.then( ( data: { patterns: Patterns } ) => {
 					setPatternsData( data.patterns );
-
-					uponSuccessfulSave();
-
+					setIsSaving( false );
+					reloadPatternPreviews();
 					resolve( data );
 				} );
 		} );
 	}
 
-	function uponSuccessfulSave() {
-		editorDirty.current = false;
-		setIsSaving( false );
-		reloadPatternPreviews();
-	}
-
 	function addPattern( newPattern: Pattern ) {
+		const defaultPattern = {
+			categories: [],
+			keywords: [],
+			blockTypes: [],
+			postTypes: [],
+			inserter: true,
+			description: '',
+			viewportWidth: '',
+			content: '',
+		};
+
 		return {
 			...patternsData,
-			[ newPattern.name ]: newPattern,
+			[ newPattern.name ]: {
+				...defaultPattern,
+				...newPattern,
+			},
 		};
 	}
 
-	function removePattern( patternName: Pattern[ 'name' ] ) {
+	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		const {
 			[ patternName ]: {},
 			...newPatterns
@@ -69,10 +74,10 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	}
 
 	return {
-		addRef,
 		addPattern,
+		addRef,
 		data: patternsData,
-		removePattern,
+		deletePattern,
 		isSaving,
 		save: savePatternsData,
 	};

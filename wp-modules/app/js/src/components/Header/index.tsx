@@ -2,7 +2,6 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Spinner } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -42,13 +41,6 @@ export default function Header() {
 								title: patternTitle,
 								name: patternSlug,
 								slug: patternSlug,
-								categories: [],
-								keywords: [],
-								blockTypes: [],
-								postTypes: [],
-								inserter: true,
-								description: '',
-								viewportWidth: '',
 								content: '',
 							} )
 						);

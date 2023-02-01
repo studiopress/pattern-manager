@@ -2,8 +2,6 @@
 import '../../../../css/src/index.scss';
 
 // WP dependencies
-import { useRef } from '@wordpress/element';
-import { Snackbar, Spinner } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 // Globals
@@ -14,7 +12,6 @@ import PatternManagerContext from '../../contexts/PatternManagerContext';
 
 // Hooks
 import usePatterns from '../../hooks/usePatterns';
-import usePmContext from '../../hooks/usePmContext';
 
 // Components
 import Header from '../Header';
