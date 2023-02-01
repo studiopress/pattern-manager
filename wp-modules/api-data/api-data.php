@@ -65,17 +65,6 @@ function register_routes() {
 					},
 				),
 			),
-			'schema'              => array(
-				'$schema'    => 'https://json-schema.org/draft-04/schema#',
-				'type'       => 'object',
-				'properties' => array(
-					'pattern' => array(
-						'description' => esc_html__( 'The pattern data', 'pattern-manager' ),
-						'type'        => 'object',
-						'readonly'    => true,
-					),
-				),
-			),
 		)
 	);
 
@@ -107,16 +96,16 @@ add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
  * @return WP_REST_Response
  */
 function get_pattern_names() {
-	$result = \PatternManager\PatternDataHandlers\get_pattern_names();
+	$is_success = \PatternManager\PatternDataHandlers\get_pattern_names();
 
-	return $result
+	return $is_success
 		? new WP_REST_Response(
 			array(
-				'patternNames' => $result,
+				'patternNames' => $is_success,
 			),
 			200
 		)
-		: new WP_REST_Response( $result, 400 );
+		: new WP_REST_Response( $is_success, 400 );
 }
 
 /**
@@ -126,20 +115,20 @@ function get_pattern_names() {
  * @return WP_REST_Response
  */
 function save_pattern( $request ) {
-	$result = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
+	$is_success = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
 
-	return $result
+	return $is_success
 		? new WP_REST_Response(
 			array(
 				'message' => __( 'Pattern saved to disk', 'pattern-manager' ),
 			),
 			200
 		)
-		: new WP_REST_Response( $result, 400 );
+		: new WP_REST_Response( $is_success, 400 );
 }
 
 /**
- * Saves patterns.
+ * Saves multiple patterns.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
@@ -164,46 +153,4 @@ function save_patterns( $request ) {
  */
 function permission_check() {
 	return current_user_can( 'manage_options' );
-}
-
-/**
- * Required args for a save request.
- *
- * @return array
- */
-function save_request_args() {
-	return array(
-		'patterns' => array(
-			'required'          => true,
-			'type'              => 'object',
-			'description'       => __( 'The patterns', 'pattern-manager' ),
-			'validate_callback' => function( $to_validate ) {
-				return is_array( $to_validate );
-			},
-		),
-	);
-}
-
-/**
- * Retrieves the item's schema, conforming to JSON Schema.
- * The properties value is what you can expect to see in a successful return/response from this endpoint.
- *
- * @return array Item schema data.
- */
-function response_item_schema() {
-	return array(
-		// This tells the spec of JSON Schema we are using which is draft 4.
-		'$schema'    => 'https://json-schema.org/draft-04/schema#',
-		// The title property marks the identity of the resource.
-		'type'       => 'object',
-
-		// These define the items which will actually be returned by the endpoint.
-		'properties' => array(
-			'patterns' => array(
-				'description' => esc_html__( 'The pattern data', 'pattern-manager' ),
-				'type'        => 'object',
-				'readonly'    => true,
-			),
-		),
-	);
 }
