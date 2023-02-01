@@ -297,7 +297,6 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-
 	$patterns_dir     = get_patterns_directory();
 	$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
 	if ( $name_was_changed ) {
