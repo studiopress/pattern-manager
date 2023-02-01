@@ -12,8 +12,28 @@ declare(strict_types=1);
 namespace PatternManager\PatternDataHandlers;
 
 // Exit if accessed directly.
+use function FseStudio\PatternDataHandlers\get_pattern;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
+}
+
+/**
+ * Gets the directory the patterns are in.
+ *
+ * @return string
+ */
+function get_patterns_directory() {
+	return get_template_directory() . '/patterns/';
+}
+
+/**
+ * Gets the file paths for patterns.
+ *
+ * @return array|false
+ */
+function get_pattern_file_paths() {
+	return glob( get_patterns_directory() . '*.php' );
 }
 
 /**
@@ -24,8 +44,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 function get_patterns() {
 	$patterns = array();
 
-	// Grab all of the patterns in this theme.
-	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
+	// Grab all the patterns in this theme.
+	$pattern_file_paths = get_pattern_file_paths();
 
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern = get_pattern_by_path( $path );
@@ -67,25 +87,17 @@ function get_pattern_by_path( $path ) {
 }
 
 /**
- * Gets a pattern by its name.
- *
- * @param string $name The pattern name.
- * @return array|false
- */
-function get_pattern_by_name( $name ) {
-	return get_pattern_by_path( get_template_directory() . "/patterns/{$name}.php" );
-}
-
-/**
  * Gets a pattern by the name in the query param.
  *
- * @return array The pattern for the editor.
+ * @return array|null The pattern for the editor.
  */
 function get_pattern_from_query_param() {
-	$name = filter_input( INPUT_GET, 'name' );
-	return $name
-		? get_pattern_by_name( urldecode( wp_kses_stripslashes( $name ) ) )
-		: [];
+	$pattern_name = filter_input( INPUT_GET, 'name' );
+	$pattern_path = get_patterns_directory() . urldecode( wp_kses_stripslashes( $pattern_name ) ) . '.php';
+
+	return file_exists( $pattern_path )
+		? get_pattern_by_path( $pattern_path )
+		: null;
 }
 
 /**
@@ -98,7 +110,7 @@ function get_pattern_names() {
 		function( $path ) {
 			return basename( $path, '.php' );
 		},
-		glob( get_template_directory() . '/patterns/*.php' ),
+		get_pattern_file_paths()
 	);
 }
 
@@ -239,11 +251,8 @@ function get_theme_patterns() {
 		'inserter'      => 'Inserter',
 	);
 
-	$theme_path      = get_template_directory();
-	$module_dir_path = module_dir_path( __FILE__ );
-
 	// Grab all of the patterns in this theme.
-	$pattern_file_paths = glob( $theme_path . '/patterns/*.php' );
+	$pattern_file_paths = get_pattern_file_paths();
 
 	$patterns = array();
 	foreach ( $pattern_file_paths as $path ) {
@@ -288,9 +297,8 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$wp_theme_dir = get_template_directory();
 
-	$patterns_dir     = $wp_theme_dir . '/patterns/';
+	$patterns_dir     = get_patterns_directory();
 	$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
 	if ( $name_was_changed ) {
 		// Delete the previous pattern file, as the file name should change on changing the name.
@@ -325,7 +333,7 @@ function delete_patterns_not_present( array $patterns ) {
 		return;
 	}
 
-	$pattern_file_paths = glob( get_template_directory() . '/patterns/*.php' );
+	$pattern_file_paths = get_pattern_file_paths();
 	if ( ! $pattern_file_paths ) {
 		return;
 	}

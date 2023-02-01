@@ -4,7 +4,7 @@
 import { Button, Fill, Icon } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { wordpress } from '@wordpress/icons';
-import { patternManager } from '../../globals';
+import { patternManager } from '../../globals/';
 
 export default function BackButton() {
 	return (
