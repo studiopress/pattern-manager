@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from '@wordpress/element';
+import { useState, useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
@@ -21,14 +21,14 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		} );
 	};
 
-	function savePatternsData() {
+	function savePatternsData( patternsToSave: Patterns ) {
 		return new Promise( ( resolve ) => {
 			setIsSaving( true );
 
 			fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify( { patterns: patternsData } ),
+				body: JSON.stringify( { patterns: patternsToSave } ),
 			} )
 				.then( ( response ) => {
 					if ( ! response.ok ) {
@@ -52,52 +52,28 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		reloadPatternPreviews();
 	}
 
-	function createPattern( newPattern: Pattern ) {
-		setPatternsData( {
+	function addPattern( newPattern: Pattern ) {
+		return {
 			...patternsData,
 			[ newPattern.name ]: newPattern,
-		} );
+		};
 	}
 
-	function deletePattern( patternName: Pattern[ 'name' ] ) {
-		if (
-			/* eslint-disable no-alert */
-			! window.confirm(
-				__(
-					'Are you sure you want to delete this pattern?',
-					'pattern-manager'
-				)
-			)
-		) {
-			return;
-		}
-
+	function removePattern( patternName: Pattern[ 'name' ] ) {
 		const {
 			[ patternName ]: {},
 			...newPatterns
 		} = patternsData;
 
-		setPatternsData( newPatterns );
-	}
-
-	/**
-	 * Allows the user to edit the patterns.
-	 *
-	 * A separate function from setPatternsData(), as this sets the 'dirty'
-	 * state of the editor.
-	 */
-	function editPatterns( newPatterns: Patterns ) {
-		editorDirty.current = true;
-		setPatternsData( newPatterns );
+		return newPatterns;
 	}
 
 	return {
 		addRef,
-		createPattern,
+		addPattern,
 		data: patternsData,
-		deletePattern,
+		removePattern,
 		isSaving,
 		save: savePatternsData,
-		set: editPatterns,
 	};
 }

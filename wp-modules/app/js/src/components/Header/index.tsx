@@ -37,20 +37,21 @@ export default function Header() {
 							patterns.data
 						);
 
-						patterns.createPattern( {
-							title: patternTitle,
-							name: patternSlug,
-							slug: patternSlug,
-							categories: [],
-							keywords: [],
-							blockTypes: [],
-							postTypes: [],
-							inserter: true,
-							description: '',
-							viewportWidth: '',
-							content: '',
-						} );
-						await patterns.save();
+						await patterns.save(
+							patterns.addPattern( {
+								title: patternTitle,
+								name: patternSlug,
+								slug: patternSlug,
+								categories: [],
+								keywords: [],
+								blockTypes: [],
+								postTypes: [],
+								inserter: true,
+								description: '',
+								viewportWidth: '',
+								content: '',
+							} )
+						);
 						location.href = getEditorUrl( patternSlug );
 					} }
 				>

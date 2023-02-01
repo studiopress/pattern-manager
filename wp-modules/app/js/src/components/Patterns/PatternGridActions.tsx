@@ -51,8 +51,7 @@ export default function PatternGridActions( {
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					patterns.createPattern( newPattern );
-					await patterns.save();
+					await patterns.save( patterns.addPattern( newPattern ) );
 					location.href = getEditorUrl( newPattern.name );
 				} }
 			>
@@ -67,8 +66,17 @@ export default function PatternGridActions( {
 				className="item-action-button"
 				aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
 				onClick={ () => {
-					patterns.deletePattern( patternData.name );
-					patterns.save();
+					if (
+						/* eslint-disable no-alert */
+						window.confirm(
+							__(
+								'Are you sure you want to delete this pattern?',
+								'pattern-manager'
+							)
+						)
+					) {
+						patterns.save( patterns.removePattern( patternData.name ) );
+					}
 				} }
 			>
 				<Icon className="item-action-icon" icon={ trash } size={ 30 } />
