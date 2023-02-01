@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PatternManager\ApiData;
 
 use WP_REST_Request;
+use WP_REST_Response;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,7 +35,6 @@ function register_routes() {
 			'schema'              => array(
 				// This tells the spec of JSON Schema we are using which is draft 4.
 				'$schema'    => 'https://json-schema.org/draft-04/schema#',
-				// The title property marks the identity of the resource.
 				'type'       => 'object',
 				// These define the items which will actually be returned by the endpoint.
 				'properties' => array(
@@ -96,17 +96,6 @@ function register_routes() {
 					},
 				),
 			),
-			'schema'              => array(
-				'$schema'    => 'https://json-schema.org/draft-04/schema#',
-				'type'       => 'object',
-				'properties' => array(
-					'patterns' => array(
-						'description' => esc_html__( 'The patterns data', 'pattern-manager' ),
-						'type'        => 'object',
-						'readonly'    => true,
-					),
-				),
-			),
 		)
 	);
 }
@@ -121,13 +110,13 @@ function get_pattern_names() {
 	$result = \PatternManager\PatternDataHandlers\get_pattern_names();
 
 	return $result
-		? new \WP_REST_Response(
+		? new WP_REST_Response(
 			array(
 				'patternNames' => $result,
 			),
 			200
 		)
-		: new \WP_REST_Response( $result, 400 );
+		: new WP_REST_Response( $result, 400 );
 }
 
 /**
@@ -140,13 +129,13 @@ function save_pattern( $request ) {
 	$result = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
 
 	return $result
-		? new \WP_REST_Response(
+		? new WP_REST_Response(
 			array(
 				'message' => __( 'Pattern saved to disk', 'pattern-manager' ),
 			),
 			200
 		)
-		: new \WP_REST_Response( $result, 400 );
+		: new WP_REST_Response( $result, 400 );
 }
 
 /**
@@ -156,17 +145,16 @@ function save_pattern( $request ) {
  * @return WP_REST_Response
  */
 function save_patterns( $request ) {
-	$result = \PatternManager\PatternDataHandlers\update_patterns( $request->get_params()['patterns'] );
+	$is_success = \PatternManager\PatternDataHandlers\update_patterns( $request->get_params()['patterns'] );
 
-	return is_wp_error( $result )
-		? new \WP_REST_Response( $result, 400 )
-		: new \WP_REST_Response(
+	return $is_success
+		? new WP_REST_Response(
 			array(
-				'message'  => __( 'Patterns successfully saved to disk', 'pattern-manager' ),
-				'patterns' => $result,
+				'message' => __( 'Patterns successfully saved to disk', 'pattern-manager' ),
 			),
 			200
-		);
+		)
+		: new WP_REST_Response( $is_success, 400 );
 }
 
 /**

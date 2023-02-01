@@ -12,8 +12,6 @@ declare(strict_types=1);
 namespace PatternManager\PatternDataHandlers;
 
 // Exit if accessed directly.
-use function FseStudio\PatternDataHandlers\get_pattern;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -81,7 +79,6 @@ function get_pattern_by_path( $path ) {
 		return false;
 	}
 	$pattern_data['name'] = basename( $path, '.php' );
-	$pattern_data['type'] = 'pattern';
 
 	return $pattern_data;
 }
@@ -272,19 +269,22 @@ function get_theme_patterns() {
  * Update the patterns.
  *
  * @param array $patterns The new patterns.
- * @return array
+ * @return bool
  */
 function update_patterns( $patterns ) {
 	delete_patterns_not_present( $patterns );
 
-	foreach ( $patterns as $pattern_name => $pattern ) {
-		update_pattern( $pattern );
-	}
+	$results = array_map(
+		function( $pattern ) {
+			return update_pattern( $pattern );
+		},
+		$patterns
+	);
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
 	tree_shake_theme_images();
 
-	return get_theme_patterns();
+	return ! in_array( false, $results, true );
 }
 
 /**

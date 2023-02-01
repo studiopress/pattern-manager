@@ -16,14 +16,9 @@ type BoundingClientRect = {
 };
 
 export default function PatternPreview( { url, viewportWidth }: Props ) {
-	const { patterns } = usePmContext();
 	const [ previewContainerSize, setPreviewContainerSize ] =
 		useState< BoundingClientRect >();
-	const [ iframeRef, setIframeRef ] = useState<
-		HTMLIFrameElement | undefined
-	>( undefined );
 	const previewContainer = useRef< HTMLDivElement >();
-	patterns.addRef( url, iframeRef );
 
 	useEffect( () => {
 		if ( previewContainer?.current ) {
@@ -49,7 +44,6 @@ export default function PatternPreview( { url, viewportWidth }: Props ) {
 				src={ url }
 				title={ __( 'Pattern Preview', 'pattern-manager' ) }
 				role={ 'img' }
-				ref={ setIframeRef }
 				style={ {
 					position: 'absolute',
 					top: '0',

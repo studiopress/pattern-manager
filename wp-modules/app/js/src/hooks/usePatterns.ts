@@ -7,17 +7,6 @@ import type { Pattern, Patterns } from '../types';
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
-	const refs = useRef< { [ key: string ]: HTMLIFrameElement } >( {} );
-
-	const addRef = ( key: string, newRef: HTMLIFrameElement ) => {
-		refs.current[ key ] = newRef;
-	};
-	const reloadPatternPreviews = () => {
-		Object.values( refs.current ).forEach( ( ref ) => {
-			ref?.contentWindow?.location.reload();
-		} );
-	};
-
 	/** Saves a single pattern. */
 	async function savePattern( patternToSave: Pattern ) {
 		return fetch( patternManager.apiEndpoints.savePatternEndpoint, {
@@ -33,21 +22,10 @@ export default function usePatterns( initialPatterns: Patterns ) {
 			method: 'POST',
 			headers: getHeaders(),
 			body: JSON.stringify( { patterns: patternsToSave } ),
-		} )
-			.then( ( response ) => {
-				if ( ! response.ok ) {
-					throw response.statusText;
-				}
-				return response.json();
-			} )
-			.then( ( data: { patterns: Patterns } ) => {
-				setPatternsData( data.patterns );
-				reloadPatternPreviews();
-			} );
+		} );
 	}
 
 	return {
-		addRef,
 		data: patternsData,
 		savePattern,
 		savePatterns,
