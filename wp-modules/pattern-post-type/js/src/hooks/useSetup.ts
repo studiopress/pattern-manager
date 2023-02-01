@@ -35,5 +35,5 @@ export default function useSetup( pattern: Pattern ) {
 				previousName: pattern.name,
 			},
 		} );
-	}, [ notices ] );
+	}, [] );
 }
