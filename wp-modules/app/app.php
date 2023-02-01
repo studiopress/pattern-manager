@@ -25,10 +25,10 @@ function get_app_state() {
 
 	return array(
 		'patterns'     => \PatternManager\PatternDataHandlers\get_patterns(),
+		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
 			'savePatternsEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-patterns/' ),
 		),
-		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'siteUrl'      => get_bloginfo( 'url' ),
 		'adminUrl'     => admin_url(),
 	);

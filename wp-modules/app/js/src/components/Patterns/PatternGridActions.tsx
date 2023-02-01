@@ -26,7 +26,6 @@ export default function PatternGridActions( {
 	return (
 		<div className="item-actions">
 			<a
-				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
 				href={ getEditorUrl( patternData.name ) }
@@ -36,7 +35,9 @@ export default function PatternGridActions( {
 					icon={ settings }
 					size={ 30 }
 				/>
-				<span className="item-action-button-text">Edit</span>
+				<span className="item-action-button-text">
+					{ __( 'Edit', 'pattern-manager' ) }
+				</span>
 			</a>
 
 			<div className="item-action-button-separator"></div>
