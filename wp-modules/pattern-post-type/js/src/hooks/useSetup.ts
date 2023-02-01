@@ -1,12 +1,18 @@
 import { useEffect } from '@wordpress/element';
-import { dispatch, select } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { rawHandler } from '@wordpress/blocks';
-import { Pattern } from '../types';
+import type { Pattern, SelectQuery } from '../types';
 
 export default function useSetup( pattern: Pattern ) {
+	const { removeNotice } = useDispatch( 'core/notices' );
+	const { editPost, resetEditorBlocks } = useDispatch( 'core/editor' );
+	const notices = useSelect( ( select: SelectQuery ) => {
+		return select( 'core/notices' ).getNotices();
+	}, [] );
+
 	useEffect( () => {
 		const { content, ...meta } = pattern;
-		dispatch( 'core/editor' ).resetEditorBlocks(
+		resetEditorBlocks(
 			rawHandler( {
 				HTML: content,
 				mode: 'BLOCKS',
@@ -15,19 +21,19 @@ export default function useSetup( pattern: Pattern ) {
 
 		// Prevent this notice: "The backup of this post in your browser is different from the version below."
 		// Get all notices, then remove if the notice has a matching wp autosave id.
-		const notices = select( 'core/notices' ).getNotices();
+
 		notices?.forEach( ( notice ) => {
 			if ( notice.id.includes( 'wpEditorAutosaveRestore' ) ) {
-				dispatch( 'core/notices' ).removeNotice( notice.id );
+				removeNotice( notice.id );
 			}
 		} );
 
 		// TODO: Set the categories. They can found at: response.patternData.categories
-		dispatch( 'core/editor' ).editPost( {
+		editPost( {
 			meta: {
 				...meta,
 				previousName: pattern.name,
 			},
 		} );
-	}, [] );
+	}, [ notices ] );
 }

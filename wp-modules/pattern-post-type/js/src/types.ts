@@ -25,6 +25,7 @@ export type SelectQuery = ( dataStore: string ) => {
 	} ) => { name: string; slug: string }[];
 	getBlockPatternCategories: () => { name: string; label: string }[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
+	getNotices: () => { id: string }[];
 };
 
 export type Pattern = {

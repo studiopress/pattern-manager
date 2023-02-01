@@ -1,10 +1,12 @@
 import flatUnorderedEquals from '../utils/flatUnorderedEquals';
 import sortAlphabetically from '../utils/sortAlphabetically';
-import { useSelect, dispatch } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
 
 export default function usePatternData( postMeta: PostMeta ) {
+	const { editPost } = useDispatch( 'core/editor' );
+
 	/**
 	 * Get, filter, and sort the custom post types, mapped for react-select.
 	 * Wrapping call in useSelect to prevent async null return on initial load.
@@ -158,7 +160,7 @@ export default function usePatternData( postMeta: PostMeta ) {
 		newValue: unknown,
 		additionalMeta: { [ key: string ]: unknown } = {}
 	) {
-		dispatch( 'core/editor' ).editPost( {
+		editPost( {
 			meta: {
 				...postMeta,
 				[ metaKey ]: newValue,
