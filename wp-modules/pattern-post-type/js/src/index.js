@@ -1,5 +1,5 @@
-import { addFilter } from '@wordpress/hooks';
 import '../../css/src/index.scss';
+import { addFilter } from '@wordpress/hooks';
 import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';

@@ -5,6 +5,7 @@ export type PostMeta = {
 	slug: string;
 	name: string;
 	content: string;
+	previousName: string;
 	description: string;
 	postTypes: string[];
 	blockTypes: string[];

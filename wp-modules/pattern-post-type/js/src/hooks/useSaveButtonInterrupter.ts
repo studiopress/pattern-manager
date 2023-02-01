@@ -13,6 +13,7 @@ export default function useSaveButtonInterrupter() {
 	const { editPost } = useDispatch( 'core/editor' );
 
 	useEffect( () => {
+		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
 		Object.values(
 			document.getElementsByClassName(
 				'editor-post-publish-panel__toggle'

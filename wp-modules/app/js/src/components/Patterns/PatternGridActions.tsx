@@ -52,7 +52,7 @@ export default function PatternGridActions( {
 					);
 					patterns.createPattern( newPattern );
 					await patterns.save();
-					location.href = getEditorUrl( patternData.name );
+					location.href = getEditorUrl( newPattern.name );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
