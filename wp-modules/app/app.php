@@ -24,7 +24,7 @@ function get_app_state() {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	return array(
-		'patterns'     => \PatternManager\PatternDataHandlers\get_theme_pattersn(),
+		'patterns'     => \PatternManager\PatternDataHandlers\get_theme_patterns(),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
 			'savePatternEndpoint'  => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),

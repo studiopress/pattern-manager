@@ -39,7 +39,7 @@ function get_pattern_file_paths() {
  *
  * @return array
  */
-function get_theme_pattersn() {
+function get_theme_patterns() {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
@@ -365,7 +365,7 @@ function tree_shake_theme_images() {
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
 	$theme_dir         = get_template_directory();
-	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_pattersn();
+	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/assets/images/';

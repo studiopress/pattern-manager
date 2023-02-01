@@ -277,7 +277,7 @@ function register_block_patterns() {
 		return;
 	}
 
-	$patterns = \PatternManager\PatternDataHandlers\get_theme_pattersn();
+	$patterns = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	foreach ( $patterns as $pattern ) {
 		if ( isset( $pattern['categories'] ) ) {
