@@ -35,11 +35,19 @@ export default function useSaveButtonInterrupter(
 		event?.preventDefault();
 
 		const meta = editor.getEditedPostAttribute( 'meta' );
-		const previousName = meta?.name;
-
 		if ( ! meta.title ) {
 			return;
 		}
+
+		// If the pattern name changed, update URL query param 'name'.
+		// That query param gets the pattern data.
+		if ( meta.previousName && meta.previousName !== meta.name ) {
+			const url = new URL( location.href );
+			url.searchParams.set( 'name', meta.name );
+			window.history.pushState( {}, '', url );
+		}
+
+		const previousName = meta?.name;
 
 		await savePattern();
 		await updatePatternNames();

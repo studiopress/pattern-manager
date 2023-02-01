@@ -34,7 +34,7 @@ export default function Header() {
 					onClick={ async () => {
 						notice.set(
 							__(
-								'Creating your new pattern and opening the editor for it…',
+								'Creating your new pattern and opening it in the editor…',
 								'pattern-manager'
 							)
 						);

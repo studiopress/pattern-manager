@@ -50,7 +50,7 @@ export default function PatternGridActions( {
 				onClick={ async () => {
 					notice.set(
 						__(
-							'Duplicating your pattern and opening the editor for it…',
+							'Duplicating your pattern and opening it in the editor…',
 							'pattern-manager'
 						)
 					);
