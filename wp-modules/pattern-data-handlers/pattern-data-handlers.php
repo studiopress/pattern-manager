@@ -35,7 +35,7 @@ function get_pattern_file_paths() {
 }
 
 /**
- * Get the data for all patterns available.
+ * Get the pattern data for all patterns in a theme.
  *
  * @return array
  */
@@ -59,7 +59,7 @@ function get_theme_patterns() {
  * Gets a pattern by its path in the filesystem.
  *
  * @param string $path The pattern path.
- * @return array|false The pattern.
+ * @return array|false The pattern, if any.
  */
 function get_pattern_by_path( $path ) {
 	$default_headers = array(
@@ -233,7 +233,7 @@ function format_pattern_data( $pattern_data, $file ) {
  * Update the patterns.
  *
  * @param array $patterns The new patterns.
- * @return bool
+ * @return bool Whether all patterns updated.
  */
 function update_patterns( $patterns ) {
 	delete_patterns_not_present( $patterns );
