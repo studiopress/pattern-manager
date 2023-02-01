@@ -162,7 +162,7 @@ function save_patterns( $request ) {
 		? new \WP_REST_Response( $result, 400 )
 		: new \WP_REST_Response(
 			array(
-				'message'  => __( 'Patterns saved to disk', 'pattern-manager' ),
+				'message'  => __( 'Patterns successfully saved to disk', 'pattern-manager' ),
 				'patterns' => $result,
 			),
 			200
