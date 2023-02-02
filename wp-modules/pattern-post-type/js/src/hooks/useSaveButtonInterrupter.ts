@@ -21,7 +21,7 @@ export default function useSaveButtonInterrupter(
 	}, [ isSavingPost ] );
 
 	useEffect( () => {
-		// Prevents the editor from changing the URL to post.php&post=<post ID>.
+		// Prevents the editor from changing the URL to post.php?post=<post ID>.
 		lockPostAutosaving();
 
 		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
