@@ -248,8 +248,8 @@ function enqueue_meta_fields_in_editor() {
 		'patternManager',
 		[
 			'apiEndpoints' => array(
-				'getPatternNames'     => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
-				'savePatternEndpoint' => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),
+				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
+				'savePatternEndpoint'     => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),
 			),
 			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern_from_query_param(),
