@@ -244,11 +244,12 @@ html body.toplevel_page_pattern-manager {
 					border-bottom-color: #eaeaea;
 					border-radius: 5px;
 					background: #f4f4f4;
+					aspect-ratio: 1/1;
 
 					&::before {
 						content: "";
 						display: block;
-						padding-top: 100%;
+						margin-top: 80%;
 					}
 
 					.item-inner {
@@ -347,7 +348,6 @@ html body.toplevel_page_pattern-manager {
 						position: relative;
 						margin-left: auto;
 						margin-right: auto;
-						bottom: 2rem;
 						padding: 0;
 						opacity: 0;
 
