@@ -17,111 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Gets the directory the patterns are in.
- *
- * @return string
- */
-function get_patterns_directory() {
-	return get_template_directory() . '/patterns/';
-}
-
-/**
- * Gets the file paths for patterns.
- *
- * @return array|false
- */
-function get_pattern_file_paths() {
-	return glob( get_patterns_directory() . '*.php' );
-}
-
-/**
- * Get the pattern data for all patterns in a theme.
- *
- * @return array
- */
-function get_theme_patterns() {
-	$patterns = array();
-
-	// Grab all the patterns in this theme.
-	$pattern_file_paths = get_pattern_file_paths();
-
-	foreach ( $pattern_file_paths as $path ) {
-		$pattern = get_pattern_by_path( $path );
-		if ( $pattern ) {
-			$patterns[ $pattern['name'] ] = $pattern;
-		}
-	}
-
-	return $patterns;
-}
-
-/**
- * Gets a pattern by its path in the filesystem.
- *
- * @param string $path The pattern path.
- * @return array|false The pattern, if any.
- */
-function get_pattern_by_path( $path ) {
-	$default_headers = array(
-		'title'         => 'Title',
-		'slug'          => 'Slug',
-		'description'   => 'Description',
-		'viewportWidth' => 'Viewport Width',
-		'categories'    => 'Categories',
-		'keywords'      => 'Keywords',
-		'blockTypes'    => 'Block Types',
-		'postTypes'     => 'Post Types',
-		'inserter'      => 'Inserter',
-	);
-
-	$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
-	if ( ! $pattern_data ) {
-		return false;
-	}
-	$pattern_data['name'] = basename( $path, '.php' );
-
-	return $pattern_data;
-}
-
-/**
- * Gets a pattern by the name in the query param.
- *
- * @return array|null The pattern for the editor.
- */
-function get_pattern_from_query_param() {
-	$pattern_name = filter_input( INPUT_GET, 'name' );
-	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
-}
-
-/**
- * Gets a pattern by its name.
- *
- * @param string $name The pattern name.
- * @return array|false
- */
-function get_pattern_by_name( $name ) {
-	$pattern_path = get_patterns_directory() . $name . '.php';
-
-	return file_exists( $pattern_path )
-		? get_pattern_by_path( $pattern_path )
-		: false;
-}
-
-/**
- * Gets all the pattern names.
- *
- * @return string[] The pattern names.
- */
-function get_pattern_names() {
-	return array_map(
-		function( $path ) {
-			return basename( $path, '.php' );
-		},
-		get_pattern_file_paths()
-	);
-}
-
-/**
  * This function validates and standardizes the data retrieved from a theme pattern file's php header.
  * It is taken/modified from Gutenberg's https://github.com/WordPress/gutenberg/blob/b3cac2c86e3a364a8c52970c25db5f00ed3e9fb6/lib/compat/wordpress-6.0/block-patterns.php#L77
  *
@@ -230,25 +125,109 @@ function format_pattern_data( $pattern_data, $file ) {
 }
 
 /**
- * Update the patterns.
+ * Get the pattern data for all patterns in a theme.
  *
- * @param array $patterns The new patterns.
- * @return bool Whether all patterns updated.
+ * @return array
  */
-function update_patterns( $patterns ) {
-	delete_patterns_not_present( $patterns );
+function get_theme_patterns() {
+	$patterns = array();
 
-	$results = array_map(
-		function( $pattern ) {
-			return update_pattern( $pattern );
-		},
-		$patterns
+	// Grab all the patterns in this theme.
+	$pattern_file_paths = get_pattern_file_paths();
+
+	foreach ( $pattern_file_paths as $path ) {
+		$pattern = get_pattern_by_path( $path );
+		if ( $pattern ) {
+			$patterns[ $pattern['name'] ] = $pattern;
+		}
+	}
+
+	return $patterns;
+}
+
+
+/**
+ * Gets the directory the patterns are in.
+ *
+ * @return string
+ */
+function get_patterns_directory() {
+	return get_template_directory() . '/patterns/';
+}
+
+/**
+ * Gets the file paths for patterns.
+ *
+ * @return array|false
+ */
+function get_pattern_file_paths() {
+	return glob( get_patterns_directory() . '*.php' );
+}
+
+/**
+ * Gets a pattern by its path in the filesystem.
+ *
+ * @param string $path The pattern path.
+ * @return array|false The pattern, if any.
+ */
+function get_pattern_by_path( $path ) {
+	$default_headers = array(
+		'title'         => 'Title',
+		'slug'          => 'Slug',
+		'description'   => 'Description',
+		'viewportWidth' => 'Viewport Width',
+		'categories'    => 'Categories',
+		'keywords'      => 'Keywords',
+		'blockTypes'    => 'Block Types',
+		'postTypes'     => 'Post Types',
+		'inserter'      => 'Inserter',
 	);
 
-	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	tree_shake_theme_images();
+	$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
+	if ( ! $pattern_data ) {
+		return false;
+	}
+	$pattern_data['name'] = basename( $path, '.php' );
 
-	return ! in_array( false, $results, true );
+	return $pattern_data;
+}
+
+/**
+ * Gets a pattern by the name in the query param.
+ *
+ * @return array|null The pattern for the editor.
+ */
+function get_pattern_from_query_param() {
+	$pattern_name = filter_input( INPUT_GET, 'name' );
+	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
+}
+
+/**
+ * Gets a pattern by its name.
+ *
+ * @param string $name The pattern name.
+ * @return array|false
+ */
+function get_pattern_by_name( $name ) {
+	$pattern_path = get_patterns_directory() . $name . '.php';
+
+	return file_exists( $pattern_path )
+		? get_pattern_by_path( $pattern_path )
+		: false;
+}
+
+/**
+ * Gets all the pattern names.
+ *
+ * @return string[] The pattern names.
+ */
+function get_pattern_names() {
+	return array_map(
+		function( $path ) {
+			return basename( $path, '.php' );
+		},
+		get_pattern_file_paths()
+	);
 }
 
 /**
@@ -282,6 +261,28 @@ function update_pattern( $pattern ) {
 	);
 
 	return $pattern_file_created;
+}
+
+/**
+ * Update the patterns.
+ *
+ * @param array $patterns The new patterns.
+ * @return bool Whether all patterns updated.
+ */
+function update_patterns( $patterns ) {
+	delete_patterns_not_present( $patterns );
+
+	$results = array_map(
+		function( $pattern ) {
+			return update_pattern( $pattern );
+		},
+		$patterns
+	);
+
+	// Now that all patterns have been saved, remove any images no longer needed in the theme.
+	tree_shake_theme_images();
+
+	return ! in_array( false, $results, true );
 }
 
 /**
