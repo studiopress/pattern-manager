@@ -145,7 +145,6 @@ function get_theme_patterns() {
 	return $patterns;
 }
 
-
 /**
  * Gets the directory the patterns are in.
  *
