@@ -23,7 +23,7 @@ export default function PatternPreview( {
 }: PatternPreviewProps ) {
 	const [ previewContainerSize, setPreviewContainerSize ] =
 		useState< BoundingClientRect >();
-	const previewContainer = useRef< HTMLDivElement >();
+	const previewContainer = useRef< HTMLDivElement | null >( null );
 	const { lazyHasIntersected } = useLazyRender( previewContainer, {
 		threshold: [ 0.3, 0.6, 1.0 ],
 	} );
