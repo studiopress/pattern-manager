@@ -51,7 +51,7 @@ export default function Header() {
 								content: '',
 							} )
 						);
-						location.href = getEditorUrl( patternSlug );
+						document.location.href = getEditorUrl( patternSlug );
 					} }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }

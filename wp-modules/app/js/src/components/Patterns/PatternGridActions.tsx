@@ -59,7 +59,7 @@ export default function PatternGridActions( {
 						Object.values( themePatterns ?? {} )
 					);
 					await patterns.savePattern( newPattern );
-					location.href = getEditorUrl( newPattern.name );
+					document.location.href = getEditorUrl( newPattern.name );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />

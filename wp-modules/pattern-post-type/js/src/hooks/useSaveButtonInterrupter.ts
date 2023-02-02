@@ -12,7 +12,7 @@ export default function useSaveButtonInterrupter(
 		return select( 'core/editor' ).isSavingPost();
 	}, [] );
 	const editor = useSelect( editorStore, [] );
-	const { editPost } = useDispatch( 'core/editor' );
+	const { editPost, lockPostAutosaving } = useDispatch( 'core/editor' );
 
 	useEffect( () => {
 		if ( isSavingPost ) {
@@ -21,6 +21,9 @@ export default function useSaveButtonInterrupter(
 	}, [ isSavingPost ] );
 
 	useEffect( () => {
+		// Prevents the editor from changing the URL to post.php&post=<post ID>.
+		lockPostAutosaving();
+
 		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
 		Object.values(
 			document.getElementsByClassName(
@@ -42,7 +45,7 @@ export default function useSaveButtonInterrupter(
 		// If the pattern name changed, update the URL query param 'name'.
 		// That query param gets the pattern data.
 		if ( meta.previousName && meta.previousName !== meta.name ) {
-			const url = new URL( location.href );
+			const url = new URL( document.location.href );
 			url.searchParams.set( 'name', meta.name );
 			window.history.pushState( {}, '', url );
 		}
