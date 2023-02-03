@@ -364,7 +364,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 }
 
 /**
- * Scans a single pattern in the theme for images and other files, keep only ones actually being used.
+ * Scans a single pattern in the theme for images and other files, keeping only ones actually being used.
  *
  * @param array $pattern The pattern to tree shake.
  */
@@ -381,7 +381,7 @@ function tree_shake_single_pattern_with_backup( array $pattern ) {
 }
 
 /**
- * Scans all patterns in the theme for images and other files, keep only ones actually being used.
+ * Scans all patterns in the theme for images and other files, keeping only ones actually being used.
  */
 function tree_shake_patterns_with_backup() {
 	$backed_up_images_dir = back_up_images();
@@ -402,7 +402,6 @@ function tree_shake_patterns_with_backup() {
  * @return string The directory of the backed up images.
  */
 function back_up_images(): string {
-	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$backed_up_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
@@ -419,7 +418,7 @@ function back_up_images(): string {
 	$wp_filesystem->delete( $images_dir, true, 'd' );
 
 	if ( ! $wp_filesystem->exists( $images_dir ) ) {
-		$wp_filesystem->mkdir( $images_dir, $backed_up_images_dir );
+		$wp_filesystem->mkdir( $images_dir );
 	}
 
 	return $backed_up_images_dir;
