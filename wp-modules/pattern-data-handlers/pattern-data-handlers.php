@@ -168,7 +168,7 @@ function get_pattern_file_paths(): array {
  * @param string $path The pattern path.
  * @return array|false The pattern, if any.
  */
-function get_pattern_by_path( string $path ): array | false {
+function get_pattern_by_path( string $path )  {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
@@ -195,7 +195,7 @@ function get_pattern_by_path( string $path ): array | false {
  *
  * @return array|false The pattern for the editor.
  */
-function get_pattern_from_query_param(): array | false {
+function get_pattern_from_query_param() {
 	return get_pattern_by_name( urldecode( sanitize_text_field( filter_input( INPUT_GET, 'name' ) ) ) );
 }
 
@@ -205,7 +205,7 @@ function get_pattern_from_query_param(): array | false {
  * @param string $name The pattern name.
  * @return string[]|false
  */
-function get_pattern_by_name( string $name ): array | false {
+function get_pattern_by_name( string $name ) {
 	if ( ! $name ) {
 		return false;
 	}
