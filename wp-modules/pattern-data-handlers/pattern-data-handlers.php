@@ -366,7 +366,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Scans a single pattern in the theme for images and other files, keep only ones actually being used.
  *
  * @param array $pattern The pattern to tree shake.
-  */
+ */
 function tree_shake_single_pattern_with_backup( array $pattern ) {
 	if ( empty ( $pattern['name'] ) ) {
 		return;
@@ -374,6 +374,7 @@ function tree_shake_single_pattern_with_backup( array $pattern ) {
 
 	$backed_up_images_dir = back_up_images();
 	_tree_shake_pattern( get_pattern_by_name( $pattern['name'] ), $backed_up_images_dir );
+
 	// Delete the temporary backup of the images we did.
 	\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->delete( $backed_up_images_dir, true, 'd' );
 }
