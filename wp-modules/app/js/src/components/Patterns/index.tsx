@@ -62,6 +62,10 @@ export default function Patterns() {
 						<div className="inner-sidebar">
 							<SearchControl
 								className="pattern-search"
+								label={ __(
+									'Search Patterns',
+									'pattern-manager'
+								) }
 								value={ searchTerm }
 								onChange={ ( newSearchTerm: string ) => {
 									setSearchTerm( newSearchTerm );
