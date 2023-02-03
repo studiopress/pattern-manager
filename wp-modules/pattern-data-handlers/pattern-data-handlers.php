@@ -261,11 +261,11 @@ function update_pattern( array $pattern ): bool {
 }
 
 /**
- * Updates only 1 pattern and does tree shaking.
+ * Saves only 1 pattern and does tree shaking.
  *
  * @param array $pattern The pattern to update.
  */
-function update_single_pattern_with_tree_shaking( array $pattern ) {
+function save_pattern( array $pattern ): bool {
 	$is_success = update_pattern( $pattern );
 	tree_shake_single_pattern_with_backup( $pattern );
 
@@ -273,12 +273,12 @@ function update_single_pattern_with_tree_shaking( array $pattern ) {
 }
 
 /**
- * Updates all patterns and does tree shaking.
+ * Saves all patterns and does tree shaking.
  *
  * @param array $patterns The new patterns.
  * @return bool Whether all patterns updated.
  */
-function update_patterns_with_tree_shaking( array $patterns ): bool {
+function save_patterns( array $patterns ): bool {
 	delete_patterns_not_present( $patterns );
 
 	$results = array_map(

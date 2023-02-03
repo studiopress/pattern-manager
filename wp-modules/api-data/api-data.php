@@ -115,7 +115,7 @@ function get_pattern_names() {
  * @return WP_REST_Response
  */
 function save_pattern( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\update_single_pattern_with_tree_shaking( $request->get_params()['pattern'] );
+	$is_success = \PatternManager\PatternDataHandlers\save_pattern( $request->get_params()['pattern'] );
 
 	return $is_success
 		? new WP_REST_Response(
@@ -134,7 +134,7 @@ function save_pattern( $request ) {
  * @return WP_REST_Response
  */
 function save_patterns( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\update_patterns_with_tree_shaking( $request->get_params()['patterns'] );
+	$is_success = \PatternManager\PatternDataHandlers\save_patterns( $request->get_params()['patterns'] );
 
 	return $is_success
 		? new WP_REST_Response(
