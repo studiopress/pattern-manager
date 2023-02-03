@@ -357,67 +357,78 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  *
  * @param array $patterns_in_theme The patterns in the theme.
  */
-function tree_shake_theme_images() {
+function tree_shake_theme_images( $pattern_name = '' ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
-	$theme_dir         = get_template_directory();
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
-	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir          = $theme_dir . '/assets/images/';
+	$backed_up_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
+	$images_dir           = get_images_dir();
 
-	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
-
-	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
-		$wp_filesystem->mkdir( $backedup_images_dir );
+	if ( ! $wp_filesystem->exists( $backed_up_images_dir ) ) {
+		$wp_filesystem->mkdir( $backed_up_images_dir );
 	}
 
 	// Before we take any action, back up the current images directory.
-	copy_dir( $images_dir, $backedup_images_dir );
+	copy_dir( $images_dir, $backed_up_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
 
 	if ( ! $wp_filesystem->exists( $images_dir ) ) {
-		$wp_filesystem->mkdir( $images_dir );
+		$wp_filesystem->mkdir( $images_dir, $backed_up_images_dir );
 	}
 
-	// Loop through all patterns in the theme.
-	foreach ( $patterns_in_theme as $pattern_data ) {
-		// Find all URLs in the block pattern html.
-		preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
-
-		// If no URLs were found in this pattern, skip to the next pattern.
-		if ( ! isset( $output_array[0] ) ) {
-			continue;
-		}
-
-		$urls_found = $output_array[0];
-
-		$img_urls_found = $output_array['url'];
-
-		// Loop through each URL found.
-		foreach ( $urls_found as $url_found ) {
-
-			// If URL to image is local to theme, pull it from the backed-up theme images directory.
-			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
-			$desired_destination_in_theme = str_replace( $backedup_images_dir, $images_dir, $local_path_to_image );
-
-			// If the path to this image starts with the path to our backedup images directory.
-			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
-				// Move the file into the theme again.
-				$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
-			}
+	if ( $pattern_name ) {
+		tree_shake_pattern( get_pattern_by_name( $pattern_name ), $backed_up_images_dir );
+	} else {
+		// Loop through all patterns in the theme.
+		foreach ( $patterns_in_theme as $pattern_data ) {
+			tree_shake_pattern( $pattern_data, $backed_up_images_dir );
 		}
 	}
 
 	// Delete the temporary backup of the images we did.
-	$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
+	$wp_filesystem->delete( $backed_up_images_dir, true, 'd' );
+}
+
+function get_images_dir() {
+	return get_template_directory() . '/assets/images/';
+}
+
+function tree_shake_pattern( $pattern_data, $backed_up_images_dir ) {
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+
+	// Find all URLs in the block pattern html.
+	preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
+
+	// If no URLs were found in this pattern, skip to the next pattern.
+	if ( ! isset( $output_array[0] ) ) {
+		return;
+	}
+
+	$urls_found = $output_array[0];
+
+	$images_url = get_template_directory_uri() . '/assets/images/';
+	$images_dir = get_images_dir();
+
+	// Loop through each URL found.
+	foreach ( $urls_found as $url_found ) {
+
+		// If URL to image is local to theme, pull it from the backed-up theme images directory.
+		$local_path_to_image          = str_replace( $images_url, $backed_up_images_dir, $url_found );
+		$desired_destination_in_theme = str_replace( $backed_up_images_dir, $images_dir, $local_path_to_image );
+
+		// If the path to this image starts with the path to our backedup images directory.
+		if ( strpos( $local_path_to_image, $backed_up_images_dir ) === 0 ) {
+			// Move the file into the theme again.
+			$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+		}
+	}
 }
 
 /**
