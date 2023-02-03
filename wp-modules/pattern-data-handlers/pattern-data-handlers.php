@@ -133,9 +133,7 @@ function get_theme_patterns(): array {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
-	$pattern_file_paths = get_pattern_file_paths();
-
-	foreach ( $pattern_file_paths as $path ) {
+	foreach ( get_pattern_file_paths() as $path ) {
 		$pattern = get_pattern_by_path( $path );
 		if ( $pattern ) {
 			$patterns[ $pattern['name'] ] = $pattern;
@@ -157,10 +155,11 @@ function get_patterns_directory(): string {
 /**
  * Gets the file paths for patterns.
  *
- * @return array|false
+ * @return string[]
  */
-function get_pattern_file_paths(): array | false {
-	return glob( get_patterns_directory() . '*.php' );
+function get_pattern_file_paths(): array {
+	$paths = glob( get_patterns_directory() . '*.php' );
+	return $paths ? $paths : array();
 }
 
 /**
@@ -306,12 +305,7 @@ function delete_patterns_not_present( array $patterns ) {
 		return;
 	}
 
-	$pattern_file_paths = get_pattern_file_paths();
-	if ( ! $pattern_file_paths ) {
-		return;
-	}
-
-	foreach ( $pattern_file_paths as $pattern_file ) {
+	foreach ( get_pattern_file_paths() as $pattern_file ) {
 		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
 			$wp_filesystem->delete( $pattern_file );
 		}
