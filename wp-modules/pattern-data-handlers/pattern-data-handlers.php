@@ -206,6 +206,10 @@ function get_pattern_from_query_param(): array | false {
  * @return string[]|false
  */
 function get_pattern_by_name( string $name ): array | false {
+	if ( ! $name ) {
+		return false;
+	}
+
 	$pattern_path = get_patterns_directory() . $name . '.php';
 
 	return file_exists( $pattern_path )
@@ -362,12 +366,13 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * @param array $pattern The pattern to tree shake.
  */
 function tree_shake_single_pattern_with_backup( array $pattern ) {
-	if ( empty( $pattern['name'] ) ) {
+	$pattern = get_pattern_by_name( $pattern['name'] ?? '' );
+	if ( empty( $pattern ) ) {
 		return;
 	}
 
 	$backed_up_images_dir = back_up_images();
-	_tree_shake_pattern( get_pattern_by_name( $pattern['name'] ), $backed_up_images_dir );
+	_tree_shake_pattern( $pattern, $backed_up_images_dir );
 
 	// Delete the temporary backup of the images we did.
 	\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->delete( $backed_up_images_dir, true, 'd' );
