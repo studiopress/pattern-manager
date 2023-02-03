@@ -11,7 +11,7 @@ references:
 jobs:
   lint:
     docker:
-      - image: cimg/php:7.4-node
+      - image: cimg/php:7.3-node
     steps:
       - checkout:
           path: *PLUGIN_PATH
@@ -29,7 +29,7 @@ jobs:
             npm run lint:css
   test-js:
     docker:
-      - image: cimg/php:7.4-node
+      - image: cimg/php:7.3-node
     steps:
       - checkout:
           path: *PLUGIN_PATH
@@ -55,7 +55,7 @@ jobs:
           command: npm run test:phpunit
   zip:
     docker:
-      - image: cimg/php:7.4-node
+      - image: cimg/php:7.3-node
     steps:
       - checkout:
           path: *PLUGIN_PATH
