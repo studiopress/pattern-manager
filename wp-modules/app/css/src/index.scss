@@ -234,37 +234,32 @@ html body.toplevel_page_pattern-manager {
 					position: relative;
 					box-sizing: border-box;
 					margin-bottom: 50px;
-					border: 1px solid transparent;
-					border: solid 1px #dcdcdc;
-					border-bottom-width: 1px;
-					border-bottom-color: #eaeaea;
-					border-radius: 5px;
-					background: #f4f4f4;
-					aspect-ratio: 1/1;
+					min-height: 300px;
 
 					&::before {
 						content: "";
 						display: block;
-						margin-top: 80%;
 					}
 
 					.item-inner {
-						display: flex;
-						position: absolute;
-						top: 0;
-						left: 0;
 						height: 100%;
-						width: 100%;
 
 						.item-pattern-preview {
 							display: flex;
 							z-index: 0;
 							flex-grow: 1;
 							position: relative;
-							border-radius: 5px;
-							overflow: hidden;
+							height: 100%;
 
-							&::before {
+							.pattern-loader {
+								position: absolute;
+								top: 0;
+								left: 0;
+								width: 100%;
+								height: 300px;
+							}
+
+							.pattern-loader::before {
 								display: block;
 								content: " ";
 								border: 3px solid transparent;
@@ -324,8 +319,19 @@ html body.toplevel_page_pattern-manager {
 							.pattern-preview-iframe-outer {
 								position: relative;
 								width: 100%;
-								height: 100%;
-								border-radius: 2px;
+								display: flex;
+								align-items: center;
+								border: 1px solid transparent;
+								border: solid 1px #dcdcdc;
+								border-bottom-width: 1px;
+								border-bottom-color: #eaeaea;
+								border-radius: 5px;
+								background: #f4f4f4;
+								min-height: 300px;
+								overflow: hidden;
+							}
+
+							.pattern-preview-iframe-inner {
 								overflow: hidden;
 							}
 
@@ -336,12 +342,13 @@ html body.toplevel_page_pattern-manager {
 					}
 
 					.item-actions {
+						position: absolute;
+						bottom: 10px;
 						display: flex;
 						flex-direction: row;
 						background: #1e1e1e;
 						border-radius: 6px;
 						width: fit-content;
-						position: relative;
 						margin-left: auto;
 						margin-right: auto;
 						padding: 0;
