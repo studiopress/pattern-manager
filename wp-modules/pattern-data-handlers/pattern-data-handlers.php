@@ -129,7 +129,7 @@ function format_pattern_data( $pattern_data, $file ) {
  *
  * @return array
  */
-function get_theme_patterns() {
+function get_theme_patterns(): array {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
@@ -150,7 +150,7 @@ function get_theme_patterns() {
  *
  * @return string
  */
-function get_patterns_directory() {
+function get_patterns_directory(): string {
 	return get_template_directory() . '/patterns/';
 }
 
@@ -159,7 +159,7 @@ function get_patterns_directory() {
  *
  * @return array|false
  */
-function get_pattern_file_paths() {
+function get_pattern_file_paths(): array | false {
 	return glob( get_patterns_directory() . '*.php' );
 }
 
@@ -169,7 +169,7 @@ function get_pattern_file_paths() {
  * @param string $path The pattern path.
  * @return array|false The pattern, if any.
  */
-function get_pattern_by_path( $path ) {
+function get_pattern_by_path( string $path ): array | false {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
@@ -194,9 +194,9 @@ function get_pattern_by_path( $path ) {
 /**
  * Gets a pattern by the name in the query param.
  *
- * @return array|null The pattern for the editor.
+ * @return array|false The pattern for the editor.
  */
-function get_pattern_from_query_param() {
+function get_pattern_from_query_param(): array | false {
 	$pattern_name = filter_input( INPUT_GET, 'name' );
 	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
 }
@@ -205,9 +205,9 @@ function get_pattern_from_query_param() {
  * Gets a pattern by its name.
  *
  * @param string $name The pattern name.
- * @return array|false
+ * @return string[]|false
  */
-function get_pattern_by_name( $name ) {
+function get_pattern_by_name( string $name ): array | false {
 	$pattern_path = get_patterns_directory() . $name . '.php';
 
 	return file_exists( $pattern_path )
@@ -220,7 +220,7 @@ function get_pattern_by_name( $name ) {
  *
  * @return string[] The pattern names.
  */
-function get_pattern_names() {
+function get_pattern_names(): array {
 	return array_map(
 		function( $path ) {
 			return basename( $path, '.php' );
@@ -264,6 +264,7 @@ function update_pattern( array $pattern ): bool {
  * Saves only 1 pattern and does tree shaking.
  *
  * @param array $pattern The pattern to update.
+ * @return bool Whether the save succeeded.
  */
 function save_pattern( array $pattern ): bool {
 	$is_success = update_pattern( $pattern );
@@ -276,7 +277,7 @@ function save_pattern( array $pattern ): bool {
  * Saves all patterns and does tree shaking.
  *
  * @param array $patterns The new patterns.
- * @return bool Whether all patterns updated.
+ * @return bool Whether the save succeeded.
  */
 function save_patterns( array $patterns ): bool {
 	delete_patterns_not_present( $patterns );
@@ -325,7 +326,7 @@ function delete_patterns_not_present( array $patterns ) {
  * @param string $pattern_content The HTML content for a pattern..
  * @return string
  */
-function remove_theme_name_from_template_parts( $pattern_content ) {
+function remove_theme_name_from_template_parts( string $pattern_content ): string {
 
 	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
 	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
@@ -368,7 +369,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * @param array $pattern The pattern to tree shake.
  */
 function tree_shake_single_pattern_with_backup( array $pattern ) {
-	if ( empty ( $pattern['name'] ) ) {
+	if ( empty( $pattern['name'] ) ) {
 		return;
 	}
 
