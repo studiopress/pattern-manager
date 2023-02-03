@@ -24,9 +24,9 @@ export default function Header() {
 					aria-hidden="true"
 					src={ wpeLogoDefaultCropped }
 				/>
-				<span className="logo-title">
+				<h1 className="logo-title">
 					{ __( 'Pattern Manager', 'pattern-manager' ) }
-				</span>
+				</h1>
 			</div>
 			<div className="header-container-inner">
 				<button
