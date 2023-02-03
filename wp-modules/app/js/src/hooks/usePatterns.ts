@@ -16,19 +16,19 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		} );
 	}
 
-	/** Saves multiple patterns. */
-	async function savePatterns( patternsToSave: Patterns ) {
-		return fetch( patternManager.apiEndpoints.savePatternsEndpoint, {
-			method: 'POST',
+	/** Deletes a pattern. */
+	async function deletePattern( patternName: Pattern[ 'name' ] ) {
+		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
+			method: 'DELETE',
 			headers: getHeaders(),
-			body: JSON.stringify( { patterns: patternsToSave } ),
+			body: JSON.stringify( { patternName } ),
 		} );
 	}
 
 	return {
 		data: patternsData,
+		deletePattern,
 		savePattern,
-		savePatterns,
 		set: setPatternsData,
 	};
 }

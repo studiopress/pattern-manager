@@ -210,11 +210,21 @@ function get_pattern_by_name( string $name ): array | false {
 		return false;
 	}
 
-	$pattern_path = get_patterns_directory() . $name . '.php';
+	$pattern_path = get_pattern_path( $name );
 
 	return file_exists( $pattern_path )
 		? get_pattern_by_path( $pattern_path )
 		: false;
+}
+
+/**
+ * Gets the pattern path.
+ *
+ * @param string $pattern_name The pattern name
+ * @return string
+ */
+function get_pattern_path( string $pattern_name ): string {
+	return get_patterns_directory() . $pattern_name . '.php';
 }
 
 /**
@@ -276,44 +286,16 @@ function save_pattern( array $pattern ): bool {
 }
 
 /**
- * Saves all patterns and does tree shaking.
+ * Deletes a pattern.
  *
- * @param array $patterns The new patterns.
- * @return bool Whether the save succeeded.
+ * @param string $pattern_name The pattern name to delete.
+ * @return bool Whether the deletion succeeded.
  */
-function save_patterns( array $patterns ): bool {
-	delete_patterns_not_present( $patterns );
-
-	$results = array_map(
-		function( $pattern ) {
-			return update_pattern( $pattern );
-		},
-		$patterns
-	);
-
-	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	tree_shake_patterns_with_backup();
-
-	return ! in_array( false, $results, true );
-}
-
-/**
- * Deletes any pattern file whose name isn't present in the passed patterns.
- *
- * @param string[] $patterns The patterns to not delete.
- */
-function delete_patterns_not_present( array $patterns ) {
-	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
+function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-	if ( ! $wp_filesystem ) {
-		return;
-	}
+	$pattern_path  = get_pattern_path( $pattern_name );
 
-	foreach ( get_pattern_file_paths() as $pattern_file ) {
-		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
-			$wp_filesystem->delete( $pattern_file );
-		}
-	}
+	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
 /**
@@ -373,22 +355,6 @@ function tree_shake_single_pattern_with_backup( array $pattern ) {
 
 	$backed_up_images_dir = back_up_images();
 	_tree_shake_pattern( $pattern, $backed_up_images_dir );
-
-	// Delete the temporary backup of the images we did.
-	\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->delete( $backed_up_images_dir, true, 'd' );
-}
-
-/**
- * Scan all patterns in theme for images and other files, keep only ones actually being used.
- */
-function tree_shake_patterns_with_backup() {
-	$backed_up_images_dir = back_up_images();
-
-	// Get the current patterns in the theme (not including templates and templates parts).
-	// Add the included Patterns for the current theme.
-	foreach ( get_theme_patterns() as $pattern_data ) {
-		_tree_shake_pattern( $pattern_data, $backed_up_images_dir );
-	}
 
 	// Delete the temporary backup of the images we did.
 	\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->delete( $backed_up_images_dir, true, 'd' );
