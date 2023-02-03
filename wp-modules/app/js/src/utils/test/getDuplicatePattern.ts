@@ -9,7 +9,6 @@ describe( 'getDuplicatePattern', () => {
 				name: 'foo',
 				slug: 'foo',
 				content: 'Here is some content',
-				type: 'pattern',
 			},
 			[],
 			{
@@ -17,7 +16,6 @@ describe( 'getDuplicatePattern', () => {
 				name: 'foo-copied',
 				slug: 'foo-copied',
 				content: 'Here is some content',
-				type: 'pattern',
 			},
 		],
 		[
@@ -26,7 +24,6 @@ describe( 'getDuplicatePattern', () => {
 				name: 'foo',
 				slug: 'foo',
 				content: 'Here is some content',
-				type: 'pattern',
 			},
 			[
 				{
@@ -34,7 +31,6 @@ describe( 'getDuplicatePattern', () => {
 					name: 'foo-copied',
 					slug: 'foo-copied',
 					content: 'Here is some content',
-					type: 'pattern',
 				},
 			],
 			{
@@ -42,7 +38,6 @@ describe( 'getDuplicatePattern', () => {
 				name: 'foo-copied-1',
 				slug: 'foo-copied-1',
 				content: 'Here is some content',
-				type: 'pattern',
 			},
 		],
 		[
@@ -51,7 +46,6 @@ describe( 'getDuplicatePattern', () => {
 				name: 'foo',
 				slug: 'foo',
 				content: 'Here is some content',
-				type: 'pattern',
 			},
 			[
 				{
@@ -59,7 +53,6 @@ describe( 'getDuplicatePattern', () => {
 					name: 'foo-copied-9',
 					slug: 'foo-copied-9',
 					content: 'Here is some content',
-					type: 'pattern',
 				},
 			],
 			{
@@ -67,7 +60,6 @@ describe( 'getDuplicatePattern', () => {
 				name: 'foo-copied-10',
 				slug: 'foo-copied-10',
 				content: 'Here is some content',
-				type: 'pattern',
 			},
 		],
 	] )(

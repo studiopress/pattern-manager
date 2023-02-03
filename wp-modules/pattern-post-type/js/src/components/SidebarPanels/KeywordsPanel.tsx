@@ -3,7 +3,7 @@ import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import CreatableSelect from 'react-select/creatable';
 
-import type { BaseSidebarProps } from '../types';
+import type { BaseSidebarProps } from './types';
 
 /**
  * The panel section for assigning keywords to the pattern.

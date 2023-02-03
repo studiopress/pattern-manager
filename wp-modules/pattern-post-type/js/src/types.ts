@@ -17,7 +17,6 @@ export type PostMeta = {
 
 export type SelectQuery = ( dataStore: string ) => {
 	getEditedPostAttribute: ( postAttribute: string ) => PostMeta;
-	getCurrentPostType: () => string;
 	getEditedPostContent: () => string;
 	isEditedPostDirty: () => boolean;
 	getPostTypes: ( {
@@ -27,4 +26,35 @@ export type SelectQuery = ( dataStore: string ) => {
 	} ) => { name: string; slug: string }[];
 	getBlockPatternCategories: () => { name: string; label: string }[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
+	getNotices: () => { id: string }[];
+	isSavingPost: () => boolean;
+};
+
+export type Pattern = {
+	content: string;
+	name: string;
+	title: string;
+	slug: string;
+	description?: string;
+	categories?: string[];
+	keywords?: string[];
+	blockTypes?: string[];
+	postTypes?: string[];
+	inserter?: boolean;
+	viewportWidth?: string | number;
+};
+
+export type Patterns = {
+	[ key: string ]: Pattern;
+};
+
+export type InitialPatternManager = {
+	apiNonce: string;
+	apiEndpoints: {
+		getPatternNamesEndpoint: string;
+		savePatternEndpoint: string;
+	};
+	pattern?: Pattern;
+	patternNames: Array< Pattern[ 'slug' ] >;
+	siteUrl: string;
 };

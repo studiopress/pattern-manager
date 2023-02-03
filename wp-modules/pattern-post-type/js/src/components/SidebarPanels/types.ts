@@ -2,7 +2,6 @@ import usePatternData from '../../hooks/usePatternData';
 import { PostMeta } from '../../types';
 
 export type PatternEditorSidebarProps = {
-	coreLastUpdate: string;
 	postMeta: PostMeta;
 };
 

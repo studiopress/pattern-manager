@@ -2,7 +2,7 @@ import convertToPascalCase from './convertToPascalCase';
 import convertToSlug from './convertToSlug';
 import convertToUpperCase from './convertToUpperCase';
 
-import { Patterns } from '../types';
+import type { Patterns } from '../types';
 
 // The number, title, and slug for the new pattern.
 type NextPattern = {

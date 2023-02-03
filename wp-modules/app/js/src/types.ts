@@ -1,34 +1,21 @@
-/* eslint-disable camelcase */
-
-import React from 'react';
 import useNotice from './hooks/useNotice';
-import useCurrentView from './hooks/useCurrentView';
-import useCurrentId from './hooks/useCurrentId';
 import usePatterns from './hooks/usePatterns';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
-	currentView: ReturnType< typeof useCurrentView >;
-	currentPatternId: ReturnType< typeof useCurrentId >;
-	currentPattern?: Pattern;
-	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
 	notice: ReturnType< typeof useNotice >;
 	patterns: ReturnType< typeof usePatterns >;
-	patternEditorIframe: React.MutableRefObject<
-		HTMLIFrameElement | undefined
-	>;
-	templateEditorIframe: React.MutableRefObject<
-		HTMLIFrameElement | undefined
-	>;
+	siteUrl: InitialPatternManager[ 'siteUrl' ];
 };
 
 export type InitialPatternManager = {
-	apiNonce: string;
 	apiEndpoints: {
+		savePatternEndpoint: string;
 		savePatternsEndpoint: string;
 	};
+	apiNonce: string;
 	siteUrl: string;
 	adminUrl: string;
 	patterns: Patterns;

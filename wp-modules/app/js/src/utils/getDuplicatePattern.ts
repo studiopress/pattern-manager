@@ -1,5 +1,5 @@
-import type { Pattern } from '../types'; // eslint-disable-line no-unused-vars
 import convertToSlug from './convertToSlug';
+import type { Pattern } from '../types';
 
 function getDuplicateNumber( newSlug: string, allPatterns: Pattern[] ) {
 	return allPatterns.reduce( ( highest, pattern ) => {
