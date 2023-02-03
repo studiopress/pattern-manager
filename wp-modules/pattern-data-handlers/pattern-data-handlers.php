@@ -197,8 +197,7 @@ function get_pattern_by_path( string $path ): array | false {
  * @return array|false The pattern for the editor.
  */
 function get_pattern_from_query_param(): array | false {
-	$pattern_name = filter_input( INPUT_GET, 'name' );
-	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
+	return get_pattern_by_name( urldecode( sanitize_text_field( filter_input( INPUT_GET, 'name' ) ) ) );
 }
 
 /**
