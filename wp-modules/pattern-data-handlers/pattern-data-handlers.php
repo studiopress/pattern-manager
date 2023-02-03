@@ -469,7 +469,7 @@ function move_block_images_to_theme( $pattern_html ) {
 		);
 
 		// Replace the URL with the one we just added to the theme.
-		$pattern_html = str_replace( $url_found, "<?php echo get_template_directory_uri(); ?>/assets/images/$filename", $pattern_html );
+		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/$filename", $pattern_html );
 	}
 
 	return $pattern_html;
