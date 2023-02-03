@@ -6,43 +6,40 @@ import { Icon, trash, copy, settings } from '@wordpress/icons';
 import usePmContext from '../../hooks/usePmContext';
 
 // Utils
+import deletePattern from '../../utils/deletePattern';
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
+import getEditorUrl from '../../utils/getEditorUrl';
 
 // Types
 import type { Pattern, Patterns } from '../../types';
 
 type Props = {
 	themePatterns: Patterns;
-	patternName: string;
 	patternData: Pattern;
 };
 
 /** Render the pattern action buttons. */
 export default function PatternGridActions( {
 	themePatterns,
-	patternName,
 	patternData,
 }: Props ) {
-	const { patterns, currentView, currentPatternId } = usePmContext();
-
+	const { notice, patterns } = usePmContext();
 	return (
 		<div className="item-actions">
-			<button
-				type="button"
+			<a
 				className="item-action-button"
 				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				onClick={ () => {
-					currentPatternId.set( patternName );
-					currentView.set( 'pattern_editor' );
-				} }
+				href={ getEditorUrl( patternData.name ) }
 			>
 				<Icon
 					className="item-action-icon"
 					icon={ settings }
 					size={ 30 }
 				/>
-				<span className="item-action-button-text">Edit</span>
-			</button>
+				<span className="item-action-button-text">
+					{ __( 'Edit', 'pattern-manager' ) }
+				</span>
+			</a>
 
 			<div className="item-action-button-separator"></div>
 
@@ -50,14 +47,19 @@ export default function PatternGridActions( {
 				type="button"
 				className="item-action-button"
 				aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
-				onClick={ () => {
+				onClick={ async () => {
+					notice.set(
+						__(
+							'Duplicating your pattern and opening it in the editor…',
+							'pattern-manager'
+						)
+					);
 					const newPattern = getDuplicatePattern(
 						patternData,
 						Object.values( themePatterns ?? {} )
 					);
-					patterns.createPattern( newPattern );
-					currentPatternId.set( newPattern.slug );
-					currentView.set( 'pattern_editor' );
+					await patterns.savePattern( newPattern );
+					document.location.href = getEditorUrl( newPattern.name );
 				} }
 			>
 				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
@@ -71,7 +73,22 @@ export default function PatternGridActions( {
 				className="item-action-button"
 				aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
 				onClick={ () => {
-					patterns.deletePattern( patternName );
+					if (
+						/* eslint-disable no-alert */
+						window.confirm(
+							__(
+								'Are you sure you want to delete this pattern?',
+								'pattern-manager'
+							)
+						)
+					) {
+						const newPatterns = deletePattern(
+							patternData.name,
+							patterns.data
+						);
+						patterns.set( newPatterns );
+						patterns.savePatterns( newPatterns );
+					}
 				} }
 			>
 				<Icon className="item-action-icon" icon={ trash } size={ 30 } />

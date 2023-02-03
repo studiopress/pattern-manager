@@ -3,7 +3,7 @@ import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
 
-import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
+import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
  * The panel section for assigning block pattern categories to the pattern.

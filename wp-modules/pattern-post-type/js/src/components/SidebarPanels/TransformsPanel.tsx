@@ -2,9 +2,9 @@ import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 import Select from 'react-select';
-import { HelperTooltip } from '../../Tooltips';
+import { HelperTooltip } from '../Tooltips';
 
-import type { BaseSidebarProps, AdditionalSidebarProps } from '../types';
+import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
  * The panel section for assigning block types to the pattern.

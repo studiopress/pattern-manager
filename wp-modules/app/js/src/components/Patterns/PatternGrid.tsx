@@ -57,7 +57,6 @@ export default function PatternGrid( { themePatterns }: Props ) {
 
 								<PatternGridActions
 									themePatterns={ themePatterns }
-									patternName={ patternName }
 									patternData={ patternData }
 								/>
 

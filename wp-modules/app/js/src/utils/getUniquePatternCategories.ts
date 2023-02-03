@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
  */
 import convertToUpperCase from './convertToUpperCase';
 import sortAlphabetically from './sortAlphabetically';
-import { Patterns } from '../types';
+import type { Patterns } from '../types';
 
 /** Create a mapping of unique categories for a dropdown or other list. */
 export default function getUniquePatternCategories( patterns: Patterns ) {

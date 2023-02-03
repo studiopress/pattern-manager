@@ -1,21 +1,71 @@
-import PatternEditorSidebar from '../PatternEditorSidebar';
-import usePostData from '../../hooks/usePostData';
-import useSubscription from '../../hooks/useSubscription';
+import { useState } from '@wordpress/element';
+import { ModalToggle, InserterToggle } from '../Toggles';
+import {
+	TitlePanel,
+	PostTypesPanel,
+	CategoriesPanel,
+	TransformsPanel,
+	KeywordsPanel,
+	DescriptionPanel,
+} from '../SidebarPanels';
+
+import usePatternData from '../../hooks/usePatternData';
+import useSetup from '../../hooks/useSetup';
 import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
-import useFilters from '../../hooks/useFilters';
+import { patternManager } from '../../globals';
+import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
-	const { coreLastUpdate, postMeta, currentPostType, postDirty } =
-		usePostData();
-	useSubscription( currentPostType, postDirty );
-	useSaveButtonInterrupter();
-	useFilters( postMeta );
+	const [ patternNames, setPatternNames ] = useState(
+		patternManager.patternNames
+	);
+	const { postMeta } = usePostData();
 
-	// Will only render component for post type 'pm_pattern'.
-	return currentPostType === 'pm_pattern' ? (
-		<PatternEditorSidebar
-			coreLastUpdate={ coreLastUpdate }
-			postMeta={ postMeta }
-		/>
-	) : null;
+	useSetup( patternManager.pattern );
+
+	const { postTypes, categories, blockTypes, updatePostMeta } =
+		usePatternData( postMeta );
+	useSaveButtonInterrupter( setPatternNames );
+
+	return (
+		<div>
+			<TitlePanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+				patternNames={ patternNames }
+			/>
+			<CategoriesPanel
+				postMeta={ postMeta }
+				categories={ categories }
+				handleChange={ updatePostMeta }
+			/>
+			<KeywordsPanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+			/>
+			<DescriptionPanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+			/>
+			<PostTypesPanel
+				postMeta={ postMeta }
+				postTypes={ postTypes }
+				handleChange={ updatePostMeta }
+			>
+				<ModalToggle
+					postMeta={ postMeta }
+					handleChange={ updatePostMeta }
+				/>
+				<InserterToggle
+					postMeta={ postMeta }
+					handleChange={ updatePostMeta }
+				/>
+			</PostTypesPanel>
+			<TransformsPanel
+				postMeta={ postMeta }
+				blockTypes={ blockTypes }
+				handleChange={ updatePostMeta }
+			/>
+		</div>
+	);
 }

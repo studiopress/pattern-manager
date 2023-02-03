@@ -182,9 +182,9 @@ function display_block_pattern_preview() {
 		return;
 	}
 
-	$pattern_id = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_theme_pattern( $pattern_id );
+	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
@@ -242,12 +242,26 @@ function enqueue_meta_fields_in_editor() {
 	// Include the js on the block editor page for the pm_pattern post type.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'patternmanager_post_meta', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'pattern_manager_post_meta', $js_url, $dependencies, $js_ver, true );
+	wp_localize_script(
+		'pattern_manager_post_meta',
+		'patternManager',
+		[
+			'apiEndpoints' => array(
+				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
+				'savePatternEndpoint'     => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),
+			),
+			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
+			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern_from_query_param(),
+			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
+			'siteUrl'      => get_bloginfo( 'url' ),
+		]
+	);
 
 	// Enqueue styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'js/build/index.css';
 	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
-	wp_enqueue_style( 'patternmanager_post_meta_style', $css_url, array(), $css_ver );
+	wp_enqueue_style( 'pattern_manager_post_meta_style', $css_url, array(), $css_ver );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
 

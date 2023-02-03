@@ -1,5 +1,5 @@
-import { Patterns } from '../../types';
 import getNextPatternIds from '../getNextPatternIds';
+import type { Patterns } from '../../types';
 
 type Expected = {
 	patternNumber: number;
@@ -103,7 +103,6 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'Abc Def',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -119,7 +118,6 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'My New Pattern',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -135,7 +133,6 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'My New Pattern 22',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -151,21 +148,18 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'My New Pattern',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern1: {
 					title: 'My New Pattern 2',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern2: {
 					title: 'My New Pattern 3',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -181,21 +175,18 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'My New Pattern',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern1: {
 					title: 'My New Pattern 2',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern2: {
 					title: 'Some Other Pattern 3',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -211,21 +202,18 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'My New Pattern',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern1: {
 					title: 'My New Pattern 2',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern2: {
 					title: 'My New Pattern 3 1',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -241,28 +229,24 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					title: 'My New Pattern',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern1: {
 					title: 'My New Pattern 2',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern2: {
 					title: 'My New Pattern 3',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
 				},
 				pattern3: {
 					title: 'My New Pattern 3 1',
-					type: 'pattern',
 					content: '',
 					name: '',
 					slug: '',
@@ -288,7 +272,6 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					slug: 'some-pattern-44',
-					type: 'pattern',
 					content: '',
 					name: '',
 					title: '',
@@ -304,14 +287,12 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					slug: 'some-pattern',
-					type: 'pattern',
 					content: '',
 					name: '',
 					title: '',
 				},
 				pattern1: {
 					slug: 'some-pattern-44',
-					type: 'pattern',
 					content: '',
 					name: '',
 					title: '',
@@ -327,21 +308,18 @@ describe( 'getNextPatternIds', () => {
 			{
 				pattern: {
 					slug: 'some-pattern-44',
-					type: 'pattern',
 					content: '',
 					name: '',
 					title: '',
 				},
 				pattern1: {
 					slug: 'some-pattern-44-1',
-					type: 'pattern',
 					content: '',
 					name: '',
 					title: '',
 				},
 				pattern2: {
 					slug: 'some-pattern-44-2',
-					type: 'pattern',
 					content: '',
 					name: '',
 					title: '',
