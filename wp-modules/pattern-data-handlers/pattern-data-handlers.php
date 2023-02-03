@@ -262,7 +262,7 @@ function update_pattern( array $pattern ): bool {
 /**
  * Saves only 1 pattern and does tree shaking.
  *
- * @param array $pattern The pattern to update.
+ * @param array $pattern The pattern to save.
  * @return bool Whether the save succeeded.
  */
 function save_pattern( array $pattern ): bool {
@@ -363,7 +363,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 }
 
 /**
- * Scans a single pattern in the theme for images and other files, keeping only ones actually being used.
+ * Scan only 1 pattern in theme for images and other files, keep only ones actually being used.
  *
  * @param array $pattern The pattern to tree shake.
  */
@@ -380,7 +380,7 @@ function tree_shake_single_pattern_with_backup( array $pattern ) {
 }
 
 /**
- * Scans all patterns in the theme for images and other files, keeping only ones actually being used.
+ * Scan all patterns in theme for images and other files, keep only ones actually being used.
  */
 function tree_shake_patterns_with_backup() {
 	$backed_up_images_dir = back_up_images();
