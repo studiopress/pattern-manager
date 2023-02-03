@@ -168,7 +168,7 @@ function get_pattern_file_paths(): array {
  * @param string $path The pattern path.
  * @return array|false The pattern, if any.
  */
-function get_pattern_by_path( string $path )  {
+function get_pattern_by_path( string $path ) {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
