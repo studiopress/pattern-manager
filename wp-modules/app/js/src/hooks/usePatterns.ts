@@ -19,9 +19,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 
 	/** Deletes a pattern. */
 	async function deletePattern( patternName: Pattern[ 'name' ] ) {
-		setPatternsData(
-			removePattern( patternName, patternsData )
-		);
+		setPatternsData( removePattern( patternName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
 			method: 'DELETE',
 			headers: getHeaders(),
