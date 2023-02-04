@@ -6,7 +6,6 @@ import { Icon, trash, copy, settings } from '@wordpress/icons';
 import usePmContext from '../../hooks/usePmContext';
 
 // Utils
-import removePattern from '../../utils/removePattern';
 import getDuplicatePattern from '../../utils/getDuplicatePattern';
 import getEditorUrl from '../../utils/getEditorUrl';
 
@@ -82,9 +81,6 @@ export default function PatternGridActions( {
 							)
 						)
 					) {
-						patterns.set(
-							removePattern( patternData.name, patterns.data )
-						);
 						patterns.deletePattern( patternData.name );
 					}
 				} }
