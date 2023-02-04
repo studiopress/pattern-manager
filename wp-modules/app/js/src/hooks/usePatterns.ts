@@ -8,17 +8,17 @@ import type { Pattern, Patterns } from '../types';
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
-	/** Saves a single pattern. */
-	async function savePattern( patternToSave: Pattern ) {
+	/** Saves a pattern. */
+	function savePattern( pattern: Pattern ) {
 		return fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
 			headers: getHeaders(),
-			body: JSON.stringify( { pattern: patternToSave } ),
+			body: JSON.stringify( { pattern } ),
 		} );
 	}
 
 	/** Deletes a pattern. */
-	async function deletePattern( patternName: Pattern[ 'name' ] ) {
+	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		setPatternsData( removePattern( patternName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
 			method: 'DELETE',
