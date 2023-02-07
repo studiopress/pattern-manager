@@ -1,5 +1,5 @@
 // WP dependencies
-import { TabbableContainer } from '@wordpress/components';
+import { Button } from '@wordpress/components';
 
 // Types
 import type { Dispatch, SetStateAction } from 'react';
@@ -27,17 +27,18 @@ export default function PatternCategories( {
 				].join( ' ' );
 
 				return (
-					<TabbableContainer
+					<Button
+						type="button"
 						key={ category.name }
+						aria-label={ category.label }
+						aria-pressed={ classes.includes( 'category-selected' ) }
 						className={ classes }
 						onClick={ () =>
 							setCurrentCategory( () => category.name )
 						}
 					>
-						<span className="category-name">
-							{ category.label }
-						</span>
-					</TabbableContainer>
+						{ category.label }
+					</Button>
 				);
 			} ) }
 		</>
