@@ -47,7 +47,7 @@ export default function PreviewIframe( {
 					src={ url }
 					title={ __( 'Pattern Preview', 'pattern-manager' ) }
 					role="img"
-					tabIndex={-1}
+					tabIndex={ -1 }
 					style={ {
 						width: viewportWidth,
 						height: iframeBodyHeight,

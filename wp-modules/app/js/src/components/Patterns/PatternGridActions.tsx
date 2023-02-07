@@ -60,10 +60,16 @@ export default function PatternGridActions( {
 							Object.values( themePatterns ?? {} )
 						);
 						await patterns.savePattern( newPattern );
-						document.location.href = getEditorUrl( newPattern.name );
+						document.location.href = getEditorUrl(
+							newPattern.name
+						);
 					} }
 				>
-					<Icon className="item-action-icon" icon={ copy } size={ 30 } />
+					<Icon
+						className="item-action-icon"
+						icon={ copy }
+						size={ 30 }
+					/>
 					<span className="item-action-button-text">Duplicate</span>
 				</button>
 
@@ -92,7 +98,11 @@ export default function PatternGridActions( {
 						}
 					} }
 				>
-					<Icon className="item-action-icon" icon={ trash } size={ 30 } />
+					<Icon
+						className="item-action-icon"
+						icon={ trash }
+						size={ 30 }
+					/>
 					<span className="item-action-button-text">Delete</span>
 				</button>
 			</div>
