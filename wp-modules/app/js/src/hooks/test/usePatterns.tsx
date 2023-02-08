@@ -11,6 +11,7 @@ it( 'usePatterns returns data for a single pattern correctly in a component', ()
 	expect( testRenderer.toJSON() ).toMatchObject( {
 		children: [
 			{
+				children: [ 'Test Pattern Single' ],
 				props: {
 					id: 'test-pattern-single',
 				},
@@ -26,7 +27,7 @@ it( 'usePatterns returns data for a single pattern correctly in a component', ()
 	testRenderer.unmount();
 } );
 
-it( 'usePatterns returns data for multiple patterns correctly in a component', () => {
+it( 'usePatterns returns patterns data correctly in a component', () => {
 	const testRenderer = create(
 		<SimpleComponent patterns={ mockPatterns } />
 	);
@@ -34,18 +35,21 @@ it( 'usePatterns returns data for multiple patterns correctly in a component', (
 	expect( testRenderer.toJSON() ).toMatchObject( {
 		children: [
 			{
+				children: [ 'Test Pattern 1' ],
 				props: {
 					id: 'test-pattern-1',
 				},
 				type: 'div',
 			},
 			{
+				children: [ 'Test Pattern 2' ],
 				props: {
 					id: 'test-pattern-2',
 				},
 				type: 'div',
 			},
 			{
+				children: [ 'Test Pattern 3' ],
 				props: {
 					id: 'test-pattern-3',
 				},
@@ -61,6 +65,43 @@ it( 'usePatterns returns data for multiple patterns correctly in a component', (
 	testRenderer.unmount();
 } );
 
+it( 'usePatterns returns patterns data correctly in a component with deeply nested markup', () => {
+	const testRenderer = create(
+		<NestedComponent patterns={ mockPatterns } />
+	);
+
+	const testInstance = testRenderer.root;
+	const testChildren = testInstance.findByProps( {
+		id: 'nested-test-pattern-container',
+	} ).children;
+
+	expect( testChildren ).toMatchObject( [
+		{
+			children: [ 'Test Pattern 1' ],
+			props: {
+				id: 'test-pattern-1',
+			},
+			type: 'div',
+		},
+		{
+			children: [ 'Test Pattern 2' ],
+			props: {
+				id: 'test-pattern-2',
+			},
+			type: 'div',
+		},
+		{
+			children: [ 'Test Pattern 3' ],
+			props: {
+				id: 'test-pattern-3',
+			},
+			type: 'div',
+		},
+	] );
+
+	testRenderer.unmount();
+} );
+
 function SimpleComponent( { patterns }: { patterns: Patterns } ) {
 	const { data } = usePatterns( patterns );
 
@@ -71,6 +112,28 @@ function SimpleComponent( { patterns }: { patterns: Patterns } ) {
 					{ title }
 				</div>
 			) ) }
+		</div>
+	);
+}
+
+function NestedComponent( { patterns }: { patterns: Patterns } ) {
+	const { data } = usePatterns( patterns );
+
+	return (
+		<div id="outer-container">
+			<div id="inner-container-1">
+				<div id="inner-container-2">
+					<div id="nested-test-pattern-container">
+						{ Object.entries( data ).map(
+							( [ patternId, { title } ] ) => (
+								<div key={ patternId } id={ patternId }>
+									{ title }
+								</div>
+							)
+						) }
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }
