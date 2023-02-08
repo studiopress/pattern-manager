@@ -2,6 +2,12 @@ export default function changeWords( translation: string, text: string ) {
 	if ( text === 'Publish' ) {
 		return 'Save pattern to theme';
 	}
+	if ( text === 'Save draft' ) {
+		return 'Save pattern';
+	}
+	if ( text === 'Publish' ) {
+		return 'Save pattern to theme';
+	}
 	if ( text === 'Post published.' || text === 'Post updated.' ) {
 		return 'Pattern saved to theme';
 	}
