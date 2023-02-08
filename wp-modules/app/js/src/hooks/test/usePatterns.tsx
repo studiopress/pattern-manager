@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 
+import { useState } from '@wordpress/element';
+import { Button } from '@wordpress/components';
 import { create, act } from 'react-test-renderer';
 import usePatterns from '../usePatterns';
 import { mockPattern, mockPatterns } from '../../fixtures/sampleData';
@@ -102,6 +104,51 @@ it( 'usePatterns returns patterns data correctly in a component with deeply nest
 	testRenderer.unmount();
 } );
 
+it( 'test a sample button press component by pressing the button', () => {
+	const testRenderer = create( <ButtonComponent /> );
+	const testInstance = testRenderer.root;
+
+	expect( testRenderer.toJSON() ).toMatchObject( {
+		children: [
+			{
+				children: [ 'false' ],
+				props: {
+					id: 'test-button',
+				},
+				type: 'button',
+			},
+		],
+		props: {
+			id: 'outer-button',
+		},
+		type: 'div',
+	} );
+
+	// Press the button to update child content.
+	// Button could also be targeted with `findByProps( { id: 'test-button' } )`.
+	act( () =>
+		testInstance.findByProps( { id: 'test-button' } ).props.onClick()
+	);
+
+	expect( testRenderer.toJSON() ).toMatchObject( {
+		children: [
+			{
+				children: [ 'true' ],
+				props: {
+					id: 'test-button',
+				},
+				type: 'button',
+			},
+		],
+		props: {
+			id: 'outer-button',
+		},
+		type: 'div',
+	} );
+
+	testRenderer.unmount();
+} );
+
 function SimpleComponent( { patterns }: { patterns: Patterns } ) {
 	const { data } = usePatterns( patterns );
 
@@ -134,6 +181,23 @@ function NestedComponent( { patterns }: { patterns: Patterns } ) {
 					</div>
 				</div>
 			</div>
+		</div>
+	);
+}
+
+function ButtonComponent() {
+	const [ buttonBool, setButtonBool ] = useState( false );
+
+	return (
+		<div id="outer-button">
+			<Button
+				id="test-button"
+				onClick={ () => {
+					setButtonBool( ( currentBool ) => ! currentBool );
+				} }
+			>
+				{ String( buttonBool ) }
+			</Button>
 		</div>
 	);
 }
