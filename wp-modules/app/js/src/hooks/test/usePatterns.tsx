@@ -27,7 +27,9 @@ it( 'usePatterns returns data for a single pattern correctly in a component', ()
 } );
 
 it( 'usePatterns returns data for multiple patterns correctly in a component', () => {
-	const testRenderer = create( <SimpleComponent patterns={ mockPatterns } /> );
+	const testRenderer = create(
+		<SimpleComponent patterns={ mockPatterns } />
+	);
 
 	expect( testRenderer.toJSON() ).toMatchObject( {
 		children: [
