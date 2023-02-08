@@ -1,6 +1,6 @@
 import { store as editorStore } from '@wordpress/editor';
 import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect, select, subscribe} from '@wordpress/data';
+import { useDispatch, useSelect, select, subscribe } from '@wordpress/data';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 import type { Pattern, SelectQuery } from '../types';
@@ -9,9 +9,7 @@ import { __ } from '@wordpress/i18n';
 export default function useSaveButtonInterrupter(
 	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
 ) {
-	const isSavingPost = useSelect( ( select: SelectQuery ) => {
-		return select( 'core/editor' ).isSavingPost();
-	}, [] );
+	const isSavingPost = select( 'core/editor' ).isSavingPost();
 	const editor = useSelect( editorStore, [] );
 	const { editPost, lockPostAutosaving } = useDispatch( 'core/editor' );
 
@@ -36,10 +34,9 @@ export default function useSaveButtonInterrupter(
 		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
 		subscribe( () => {
 			if ( select( 'core/editor' ).isSavingPost() ) {
-				handleSave(null);
+				handleSave( null );
 			}
 		} );
-
 	}, [] );
 
 	async function handleSave( event?: Event ) {
@@ -55,10 +52,8 @@ export default function useSaveButtonInterrupter(
 				'editor-post-publish-panel__toggle'
 			)
 		).forEach( ( saveButton ) => {
-			const textContent = saveButton.textContent;
 			saveButton.setAttribute( 'disabled', 'disabled' );
-			saveButton.setAttribute( 'originalText', textContent );
-			saveButton.textContent = __( 'Saving pattern...', 'pattern-manager' );
+			saveButton.textContent = __( 'Saving pattern…', 'pattern-manager' );
 		} );
 
 		// If the pattern name changed, update the URL query param 'name'.
@@ -96,10 +91,10 @@ export default function useSaveButtonInterrupter(
 				)
 			).forEach( ( saveButton ) => {
 				saveButton.removeAttribute( 'disabled' );
-				saveButton.textContent = saveButton.getAttribute( 'originalText' );
+				saveButton.textContent = __( 'Save pattern to theme', 'pattern-manager' );
 				saveButton.removeAttribute( 'originalText' );
 			} );
-		});
+		} );
 	}
 
 	async function updatePatternNames() {
