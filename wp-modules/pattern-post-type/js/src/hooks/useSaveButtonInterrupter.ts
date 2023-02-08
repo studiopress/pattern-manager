@@ -12,6 +12,7 @@ export default function useSaveButtonInterrupter(
 	const isSavingPost = select( 'core/editor' ).isSavingPost();
 	const editor = useSelect( editorStore, [] );
 	const { editPost, lockPostAutosaving } = useDispatch( 'core/editor' );
+	const { createNotice } = useDispatch( 'core/notices' );
 
 	useEffect( () => {
 		if ( isSavingPost ) {
@@ -84,17 +85,38 @@ export default function useSaveButtonInterrupter(
 					content: editor.getEditedPostContent(),
 				},
 			} ),
-		} ).then( () => {
-			Object.values(
-				document.getElementsByClassName(
-					'editor-post-publish-panel__toggle'
-				)
-			).forEach( ( saveButton ) => {
-				saveButton.removeAttribute( 'disabled' );
-				saveButton.textContent = __( 'Save pattern to theme', 'pattern-manager' );
-				saveButton.removeAttribute( 'originalText' );
+		} )
+			.then( async ( response ) => {
+				const data: { message: string } = await response.json();
+
+				if ( ! response.ok ) {
+					throw data;
+				}
+
+				Object.values(
+					document.getElementsByClassName(
+						'editor-post-publish-panel__toggle'
+					)
+				).forEach( ( saveButton ) => {
+					saveButton.removeAttribute( 'disabled' );
+					saveButton.textContent = __(
+						'Save pattern to theme',
+						'pattern-manager'
+					);
+					saveButton.removeAttribute( 'originalText' );
+				} );
+
+				createNotice( 'success', data.message, {
+					type: 'snackbar',
+					isDismissible: true,
+				} );
+			} )
+			.catch( ( data: { message: string } ) => {
+				createNotice( 'error', data.message, {
+					type: 'snackbar',
+					isDismissible: true,
+				} );
 			} );
-		} );
 	}
 
 	async function updatePatternNames() {

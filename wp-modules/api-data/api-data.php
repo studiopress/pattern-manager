@@ -124,7 +124,12 @@ function save_pattern( $request ) {
 			),
 			200
 		)
-		: new WP_REST_Response( $is_success, 400 );
+		: new WP_REST_Response(
+			array(
+				'message' => __( 'Something went wrong while saving the pattern.', 'pattern-manager' ),
+			),
+			400
+		);
 }
 
 /**
@@ -143,7 +148,12 @@ function save_patterns( $request ) {
 			),
 			200
 		)
-		: new WP_REST_Response( $is_success, 400 );
+		: new WP_REST_Response(
+			array(
+				'message' => __( 'Something went wrong while saving the patterns.', 'pattern-manager' ),
+			),
+			400
+		);
 }
 
 /**

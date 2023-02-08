@@ -19,11 +19,6 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	display: none;
 }
 
-/* Hide the snackbar on the pattern editor, as the pattern-manager app has its own snackbar. */
-.components-snackbar {
-	display: none !important;
-}
-
 /* Toggle components */
 .patternmanager-post-type-modal-toggle,
 .patternmanager-inserter-toggle {
