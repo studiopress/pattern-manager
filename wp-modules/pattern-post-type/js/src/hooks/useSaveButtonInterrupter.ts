@@ -87,6 +87,19 @@ export default function useSaveButtonInterrupter(
 			} ),
 		} )
 			.then( async ( response ) => {
+				// Put the save button back the way it was.
+				Object.values(
+					document.getElementsByClassName(
+						'editor-post-publish-panel__toggle'
+					)
+				).forEach( ( saveButton ) => {
+					saveButton.removeAttribute( 'disabled' );
+					saveButton.textContent = __(
+						'Save pattern to theme',
+						'pattern-manager'
+					);
+				} );
+
 				let data: { message: string } = {
 					message: __( 'Something went wrong', 'pattern-manager' ),
 				};
@@ -100,19 +113,6 @@ export default function useSaveButtonInterrupter(
 				if ( ! response.ok ) {
 					throw data;
 				}
-
-				Object.values(
-					document.getElementsByClassName(
-						'editor-post-publish-panel__toggle'
-					)
-				).forEach( ( saveButton ) => {
-					saveButton.removeAttribute( 'disabled' );
-					saveButton.textContent = __(
-						'Save pattern to theme',
-						'pattern-manager'
-					);
-					saveButton.removeAttribute( 'originalText' );
-				} );
 
 				createNotice( 'success', data.message, {
 					type: 'snackbar',
