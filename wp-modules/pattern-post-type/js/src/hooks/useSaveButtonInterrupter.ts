@@ -1,9 +1,10 @@
 import { store as editorStore } from '@wordpress/editor';
 import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch, useSelect, select, subscribe} from '@wordpress/data';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
 import type { Pattern, SelectQuery } from '../types';
+import { __ } from '@wordpress/i18n';
 
 export default function useSaveButtonInterrupter(
 	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
@@ -24,7 +25,6 @@ export default function useSaveButtonInterrupter(
 		// Prevents the editor from changing the URL to post.php?post=<post ID>.
 		lockPostAutosaving();
 
-		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
 		Object.values(
 			document.getElementsByClassName(
 				'editor-post-publish-panel__toggle'
@@ -32,6 +32,14 @@ export default function useSaveButtonInterrupter(
 		).forEach( ( saveButton ) => {
 			saveButton.addEventListener( 'click', handleSave, false );
 		} );
+
+		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
+		subscribe( () => {
+			if ( select( 'core/editor' ).isSavingPost() ) {
+				handleSave(null);
+			}
+		} );
+
 	}, [] );
 
 	async function handleSave( event?: Event ) {
@@ -41,6 +49,17 @@ export default function useSaveButtonInterrupter(
 		if ( ! meta.title ) {
 			return;
 		}
+
+		Object.values(
+			document.getElementsByClassName(
+				'editor-post-publish-panel__toggle'
+			)
+		).forEach( ( saveButton ) => {
+			const textContent = saveButton.textContent;
+			saveButton.setAttribute( 'disabled', 'disabled' );
+			saveButton.setAttribute( 'originalText', textContent );
+			saveButton.textContent = __( 'Saving pattern...', 'pattern-manager' );
+		} );
 
 		// If the pattern name changed, update the URL query param 'name'.
 		// That query param gets the pattern data.
@@ -70,7 +89,17 @@ export default function useSaveButtonInterrupter(
 					content: editor.getEditedPostContent(),
 				},
 			} ),
-		} );
+		} ).then( () => {
+			Object.values(
+				document.getElementsByClassName(
+					'editor-post-publish-panel__toggle'
+				)
+			).forEach( ( saveButton ) => {
+				saveButton.removeAttribute( 'disabled' );
+				saveButton.textContent = saveButton.getAttribute( 'originalText' );
+				saveButton.removeAttribute( 'originalText' );
+			} );
+		});
 	}
 
 	async function updatePatternNames() {
