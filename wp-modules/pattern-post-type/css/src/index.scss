@@ -14,6 +14,11 @@
 	display: none !important;
 }
 
+/* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
+.components-button.editor-post-publish-button__button.is-primary {
+	display: none;
+}
+
 /* Hide the snackbar on the pattern editor, as the pattern-manager app has its own snackbar. */
 .components-snackbar {
 	display: none !important;
@@ -40,7 +45,7 @@
 	border-width: 1px;
 	box-sizing: border-box;
 	height: 50px;
-	
+
 	@media only screen and (min-width: 781.25px) {
 		height: 40px;
 	}

@@ -361,4 +361,4 @@ function save_pattern_to_file( int $post_id, WP_Post $post ) {
 		);
 	}
 }
-add_filter( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
