@@ -1,29 +1,24 @@
 import { store as editorStore } from '@wordpress/editor';
-import { useEffect } from '@wordpress/element';
-import { useDispatch, useSelect, select, subscribe } from '@wordpress/data';
+import { useState, useEffect } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
-import type { Pattern, SelectQuery } from '../types';
+import type { Pattern } from '../types';
 import { __ } from '@wordpress/i18n';
 
 export default function useSaveButtonInterrupter(
 	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
 ) {
-	const isSavingPost = select( 'core/editor' ).isSavingPost();
+	const [ isSavingPattern, setIsSavingPattern ] = useState( false );
 	const editor = useSelect( editorStore, [] );
 	const { editPost, lockPostAutosaving } = useDispatch( 'core/editor' );
 	const { createNotice } = useDispatch( 'core/notices' );
 
 	useEffect( () => {
-		if ( isSavingPost ) {
-			handleSave();
-		}
-	}, [ isSavingPost ] );
-
-	useEffect( () => {
 		// Prevents the editor from changing the URL to post.php?post=<post ID>.
 		lockPostAutosaving();
 
+		// Listen for clicks on the save button.
 		Object.values(
 			document.getElementsByClassName(
 				'editor-post-publish-panel__toggle'
@@ -32,16 +27,23 @@ export default function useSaveButtonInterrupter(
 			saveButton.addEventListener( 'click', handleSave, false );
 		} );
 
-		// While the above event listeners handle interrupting save button clicks, this also handles keyboard shortcut saves (like cmd+s).
-		subscribe( () => {
-			if ( select( 'core/editor' ).isSavingPost() ) {
-				handleSave( null );
+		// Listen for keyboard cmd+s events as well.
+
+		document.addEventListener( 'keydown', function ( event ) {
+			if ( ( event.ctrlKey || event.metaKey ) && event.key === 's' ) {
+				handleSave( event );
 			}
 		} );
 	}, [] );
 
 	async function handleSave( event?: Event ) {
 		event?.preventDefault();
+
+		//If we are already waiting for a save to finish, don't do anything here.
+		if ( isSavingPattern ) {
+			return;
+		}
+		setIsSavingPattern( true );
 
 		const meta = editor.getEditedPostAttribute( 'meta' );
 		if ( ! meta.title ) {
@@ -87,6 +89,8 @@ export default function useSaveButtonInterrupter(
 			} ),
 		} )
 			.then( async ( response ) => {
+				setIsSavingPattern( false );
+
 				// Put the save button back the way it was.
 				Object.values(
 					document.getElementsByClassName(
