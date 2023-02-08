@@ -1,36 +1,19 @@
 import { useEffect } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
-import { rawHandler } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import type { InitialPatternManager, SelectQuery } from '../types';
 
 export default function useSetup(
 	pattern: InitialPatternManager[ 'pattern' ]
 ) {
-	const { createErrorNotice, removeNotice } = useDispatch( 'core/notices' );
-	const { editPost, resetEditorBlocks } = useDispatch( 'core/editor' );
+	const { removeNotice } = useDispatch( 'core/notices' );
+	const { editPost } = useDispatch( 'core/editor' );
 	const notices = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/notices' ).getNotices();
 	}, [] );
 
 	useEffect( () => {
-		if ( ! pattern ) {
-			createErrorNotice(
-				__(
-					'No pattern found. Is this the right URL?',
-					'pattern-manager'
-				)
-			);
-			return;
-		}
-
 		const { content, ...meta } = pattern;
-		resetEditorBlocks(
-			rawHandler( {
-				HTML: content,
-				mode: 'BLOCKS',
-			} )
-		);
 
 		editPost( {
 			meta: {
