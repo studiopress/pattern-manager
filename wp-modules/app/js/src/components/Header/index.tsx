@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -29,8 +30,8 @@ export default function Header() {
 				</h1>
 			</div>
 			<div className="header-container-inner">
-				<button
-					className="header-button"
+				<Button
+					variant="primary"
 					onClick={ async () => {
 						notice.set(
 							__(
@@ -55,7 +56,7 @@ export default function Header() {
 					} }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

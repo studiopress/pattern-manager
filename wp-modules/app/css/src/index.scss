@@ -113,31 +113,7 @@ html body.toplevel_page_pattern-manager {
 			flex-wrap: wrap;
 			gap: 0.5rem;
 
-			.header-button {
-				display: inline-flex;
-				padding-top: 0.5rem;
-				padding-bottom: 0.5rem;
-				padding-left: 1rem;
-				padding-right: 1rem;
-				font-size: 0.875rem;
-				font-weight: 500;
-				align-items: center;
-				border-radius: 0.125rem;
-				border-color: transparent;
-				color: #fff;
-				background-color: #0074ad;
-				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-				cursor: pointer;
-
-				&:hover {
-					background-color: #006ba1;
-					// hover:bg-wp-blue-hover
-					// focus:outline-none
-					// focus:ring-2
-					// focus:ring-offset-2
-					// focus:ring-wp-blue
-				}
-			}
+			
 		}
 	}
 
