@@ -37,6 +37,7 @@ function pattern_post_type() {
 		$labels = array(
 			'name'          => __( 'Patterns', 'pattern-manager' ),
 			'singular_name' => __( 'Pattern', 'pattern-manager' ),
+			'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
 		);
 	}
 

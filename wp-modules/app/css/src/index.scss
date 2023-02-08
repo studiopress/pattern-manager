@@ -1,14 +1,5 @@
-html.wp-toolbar {
-	padding-top: 0 !important;
-}
-
-#wpadminbar {
-	display: none;
-}
-
 /* stylelint-disable */
 html body.toplevel_page_pattern-manager {
-	margin-top: 0 !important;
 	height: 100% !important;
 	background: #fff;
 }
@@ -17,19 +8,17 @@ html body.toplevel_page_pattern-manager {
 	padding-top: 0 !important;
 }
 
-/* stylelint-enable */
-
-#wpcontent,
-#wpbody-content {
-	padding: 0 !important;
+.toplevel_page_pattern-manager #wpcontent {
+	padding-left: 0;
 }
+
+/* stylelint-enable */
 
 #wpfooter {
 	display: none;
 }
 
 #wpbody {
-	padding-top: 0;
 	height: 100%;
 	background: #f1f1f1;
 }
@@ -54,8 +43,6 @@ html body.toplevel_page_pattern-manager {
 /* stylelint-enable */
 
 #pattern-manager-app {
-	z-index: 9999999999;
-	position: relative;
 	box-sizing: border-box;
 	background: #f1f1f1;
 	font-size: 16px;
@@ -73,12 +60,10 @@ html body.toplevel_page_pattern-manager {
 		z-index: 10;
 		position: sticky;
 		display: flex;
-		// flex: 1 1 0%;
 		justify-content: flex-end;
 		align-items: center;
 		width: 100%;
 		gap: 1.5rem;
-		top: 0;
 		flex-shrink: 0;
 		flex-wrap: wrap;
 		background: #fff;
@@ -86,6 +71,11 @@ html body.toplevel_page_pattern-manager {
 		margin-left: auto;
 		margin-right: auto;
 		padding: 1rem 3rem 1rem 3rem;
+		top: 32px;
+
+		@media (max-width: 782px) {
+			top: 46px;
+		}
 
 		.header-container-logo {
 			position: relative;
@@ -100,10 +90,11 @@ html body.toplevel_page_pattern-manager {
 
 			.logo-title {
 				display: table-cell;
+				font-size: 16px;
+				font-weight: 600;
 				vertical-align: middle;
 				padding-left: 10px;
 				padding-bottom: 4px;
-				font-weight: 600;
 			}
 		}
 
@@ -111,32 +102,6 @@ html body.toplevel_page_pattern-manager {
 			display: flex;
 			flex-wrap: wrap;
 			gap: 0.5rem;
-
-			.header-button {
-				display: inline-flex;
-				padding-top: 0.5rem;
-				padding-bottom: 0.5rem;
-				padding-left: 1rem;
-				padding-right: 1rem;
-				font-size: 0.875rem;
-				font-weight: 500;
-				align-items: center;
-				border-radius: 0.125rem;
-				border-color: transparent;
-				color: #fff;
-				background-color: #0074ad;
-				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-				cursor: pointer;
-
-				&:hover {
-					background-color: #006ba1;
-					// hover:bg-wp-blue-hover
-					// focus:outline-none
-					// focus:ring-2
-					// focus:ring-offset-2
-					// focus:ring-wp-blue
-				}
-			}
 		}
 	}
 
