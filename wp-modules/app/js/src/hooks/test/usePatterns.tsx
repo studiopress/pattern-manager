@@ -123,7 +123,7 @@ it( 'test a sample button press component by pressing the button', () => {
 	} );
 
 	// Press the button to update child content.
-	// Button could also be targeted with `findByProps( { id: 'test-button' } )`.
+	// Button could also be targeted with `findByType( Button )`.
 	act( () =>
 		testInstance.findByProps( { id: 'test-button' } ).props.onClick()
 	);
