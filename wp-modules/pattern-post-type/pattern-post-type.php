@@ -351,13 +351,18 @@ function save_pattern_to_file( int $post_id, WP_Post $post ) {
 			)
 		);
 
+		// Prevent an infinite loop.
+		remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
+
 		// Removes the post content, as it should be saved in the pattern .php file.
-		wp_insert_post(
+		wp_update_post(
 			[
 				'ID'      => $post_id,
 				'content' => '',
 			]
 		);
+
+		add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
 	}
 }
 add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
