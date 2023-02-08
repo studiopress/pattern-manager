@@ -11,6 +11,10 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternPostType;
 
+use WP_Post;
+use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\update_pattern;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -185,7 +189,7 @@ function display_block_pattern_preview() {
 
 	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
+	$pattern = get_pattern_by_name( $pattern_name );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
@@ -310,3 +314,33 @@ function modify_terms( string $translation, string $text, string $domain ) {
 	return $translation;
 }
 add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
+
+function get_pattern_from_file( $content ) {
+	if ( get_post_type() !== 'pm_pattern' ) {
+		return $content;
+	}
+
+	$pattern_name = get_post_meta( get_the_ID(), 'name' );
+	if ( ! $pattern_name ) {
+		return $content;
+	}
+
+	return get_pattern_by_name( $pattern_name )['content'] ?? '';
+}
+add_filter( 'the_content', __NAMESPACE__ . '\get_pattern_from_file' );
+
+function save_pattern_to_file( int $post_id, WP_Post $post ) {
+	if ( $post->post_type === 'pm_pattern' ) {
+		update_pattern(
+			array_merge(
+				get_pattern_by_name( get_post_meta( $post_id, 'name', true ) ),
+				[
+					'content' => $post->post_content,
+				]
+			)
+		);
+
+		// TODO: overwrite existing post_content saved to DB, it'd be confusing to also have that.
+	}
+}
+add_filter( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );

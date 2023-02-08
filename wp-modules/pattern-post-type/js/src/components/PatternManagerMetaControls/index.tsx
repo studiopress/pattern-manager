@@ -11,7 +11,6 @@ import {
 
 import usePatternData from '../../hooks/usePatternData';
 import useSetup from '../../hooks/useSetup';
-import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
 import { patternManager } from '../../globals';
 import usePostData from '../../hooks/usePostData';
 
@@ -25,7 +24,6 @@ export default function PatternManagerMetaControls() {
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
-	useSaveButtonInterrupter( setPatternNames );
 
 	return (
 		<div>
