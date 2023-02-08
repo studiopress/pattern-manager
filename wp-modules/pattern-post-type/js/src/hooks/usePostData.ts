@@ -7,7 +7,6 @@ export default function usePostData() {
 			( select: SelectQuery ) => ( {
 				postMeta:
 					select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
-				postContent: select( 'core/editor' ).getEditedPostContent(),
 			} ),
 			[]
 		),

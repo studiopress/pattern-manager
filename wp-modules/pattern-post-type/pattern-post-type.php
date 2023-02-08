@@ -315,8 +315,14 @@ function modify_terms( string $translation, string $text, string $domain ) {
 }
 add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
 
-function get_pattern_from_file( $content ) {
-	if ( get_post_type() !== 'pm_pattern' ) {
+/**
+ * Gets the pattern from the file, instead of from the post content.
+ *
+ * @param string $content The post content.
+ * @return mixed|string
+ */
+function get_pattern_from_file( string $content ) {
+	if ( 'pm_pattern' !== get_post_type() ) {
 		return $content;
 	}
 
@@ -329,6 +335,12 @@ function get_pattern_from_file( $content ) {
 }
 add_filter( 'the_content', __NAMESPACE__ . '\get_pattern_from_file' );
 
+/**
+ * Saves the pattern to the pattern .php file.
+ *
+ * @param int $post_id The post ID.
+ * @param WP_Post $post The post.
+ */
 function save_pattern_to_file( int $post_id, WP_Post $post ) {
 	if ( $post->post_type === 'pm_pattern' ) {
 		update_pattern(
@@ -340,7 +352,13 @@ function save_pattern_to_file( int $post_id, WP_Post $post ) {
 			)
 		);
 
-		// TODO: overwrite existing post_content saved to DB, it'd be confusing to also have that.
+		// Removes the post content, as it should be saved in the pattern .php file.
+		wp_insert_post(
+			[
+				'ID'      => $post_id,
+				'content' => '',
+			]
+		);
 	}
 }
 add_filter( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
