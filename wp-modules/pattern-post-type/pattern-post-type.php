@@ -321,7 +321,7 @@ add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
  * @param string $content The post content.
  * @return mixed|string
  */
-function get_pattern_from_file( string $content ) {
+function get_pattern_content_from_file( string $content ) {
 	if ( 'pm_pattern' !== get_post_type() ) {
 		return $content;
 	}
@@ -333,7 +333,7 @@ function get_pattern_from_file( string $content ) {
 
 	return get_pattern_by_name( $pattern_name )['content'] ?? '';
 }
-add_filter( 'the_content', __NAMESPACE__ . '\get_pattern_from_file' );
+add_filter( 'the_content', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
 /**
  * Saves the pattern to the pattern .php file.
