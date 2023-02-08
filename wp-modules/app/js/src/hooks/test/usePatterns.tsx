@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
 import { useState } from '@wordpress/element';
 import { Button } from '@wordpress/components';
 import { create, act } from 'react-test-renderer';
