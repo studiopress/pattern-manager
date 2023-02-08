@@ -87,7 +87,15 @@ export default function useSaveButtonInterrupter(
 			} ),
 		} )
 			.then( async ( response ) => {
-				const data: { message: string } = await response.json();
+				let data: { message: string } = {
+					message: __( 'Something went wrong', 'pattern-manager' ),
+				};
+
+				try {
+					data = await response.json();
+				} catch ( error: any ) {
+					throw error;
+				}
 
 				if ( ! response.ok ) {
 					throw data;
@@ -111,11 +119,15 @@ export default function useSaveButtonInterrupter(
 					isDismissible: true,
 				} );
 			} )
-			.catch( ( data: { message: string } ) => {
-				createNotice( 'error', data.message, {
-					type: 'snackbar',
-					isDismissible: true,
-				} );
+			.catch( ( data: any ) => {
+				createNotice(
+					'error',
+					data.message ? data?.message : JSON.stringify( data ),
+					{
+						type: 'snackbar',
+						isDismissible: true,
+					}
+				);
 			} );
 	}
 
