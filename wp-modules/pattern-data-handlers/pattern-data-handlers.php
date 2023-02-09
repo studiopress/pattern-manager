@@ -192,16 +192,6 @@ function get_pattern_by_path( $path ) {
 }
 
 /**
- * Gets a pattern by the name in the query param.
- *
- * @return array|null The pattern for the editor.
- */
-function get_pattern_from_query_param() {
-	$pattern_name = filter_input( INPUT_GET, 'name' );
-	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
-}
-
-/**
  * Gets a pattern by its name.
  *
  * @param string $name The pattern name.

@@ -3,24 +3,11 @@ import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import type { InitialPatternManager, SelectQuery } from '../types';
 
-export default function useSetup(
-	pattern: InitialPatternManager[ 'pattern' ]
-) {
+export default function useSetup() {
 	const { removeNotice } = useDispatch( 'core/notices' );
 	const { editPost } = useDispatch( 'core/editor' );
 	const notices = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/notices' ).getNotices();
-	}, [] );
-
-	useEffect( () => {
-		const { content, ...meta } = pattern;
-
-		editPost( {
-			meta: {
-				...meta,
-				previousName: pattern.name,
-			},
-		} );
 	}, [] );
 
 	useEffect( () => {

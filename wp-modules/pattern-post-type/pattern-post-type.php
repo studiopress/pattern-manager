@@ -256,7 +256,6 @@ function enqueue_meta_fields_in_editor() {
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
 			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern_from_query_param(),
 			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
 			'siteUrl'      => get_bloginfo( 'url' ),
 		]
@@ -344,9 +343,14 @@ function save_pattern_to_file( int $post_id, WP_Post $post ) {
 		return;
 	}
 
+	$pattern = get_pattern_by_name( get_post_meta( $post_id, 'name', true ) );
+	if ( ! $pattern ) {
+		return;
+	}
+
 	update_pattern(
 		array_merge(
-			get_pattern_by_name( get_post_meta( $post_id, 'name', true ) ),
+			$pattern,
 			[
 				'content' => $post->post_content,
 			]

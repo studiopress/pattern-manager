@@ -20,7 +20,7 @@ export default function PatternManagerMetaControls() {
 	);
 	const { postMeta } = usePostData();
 
-	useSetup( patternManager.pattern );
+	useSetup();
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
