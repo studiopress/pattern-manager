@@ -213,18 +213,17 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
-		// TODO: Port over the JS logic to duplicate a pattern.
-		$pattern_name         = sanitize_text_field( filter_input( INPUT_GET, 'name' ) );
-		$pattern_to_duplicate = get_pattern_by_name( $pattern_name );
-		$new_name             = "{$pattern_to_duplicate['name']}-copied";
-		$new_pattern          = array_merge(
+		$pattern_to_duplicate  = get_pattern_by_name( sanitize_text_field( filter_input( INPUT_GET, 'name' ) ) );
+		$duplicate_pattern_ids = get_duplicate_pattern_ids( $pattern_to_duplicate['name'], get_theme_patterns() );
+		if ( ! $duplicate_pattern_ids ) {
+			return;
+		}
+
+		$new_pattern = array_merge(
 			$pattern_to_duplicate,
-			array(
-				'name'  => $new_name,
-				'slug'  => $new_name,
-				'title' => "{$pattern_to_duplicate['title']} (copied)",
-			)
+			$duplicate_pattern_ids
 		);
+
 		update_pattern( $new_pattern );
 		$new_post = wp_insert_post(
 			[
