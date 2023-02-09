@@ -404,3 +404,27 @@ function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_valu
 	);
 }
 add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
+
+/**
+ * Gets the metadata from the pattern file, not the DB.
+ *
+ * @param null|mixed $override The filtered metadata, or null to get meta from the DB.
+ * @param int $post_id The post ID the meta is for.
+ * @param string $meta_key The meta key to get.
+ * @return null|mixed The filtered meta value, or null.
+ */
+function get_metadata_from_pattern_file( $override, $post_id, $meta_key ) {
+	$post = get_post( $post_id );
+	if ( 'pm_pattern' !== $post->post_type ) {
+		return $override;
+	}
+
+	$pattern_name = $post->post_name;
+	$pattern      = get_pattern_by_name( $pattern_name );
+	if ( ! $pattern ) {
+		return $override;
+	}
+
+	return $pattern[ $meta_key ] ?? $override;
+}
+add_filter( 'get_post_metadata', __NAMESPACE__ . '\get_metadata_from_pattern_file', 10, 3 );
