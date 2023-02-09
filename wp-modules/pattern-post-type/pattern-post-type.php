@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once module_dir_path( __FILE__ ) . 'model.php';
+require_once module_dir_path( __FILE__ ) . 'utils.php';
 
 /**
  * Create a custom post type to be used for our default post.

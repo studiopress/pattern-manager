@@ -12,6 +12,7 @@ namespace PatternManager\PatternPostType;
 
 use WP_Post;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
 use function PatternManager\PatternDataHandlers\update_pattern;
 
@@ -186,15 +187,15 @@ function redirect_pattern_actions() {
 	);
 
 	if ( 'create-new' === filter_input( INPUT_GET, 'action' ) ) {
-		// TODO: Port over the JS logic to create a new pattern name.
-		$number      = wp_rand( 1, 1000 );
-		$new_name    = "my-new-pattern-${number}";
+		$name_base   = 'my-new-pattern';
+		$number      = get_new_pattern_number( $name_base, get_theme_patterns() );
+		$new_name    = "{$name_base}-{$number}";
 		$new_pattern = array_merge(
 			$pattern_defaults,
 			array(
 				'name'  => $new_name,
 				'slug'  => $new_name,
-				'title' => "My New Pattern ${number}",
+				'title' => "My New Pattern {$number}",
 			)
 		);
 		update_pattern( $new_pattern );
