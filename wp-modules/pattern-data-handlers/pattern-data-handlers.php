@@ -149,7 +149,7 @@ function get_theme_patterns() {
 				]
 			);
 			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
-			if ( $post && $pattern['name'] === get_post_meta( $post->ID, 'name', true ) ) {
+			if ( $post && $post->post_name === $pattern['name'] ) {
 				$pattern['editorLink'] = get_edit_post_link( $post, 'localized_data' );
 			} else {
 				$pattern['editorLink'] = add_query_arg(
