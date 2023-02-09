@@ -148,6 +148,7 @@ function get_theme_patterns() {
 					'post_status'    => 'any',
 				]
 			);
+			// TODO: if there's no post for a pattern, add a link to create a post only when they click to edit.
 			$pattern['editorLink']        = $query->found_posts ? get_edit_post_link( $query->posts[0], 'localized_data' ) : '';
 			$patterns[ $pattern['name'] ] = $pattern;
 		}
