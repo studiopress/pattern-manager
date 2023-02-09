@@ -14,7 +14,10 @@
 	display: none !important;
 }
 
-/* Hide the 'Publish' button in the pattern editor, as there's already a save button, and publish has no meaning for a pattern. */
+/*
+ * Hide the 'Publish' button in the pattern editor, as there's already a save button.
+ * And publish has no meaning for a pattern saved to a .php file.
+ */
 .components-button.editor-post-publish-button__button.is-primary {
 	display: none;
 }
