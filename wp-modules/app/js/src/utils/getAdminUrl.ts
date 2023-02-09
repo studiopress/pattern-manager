@@ -5,8 +5,8 @@ export default function getAdminUrl( queryParams: {
 } ) {
 	const url = new URL( `${ patternManager.siteUrl }/wp-admin/admin.php` );
 	url.searchParams.append( 'post_type', 'pm_pattern' );
-	Object.keys( queryParams ).forEach( ( key ) => {
-		url.searchParams.append( key, queryParams[ key ] );
+	Object.entries( queryParams ).forEach( ( [ key, value ] ) => {
+		url.searchParams.append( key, value );
 	} );
 
 	return url.toString();
