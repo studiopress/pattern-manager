@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace PatternManager\PatternPostType;
 
 use WP_Post;
+use function PatternManager\PatternDataHandlers\delete_pattern;
+use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\update_pattern;
 
@@ -333,7 +335,7 @@ function get_pattern_content_from_file( $post ) {
 add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
 /**
- * Saves the pattern to the pattern .php file.
+ * Saves the pattern to the .php file.
  *
  * @param int $post_id The post ID.
  * @param WP_Post $post The post.
@@ -379,9 +381,10 @@ add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
  * @param int $post_id The post ID.
  * @param string $meta_key The meta key to update.
  * @param mixed $meta_value The meta value to update.
+ * @param mixed $previous_value The previous meta value.
  * @return null|bool
  */
-function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_value ) {
+function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_value, $previous_value ) {
 	$post = get_post( $post_id );
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return $result;
@@ -393,7 +396,19 @@ function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_valu
 		return $result;
 	}
 
-	// TODO: accept a 5th $previous_value argument, and change the pattern name if it changed.
+	if ( 'name' === $meta_key ) {
+		wp_update_post(
+			[
+				'ID'        => $post_id,
+				'post_name' => $meta_value,
+			]
+		);
+
+		if ( $previous_value !== $meta_value ) {
+			delete_pattern( $meta_value );
+		}
+	}
+
 	return update_pattern(
 		array_merge(
 			$pattern,
@@ -403,7 +418,7 @@ function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_valu
 		)
 	);
 }
-add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
+add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 5 );
 
 /**
  * Gets the metadata from the pattern file, not the DB.
@@ -411,9 +426,10 @@ add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_f
  * @param null|mixed $override The filtered metadata, or null to get meta from the DB.
  * @param int $post_id The post ID the meta is for.
  * @param string $meta_key The meta key to get.
+ * @param bool $is_single Whether the meta is single.
  * @return null|mixed The filtered meta value, or null.
  */
-function get_metadata_from_pattern_file( $override, $post_id, $meta_key ) {
+function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_single ) {
 	$post = get_post( $post_id );
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return $override;
@@ -425,6 +441,10 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key ) {
 		return $override;
 	}
 
-	return $pattern[ $meta_key ] ?? $override;
+	if ( isset( $pattern[ $meta_key ] ) ) {
+		return $is_single ? $pattern[ $meta_key ] : [ $pattern[ $meta_key ] ];
+	}
+
+	return $override;
 }
-add_filter( 'get_post_metadata', __NAMESPACE__ . '\get_metadata_from_pattern_file', 10, 3 );
+add_filter( 'get_post_metadata', __NAMESPACE__ . '\get_metadata_from_pattern_file', 10, 4 );

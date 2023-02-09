@@ -198,11 +198,21 @@ function get_pattern_by_path( $path ) {
  * @return array|false
  */
 function get_pattern_by_name( $name ) {
-	$pattern_path = get_patterns_directory() . $name . '.php';
+	$pattern_path = get_pattern_path( $name );
 
 	return file_exists( $pattern_path )
 		? get_pattern_by_path( $pattern_path )
 		: false;
+}
+
+/**
+ * Gets the path to a pattern.
+ *
+ * @param string $name The pattern name.
+ * @return string The absolute pattern path.
+ */
+function get_pattern_path( string $name ): string {
+	return get_patterns_directory() . $name . '.php';
 }
 
 /**
@@ -229,13 +239,7 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$patterns_dir     = get_patterns_directory();
-	$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
-	if ( $name_was_changed ) {
-		// Delete the previous pattern file, as the file name should change on changing the name.
-		$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
-	}
-
+	$patterns_dir  = get_patterns_directory();
 	$file_contents = construct_pattern_php_file_contents( $pattern, 'pattern-manager' );
 	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 
@@ -275,27 +279,15 @@ function update_patterns( $patterns ) {
 }
 
 /**
- * Deletes any pattern file whose name isn't present in the passed patterns.
+ * Deletes a pattern.
  *
- * @param string[] $patterns The patterns to not delete.
+ * @param string $pattern_name The name of the pattern.
+ * @return bool Whether deletion was successful.
  */
-function delete_patterns_not_present( array $patterns ) {
-	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
+function delete_pattern( $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-	if ( ! $wp_filesystem ) {
-		return;
-	}
-
-	$pattern_file_paths = get_pattern_file_paths();
-	if ( ! $pattern_file_paths ) {
-		return;
-	}
-
-	foreach ( $pattern_file_paths as $pattern_file ) {
-		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
-			$wp_filesystem->delete( $pattern_file );
-		}
-	}
+	$pattern_path  = get_pattern_path( $pattern_name );
+	return $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
 /**
