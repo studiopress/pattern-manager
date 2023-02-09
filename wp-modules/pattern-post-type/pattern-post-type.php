@@ -317,34 +317,23 @@ add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
 /**
  * Gets the pattern from the file, instead of from the post content.
  *
- * @param WP_Post[] $posts The posts to filter.
- * @return WP_Post[]
+ * @param WP_Post $post The posts to filter.
+ * @return WP_Post
  */
-function get_pattern_content_from_file( $posts ) {
-	if ( ! is_array( $posts ) ) {
-		return $posts;
+function get_pattern_content_from_file( $post ) {
+	if ( 'pm_pattern' !== $post->post_type ) {
+		return $post;
 	}
 
-	return array_map(
-		function ( $post ) {
-			if ( 'pm_pattern' !== $post->post_type ) {
-				return $post;
-			}
+	$pattern_name = get_post_meta( get_the_ID(), 'name', true );
+	if ( ! $pattern_name ) {
+		return $post;
+	}
 
-			$pattern_name = get_post_meta( get_the_ID(), 'name', true );
-			if ( ! $pattern_name ) {
-				return $post;
-			}
+	$post->post_content = get_pattern_by_name( $pattern_name )['content'] ?? '';
 
-			$new_post               = clone( $post );
-			$new_post->post_content = get_pattern_by_name( $pattern_name )['content'] ?? '';
-
-			return $new_post;
-		},
-		$posts
-	);
 }
-add_filter( 'the_posts', __NAMESPACE__ . '\get_pattern_content_from_file' );
+add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
 /**
  * Saves the pattern to the pattern .php file.
