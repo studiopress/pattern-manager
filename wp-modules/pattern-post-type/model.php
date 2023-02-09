@@ -22,15 +22,14 @@ use function PatternManager\PatternDataHandlers\update_pattern;
  */
 function get_pattern_content_from_file( $post ) {
 	if ( 'pm_pattern' !== $post->post_type ) {
-		return $post;
+		return;
 	}
 
-	$pattern_name = get_post_meta( get_the_ID(), 'name', true );
-	if ( ! $pattern_name ) {
-		return $post;
+	if ( ! $post->post_name ) {
+		return;
 	}
 
-	$post->post_content = get_pattern_by_name( $pattern_name )['content'] ?? '';
+	$post->post_content = get_pattern_by_name( $post->post_name )['content'] ?? '';
 }
 add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
