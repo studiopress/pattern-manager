@@ -315,10 +315,9 @@ function modify_terms( string $translation, string $text, string $domain ) {
 add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
 
 /**
- * Gets the pattern from the file, instead of from the post content.
+ * Gets the pattern content from the file, instead of from the post content.
  *
- * @param WP_Post $post The posts to filter.
- * @return WP_Post
+ * @param WP_Post $post The post to possibly add content to.
  */
 function get_pattern_content_from_file( $post ) {
 	if ( 'pm_pattern' !== $post->post_type ) {
@@ -331,7 +330,6 @@ function get_pattern_content_from_file( $post ) {
 	}
 
 	$post->post_content = get_pattern_by_name( $pattern_name )['content'] ?? '';
-
 }
 add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
