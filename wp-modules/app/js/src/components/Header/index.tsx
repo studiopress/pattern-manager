@@ -28,7 +28,7 @@ export default function Header() {
 				<Button
 					variant="primary"
 					href={ getAdminUrl( {
-						action: 'create-new'
+						action: 'create-new',
 					} ) }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }

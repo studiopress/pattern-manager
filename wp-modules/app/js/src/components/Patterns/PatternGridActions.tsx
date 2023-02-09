@@ -17,9 +17,7 @@ type Props = {
 };
 
 /** Render the pattern action buttons. */
-export default function PatternGridActions( {
-	patternData,
-}: Props ) {
+export default function PatternGridActions( { patternData }: Props ) {
 	const { patterns } = usePmContext();
 	return (
 		<div className="item-actions">
@@ -55,7 +53,9 @@ export default function PatternGridActions( {
 						icon={ copy }
 						size={ 30 }
 					/>
-					<span className="item-action-button-text">{ __( 'Duplicate', 'pattern-manager' ) }</span>
+					<span className="item-action-button-text">
+						{ __( 'Duplicate', 'pattern-manager' ) }
+					</span>
 				</a>
 
 				<div className="item-action-button-separator"></div>
