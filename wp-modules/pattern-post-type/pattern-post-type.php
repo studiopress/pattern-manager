@@ -438,3 +438,48 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 	return $override;
 }
 add_filter( 'get_post_metadata', __NAMESPACE__ . '\get_metadata_from_pattern_file', 10, 4 );
+
+function create_new_pattern_post() {
+	if ( 'pm_pattern' !== filter_input( INPUT_GET, 'post_type' ) ) {
+		return;
+	}
+
+	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
+		$new_post = wp_insert_post( [
+			'post_type' => 'pm_pattern',
+			'post_name' => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
+		] );
+
+		wp_safe_redirect(
+			get_edit_post_link( $new_post, 'direct_link' )
+		);
+	}
+
+	if ( 'create-new' === filter_input( INPUT_GET, 'action' ) ) {
+		// TODO: Port over the JS logic to create a new pattern name.
+		$number      = rand( 1, 1000 );
+		$new_pattern = array(
+			'name'        => "my-new-pattern-${number}",
+			'slug'        => "my-new-pattern-${number}",
+			'title'       => "My New Pattern ${number}",
+			'categories' => array(),
+			'keywords' => array(),
+			'blockTypes' => array(),
+			'postTypes' => array(),
+			'inserter' => true,
+			'description' => '',
+			'viewportWidth' => '',
+			'content' => '',
+		);
+		update_pattern( $new_pattern );
+		$new_post = wp_insert_post( [
+			'post_type' => 'pm_pattern',
+			'post_name' => $new_pattern['name'],
+		] );
+
+		wp_safe_redirect(
+			get_edit_post_link( $new_post, 'direct_link' )
+		);
+	}
+}
+add_action( 'admin_init', __NAMESPACE__ . '\create_new_pattern_post' );

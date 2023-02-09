@@ -7,23 +7,20 @@ import usePmContext from '../../hooks/usePmContext';
 
 // Utils
 import deletePattern from '../../utils/deletePattern';
-import getDuplicatePattern from '../../utils/getDuplicatePattern';
-import getEditorUrl from '../../utils/getEditorUrl';
+import getAdminUrl from '../../utils/getAdminUrl';
 
 // Types
 import type { Pattern, Patterns } from '../../types';
 
 type Props = {
-	themePatterns: Patterns;
 	patternData: Pattern;
 };
 
 /** Render the pattern action buttons. */
 export default function PatternGridActions( {
-	themePatterns,
 	patternData,
 }: Props ) {
-	const { notice, patterns } = usePmContext();
+	const { patterns } = usePmContext();
 	return (
 		<div className="item-actions">
 			<div className="item-actions-inside">
@@ -44,34 +41,22 @@ export default function PatternGridActions( {
 
 				<div className="item-action-button-separator"></div>
 
-				<button
+				<a
 					type="button"
 					className="item-action-button"
 					aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
-					onClick={ async () => {
-						notice.set(
-							__(
-								'Duplicating your pattern and opening it in the editor…',
-								'pattern-manager'
-							)
-						);
-						const newPattern = getDuplicatePattern(
-							patternData,
-							Object.values( themePatterns ?? {} )
-						);
-						await patterns.savePattern( newPattern );
-						document.location.href = getEditorUrl(
-							newPattern.name
-						);
-					} }
+					href={ getAdminUrl( {
+						action: 'duplicate',
+						name: patternData.name,
+					} ) }
 				>
 					<Icon
 						className="item-action-icon"
 						icon={ copy }
 						size={ 30 }
 					/>
-					<span className="item-action-button-text">Duplicate</span>
-				</button>
+					<span className="item-action-button-text">{ __( 'Duplicate', 'pattern-manager' ) }</span>
+				</a>
 
 				<div className="item-action-button-separator"></div>
 

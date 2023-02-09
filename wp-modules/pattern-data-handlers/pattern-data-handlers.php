@@ -148,8 +148,17 @@ function get_theme_patterns() {
 					'post_status'    => 'any',
 				]
 			);
-			// TODO: if there's no post for a pattern, add a link to create a post only when they click to edit.
-			$pattern['editorLink']        = $query->found_posts ? get_edit_post_link( $query->posts[0], 'localized_data' ) : '';
+			$post = empty( $query->posts[0] ) ? false : $query->posts[ 0 ];
+			if ( $post && $pattern['name'] === get_post_meta( $post->ID, 'name', true ) ) {
+				$pattern['editorLink'] = get_edit_post_link( $post, 'localized_data' );
+			} else {
+				$pattern['editorLink'] = add_query_arg( [
+					'post_type' => 'pm_pattern',
+					'action'    => 'edit-pattern',
+					'name'      => $pattern['name'],
+				], admin_url() );
+			}
+
 			$patterns[ $pattern['name'] ] = $pattern;
 		}
 	}
