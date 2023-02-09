@@ -371,3 +371,36 @@ function save_pattern_to_file( int $post_id, WP_Post $post ) {
 	add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
 }
 add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+
+/**
+ * Saves a meta value to the pattern file, instead of the DB.
+ *
+ * @param null|bool $result The result of updating meta.
+ * @param int $post_id The post ID.
+ * @param string $meta_key The meta key to update.
+ * @param mixed $meta_value The meta value to update.
+ * @return null|bool
+ */
+function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_value ) {
+	$post = get_post( $post_id );
+	if ( 'pm_pattern' !== $post->post_type ) {
+		return $result;
+	}
+
+	$pattern_name = $post->post_name;
+	$pattern      = get_pattern_by_name( $pattern_name );
+	if ( ! $pattern ) {
+		return $result;
+	}
+
+	// TODO: accept a 5th $previous_value argument, and change the pattern name if it changed.
+	return update_pattern(
+		array_merge(
+			$pattern,
+			[
+				$meta_key => $meta_value,
+			]
+		)
+	);
+}
+add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
