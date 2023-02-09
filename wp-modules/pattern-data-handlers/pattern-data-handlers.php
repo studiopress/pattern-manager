@@ -140,7 +140,7 @@ function get_theme_patterns() {
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern = get_pattern_by_path( $path );
 		if ( $pattern ) {
-			$query = new WP_Query(
+			$query                 = new WP_Query(
 				[
 					'post_type'      => 'pm_pattern',
 					'post_name'      => $pattern['name'],
@@ -148,11 +148,10 @@ function get_theme_patterns() {
 					'post_status'    => 'any',
 				]
 			);
-			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
-			if ( $post && $post->post_name === $pattern['name'] ) {
-				$pattern['editorLink'] = get_edit_post_link( $post, 'localized_data' );
-			} else {
-				$pattern['editorLink'] = add_query_arg(
+			$post                  = empty( $query->posts[0] ) ? false : $query->posts[0];
+			$pattern['editorLink'] = $post && $post->post_name === $pattern['name']
+				? get_edit_post_link( $post, 'localized_data' )
+				: add_query_arg(
 					[
 						'post_type' => 'pm_pattern',
 						'action'    => 'edit-pattern',
@@ -160,7 +159,6 @@ function get_theme_patterns() {
 					],
 					admin_url()
 				);
-			}
 
 			$patterns[ $pattern['name'] ] = $pattern;
 		}
