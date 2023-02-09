@@ -14,11 +14,13 @@
 	display: none !important;
 }
 
-/*
- * Hide the 'Publish' button in the pattern editor, as there's already a save button.
- * And publish has no meaning for a pattern saved to a .php file.
- */
-.components-button.editor-post-publish-button__button.is-primary {
+/* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
+button.components-button.editor-post-save-draft.is-tertiary {
+	display: none;
+}
+
+/* Hide the 'Switch to draft' button in the pattern editor, as draft doesn't mean anything for a pattern saved to a .php file. */
+button.components-button.editor-post-switch-to-draft.is-tertiary {
 	display: none;
 }
 

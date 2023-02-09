@@ -163,8 +163,9 @@ function redirect_pattern_actions() {
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
 		$new_post = wp_insert_post(
 			[
-				'post_type' => 'pm_pattern',
-				'post_name' => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
+				'post_type'   => 'pm_pattern',
+				'post_name'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
+				'post_status' => 'publish',
 			]
 		);
 
@@ -199,8 +200,9 @@ function redirect_pattern_actions() {
 		update_pattern( $new_pattern );
 		$new_post = wp_insert_post(
 			[
-				'post_type' => 'pm_pattern',
-				'post_name' => $new_pattern['name'],
+				'post_type'   => 'pm_pattern',
+				'post_name'   => $new_pattern['name'],
+				'post_status' => 'publish',
 			]
 		);
 
@@ -225,8 +227,9 @@ function redirect_pattern_actions() {
 		update_pattern( $new_pattern );
 		$new_post = wp_insert_post(
 			[
-				'post_type' => 'pm_pattern',
-				'post_name' => $new_pattern['name'],
+				'post_type'   => 'pm_pattern',
+				'post_name'   => $new_pattern['name'],
+				'post_status' => 'publish',
 			]
 		);
 

@@ -145,7 +145,6 @@ function get_theme_patterns() {
 					'post_type'      => 'pm_pattern',
 					'post_name'      => $pattern['name'],
 					'posts_per_page' => 1,
-					'post_status'    => 'any',
 				]
 			);
 			$post                  = empty( $query->posts[0] ) ? false : $query->posts[0];

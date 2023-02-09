@@ -1,5 +1,5 @@
 export default function changeWords( translation: string, text: string ) {
-	if ( text === 'Save draft' ) {
+	if ( text === 'Publish' ) {
 		return 'Save pattern to theme';
 	}
 	if ( text === 'Post published.' || text === 'Post updated.' ) {
