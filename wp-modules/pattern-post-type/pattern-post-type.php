@@ -317,22 +317,34 @@ add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
 /**
  * Gets the pattern from the file, instead of from the post content.
  *
- * @param string $content The post content.
- * @return mixed|string
+ * @param WP_Post[] $posts The posts to filter.
+ * @return WP_Post[]
  */
-function get_pattern_content_from_file( string $content ) {
-	if ( 'pm_pattern' !== get_post_type() ) {
-		return $content;
+function get_pattern_content_from_file( $posts ) {
+	if ( ! is_array( $posts ) ) {
+		return $posts;
 	}
 
-	$pattern_name = get_post_meta( get_the_ID(), 'name' );
-	if ( ! $pattern_name ) {
-		return $content;
-	}
+	return array_map(
+		function ( $post ) {
+			if ( 'pm_pattern' !== $post->post_type ) {
+				return $post;
+			}
 
-	return get_pattern_by_name( $pattern_name )['content'] ?? '';
+			$pattern_name = get_post_meta( get_the_ID(), 'name', true );
+			if ( ! $pattern_name ) {
+				return $post;
+			}
+
+			$new_post               = clone( $post );
+			$new_post->post_content = get_pattern_by_name( $pattern_name )['content'] ?? '';
+
+			return $new_post;
+		},
+		$posts
+	);
 }
-add_filter( 'the_content', __NAMESPACE__ . '\get_pattern_content_from_file' );
+add_filter( 'the_posts', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
 /**
  * Saves the pattern to the pattern .php file.
@@ -341,28 +353,30 @@ add_filter( 'the_content', __NAMESPACE__ . '\get_pattern_content_from_file' );
  * @param WP_Post $post The post.
  */
 function save_pattern_to_file( int $post_id, WP_Post $post ) {
-	if ( $post->post_type === 'pm_pattern' ) {
-		update_pattern(
-			array_merge(
-				get_pattern_by_name( get_post_meta( $post_id, 'name', true ) ),
-				[
-					'content' => $post->post_content,
-				]
-			)
-		);
-
-		// Prevent an infinite loop.
-		remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
-
-		// Removes the post content, as it should be saved in the pattern .php file.
-		wp_update_post(
-			[
-				'ID'      => $post_id,
-				'content' => '',
-			]
-		);
-
-		add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+	if ( 'pm_pattern' !== $post->post_type ) {
+		return;
 	}
+
+	update_pattern(
+		array_merge(
+			get_pattern_by_name( get_post_meta( $post_id, 'name', true ) ),
+			[
+				'content' => $post->post_content,
+			]
+		)
+	);
+
+	// Prevent an infinite loop.
+	remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
+
+	// Removes the post content, as it should be saved in the pattern .php file.
+	wp_update_post(
+		[
+			'ID'           => $post_id,
+			'post_content' => '',
+		]
+	);
+
+	add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
 }
 add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
