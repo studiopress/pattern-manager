@@ -30,7 +30,7 @@ export default function PatternGridActions( {
 				<a
 					className="item-action-button"
 					aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-					href={ getEditorUrl( patternData.name ) }
+					href={ patternData?.editorLink }
 				>
 					<Icon
 						className="item-action-icon"

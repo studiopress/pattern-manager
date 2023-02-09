@@ -23,6 +23,7 @@ export type InitialPatternManager = {
 
 export type Pattern = {
 	content: string;
+	editorLink?: string;
 	name: string;
 	title: string;
 	slug: string;

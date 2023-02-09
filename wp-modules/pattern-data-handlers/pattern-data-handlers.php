@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternDataHandlers;
 
+use WP_Query;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -138,6 +140,15 @@ function get_theme_patterns() {
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern = get_pattern_by_path( $path );
 		if ( $pattern ) {
+			$query                        = new WP_Query(
+				[
+					'post_type'      => 'pm_pattern',
+					'post_name'      => $pattern['name'],
+					'posts_per_page' => 1,
+					'post_status'    => 'any',
+				]
+			);
+			$pattern['editorLink']        = $query->found_posts ? get_edit_post_link( $query->posts[0], 'localized_data' ) : '';
 			$patterns[ $pattern['name'] ] = $pattern;
 		}
 	}

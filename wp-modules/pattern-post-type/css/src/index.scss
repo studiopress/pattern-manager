@@ -14,7 +14,7 @@
 	display: none !important;
 }
 
-/* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
+/* Hide the 'Publish' button in the pattern editor, as there's already a save button, and publish has no meaning for a pattern. */
 .components-button.editor-post-publish-button__button.is-primary {
 	display: none;
 }
