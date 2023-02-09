@@ -130,6 +130,10 @@ add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_f
  */
 function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_single ) {
 	$post = get_post( $post_id );
+	if ( ! $post ) {
+		return $override;
+	}
+
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return $override;
 	}
