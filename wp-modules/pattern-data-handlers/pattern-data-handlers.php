@@ -306,18 +306,6 @@ function delete_pattern( string $pattern_name ): bool {
 }
 
 /**
- * Deletes a pattern.
- *
- * @param string $pattern_name The name of the pattern.
- * @return bool Whether deletion was successful.
- */
-function delete_pattern( $pattern_name ): bool {
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-	$pattern_path  = get_pattern_path( $pattern_name );
-	return $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
-}
-
-/**
  * WordPress's template part block adds a "theme" attribute, which can be incorrect if the template part was copied from another theme.
  * This function removes that attribute from any template part blocks in a pattern's content.
  *
