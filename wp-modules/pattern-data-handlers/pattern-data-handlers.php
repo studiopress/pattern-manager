@@ -129,11 +129,13 @@ function format_pattern_data( $pattern_data, $file ) {
  *
  * @return array
  */
-function get_theme_patterns(): array {
+function get_theme_patterns() {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
-	foreach ( get_pattern_file_paths() as $path ) {
+	$pattern_file_paths = get_pattern_file_paths();
+
+	foreach ( $pattern_file_paths as $path ) {
 		$pattern = get_pattern_by_path( $path );
 		if ( $pattern ) {
 			$patterns[ $pattern['name'] ] = $pattern;
@@ -148,18 +150,17 @@ function get_theme_patterns(): array {
  *
  * @return string
  */
-function get_patterns_directory(): string {
+function get_patterns_directory() {
 	return get_template_directory() . '/patterns/';
 }
 
 /**
  * Gets the file paths for patterns.
  *
- * @return string[]
+ * @return array|false
  */
-function get_pattern_file_paths(): array {
-	$paths = glob( get_patterns_directory() . '*.php' );
-	return $paths ? $paths : array();
+function get_pattern_file_paths() {
+	return glob( get_patterns_directory() . '*.php' );
 }
 
 /**
@@ -168,7 +169,7 @@ function get_pattern_file_paths(): array {
  * @param string $path The pattern path.
  * @return array|false The pattern, if any.
  */
-function get_pattern_by_path( string $path ) {
+function get_pattern_by_path( $path ) {
 	$default_headers = array(
 		'title'         => 'Title',
 		'slug'          => 'Slug',
@@ -193,23 +194,20 @@ function get_pattern_by_path( string $path ) {
 /**
  * Gets a pattern by the name in the query param.
  *
- * @return array|false The pattern for the editor.
+ * @return array|null The pattern for the editor.
  */
 function get_pattern_from_query_param() {
-	return get_pattern_by_name( urldecode( sanitize_text_field( filter_input( INPUT_GET, 'name' ) ) ) );
+	$pattern_name = filter_input( INPUT_GET, 'name' );
+	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
 }
 
 /**
  * Gets a pattern by its name.
  *
  * @param string $name The pattern name.
- * @return string[]|false
+ * @return array|false
  */
-function get_pattern_by_name( string $name ) {
-	if ( ! $name ) {
-		return false;
-	}
-
+function get_pattern_by_name( $name ) {
 	$pattern_path = get_patterns_directory() . $name . '.php';
 
 	return file_exists( $pattern_path )
@@ -222,7 +220,7 @@ function get_pattern_by_name( string $name ) {
  *
  * @return string[] The pattern names.
  */
-function get_pattern_names(): array {
+function get_pattern_names() {
 	return array_map(
 		function( $path ) {
 			return basename( $path, '.php' );
@@ -237,7 +235,7 @@ function get_pattern_names(): array {
  * @param array $pattern Data about the pattern.
  * @return bool
  */
-function update_pattern( array $pattern ): bool {
+function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
@@ -255,33 +253,22 @@ function update_pattern( array $pattern ): bool {
 		$wp_filesystem->mkdir( $patterns_dir );
 	}
 
-	return $wp_filesystem->put_contents(
+	$pattern_file_created = $wp_filesystem->put_contents(
 		$patterns_dir . $file_name,
 		$file_contents,
 		FS_CHMOD_FILE
 	);
+
+	return $pattern_file_created;
 }
 
 /**
- * Saves only 1 pattern and does tree shaking.
- *
- * @param array $pattern The pattern to save.
- * @return bool Whether the save succeeded.
- */
-function save_pattern( array $pattern ): bool {
-	$is_success = update_pattern( $pattern );
-	tree_shake_single_pattern_with_backup( $pattern );
-
-	return $is_success;
-}
-
-/**
- * Saves all patterns and does tree shaking.
+ * Update the patterns.
  *
  * @param array $patterns The new patterns.
- * @return bool Whether the save succeeded.
+ * @return bool Whether all patterns updated.
  */
-function save_patterns( array $patterns ): bool {
+function update_patterns( $patterns ) {
 	delete_patterns_not_present( $patterns );
 
 	$results = array_map(
@@ -292,7 +279,7 @@ function save_patterns( array $patterns ): bool {
 	);
 
 	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	tree_shake_patterns_with_backup();
+	tree_shake_theme_images();
 
 	return ! in_array( false, $results, true );
 }
@@ -309,7 +296,12 @@ function delete_patterns_not_present( array $patterns ) {
 		return;
 	}
 
-	foreach ( get_pattern_file_paths() as $pattern_file ) {
+	$pattern_file_paths = get_pattern_file_paths();
+	if ( ! $pattern_file_paths ) {
+		return;
+	}
+
+	foreach ( $pattern_file_paths as $pattern_file ) {
 		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
 			$wp_filesystem->delete( $pattern_file );
 		}
@@ -323,7 +315,7 @@ function delete_patterns_not_present( array $patterns ) {
  * @param string $pattern_content The HTML content for a pattern..
  * @return string
  */
-function remove_theme_name_from_template_parts( string $pattern_content ): string {
+function remove_theme_name_from_template_parts( $pattern_content ) {
 
 	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
 	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
@@ -361,56 +353,32 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 }
 
 /**
- * Scan only 1 pattern in theme for images and other files, keep only ones actually being used.
- *
- * @param array $pattern The pattern to tree shake.
- */
-function tree_shake_single_pattern_with_backup( array $pattern ) {
-	$pattern = get_pattern_by_name( $pattern['name'] ?? '' );
-	if ( empty( $pattern ) ) {
-		return;
-	}
-
-	$backed_up_images_dir = back_up_images();
-	_tree_shake_pattern( $pattern, $backed_up_images_dir );
-
-	// Delete the temporary backup of the images we did.
-	\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->delete( $backed_up_images_dir, true, 'd' );
-}
-
-/**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
- */
-function tree_shake_patterns_with_backup() {
-	$backed_up_images_dir = back_up_images();
-
-	// Get the current patterns in the theme (not including templates and templates parts).
-	// Add the included Patterns for the current theme.
-	foreach ( get_theme_patterns() as $pattern_data ) {
-		_tree_shake_pattern( $pattern_data, $backed_up_images_dir );
-	}
-
-	// Delete the temporary backup of the images we did.
-	\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->delete( $backed_up_images_dir, true, 'd' );
-}
-
-/**
- * Backs up the images that will be tree shaken.
  *
- * @return string The directory of the backed up images.
+ * @param array $patterns_in_theme The patterns in the theme.
  */
-function back_up_images(): string {
+function tree_shake_theme_images() {
+	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$backed_up_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir           = get_theme_images_directory();
+	// Get the current patterns in the theme (not including templates and templates parts).
+	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
+	// Add the included Patterns for the current theme.
+	$theme_dir         = get_template_directory();
+	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
-	if ( ! $wp_filesystem->exists( $backed_up_images_dir ) ) {
-		$wp_filesystem->mkdir( $backed_up_images_dir );
+	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
+	$images_dir          = $theme_dir . '/assets/images/';
+
+	$wp_theme_url = get_template_directory_uri();
+	$images_url   = $wp_theme_url . '/assets/images/';
+
+	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
+		$wp_filesystem->mkdir( $backedup_images_dir );
 	}
 
 	// Before we take any action, back up the current images directory.
-	copy_dir( $images_dir, $backed_up_images_dir );
+	copy_dir( $images_dir, $backedup_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
@@ -419,53 +387,37 @@ function back_up_images(): string {
 		$wp_filesystem->mkdir( $images_dir );
 	}
 
-	return $backed_up_images_dir;
-}
+	// Loop through all patterns in the theme.
+	foreach ( $patterns_in_theme as $pattern_data ) {
+		// Find all URLs in the block pattern html.
+		preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
 
-/**
- * Gets the theme images directory.
- *
- * @return string
- */
-function get_theme_images_directory(): string {
-	return get_template_directory() . '/assets/images/';
-}
+		// If no URLs were found in this pattern, skip to the next pattern.
+		if ( ! isset( $output_array[0] ) ) {
+			continue;
+		}
 
-/**
- * Tree shakes a single pattern.
- *
- * @param array $pattern_data The pattern to tree shake.
- * @param string $backed_up_images_dir The directory of the images backup.
- */
-function _tree_shake_pattern( array $pattern_data, string $backed_up_images_dir ) {
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+		$urls_found = $output_array[0];
 
-	// Find all URLs in the block pattern html.
-	preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
+		$img_urls_found = $output_array['url'];
 
-	// If no URLs were found in this pattern, skip to the next pattern.
-	if ( ! isset( $output_array[0] ) ) {
-		return;
-	}
+		// Loop through each URL found.
+		foreach ( $urls_found as $url_found ) {
 
-	$urls_found = $output_array[0];
+			// If URL to image is local to theme, pull it from the backed-up theme images directory.
+			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
+			$desired_destination_in_theme = str_replace( $backedup_images_dir, $images_dir, $local_path_to_image );
 
-	$images_url = get_template_directory_uri() . '/assets/images/';
-	$images_dir = get_theme_images_directory();
-
-	// Loop through each URL found.
-	foreach ( $urls_found as $url_found ) {
-
-		// If URL to image is local to theme, pull it from the backed-up theme images directory.
-		$local_path_to_image          = str_replace( $images_url, $backed_up_images_dir, $url_found );
-		$desired_destination_in_theme = str_replace( $backed_up_images_dir, $images_dir, $local_path_to_image );
-
-		// If the path to this image starts with the path to our backedup images directory.
-		if ( strpos( $local_path_to_image, $backed_up_images_dir ) === 0 ) {
-			// Move the file into the theme again.
-			$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+			// If the path to this image starts with the path to our backedup images directory.
+			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
+				// Move the file into the theme again.
+				$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+			}
 		}
 	}
+
+	// Delete the temporary backup of the images we did.
+	$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
 }
 
 /**

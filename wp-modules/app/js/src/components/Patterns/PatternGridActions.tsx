@@ -26,74 +26,86 @@ export default function PatternGridActions( {
 	const { notice, patterns } = usePmContext();
 	return (
 		<div className="item-actions">
-			<a
-				className="item-action-button"
-				aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-				href={ getEditorUrl( patternData.name ) }
-			>
-				<Icon
-					className="item-action-icon"
-					icon={ settings }
-					size={ 30 }
-				/>
-				<span className="item-action-button-text">
-					{ __( 'Edit', 'pattern-manager' ) }
-				</span>
-			</a>
+			<div className="item-actions-inside">
+				<a
+					className="item-action-button"
+					aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
+					href={ getEditorUrl( patternData.name ) }
+				>
+					<Icon
+						className="item-action-icon"
+						icon={ settings }
+						size={ 30 }
+					/>
+					<span className="item-action-button-text">
+						{ __( 'Edit', 'pattern-manager' ) }
+					</span>
+				</a>
 
-			<div className="item-action-button-separator"></div>
+				<div className="item-action-button-separator"></div>
 
-			<button
-				type="button"
-				className="item-action-button"
-				aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
-				onClick={ async () => {
-					notice.set(
-						__(
-							'Duplicating your pattern and opening it in the editor…',
-							'pattern-manager'
-						)
-					);
-					const newPattern = getDuplicatePattern(
-						patternData,
-						Object.values( themePatterns ?? {} )
-					);
-					await patterns.savePattern( newPattern );
-					document.location.href = getEditorUrl( newPattern.name );
-				} }
-			>
-				<Icon className="item-action-icon" icon={ copy } size={ 30 } />
-				<span className="item-action-button-text">Duplicate</span>
-			</button>
-
-			<div className="item-action-button-separator"></div>
-
-			<button
-				type="button"
-				className="item-action-button"
-				aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
-				onClick={ () => {
-					if (
-						/* eslint-disable no-alert */
-						window.confirm(
+				<button
+					type="button"
+					className="item-action-button"
+					aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
+					onClick={ async () => {
+						notice.set(
 							__(
-								'Are you sure you want to delete this pattern?',
+								'Duplicating your pattern and opening it in the editor…',
 								'pattern-manager'
 							)
-						)
-					) {
-						const newPatterns = deletePattern(
-							patternData.name,
-							patterns.data
 						);
-						patterns.set( newPatterns );
-						patterns.savePatterns( newPatterns );
-					}
-				} }
-			>
-				<Icon className="item-action-icon" icon={ trash } size={ 30 } />
-				<span className="item-action-button-text">Delete</span>
-			</button>
+						const newPattern = getDuplicatePattern(
+							patternData,
+							Object.values( themePatterns ?? {} )
+						);
+						await patterns.savePattern( newPattern );
+						document.location.href = getEditorUrl(
+							newPattern.name
+						);
+					} }
+				>
+					<Icon
+						className="item-action-icon"
+						icon={ copy }
+						size={ 30 }
+					/>
+					<span className="item-action-button-text">Duplicate</span>
+				</button>
+
+				<div className="item-action-button-separator"></div>
+
+				<button
+					type="button"
+					className="item-action-button"
+					aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
+					onClick={ () => {
+						if (
+							/* eslint-disable no-alert */
+							window.confirm(
+								__(
+									'Are you sure you want to delete this pattern?',
+									'pattern-manager'
+								)
+							)
+						) {
+							const newPatterns = deletePattern(
+								patternData.name,
+								patterns.data
+							);
+							patterns.set( newPatterns );
+							patterns.savePatterns( newPatterns );
+						}
+					} }
+				>
+					<Icon
+						className="item-action-icon"
+						icon={ trash }
+						size={ 30 }
+					/>
+					<span className="item-action-button-text">Delete</span>
+				</button>
+			</div>
 		</div>
 	);
 }

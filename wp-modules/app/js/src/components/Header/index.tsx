@@ -2,6 +2,7 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
+import { Button } from '@wordpress/components';
 
 /**
  * Internal dependencies
@@ -24,17 +25,17 @@ export default function Header() {
 					aria-hidden="true"
 					src={ wpeLogoDefaultCropped }
 				/>
-				<span className="logo-title">
+				<h1 className="logo-title">
 					{ __( 'Pattern Manager', 'pattern-manager' ) }
-				</span>
+				</h1>
 			</div>
 			<div className="header-container-inner">
-				<button
-					className="header-button"
+				<Button
+					variant="primary"
 					onClick={ async () => {
 						notice.set(
 							__(
-								'Creating your new pattern and opening it in the editor…',
+								'Creating your new pattern and opening it in the editor.',
 								'pattern-manager'
 							)
 						);
@@ -55,7 +56,7 @@ export default function Header() {
 					} }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }
-				</button>
+				</Button>
 			</div>
 		</div>
 	);
