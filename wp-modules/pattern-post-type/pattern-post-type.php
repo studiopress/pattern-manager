@@ -100,6 +100,26 @@ function pattern_post_type() {
 		)
 	);
 
+	register_post_meta(
+		'pm_pattern',
+		'description',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'string',
+		)
+	);
+
+	register_post_meta(
+		'pm_pattern',
+		'inserter',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'boolean',
+		)
+	);
+
 	/**
 	 * Add blockTypes array post meta.
 	 *
