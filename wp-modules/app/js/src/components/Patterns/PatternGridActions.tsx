@@ -10,7 +10,7 @@ import deletePattern from '../../utils/deletePattern';
 import getAdminUrl from '../../utils/getAdminUrl';
 
 // Types
-import type { Pattern, Patterns } from '../../types';
+import type { Pattern } from '../../types';
 
 type Props = {
 	patternData: Pattern;
@@ -25,7 +25,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 				<a
 					className="item-action-button"
 					aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-					href={ patternData?.editorLink }
+					href={ patternData.editorLink }
 				>
 					<Icon
 						className="item-action-icon"
