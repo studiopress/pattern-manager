@@ -146,6 +146,31 @@ class UtilsTest extends TestCase {
 					'title' => 'My New Pattern (copied) 2',
 				),
 			),
+			array(
+				'my-new-pattern',
+				array(
+					'my-new-pattern'          => array(
+						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
+						'title' => 'My New Pattern',
+					),
+					'my-new-pattern-copied'   => array(
+						'name'  => 'my-new-pattern-copied',
+						'slug'  => 'my-new-pattern-copied',
+						'title' => 'My New Pattern (copied)',
+					),
+					'my-new-pattern-copied-9' => array(
+						'name'  => 'my-new-pattern-copied-9',
+						'slug'  => 'my-new-pattern-copied-9',
+						'title' => 'My New Pattern (copied) 9',
+					),
+				),
+				array(
+					'name'  => 'my-new-pattern-copied-1',
+					'slug'  => 'my-new-pattern-copied-1',
+					'title' => 'My New Pattern (copied) 1',
+				),
+			),
 		);
 	}
 

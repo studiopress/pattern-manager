@@ -82,7 +82,7 @@ add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
  * @param string $meta_key The meta key to update.
  * @param mixed $meta_value The meta value to update.
  * @param mixed $previous_value The previous meta value.
- * @return null|bool
+ * @return null|bool Whether to override Core's saving of metadata.
  */
 function save_metadata_to_pattern_file( $result, $post_id, $meta_key, $meta_value, $previous_value ) {
 	$post = get_post( $post_id );
