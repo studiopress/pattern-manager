@@ -26,33 +26,12 @@ require_once module_dir_path( __FILE__ ) . 'utils.php';
  * Create a custom post type to be used for our default post.
  */
 function pattern_post_type() {
-	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$post_id      = absint( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$post_type    = get_post_type( $post_id );
-		$pattern_type = get_post_meta( $post_id, 'type', true );
-	} else {
-		$pattern_type = 'pattern';
-	}
-
 	$labels = array(
 		'name'          => __( 'Patterns', 'pattern-manager' ),
 		'singular_name' => __( 'Pattern', 'pattern-manager' ),
+		'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
+		'item_updated'  => __( 'Pattern saved to your theme directory', 'pattern-manager' ),
 	);
-
-	if ( 'pattern' === $pattern_type ) {
-		$labels = array(
-			'name'          => __( 'Patterns', 'pattern-manager' ),
-			'singular_name' => __( 'Pattern', 'pattern-manager' ),
-			'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
-		);
-	}
-
-	if ( 'template' === $pattern_type ) {
-		$labels = array(
-			'name'          => __( 'Templates', 'pattern-manager' ),
-			'singular_name' => __( 'Template', 'pattern-manager' ),
-		);
-	}
 
 	register_post_type(
 		'pm_pattern',
