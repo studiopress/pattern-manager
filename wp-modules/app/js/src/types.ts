@@ -1,11 +1,9 @@
-import useNotice from './hooks/useNotice';
 import usePatterns from './hooks/usePatterns';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
-	notice: ReturnType< typeof useNotice >;
 	patterns: ReturnType< typeof usePatterns >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 };
