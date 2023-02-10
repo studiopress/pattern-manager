@@ -293,37 +293,16 @@ function update_pattern( $pattern ) {
 }
 
 /**
- * Update the patterns.
- *
- * @param array $patterns The new patterns.
- * @return bool Whether all patterns updated.
- */
-function update_patterns( $patterns ) {
-	delete_patterns_not_present( $patterns );
-
-	$results = array_map(
-		function( $pattern ) {
-			return update_pattern( $pattern );
-		},
-		$patterns
-	);
-
-	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	tree_shake_theme_images();
-
-	return ! in_array( false, $results, true );
-}
-
-/**
  * Deletes a pattern.
  *
- * @param string $pattern_name The name of the pattern.
- * @return bool Whether deletion was successful.
+ * @param string $pattern_name The pattern name to delete.
+ * @return bool Whether the deletion succeeded.
  */
-function delete_pattern( $pattern_name ): bool {
+function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
-	return $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
+
+	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
 /**
