@@ -159,7 +159,7 @@ function get_theme_patterns_with_editor_links() {
 			$query                 = new WP_Query(
 				[
 					'post_type'      => 'pm_pattern',
-					'post_name'      => $pattern['name'],
+					'name'           => $pattern['name'],
 					'posts_per_page' => 1,
 				]
 			);
