@@ -223,9 +223,8 @@ function get_pattern_by_path( $path ) {
 	if ( ! $pattern_data ) {
 		return false;
 	}
-	$pattern_data['name'] = basename( $path, '.php' );
 
-	return $pattern_data;
+	return array_merge( $pattern_data, array( 'name' => basename( $path, '.php' ) ) );
 }
 
 /**
