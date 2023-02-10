@@ -10,22 +10,22 @@ import {
 } from '../SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
-import useSetup from '../../hooks/useSetup';
-import useSaveButtonInterrupter from '../../hooks/useSaveButtonInterrupter';
+import useSave from '../../hooks/useSave';
 import { patternManager } from '../../globals';
 import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
-	const [ patternNames, setPatternNames ] = useState(
-		patternManager.patternNames
-	);
 	const { postMeta } = usePostData();
+	const [ patternNames, setPatternNames ] = useState(
+		patternManager.patternNames.filter( ( name ) => {
+			return name !== postMeta.name;
+		} )
+	);
 
-	useSetup( patternManager.pattern );
+	useSave( setPatternNames );
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
-	useSaveButtonInterrupter( setPatternNames );
 
 	return (
 		<div>

@@ -60,7 +60,6 @@ export default function PatternGrid( { themePatterns }: Props ) {
 								</div>
 
 								<PatternGridActions
-									themePatterns={ themePatterns }
 									patternData={ patternData }
 								/>
 

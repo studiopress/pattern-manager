@@ -11,10 +11,16 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternPostType;
 
+use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
+use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+require_once module_dir_path( __FILE__ ) . 'model.php';
+require_once module_dir_path( __FILE__ ) . 'utils.php';
 
 /**
  * Create a custom post type to be used for our default post.
@@ -96,11 +102,21 @@ function pattern_post_type() {
 
 	register_post_meta(
 		'pm_pattern',
-		'previousName',
+		'description',
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
+		)
+	);
+
+	register_post_meta(
+		'pm_pattern',
+		'inserter',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'boolean',
 		)
 	);
 
@@ -130,6 +146,23 @@ function pattern_post_type() {
 	register_post_meta(
 		'pm_pattern',
 		'postTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
+
+	register_post_meta(
+		'pm_pattern',
+		'categories',
 		array(
 			'show_in_rest' => array(
 				'schema' => array(
@@ -185,7 +218,7 @@ function display_block_pattern_preview() {
 
 	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
+	$pattern = get_pattern_by_name( $pattern_name );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
@@ -250,10 +283,8 @@ function enqueue_meta_fields_in_editor() {
 		[
 			'apiEndpoints' => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
-				'savePatternEndpoint'     => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),
 			),
 			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern_from_query_param(),
 			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
 			'siteUrl'      => get_bloginfo( 'url' ),
 		]

@@ -4,7 +4,6 @@ export type PostMeta = {
 	title: string;
 	slug: string;
 	name: string;
-	content: string;
 	previousName: string;
 	description: string;
 	postTypes: string[];
@@ -52,9 +51,7 @@ export type InitialPatternManager = {
 	apiNonce: string;
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
-		savePatternEndpoint: string;
 	};
-	pattern?: Pattern;
 	patternNames: Array< Pattern[ 'slug' ] >;
 	siteUrl: string;
 };
