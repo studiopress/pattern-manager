@@ -189,15 +189,17 @@ function redirect_pattern_actions() {
 	if ( 'create-new' === filter_input( INPUT_GET, 'action' ) ) {
 		$name_base   = 'my-new-pattern';
 		$number      = get_new_pattern_number( $name_base, get_theme_patterns() );
-		$new_name    = "{$name_base}-{$number}";
+		$new_name    = $number ? "{$name_base}-{$number}" : $name_base;
+		$new_title   = $number ? "My New Pattern {$number}" : 'My New Pattern';
 		$new_pattern = array_merge(
 			$pattern_defaults,
 			array(
 				'name'  => $new_name,
 				'slug'  => $new_name,
-				'title' => "My New Pattern {$number}",
+				'title' => $new_title,
 			)
 		);
+
 		update_pattern( $new_pattern );
 		$new_post = wp_insert_post(
 			[

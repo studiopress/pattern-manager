@@ -85,7 +85,7 @@ class UtilsTest extends TestCase {
 	 */
 	public function data_get_duplicate_pattern_ids() {
 		return array(
-			array( 'my-new-pattern', array(), array() ),
+			array( 'my-new-pattern', array(), null ),
 			array(
 				'my-new-pattern',
 				array(

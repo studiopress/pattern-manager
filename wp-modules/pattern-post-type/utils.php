@@ -14,7 +14,7 @@ namespace PatternManager\PatternPostType;
  * Gets the new pattern number.
  *
  * @param string $name The new pattern name.
- * @param array $all_patterns All the patterns.
+ * @param array<string, mixed> $all_patterns All the patterns.
  * @return int The new pattern number.
  */
 function get_new_pattern_number( string $name, array $all_patterns ): int {
@@ -37,7 +37,11 @@ function get_new_pattern_number( string $name, array $all_patterns ): int {
  *
  * @param string $name The pattern name
  * @param array $all_patterns All the patterns.
- * @return array|null The duplicated pattern name, slug, and title.
+ * @return array {
+ *   'name'  => string,
+ *   'slug'  => string,
+ *   'title' => string,
+ * } | null
  */
 function get_duplicate_pattern_ids( string $name, array $all_patterns ) {
 	$pattern_to_duplicate = $all_patterns[ $name ] ?? null;
