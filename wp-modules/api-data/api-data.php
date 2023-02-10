@@ -139,7 +139,7 @@ function delete_pattern( $request ) {
 	return $is_success
 		? new WP_REST_Response(
 			array(
-				'message' => __( 'Patterns successfully deleted', 'pattern-manager' ),
+				'message' => __( 'Pattern successfully deleted', 'pattern-manager' ),
 			),
 			200
 		)

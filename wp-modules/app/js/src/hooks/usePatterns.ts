@@ -8,7 +8,6 @@ import type { Pattern, Patterns } from '../types';
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
-	/** Saves a pattern. */
 	function savePattern( pattern: Pattern ) {
 		return fetch( patternManager.apiEndpoints.savePatternEndpoint, {
 			method: 'POST',
@@ -17,7 +16,6 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		} );
 	}
 
-	/** Deletes a pattern. */
 	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		setPatternsData( removePattern( patternName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
