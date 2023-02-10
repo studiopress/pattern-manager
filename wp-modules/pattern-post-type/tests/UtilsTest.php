@@ -175,7 +175,7 @@ class UtilsTest extends TestCase {
 	}
 
 	/**
-	 * Tests get_duplicate_pattern.
+	 * Tests get_duplicate_pattern_ids.
 	 *
 	 * @dataProvider data_get_duplicate_pattern_ids
 	 */
