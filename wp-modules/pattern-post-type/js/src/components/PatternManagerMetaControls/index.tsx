@@ -16,10 +16,12 @@ import { patternManager } from '../../globals';
 import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
-	const [ patternNames, setPatternNames ] = useState(
-		patternManager.patternNames
-	);
 	const { postMeta } = usePostData();
+	const [ patternNames, setPatternNames ] = useState(
+		patternManager.patternNames.filter( ( name ) => {
+			return name !== postMeta.name;
+		} )
+	);
 
 	useSave( setPatternNames );
 	useSetup();
