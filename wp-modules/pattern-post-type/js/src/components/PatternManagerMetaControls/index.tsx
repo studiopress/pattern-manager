@@ -10,6 +10,7 @@ import {
 } from '../SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
+import useSave from '../../hooks/useSave';
 import useSetup from '../../hooks/useSetup';
 import { patternManager } from '../../globals';
 import usePostData from '../../hooks/usePostData';
@@ -20,6 +21,7 @@ export default function PatternManagerMetaControls() {
 	);
 	const { postMeta } = usePostData();
 
+	useSave( setPatternNames );
 	useSetup();
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
