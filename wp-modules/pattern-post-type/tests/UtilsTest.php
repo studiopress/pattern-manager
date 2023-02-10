@@ -14,7 +14,7 @@ require_once dirname( __DIR__ ) . '/utils.php';
 /**
  * Test the util functions.
  */
-class UtilsTest extends TestCase {
+class UtilsTest extends WP_UnitTestCase {
 
 	/**
 	 * Gets the data for the test of get_new_pattern_number().
