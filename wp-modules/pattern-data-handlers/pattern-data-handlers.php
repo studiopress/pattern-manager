@@ -289,6 +289,8 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
+	tree_shake_theme_images();
+
 	return $pattern_file_created;
 }
 
