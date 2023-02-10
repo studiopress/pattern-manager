@@ -20,11 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Get the values needed to render/hydrate the app.
  */
 function get_app_state() {
-	// Spin up the filesystem api.
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
 	return array(
-		'patterns'     => \PatternManager\PatternDataHandlers\get_theme_patterns(),
+		'patterns'     => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
 		'apiNonce'     => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints' => array(
 			'savePatternEndpoint'  => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),

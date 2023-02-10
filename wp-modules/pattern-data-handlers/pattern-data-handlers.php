@@ -140,6 +140,22 @@ function get_theme_patterns() {
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern = get_pattern_by_path( $path );
 		if ( $pattern ) {
+			$patterns[ $pattern['name'] ] = $pattern;
+		}
+	}
+
+	return $patterns;
+}
+
+/**
+ * Get the pattern data with links to the editor.
+ *
+ * @return array
+ */
+function get_theme_patterns_with_editor_links() {
+	$all_patterns = get_theme_patterns();
+	foreach ( $all_patterns as $pattern_name => $pattern ) {
+		if ( $pattern ) {
 			$query                 = new WP_Query(
 				[
 					'post_type'      => 'pm_pattern',
@@ -159,11 +175,11 @@ function get_theme_patterns() {
 					admin_url()
 				);
 
-			$patterns[ $pattern['name'] ] = $pattern;
+			$all_patterns[ $pattern_name ] = $pattern;
 		}
 	}
 
-	return $patterns;
+	return $all_patterns;
 }
 
 /**
