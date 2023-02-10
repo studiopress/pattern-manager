@@ -104,7 +104,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			]
 		);
 
-		if ( $previous_value !== $meta_value ) {
+		if ( $previous_value && $previous_value !== $meta_value ) {
 			delete_pattern( $meta_value );
 		}
 	}
