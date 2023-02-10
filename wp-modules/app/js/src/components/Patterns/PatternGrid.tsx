@@ -36,7 +36,11 @@ export default function PatternGrid( { themePatterns }: Props ) {
 				Object.entries( themePatterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						return (
-							<div key={ patternName } className="grid-item">
+							<div
+								key={ patternName }
+								className="grid-item"
+								tabIndex={ 0 }
+							>
 								<div className="item-inner">
 									<div className="item-pattern-preview">
 										<PatternPreview

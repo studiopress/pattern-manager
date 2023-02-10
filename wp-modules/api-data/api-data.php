@@ -115,7 +115,7 @@ function get_pattern_names() {
  * @return WP_REST_Response
  */
 function save_pattern( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\save_pattern( $request->get_params()['pattern'] );
+	$is_success = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
 
 	return $is_success
 		? new WP_REST_Response(

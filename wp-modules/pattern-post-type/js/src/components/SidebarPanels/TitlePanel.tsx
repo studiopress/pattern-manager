@@ -62,7 +62,7 @@ export default function TitlePanel( {
 			/>
 			<PanelRow className="components-panel__row-patternmanager-pattern-name-error">
 				<RichText.Content
-					tagName="h4"
+					tagName="span"
 					className="components-panel__row-patternmanager-pattern-name-error-inner"
 					value={ errorMessage }
 				/>
