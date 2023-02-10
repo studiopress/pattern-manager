@@ -7,7 +7,7 @@
 
 namespace PatternManager\PatternPostType;
 
-use PHPUnit\Framework\TestCase;
+use WP_UnitTestCase;
 
 require_once dirname( __DIR__ ) . '/utils.php';
 
