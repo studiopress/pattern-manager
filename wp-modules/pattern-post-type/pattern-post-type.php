@@ -142,6 +142,23 @@ function pattern_post_type() {
 
 	register_post_meta(
 		'pm_pattern',
+		'categories',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
+
+	register_post_meta(
+		'pm_pattern',
 		'keywords',
 		array(
 			'show_in_rest' => array(
