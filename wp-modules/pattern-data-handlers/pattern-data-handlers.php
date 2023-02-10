@@ -398,7 +398,7 @@ function tree_shake_theme_images() {
 
 		$urls_found = $output_array[0];
 
-		$img_urls_found = $output_array['url'];
+		$img_urls_found = $output_array['url'] ?? [];
 
 		// Loop through each URL found.
 		foreach ( $urls_found as $url_found ) {
