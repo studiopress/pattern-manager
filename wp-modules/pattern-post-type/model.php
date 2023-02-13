@@ -26,11 +26,11 @@ function get_pattern_content_from_file( $post ) {
 		return;
 	}
 
-	if ( ! $post->post_name ) {
+	if ( ! $post->post_title ) {
 		return;
 	}
 
-	$post->post_content = get_pattern_by_name( $post->post_name )['content'] ?? '';
+	$post->post_content = get_pattern_by_name( $post->post_title )['content'] ?? '';
 }
 add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
@@ -90,7 +90,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	$pattern_name = $post->post_name;
+	$pattern_name = $post->post_title;
 	$pattern      = get_pattern_by_name( $pattern_name );
 	if ( ! $pattern ) {
 		return $override;
@@ -100,7 +100,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		wp_update_post(
 			[
 				'ID'        => $post_id,
-				'post_name' => $meta_value,
+				'post_title' => $meta_value,
 			]
 		);
 
@@ -130,6 +130,7 @@ add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_f
  * @return null|mixed The filtered meta value, or null.
  */
 function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_single ) {
+
 	$post = get_post( $post_id );
 	if ( ! $post ) {
 		return $override;
@@ -138,14 +139,25 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return $override;
 	}
-
-	$pattern_name = $post->post_name;
+	
+	$pattern_name = $post->post_title;
+	//echo $pattern_name;
+	//die();
 	$pattern      = get_pattern_by_name( $pattern_name );
 	if ( ! $pattern ) {
+		echo 'Something went wrong. No pattern found for ' . $post_id . '. ' . $pattern_name;
+		die();
+		
 		return $override;
 	}
-
+	
+	//print_r( $pattern );
+	//die();
+	
 	if ( isset( $pattern[ $meta_key ] ) ) {
+		//echo 'pattern has a ' . $meta_key;
+		//echo 'It is' . $pattern[ $meta_key ];
+		//die();
 		return $is_single ? $pattern[ $meta_key ] : [ $pattern[ $meta_key ] ];
 	}
 
@@ -167,7 +179,7 @@ function redirect_pattern_actions() {
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => 'pm_pattern',
-				'post_name'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
+				'post_title'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
 				'post_status' => 'publish',
 			]
 		);
@@ -207,7 +219,7 @@ function redirect_pattern_actions() {
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => 'pm_pattern',
-				'post_name'   => $new_pattern['name'],
+				'post_title'   => $new_pattern['name'],
 				'post_status' => 'publish',
 			]
 		);
@@ -236,7 +248,7 @@ function redirect_pattern_actions() {
 		$new_post = wp_insert_post(
 			[
 				'post_type'    => 'pm_pattern',
-				'post_name'    => $new_pattern['name'],
+				'post_title'    => $new_pattern['name'],
 				'post_status'  => 'publish',
 				'post_content' => '',
 			]
