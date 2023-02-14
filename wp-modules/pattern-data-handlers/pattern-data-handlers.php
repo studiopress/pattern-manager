@@ -156,14 +156,14 @@ function get_theme_patterns_with_editor_links() {
 	$all_patterns = get_theme_patterns();
 	foreach ( $all_patterns as $pattern_name => $pattern ) {
 		if ( $pattern ) {
-			$query                 = new WP_Query(
+			$query = new WP_Query(
 				[
 					'post_type'      => 'pm_pattern',
 					'post_title'     => $pattern['name'],
 					'posts_per_page' => 1,
 				]
 			);
-			$post                  = empty( $query->posts[0] ) ? false : $query->posts[0];
+			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
 
 			$pattern['editorLink'] = $post && $post->post_title === $pattern['name']
 				? get_edit_post_link( $post, 'localized_data' )
@@ -289,9 +289,9 @@ function update_pattern( $pattern ) {
 		$file_contents,
 		FS_CHMOD_FILE
 	);
-	
+
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
-	//tree_shake_theme_images();
+	// NOT WORKING tree_shake_theme_images();.
 
 	return $pattern_file_created;
 }
