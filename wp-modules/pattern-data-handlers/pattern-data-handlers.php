@@ -289,8 +289,9 @@ function update_pattern( $pattern ) {
 		$file_contents,
 		FS_CHMOD_FILE
 	);
-
-	tree_shake_theme_images();
+	
+	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
+	//tree_shake_theme_images();
 
 	return $pattern_file_created;
 }
@@ -368,10 +369,10 @@ function tree_shake_theme_images() {
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir          = $theme_dir . '/assets/images/';
+	$images_dir          = $theme_dir . '/patterns/images/';
 
 	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
+	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
@@ -433,10 +434,10 @@ function move_block_images_to_theme( $pattern_html ) {
 
 	$wp_theme_dir = get_template_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';
-	$images_dir   = $wp_theme_dir . '/assets/images/';
+	$images_dir   = $wp_theme_dir . '/patterns/images/';
 
 	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
+	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $assets_dir ) ) {
 		$wp_filesystem->mkdir( $assets_dir );
@@ -481,13 +482,13 @@ function move_block_images_to_theme( $pattern_html ) {
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(
-			$wp_theme_dir . '/assets/images/' . $filename,
+			$wp_theme_dir . '/patterns/images/' . $filename,
 			$file_contents,
 			FS_CHMOD_FILE
 		);
 
 		// Replace the URL with the one we just added to the theme.
-		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/$filename", $pattern_html );
+		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_template_directory_uri() ); ?>/patterns/images/$filename", $pattern_html );
 	}
 
 	return $pattern_html;
