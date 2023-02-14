@@ -85,6 +85,7 @@ add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_fi
  * @return null|bool Whether to override Core's saving of metadata to the DB.
  */
 function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value, $previous_value ) {
+
 	$post = get_post( $post_id );
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return $override;
@@ -93,6 +94,12 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	$pattern_name = $post->post_title;
 	$pattern      = get_pattern_by_name( $pattern_name );
 	if ( ! $pattern ) {
+		return $override;
+	}
+	
+	// Only update the pattern if a registered meta key is being updated here (no need for core keys like _edit_lock).
+	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', 'pm_pattern' ) );
+	if ( ! in_array( $meta_key, $registered_meta_keys ) ) {
 		return $override;
 	}
 
