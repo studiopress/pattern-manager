@@ -156,7 +156,14 @@ function get_theme_patterns_with_editor_links() {
 	$all_patterns = get_theme_patterns();
 	foreach ( $all_patterns as $pattern_name => $pattern ) {
 		if ( $pattern ) {
-			$post = get_page_by_title( $pattern['name'], 'OBJECT', 'pm_pattern' );
+			$query                 = new WP_Query(
+				[
+					'post_type'      => 'pm_pattern',
+					'post_title'     => $pattern['name'],
+					'posts_per_page' => 1,
+				]
+			);
+			$post                  = empty( $query->posts[0] ) ? false : $query->posts[0];
 
 			$pattern['editorLink'] = $post && $post->post_title === $pattern['name']
 				? get_edit_post_link( $post, 'localized_data' )
