@@ -236,17 +236,17 @@ class UtilsTest extends WP_UnitTestCase {
 			),
 			array(
 				array(
-					'my-new-pattern'          => array(
+					'my-new-pattern'   => array(
 						'name'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
-					'my-new-pattern-copied'   => array(
+					'my-new-pattern-1' => array(
 						'name'  => 'my-new-pattern-1',
 						'slug'  => 'my-new-pattern-1',
 						'title' => 'My New Pattern 1',
 					),
-					'my-new-pattern-copied-1' => array(
+					'my-new-pattern-2' => array(
 						'name'  => 'my-new-pattern-2',
 						'slug'  => 'my-new-pattern-2',
 						'title' => 'My New Pattern 2',
@@ -260,17 +260,17 @@ class UtilsTest extends WP_UnitTestCase {
 			),
 			array(
 				array(
-					'my-new-pattern'          => array(
+					'my-new-pattern'   => array(
 						'name'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
-					'my-new-pattern-copied'   => array(
+					'my-new-pattern-1' => array(
 						'name'  => 'my-new-pattern-1',
 						'slug'  => 'my-new-pattern-1',
 						'title' => 'My New Pattern 1',
 					),
-					'my-new-pattern-copied-9' => array(
+					'my-new-pattern-9' => array(
 						'name'  => 'my-new-pattern-9',
 						'slug'  => 'my-new-pattern-9',
 						'title' => 'My New Pattern 9',
