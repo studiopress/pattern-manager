@@ -286,7 +286,7 @@ class UtilsTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests get_duplicate_pattern.
+	 * Tests get_new_pattern.
 	 *
 	 * @dataProvider data_get_new_pattern
 	 */
