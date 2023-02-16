@@ -184,7 +184,7 @@ html body.toplevel_page_pattern-manager {
 				display: grid;
 				grid-template-columns: repeat(3, minmax(0, 1fr));
 				grid-gap: 2rem;
-				column-gap: 4rem;
+				column-gap: 2rem;
 
 				@media (max-width: 1729px) {
 					grid-template-columns: repeat(2, minmax(0, 1fr));

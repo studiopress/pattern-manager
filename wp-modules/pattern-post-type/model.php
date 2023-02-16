@@ -26,11 +26,11 @@ function get_pattern_content_from_file( $post ) {
 		return;
 	}
 
-	if ( ! $post->post_name ) {
+	if ( ! $post->post_title ) {
 		return;
 	}
 
-	$post->post_content = get_pattern_by_name( $post->post_name )['content'] ?? '';
+	$post->post_content = get_pattern_by_name( $post->post_title )['content'] ?? '';
 }
 add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
 
@@ -40,12 +40,12 @@ add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
  * @param int $post_id The post ID.
  * @param WP_Post $post The post.
  */
-function save_pattern_to_file( int $post_id, WP_Post $post ) {
+function save_pattern_to_file( WP_Post $post ) {
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( get_post_meta( $post_id, 'name', true ) );
+	$pattern = get_pattern_by_name( get_post_meta( $post->ID, 'name', true ) );
 	if ( ! $pattern ) {
 		return;
 	}
@@ -60,19 +60,19 @@ function save_pattern_to_file( int $post_id, WP_Post $post ) {
 	);
 
 	// Prevent an infinite loop.
-	remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
+	remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 	// Removes the post content, as it should be saved in the pattern .php file.
 	wp_update_post(
 		[
-			'ID'           => $post_id,
+			'ID'           => $post->ID,
 			'post_content' => '',
 		]
 	);
 
-	add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+	add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 }
-add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 /**
  * Saves a meta value to the pattern file, instead of the DB.
@@ -90,17 +90,23 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	$pattern_name = $post->post_name;
+	$pattern_name = $post->post_title;
 	$pattern      = get_pattern_by_name( $pattern_name );
 	if ( ! $pattern ) {
+		return $override;
+	}
+
+	// Only update the pattern if a registered meta key is being updated here (no need for core keys like _edit_lock).
+	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', 'pm_pattern' ) );
+	if ( ! in_array( $meta_key, $registered_meta_keys, true ) ) {
 		return $override;
 	}
 
 	if ( 'name' === $meta_key ) {
 		wp_update_post(
 			[
-				'ID'        => $post_id,
-				'post_name' => $meta_value,
+				'ID'         => $post_id,
+				'post_title' => $meta_value,
 			]
 		);
 
@@ -139,8 +145,9 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 		return $override;
 	}
 
-	$pattern_name = $post->post_name;
-	$pattern      = get_pattern_by_name( $pattern_name );
+	$pattern_name = $post->post_title;
+
+	$pattern = get_pattern_by_name( $pattern_name );
 	if ( ! $pattern ) {
 		return $override;
 	}
@@ -167,15 +174,15 @@ function redirect_pattern_actions() {
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
 		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
+		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => 'pm_pattern',
-				'post_name'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
+				'post_title'  => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
 				'post_status' => 'publish',
 			]
 		);
-		add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
@@ -211,7 +218,7 @@ function redirect_pattern_actions() {
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => 'pm_pattern',
-				'post_name'   => $new_pattern['name'],
+				'post_title'  => $new_pattern['name'],
 				'post_status' => 'publish',
 			]
 		);
@@ -236,16 +243,16 @@ function redirect_pattern_actions() {
 		update_pattern( $new_pattern );
 
 		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
+		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
 				'post_type'    => 'pm_pattern',
-				'post_name'    => $new_pattern['name'],
+				'post_title'   => $new_pattern['name'],
 				'post_status'  => 'publish',
 				'post_content' => '',
 			]
 		);
-		add_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
