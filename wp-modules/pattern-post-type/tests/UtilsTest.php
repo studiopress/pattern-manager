@@ -185,4 +185,129 @@ class UtilsTest extends WP_UnitTestCase {
 			get_duplicate_pattern_ids( $pattern_name, $patterns )
 		);
 	}
+
+	/**
+	 * Gets the data for the test of get_new_pattern().
+	 *
+	 * @return array[]
+	 */
+	public function data_get_new_pattern() {
+		return array(
+			array(
+				array(),
+				array(
+					'name'  => 'my-new-pattern',
+					'slug'  => 'my-new-pattern',
+					'title' => 'My New Pattern',
+				),
+			),
+			array(
+				array(
+					'my-new-pattern' => array(
+						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
+						'title' => 'My New Pattern',
+					),
+				),
+				array(
+					'name'  => 'my-new-pattern-1',
+					'slug'  => 'my-new-pattern-1',
+					'title' => 'My New Pattern 1',
+				),
+			),
+			array(
+				array(
+					'my-new-pattern'        => array(
+						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
+						'title' => 'My New Pattern',
+					),
+					'my-new-pattern-1' => array(
+						'name'  => 'my-new-pattern-1',
+						'slug'  => 'my-new-pattern-1',
+						'title' => 'My New Pattern 1',
+					),
+				),
+				array(
+					'name'  => 'my-new-pattern-2',
+					'slug'  => 'my-new-pattern-2',
+					'title' => 'My New Pattern 2',
+				),
+			),
+			array(
+				'my-new-pattern',
+				array(
+					'my-new-pattern'          => array(
+						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
+						'title' => 'My New Pattern',
+					),
+					'my-new-pattern-copied'   => array(
+						'name'  => 'my-new-pattern-1',
+						'slug'  => 'my-new-pattern-1',
+						'title' => 'My New Pattern 1',
+					),
+					'my-new-pattern-copied-1' => array(
+						'name'  => 'my-new-pattern-2',
+						'slug'  => 'my-new-pattern-2',
+						'title' => 'My New Pattern 2',
+					),
+				),
+				array(
+					'name'  => 'my-new-pattern-3',
+					'slug'  => 'my-new-pattern-3',
+					'title' => 'My New Pattern 3',
+				),
+			),
+			array(
+				'my-new-pattern',
+				array(
+					'my-new-pattern'          => array(
+						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
+						'title' => 'My New Pattern',
+					),
+					'my-new-pattern-copied'   => array(
+						'name'  => 'my-new-pattern-1',
+						'slug'  => 'my-new-pattern-1',
+						'title' => 'My New Pattern 1',
+					),
+					'my-new-pattern-copied-9' => array(
+						'name'  => 'my-new-pattern-9',
+						'slug'  => 'my-new-pattern-9',
+						'title' => 'My New Pattern 9',
+					),
+				),
+				array(
+					'name'  => 'my-new-pattern-2',
+					'slug'  => 'my-new-pattern-2',
+					'title' => 'My New Pattern 2',
+				),
+			),
+		);
+	}
+
+	/**
+	 * Tests get_duplicate_pattern_ids.
+	 *
+	 * @dataProvider data_get_new_pattern
+	 */
+	public function test_get_new_pattern( $all_patterns, $expected ) {
+		$this->assertSame(
+			array_merge(
+				$expected,
+				array(
+					'categories'    => array(),
+					'keywords'      => array(),
+					'blockTypes'    => array(),
+					'postTypes'     => array(),
+					'inserter'      => true,
+					'description'   => '',
+					'viewportWidth' => '',
+					'content'       => '',
+				)
+			),
+			get_new_pattern( $all_patterns )
+		);
+	}
 }

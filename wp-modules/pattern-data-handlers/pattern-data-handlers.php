@@ -131,7 +131,7 @@ function format_pattern_data( $pattern_data, $file ) {
  *
  * @return array
  */
-function get_theme_patterns() {
+function get_theme_patterns(): array {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
