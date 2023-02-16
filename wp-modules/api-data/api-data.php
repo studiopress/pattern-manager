@@ -70,18 +70,18 @@ function register_routes() {
 
 	register_rest_route(
 		$namespace,
-		'/save-patterns',
+		'/delete-pattern',
 		array(
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\save_patterns',
+			'methods'             => 'DELETE',
+			'callback'            => __NAMESPACE__ . '\delete_pattern',
 			'permission_callback' => __NAMESPACE__ . '\permission_check',
 			'args'                => array(
-				'patterns' => array(
+				'patternName' => array(
 					'required'          => true,
-					'type'              => 'object',
-					'description'       => __( 'The patterns', 'pattern-manager' ),
+					'type'              => 'string',
+					'description'       => __( 'The pattern to delete', 'pattern-manager' ),
 					'validate_callback' => function( $to_validate ) {
-						return is_array( $to_validate );
+						return is_string( $to_validate );
 					},
 				),
 			),
@@ -128,18 +128,18 @@ function save_pattern( $request ) {
 }
 
 /**
- * Saves multiple patterns.
+ * Deletes a single pattern.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
  */
-function save_patterns( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\update_patterns( $request->get_params()['patterns'] );
+function delete_pattern( $request ) {
+	$is_success = \PatternManager\PatternDataHandlers\delete_pattern( $request->get_params()['patternName'] );
 
 	return $is_success
 		? new WP_REST_Response(
 			array(
-				'message' => __( 'Patterns successfully saved to disk', 'pattern-manager' ),
+				'message' => __( 'Pattern successfully deleted', 'pattern-manager' ),
 			),
 			200
 		)

@@ -1,6 +1,6 @@
 import type { Pattern, Patterns } from '../types';
 
-export default function deletePattern(
+export default function removePattern(
 	nameToDelete: Pattern[ 'name' ],
 	existingPatterns: Patterns
 ) {

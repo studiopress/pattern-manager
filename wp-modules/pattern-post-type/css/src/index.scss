@@ -19,9 +19,9 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	display: none;
 }
 
-/* Hide the snackbar on the pattern editor, as the pattern-manager app has its own snackbar. */
-.components-snackbar {
-	display: none !important;
+/* Hide the 'Switch to draft' button in the pattern editor, as draft doesn't mean anything for a pattern saved to a .php file. */
+button.components-button.editor-post-switch-to-draft.is-tertiary {
+	display: none;
 }
 
 /* Toggle components */
@@ -45,7 +45,7 @@ button.components-button.editor-post-save-draft.is-tertiary {
 	border-width: 1px;
 	box-sizing: border-box;
 	height: 50px;
-	
+
 	@media only screen and (min-width: 781.25px) {
 		height: 40px;
 	}

@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternDataHandlers;
 
+use WP_Query;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -146,6 +148,42 @@ function get_theme_patterns() {
 }
 
 /**
+ * Get the pattern data with links to the editor.
+ *
+ * @return array
+ */
+function get_theme_patterns_with_editor_links() {
+	$all_patterns = get_theme_patterns();
+	foreach ( $all_patterns as $pattern_name => $pattern ) {
+		if ( $pattern ) {
+			$query = new WP_Query(
+				[
+					'post_type'      => 'pm_pattern',
+					'post_title'     => $pattern['name'],
+					'posts_per_page' => 1,
+				]
+			);
+			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
+
+			$pattern['editorLink'] = $post && $post->post_title === $pattern['name']
+				? get_edit_post_link( $post, 'localized_data' )
+				: add_query_arg(
+					[
+						'post_type' => 'pm_pattern',
+						'action'    => 'edit-pattern',
+						'name'      => $pattern['name'],
+					],
+					admin_url()
+				);
+
+			$all_patterns[ $pattern_name ] = $pattern;
+		}
+	}
+
+	return $all_patterns;
+}
+
+/**
  * Gets the directory the patterns are in.
  *
  * @return string
@@ -186,19 +224,8 @@ function get_pattern_by_path( $path ) {
 	if ( ! $pattern_data ) {
 		return false;
 	}
-	$pattern_data['name'] = basename( $path, '.php' );
 
-	return $pattern_data;
-}
-
-/**
- * Gets a pattern by the name in the query param.
- *
- * @return array|null The pattern for the editor.
- */
-function get_pattern_from_query_param() {
-	$pattern_name = filter_input( INPUT_GET, 'name' );
-	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
+	return array_merge( $pattern_data, array( 'name' => basename( $path, '.php' ) ) );
 }
 
 /**
@@ -208,11 +235,21 @@ function get_pattern_from_query_param() {
  * @return array|false
  */
 function get_pattern_by_name( $name ) {
-	$pattern_path = get_patterns_directory() . $name . '.php';
+	$pattern_path = get_pattern_path( $name );
 
 	return file_exists( $pattern_path )
 		? get_pattern_by_path( $pattern_path )
 		: false;
+}
+
+/**
+ * Gets the path to a pattern.
+ *
+ * @param string $name The pattern name.
+ * @return string The absolute pattern path.
+ */
+function get_pattern_path( string $name ): string {
+	return get_patterns_directory() . $name . '.php';
 }
 
 /**
@@ -239,13 +276,7 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$patterns_dir     = get_patterns_directory();
-	$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
-	if ( $name_was_changed ) {
-		// Delete the previous pattern file, as the file name should change on changing the name.
-		$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
-	}
-
+	$patterns_dir  = get_patterns_directory();
 	$file_contents = construct_pattern_php_file_contents( $pattern, 'pattern-manager' );
 	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 
@@ -259,53 +290,23 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
+	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
+	// NOT WORKING tree_shake_theme_images();.
+
 	return $pattern_file_created;
 }
 
 /**
- * Update the patterns.
+ * Deletes a pattern.
  *
- * @param array $patterns The new patterns.
- * @return bool Whether all patterns updated.
+ * @param string $pattern_name The pattern name to delete.
+ * @return bool Whether the deletion succeeded.
  */
-function update_patterns( $patterns ) {
-	delete_patterns_not_present( $patterns );
-
-	$results = array_map(
-		function( $pattern ) {
-			return update_pattern( $pattern );
-		},
-		$patterns
-	);
-
-	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	tree_shake_theme_images();
-
-	return ! in_array( false, $results, true );
-}
-
-/**
- * Deletes any pattern file whose name isn't present in the passed patterns.
- *
- * @param string[] $patterns The patterns to not delete.
- */
-function delete_patterns_not_present( array $patterns ) {
-	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
+function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-	if ( ! $wp_filesystem ) {
-		return;
-	}
+	$pattern_path  = get_pattern_path( $pattern_name );
 
-	$pattern_file_paths = get_pattern_file_paths();
-	if ( ! $pattern_file_paths ) {
-		return;
-	}
-
-	foreach ( $pattern_file_paths as $pattern_file ) {
-		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
-			$wp_filesystem->delete( $pattern_file );
-		}
-	}
+	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
 /**
@@ -368,10 +369,10 @@ function tree_shake_theme_images() {
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir          = $theme_dir . '/assets/images/';
+	$images_dir          = $theme_dir . '/patterns/images/';
 
 	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
+	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
@@ -399,7 +400,7 @@ function tree_shake_theme_images() {
 
 		$urls_found = $output_array[0];
 
-		$img_urls_found = $output_array['url'];
+		$img_urls_found = $output_array['url'] ?? [];
 
 		// Loop through each URL found.
 		foreach ( $urls_found as $url_found ) {
@@ -433,10 +434,10 @@ function move_block_images_to_theme( $pattern_html ) {
 
 	$wp_theme_dir = get_template_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';
-	$images_dir   = $wp_theme_dir . '/assets/images/';
+	$images_dir   = $wp_theme_dir . '/patterns/images/';
 
 	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
+	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $assets_dir ) ) {
 		$wp_filesystem->mkdir( $assets_dir );
@@ -481,13 +482,13 @@ function move_block_images_to_theme( $pattern_html ) {
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(
-			$wp_theme_dir . '/assets/images/' . $filename,
+			$wp_theme_dir . '/patterns/images/' . $filename,
 			$file_contents,
 			FS_CHMOD_FILE
 		);
 
 		// Replace the URL with the one we just added to the theme.
-		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/$filename", $pattern_html );
+		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_template_directory_uri() ); ?>/patterns/images/$filename", $pattern_html );
 	}
 
 	return $pattern_html;

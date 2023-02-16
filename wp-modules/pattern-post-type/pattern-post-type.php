@@ -11,42 +11,27 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternPostType;
 
+use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
+use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once module_dir_path( __FILE__ ) . 'model.php';
+require_once module_dir_path( __FILE__ ) . 'utils.php';
+
 /**
  * Create a custom post type to be used for our default post.
  */
 function pattern_post_type() {
-	if ( isset( $_GET['post'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$post_id      = absint( $_GET['post'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$post_type    = get_post_type( $post_id );
-		$pattern_type = get_post_meta( $post_id, 'type', true );
-	} else {
-		$pattern_type = 'pattern';
-	}
-
 	$labels = array(
 		'name'          => __( 'Patterns', 'pattern-manager' ),
 		'singular_name' => __( 'Pattern', 'pattern-manager' ),
+		'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
+		'item_updated'  => __( 'Pattern saved to your theme directory', 'pattern-manager' ),
 	);
-
-	if ( 'pattern' === $pattern_type ) {
-		$labels = array(
-			'name'          => __( 'Patterns', 'pattern-manager' ),
-			'singular_name' => __( 'Pattern', 'pattern-manager' ),
-			'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
-		);
-	}
-
-	if ( 'template' === $pattern_type ) {
-		$labels = array(
-			'name'          => __( 'Templates', 'pattern-manager' ),
-			'singular_name' => __( 'Template', 'pattern-manager' ),
-		);
-	}
 
 	register_post_type(
 		'pm_pattern',
@@ -96,11 +81,21 @@ function pattern_post_type() {
 
 	register_post_meta(
 		'pm_pattern',
-		'previousName',
+		'description',
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
+		)
+	);
+
+	register_post_meta(
+		'pm_pattern',
+		'inserter',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'boolean',
 		)
 	);
 
@@ -130,6 +125,23 @@ function pattern_post_type() {
 	register_post_meta(
 		'pm_pattern',
 		'postTypes',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+		)
+	);
+
+	register_post_meta(
+		'pm_pattern',
+		'categories',
 		array(
 			'show_in_rest' => array(
 				'schema' => array(
@@ -185,7 +197,7 @@ function display_block_pattern_preview() {
 
 	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
+	$pattern = get_pattern_by_name( $pattern_name );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
@@ -250,10 +262,8 @@ function enqueue_meta_fields_in_editor() {
 		[
 			'apiEndpoints' => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
-				'savePatternEndpoint'     => get_rest_url( false, 'pattern-manager/v1/save-pattern/' ),
 			),
 			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'pattern'      => \PatternManager\PatternDataHandlers\get_pattern_from_query_param(),
 			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
 			'siteUrl'      => get_bloginfo( 'url' ),
 		]
@@ -293,20 +303,3 @@ function register_block_patterns() {
 	}
 }
 add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
-
-/**
- * Modify certain words when editing a pattern.
- *
- * @param string $translation The translated or modified string.
- * @param string $text The original text we'll change.
- * @param string $domain The text domain of the string in question.
- * @return string
- */
-function modify_terms( string $translation, string $text, string $domain ) {
-	if ( 'Tags' === $translation ) {
-		return 'Pattern Categories';
-	}
-
-	return $translation;
-}
-add_filter( 'gettext', __NAMESPACE__ . '\modify_terms', 10, 3 );
