@@ -161,6 +161,10 @@ function redirect_pattern_actions() {
 		return;
 	}
 
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
 		// Prevent the hook from overwriting the file when this post is created.
 		remove_action( 'save_post', __NAMESPACE__ . '\save_pattern_to_file' );
