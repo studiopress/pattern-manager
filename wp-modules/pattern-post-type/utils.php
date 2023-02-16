@@ -15,7 +15,6 @@ namespace PatternManager\PatternPostType;
  *
  * @param string $name The new pattern name.
  * @param array<string, mixed> $all_patterns All the patterns.
- *
  * @return int The new pattern number.
  */
 function get_new_pattern_number( string $name, array $all_patterns ): int {

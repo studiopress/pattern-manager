@@ -217,7 +217,7 @@ class UtilsTest extends WP_UnitTestCase {
 			),
 			array(
 				array(
-					'my-new-pattern'        => array(
+					'my-new-pattern'   => array(
 						'name'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
@@ -235,7 +235,6 @@ class UtilsTest extends WP_UnitTestCase {
 				),
 			),
 			array(
-				'my-new-pattern',
 				array(
 					'my-new-pattern'          => array(
 						'name'  => 'my-new-pattern',
@@ -260,7 +259,6 @@ class UtilsTest extends WP_UnitTestCase {
 				),
 			),
 			array(
-				'my-new-pattern',
 				array(
 					'my-new-pattern'          => array(
 						'name'  => 'my-new-pattern',
@@ -288,7 +286,7 @@ class UtilsTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests get_duplicate_pattern_ids.
+	 * Tests get_duplicate_pattern.
 	 *
 	 * @dataProvider data_get_new_pattern
 	 */
