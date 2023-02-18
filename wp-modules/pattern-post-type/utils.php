@@ -59,3 +59,30 @@ function get_duplicate_pattern_ids( string $name, array $all_patterns ) {
 		'title' => $pattern_number ? "{$base_title} {$pattern_number}" : $base_title,
 	);
 }
+
+/**
+ * Gets a new pattern.
+ *
+ * @param array $all_patterns All the patterns.
+ * @return array The new pattern.
+ */
+function get_new_pattern( array $all_patterns ): array {
+	$name_base = 'my-new-pattern';
+	$number    = get_new_pattern_number( $name_base, $all_patterns );
+	$new_name  = $number ? "{$name_base}-{$number}" : $name_base;
+	$new_title = $number ? "My New Pattern {$number}" : 'My New Pattern';
+
+	return array(
+		'name'          => $new_name,
+		'slug'          => $new_name,
+		'title'         => $new_title,
+		'categories'    => array(),
+		'keywords'      => array(),
+		'blockTypes'    => array(),
+		'postTypes'     => array(),
+		'inserter'      => true,
+		'description'   => '',
+		'viewportWidth' => '',
+		'content'       => '',
+	);
+}
