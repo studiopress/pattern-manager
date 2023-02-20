@@ -172,8 +172,6 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => 'pm_pattern',
@@ -181,7 +179,6 @@ function redirect_pattern_actions() {
 				'post_status' => 'publish',
 			]
 		);
-		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
@@ -219,8 +216,6 @@ function redirect_pattern_actions() {
 
 		update_pattern( $new_pattern );
 
-		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
 				'post_type'    => 'pm_pattern',
@@ -229,7 +224,6 @@ function redirect_pattern_actions() {
 				'post_content' => '',
 			]
 		);
-		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
