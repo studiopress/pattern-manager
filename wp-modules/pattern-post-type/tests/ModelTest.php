@@ -38,7 +38,7 @@ class ModelTest extends WP_UnitTestCase {
 	 */
 	public function test_ignore_title_field_in_revisions_correct_post() {
 		$this->assertSame(
-			[ 'post_title' => 'my-new-pattern' ],
+			[ 'post_title' => 'my-new-patterni' ],
 			ignore_title_field_in_revisions(
 				[ 'post_title' => 'my-new-pattern' ],
 				$this->factory()->post->create(
