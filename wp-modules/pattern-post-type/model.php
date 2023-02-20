@@ -251,7 +251,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
  * @return array The filtered fields.
  */
 function ignore_title_field_in_revisions( $fields, $post ) {
-	return 'pm_pattern' === get_post_type( $post->post_parent )
+	return isset( $post->post_parent ) && 'pm_pattern' === get_post_type( $post->post_parent )
 		? array_diff_key( $fields, [ 'post_title' => null ] )
 		: $fields;
 }
