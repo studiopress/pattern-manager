@@ -22,7 +22,7 @@ class ModelTest extends WP_UnitTestCase {
 	 */
 	public function test_ignore_title_field_in_revisions_wrong_post() {
 		$post              = new stdClass();
-		$post->post_parent = $this->factory()->post->create( [ 'post_type' => 'page' ] )->ID;
+		$post->post_parent = $this->factory()->post->create( [ 'post_type' => 'page' ] );
 
 		$this->assertSame(
 			[
@@ -31,10 +31,7 @@ class ModelTest extends WP_UnitTestCase {
 
 			],
 			ignore_title_field_in_revisions(
-				[
-					'post_title'  => 'Example Title',
-					'post_author' => 123,
-				],
+				[ 'post_title'  => 'Example Title', 'post_author' => 123 ],
 				$post
 			)
 		);
@@ -55,7 +52,7 @@ class ModelTest extends WP_UnitTestCase {
 					'post_author' => 123,
 				],
 				[
-					'post_parent' => $this->factory()->post->create( [ 'post_type' => 'pm_pattern' ] )->ID,
+					'post_parent' => $this->factory()->post->create( [ 'post_type' => 'pm_pattern' ] ),
 				]
 			)
 		);
@@ -66,7 +63,7 @@ class ModelTest extends WP_UnitTestCase {
 	 */
 	public function test_ignore_title_field_in_revisions_correct_post() {
 		$post              = new stdClass();
-		$post->post_parent = $this->factory()->post->create( [ 'post_type' => 'pm_pattern' ] )->ID;
+		$post->post_parent = $this->factory()->post->create( [ 'post_type' => 'pm_pattern' ] );
 		$this->assertSame(
 			[ 'post_author' => 123 ],
 			ignore_title_field_in_revisions(
