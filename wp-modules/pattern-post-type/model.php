@@ -240,6 +240,11 @@ function redirect_pattern_actions() {
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
 
+/**
+ * Gets the pm_pattern post IDs.
+ *
+ * @return int[]
+ */
 function get_pm_post_ids() {
 	return ( new WP_Query(
 		[
@@ -251,10 +256,13 @@ function get_pm_post_ids() {
 	) )->posts;
 }
 
+/**
+ * Deletes all pm_pattern posts.
+ */
 function delete_pattern_posts() {
 	$post_ids = get_pm_post_ids();
 
-	while( ! empty( $post_ids ) ) {
+	while ( ! empty( $post_ids ) ) {
 		foreach ( $post_ids as $post_id ) {
 			wp_delete_post( $post_id, true );
 		}
