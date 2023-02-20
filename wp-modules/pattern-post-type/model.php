@@ -45,7 +45,7 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( get_post_meta( $post->ID, 'name', true ) );
+	$pattern = get_pattern_by_name( $post->post_title );
 	if ( ! $pattern ) {
 		return;
 	}
@@ -238,3 +238,21 @@ function redirect_pattern_actions() {
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
+
+/**
+ * Filters the fields used in post revisions.
+ *
+ * If the revision is for a pattern post,
+ * don't restore the title of the revision,
+ * as the title is where the pattern name is stored.
+ *
+ * @param array $fields The fields to filter.
+ * @param WP_Post $post The post to filter for.
+ * @return array The filtered fields.
+ */
+function ignore_title_field_in_revisions( $fields, $post ) {
+	return 'pm_pattern' === get_post_type( $post->post_parent )
+		? array_diff_key( $fields, [ 'post_title' => null ] )
+		: $fields;
+}
+add_filter( '_wp_post_revision_fields', __NAMESPACE__ . '\ignore_title_field_in_revisions', 10, 2 );
