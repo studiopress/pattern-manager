@@ -81,10 +81,9 @@ add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_fi
  * @param int $post_id The post ID.
  * @param string $meta_key The meta key to update.
  * @param mixed $meta_value The meta value to update.
- * @param mixed $previous_value The previous meta value.
  * @return null|bool Whether to override Core's saving of metadata to the DB.
  */
-function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value, $previous_value ) {
+function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value ) {
 	$post = get_post( $post_id );
 	if ( 'pm_pattern' !== $post->post_type ) {
 		return $override;
@@ -110,8 +109,8 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			]
 		);
 
-		if ( $previous_value && $previous_value !== $meta_value ) {
-			delete_pattern( $meta_value );
+		if ( $pattern_name !== $meta_value ) {
+			delete_pattern( $pattern_name );
 		}
 	}
 
@@ -124,7 +123,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		)
 	);
 }
-add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 5 );
+add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
 
 /**
  * Gets the metadata from the pattern file, not the DB.
