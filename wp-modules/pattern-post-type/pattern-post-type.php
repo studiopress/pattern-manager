@@ -25,7 +25,7 @@ require_once module_dir_path( __FILE__ ) . 'model.php';
 /**
  * Create a custom post type to be used for our default post.
  */
-function pattern_post_type() {
+function register_pattern_post_type() {
 	$post_type_key = get_pattern_post_type();
 	$labels        = array(
 		'name'          => __( 'Patterns', 'pattern-manager' ),
@@ -174,7 +174,7 @@ function pattern_post_type() {
 		)
 	);
 }
-add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
+add_action( 'init', __NAMESPACE__ . '\register_pattern_post_type' );
 
 /**
  * Disable auto-save for this post type.
