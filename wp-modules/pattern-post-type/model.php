@@ -247,7 +247,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
  * as the title is where the pattern name is stored.
  *
  * @param array $fields The fields to filter.
- * @param WP_Post $post The post to filter for.
+ * @param WP_Post|array $post The post to filter for.
  * @return array The filtered fields.
  */
 function ignore_title_field_in_revisions( $fields, $post ) {
