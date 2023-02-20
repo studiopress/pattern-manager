@@ -43,9 +43,12 @@ class ModelTest extends WP_UnitTestCase {
 	/**
 	 * Tests ignore_title_field_in_revisions.
 	 */
-	public function test_ignore_title_field_in_revisions_correct_post() {
+	public function test_ignore_title_field_in_revisions_array_post() {
 		$this->assertSame(
-			[ 'post_author' => 123 ],
+			[
+				'post_title'  => 'my-new-pattern',
+				'post_author' => 123,
+			],
 			ignore_title_field_in_revisions(
 				[
 					'post_title'  => 'my-new-pattern',
@@ -63,7 +66,7 @@ class ModelTest extends WP_UnitTestCase {
 	/**
 	 * Tests ignore_title_field_in_revisions.
 	 */
-	public function test_ignore_title_field_in_revisions_array_post() {
+	public function test_ignore_title_field_in_revisions_correct_post() {
 		$this->assertSame(
 			[ 'post_author' => 123 ],
 			ignore_title_field_in_revisions(
