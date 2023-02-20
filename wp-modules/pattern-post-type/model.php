@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PatternManager\PatternPostType;
 
 use WP_Post;
+use WP_Query;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
@@ -238,3 +239,27 @@ function redirect_pattern_actions() {
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
+
+function get_pm_post_ids() {
+	return ( new WP_Query(
+		[
+			'post_type'      => 'pm_pattern',
+			'post_status'    => 'any',
+			'fields'         => 'ids',
+			'posts_per_page' => 10,
+		]
+	) )->posts;
+}
+
+function delete_pattern_posts() {
+	$post_ids = get_pm_post_ids();
+
+	while( ! empty( $post_ids ) ) {
+		foreach ( $post_ids as $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
+
+		$post_ids = get_pm_post_ids();
+	}
+}
+add_action( 'after_switch_theme', __NAMESPACE__ . '\delete_pattern_posts' );
