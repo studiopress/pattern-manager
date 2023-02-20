@@ -31,7 +31,10 @@ class ModelTest extends WP_UnitTestCase {
 
 			],
 			ignore_title_field_in_revisions(
-				[ 'post_title'  => 'Example Title', 'post_author' => 123 ],
+				[
+					'post_title'  => 'Example Title',
+					'post_author' => 123,
+				],
 				$post
 			)
 		);
