@@ -15,7 +15,7 @@ namespace PatternManager\PatternPostType;
  *
  * @return string
  */
-function get_pattern_post_type() {
+function get_pattern_post_type(): string {
 	return 'pm_pattern';
 }
 
