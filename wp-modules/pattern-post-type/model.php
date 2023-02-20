@@ -23,7 +23,7 @@ use function PatternManager\PatternDataHandlers\update_pattern;
  * @param WP_Post $post The post to possibly add content to.
  */
 function get_pattern_content_from_file( $post ) {
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
 
@@ -42,7 +42,7 @@ add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
  * @param WP_Post $post The post.
  */
 function save_pattern_to_file( WP_Post $post ) {
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
 
@@ -61,7 +61,7 @@ function save_pattern_to_file( WP_Post $post ) {
 	);
 
 	// Prevent an infinite loop.
-	remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
+	remove_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 	// Removes the post content, as it should be saved in the pattern .php file.
 	wp_update_post(
@@ -71,9 +71,9 @@ function save_pattern_to_file( WP_Post $post ) {
 		]
 	);
 
-	add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
+	add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 }
-add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
+add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 /**
  * Saves a meta value to the pattern file, instead of the DB.
@@ -87,7 +87,7 @@ add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_fi
  */
 function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value, $previous_value ) {
 	$post = get_post( $post_id );
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return $override;
 	}
 
@@ -98,7 +98,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	// Only update the pattern if a registered meta key is being updated here (no need for core keys like _edit_lock).
-	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', 'pm_pattern' ) );
+	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', get_pattern_post_type() ) );
 	if ( ! in_array( $meta_key, $registered_meta_keys, true ) ) {
 		return $override;
 	}
@@ -142,7 +142,7 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 		return $override;
 	}
 
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return $override;
 	}
 
@@ -165,7 +165,7 @@ add_filter( 'get_post_metadata', __NAMESPACE__ . '\get_metadata_from_pattern_fil
  * Redirects for pattern actions.
  */
 function redirect_pattern_actions() {
-	if ( 'pm_pattern' !== filter_input( INPUT_GET, 'post_type' ) ) {
+	if ( get_pattern_post_type() !== filter_input( INPUT_GET, 'post_type' ) ) {
 		return;
 	}
 
@@ -178,7 +178,7 @@ function redirect_pattern_actions() {
 		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
-				'post_type'   => 'pm_pattern',
+				'post_type'   => get_pattern_post_type(),
 				'post_title'  => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
 				'post_status' => 'publish',
 			]
@@ -196,7 +196,7 @@ function redirect_pattern_actions() {
 		update_pattern( $new_pattern );
 		$new_post = wp_insert_post(
 			[
-				'post_type'   => 'pm_pattern',
+				'post_type'   => get_pattern_post_type(),
 				'post_title'  => $new_pattern['name'],
 				'post_status' => 'publish',
 			]
@@ -225,7 +225,7 @@ function redirect_pattern_actions() {
 		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
-				'post_type'    => 'pm_pattern',
+				'post_type'    => get_pattern_post_type(),
 				'post_title'   => $new_pattern['name'],
 				'post_status'  => 'publish',
 				'post_content' => '',
@@ -248,7 +248,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
 function get_pm_post_ids() {
 	return ( new WP_Query(
 		[
-			'post_type'      => 'pm_pattern',
+			'post_type'      => get_pattern_post_type(),
 			'post_status'    => 'any',
 			'fields'         => 'ids',
 			'posts_per_page' => 10,

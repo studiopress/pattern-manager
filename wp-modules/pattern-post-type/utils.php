@@ -11,6 +11,15 @@ declare(strict_types=1);
 namespace PatternManager\PatternPostType;
 
 /**
+ * Gets the pattern post type.
+ *
+ * @return string
+ */
+function get_pattern_post_type() {
+	return 'pm_pattern';
+}
+
+/**
  * Gets the new pattern number.
  *
  * @param string $name The new pattern name.
