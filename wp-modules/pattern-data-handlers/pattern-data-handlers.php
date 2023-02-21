@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PatternManager\PatternDataHandlers;
 
 use WP_Query;
+use function PatternManager\PatternPostType\get_pattern_post_type;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -158,7 +159,7 @@ function get_theme_patterns_with_editor_links() {
 		if ( $pattern ) {
 			$query = new WP_Query(
 				[
-					'post_type'      => 'pm_pattern',
+					'post_type'      => get_pattern_post_type(),
 					'post_title'     => $pattern['name'],
 					'posts_per_page' => 1,
 				]
@@ -169,7 +170,7 @@ function get_theme_patterns_with_editor_links() {
 				? get_edit_post_link( $post, 'localized_data' )
 				: add_query_arg(
 					[
-						'post_type' => 'pm_pattern',
+						'post_type' => get_pattern_post_type(),
 						'action'    => 'edit-pattern',
 						'name'      => $pattern['name'],
 					],
