@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
  * Internal dependencies
  */
 import { patternManager } from '../globals';
+import wasThemeChanged from './wasThemeChanged';
 
 export default function receiveActiveTheme( data: Record< string, unknown > ) {
 	if ( wasThemeChanged( data, patternManager.activeTheme ) ) {
@@ -19,11 +20,4 @@ export default function receiveActiveTheme( data: Record< string, unknown > ) {
 			{ id: 'pattern-manager-theme-changed' }
 		);
 	}
-}
-
-export function wasThemeChanged(
-	data: Record< string, unknown >,
-	originalTheme: typeof patternManager.activeTheme
-) {
-	return !! data.activeTheme && data.activeTheme !== originalTheme;
 }

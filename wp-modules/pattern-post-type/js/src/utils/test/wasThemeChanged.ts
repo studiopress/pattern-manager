@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import { wasThemeChanged } from '../receiveActiveTheme';
+import wasThemeChanged from '../wasThemeChanged';
 
 describe( 'wasThemeChanged', () => {
 	it.each( [
