@@ -260,6 +260,7 @@ function enqueue_meta_fields_in_editor() {
 		'pattern_manager_post_meta',
 		'patternManager',
 		[
+			'activeTheme'  => basename( get_template_directory() ),
 			'apiEndpoints' => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),

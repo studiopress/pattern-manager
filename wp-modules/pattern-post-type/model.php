@@ -238,3 +238,21 @@ function redirect_pattern_actions() {
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
+
+/**
+ * Adds the active theme to the heartbeat response.
+ *
+ * @param array  $response  The Heartbeat response.
+ * @param array  $data      The $_POST data sent.
+ * @param string $screen_id The screen ID.
+ * @return array The Heartbeat response.
+ */
+function add_active_theme_to_heartbeat( $response, $data, $screen_id ) {
+	return 'pm_pattern' === $screen_id
+		? array_merge(
+			$response,
+			[ 'activeTheme' => basename( get_template_directory() ) ]
+		)
+		: $response;
+}
+add_filter( 'heartbeat_received', __NAMESPACE__ . '\add_active_theme_to_heartbeat', 10, 3 );
