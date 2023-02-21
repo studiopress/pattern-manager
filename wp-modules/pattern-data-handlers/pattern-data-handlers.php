@@ -268,7 +268,7 @@ function get_pattern_names() {
 }
 
 /**
- * Update a single pattern.
+ * Update or create a single pattern.
  *
  * @param array $pattern Data about the pattern.
  * @return bool

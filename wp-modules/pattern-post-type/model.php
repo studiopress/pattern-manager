@@ -82,10 +82,9 @@ add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\sa
  * @param int $post_id The post ID.
  * @param string $meta_key The meta key to update.
  * @param mixed $meta_value The meta value to update.
- * @param mixed $previous_value The previous meta value.
  * @return null|bool Whether to override Core's saving of metadata to the DB.
  */
-function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value, $previous_value ) {
+function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value ) {
 	$post = get_post( $post_id );
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return $override;
@@ -111,8 +110,8 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			]
 		);
 
-		if ( $previous_value && $previous_value !== $meta_value ) {
-			delete_pattern( $meta_value );
+		if ( $pattern_name !== $meta_value ) {
+			delete_pattern( $pattern_name );
 		}
 	}
 
@@ -125,7 +124,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		)
 	);
 }
-add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 5 );
+add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
 
 /**
  * Gets the metadata from the pattern file, not the DB.
@@ -174,8 +173,6 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => get_pattern_post_type(),
@@ -183,7 +180,6 @@ function redirect_pattern_actions() {
 				'post_status' => 'publish',
 			]
 		);
-		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
@@ -221,8 +217,6 @@ function redirect_pattern_actions() {
 
 		update_pattern( $new_pattern );
 
-		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
 				'post_type'    => get_pattern_post_type(),
@@ -231,7 +225,6 @@ function redirect_pattern_actions() {
 				'post_content' => '',
 			]
 		);
-		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
