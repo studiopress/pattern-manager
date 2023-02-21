@@ -1,3 +1,4 @@
+import { speak } from '@wordpress/a11y';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
@@ -43,18 +44,21 @@ export default function TitlePanel( {
 					} );
 
 					if ( ! newTitle ) {
-						setErrorMessage(
-							__( 'Please enter a title.', 'pattern-manager' )
+						const newErrorMessage = __(
+							'Please enter a title.',
+							'pattern-manager'
 						);
+						speak( newErrorMessage, 'assertive' );
+						setErrorMessage( newErrorMessage );
 					} else if (
 						isTitleTaken( newTitle, postMeta.slug, patternNames )
 					) {
-						setErrorMessage(
-							__(
-								'Please enter a unique title.',
-								'pattern-manager'
-							)
+						const newErrorMessage = __(
+							'Please enter a unique title.',
+							'pattern-manager'
 						);
+						speak( newErrorMessage, 'assertive' );
+						setErrorMessage( newErrorMessage );
 					} else {
 						setErrorMessage( '' );
 					}
