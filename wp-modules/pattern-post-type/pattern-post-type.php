@@ -19,14 +19,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require_once module_dir_path( __FILE__ ) . 'model.php';
 require_once module_dir_path( __FILE__ ) . 'utils.php';
+require_once module_dir_path( __FILE__ ) . 'model.php';
 
 /**
  * Create a custom post type to be used for our default post.
  */
-function pattern_post_type() {
-	$labels = array(
+function register_pattern_post_type() {
+	$post_type_key = get_pattern_post_type();
+	$labels        = array(
 		'name'          => __( 'Patterns', 'pattern-manager' ),
 		'singular_name' => __( 'Pattern', 'pattern-manager' ),
 		'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
@@ -34,7 +35,7 @@ function pattern_post_type() {
 	);
 
 	register_post_type(
-		'pm_pattern',
+		$post_type_key,
 		array(
 			'public'       => false,
 			'has_archive'  => false,
@@ -50,7 +51,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'type',
 		array(
 			'show_in_rest' => true,
@@ -60,7 +61,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'title',
 		array(
 			'show_in_rest' => true,
@@ -70,7 +71,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'name',
 		array(
 			'show_in_rest' => true,
@@ -80,7 +81,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'description',
 		array(
 			'show_in_rest' => true,
@@ -90,7 +91,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'inserter',
 		array(
 			'show_in_rest' => true,
@@ -106,7 +107,7 @@ function pattern_post_type() {
 	 * @see https://make.wordpress.org/core/2019/10/03/wp-5-3-supports-object-and-array-meta-types-in-the-rest-api/
 	 */
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'blockTypes',
 		array(
 			'show_in_rest' => array(
@@ -123,7 +124,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'postTypes',
 		array(
 			'show_in_rest' => array(
@@ -140,7 +141,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'categories',
 		array(
 			'show_in_rest' => array(
@@ -157,7 +158,7 @@ function pattern_post_type() {
 	);
 
 	register_post_meta(
-		'pm_pattern',
+		$post_type_key,
 		'keywords',
 		array(
 			'show_in_rest' => array(
@@ -173,7 +174,7 @@ function pattern_post_type() {
 		)
 	);
 }
-add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
+add_action( 'init', __NAMESPACE__ . '\register_pattern_post_type' );
 
 /**
  * Disable auto-save for this post type.
@@ -181,7 +182,7 @@ add_action( 'init', __NAMESPACE__ . '\pattern_post_type' );
  */
 function disable_autosave() {
 	global $post_type;
-	if ( 'pm_pattern' === $post_type ) {
+	if ( get_pattern_post_type() === $post_type ) {
 		wp_dequeue_script( 'autosave' );
 	}
 }
@@ -238,7 +239,7 @@ function do_the_content_things( $content ) {
  * Add style and metaboxes to pm_pattern posts when editing.
  */
 function enqueue_meta_fields_in_editor() {
-	if ( 'pm_pattern' !== get_post_type() ) {
+	if ( get_pattern_post_type() !== get_post_type() ) {
 		return;
 	}
 
@@ -285,7 +286,7 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
 function register_block_patterns() {
 	$current_screen = get_current_screen();
 
-	if ( 'pm_pattern' !== $current_screen->post_type ) {
+	if ( get_pattern_post_type() !== $current_screen->post_type ) {
 		return;
 	}
 

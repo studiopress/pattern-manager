@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace PatternManager\PatternPostType;
 
 use WP_Post;
+use WP_Query;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
@@ -22,7 +23,7 @@ use function PatternManager\PatternDataHandlers\update_pattern;
  * @param WP_Post $post The post to possibly add content to.
  */
 function get_pattern_content_from_file( $post ) {
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
 
@@ -41,11 +42,11 @@ add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
  * @param WP_Post $post The post.
  */
 function save_pattern_to_file( WP_Post $post ) {
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( get_post_meta( $post->ID, 'name', true ) );
+	$pattern = get_pattern_by_name( $post->post_title );
 	if ( ! $pattern ) {
 		return;
 	}
@@ -60,7 +61,7 @@ function save_pattern_to_file( WP_Post $post ) {
 	);
 
 	// Prevent an infinite loop.
-	remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
+	remove_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 	// Removes the post content, as it should be saved in the pattern .php file.
 	wp_update_post(
@@ -70,9 +71,9 @@ function save_pattern_to_file( WP_Post $post ) {
 		]
 	);
 
-	add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
+	add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 }
-add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
+add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 /**
  * Saves a meta value to the pattern file, instead of the DB.
@@ -81,12 +82,11 @@ add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_fi
  * @param int $post_id The post ID.
  * @param string $meta_key The meta key to update.
  * @param mixed $meta_value The meta value to update.
- * @param mixed $previous_value The previous meta value.
  * @return null|bool Whether to override Core's saving of metadata to the DB.
  */
-function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value, $previous_value ) {
+function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value ) {
 	$post = get_post( $post_id );
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return $override;
 	}
 
@@ -97,7 +97,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	// Only update the pattern if a registered meta key is being updated here (no need for core keys like _edit_lock).
-	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', 'pm_pattern' ) );
+	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', get_pattern_post_type() ) );
 	if ( ! in_array( $meta_key, $registered_meta_keys, true ) ) {
 		return $override;
 	}
@@ -110,8 +110,8 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			]
 		);
 
-		if ( $previous_value && $previous_value !== $meta_value ) {
-			delete_pattern( $meta_value );
+		if ( $pattern_name !== $meta_value ) {
+			delete_pattern( $pattern_name );
 		}
 	}
 
@@ -124,7 +124,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		)
 	);
 }
-add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 5 );
+add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
 
 /**
  * Gets the metadata from the pattern file, not the DB.
@@ -141,7 +141,7 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 		return $override;
 	}
 
-	if ( 'pm_pattern' !== $post->post_type ) {
+	if ( get_pattern_post_type() !== $post->post_type ) {
 		return $override;
 	}
 
@@ -164,7 +164,7 @@ add_filter( 'get_post_metadata', __NAMESPACE__ . '\get_metadata_from_pattern_fil
  * Redirects for pattern actions.
  */
 function redirect_pattern_actions() {
-	if ( 'pm_pattern' !== filter_input( INPUT_GET, 'post_type' ) ) {
+	if ( get_pattern_post_type() !== filter_input( INPUT_GET, 'post_type' ) ) {
 		return;
 	}
 
@@ -173,16 +173,13 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
-				'post_type'   => 'pm_pattern',
+				'post_type'   => get_pattern_post_type(),
 				'post_title'  => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
 				'post_status' => 'publish',
 			]
 		);
-		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
@@ -195,7 +192,7 @@ function redirect_pattern_actions() {
 		update_pattern( $new_pattern );
 		$new_post = wp_insert_post(
 			[
-				'post_type'   => 'pm_pattern',
+				'post_type'   => get_pattern_post_type(),
 				'post_title'  => $new_pattern['name'],
 				'post_status' => 'publish',
 			]
@@ -220,17 +217,14 @@ function redirect_pattern_actions() {
 
 		update_pattern( $new_pattern );
 
-		// Prevent the hook from overwriting the file when this post is created.
-		remove_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 		$new_post = wp_insert_post(
 			[
-				'post_type'    => 'pm_pattern',
+				'post_type'    => get_pattern_post_type(),
 				'post_title'   => $new_pattern['name'],
 				'post_status'  => 'publish',
 				'post_content' => '',
 			]
 		);
-		add_action( 'rest_after_insert_pm_pattern', __NAMESPACE__ . '\save_pattern_to_file' );
 
 		wp_safe_redirect(
 			get_edit_post_link( $new_post, 'direct_link' )
@@ -256,3 +250,53 @@ function add_active_theme_to_heartbeat( $response, $data, $screen_id ) {
 		: $response;
 }
 add_filter( 'heartbeat_received', __NAMESPACE__ . '\add_active_theme_to_heartbeat', 10, 3 );
+
+/**
+ * Filters the fields used in post revisions.
+ *
+ * If the revision is for a pattern post,
+ * don't restore the title of the revision,
+ * as the title is where the pattern name is stored.
+ *
+ * @param array $fields The fields to filter.
+ * @param WP_Post|array $post The post to filter for.
+ * @return array The filtered fields.
+ */
+function ignore_title_field_in_revisions( $fields, $post ) {
+	return isset( $post->post_parent ) && get_pattern_post_type() === get_post_type( $post->post_parent )
+		? array_diff_key( $fields, [ 'post_title' => null ] )
+		: $fields;
+}
+add_filter( '_wp_post_revision_fields', __NAMESPACE__ . '\ignore_title_field_in_revisions', 10, 2 );
+
+/**
+ * Gets the pm_pattern post IDs.
+ *
+ * @return int[]
+ */
+function get_pm_post_ids() {
+	return ( new WP_Query(
+		[
+			'post_type'      => get_pattern_post_type(),
+			'post_status'    => 'any',
+			'fields'         => 'ids',
+			'posts_per_page' => 10,
+		]
+	) )->posts;
+}
+
+/**
+ * Deletes all pm_pattern posts.
+ */
+function delete_pattern_posts() {
+	$post_ids = get_pm_post_ids();
+
+	while ( ! empty( $post_ids ) ) {
+		foreach ( $post_ids as $post_id ) {
+			wp_delete_post( $post_id, true );
+		}
+
+		$post_ids = get_pm_post_ids();
+	}
+}
+add_action( 'after_switch_theme', __NAMESPACE__ . '\delete_pattern_posts' );
