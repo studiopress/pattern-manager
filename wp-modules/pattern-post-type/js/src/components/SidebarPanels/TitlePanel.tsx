@@ -1,4 +1,5 @@
 import { speak } from '@wordpress/a11y';
+import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
@@ -24,6 +25,7 @@ export default function TitlePanel( {
 	handleChange,
 	patternNames,
 }: BaseSidebarProps & { patternNames: Array< Pattern[ 'name' ] > } ) {
+	const { lockPostSaving, unlockPostSaving } = useDispatch( 'core/editor' );
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 
 	return (
@@ -44,6 +46,7 @@ export default function TitlePanel( {
 					} );
 
 					if ( ! newTitle ) {
+						lockPostSaving();
 						const newErrorMessage = __(
 							'Please enter a title.',
 							'pattern-manager'
@@ -53,6 +56,7 @@ export default function TitlePanel( {
 					} else if (
 						isTitleTaken( newTitle, postMeta.slug, patternNames )
 					) {
+						lockPostSaving();
 						const newErrorMessage = __(
 							'Please enter a unique title.',
 							'pattern-manager'
@@ -60,6 +64,7 @@ export default function TitlePanel( {
 						speak( newErrorMessage, 'assertive' );
 						setErrorMessage( newErrorMessage );
 					} else {
+						unlockPostSaving();
 						setErrorMessage( '' );
 					}
 				} }
