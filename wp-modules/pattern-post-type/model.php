@@ -242,7 +242,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
  * @return array The Heartbeat response.
  */
 function add_active_theme_to_heartbeat( $response, $data, $screen_id ) {
-	return 'pm_pattern' === $screen_id
+	return get_pattern_post_type() === $screen_id
 		? array_merge(
 			$response,
 			[ 'activeTheme' => basename( get_template_directory() ) ]
