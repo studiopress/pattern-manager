@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace PatternManager\PatternDataHandlers;
 
 use WP_Query;
-use function PatternManager\PatternPostType\get_pattern_post_type;
+use function PatternManager\Editor\get_pattern_post_type;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {

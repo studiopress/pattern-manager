@@ -1,14 +1,14 @@
 <?php
 /**
  * Module Name: Pattern Post Type
- * Namespace: PatternPostType
+ * Namespace: Editor
  *
  * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace PatternManager\PatternPostType;
+namespace PatternManager\Editor;
 
 /**
  * Gets the pattern post type.

@@ -1,15 +1,15 @@
 <?php
 /**
- * Module Name: Pattern Post Type
+ * Module Name: Editor
  * Description: This module registers a post type to be used when editing block patterns, and sets up how things work in the block editor.
- * Namespace: PatternPostType
+ * Namespace: Editor
  *
  * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace PatternManager\PatternPostType;
+namespace PatternManager\Editor;
 
 use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
