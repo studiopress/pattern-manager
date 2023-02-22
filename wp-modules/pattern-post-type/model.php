@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PatternManager\PatternPostType;
 
 use WP_Post;
-use WP_Query;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;

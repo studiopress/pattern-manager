@@ -34,7 +34,7 @@ class ModelTest extends WP_UnitTestCase {
 	/**
 	 * Tests add_active_theme_to_heartbeat.
 	 */
-	public function test_add_active_theme_to_heartbeat_corrent_post() {
+	public function test_add_active_theme_to_heartbeat_correct_post() {
 		$this->assertTrue(
 			array_key_exists(
 				'activeTheme',
