@@ -95,3 +95,19 @@ function get_new_pattern( array $all_patterns ): array {
 		'content'       => '',
 	);
 }
+
+/**
+ * Gets the pm_pattern post IDs.
+ *
+ * @return int[]
+ */
+function get_pm_post_ids() {
+	return ( new WP_Query(
+		[
+			'post_type'      => get_pattern_post_type(),
+			'post_status'    => 'any',
+			'fields'         => 'ids',
+			'posts_per_page' => 10,
+		]
+	) )->posts;
+}

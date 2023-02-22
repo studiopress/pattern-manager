@@ -270,22 +270,6 @@ function ignore_title_field_in_revisions( $fields, $post ) {
 add_filter( '_wp_post_revision_fields', __NAMESPACE__ . '\ignore_title_field_in_revisions', 10, 2 );
 
 /**
- * Gets the pm_pattern post IDs.
- *
- * @return int[]
- */
-function get_pm_post_ids() {
-	return ( new WP_Query(
-		[
-			'post_type'      => get_pattern_post_type(),
-			'post_status'    => 'any',
-			'fields'         => 'ids',
-			'posts_per_page' => 10,
-		]
-	) )->posts;
-}
-
-/**
  * Deletes all pm_pattern posts.
  */
 function delete_pattern_posts() {
