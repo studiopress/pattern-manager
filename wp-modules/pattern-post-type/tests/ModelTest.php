@@ -113,7 +113,28 @@ class ModelTest extends WP_UnitTestCase {
 	/**
 	 * Tests delete_pattern_posts.
 	 */
-	public function test_delete_pattern_posts() {
+	public function test_delete_pattern_posts_wrong_post() {
+		for ( $i = 0; $i < 5; $i++ ) {
+			$this->factory()->post->create();
+		}
+
+		$this->assertCount(
+			5,
+			get_posts()
+		);
+
+		delete_pattern_posts();
+
+		$this->assertCount(
+			5,
+			get_posts()
+		);
+	}
+
+	/**
+	 * Tests delete_pattern_posts.
+	 */
+	public function test_delete_pattern_posts_correct_post() {
 		for ( $i = 0; $i < 5; $i++ ) {
 			$this->factory()->post->create( [ 'post_type' => 'pm_pattern' ] );
 		}
