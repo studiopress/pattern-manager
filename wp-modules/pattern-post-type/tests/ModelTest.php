@@ -118,17 +118,11 @@ class ModelTest extends WP_UnitTestCase {
 			$this->factory()->post->create();
 		}
 
-		$this->assertCount(
-			5,
-			get_posts()
-		);
+		$this->assertCount( 5, get_posts() );
 
 		delete_pattern_posts();
 
-		$this->assertCount(
-			5,
-			get_posts()
-		);
+		$this->assertCount( 5, get_posts() );
 	}
 
 	/**
