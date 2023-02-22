@@ -190,7 +190,7 @@ function get_theme_patterns_with_editor_links() {
  * @return string
  */
 function get_patterns_directory() {
-	return get_template_directory() . '/patterns/';
+	return get_stylesheet_directory() . '/patterns/';
 }
 
 /**
@@ -320,7 +320,7 @@ function delete_pattern( string $pattern_name ): bool {
 function remove_theme_name_from_template_parts( $pattern_content ) {
 
 	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
-	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
+	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_stylesheet_directory() ) . '"', $pattern_content );
 }
 
 /**
@@ -366,7 +366,7 @@ function tree_shake_theme_images() {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
-	$theme_dir         = get_template_directory();
+	$theme_dir         = get_stylesheet_directory();
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
@@ -433,7 +433,7 @@ function move_block_images_to_theme( $pattern_html ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$wp_theme_dir = get_template_directory();
+	$wp_theme_dir = get_stylesheet_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';
 	$images_dir   = $wp_theme_dir . '/patterns/images/';
 

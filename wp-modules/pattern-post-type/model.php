@@ -245,7 +245,7 @@ function add_active_theme_to_heartbeat( $response, $data, $screen_id ) {
 	return get_pattern_post_type() === $screen_id
 		? array_merge(
 			$response,
-			[ 'activeTheme' => basename( get_template_directory() ) ]
+			[ 'activeTheme' => basename( get_stylesheet_directory() ) ]
 		)
 		: $response;
 }
