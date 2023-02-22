@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternPostType;
 
+use WP_Query;
+
 /**
  * Gets the pattern post type.
  *

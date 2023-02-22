@@ -18,6 +18,36 @@ require_once dirname( __DIR__ ) . '/model.php';
 class ModelTest extends WP_UnitTestCase {
 
 	/**
+	 * Tests add_active_theme_to_heartbeat.
+	 */
+	public function test_add_active_theme_to_heartbeat_wrong_post() {
+		$this->assertSame(
+			[ 'refresh-nonces' => true ],
+			add_active_theme_to_heartbeat(
+				[ 'refresh-nonces' => true ],
+				[],
+				'post'
+			)
+		);
+	}
+
+	/**
+	 * Tests add_active_theme_to_heartbeat.
+	 */
+	public function test_add_active_theme_to_heartbeat_corrent_post() {
+		$this->assertTrue(
+			array_key_exists(
+				'activeTheme',
+				add_active_theme_to_heartbeat(
+					[ 'refresh-nonces' => true ],
+					[],
+					'pm_pattern'
+				)
+			)
+		);
+	}
+
+	/**
 	 * Tests ignore_title_field_in_revisions.
 	 */
 	public function test_ignore_title_field_in_revisions_wrong_post() {
