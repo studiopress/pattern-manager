@@ -50,26 +50,6 @@ function register_routes() {
 
 	register_rest_route(
 		$namespace,
-		'/save-pattern',
-		array(
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\save_pattern',
-			'permission_callback' => __NAMESPACE__ . '\permission_check',
-			'args'                => array(
-				'pattern' => array(
-					'required'          => true,
-					'type'              => 'object',
-					'description'       => __( 'The pattern', 'pattern-manager' ),
-					'validate_callback' => function( $to_validate ) {
-						return is_array( $to_validate );
-					},
-				),
-			),
-		)
-	);
-
-	register_rest_route(
-		$namespace,
 		'/delete-pattern',
 		array(
 			'methods'             => 'DELETE',
@@ -102,25 +82,6 @@ function get_pattern_names() {
 		? new WP_REST_Response(
 			array(
 				'patternNames' => $is_success,
-			),
-			200
-		)
-		: new WP_REST_Response( $is_success, 400 );
-}
-
-/**
- * Saves a single pattern.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_REST_Response
- */
-function save_pattern( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
-
-	return $is_success
-		? new WP_REST_Response(
-			array(
-				'message' => __( 'Pattern saved to disk', 'pattern-manager' ),
 			),
 			200
 		)

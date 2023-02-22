@@ -8,14 +8,6 @@ import type { Pattern, Patterns } from '../types';
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
-	function savePattern( pattern: Pattern ) {
-		return fetch( patternManager.apiEndpoints.savePatternEndpoint, {
-			method: 'POST',
-			headers: getHeaders(),
-			body: JSON.stringify( { pattern } ),
-		} );
-	}
-
 	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		setPatternsData( removePattern( patternName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
@@ -28,6 +20,5 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	return {
 		data: patternsData,
 		deletePattern,
-		savePattern,
 	};
 }
