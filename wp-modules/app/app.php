@@ -1,6 +1,6 @@
 <?php
 /**
- * Module Name: Patterns
+ * Module Name: App
  * Description: The browser app where the work gets done.
  * Namespace: Patterns
  *
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace PatternManager\Patterns;
+namespace PatternManager\App;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
