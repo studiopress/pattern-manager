@@ -1,5 +1,5 @@
 {
-  "name": "patternmanager-pattern-post-type",
+  "name": "patternmanager-editor",
   "description": "Javascript that gets loaded with editing an fse-pattern post type.",
   "main": "js/build/index.js",
   "scripts": {
