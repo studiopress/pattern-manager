@@ -1,6 +1,6 @@
 <?php
 /**
- * Module Name: Pattern Post Type
+ * Module Name: Editor
  * Namespace: Editor
  *
  * @package pattern-manager

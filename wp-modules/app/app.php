@@ -2,7 +2,7 @@
 /**
  * Module Name: App
  * Description: The browser app where the work gets done.
- * Namespace: Patterns
+ * Namespace: App
  *
  * @package pattern-manager
  */
