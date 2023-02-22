@@ -1,9 +1,10 @@
 import '../../css/src/index.scss';
-import { addFilter } from '@wordpress/hooks';
+import { addAction, addFilter } from '@wordpress/hooks';
 import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';
 import changeWords from './utils/changeWords';
+import receiveActiveTheme from './utils/receiveActiveTheme';
 
 registerPlugin( 'pattern-manager-postmeta-for-patterns', {
 	icon: null,
@@ -16,3 +17,8 @@ registerPlugin( 'pattern-manager-back-button', {
 } );
 
 addFilter( 'i18n.gettext', 'pattern-manager/changeWords', changeWords );
+addAction(
+	'heartbeat.tick',
+	'pattern-manager/checkActiveTheme',
+	receiveActiveTheme
+);
