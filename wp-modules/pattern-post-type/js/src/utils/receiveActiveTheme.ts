@@ -14,7 +14,7 @@ export default function receiveActiveTheme( data: Record< string, unknown > ) {
 	if ( wasThemeChanged( data, patternManager.activeTheme ) ) {
 		dispatch( 'core/notices' ).createErrorNotice(
 			__(
-				'The theme was changed. This pattern does not exist in this theme. Please close this tab.',
+				'Please close this tab. This pattern does not exist in the current theme or the theme was changed since this tab was opened.',
 				'pattern-manager'
 			),
 			{ id: 'pattern-manager-theme-changed' }
