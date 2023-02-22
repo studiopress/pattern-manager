@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PatternManager\Editor;
 
 use WP_Post;
-use WP_Query;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
@@ -268,22 +267,6 @@ function ignore_title_field_in_revisions( $fields, $post ) {
 		: $fields;
 }
 add_filter( '_wp_post_revision_fields', __NAMESPACE__ . '\ignore_title_field_in_revisions', 10, 2 );
-
-/**
- * Gets the pm_pattern post IDs.
- *
- * @return int[]
- */
-function get_pm_post_ids() {
-	return ( new WP_Query(
-		[
-			'post_type'      => get_pattern_post_type(),
-			'post_status'    => 'any',
-			'fields'         => 'ids',
-			'posts_per_page' => 10,
-		]
-	) )->posts;
-}
 
 /**
  * Deletes all pm_pattern posts.
