@@ -22,7 +22,7 @@ export default function PatternCategories( {
 				const classes = [
 					'category',
 					...( currentCategory === category.name
-						? [ 'category-selected' ]
+						? [ 'category-selected is-pressed' ]
 						: [] ),
 				].join( ' ' );
 
