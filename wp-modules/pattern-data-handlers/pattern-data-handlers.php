@@ -432,6 +432,9 @@ function move_block_images_to_theme( $pattern_html ) {
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+	if ( ! $wp_filesystem ) {
+		return;
+	}
 
 	$wp_theme_dir = get_stylesheet_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';
