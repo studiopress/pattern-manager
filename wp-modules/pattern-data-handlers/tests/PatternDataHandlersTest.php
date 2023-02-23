@@ -64,7 +64,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			'inserter'      => true,
 			'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
 			'name'          => 'my-new-pattern',
-		]
+		];
 	}
 
 	/**
@@ -144,6 +144,23 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$this->assertSame(
 			[ 'my-new-pattern' ],
 			get_pattern_names(),
+		);
+	}
+
+	/**
+	 * Test update_pattern.
+	 */
+	public function test_update_pattern() {
+		update_pattern(
+			array_merge(
+				get_pattern_by_name( 'my-new-pattern' ),
+				[ 'content' => 'Here is new content' ]
+			)
+		);
+
+		assertEquals(
+			'Here is new content',
+			get_pattern_by_name( 'my-new-pattern' )['content']
 		);
 	}
 }
