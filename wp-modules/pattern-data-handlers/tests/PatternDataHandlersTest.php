@@ -165,4 +165,37 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			)
 		);
 	}
+
+	/**
+	 * Test delete_pattern.
+	 */
+	public function test_delete_pattern() {
+		update_pattern(
+			[
+				'name'          => 'foo',
+				'slug'          => 'foo',
+				'title'         => 'Foo',
+				'categories'    => [],
+				'keywords'      => [],
+				'blockTypes'    => [],
+				'postTypes'     => [],
+				'inserter'      => true,
+				'description'   => '',
+				'viewportWidth' => '',
+				'content'       => '',
+			]
+		);
+
+		assertSame(
+			'foo',
+			get_pattern_by_name( 'foo' )['name']
+		);
+
+		delete_pattern( 'foo' );
+
+		assertSame(
+			false,
+			get_pattern_by_name( 'foo' )
+		);
+	}
 }
