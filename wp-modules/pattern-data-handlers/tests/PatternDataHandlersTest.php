@@ -23,6 +23,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
+		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 	}
 
 	/**
@@ -30,7 +31,15 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function tearDown() {
 		remove_filter( 'request_filesystem_credentials', '__return_true' );
+		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		parent::tearDown();
+	}
+
+	/**
+	 * Gets the fixtures directory.
+	 */
+	public function get_fixtures_directory() {
+		return __DIR__ . '/fixtures';
 	}
 
 	/**
@@ -44,7 +53,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
-		$actual_pattern = get_pattern_by_path( __DIR__ . '/fixtures/my-new-pattern.php' );
+		$actual_pattern = get_pattern_by_path( $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' );
 
 		$this->assertSame(
 			[
@@ -73,7 +82,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents() {
-		$pattern_path = __DIR__ . '/fixtures/my-new-pattern.php';
+		$pattern_path = $this->get_fixtures_directory() . '/patterns/my-new-pattern.php';
 
 		$this->assertSame(
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -82,6 +91,39 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 				get_pattern_by_path( $pattern_path ),
 				'foo-textdomain'
 			)
+		);
+	}
+
+	/**
+	 * Tests get_theme_patterns.
+	 */
+	public function test_get_theme_patterns() {
+		$patterns = get_theme_patterns();
+
+		$this->assertSame(
+			[
+				[
+					'title'         => 'My New Pattern',
+					'slug'          => 'my-new-pattern',
+					'description'   => 'Here is a description',
+					'viewportWidth' => 1280,
+					'categories'    => [ 'contact', 'featured' ],
+					'keywords'      => [ 'example', 'music' ],
+					'blockTypes'    => [ 'core/gallery', 'core/media-text' ],
+					'postTypes'     => [ 'wp_block', 'wp_template' ],
+					'inserter'      => true,
+					'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
+					'name'          => 'my-new-pattern',
+				],
+			],
+			[
+				array_merge(
+					$patterns[0],
+					[
+						'content' => $this->normalize( $patterns[0]['content'] ),
+					],
+				),
+			]
 		);
 	}
 }
