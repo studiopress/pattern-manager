@@ -39,7 +39,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 				'inserter'      => true,
 				'content'       => '<!-- wp:paragraph -->
 				<p>Here is some content</p>
-				<!-- /wp:paragraph -->'
+				<!-- /wp:paragraph -->',
 			],
 			get_pattern_by_path( __DIR__ . '/fixtures/my-new-pattern.php' )
 		);
