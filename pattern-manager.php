@@ -3,7 +3,7 @@
  * Plugin Name: Pattern Manager
  * Plugin URI: wpengine.com
  * Description: Create and maintain patterns.
- * Version: 0.1.0
+ * Version: 0.1.1
  * Author: WP Engine
  * Author URI: wpengine.com
  * Text Domain: pattern-manager
