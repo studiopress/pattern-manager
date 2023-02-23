@@ -18,6 +18,22 @@ require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 class PatternDataHandlersTest extends WP_UnitTestCase {
 
 	/**
+	 * @inheritDoc
+	 */
+	public function setUp() {
+		parent::setUp();
+		add_filter( 'request_filesystem_credentials', '__return_true' );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function tearDown() {
+		remove_filter( 'request_filesystem_credentials', '__return_true' );
+		parent::tearDown();
+	}
+
+	/**
 	 * Normalizes in order to compare in tests.
 	 */
 	public function normalize( string $to_normalize ): string {
@@ -28,9 +44,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
-		add_filter( 'request_filesystem_credentials', '__return_true' );
-
 		$actual_pattern = get_pattern_by_path( __DIR__ . '/fixtures/my-new-pattern.php' );
+
 		$this->assertSame(
 			[
 				'title'         => 'My New Pattern',
@@ -58,10 +73,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents() {
-		add_filter( 'request_filesystem_credentials', '__return_true' );
 		$pattern_path = __DIR__ . '/fixtures/my-new-pattern.php';
 
 		$this->assertSame(
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( $pattern_path ),
 			construct_pattern_php_file_contents(
 				get_pattern_by_path( $pattern_path ),
