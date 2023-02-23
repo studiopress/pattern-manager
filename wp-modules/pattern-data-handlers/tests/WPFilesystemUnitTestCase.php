@@ -27,4 +27,18 @@ abstract class WP_Filesystem_UnitTestCase extends WP_UnitTestCase {
 	public function filter_abstraction_file( $file ) {
 		return __DIR__ . '/MockFs.php';
 	}
+
+	public function test_is_MockFS_sane() {
+		global $wp_filesystem;
+		$this->assertInstanceOf( 'WP_Filesystem_MockFS', $wp_filesystem );
+
+		$wp_filesystem->init( '/' );
+
+		// Test creation/exists checks.
+		$this->assertFalse( $wp_filesystem->is_dir( '/test/' ) );
+		$wp_filesystem->mkdir( '/test' );
+		$this->assertTrue( $wp_filesystem->exists( '/test' ) );
+		$this->assertTrue( $wp_filesystem->is_dir( '/test/' ) );
+		$this->assertFalse( $wp_filesystem->is_file( '/test' ) );
+	}
 }
