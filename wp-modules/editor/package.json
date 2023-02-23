@@ -1,6 +1,6 @@
 {
-  "name": "patternmanager-pattern-post-type",
-  "description": "Javascript that gets loaded with editing an fse-pattern post type.",
+  "name": "patternmanager-editor",
+  "description": "Javascript that gets loaded when editing a pattern.",
   "main": "js/build/index.js",
   "scripts": {
     "build": "wp-scripts build js/src/index.js --output-path=js/build/",

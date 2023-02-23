@@ -1,14 +1,14 @@
 <?php
 /**
- * Module Name: Pattern Post Type
- * Namespace: PatternPostType
+ * Module Name: Editor
+ * Namespace: Editor
  *
  * @package pattern-manager
  */
 
 declare(strict_types=1);
 
-namespace PatternManager\PatternPostType;
+namespace PatternManager\Editor;
 
 use WP_Query;
 

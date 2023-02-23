@@ -5,7 +5,7 @@
  * @package pattern-manager
  */
 
-namespace PatternManager\PatternPostType;
+namespace PatternManager\Editor;
 
 use stdClass;
 use WP_UnitTestCase;
