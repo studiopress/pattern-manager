@@ -161,7 +161,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		assertEquals(
 			array_merge(
 				$this->get_expected_pattern(),
-				'content' => 'Here is new content'
+				[ 'content' => 'Here is new content' ]
 			)
 		);
 	}
