@@ -159,8 +159,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		);
 
 		assertEquals(
-			'Here is new content',
-			get_pattern_by_name( 'my-new-pattern' )['content']
+			array_merge(
+				$this->get_expected_pattern(),
+				'content' => 'Here is new content'
+			)
 		);
 	}
 }
