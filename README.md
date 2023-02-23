@@ -4,7 +4,6 @@ Tested up to: 6.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl
-Stable tag: 0.1.1
 
 ## Development set up process
 
