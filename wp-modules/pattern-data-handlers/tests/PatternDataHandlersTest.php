@@ -7,14 +7,14 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-use WP_Filesystem_UnitTestCase;
+use WP_UnitTestCase;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
  * Test the pattern functions.
  */
-class PatternDataHandlersTest extends WP_Filesystem_UnitTestCase {
+class PatternDataHandlersTest extends WP_UnitTestCase {
 
 	/**
 	 * @inheritDoc
