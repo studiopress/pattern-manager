@@ -57,15 +57,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_construct_pattern_php_file_contents() {
 		add_filter( 'request_filesystem_credentials', '__return_true' );
-
 		$pattern_path = __DIR__ . '/fixtures/my-new-pattern.php';
 
-		ob_start();
-		require $pattern_path;
-		$pattern_contents = ob_get_clean();
-
 		$this->assertSame(
-			$pattern_contents,
+			file_get_contents( $pattern_path ),
 			construct_pattern_php_file_contents(
 				get_pattern_by_path( $pattern_path ),
 				'foo-textdomain'
