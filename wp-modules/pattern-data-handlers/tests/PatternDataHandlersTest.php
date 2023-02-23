@@ -7,7 +7,6 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-use stdClass;
 use WP_UnitTestCase;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
@@ -23,7 +22,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
-		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 	}
 
 	/**
@@ -50,25 +49,32 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Gets the expected pattern.
+	 */
+	public function get_expected_pattern() {
+		return [
+			'title'         => 'My New Pattern',
+			'slug'          => 'my-new-pattern',
+			'description'   => 'Here is a description',
+			'viewportWidth' => 1280,
+			'categories'    => [ 'contact', 'featured' ],
+			'keywords'      => [ 'example', 'music' ],
+			'blockTypes'    => [ 'core/gallery', 'core/media-text' ],
+			'postTypes'     => [ 'wp_block', 'wp_template' ],
+			'inserter'      => true,
+			'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
+			'name'          => 'my-new-pattern',
+		]
+	}
+
+	/**
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
 		$actual_pattern = get_pattern_by_path( $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' );
 
 		$this->assertSame(
-			[
-				'title'         => 'My New Pattern',
-				'slug'          => 'my-new-pattern',
-				'description'   => 'Here is a description',
-				'viewportWidth' => 1280,
-				'categories'    => [ 'contact', 'featured' ],
-				'keywords'      => [ 'example', 'music' ],
-				'blockTypes'    => [ 'core/gallery', 'core/media-text' ],
-				'postTypes'     => [ 'wp_block', 'wp_template' ],
-				'inserter'      => true,
-				'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
-				'name'          => 'my-new-pattern',
-			],
+			$this->get_expected_pattern(),
 			array_merge(
 				$actual_pattern,
 				[
@@ -100,22 +106,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns() {
 		$patterns = get_theme_patterns();
 
-		$this->assertCount( 1, $patterns );
+		$this->assertCount( 1, array_values( $patterns ) );
 		$this->assertSame(
 			[
-				'my-new-pattern' => [
-					'title'         => 'My New Pattern',
-					'slug'          => 'my-new-pattern',
-					'description'   => 'Here is a description',
-					'viewportWidth' => 1280,
-					'categories'    => [ 'contact', 'featured' ],
-					'keywords'      => [ 'example', 'music' ],
-					'blockTypes'    => [ 'core/gallery', 'core/media-text' ],
-					'postTypes'     => [ 'wp_block', 'wp_template' ],
-					'inserter'      => true,
-					'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
-					'name'          => 'my-new-pattern',
-				],
+				'my-new-pattern' => $this->get_expected_pattern(),
 			],
 			[
 				'my-new-pattern' => array_merge(
@@ -134,7 +128,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns_with_editor_links() {
 		$patterns = get_theme_patterns_with_editor_links();
 
-		$this->assertCount( 1, $patterns );
+		$this->assertCount( 1, array_values( $patterns ) );
 		$this->assertTrue(
 			array_key_exists(
 				'editorLink',
