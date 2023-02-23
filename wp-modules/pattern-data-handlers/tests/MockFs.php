@@ -77,7 +77,6 @@ class WP_Filesystem_MockFS extends WP_Filesystem_Base {
 				$this->put_contents( $path, 'This is a test file' );
 			}
 		}
-
 	}
 
 	/**
@@ -165,7 +164,6 @@ class WP_Filesystem_MockFS extends WP_Filesystem_Base {
 	}
 
 	public function dirlist( $path = '.', $include_hidden = true, $recursive = false ) {
-
 		if ( empty( $path ) || '.' === $path ) {
 			$path = $this->cwd();
 		}
