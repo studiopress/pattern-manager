@@ -28,6 +28,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
+		add_filter( 'request_filesystem_credentials', '__return_true' );
+
 		$actual_pattern = get_pattern_by_path( __DIR__ . '/fixtures/my-new-pattern.php' );
 		$this->assertSame(
 			[
