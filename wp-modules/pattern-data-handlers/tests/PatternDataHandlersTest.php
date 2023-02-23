@@ -28,23 +28,27 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
+		$actual_pattern = get_pattern_by_path( __DIR__ . '/fixtures/my-new-pattern.php' );
 		$this->assertSame(
 			[
-				'name'          => 'my-new-pattern',
 				'title'         => 'My New Pattern',
 				'slug'          => 'my-new-pattern',
 				'description'   => 'Here is a description',
-				'viewportWidth' => '1280',
+				'viewportWidth' => 1280,
 				'categories'    => [ 'contact', 'featured' ],
 				'keywords'      => [ 'example', 'music' ],
 				'blockTypes'    => [ 'core/gallery', 'core/media-text' ],
 				'postTypes'     => [ 'wp_block', 'wp_template' ],
 				'inserter'      => true,
-				'content'       => '<!-- wp:paragraph -->
-				<p>Here is some content</p>
-				<!-- /wp:paragraph -->',
+				'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
+				'name'          => 'my-new-pattern',
 			],
-			get_pattern_by_path( __DIR__ . '/fixtures/my-new-pattern.php' )
+			array_merge(
+				$actual_pattern,
+				[
+					'content' => $this->normalize( $actual_pattern['content'] ),
+				]
+			)
 		);
 	}
 
