@@ -56,6 +56,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents() {
+		add_filter( 'request_filesystem_credentials', '__return_true' );
+
 		$pattern_path = __DIR__ . '/fixtures/my-new-pattern.php';
 
 		ob_start();
