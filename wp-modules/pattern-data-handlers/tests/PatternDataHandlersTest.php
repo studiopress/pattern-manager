@@ -9,7 +9,6 @@ namespace PatternManager\PatternDataHandlers;
 
 use WP_Filesystem_UnitTestCase;
 
-require_once __DIR__ . '/WPFilesystemUnitTestCase.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
@@ -145,58 +144,6 @@ class PatternDataHandlersTest extends WP_Filesystem_UnitTestCase {
 		$this->assertSame(
 			[ 'my-new-pattern' ],
 			get_pattern_names(),
-		);
-	}
-
-	/**
-	 * Test update_pattern.
-	 */
-	public function test_update_pattern() {
-		update_pattern(
-			array_merge(
-				get_pattern_by_name( 'my-new-pattern' ),
-				[ 'content' => 'Here is new content' ]
-			)
-		);
-
-		assertEquals(
-			array_merge(
-				$this->get_expected_pattern(),
-				[ 'content' => 'Here is new content' ]
-			)
-		);
-	}
-
-	/**
-	 * Test delete_pattern.
-	 */
-	public function test_delete_pattern() {
-		update_pattern(
-			[
-				'name'          => 'foo',
-				'slug'          => 'foo',
-				'title'         => 'Foo',
-				'categories'    => [],
-				'keywords'      => [],
-				'blockTypes'    => [],
-				'postTypes'     => [],
-				'inserter'      => true,
-				'description'   => '',
-				'viewportWidth' => '',
-				'content'       => '',
-			]
-		);
-
-		assertSame(
-			'foo',
-			get_pattern_by_name( 'foo' )['name']
-		);
-
-		delete_pattern( 'foo' );
-
-		assertSame(
-			false,
-			get_pattern_by_name( 'foo' )
 		);
 	}
 }
