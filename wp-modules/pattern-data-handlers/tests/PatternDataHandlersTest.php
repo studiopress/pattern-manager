@@ -129,9 +129,24 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests get_theme_patterns_with_editor_links.
+	 */
+	public function test_get_theme_patterns_with_editor_links() {
+		$patterns = get_theme_patterns_with_editor_links();
+
+		$this->assertCount( 1, $patterns );
+		$this->assertTrue(
+			array_key_exists(
+				'editorLink',
+				$patterns['my-new-pattern']
+			)
+		);
+	}
+
+	/**
 	 * Test get_pattern_names.
 	 */
-	function test_get_pattern_names() {
+	public function test_get_pattern_names() {
 		$this->assertSame(
 			[ 'my-new-pattern' ],
 			get_pattern_names(),
