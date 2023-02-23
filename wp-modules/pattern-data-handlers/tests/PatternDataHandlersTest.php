@@ -100,9 +100,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns() {
 		$patterns = get_theme_patterns();
 
+		$this->assertCount( 1, $patterns );
 		$this->assertSame(
 			[
-				[
+				'my-new-pattern' => [
 					'title'         => 'My New Pattern',
 					'slug'          => 'my-new-pattern',
 					'description'   => 'Here is a description',
@@ -117,13 +118,23 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 				],
 			],
 			[
-				array_merge(
-					$patterns[0],
+				'my-new-pattern' => array_merge(
+					$patterns['my-new-pattern'],
 					[
-						'content' => $this->normalize( $patterns[0]['content'] ),
+						'content' => $this->normalize( $patterns['my-new-pattern']['content'] ),
 					],
 				),
 			]
+		);
+	}
+
+	/**
+	 * Test get_pattern_names.
+	 */
+	function test_get_pattern_names() {
+		$this->assertSame(
+			[ 'my-new-pattern' ],
+			get_pattern_names(),
 		);
 	}
 }
