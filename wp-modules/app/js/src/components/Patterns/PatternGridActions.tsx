@@ -1,5 +1,5 @@
 // WP dependencies
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { Icon, trash, copy, settings } from '@wordpress/icons';
 import { Button } from '@wordpress/components';
 
@@ -24,11 +24,11 @@ export default function PatternGridActions( { patternData }: Props ) {
 			<div className="item-actions-inside">
 				<Button
 					className="item-action-button"
-					aria-label={
-						__( 'Edit', 'pattern-manager' ) +
-						' ' +
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Edit %1$s', 'pattern-manager' ),
 						patternData.title
-					}
+					) }
 					href={ patternData.editorLink }
 				>
 					<Icon
@@ -46,11 +46,11 @@ export default function PatternGridActions( { patternData }: Props ) {
 				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={
-						__( 'Duplicate', 'pattern-manager' ) +
-						' ' +
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Duplicate %1$s', 'pattern-manager' ),
 						patternData.title
-					}
+					) }
 					href={ getAdminUrl( {
 						action: 'duplicate',
 						name: patternData.name,
@@ -71,11 +71,11 @@ export default function PatternGridActions( { patternData }: Props ) {
 				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={
-						__( 'Delete', 'pattern-manager' ) +
-						' ' +
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Delete %1$s', 'pattern-manager' ),
 						patternData.title
-					}
+					) }
 					onClick={ () => {
 						if (
 							/* eslint-disable no-alert */
