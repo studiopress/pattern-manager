@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace PatternManager\GetWpFilesystem;
 
-use WP_Filesystem;
 use WP_Filesystem_Base;
 
 // Exit if accessed directly.
