@@ -39,7 +39,7 @@ export default function PatternGrid( { themePatterns }: Props ) {
 							<div
 								key={ patternName }
 								className="grid-item"
-								aria-label={ patternName }
+								aria-label={ patternData.title }
 							>
 								<div className="item-inner">
 									<div className="item-pattern-preview">
