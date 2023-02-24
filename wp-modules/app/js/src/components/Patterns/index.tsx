@@ -59,7 +59,11 @@ export default function Patterns() {
 					</div>
 				) : (
 					<>
-						<div className="inner-sidebar">
+						<div
+							className="inner-sidebar"
+							role="region"
+							aria-label="Sort patterns by category"
+						>
 							<SearchControl
 								className="pattern-search"
 								label={ __(
@@ -86,7 +90,11 @@ export default function Patterns() {
 								/>
 							) }
 						</div>
-						<div className="inner-grid">
+						<div
+							className="inner-grid"
+							role="region"
+							aria-label="Block Patterns"
+						>
 							<PatternGrid themePatterns={ filteredPatterns } />
 						</div>
 					</>

@@ -18,6 +18,10 @@ export default function DescriptionPanel( {
 		>
 			<TextareaControl
 				id="patternmanager-pattern-editor-description-textarea"
+				aria-label={ __(
+					'Add Pattern Description',
+					'pattern-manager'
+				) }
 				help={ __(
 					'Optionally describe the pattern.',
 					'pattern-manager'

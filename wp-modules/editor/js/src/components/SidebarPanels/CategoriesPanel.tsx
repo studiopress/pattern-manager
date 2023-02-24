@@ -24,6 +24,10 @@ export default function CategoriesPanel( {
 					isMulti
 					isClearable
 					closeMenuOnSelect={ false }
+					aria-label={ __(
+						'Add Pattern Categories',
+						'pattern-manager'
+					) }
 					value={ postMeta?.categories?.map( ( category ) =>
 						categories.find(
 							( matchedCategory ) =>
