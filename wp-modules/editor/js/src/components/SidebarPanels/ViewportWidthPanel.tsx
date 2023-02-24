@@ -1,6 +1,8 @@
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
+import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
+import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps } from './types';
 import type { Pattern } from '../../types';
@@ -31,6 +33,14 @@ export default function ViewportWidthPanel( {
 				onChange={ ( value: Pattern[ 'viewportWidth' ] ) =>
 					handleChange( 'viewportWidth', value )
 				}
+			/>
+			<PatternPreview
+				url={
+					patternManager.siteUrl +
+					'?pm_pattern_preview=' +
+					postMeta.name
+				}
+				viewportWidth={ postMeta.viewportWidth }
 			/>
 		</PluginDocumentSettingPanel>
 	);
