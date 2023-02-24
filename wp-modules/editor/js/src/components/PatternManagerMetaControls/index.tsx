@@ -7,6 +7,7 @@ import {
 	TransformsPanel,
 	KeywordsPanel,
 	DescriptionPanel,
+	ViewportWidthPanel,
 } from '../SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
@@ -44,6 +45,10 @@ export default function PatternManagerMetaControls() {
 				handleChange={ updatePostMeta }
 			/>
 			<DescriptionPanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+			/>
+			<ViewportWidthPanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
 			/>
