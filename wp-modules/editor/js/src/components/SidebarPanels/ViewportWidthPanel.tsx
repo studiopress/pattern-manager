@@ -11,6 +11,8 @@ export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
 }: BaseSidebarProps ) {
+	const viewportWidth = postMeta.viewportWidth || 1280;
+
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-viewport-width"
@@ -28,11 +30,10 @@ export default function ViewportWidthPanel( {
 				min={ 640 }
 				max={ 2560 }
 				step={ 80 }
-				initialPosition={ 1280 } // Used if there is no value.
-				value={ postMeta.viewportWidth }
-				onChange={ ( value: Pattern[ 'viewportWidth' ] ) =>
-					handleChange( 'viewportWidth', value )
-				}
+				value={ viewportWidth }
+				onChange={ ( value: Pattern[ 'viewportWidth' ] ) => {
+					handleChange( 'viewportWidth', value );
+				} }
 			/>
 			<PatternPreview
 				url={
@@ -40,7 +41,7 @@ export default function ViewportWidthPanel( {
 					'?pm_pattern_preview=' +
 					postMeta.name
 				}
-				viewportWidth={ postMeta.viewportWidth }
+				viewportWidth={ viewportWidth }
 			/>
 		</PluginDocumentSettingPanel>
 	);
