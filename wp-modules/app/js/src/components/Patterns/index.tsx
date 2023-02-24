@@ -86,7 +86,7 @@ export default function Patterns() {
 								/>
 							) }
 						</div>
-						<div className="inner-grid">
+						<div className="inner-grid" aria-label="Block Patterns">
 							<PatternGrid themePatterns={ filteredPatterns } />
 						</div>
 					</>
