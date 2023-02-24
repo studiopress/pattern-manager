@@ -24,7 +24,11 @@ export default function PatternGridActions( { patternData }: Props ) {
 			<div className="item-actions-inside">
 				<Button
 					className="item-action-button"
-					aria-label={ __( 'Edit', 'pattern-manager' ) + ' ' + patternData.title }
+					aria-label={
+						__( 'Edit', 'pattern-manager' ) +
+						' ' +
+						patternData.title
+					}
 					href={ patternData.editorLink }
 				>
 					<Icon
@@ -42,7 +46,11 @@ export default function PatternGridActions( { patternData }: Props ) {
 				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={ __( 'Duplicate', 'pattern-manager' ) + ' ' + patternData.title }
+					aria-label={
+						__( 'Duplicate', 'pattern-manager' ) +
+						' ' +
+						patternData.title
+					}
 					href={ getAdminUrl( {
 						action: 'duplicate',
 						name: patternData.name,
@@ -63,7 +71,11 @@ export default function PatternGridActions( { patternData }: Props ) {
 				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={ __( 'Delete', 'pattern-manager' ) + ' ' + patternData.title }
+					aria-label={
+						__( 'Delete', 'pattern-manager' ) +
+						' ' +
+						patternData.title
+					}
 					onClick={ () => {
 						if (
 							/* eslint-disable no-alert */
