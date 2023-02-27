@@ -290,5 +290,13 @@ function get_simpler_pattern_name( $slug, $post_ID, $post_status, $post_type, $p
 		? sanitize_title( $original_slug ) // TODO: port convertToSlug() to PHP and make this like convertToSlug( $original_slug ).
 		: $slug;
 }
-
 add_filter( 'wp_unique_post_slug', __NAMESPACE__ . '\get_simpler_pattern_name', 10, 6 );
+
+function remove_pre_post_publish_panel( $editor_settings, $block_editor_context ) {
+	return
+		array_merge(
+			$editor_settings,
+			[ 'enablePostPublishSidebar' => false ],
+		);
+}
+add_filter( 'block_editor_settings_all', __NAMESPACE__ . '\remove_pre_post_publish_panel', 10 ,2 );

@@ -28,10 +28,11 @@ require_once trailingslashit( __DIR__ ) . 'model.php';
 function register_pattern_post_type() {
 	$post_type_key = get_pattern_post_type();
 	$labels        = array(
-		'name'          => __( 'Patterns', 'pattern-manager' ),
-		'singular_name' => __( 'Pattern', 'pattern-manager' ),
-		'add_new_item'  => __( 'Pattern Editor', 'pattern-manager' ),
-		'item_updated'  => __( 'Pattern saved to your theme directory', 'pattern-manager' ),
+		'name'           => __( 'Patterns', 'pattern-manager' ),
+		'singular_name'  => __( 'Pattern', 'pattern-manager' ),
+		'add_new_item'   => __( 'Pattern Editor', 'pattern-manager' ),
+		'item_published' => __( 'Pattern created', 'pattern-manager' ),
+		'item_updated'   => __( 'Pattern saved to your theme directory', 'pattern-manager' ),
 	);
 
 	register_post_type(
