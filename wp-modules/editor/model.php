@@ -55,7 +55,7 @@ function save_pattern_to_file( WP_Post $post ) {
 
 	update_pattern(
 		array_merge(
-			$pattern ? $pattern: [],
+			$pattern ? $pattern : [],
 			[
 				'content' => $post->post_content,
 				'title'   => $post->post_title,
