@@ -49,9 +49,7 @@ export default function TitlePanel( {
 				) }
 				value={ title }
 				onChange={ ( newTitle: PostMeta[ 'title' ] ) => {
-					editPost( {
-						title: newTitle,
-					} );
+					editPost( { title: newTitle } );
 					handleChange( 'name', convertToSlug( newTitle ) );
 
 					if ( ! newTitle ) {
