@@ -7,7 +7,7 @@ import { Button } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import getAdminUrl from '../../utils/getAdminUrl';
+import { patternManager } from '../../globals';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 export default function Header() {
@@ -27,9 +27,7 @@ export default function Header() {
 			<div className="header-container-inner">
 				<Button
 					variant="primary"
-					href={ getAdminUrl( {
-						action: 'create-new',
-					} ) }
+					href={ `${ patternManager.siteUrl }/wp-admin/post-new.php?post_type=pm_pattern` }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }
 				</Button>

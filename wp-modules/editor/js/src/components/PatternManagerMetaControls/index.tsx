@@ -15,7 +15,7 @@ import { patternManager } from '../../globals';
 import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
-	const { postMeta } = usePostData();
+	const { postMeta, title } = usePostData();
 	const [ patternNames, setPatternNames ] = useState(
 		patternManager.patternNames.filter( ( name ) => {
 			return name !== postMeta.name;
@@ -31,6 +31,7 @@ export default function PatternManagerMetaControls() {
 		<div>
 			<TitlePanel
 				postMeta={ postMeta }
+				title={ title }
 				handleChange={ updatePostMeta }
 				patternNames={ patternNames }
 			/>
