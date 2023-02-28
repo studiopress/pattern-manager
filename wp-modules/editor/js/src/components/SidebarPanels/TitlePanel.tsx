@@ -11,7 +11,6 @@ import convertToSlug from '../../utils/convertToSlug';
 
 import type { BaseSidebarProps } from './types';
 import type { Pattern, PostMeta } from '../../types';
-import usePatternData from '../../hooks/usePatternData';
 
 function isTitleTaken(
 	patternTitle: string,
