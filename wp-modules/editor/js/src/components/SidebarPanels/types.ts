@@ -15,6 +15,5 @@ export type AdditionalSidebarProps = {
 	blockTypes: ReturnType< typeof usePatternData >[ 'blockTypes' ];
 	categories: ReturnType< typeof usePatternData >[ 'categories' ];
 	postTypes: ReturnType< typeof usePatternData >[ 'postTypes' ];
-	isSavingPost: ReturnType< typeof useSave >[ 'isSavingPost' ];
 	isPostSavingLocked: ReturnType< typeof useSave >[ 'isPostSavingLocked' ];
 };

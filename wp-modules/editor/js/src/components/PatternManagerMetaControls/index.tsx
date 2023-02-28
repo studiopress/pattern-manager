@@ -23,7 +23,7 @@ export default function PatternManagerMetaControls() {
 		} )
 	);
 
-	const { isSavingPost, isPostSavingLocked } = useSave( setPatternNames );
+	const { isPostSavingLocked } = useSave( setPatternNames );
 
 	const { postTypes, categories, blockTypes, updatePostMeta } =
 		usePatternData( postMeta );
@@ -51,7 +51,6 @@ export default function PatternManagerMetaControls() {
 			<ViewportWidthPanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
-				isSavingPost={ isSavingPost }
 				isPostSavingLocked={ isPostSavingLocked }
 			/>
 			<PostTypesPanel

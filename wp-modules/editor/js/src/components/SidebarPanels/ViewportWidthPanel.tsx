@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
-import { useState, useMemo } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
@@ -7,17 +8,18 @@ import PatternPreview from '../../../../../app/js/src/components/PatternPreview'
 import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
-import type { Pattern } from '../../types';
+import type { Pattern, SelectQuery } from '../../types';
 
 export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
-	isSavingPost,
 	isPostSavingLocked,
 }: BaseSidebarProps &
-	Pick< AdditionalSidebarProps, 'isSavingPost' | 'isPostSavingLocked' > ) {
+	Pick< AdditionalSidebarProps, 'isPostSavingLocked' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
-	const savedPatternName = useMemo( () => postMeta.name, [ isSavingPost ] );
+	const savedPatternName = useSelect( ( select: SelectQuery ) => {
+		return select( 'core/editor' ).getCurrentPostAttribute( 'meta' )?.name;
+	}, [] );
 	const viewportWidth = postMeta.viewportWidth || 1280;
 
 	return (
