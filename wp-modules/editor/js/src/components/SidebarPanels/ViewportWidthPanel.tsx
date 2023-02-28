@@ -1,16 +1,24 @@
 import { __ } from '@wordpress/i18n';
+import { useSelect } from '@wordpress/data';
+import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
+import { RichText } from '@wordpress/block-editor';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import { patternManager } from '../../globals';
 
-import type { BaseSidebarProps } from './types';
-import type { Pattern } from '../../types';
+import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
+import type { Pattern, SelectQuery } from '../../types';
 
 export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
-}: BaseSidebarProps ) {
+	errorMessage,
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'errorMessage' > ) {
+	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
+	const savedPatternName = useSelect( ( select: SelectQuery ) => {
+		return select( 'core/editor' ).getCurrentPostAttribute( 'meta' )?.name;
+	}, [] );
 	const viewportWidth = postMeta.viewportWidth || 1280;
 
 	return (
@@ -34,15 +42,27 @@ export default function ViewportWidthPanel( {
 				onChange={ ( value: Pattern[ 'viewportWidth' ] ) => {
 					handleChange( 'viewportWidth', value );
 				} }
+				onMouseMove={ () => setPreviewIsVisible( true ) }
+				onMouseLeave={ () => setPreviewIsVisible( false ) }
 			/>
-			<PatternPreview
-				url={
-					patternManager.siteUrl +
-					'?pm_pattern_preview=' +
-					postMeta.name
-				}
-				viewportWidth={ viewportWidth }
-			/>
+
+			{ previewIsVisible &&
+				( !! errorMessage ? (
+					<RichText.Content
+						tagName="span"
+						className="components-panel__row-patternmanager-pattern-name-error-inner"
+						value={ errorMessage }
+					/>
+				) : (
+					<PatternPreview
+						url={
+							patternManager.siteUrl +
+							'?pm_pattern_preview=' +
+							savedPatternName
+						}
+						viewportWidth={ viewportWidth }
+					/>
+				) ) }
 		</PluginDocumentSettingPanel>
 	);
 }

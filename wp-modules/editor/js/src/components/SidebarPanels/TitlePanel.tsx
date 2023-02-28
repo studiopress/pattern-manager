@@ -1,14 +1,13 @@
 import { speak } from '@wordpress/a11y';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
 import convertToSlug from '../../utils/convertToSlug';
 
-import type { BaseSidebarProps } from './types';
+import type { AdditionalSidebarProps, BaseSidebarProps } from './types';
 import type { Pattern, PostMeta } from '../../types';
 
 function isTitleTaken(
@@ -23,10 +22,14 @@ function isTitleTaken(
 export default function TitlePanel( {
 	postMeta,
 	handleChange,
+	errorMessage,
+	setErrorMessage,
 	patternNames,
-}: BaseSidebarProps & { patternNames: Array< Pattern[ 'name' ] > } ) {
+}: BaseSidebarProps &
+	Pick< AdditionalSidebarProps, 'errorMessage' | 'setErrorMessage' > & {
+		patternNames: Array< Pattern[ 'name' ] >;
+	} ) {
 	const { lockPostSaving, unlockPostSaving } = useDispatch( 'core/editor' );
-	const [ errorMessage, setErrorMessage ] = useState( '' );
 
 	return (
 		<PluginDocumentSettingPanel

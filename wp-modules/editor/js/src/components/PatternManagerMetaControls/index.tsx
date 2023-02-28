@@ -17,6 +17,7 @@ import usePostData from '../../hooks/usePostData';
 
 export default function PatternManagerMetaControls() {
 	const { postMeta } = usePostData();
+	const [ errorMessage, setErrorMessage ] = useState( '' );
 	const [ patternNames, setPatternNames ] = useState(
 		patternManager.patternNames.filter( ( name ) => {
 			return name !== postMeta.name;
@@ -33,6 +34,8 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
+				errorMessage={ errorMessage }
+				setErrorMessage={ setErrorMessage }
 				patternNames={ patternNames }
 			/>
 			<CategoriesPanel
@@ -51,6 +54,7 @@ export default function PatternManagerMetaControls() {
 			<ViewportWidthPanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
+				errorMessage={ errorMessage }
 			/>
 			<PostTypesPanel
 				postMeta={ postMeta }

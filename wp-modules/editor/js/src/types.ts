@@ -26,6 +26,7 @@ export type SelectQuery = ( dataStore: string ) => {
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 	getNotices: () => { id: string }[];
 	isSavingPost: () => boolean;
+	getCurrentPostAttribute: ( attributeName: 'meta' ) => PostMeta;
 };
 
 export type Pattern = {
