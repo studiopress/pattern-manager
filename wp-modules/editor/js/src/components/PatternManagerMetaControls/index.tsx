@@ -7,6 +7,7 @@ import {
 	TransformsPanel,
 	KeywordsPanel,
 	DescriptionPanel,
+	ViewportWidthPanel,
 } from '../SidebarPanels';
 
 import usePatternData from '../../hooks/usePatternData';
@@ -16,6 +17,7 @@ import useEditedPostData from '../../hooks/useEditedPostData';
 
 export default function PatternManagerMetaControls() {
 	const { postMeta, title } = useEditedPostData();
+	const [ errorMessage, setErrorMessage ] = useState( '' );
 	const [ patternNames, setPatternNames ] = useState(
 		patternManager.patternNames.filter( ( name ) => {
 			return name !== postMeta.name;
@@ -32,6 +34,8 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
+				errorMessage={ errorMessage }
+				setErrorMessage={ setErrorMessage }
 				patternNames={ patternNames }
 				title={ title }
 			/>
@@ -47,6 +51,11 @@ export default function PatternManagerMetaControls() {
 			<DescriptionPanel
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
+			/>
+			<ViewportWidthPanel
+				postMeta={ postMeta }
+				handleChange={ updatePostMeta }
+				errorMessage={ errorMessage }
 			/>
 			<PostTypesPanel
 				postMeta={ postMeta }

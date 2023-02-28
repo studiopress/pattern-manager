@@ -10,7 +10,7 @@ export type PostMeta = {
 	categories: string[];
 	keywords: string[];
 	inserter: boolean;
-	viewportWidth: string | number;
+	viewportWidth: number;
 };
 
 export type SelectQuery = ( dataStore: string ) => {
@@ -26,6 +26,7 @@ export type SelectQuery = ( dataStore: string ) => {
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 	getNotices: () => { id: string }[];
 	isSavingPost: () => boolean;
+	getCurrentPostAttribute: ( attributeName: 'meta' ) => PostMeta;
 };
 
 export type Pattern = {
@@ -39,7 +40,7 @@ export type Pattern = {
 	blockTypes?: string[];
 	postTypes?: string[];
 	inserter?: boolean;
-	viewportWidth?: string | number;
+	viewportWidth?: number;
 };
 
 export type Patterns = {
