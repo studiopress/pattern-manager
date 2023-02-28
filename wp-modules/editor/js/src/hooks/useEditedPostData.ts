@@ -2,12 +2,13 @@ import { useSelect } from '@wordpress/data';
 import { store as editorStore } from '@wordpress/editor';
 import { PostMeta, SelectQuery } from '../types';
 
-type UsePostData = {
+type UseEditedPostData = {
 	postMeta: PostMeta;
 	title: string;
 };
 
-export default function usePostData(): UsePostData {
+export default function useEditedPostData(): UseEditedPostData {
+	// @ts-expect-error the @wordpress/editor store isn't typed.
 	return {
 		...useSelect(
 			( select: SelectQuery ) => ( {
