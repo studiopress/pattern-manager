@@ -207,7 +207,6 @@ function redirect_pattern_actions() {
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => get_pattern_post_type(),
-				'post_title'  => $new_pattern['title'],
 				'post_name'   => $new_pattern['name'],
 				'post_status' => 'publish',
 			]
