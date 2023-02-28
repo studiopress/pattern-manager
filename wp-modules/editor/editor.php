@@ -54,16 +54,6 @@ function register_pattern_post_type() {
 
 	register_post_meta(
 		$post_type_key,
-		'type',
-		array(
-			'show_in_rest' => true,
-			'single'       => true,
-			'type'         => 'string',
-		)
-	);
-
-	register_post_meta(
-		$post_type_key,
 		'name',
 		array(
 			'show_in_rest' => true,
