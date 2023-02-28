@@ -1,5 +1,5 @@
 import usePatternData from '../../hooks/usePatternData';
-import { PostMeta } from '../../types';
+import { Pattern, PostMeta } from '../../types';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -17,6 +17,7 @@ export type AdditionalSidebarProps = {
 	categories: ReturnType< typeof usePatternData >[ 'categories' ];
 	postTypes: ReturnType< typeof usePatternData >[ 'postTypes' ];
 	errorMessage: string;
+	patternNames: Array< Pattern[ 'name' ] >;
 	setErrorMessage: Dispatch< SetStateAction< string > >;
 	title: string;
 };

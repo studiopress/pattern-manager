@@ -30,10 +30,8 @@ export default function TitlePanel( {
 }: BaseSidebarProps &
 	Pick<
 		AdditionalSidebarProps,
-		'errorMessage' | 'setErrorMessage' | 'title'
-	> & {
-		patternNames: Array< Pattern[ 'name' ] >;
-	} ) {
+		'errorMessage' | 'patternNames' | 'setErrorMessage' | 'title'
+	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( editorStore );
 
