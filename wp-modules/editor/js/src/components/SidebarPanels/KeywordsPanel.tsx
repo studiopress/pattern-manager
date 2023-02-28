@@ -25,6 +25,7 @@ export default function KeywordsPanel( {
 					DropdownIndicator: null,
 				} }
 				inputValue={ keywordInputValue }
+				aria-label={ __( 'Add Pattern Keywords', 'pattern-manager' ) }
 				isClearable
 				isMulti
 				menuIsOpen={ false }

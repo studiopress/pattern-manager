@@ -1,6 +1,7 @@
 // WP dependencies
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { Icon, trash, copy, settings } from '@wordpress/icons';
+import { Button } from '@wordpress/components';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
@@ -21,9 +22,13 @@ export default function PatternGridActions( { patternData }: Props ) {
 	return (
 		<div className="item-actions">
 			<div className="item-actions-inside">
-				<a
+				<Button
 					className="item-action-button"
-					aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Edit %1$s', 'pattern-manager' ),
+						patternData.title
+					) }
 					href={ patternData.editorLink }
 				>
 					<Icon
@@ -34,14 +39,18 @@ export default function PatternGridActions( { patternData }: Props ) {
 					<span className="item-action-button-text">
 						{ __( 'Edit', 'pattern-manager' ) }
 					</span>
-				</a>
+				</Button>
 
 				<div className="item-action-button-separator"></div>
 
-				<a
+				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Duplicate %1$s', 'pattern-manager' ),
+						patternData.title
+					) }
 					href={ getAdminUrl( {
 						action: 'duplicate',
 						name: patternData.name,
@@ -55,14 +64,18 @@ export default function PatternGridActions( { patternData }: Props ) {
 					<span className="item-action-button-text">
 						{ __( 'Duplicate', 'pattern-manager' ) }
 					</span>
-				</a>
+				</Button>
 
 				<div className="item-action-button-separator"></div>
 
-				<button
+				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Delete %1$s', 'pattern-manager' ),
+						patternData.title
+					) }
 					onClick={ () => {
 						if (
 							/* eslint-disable no-alert */
@@ -83,7 +96,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 						size={ 30 }
 					/>
 					<span className="item-action-button-text">Delete</span>
-				</button>
+				</Button>
 			</div>
 		</div>
 	);
