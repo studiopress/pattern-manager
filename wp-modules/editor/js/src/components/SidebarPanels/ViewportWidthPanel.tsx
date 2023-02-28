@@ -14,8 +14,7 @@ export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
 	isPostSavingLocked,
-}: BaseSidebarProps &
-	Pick< AdditionalSidebarProps, 'isPostSavingLocked' > ) {
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'isPostSavingLocked' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
 	const savedPatternName = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).getCurrentPostAttribute( 'meta' )?.name;
