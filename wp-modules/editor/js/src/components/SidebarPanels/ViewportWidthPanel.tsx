@@ -27,10 +27,7 @@ export default function ViewportWidthPanel( {
 			title={ __( 'Viewport Width', 'pattern-manager' ) }
 		>
 			<RangeControl
-				label={ __(
-					'Preview width in pixels',
-					'pattern-manager'
-				) }
+				label={ __( 'Preview width in pixels', 'pattern-manager' ) }
 				hideLabelFromVision={ true }
 				help={ __(
 					'Adjust preview width for the pattern.',
