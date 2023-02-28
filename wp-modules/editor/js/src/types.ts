@@ -14,7 +14,7 @@ export type PostMeta = {
 };
 
 export type SelectQuery = ( dataStore: string ) => {
-	getEditedPostAttribute: ( postAttribute: string ) => any;
+	getEditedPostAttribute: ( postAttribute: string ) => unknown;
 	getEditedPostContent: () => string;
 	isEditedPostDirty: () => boolean;
 	getPostTypes: ( {
