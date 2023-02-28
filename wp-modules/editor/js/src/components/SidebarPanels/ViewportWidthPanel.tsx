@@ -27,10 +27,11 @@ export default function ViewportWidthPanel( {
 			title={ __( 'Viewport Width', 'pattern-manager' ) }
 		>
 			<RangeControl
-				aria-label={ __(
-					'Viewport Width Adjustment Slider (used for resizing the preview for the pattern)',
+				label={ __(
+					'Preview width in pixels',
 					'pattern-manager'
 				) }
+				hideLabelFromVision={ true }
 				help={ __(
 					'Adjust preview width for the pattern.',
 					'pattern-manager'
