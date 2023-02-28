@@ -259,6 +259,11 @@ add_action( 'after_switch_theme', __NAMESPACE__ . '\delete_pattern_posts' );
 /**
  * Gets the title for a new pattern post.
  *
+ * For posts of type 'post', it's fine if the title is empty.
+ * But the title of a pattern is important,
+ * as the file name is a slug of that title.
+ * It must be unique.
+ *
  * @param string $post_title The post title.
  * @param WP_Post $post The post.
  * @return string
@@ -269,25 +274,3 @@ function get_default_title( $post_title, $post ) {
 		: $post_title;
 }
 add_filter( 'default_title', __NAMESPACE__ . '\get_default_title', 10, 2 );
-
-/**
- * Overrides the longer ->post_name that WP gives a pattern.
- *
- * The ->post_name is where we store the pattern name.
- * So it needs to be in sync with the ->post_title.
- * It can't be something like foo-4 if the title is 'Foo'.
- *
- * @param string $slug          The post slug.
- * @param int    $post_ID       Post ID.
- * @param string $post_status   The post status.
- * @param string $post_type     Post type.
- * @param int    $post_parent   Post parent ID
- * @param string $original_slug The original post slug.
- * @return string The simpler pattern name.
- */
-function get_simpler_pattern_name( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
-	return get_pattern_post_type() === $post_type
-		? sanitize_title( $original_slug ) // TODO: port convertToSlug() to PHP and make this like convertToSlug( $original_slug ).
-		: $slug;
-}
-add_filter( 'wp_unique_post_slug', __NAMESPACE__ . '\get_simpler_pattern_name', 10, 6 );
