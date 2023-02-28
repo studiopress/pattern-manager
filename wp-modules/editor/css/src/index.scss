@@ -9,10 +9,8 @@
 	display: none !important;
 }
 
-/* TODO: prevent pre-publish pattern from opening. */
 /* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
-button.components-button.editor-post-save-draft.is-tertiary,
-[aria-label="Save draft"] {
+button.components-button.editor-post-save-draft.is-tertiary {
 	display: none;
 }
 
