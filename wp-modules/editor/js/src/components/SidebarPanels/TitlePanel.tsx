@@ -1,6 +1,7 @@
 import { speak } from '@wordpress/a11y';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { store as editorStore } from '@wordpress/editor';
 import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
@@ -33,7 +34,7 @@ export default function TitlePanel( {
 	title,
 }: Props ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
-		useDispatch( 'core/editor' );
+		useDispatch( editorStore );
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 
 	return (

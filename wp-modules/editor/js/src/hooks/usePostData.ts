@@ -1,15 +1,19 @@
 import { useSelect } from '@wordpress/data';
-import { SelectQuery } from '../types';
+import { store as editorStore } from '@wordpress/editor';
+import { PostMeta, SelectQuery } from '../types';
 
-export default function usePostData() {
+type UsePostData = {
+	postMeta: PostMeta;
+	title: string;
+};
+
+export default function usePostData(): UsePostData {
 	return {
 		...useSelect(
 			( select: SelectQuery ) => ( {
 				postMeta:
-					select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
-				title: select( 'core/editor' ).getEditedPostAttribute(
-					'title'
-				),
+					select( editorStore ).getEditedPostAttribute( 'meta' ),
+				title: select( editorStore ).getEditedPostAttribute( 'title' ),
 			} ),
 			[]
 		),
