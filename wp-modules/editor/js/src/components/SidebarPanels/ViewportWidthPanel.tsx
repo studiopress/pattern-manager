@@ -47,7 +47,7 @@ export default function ViewportWidthPanel( {
 			/>
 
 			{ previewIsVisible &&
-				( errorMessage ? (
+				( !! errorMessage ? (
 					<RichText.Content
 						tagName="span"
 						className="components-panel__row-patternmanager-pattern-name-error-inner"
