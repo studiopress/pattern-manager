@@ -265,7 +265,7 @@ add_action( 'after_switch_theme', __NAMESPACE__ . '\delete_pattern_posts' );
  */
 function get_default_title( $post_title, $post ) {
 	return isset( $post->post_type ) && get_pattern_post_type() === $post->post_type
-		? get_new_pattern( get_theme_patterns() )['title']
+		? get_new_pattern_title( get_theme_patterns() )
 		: $post_title;
 }
 add_filter( 'default_title', __NAMESPACE__ . '\get_default_title', 10, 2 );
