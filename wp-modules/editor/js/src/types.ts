@@ -27,6 +27,7 @@ export type SelectQuery = ( dataStore: string ) => {
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 	getNotices: () => { id: string }[];
 	isSavingPost: () => boolean;
+	isPostSavingLocked: () => boolean;
 };
 
 export type Pattern = {
