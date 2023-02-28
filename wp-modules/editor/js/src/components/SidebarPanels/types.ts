@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction } from 'React';
 import usePatternData from '../../hooks/usePatternData';
 import { PostMeta } from '../../types';
+
+import type { Dispatch, SetStateAction } from 'react';
 
 export type PatternEditorSidebarProps = {
 	postMeta: PostMeta;
