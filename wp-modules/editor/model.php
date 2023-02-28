@@ -291,11 +291,11 @@ add_filter( 'default_title', __NAMESPACE__ . '\get_default_title', 10, 2 );
  * @param string $post_type     Post type.
  * @param int    $post_parent   Post parent ID
  * @param string $original_slug The original post slug.
- * @return string The simpler pattern name.
+ * @return string The slug.
  */
-function get_simpler_pattern_name( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
+function short_circuit_unique_slug( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
 	return get_pattern_post_type() === $post_type
 		? $original_slug
 		: $slug;
 }
-add_filter( 'wp_unique_post_slug', __NAMESPACE__ . '\get_simpler_pattern_name', 10, 6 );
+add_filter( 'wp_unique_post_slug', __NAMESPACE__ . '\short_circuit_unique_slug', 10, 6 );
