@@ -13,8 +13,8 @@ import type { Pattern, SelectQuery } from '../../types';
 export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
-	isPostSavingLocked,
-}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'isPostSavingLocked' > ) {
+	errorMessage,
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'errorMessage' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
 	const savedPatternName = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).getCurrentPostAttribute( 'meta' )?.name;
@@ -47,14 +47,11 @@ export default function ViewportWidthPanel( {
 			/>
 
 			{ previewIsVisible &&
-				( isPostSavingLocked ? (
+				( errorMessage ? (
 					<RichText.Content
 						tagName="span"
 						className="components-panel__row-patternmanager-pattern-name-error-inner"
-						value={ __(
-							'Please update the pattern title.',
-							'pattern-manager'
-						) }
+						value={ errorMessage }
 					/>
 				) : (
 					<PatternPreview

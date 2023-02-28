@@ -1,5 +1,5 @@
+import { Dispatch, SetStateAction } from 'React';
 import usePatternData from '../../hooks/usePatternData';
-import useSave from '../../hooks/useSave';
 import { PostMeta } from '../../types';
 
 export type PatternEditorSidebarProps = {
@@ -15,5 +15,6 @@ export type AdditionalSidebarProps = {
 	blockTypes: ReturnType< typeof usePatternData >[ 'blockTypes' ];
 	categories: ReturnType< typeof usePatternData >[ 'categories' ];
 	postTypes: ReturnType< typeof usePatternData >[ 'postTypes' ];
-	isPostSavingLocked: ReturnType< typeof useSave >[ 'isPostSavingLocked' ];
+	errorMessage: string;
+	setErrorMessage: Dispatch< SetStateAction< string > >;
 };

@@ -7,16 +7,9 @@ import type { Pattern, SelectQuery } from '../types';
 export default function useSave(
 	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
 ) {
-	const { isSavingPost, isPostSavingLocked } = useSelect(
-		( select: SelectQuery ) => {
-			return {
-				isSavingPost: select( 'core/editor' ).isSavingPost(),
-				isPostSavingLocked:
-					select( 'core/editor' ).isPostSavingLocked(),
-			};
-		},
-		[]
-	);
+	const isSavingPost = useSelect( ( select: SelectQuery ) => {
+		return select( 'core/editor' ).isSavingPost();
+	}, [] );
 
 	useEffect( () => {
 		if ( isSavingPost ) {
@@ -38,9 +31,4 @@ export default function useSave(
 			setPatternNames( data.patternNames );
 		}
 	}
-
-	return {
-		isSavingPost,
-		isPostSavingLocked,
-	};
 }
