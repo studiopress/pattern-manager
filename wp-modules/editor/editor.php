@@ -90,6 +90,16 @@ function register_pattern_post_type() {
 		)
 	);
 
+	register_post_meta(
+		$post_type_key,
+		'viewportWidth',
+		array(
+			'show_in_rest' => true,
+			'single'       => true,
+			'type'         => 'number',
+		)
+	);
+
 	/**
 	 * Add blockTypes array post meta.
 	 *

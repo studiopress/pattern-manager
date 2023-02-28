@@ -10,7 +10,7 @@ export type PostMeta = {
 	categories: string[];
 	keywords: string[];
 	inserter: boolean;
-	viewportWidth: string | number;
+	viewportWidth: number;
 };
 
 export type SelectQuery = ( dataStore: string ) => {
@@ -39,7 +39,7 @@ export type Pattern = {
 	blockTypes?: string[];
 	postTypes?: string[];
 	inserter?: boolean;
-	viewportWidth?: string | number;
+	viewportWidth?: number;
 };
 
 export type Patterns = {
