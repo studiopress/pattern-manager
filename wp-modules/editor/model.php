@@ -58,7 +58,6 @@ function save_pattern_to_file( WP_Post $post ) {
 			$pattern ? $pattern : [],
 			[
 				'content' => $post->post_content,
-				'title'   => $post->post_title,
 				'name'    => $post->post_name,
 			],
 			$post->post_title
@@ -261,7 +260,7 @@ add_action( 'after_switch_theme', __NAMESPACE__ . '\delete_pattern_posts' );
  * For posts of type 'post', it's fine if the title is empty.
  * But the title of a pattern is important,
  * as the file name is a slug of that title.
- * It must be unique.
+ * And it must be unique.
  *
  * @param string $post_title The post title.
  * @param WP_Post $post The post.
