@@ -211,7 +211,6 @@ function redirect_pattern_actions() {
 				'post_title'   => $new_pattern['title'],
 				'post_name'    => $new_pattern['name'],
 				'post_status'  => 'publish',
-				'post_content' => '',
 			]
 		);
 

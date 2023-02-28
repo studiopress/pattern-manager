@@ -1,6 +1,6 @@
 import '../../css/src/index.scss';
-import { store as editorStore } from '@wordpress/editor';
 import { dispatch } from '@wordpress/data';
+import { store as editorStore } from '@wordpress/editor';
 import { addAction, addFilter } from '@wordpress/hooks';
 import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
