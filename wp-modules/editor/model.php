@@ -17,11 +17,11 @@ use function PatternManager\PatternDataHandlers\delete_pattern;
 use function PatternManager\PatternDataHandlers\update_pattern;
 
 /**
- * Gets the pattern content from the file, instead of from the post content.
+ * Gets the pattern content and title from the PHP file.
  *
  * @param WP_Post $post The post to possibly add content to.
  */
-function get_pattern_content_from_file( $post ) {
+function populate_pattern_from_file( $post ) {
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
@@ -38,7 +38,7 @@ function get_pattern_content_from_file( $post ) {
 	$post->post_content = $pattern['content'];
 	$post->post_title   = $pattern['title'];
 }
-add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
+add_action( 'the_post', __NAMESPACE__ . '\populate_pattern_from_file' );
 
 /**
  * Saves the pattern to the .php file.
