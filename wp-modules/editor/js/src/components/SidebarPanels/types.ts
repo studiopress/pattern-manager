@@ -18,4 +18,5 @@ export type AdditionalSidebarProps = {
 	postTypes: ReturnType< typeof usePatternData >[ 'postTypes' ];
 	errorMessage: string;
 	setErrorMessage: Dispatch< SetStateAction< string > >;
+	title: string;
 };
