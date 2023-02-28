@@ -274,3 +274,27 @@ function get_default_title( $post_title, $post ) {
 		: $post_title;
 }
 add_filter( 'default_title', __NAMESPACE__ . '\get_default_title', 10, 2 );
+
+/**
+ * Prevents WP from giving a longer ->post_name to a pattern.
+ *
+ * On renaming a pattern, sometimes WP adds a number
+ * to the ->post_name in order to be unique.
+ * It can change 'example-pattern' to 'example-pattern-1'.
+ * The ->post_name is where we store the pattern name.
+ * So it needs to be in sync with the ->post_title.
+ * It can't be 'example-pattern-1' if the title is 'Example Pattern'.
+ *
+ * @param string $slug          The post slug.
+ * @param int    $post_ID       Post ID.
+ * @param string $post_status   The post status.
+ * @param string $post_type     Post type.
+ * @param int    $post_parent   Post parent ID
+ * @param string $original_slug The original post slug.
+ * @return string The simpler pattern name.
+ */
+function get_simpler_pattern_name( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
+	return get_pattern_post_type() === $post_type
+		? $original_slug
+		: $slug;
+}
