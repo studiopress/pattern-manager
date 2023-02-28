@@ -6,11 +6,9 @@ import { Button } from '@wordpress/components';
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
 
-// Utils
-import getAdminUrl from '../../utils/getAdminUrl';
-
 // Types
 import type { Pattern } from '../../types';
+import { patternManager } from '../../globals';
 
 type Props = {
 	patternData: Pattern;
@@ -51,10 +49,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 						__( 'Duplicate %1$s', 'pattern-manager' ),
 						patternData.title
 					) }
-					href={ getAdminUrl( {
-						action: 'duplicate',
-						name: patternData.name,
-					} ) }
+					href={ `${ patternManager.siteUrl }/wp-admin/admin.php?post_type=pm_pattern&action=duplicate&name=${ patternData.name }` }
 				>
 					<Icon
 						className="item-action-icon"
