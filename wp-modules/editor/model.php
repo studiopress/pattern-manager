@@ -298,3 +298,4 @@ function get_simpler_pattern_name( $slug, $post_ID, $post_status, $post_type, $p
 		? $original_slug
 		: $slug;
 }
+add_filter( 'wp_unique_post_slug', __NAMESPACE__ . '\get_simpler_pattern_name', 10, 6 );
