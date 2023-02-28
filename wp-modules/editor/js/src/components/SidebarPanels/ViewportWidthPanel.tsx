@@ -1,16 +1,23 @@
 import { __ } from '@wordpress/i18n';
+import { useState, useMemo } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
+import { RichText } from '@wordpress/block-editor';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import { patternManager } from '../../globals';
 
-import type { BaseSidebarProps } from './types';
+import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 import type { Pattern } from '../../types';
 
 export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
-}: BaseSidebarProps ) {
+	isSavingPost,
+	isPostSavingLocked,
+}: BaseSidebarProps &
+	Pick< AdditionalSidebarProps, 'isSavingPost' | 'isPostSavingLocked' > ) {
+	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
+	const savedPatternName = useMemo( () => postMeta.name, [ isSavingPost ] );
 	const viewportWidth = postMeta.viewportWidth || 1280;
 
 	return (
@@ -34,15 +41,27 @@ export default function ViewportWidthPanel( {
 				onChange={ ( value: Pattern[ 'viewportWidth' ] ) => {
 					handleChange( 'viewportWidth', value );
 				} }
+				onMouseMove={ () => setPreviewIsVisible( true ) }
+				onMouseLeave={ () => setPreviewIsVisible( false ) }
 			/>
-			<PatternPreview
-				url={
-					patternManager.siteUrl +
-					'?pm_pattern_preview=' +
-					postMeta.name
-				}
-				viewportWidth={ viewportWidth }
-			/>
+
+			{ previewIsVisible &&
+				( ! isPostSavingLocked ? (
+					<PatternPreview
+						url={
+							patternManager.siteUrl +
+							'?pm_pattern_preview=' +
+							savedPatternName
+						}
+						viewportWidth={ viewportWidth }
+					/>
+				) : (
+					<RichText.Content
+						tagName="span"
+						className="components-panel__row-patternmanager-pattern-name-error-inner"
+						value={ 'Please update the pattern title.' }
+					/>
+				) ) }
 		</PluginDocumentSettingPanel>
 	);
 }
