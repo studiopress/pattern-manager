@@ -12,10 +12,10 @@ import {
 import usePatternData from '../../hooks/usePatternData';
 import useSave from '../../hooks/useSave';
 import { patternManager } from '../../globals';
-import usePostData from '../../hooks/usePostData';
+import useEditedPostData from '../../hooks/useEditedPostData';
 
 export default function PatternManagerMetaControls() {
-	const { postMeta, title } = usePostData();
+	const { postMeta, title } = useEditedPostData();
 	const [ patternNames, setPatternNames ] = useState(
 		patternManager.patternNames.filter( ( name ) => {
 			return name !== postMeta.name;
