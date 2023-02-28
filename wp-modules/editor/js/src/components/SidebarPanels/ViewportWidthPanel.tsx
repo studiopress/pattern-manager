@@ -46,7 +46,13 @@ export default function ViewportWidthPanel( {
 			/>
 
 			{ previewIsVisible &&
-				( ! isPostSavingLocked ? (
+				( isPostSavingLocked ? (
+					<RichText.Content
+						tagName="span"
+						className="components-panel__row-patternmanager-pattern-name-error-inner"
+						value={ 'Please update the pattern title.' }
+					/>
+				) : (
 					<PatternPreview
 						url={
 							patternManager.siteUrl +
@@ -54,12 +60,6 @@ export default function ViewportWidthPanel( {
 							savedPatternName
 						}
 						viewportWidth={ viewportWidth }
-					/>
-				) : (
-					<RichText.Content
-						tagName="span"
-						className="components-panel__row-patternmanager-pattern-name-error-inner"
-						value={ 'Please update the pattern title.' }
 					/>
 				) ) }
 		</PluginDocumentSettingPanel>
