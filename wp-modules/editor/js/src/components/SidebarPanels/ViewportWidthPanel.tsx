@@ -50,7 +50,10 @@ export default function ViewportWidthPanel( {
 					<RichText.Content
 						tagName="span"
 						className="components-panel__row-patternmanager-pattern-name-error-inner"
-						value={ 'Please update the pattern title.' }
+						value={ __(
+							'Please update the pattern title.',
+							'pattern-manager'
+						) }
 					/>
 				) : (
 					<PatternPreview
