@@ -22,17 +22,15 @@ function isTitleTaken(
 	return patternNames.includes( newSlug ) && newSlug !== currentSlug;
 }
 
-type Props = BaseSidebarProps & {
-	patternNames: Array< Pattern[ 'name' ] >;
-	title: string;
-};
-
 export default function TitlePanel( {
 	handleChange,
 	patternNames,
 	postMeta,
 	title,
-}: Props ) {
+}: BaseSidebarProps & {
+	patternNames: Array< Pattern[ 'name' ] >;
+	title: string;
+} ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( editorStore );
 	const [ errorMessage, setErrorMessage ] = useState( '' );
