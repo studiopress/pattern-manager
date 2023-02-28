@@ -31,9 +31,9 @@ export default function PatternManagerMetaControls() {
 		<div>
 			<TitlePanel
 				postMeta={ postMeta }
-				title={ title }
 				handleChange={ updatePostMeta }
 				patternNames={ patternNames }
+				title={ title }
 			/>
 			<CategoriesPanel
 				postMeta={ postMeta }
