@@ -1,6 +1,5 @@
 import '../../css/src/index.scss';
 import { dispatch } from '@wordpress/data';
-import { store as editorStore } from '@wordpress/editor';
 import { addAction, addFilter } from '@wordpress/hooks';
 import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
@@ -25,5 +24,4 @@ addAction(
 	receiveActiveTheme
 );
 
-// @ts-expect-error the @wordpress/editor store isn't typed.
-dispatch( editorStore ).disablePublishSidebar();
+dispatch( 'core/editor' ).disablePublishSidebar();

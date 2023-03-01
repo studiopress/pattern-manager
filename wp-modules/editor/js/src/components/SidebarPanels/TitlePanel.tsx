@@ -1,7 +1,6 @@
 import { speak } from '@wordpress/a11y';
 import { useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import { store as editorStore } from '@wordpress/editor';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
@@ -33,7 +32,7 @@ export default function TitlePanel( {
 		'errorMessage' | 'patternNames' | 'setErrorMessage' | 'title'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
-		useDispatch( editorStore );
+		useDispatch( 'core/editor' );
 
 	return (
 		<PluginDocumentSettingPanel

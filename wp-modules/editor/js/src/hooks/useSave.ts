@@ -1,5 +1,4 @@
 import { useSelect } from '@wordpress/data';
-import { store as editorStore } from '@wordpress/editor';
 import { useEffect } from '@wordpress/element';
 import getHeaders from '../utils/getHeaders';
 import { patternManager } from '../globals';
@@ -9,7 +8,7 @@ export default function useSave(
 	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
 ) {
 	const isSavingPost = useSelect( ( select: SelectQuery ) => {
-		return select( editorStore ).isSavingPost();
+		return select( 'core/editor' ).isSavingPost();
 	}, [] );
 
 	useEffect( () => {

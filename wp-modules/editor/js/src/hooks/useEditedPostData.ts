@@ -1,5 +1,4 @@
 import { useSelect } from '@wordpress/data';
-import { store as editorStore } from '@wordpress/editor';
 import { PostMeta, SelectQuery } from '../types';
 
 type UseEditedPostData = {
@@ -8,13 +7,15 @@ type UseEditedPostData = {
 };
 
 export default function useEditedPostData(): UseEditedPostData {
-	// @ts-expect-error the @wordpress/editor store isn't typed.
+	// @ts-expect-error if @wordpress/editor store is typed, pass it to select() instead of the string.
 	return {
 		...useSelect(
 			( select: SelectQuery ) => ( {
 				postMeta:
-					select( editorStore ).getEditedPostAttribute( 'meta' ),
-				title: select( editorStore ).getEditedPostAttribute( 'title' ),
+					select( 'core/editor' ).getEditedPostAttribute( 'meta' ),
+				title: select( 'core/editor' ).getEditedPostAttribute(
+					'title'
+				),
 			} ),
 			[]
 		),

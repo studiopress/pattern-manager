@@ -12,7 +12,6 @@
     "@wordpress/components": "^23.0.0",
     "@wordpress/data": "^8.0.0",
     "@wordpress/edit-post": "^7.0.0",
-    "@wordpress/editor": "^13.4.0",
     "@wordpress/element": "^5.0.0",
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^9.16.0",
