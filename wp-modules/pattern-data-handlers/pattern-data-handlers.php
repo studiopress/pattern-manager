@@ -239,7 +239,6 @@ function get_pattern_defaults() {
 	return [
 		'name'          => '',
 		'title'         => '',
-		'slug'          => '',
 		'description'   => '',
 		'content'       => '',
 		'viewportWidth' => 1280,
