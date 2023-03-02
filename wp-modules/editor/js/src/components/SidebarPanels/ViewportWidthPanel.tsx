@@ -30,7 +30,7 @@ export default function ViewportWidthPanel( {
 				label={ __( 'Preview width in pixels', 'pattern-manager' ) }
 				hideLabelFromVision={ true }
 				help={ __(
-					'Adjust the width of the pattern preview in the pattern inserter.',
+					'Adjust the pattern preview width in the pattern inserter.',
 					'pattern-manager'
 				) }
 				min={ 640 }
