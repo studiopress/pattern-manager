@@ -308,7 +308,7 @@ function register_block_patterns() {
 add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
 
 /**
- * Adds 'postId' to block context to enable preview.
+ * Enables the Core Comments block to render by adding a 'postId'.
  *
  * @param array $context The rendered block context.
  * @param array $parsed_block The block to render.
@@ -319,18 +319,11 @@ function add_post_id_to_block_context( $context, $parsed_block ) {
 		return $context;
 	}
 
-	if ( isset( $parsed_block['blockName'] ) && 0 === strpos( $parsed_block['blockName'], 'core/comment' ) ) {
-		return array_merge(
+	return isset( $parsed_block['blockName'] ) && 0 === strpos( $parsed_block['blockName'], 'core/comment' )
+		? array_merge(
 			$context,
 			[ 'postId' => get_post_id_with_comment() ?? intval( get_option( 'page_on_front' ) ) ]
-		);
-	}
-
-	return isset( $context['postId'] )
-		? $context
-		: array_merge(
-			$context,
-			[ 'postId' => intval( get_option( 'page_on_front' ) ) ]
-		);
+		)
+		: $context;
 }
 add_filter( 'render_block_context', __NAMESPACE__ . '\add_post_id_to_block_context', 10, 2 );
