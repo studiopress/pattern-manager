@@ -25,8 +25,9 @@ class EditorTest extends WP_UnitTestCase {
 		register_pattern_post_type();
 
 		foreach ( array_diff( get_pattern_defaults(), [ 'title' => null ] ) as $meta_key => $meta_value ) {
+			$expected_type = get_registered_meta_keys( 'post', 'pm_pattern' )[ $meta_key ]['type'];
 			$this->assertSame(
-				get_registered_meta_keys( 'post', 'pm_pattern' )[ $meta_key ]['type'],
+				'number' === $expected_type ? 'integer' : $expected_type,
 				gettype( $meta_value )
 			);
 		}
