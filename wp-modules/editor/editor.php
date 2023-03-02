@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PatternManager\Editor;
 
+use WP_Query;
 use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 
@@ -305,3 +306,31 @@ function register_block_patterns() {
 	}
 }
 add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
+
+/**
+ * Adds 'postId' to block context to enable preview.
+ *
+ * @param array $context The rendered block context.
+ * @param array $parsed_block The block to render.
+ * @return array The filtered context.
+ */
+function add_post_id_to_block_context( $context, $parsed_block ) {
+	if ( ! filter_input( INPUT_GET, 'pm_pattern_preview' ) ) {
+		return $context;
+	}
+
+	if ( isset( $parsed_block['blockName'] ) && 0 === strpos( $parsed_block['blockName'], 'core/comment' ) ) {
+		return array_merge(
+			$context,
+			[ 'postId' => get_post_id_with_comment() ?? intval( get_option( 'page_on_front' ) ) ]
+		);
+	}
+
+	return isset( $context['postId'] )
+		? $context
+		: array_merge(
+			$context,
+			[ 'postId' => intval( get_option( 'page_on_front' ) ) ]
+		);
+}
+add_filter( 'render_block_context', __NAMESPACE__ . '\add_post_id_to_block_context', 10, 2 );

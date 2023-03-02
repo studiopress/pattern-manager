@@ -113,3 +113,23 @@ function get_pm_post_ids() {
 		]
 	) )->posts;
 }
+
+/**
+ * Gets an ID of a post that has a comment.
+ *
+ * @return int|null
+ */
+function get_post_id_with_comment() {
+	$post_ids = ( new WP_Query(
+		[
+			'comment_count'  => [
+				'value'   => 0,
+				'compare' => '>',
+			],
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+		]
+	) )->posts;
+
+	return $post_ids[0] ?? null;
+}
