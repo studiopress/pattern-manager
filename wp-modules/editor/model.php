@@ -108,6 +108,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	$pattern_name = $post->post_name;
+	$pattern      = get_pattern_by_name( $pattern_name );
 
 	if ( 'name' === $meta_key ) {
 		wp_update_post(
@@ -121,8 +122,6 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			delete_pattern( $pattern_name );
 		}
 	}
-
-	$pattern = get_pattern_by_name( $pattern_name );
 
 	return update_pattern(
 		$pattern
