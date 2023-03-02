@@ -11,9 +11,6 @@ declare(strict_types=1);
 
 namespace PatternManager\Editor;
 
-use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
-use function PatternManager\PatternDataHandlers\get_pattern_by_name;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
