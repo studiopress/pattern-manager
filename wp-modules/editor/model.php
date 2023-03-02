@@ -12,6 +12,7 @@ namespace PatternManager\Editor;
 
 use WP_Post;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
 use function PatternManager\PatternDataHandlers\update_pattern;
@@ -102,11 +103,11 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	$pattern_name = $post->post_name;
-	$pattern      = get_pattern_by_name( $pattern_name );
-	if ( ! $pattern ) {
+	if ( 'name' === $meta_key && ! $meta_value ) {
 		return $override;
 	}
+
+	$pattern_name = $post->post_name;
 
 	if ( 'name' === $meta_key ) {
 		wp_update_post(
@@ -121,13 +122,24 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		}
 	}
 
+	$pattern = get_pattern_by_name( $pattern_name );
+
 	return update_pattern(
-		array_merge(
-			$pattern,
-			[
-				$meta_key => $meta_value,
-			]
-		)
+		$pattern
+			? array_merge(
+				$pattern,
+				[
+					$meta_key => $meta_value,
+				]
+			)
+			: array_merge(
+				get_pattern_defaults(),
+				[
+					'name'    => $pattern_name,
+					'title'   => $post->post_title,
+					$meta_key => $meta_value,
+				]
+			)
 	);
 }
 add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );

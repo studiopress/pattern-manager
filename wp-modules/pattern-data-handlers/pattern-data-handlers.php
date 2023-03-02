@@ -231,6 +231,27 @@ function get_pattern_by_path( $path ) {
 }
 
 /**
+ * Gets the default values for a pattern.
+ *
+ * @return array
+ */
+function get_pattern_defaults() {
+	return [
+		'name'          => '',
+		'title'         => '',
+		'slug'          => '',
+		'description'   => '',
+		'content'       => '',
+		'viewportWidth' => 1280,
+		'categories'    => [],
+		'keywords'      => [],
+		'blockTypes'    => [],
+		'postTypes'     => [],
+		'inserter'      => true,
+	];
+}
+
+/**
  * Gets a pattern by its name.
  *
  * @param string $name The pattern name.
