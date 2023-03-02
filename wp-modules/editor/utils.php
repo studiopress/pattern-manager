@@ -120,7 +120,7 @@ function get_pm_post_ids() {
  * @return int|null
  */
 function get_post_id_with_comment() {
-	$post_ids = ( new WP_Query(
+	return ( new WP_Query(
 		[
 			'comment_count'  => [
 				'value'   => 0,
@@ -129,7 +129,5 @@ function get_post_id_with_comment() {
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
 		]
-	) )->posts;
-
-	return $post_ids[0] ?? null;
+	) )->posts[0] ?? null;
 }
