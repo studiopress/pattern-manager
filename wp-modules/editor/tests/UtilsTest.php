@@ -268,7 +268,7 @@ class UtilsTest extends WP_UnitTestCase {
 	/**
 	 * Tests get_new_pattern_title.
 	 *
-	 * @dataProvider data_get_new_pattern
+	 * @dataProvider data_get_new_pattern_title
 	 */
 	public function test_get_new_pattern_title( $all_patterns, $expected ) {
 		$this->assertSame(

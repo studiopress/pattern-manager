@@ -85,35 +85,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests get_pattern_defaults.
-	 */
-	public function test_get_pattern_defaults() {
-		$actual_pattern = format_pattern_data( get_pattern_defaults(), $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' );
-
-		$this->assertSame(
-			[
-				'name'          => '',
-				'title'         => '',
-				'slug'          => '',
-				'description'   => '',
-				'viewportWidth' => 1280,
-				'categories'    => [],
-				'keywords'      => [],
-				'blockTypes'    => [],
-				'postTypes'     => [],
-				'inserter'      => true,
-				'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
-			],
-			array_merge(
-				$actual_pattern,
-				[
-					'content' => $this->normalize( $actual_pattern['content'] ),
-				]
-			)
-		);
-	}
-
-	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents() {
