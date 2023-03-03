@@ -28,7 +28,8 @@ class EditorTest extends WP_UnitTestCase {
 			$expected_type = get_registered_meta_keys( 'post', 'pm_pattern' )[ $meta_key ]['type'];
 			$this->assertSame(
 				'number' === $expected_type ? 'integer' : $expected_type,
-				gettype( $default_value )
+				gettype( $default_value ),
+				"type of the default for {$meta_key} is wrong"
 			);
 		}
 	}
@@ -42,7 +43,8 @@ class EditorTest extends WP_UnitTestCase {
 		foreach ( array_diff( get_pattern_defaults(), [ 'title' => null ] ) as $meta_key => $default_value ) {
 			$this->assertSame(
 				$default_value,
-				get_registered_meta_keys( 'post', 'pm_pattern' )[ $meta_key ]['default']
+				get_registered_meta_keys( 'post', 'pm_pattern' )[ $meta_key ]['default'],
+				"default type of {$meta_key} is wrong"
 			);
 		}
 	}
