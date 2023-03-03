@@ -20,16 +20,19 @@ function isTitleTaken(
 }
 
 export default function TitlePanel( {
-	postMeta,
 	handleChange,
 	errorMessage,
 	setErrorMessage,
 	patternNames,
+	postMeta,
+	title,
 }: BaseSidebarProps &
-	Pick< AdditionalSidebarProps, 'errorMessage' | 'setErrorMessage' > & {
-		patternNames: Array< Pattern[ 'name' ] >;
-	} ) {
-	const { lockPostSaving, unlockPostSaving } = useDispatch( 'core/editor' );
+	Pick<
+		AdditionalSidebarProps,
+		'errorMessage' | 'patternNames' | 'setErrorMessage' | 'title'
+	> ) {
+	const { editPost, lockPostSaving, unlockPostSaving } =
+		useDispatch( 'core/editor' );
 
 	return (
 		<PluginDocumentSettingPanel
@@ -42,11 +45,10 @@ export default function TitlePanel( {
 					'Pattern Title Name Input (used for renaming the pattern)',
 					'pattern-manager'
 				) }
-				value={ postMeta.title }
+				value={ title }
 				onChange={ ( newTitle: PostMeta[ 'title' ] ) => {
-					handleChange( 'title', newTitle, {
-						name: convertToSlug( newTitle ),
-					} );
+					editPost( { title: newTitle } );
+					handleChange( 'name', convertToSlug( newTitle ) );
 
 					if ( ! newTitle ) {
 						lockPostSaving();

@@ -15,6 +15,7 @@
     "@wordpress/element": "^5.0.0",
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^9.16.0",
+    "@wordpress/plugins": "^5.4.0",
     "@wordpress/scripts": "^24.4.0"
   },
   "dependencies": {

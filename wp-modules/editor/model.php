@@ -12,27 +12,34 @@ namespace PatternManager\Editor;
 
 use WP_Post;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
 use function PatternManager\PatternDataHandlers\update_pattern;
 
 /**
- * Gets the pattern content from the file, instead of from the post content.
+ * Gets the pattern content and title from the PHP file.
  *
  * @param WP_Post $post The post to possibly add content to.
  */
-function get_pattern_content_from_file( $post ) {
+function populate_pattern_from_file( $post ) {
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
 
-	if ( ! $post->post_title ) {
+	if ( ! $post->post_name ) {
 		return;
 	}
 
-	$post->post_content = get_pattern_by_name( $post->post_title )['content'] ?? '';
+	$pattern = get_pattern_by_name( $post->post_name );
+	if ( ! $pattern ) {
+		return;
+	}
+
+	$post->post_content = $pattern['content'];
+	$post->post_title   = $pattern['title'];
 }
-add_action( 'the_post', __NAMESPACE__ . '\get_pattern_content_from_file' );
+add_action( 'the_post', __NAMESPACE__ . '\populate_pattern_from_file' );
 
 /**
  * Saves the pattern to the .php file.
@@ -45,17 +52,18 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( $post->post_title );
-	if ( ! $pattern ) {
-		return;
-	}
+	$pattern = get_pattern_by_name( $post->post_name );
 
 	update_pattern(
 		array_merge(
-			$pattern,
+			$pattern ? $pattern : [],
 			[
 				'content' => $post->post_content,
-			]
+				'name'    => $post->post_name,
+			],
+			$post->post_title
+				? [ 'title' => $post->post_title ]
+				: []
 		)
 	);
 
@@ -89,23 +97,24 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	$pattern_name = $post->post_title;
-	$pattern      = get_pattern_by_name( $pattern_name );
-	if ( ! $pattern ) {
-		return $override;
-	}
-
 	// Only update the pattern if a registered meta key is being updated here (no need for core keys like _edit_lock).
 	$registered_meta_keys = array_keys( get_registered_meta_keys( 'post', get_pattern_post_type() ) );
 	if ( ! in_array( $meta_key, $registered_meta_keys, true ) ) {
 		return $override;
 	}
 
+	if ( 'name' === $meta_key && ! $meta_value ) {
+		return $override;
+	}
+
+	$pattern_name = $post->post_name;
+	$pattern      = get_pattern_by_name( $pattern_name );
+
 	if ( 'name' === $meta_key ) {
 		wp_update_post(
 			[
-				'ID'         => $post_id,
-				'post_title' => $meta_value,
+				'ID'        => $post_id,
+				'post_name' => $meta_value,
 			]
 		);
 
@@ -115,12 +124,21 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	return update_pattern(
-		array_merge(
-			$pattern,
-			[
-				$meta_key => $meta_value,
-			]
-		)
+		$pattern
+			? array_merge(
+				$pattern,
+				[
+					$meta_key => $meta_value,
+				]
+			)
+			: array_merge(
+				get_pattern_defaults(),
+				[
+					'name'  => $pattern_name,
+					'title' => $post->post_title,
+				],
+				[ $meta_key => $meta_value ]
+			)
 	);
 }
 add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
@@ -144,9 +162,7 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 		return $override;
 	}
 
-	$pattern_name = $post->post_title;
-
-	$pattern = get_pattern_by_name( $pattern_name );
+	$pattern = get_pattern_by_name( $post->post_name );
 	if ( ! $pattern ) {
 		return $override;
 	}
@@ -175,24 +191,7 @@ function redirect_pattern_actions() {
 		$new_post = wp_insert_post(
 			[
 				'post_type'   => get_pattern_post_type(),
-				'post_title'  => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
-				'post_status' => 'publish',
-			]
-		);
-
-		wp_safe_redirect(
-			get_edit_post_link( $new_post, 'direct_link' )
-		);
-	}
-
-	if ( 'create-new' === filter_input( INPUT_GET, 'action' ) ) {
-		$new_pattern = get_new_pattern( get_theme_patterns() );
-
-		update_pattern( $new_pattern );
-		$new_post = wp_insert_post(
-			[
-				'post_type'   => get_pattern_post_type(),
-				'post_title'  => $new_pattern['name'],
+				'post_name'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
 				'post_status' => 'publish',
 			]
 		);
@@ -218,10 +217,9 @@ function redirect_pattern_actions() {
 
 		$new_post = wp_insert_post(
 			[
-				'post_type'    => get_pattern_post_type(),
-				'post_title'   => $new_pattern['name'],
-				'post_status'  => 'publish',
-				'post_content' => '',
+				'post_type'   => get_pattern_post_type(),
+				'post_name'   => $new_pattern['name'],
+				'post_status' => 'publish',
 			]
 		);
 
@@ -251,24 +249,6 @@ function add_active_theme_to_heartbeat( $response, $data, $screen_id ) {
 add_filter( 'heartbeat_received', __NAMESPACE__ . '\add_active_theme_to_heartbeat', 10, 3 );
 
 /**
- * Filters the fields used in post revisions.
- *
- * If the revision is for a pattern post,
- * don't restore the title of the revision,
- * as the title is where the pattern name is stored.
- *
- * @param array $fields The fields to filter.
- * @param WP_Post|array $post The post to filter for.
- * @return array The filtered fields.
- */
-function ignore_title_field_in_revisions( $fields, $post ) {
-	return isset( $post->post_parent ) && get_pattern_post_type() === get_post_type( $post->post_parent )
-		? array_diff_key( $fields, [ 'post_title' => null ] )
-		: $fields;
-}
-add_filter( '_wp_post_revision_fields', __NAMESPACE__ . '\ignore_title_field_in_revisions', 10, 2 );
-
-/**
  * Deletes all pm_pattern posts.
  */
 function delete_pattern_posts() {
@@ -283,3 +263,47 @@ function delete_pattern_posts() {
 	}
 }
 add_action( 'after_switch_theme', __NAMESPACE__ . '\delete_pattern_posts' );
+
+/**
+ * Gets the title for a new pattern post.
+ *
+ * For posts of type 'post', it's fine if the title is empty.
+ * But the title of a pattern is important,
+ * as the file name is a slug of that title.
+ * And it must be unique.
+ *
+ * @param string $post_title The post title.
+ * @param WP_Post $post The post.
+ * @return string
+ */
+function get_default_title( $post_title, $post ) {
+	return isset( $post->post_type ) && get_pattern_post_type() === $post->post_type
+		? get_new_pattern_title( get_theme_patterns() )
+		: $post_title;
+}
+add_filter( 'default_title', __NAMESPACE__ . '\get_default_title', 10, 2 );
+
+/**
+ * Prevents WP from giving a longer ->post_name to a pattern.
+ *
+ * On renaming a pattern, sometimes WP adds a number
+ * to the ->post_name in order to be unique.
+ * It can change 'example-pattern' to 'example-pattern-1'.
+ * The ->post_name is where we store the pattern name.
+ * So it needs to be in sync with the ->post_title.
+ * It can't be 'example-pattern-1' if the title is 'Example Pattern'.
+ *
+ * @param string $slug          The post slug.
+ * @param int    $post_ID       Post ID.
+ * @param string $post_status   The post status.
+ * @param string $post_type     Post type.
+ * @param int    $post_parent   Post parent ID
+ * @param string $original_slug The original post slug.
+ * @return string The slug.
+ */
+function short_circuit_unique_slug( $slug, $post_ID, $post_status, $post_type, $post_parent, $original_slug ) {
+	return get_pattern_post_type() === $post_type
+		? $original_slug
+		: $slug;
+}
+add_filter( 'wp_unique_post_slug', __NAMESPACE__ . '\short_circuit_unique_slug', 10, 6 );

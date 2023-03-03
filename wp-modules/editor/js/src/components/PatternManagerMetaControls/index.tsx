@@ -13,10 +13,10 @@ import {
 import usePatternData from '../../hooks/usePatternData';
 import useSave from '../../hooks/useSave';
 import { patternManager } from '../../globals';
-import usePostData from '../../hooks/usePostData';
+import useEditedPostData from '../../hooks/useEditedPostData';
 
 export default function PatternManagerMetaControls() {
-	const { postMeta } = usePostData();
+	const { postMeta, title } = useEditedPostData();
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 	const [ patternNames, setPatternNames ] = useState(
 		patternManager.patternNames.filter( ( name ) => {
@@ -37,6 +37,7 @@ export default function PatternManagerMetaControls() {
 				errorMessage={ errorMessage }
 				setErrorMessage={ setErrorMessage }
 				patternNames={ patternNames }
+				title={ title }
 			/>
 			<CategoriesPanel
 				postMeta={ postMeta }

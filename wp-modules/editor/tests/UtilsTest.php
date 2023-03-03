@@ -187,19 +187,15 @@ class UtilsTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Gets the data for the test of get_new_pattern().
+	 * Gets the data for the test of get_new_pattern_title().
 	 *
 	 * @return array[]
 	 */
-	public function data_get_new_pattern() {
+	public function data_get_new_pattern_title() {
 		return array(
 			array(
 				array(),
-				array(
-					'name'  => 'my-new-pattern',
-					'slug'  => 'my-new-pattern',
-					'title' => 'My New Pattern',
-				),
+				'My New Pattern',
 			),
 			array(
 				array(
@@ -209,11 +205,7 @@ class UtilsTest extends WP_UnitTestCase {
 						'title' => 'My New Pattern',
 					),
 				),
-				array(
-					'name'  => 'my-new-pattern-1',
-					'slug'  => 'my-new-pattern-1',
-					'title' => 'My New Pattern 1',
-				),
+				'My New Pattern 1',
 			),
 			array(
 				array(
@@ -228,11 +220,7 @@ class UtilsTest extends WP_UnitTestCase {
 						'title' => 'My New Pattern 1',
 					),
 				),
-				array(
-					'name'  => 'my-new-pattern-2',
-					'slug'  => 'my-new-pattern-2',
-					'title' => 'My New Pattern 2',
-				),
+				'My New Pattern 2',
 			),
 			array(
 				array(
@@ -252,11 +240,7 @@ class UtilsTest extends WP_UnitTestCase {
 						'title' => 'My New Pattern 2',
 					),
 				),
-				array(
-					'name'  => 'my-new-pattern-3',
-					'slug'  => 'my-new-pattern-3',
-					'title' => 'My New Pattern 3',
-				),
+				'My New Pattern 3',
 			),
 			array(
 				array(
@@ -276,36 +260,20 @@ class UtilsTest extends WP_UnitTestCase {
 						'title' => 'My New Pattern 9',
 					),
 				),
-				array(
-					'name'  => 'my-new-pattern-2',
-					'slug'  => 'my-new-pattern-2',
-					'title' => 'My New Pattern 2',
-				),
+				'My New Pattern 2',
 			),
 		);
 	}
 
 	/**
-	 * Tests get_new_pattern.
+	 * Tests get_new_pattern_title.
 	 *
-	 * @dataProvider data_get_new_pattern
+	 * @dataProvider data_get_new_pattern_title
 	 */
-	public function test_get_new_pattern( $all_patterns, $expected ) {
+	public function test_get_new_pattern_title( $all_patterns, $expected ) {
 		$this->assertSame(
-			array_merge(
-				$expected,
-				array(
-					'categories'    => array(),
-					'keywords'      => array(),
-					'blockTypes'    => array(),
-					'postTypes'     => array(),
-					'inserter'      => true,
-					'description'   => '',
-					'viewportWidth' => '',
-					'content'       => '',
-				)
-			),
-			get_new_pattern( $all_patterns )
+			$expected,
+			get_new_pattern_title( $all_patterns )
 		);
 	}
 }
