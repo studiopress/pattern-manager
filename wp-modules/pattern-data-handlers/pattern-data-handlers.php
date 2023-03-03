@@ -366,7 +366,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
  * Block Types: ' . ( isset( $pattern['blockTypes'] ) ? implode( ', ', $pattern['blockTypes'] ) : '' ) . '
  * Post Types: ' . ( isset( $pattern['postTypes'] ) ? implode( ', ', $pattern['postTypes'] ) : '' ) . '
- * Inserter: ' . ( $pattern['inserter'] ?? true ? 'true' : 'false' ) . '
+ * Inserter: ' . ( true === $pattern['inserter'] ? 'true' : 'false' ) . '
  */
 
 ?>
