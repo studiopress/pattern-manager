@@ -160,13 +160,14 @@ function get_theme_patterns_with_editor_links() {
 			$query = new WP_Query(
 				[
 					'post_type'      => get_pattern_post_type(),
-					'post_title'     => $pattern['name'],
+					'post_name'      => $pattern['name'],
+					'post_status'    => 'publish',
 					'posts_per_page' => 1,
 				]
 			);
 			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
 
-			$pattern['editorLink'] = $post && $post->post_title === $pattern['name']
+			$pattern['editorLink'] = $post && $post->name === $pattern['name']
 				? get_edit_post_link( $post, 'localized_data' )
 				: add_query_arg(
 					[
@@ -227,6 +228,26 @@ function get_pattern_by_path( $path ) {
 	}
 
 	return array_merge( $pattern_data, array( 'name' => basename( $path, '.php' ) ) );
+}
+
+/**
+ * Gets the default values for a pattern.
+ *
+ * @return array
+ */
+function get_pattern_defaults() {
+	return [
+		'name'          => '',
+		'title'         => '',
+		'description'   => '',
+		'content'       => '',
+		'viewportWidth' => 1280,
+		'categories'    => [],
+		'keywords'      => [],
+		'blockTypes'    => [],
+		'postTypes'     => [],
+		'inserter'      => true,
+	];
 }
 
 /**

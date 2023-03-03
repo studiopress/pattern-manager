@@ -9,12 +9,7 @@
 	display: none !important;
 }
 
-/* When the save button is clicked, hide the pre-publish panel that pops open, as we handle saving in PM. */
-.editor-post-publish-panel {
-	display: none !important;
-}
-
-/* Hide the 'Save Draft' button in the pattern editor (appears after pattern is edited), as the save theme button handles it.*/
+/* Hide the 'Save Draft' button in the pattern editor (appears after pattern is published), as the 'Update' button handles it. */
 button.components-button.editor-post-save-draft.is-tertiary {
 	display: none;
 }
