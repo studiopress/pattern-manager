@@ -352,7 +352,7 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
  * @return bool
  */
 function construct_pattern_php_file_contents( $pattern_data, $text_domain ) {
-	$pattern = wp_parse_args( $pattern_data, get_pattern_defaults() );
+	$pattern            = wp_parse_args( $pattern_data, get_pattern_defaults() );
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
@@ -367,7 +367,7 @@ function construct_pattern_php_file_contents( $pattern_data, $text_domain ) {
  * Viewport Width: ' . $pattern['viewportWidth'] . '
  * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
  * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
- * Inserter: ' . $pattern['inserter'] ? 'true' : 'false' . '
+ * Inserter: ' . $pattern['inserter'] ? 'true' : 'false
  */
 
 ?>
