@@ -60,7 +60,7 @@ function register_pattern_post_type() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
-			'default'      => 1234,
+			'default'      => get_pattern_defaults()['name'],
 		)
 	);
 
