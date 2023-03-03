@@ -68,6 +68,22 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests construct_pattern_php_file_contents.
+	 */
+	public function test_construct_pattern_php_file_contents_empty() {
+		$this->assertSame(
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			file_get_contents( $this->get_fixtures_directory() . '/expected/empty.php' ),
+			construct_pattern_php_file_contents(
+				[
+					'name'  => 'empty',
+					'title' => 'empty',
+				]
+			)
+		);
+	}
+
+	/**
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
@@ -87,15 +103,14 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
-	public function test_construct_pattern_php_file_contents() {
+	public function test_construct_pattern_php_file_contents_with_values() {
 		$pattern_path = $this->get_fixtures_directory() . '/patterns/my-new-pattern.php';
 
 		$this->assertSame(
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( $pattern_path ),
 			construct_pattern_php_file_contents(
-				get_pattern_by_path( $pattern_path ),
-				'foo-textdomain'
+				get_pattern_by_path( $pattern_path )
 			)
 		);
 	}
