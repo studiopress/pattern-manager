@@ -13,6 +13,7 @@ namespace PatternManager\Editor;
 
 use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -58,7 +59,8 @@ function register_pattern_post_type() {
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
-			'type'         => 'string',
+			'type'         => 'string'
+			'default'      => get_pattern_defaults()['name'],
 		)
 	);
 
@@ -69,6 +71,7 @@ function register_pattern_post_type() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
+			'default'      => get_pattern_defaults()['description'],
 		)
 	);
 
@@ -79,7 +82,7 @@ function register_pattern_post_type() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'boolean',
-			'default'      => true,
+			'default'      => get_pattern_defaults()['inserter'],
 		)
 	);
 
@@ -90,6 +93,7 @@ function register_pattern_post_type() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'number',
+			'default'      => get_pattern_defaults()['viewportWidth'],
 		)
 	);
 
@@ -113,6 +117,7 @@ function register_pattern_post_type() {
 			),
 			'single'       => true,
 			'type'         => 'array',
+			'default'      => get_pattern_defaults()['blockTypes'],
 		)
 	);
 
@@ -130,6 +135,7 @@ function register_pattern_post_type() {
 			),
 			'single'       => true,
 			'type'         => 'array',
+			'default'      => get_pattern_defaults()['postTypes'],
 		)
 	);
 
@@ -147,6 +153,7 @@ function register_pattern_post_type() {
 			),
 			'single'       => true,
 			'type'         => 'array',
+			'default'      => get_pattern_defaults()['categories'],
 		)
 	);
 
@@ -164,6 +171,7 @@ function register_pattern_post_type() {
 			),
 			'single'       => true,
 			'type'         => 'array',
+			'default'      => get_pattern_defaults()['keywords'],
 		)
 	);
 }

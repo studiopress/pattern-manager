@@ -19,7 +19,7 @@ export default function ViewportWidthPanel( {
 	const savedPatternName = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).getCurrentPostAttribute( 'meta' )?.name;
 	}, [] );
-	const viewportWidth = postMeta.viewportWidth || 1280;
+	const viewportWidth = postMeta.viewportWidth;
 
 	return (
 		<PluginDocumentSettingPanel
