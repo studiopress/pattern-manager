@@ -17,6 +17,7 @@ export type SelectQuery = ( dataStore: string ) => {
 	getEditedPostAttribute: ( postAttribute: string ) => unknown;
 	getEditedPostContent: () => string;
 	isEditedPostDirty: () => boolean;
+	isEditedPostNew: () => boolean;
 	getPostTypes: ( {
 		per_page,
 	}: {

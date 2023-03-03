@@ -4,6 +4,7 @@ import { PostMeta, SelectQuery } from '../types';
 type UseEditedPostData = {
 	postMeta: PostMeta;
 	title: string;
+	isEditedPostNew: boolean;
 };
 
 export default function useEditedPostData(): UseEditedPostData {
@@ -16,6 +17,7 @@ export default function useEditedPostData(): UseEditedPostData {
 				title: select( 'core/editor' ).getEditedPostAttribute(
 					'title'
 				),
+				isEditedPostNew: select( 'core/editor' ).isEditedPostNew(),
 			} ),
 			[]
 		),
