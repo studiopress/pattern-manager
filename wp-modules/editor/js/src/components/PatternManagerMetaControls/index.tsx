@@ -59,6 +59,7 @@ export default function PatternManagerMetaControls() {
 				postMeta={ postMeta }
 				handleChange={ updatePostMeta }
 				errorMessage={ errorMessage }
+				currentName={ currentName }
 			/>
 			<PostTypesPanel
 				postMeta={ postMeta }
