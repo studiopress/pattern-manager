@@ -8,7 +8,7 @@ export default function InserterToggle( {
 	postMeta,
 	handleChange,
 }: ToggleTypes ) {
-	const isChecked = postMeta?.inserter ?? true;
+	const isChecked = postMeta?.inserter;
 
 	return (
 		<PanelRow className="patternmanager-inserter-toggle">

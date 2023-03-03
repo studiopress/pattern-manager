@@ -59,7 +59,7 @@ function register_pattern_post_type() {
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
-			'type'         => 'string'
+			'type'         => 'string',
 			'default'      => get_pattern_defaults()['name'],
 		)
 	);
