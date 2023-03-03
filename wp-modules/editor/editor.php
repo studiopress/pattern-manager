@@ -302,6 +302,8 @@ add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
 /**
  * Enables the Core Comments block to render by adding a 'postId'.
  *
+ * TODO: Remove if fixed in Core.
+ *
  * @param array $context The rendered block context.
  * @param array $parsed_block The block to render.
  * @return array The filtered context.
