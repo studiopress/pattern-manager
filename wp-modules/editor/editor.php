@@ -79,6 +79,7 @@ function register_pattern_post_type() {
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'boolean',
+			'default'      => true,
 		)
 	);
 
