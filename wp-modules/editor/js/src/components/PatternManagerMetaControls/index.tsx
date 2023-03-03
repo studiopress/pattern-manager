@@ -16,7 +16,7 @@ import { patternManager } from '../../globals';
 import useEditedPostData from '../../hooks/useEditedPostData';
 
 export default function PatternManagerMetaControls() {
-	const { postMeta, title } = useEditedPostData();
+	const { postMeta, title, isEditedPostNew } = useEditedPostData();
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 	const [ patternNames, setPatternNames ] = useState(
 		patternManager.patternNames.filter( ( name ) => {
@@ -69,6 +69,7 @@ export default function PatternManagerMetaControls() {
 				<InserterToggle
 					postMeta={ postMeta }
 					handleChange={ updatePostMeta }
+					isEditedPostNew={ isEditedPostNew }
 				/>
 			</PostTypesPanel>
 			<TransformsPanel
