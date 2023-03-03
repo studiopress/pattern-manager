@@ -24,12 +24,16 @@ export default function TitlePanel( {
 	errorMessage,
 	setErrorMessage,
 	patternNames,
-	postMeta,
 	title,
+	currentName,
 }: BaseSidebarProps &
 	Pick<
 		AdditionalSidebarProps,
-		'errorMessage' | 'patternNames' | 'setErrorMessage' | 'title'
+		| 'errorMessage'
+		| 'patternNames'
+		| 'setErrorMessage'
+		| 'title'
+		| 'currentName'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( 'core/editor' );
@@ -59,7 +63,7 @@ export default function TitlePanel( {
 						speak( newErrorMessage, 'assertive' );
 						setErrorMessage( newErrorMessage );
 					} else if (
-						isTitleTaken( newTitle, postMeta.slug, patternNames )
+						isTitleTaken( newTitle, currentName, patternNames )
 					) {
 						lockPostSaving();
 						const newErrorMessage = __(
