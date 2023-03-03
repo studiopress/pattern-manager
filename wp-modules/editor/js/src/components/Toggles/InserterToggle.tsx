@@ -40,7 +40,7 @@ export default function InserterToggle( {
 						: __( 'Hidden in the inserter', 'pattern-manager' )
 				}
 				onChange={ ( value: boolean ) => {
-					if ( isDefaultChecked.current === true ) {
+					if ( isDefaultChecked.current ) {
 						isDefaultChecked.current = false;
 					}
 
