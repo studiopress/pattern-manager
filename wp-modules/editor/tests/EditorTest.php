@@ -44,7 +44,7 @@ class EditorTest extends WP_UnitTestCase {
 			$this->assertSame(
 				$default_value,
 				get_registered_meta_keys( 'post', 'pm_pattern' )[ $meta_key ]['default'],
-				"default type of {$meta_key} is wrong"
+				"default value of {$meta_key} is wrong"
 			);
 		}
 	}
