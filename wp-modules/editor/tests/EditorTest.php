@@ -19,7 +19,7 @@ require_once dirname( __DIR__ ) . '/editor.php';
 class EditorTest extends WP_UnitTestCase {
 
 	/**
-	 * Tests register_pattern_post_type_meta.
+	 * Tests register_pattern_post_type.
 	 */
 	public function test_register_pattern_post_type_meta_types() {
 		register_pattern_post_type();
@@ -35,7 +35,7 @@ class EditorTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests register_pattern_post_type_meta.
+	 * Tests register_pattern_post_type.
 	 */
 	public function test_register_pattern_post_type_meta_defaults() {
 		register_pattern_post_type();
