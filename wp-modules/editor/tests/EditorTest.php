@@ -29,7 +29,7 @@ class EditorTest extends WP_UnitTestCase {
 			$this->assertSame(
 				'number' === $expected_type ? 'integer' : $expected_type,
 				gettype( $default_value ),
-				"type of the default for {$meta_key} is wrong"
+				"the type of the default for {$meta_key} is wrong"
 			);
 		}
 	}
