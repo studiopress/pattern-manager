@@ -76,8 +76,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_construct_pattern_php_file_contents_empty() {
 		$this->assertSame(
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			$this->normalize(
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 				file_get_contents( $this->get_fixtures_directory() . '/expected/empty.php' )
 			),
 			$this->normalize(
