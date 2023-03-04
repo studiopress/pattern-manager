@@ -77,7 +77,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			construct_pattern_php_file_contents(
 				[
 					'name'  => 'empty',
-					'title' => 'empty',
+					'title' => 'Empty',
 				]
 			)
 		);
