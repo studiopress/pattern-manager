@@ -46,7 +46,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function normalize( string $to_normalize ): string {
 		return preg_replace(
-			'/[\t\n]/',
+			'/\s?[\t\n]/',
 			'',
 			preg_replace( '/\/\/ phpcs:disable.*[\t\n]/', '', $to_normalize )
 		);
