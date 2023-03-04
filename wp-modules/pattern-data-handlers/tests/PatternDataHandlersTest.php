@@ -45,7 +45,11 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Normalizes in order to compare in tests.
 	 */
 	public function normalize( string $to_normalize ): string {
-		return preg_replace( '/[\t\n]/', '', $to_normalize );
+		return preg_replace(
+			'/[\t\n]/',
+			'',
+			preg_replace( '\/\/ phpcs:disable.*[\t\n]', '', $to_normalize )
+		);
 	}
 
 	/**
@@ -73,12 +77,16 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_construct_pattern_php_file_contents_empty() {
 		$this->assertSame(
 			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			file_get_contents( $this->get_fixtures_directory() . '/expected/empty.php' ),
-			construct_pattern_php_file_contents(
-				[
-					'name'  => 'empty',
-					'title' => 'Empty',
-				]
+			$this->normalize(
+				file_get_contents( $this->get_fixtures_directory() . '/expected/empty.php' )
+			),
+			$this->normalize(
+				construct_pattern_php_file_contents(
+					[
+						'name'  => 'empty',
+						'title' => 'Empty',
+					]
+				)
 			)
 		);
 	}

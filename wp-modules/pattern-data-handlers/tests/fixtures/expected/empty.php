@@ -1,8 +1,9 @@
 <?php
+// phpcs:disable PSR2.Files.ClosingTag.NotAllowed
 /**
  * Title: Empty
  * Slug: empty
- * Description: Here is a description
+ * Description:
  * Categories:
  * Keywords:
  * Viewport Width: 1280
