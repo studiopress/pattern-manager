@@ -12,11 +12,11 @@ import type { Pattern, PostMeta } from '../../types';
 
 function isTitleTaken(
 	patternTitle: string,
-	currentSlug: string,
+	currentName: string,
 	patternNames: Array< Pattern[ 'name' ] >
 ) {
 	const newSlug = convertToSlug( patternTitle );
-	return patternNames.includes( newSlug ) && newSlug !== currentSlug;
+	return patternNames.includes( newSlug ) && newSlug !== currentName;
 }
 
 export default function TitlePanel( {
