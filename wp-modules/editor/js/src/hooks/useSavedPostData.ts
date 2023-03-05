@@ -1,11 +1,11 @@
 import { useSelect } from '@wordpress/data';
 import { SelectQuery } from '../types';
 
-type useSavedPostData = {
+type UseSavedPostData = {
 	currentName: string;
 };
 
-export default function useSavedPostData(): useSavedPostData {
+export default function useSavedPostData(): UseSavedPostData {
 	return {
 		...useSelect(
 			( select: SelectQuery ) => ( {
