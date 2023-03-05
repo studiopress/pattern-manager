@@ -8,7 +8,7 @@ import { RichText } from '@wordpress/block-editor';
 import convertToSlug from '../../utils/convertToSlug';
 
 import type { AdditionalSidebarProps, BaseSidebarProps } from './types';
-import type { Pattern, PostMeta } from '../../types';
+import type { Pattern } from '../../types';
 
 function isTitleTaken(
 	patternTitle: string,
@@ -50,7 +50,7 @@ export default function TitlePanel( {
 					'pattern-manager'
 				) }
 				value={ title }
-				onChange={ ( newTitle: PostMeta[ 'title' ] ) => {
+				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
 					handleChange( 'name', convertToSlug( newTitle ) );
 

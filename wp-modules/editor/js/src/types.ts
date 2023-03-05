@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 
 export type PostMeta = {
-	title: string;
 	name: string;
 	description: string;
 	postTypes: string[];
