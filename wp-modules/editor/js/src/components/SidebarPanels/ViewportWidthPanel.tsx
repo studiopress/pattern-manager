@@ -1,5 +1,4 @@
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
@@ -8,7 +7,7 @@ import PatternPreview from '../../../../../app/js/src/components/PatternPreview'
 import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
-import type { Pattern, SelectQuery } from '../../types';
+import type { Pattern } from '../../types';
 
 export default function ViewportWidthPanel( {
 	postMeta,
