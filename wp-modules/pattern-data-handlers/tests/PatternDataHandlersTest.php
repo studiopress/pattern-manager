@@ -177,6 +177,9 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
+		global $wp_filesystem;
+		$wp_filesystem->init( '/' );
+
 		move_block_images_to_theme(
 			get_pattern_by_name( 'with-image' )['content']
 		);
