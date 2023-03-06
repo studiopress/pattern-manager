@@ -154,8 +154,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_tree_shake_theme_images() {
 		tree_shake_theme_images();
 		$this->assertSame(
-			file_get_contents( __DIR__ . '/expected/my-new-pattern.php' ),
-			file_get_contents( $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' )
+			file_get_contents( __DIR__ . '/expected/with-image.php' ),
+			file_get_contents( $this->get_fixtures_directory() . '/patterns/with-image.php' )
 		);
 	}
 }
