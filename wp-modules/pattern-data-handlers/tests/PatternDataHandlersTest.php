@@ -25,6 +25,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		add_filter( 'filesystem_method_file' [ $this, 'get_wp_filesystem_stub' ] );
 	}
 
 	/**
@@ -41,6 +42,15 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function get_fixtures_directory() {
 		return __DIR__ . '/fixtures';
+	}
+
+	/**
+	 * Gets the path to the filesystem stub.
+	 *
+	 * @return string
+	 */
+	public function get_wp_filesystem_stub() {
+		return __DIR__ . '/fixtures/WPFilesystem.php';
 	}
 
 	/**
@@ -143,7 +153,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_get_pattern_names() {
 		$this->assertSame(
-			[ 'my-new-pattern' ],
+			[
+				'my-new-pattern',
+				'with-image',
+			],
 			get_pattern_names(),
 		);
 	}
@@ -153,6 +166,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		tree_shake_theme_images();
+
 		$this->assertSame(
 			file_get_contents( __DIR__ . '/expected/with-image.php' ),
 			file_get_contents( $this->get_fixtures_directory() . '/patterns/with-image.php' )
