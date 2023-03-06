@@ -9,7 +9,7 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-require_once '/var/www/html/wp-content/plugins/pattern-manager/tests/phpunit/filesystem/base.php';
+require_once '/var/www/html/wp-content/wpps-scripts/vendor/wp-phpunit/wp-phpunit/filesystem/base.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 use WP_Filesystem_UnitTestCase;
