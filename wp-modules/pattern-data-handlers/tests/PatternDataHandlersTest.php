@@ -11,9 +11,8 @@ namespace PatternManager\PatternDataHandlers;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
-use function WP_Filesystem;
 use WP_UnitTestCase;
-use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
+use function WP_Filesystem;
 
 /**
  * Test the pattern functions.
