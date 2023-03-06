@@ -14,7 +14,7 @@ export default function CategoriesPanel( {
 	categoryOptions,
 	handleChange,
 }: BaseSidebarProps< 'categories' > &
-	Pick< AdditionalSidebarProps, 'categoryOptions' > ) {
+	AdditionalSidebarProps< 'categoryOptions' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"

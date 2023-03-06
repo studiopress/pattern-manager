@@ -15,7 +15,7 @@ export default function ViewportWidthPanel( {
 	viewportWidth,
 	handleChange,
 }: BaseSidebarProps< 'viewportWidth' > &
-	Pick< AdditionalSidebarProps, 'errorMessage' | 'currentName' > ) {
+	AdditionalSidebarProps< 'errorMessage' | 'currentName' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
 	const currentWidth = viewportWidth || 1280;
 

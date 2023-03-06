@@ -15,7 +15,7 @@ export default function TransformsPanel( {
 	blockTypes,
 	handleChange,
 }: BaseSidebarProps< 'blockTypes' > &
-	Pick< AdditionalSidebarProps, 'blockTypeOptions' > ) {
+	AdditionalSidebarProps< 'blockTypeOptions' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-transforms"

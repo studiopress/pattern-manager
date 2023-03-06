@@ -18,7 +18,7 @@ export default function PostTypesPanel( {
 	postTypes,
 	handleChange,
 }: BaseSidebarProps< 'postTypes' | 'blockTypes' > &
-	Pick< AdditionalSidebarProps, 'postTypeOptions' > & {
+	AdditionalSidebarProps< 'postTypeOptions' > & {
 		children: ReactNode;
 	} ) {
 	return (

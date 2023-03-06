@@ -14,7 +14,7 @@ export type BaseSidebarProps< T extends keyof PatternPostData > = Pick<
 	handleChange: ReturnType< typeof usePatternData >[ 'updatePostMeta' ];
 };
 
-export type AdditionalSidebarProps = {
+type AdditionalTypes = {
 	blockTypeOptions: ReturnType<
 		typeof usePatternData
 	>[ 'queriedBlockTypes' ];
@@ -25,3 +25,8 @@ export type AdditionalSidebarProps = {
 	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];
 	setErrorMessage: Dispatch< SetStateAction< string > >;
 };
+
+export type AdditionalSidebarProps< T extends keyof AdditionalTypes > = Pick<
+	AdditionalTypes,
+	T
+>;

@@ -27,13 +27,8 @@ export default function TitlePanel( {
 	handleChange,
 	setErrorMessage,
 }: BaseSidebarProps< 'title' > &
-	Pick<
-		AdditionalSidebarProps,
-		| 'currentName'
-		| 'errorMessage'
-		| 'patternNames'
-		| 'setErrorMessage'
-		| 'title'
+	AdditionalSidebarProps<
+		'currentName' | 'errorMessage' | 'patternNames' | 'setErrorMessage'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( 'core/editor' );
