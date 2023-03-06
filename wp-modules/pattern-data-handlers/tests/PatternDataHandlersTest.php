@@ -187,14 +187,14 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 
 		// Tree shaking shouldn't remove this, as it's in a pattern.
 		$this->assertTrue(
-			file_exists(
+			$wp_filesystem->exists(
 				$this->get_fixtures_directory() . '/patterns/images/WPE-ShareImage-A-1200x630-1.png'
 			)
 		);
 
 		// Tree shaking should remove this, as it's not in a pattern.
 		$this->assertFalse(
-			file_exists(
+			$wp_filesystem->exists(
 				$this->get_fixtures_directory() . '/patterns/images/not-used.png'
 			)
 		);
