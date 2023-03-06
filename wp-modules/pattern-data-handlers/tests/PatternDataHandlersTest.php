@@ -9,7 +9,6 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-require_once '/var/www/html/wp-content/wpps-scripts/vendor/wp-phpunit/wp-phpunit/includes/mock-fs.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 use WP_UnitTestCase;
@@ -54,7 +53,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Filters the abstraction file.
 	 */
 	public function filter_abstraction_file( $file ) {
-		return '/var/www/html/wp-content/wpps-scripts/vendor/wp-phpunit/wp-phpunit/includes/mock-fs.php';
+		return WP_TESTS_DIR . '/includes/mock-fs.php'
 	}
 
 	/**
