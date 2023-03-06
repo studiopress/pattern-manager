@@ -25,7 +25,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		add_filter( 'filesystem_method_file' [ $this, 'get_wp_filesystem_stub' ] );
+		add_filter( 'filesystem_method_file', [ $this, 'get_wp_filesystem_stub' ] );
 	}
 
 	/**
