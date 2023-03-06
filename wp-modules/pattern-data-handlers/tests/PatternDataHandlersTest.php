@@ -9,9 +9,8 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-use WP_UnitTestCase;
+use WP_Filesystem_UnitTestCase;
 
-require_once dirname( dirname( dirname( dirname( __DIR__ ) ) ) ) . '/wpps-scripts/tests/phpunit/tests/filesystem/base.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
