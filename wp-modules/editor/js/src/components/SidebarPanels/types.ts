@@ -1,12 +1,7 @@
 import usePatternData from '../../hooks/usePatternData';
 import useSavedPostData from '../../hooks/useSavedPostData';
-import { Pattern, PostMeta } from '../../types';
-
+import type { Pattern, PostMeta } from '../../types';
 import type { Dispatch, SetStateAction } from 'react';
-
-export type PatternEditorSidebarProps = {
-	postMeta: PostMeta;
-};
 
 export type PatternPostData = PostMeta & {
 	title: string;
