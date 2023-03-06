@@ -5,6 +5,8 @@
  * @package pattern-manager
  */
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+
 namespace PatternManager\PatternDataHandlers;
 
 use WP_UnitTestCase;
@@ -91,7 +93,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$pattern_path = $this->get_fixtures_directory() . '/patterns/my-new-pattern.php';
 
 		$this->assertSame(
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( $pattern_path ),
 			construct_pattern_php_file_contents(
 				get_pattern_by_path( $pattern_path ),
@@ -106,7 +107,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns() {
 		$patterns = get_theme_patterns();
 
-		$this->assertCount( 1, array_values( $patterns ) );
+		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertSame(
 			[
 				'my-new-pattern' => $this->get_expected_pattern(),
@@ -128,7 +129,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns_with_editor_links() {
 		$patterns = get_theme_patterns_with_editor_links();
 
-		$this->assertCount( 1, array_values( $patterns ) );
+		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertTrue(
 			array_key_exists(
 				'editorLink',
@@ -153,10 +154,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_tree_shake_theme_images() {
 		tree_shake_theme_images();
 		$this->assertSame(
-			// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( __DIR__ . '/expected/my-new-pattern.php' ),
 			file_get_contents( $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' )
-			// phpcs:enable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		);
 	}
 }
