@@ -11,7 +11,7 @@ namespace PatternManager\PatternDataHandlers;
 
 use WP_UnitTestCase;
 
-require_once __DIR__ . '/../../../../../../tests/phpunit/tests/filesystem/base.php';
+require_once '/tmp/wordpress-tests-lib/tests/phpunit/tests/filesystem/base.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
@@ -165,7 +165,7 @@ class PatternDataHandlersTest extends WP_Filesystem_UnitTestCase {
 	public function test_tree_shake_theme_images() {
 		move_block_images_to_theme(
 			get_pattern_by_name( 'with-image' )['content']
-		)
+		);
 		tree_shake_theme_images();
 
 		// Tree shaking shouldn't remove this, as it's in a pattern.
