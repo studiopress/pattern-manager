@@ -14,10 +14,10 @@ import type { ReactNode } from 'react';
 export default function PostTypesPanel( {
 	children,
 	postMeta,
-	postTypes,
+	postTypeOptions,
 	handleChange,
 }: BaseSidebarProps &
-	Pick< AdditionalSidebarProps, 'postTypes' > & {
+	Pick< AdditionalSidebarProps, 'postTypeOptions' > & {
 		children: ReactNode;
 	} ) {
 	return (
@@ -32,7 +32,7 @@ export default function PostTypesPanel( {
 				) }
 				helperTitle={ __( 'Allowed post types', 'pattern-manager' ) }
 			/>
-			{ postTypes ? (
+			{ postTypeOptions ? (
 				<Select
 					isMulti
 					isClearable
@@ -40,7 +40,7 @@ export default function PostTypesPanel( {
 					aria-label={ __( 'Select post types', 'pattern-manager' ) }
 					value={ postMeta?.postTypes?.map( ( postType ) => {
 						return {
-							...postTypes.find(
+							...postTypeOptions.find(
 								( matchedPostType ) =>
 									matchedPostType.value === postType
 							),
@@ -68,7 +68,7 @@ export default function PostTypesPanel( {
 								'' ),
 						};
 					} ) }
-					options={ postTypes }
+					options={ postTypeOptions }
 					onChange={ ( postTypeSelections ) => {
 						handleChange(
 							'postTypes',

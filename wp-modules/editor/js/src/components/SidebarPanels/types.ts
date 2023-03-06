@@ -14,9 +14,11 @@ export type BaseSidebarProps = {
 };
 
 export type AdditionalSidebarProps = {
-	blockTypes: ReturnType< typeof usePatternData >[ 'blockTypes' ];
-	categories: ReturnType< typeof usePatternData >[ 'categories' ];
-	postTypes: ReturnType< typeof usePatternData >[ 'postTypes' ];
+	blockTypeOptions: ReturnType<
+		typeof usePatternData
+	>[ 'queriedBlockTypes' ];
+	categoryOptions: ReturnType< typeof usePatternData >[ 'queriedCategories' ];
+	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];
 	errorMessage: string;
 	patternNames: Array< Pattern[ 'name' ] >;
 	setErrorMessage: Dispatch< SetStateAction< string > >;

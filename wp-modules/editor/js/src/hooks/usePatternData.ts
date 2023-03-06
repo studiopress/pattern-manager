@@ -172,9 +172,9 @@ export default function usePatternData( postMeta: PostMeta ) {
 	}
 
 	return {
-		postTypes,
-		categories,
-		blockTypes,
+		queriedPostTypes: postTypes,
+		queriedCategories: categories,
+		queriedBlockTypes: blockTypes,
 		updatePostMeta,
 	};
 }

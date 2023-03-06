@@ -11,15 +11,15 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
  */
 export default function CategoriesPanel( {
 	postMeta,
-	categories,
+	categoryOptions,
 	handleChange,
-}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'categories' > ) {
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'categoryOptions' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"
 			title={ __( 'Pattern Categories', 'pattern-manager' ) }
 		>
-			{ categories ? (
+			{ categoryOptions ? (
 				<Select
 					isMulti
 					isClearable
@@ -29,12 +29,12 @@ export default function CategoriesPanel( {
 						'pattern-manager'
 					) }
 					value={ postMeta?.categories?.map( ( category ) =>
-						categories.find(
+						categoryOptions.find(
 							( matchedCategory ) =>
 								matchedCategory.value === category
 						)
 					) }
-					options={ categories }
+					options={ categoryOptions }
 					onChange={ ( categorySelections ) => {
 						handleChange(
 							'categories',

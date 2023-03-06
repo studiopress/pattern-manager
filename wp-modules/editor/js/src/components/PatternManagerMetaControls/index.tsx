@@ -28,8 +28,12 @@ export default function PatternManagerMetaControls() {
 
 	useSave( setPatternNames );
 
-	const { postTypes, categories, blockTypes, updatePostMeta } =
-		usePatternData( postMeta );
+	const {
+		queriedPostTypes,
+		queriedCategories,
+		queriedBlockTypes,
+		updatePostMeta,
+	} = usePatternData( postMeta );
 
 	return (
 		<div>
@@ -44,7 +48,7 @@ export default function PatternManagerMetaControls() {
 			/>
 			<CategoriesPanel
 				postMeta={ postMeta }
-				categories={ categories }
+				categoryOptions={ queriedCategories }
 				handleChange={ updatePostMeta }
 			/>
 			<KeywordsPanel
@@ -63,7 +67,7 @@ export default function PatternManagerMetaControls() {
 			/>
 			<PostTypesPanel
 				postMeta={ postMeta }
-				postTypes={ postTypes }
+				postTypeOptions={ queriedPostTypes }
 				handleChange={ updatePostMeta }
 			>
 				<ModalToggle
@@ -77,7 +81,7 @@ export default function PatternManagerMetaControls() {
 			</PostTypesPanel>
 			<TransformsPanel
 				postMeta={ postMeta }
-				blockTypes={ blockTypes }
+				blockTypeOptions={ queriedBlockTypes }
 				handleChange={ updatePostMeta }
 			/>
 		</div>

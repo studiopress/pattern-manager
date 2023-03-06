@@ -12,9 +12,9 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
  */
 export default function TransformsPanel( {
 	postMeta,
-	blockTypes,
+	blockTypeOptions,
 	handleChange,
-}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'blockTypes' > ) {
+}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'blockTypeOptions' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-transforms"
@@ -30,7 +30,7 @@ export default function TransformsPanel( {
 					'pattern-manager'
 				) }
 			/>
-			{ blockTypes ? (
+			{ blockTypeOptions ? (
 				<Select
 					isMulti
 					isClearable
@@ -42,12 +42,12 @@ export default function TransformsPanel( {
 							return null;
 						}
 
-						return blockTypes.find(
+						return blockTypeOptions.find(
 							( matchedBlocktype ) =>
 								matchedBlocktype.value === blockType
 						);
 					} ) }
-					options={ blockTypes }
+					options={ blockTypeOptions }
 					onChange={ ( blockTypeSelections ) => {
 						handleChange( 'blockTypes', [
 							...blockTypeSelections.map(
