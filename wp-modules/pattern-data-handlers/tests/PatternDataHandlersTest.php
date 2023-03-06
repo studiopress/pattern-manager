@@ -157,5 +157,17 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			file_get_contents( __DIR__ . '/expected/with-image.php' ),
 			file_get_contents( $this->get_fixtures_directory() . '/patterns/with-image.php' )
 		);
+
+		// Only the image used in a pattern should still be in patterns/images/.
+		$this->assertTrue(
+			file_exists(
+				$this->get_fixtures_directory() . '/patterns/images/WPE-ShareImage-A-1200x630-1.png'
+			)
+		);
+		$this->assertFalse(
+			file_exists(
+				$this->get_fixtures_directory() . '/patterns/images/not-used.png'
+			)
+		);
 	}
 }
