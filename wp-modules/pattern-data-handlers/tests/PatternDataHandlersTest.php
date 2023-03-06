@@ -146,4 +146,17 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			get_pattern_names(),
 		);
 	}
+
+	/**
+	 * Test tree_shake_theme_images.
+	 */
+	public function test_tree_shake_theme_images() {
+		tree_shake_theme_images();
+		$this->assertSame(
+			// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+			file_get_contents( __DIR__ . '/expected/my-new-pattern.php' ),
+			file_get_contents( $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' )
+			// phpcs:enable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		);
+	}
 }
