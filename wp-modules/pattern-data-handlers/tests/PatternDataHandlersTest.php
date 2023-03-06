@@ -10,6 +10,7 @@
 namespace PatternManager\PatternDataHandlers;
 
 use WP_UnitTestCase;
+use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
@@ -177,7 +178,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		global $wp_filesystem;
+		$wp_filesystem = get_wp_filesystem_api();
 		$wp_filesystem->init( getenv( 'ABSPATH' ) );
 
 		move_block_images_to_theme(
