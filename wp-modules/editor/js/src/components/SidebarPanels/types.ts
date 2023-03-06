@@ -1,4 +1,5 @@
 import usePatternData from '../../hooks/usePatternData';
+import useSavedPostData from '../../hooks/useSavedPostData';
 import { Pattern, PostMeta } from '../../types';
 
 import type { Dispatch, SetStateAction } from 'react';
@@ -20,4 +21,5 @@ export type AdditionalSidebarProps = {
 	patternNames: Array< Pattern[ 'name' ] >;
 	setErrorMessage: Dispatch< SetStateAction< string > >;
 	title: string;
+	currentName: ReturnType< typeof useSavedPostData >[ 'currentName' ];
 };
