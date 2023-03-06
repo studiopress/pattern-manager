@@ -163,9 +163,19 @@ class PatternDataHandlersTest extends WP_Filesystem_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
+		move_block_images_to_theme(
+			get_pattern_by_name( 'with-image' )['content']
+		)
 		tree_shake_theme_images();
 
-		// This should remove the image that's not used in a pattern.
+		// Tree shaking shouldn't remove this, as it's in a pattern.
+		$this->assertTrue(
+			file_exists(
+				$this->get_fixtures_directory() . '/patterns/images/WPE-ShareImage-A-1200x630-1.png'
+			)
+		);
+
+		// Tree shaking should remove this, as it's not in a pattern.
 		$this->assertFalse(
 			file_exists(
 				$this->get_fixtures_directory() . '/patterns/images/not-used.png'
