@@ -11,7 +11,7 @@ namespace PatternManager\PatternDataHandlers;
 
 use WP_UnitTestCase;
 
-require_once '/tmp/wordpress-tests-lib/includes/functions.php';
+require_once '/var/www/html/wp-content/wpps-scripts/tests/phpunit/includes/functions.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
