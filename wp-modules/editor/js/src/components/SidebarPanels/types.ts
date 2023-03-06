@@ -19,10 +19,9 @@ export type AdditionalSidebarProps = {
 		typeof usePatternData
 	>[ 'queriedBlockTypes' ];
 	categoryOptions: ReturnType< typeof usePatternData >[ 'queriedCategories' ];
-	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];
+	currentName: ReturnType< typeof useSavedPostData >[ 'currentName' ];
 	errorMessage: string;
 	patternNames: Array< Pattern[ 'name' ] >;
+	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];
 	setErrorMessage: Dispatch< SetStateAction< string > >;
-	title: string;
-	currentName: ReturnType< typeof useSavedPostData >[ 'currentName' ];
 };
