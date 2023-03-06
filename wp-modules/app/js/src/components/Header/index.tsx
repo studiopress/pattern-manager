@@ -8,7 +8,7 @@ import { Button } from '@wordpress/components';
  * Internal dependencies
  */
 import { patternManager } from '../../globals';
-import wpeLogoDefaultCropped from '../../../../img/wpe-logo-s-default-cropped.svg';
+import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 export default function Header() {
 	return (
