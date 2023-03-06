@@ -27,7 +27,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		add_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		add_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		add_filter( 'request_filesystem_credentials', '__return_true' );
 		WP_Filesystem();
 	}
 
@@ -39,7 +38,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		remove_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		remove_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		unset( $wp_filesystem );
 
 		parent::tear_down();
