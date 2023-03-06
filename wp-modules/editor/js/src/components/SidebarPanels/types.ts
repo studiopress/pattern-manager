@@ -8,8 +8,14 @@ export type PatternEditorSidebarProps = {
 	postMeta: PostMeta;
 };
 
-export type BaseSidebarProps = {
-	postMeta: PostMeta;
+export type PatternPostData = PostMeta & {
+	title: string;
+};
+
+export type BaseSidebarProps< T extends keyof PatternPostData > = Pick<
+	PatternPostData,
+	T
+> & {
 	handleChange: ReturnType< typeof usePatternData >[ 'updatePostMeta' ];
 };
 
