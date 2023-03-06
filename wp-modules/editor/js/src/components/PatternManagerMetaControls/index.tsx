@@ -29,9 +29,9 @@ export default function PatternManagerMetaControls() {
 	useSave( setPatternNames );
 
 	const {
-		queriedPostTypes,
-		queriedCategories,
 		queriedBlockTypes,
+		queriedCategories,
+		queriedPostTypes,
 		updatePostMeta,
 		updatePostMetaMulti,
 	} = usePatternData( postMeta );
