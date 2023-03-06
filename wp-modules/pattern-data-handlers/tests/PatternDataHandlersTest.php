@@ -11,28 +11,26 @@ namespace PatternManager\PatternDataHandlers;
 
 use WP_UnitTestCase;
 
+require_once WP_TESTS_DIR . '/tests/filesystem/base.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
  * Test the pattern functions.
  */
-class PatternDataHandlersTest extends WP_UnitTestCase {
+class PatternDataHandlersTest extends WP_Filesystem_UnitTestCase {
 
 	/**
 	 * @inheritDoc
 	 */
 	public function setUp() {
 		parent::setUp();
-		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		add_filter( 'filesystem_method_file', [ $this, 'get_wp_filesystem_stub' ] );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function tearDown() {
-		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		parent::tearDown();
 	}
