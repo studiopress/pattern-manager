@@ -11,6 +11,10 @@ export type PostMeta = {
 	viewportWidth: number;
 };
 
+export type PatternPostData = PostMeta & {
+	title: string;
+};
+
 export type SelectQuery = ( dataStore: string ) => {
 	getBlockPatternCategories: () => { name: string; label: string }[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
