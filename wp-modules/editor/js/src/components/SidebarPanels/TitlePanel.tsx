@@ -8,15 +8,15 @@ import { RichText } from '@wordpress/block-editor';
 import convertToSlug from '../../utils/convertToSlug';
 
 import type { AdditionalSidebarProps, BaseSidebarProps } from './types';
-import type { Pattern, PostMeta } from '../../types';
+import type { Pattern } from '../../types';
 
 function isTitleTaken(
 	patternTitle: string,
-	currentSlug: string,
+	currentName: string,
 	patternNames: Array< Pattern[ 'name' ] >
 ) {
 	const newSlug = convertToSlug( patternTitle );
-	return patternNames.includes( newSlug ) && newSlug !== currentSlug;
+	return patternNames.includes( newSlug ) && newSlug !== currentName;
 }
 
 export default function TitlePanel( {
@@ -24,12 +24,16 @@ export default function TitlePanel( {
 	errorMessage,
 	setErrorMessage,
 	patternNames,
-	postMeta,
 	title,
+	currentName,
 }: BaseSidebarProps &
 	Pick<
 		AdditionalSidebarProps,
-		'errorMessage' | 'patternNames' | 'setErrorMessage' | 'title'
+		| 'errorMessage'
+		| 'patternNames'
+		| 'setErrorMessage'
+		| 'title'
+		| 'currentName'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( 'core/editor' );
@@ -46,7 +50,7 @@ export default function TitlePanel( {
 					'pattern-manager'
 				) }
 				value={ title }
-				onChange={ ( newTitle: PostMeta[ 'title' ] ) => {
+				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
 					handleChange( 'name', convertToSlug( newTitle ) );
 
@@ -59,7 +63,7 @@ export default function TitlePanel( {
 						speak( newErrorMessage, 'assertive' );
 						setErrorMessage( newErrorMessage );
 					} else if (
-						isTitleTaken( newTitle, postMeta.slug, patternNames )
+						isTitleTaken( newTitle, currentName, patternNames )
 					) {
 						lockPostSaving();
 						const newErrorMessage = __(

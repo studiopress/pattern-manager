@@ -1,5 +1,4 @@
 import { __ } from '@wordpress/i18n';
-import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
@@ -8,17 +7,16 @@ import PatternPreview from '../../../../../app/js/src/components/PatternPreview'
 import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
-import type { Pattern, SelectQuery } from '../../types';
+import type { Pattern } from '../../types';
 
 export default function ViewportWidthPanel( {
 	postMeta,
 	handleChange,
 	errorMessage,
-}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'errorMessage' > ) {
+	currentName,
+}: BaseSidebarProps &
+	Pick< AdditionalSidebarProps, 'errorMessage' | 'currentName' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
-	const savedPatternName = useSelect( ( select: SelectQuery ) => {
-		return select( 'core/editor' ).getCurrentPostAttribute( 'meta' )?.name;
-	}, [] );
 	const viewportWidth = postMeta.viewportWidth || 1280;
 
 	return (
@@ -56,7 +54,7 @@ export default function ViewportWidthPanel( {
 						url={
 							patternManager.siteUrl +
 							'?pm_pattern_preview=' +
-							savedPatternName
+							currentName
 						}
 						viewportWidth={ viewportWidth }
 					/>
