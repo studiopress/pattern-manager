@@ -9,9 +9,9 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
-
 use WP_UnitTestCase;
+
+require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 /**
  * Test the pattern functions.
@@ -26,6 +26,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		add_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		add_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		add_filter( 'request_filesystem_credentials', '__return_true' );
 		WP_Filesystem();
 	}
 
@@ -34,9 +35,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function tear_down() {
 		global $wp_filesystem;
-		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		remove_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		remove_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
+		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		unset( $wp_filesystem );
 
 		parent::tear_down();
@@ -61,15 +63,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function get_fixtures_directory() {
 		return __DIR__ . '/fixtures';
-	}
-
-	/**
-	 * Gets the path to the filesystem stub.
-	 *
-	 * @return string
-	 */
-	public function get_wp_filesystem_stub() {
-		return __DIR__ . '/fixtures/WPFilesystem.php';
 	}
 
 	/**
