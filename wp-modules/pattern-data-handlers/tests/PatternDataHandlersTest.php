@@ -53,7 +53,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Filters the abstraction file.
 	 */
 	public function filter_abstraction_file( $file ) {
-		return WP_TESTS_DIR . '/includes/mock-fs.php'
+		return WP_TESTS_DIR . '/includes/mock-fs.php';
 	}
 
 	/**
