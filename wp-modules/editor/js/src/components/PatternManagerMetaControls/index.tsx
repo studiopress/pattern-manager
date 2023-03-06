@@ -1,12 +1,12 @@
 import { useState } from '@wordpress/element';
-import { ModalToggle, InserterToggle } from '../Toggles';
+import { InserterToggle, ModalToggle } from '../Toggles';
 import {
-	TitlePanel,
-	PostTypesPanel,
 	CategoriesPanel,
-	TransformsPanel,
-	KeywordsPanel,
 	DescriptionPanel,
+	KeywordsPanel,
+	PostTypesPanel,
+	TitlePanel,
+	TransformsPanel,
 	ViewportWidthPanel,
 } from '../SidebarPanels';
 
