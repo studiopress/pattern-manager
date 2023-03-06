@@ -9,7 +9,6 @@
 
 namespace PatternManager\PatternDataHandlers;
 
-require_once '/var/www/html/wp-content/wpps-scripts/vendor/wp-phpunit/wp-phpunit/filesystem/base.php';
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 use WP_Filesystem_UnitTestCase;
@@ -18,22 +17,44 @@ use WP_Filesystem_UnitTestCase;
 /**
  * Test the pattern functions.
  */
-class PatternDataHandlersTest extends WP_Filesystem_UnitTestCase {
+class PatternDataHandlersTest extends WP_UnitTestCase {
 
 	/**
 	 * @inheritDoc
 	 */
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
+		add_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
+		add_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		WP_Filesystem();
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function tearDown() {
+	public function tear_down() {
+		global $wp_filesystem;
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		parent::tearDown();
+		remove_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
+		remove_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
+		unset( $wp_filesystem );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * Filters the FS method.
+	 */
+	public function filter_fs_method( $method ) {
+		return 'MockFS';
+	}
+
+	/**
+	 * Filters the abstraction file.
+	 */
+	public function filter_abstraction_file( $file ) {
+		return '/var/www/html/wp-content/wpps-scripts/vendor/wp-phpunit/wp-phpunit/includes/mock-fs.php';
 	}
 
 	/**
