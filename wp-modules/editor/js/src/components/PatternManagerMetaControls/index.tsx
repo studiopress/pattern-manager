@@ -33,55 +33,59 @@ export default function PatternManagerMetaControls() {
 		queriedCategories,
 		queriedBlockTypes,
 		updatePostMeta,
+		updatePostMetaMulti,
 	} = usePatternData( postMeta );
 
 	return (
 		<div>
 			<TitlePanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
+				currentName={ currentName }
 				errorMessage={ errorMessage }
-				setErrorMessage={ setErrorMessage }
 				patternNames={ patternNames }
 				title={ title }
-				currentName={ currentName }
+				handleChange={ updatePostMeta }
+				setErrorMessage={ setErrorMessage }
 			/>
 			<CategoriesPanel
-				postMeta={ postMeta }
+				categories={ postMeta.categories }
 				categoryOptions={ queriedCategories }
 				handleChange={ updatePostMeta }
 			/>
 			<KeywordsPanel
-				postMeta={ postMeta }
+				keywords={ postMeta.keywords }
 				handleChange={ updatePostMeta }
 			/>
 			<DescriptionPanel
-				postMeta={ postMeta }
+				description={ postMeta.description }
 				handleChange={ updatePostMeta }
 			/>
 			<ViewportWidthPanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
-				errorMessage={ errorMessage }
 				currentName={ currentName }
+				errorMessage={ errorMessage }
+				viewportWidth={ postMeta.viewportWidth }
+				handleChange={ updatePostMeta }
 			/>
 			<PostTypesPanel
-				postMeta={ postMeta }
+				blockTypes={ postMeta.blockTypes }
 				postTypeOptions={ queriedPostTypes }
+				postTypes={ postMeta.postTypes }
 				handleChange={ updatePostMeta }
 			>
 				<ModalToggle
-					postMeta={ postMeta }
-					handleChange={ updatePostMeta }
+					blockTypes={ postMeta.blockTypes }
+					inserter={ postMeta.inserter }
+					postTypes={ postMeta.postTypes }
+					handleChangeMulti={ updatePostMetaMulti }
 				/>
 				<InserterToggle
-					postMeta={ postMeta }
+					inserter={ postMeta.inserter }
+					postTypes={ postMeta.postTypes }
 					handleChange={ updatePostMeta }
 				/>
 			</PostTypesPanel>
 			<TransformsPanel
-				postMeta={ postMeta }
 				blockTypeOptions={ queriedBlockTypes }
+				blockTypes={ postMeta.blockTypes }
 				handleChange={ updatePostMeta }
 			/>
 		</div>

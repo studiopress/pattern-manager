@@ -11,10 +11,11 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
  * Block types in the pattern file are primarily used for transforming blocks.
  */
 export default function TransformsPanel( {
-	postMeta,
 	blockTypeOptions,
+	blockTypes,
 	handleChange,
-}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'blockTypeOptions' > ) {
+}: BaseSidebarProps< 'blockTypes' > &
+	Pick< AdditionalSidebarProps, 'blockTypeOptions' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-transforms"
@@ -36,7 +37,7 @@ export default function TransformsPanel( {
 					isClearable
 					closeMenuOnSelect={ false }
 					aria-label={ __( 'Select block types', 'pattern-manager' ) }
-					value={ postMeta?.blockTypes?.map( ( blockType ) => {
+					value={ blockTypes?.map( ( blockType ) => {
 						// Hide block type related to the post type modal.
 						if ( blockType === 'core/post-content' ) {
 							return null;
@@ -54,7 +55,7 @@ export default function TransformsPanel( {
 								( blockTypeObject ) => blockTypeObject.value
 							),
 							// Make sure 'core/post-content' is not removed if it was in postMeta.blockTypes.
-							...( ( postMeta?.blockTypes?.includes(
+							...( ( blockTypes?.includes(
 								'core/post-content'
 							) && [ 'core/post-content' ] ) ||
 								'' ),

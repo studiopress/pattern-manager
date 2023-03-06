@@ -2,19 +2,20 @@ import { __ } from '@wordpress/i18n';
 import { PanelRow, ToggleControl } from '@wordpress/components';
 import { ReverseTooltip } from '../Tooltips';
 
-import type { ToggleTypes } from './types';
+import type { ToggleProps } from './types';
 
 export default function InserterToggle( {
-	postMeta,
+	inserter,
+	postTypes,
 	handleChange,
-}: ToggleTypes ) {
-	const isChecked = postMeta?.inserter ?? true;
+}: ToggleProps< 'inserter' | 'postTypes' > ) {
+	const isChecked = inserter ?? true;
 
 	return (
 		<PanelRow className="patternmanager-inserter-toggle">
 			<ToggleControl
 				label={
-					! isChecked && postMeta?.postTypes?.length ? (
+					! isChecked && postTypes?.length ? (
 						<ReverseTooltip
 							helperText={ __(
 								'Modal visibility selection also depends on this setting.',
