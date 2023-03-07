@@ -168,7 +168,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_pattern_names() {
 		$this->assertSame(
 			[ 'my-new-pattern' ],
-			get_pattern_names(),
+			get_pattern_names()
 		);
 	}
 
@@ -177,7 +177,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		global $wp_filesystem;
-		$wp_filesystem->init( $this->get_fixtures_directory() );
+		$wp_filesystem->init( WP_CONTENT_DIR );
 
 		tree_shake_theme_images( $wp_filesystem );
 
