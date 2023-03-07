@@ -94,6 +94,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$this->assertFalse(
 			$wp_filesystem->exists(
 				__DIR__ . '/fixtures/patterns/images/not-used.png'
-			);
+			)
+		);
 	}
 }
