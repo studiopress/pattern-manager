@@ -24,6 +24,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function set_up() {
 		parent::set_up();
+		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		add_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
@@ -35,6 +36,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function tear_down() {
 		global $wp_filesystem;
+		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		remove_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
@@ -76,7 +78,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		global $wp_filesystem;
-		$wp_filesystem->init( ABSPATH);
+		$wp_filesystem->init( ABSPATH );
 
 		move_block_images_to_theme(
 			get_pattern_by_name( 'with-image' )['content']
