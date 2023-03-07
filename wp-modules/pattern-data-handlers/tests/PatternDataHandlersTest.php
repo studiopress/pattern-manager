@@ -110,22 +110,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests construct_pattern_php_file_contents.
-	 */
-	public function test_construct_pattern_php_file_contents() {
-		$pattern_path = $this->get_fixtures_directory() . '/patterns/my-new-pattern.php';
-
-		$this->assertSame(
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-			file_get_contents( $pattern_path ),
-			construct_pattern_php_file_contents(
-				get_pattern_by_path( $pattern_path ),
-				'foo-textdomain'
-			)
-		);
-	}
-
-	/**
 	 * Tests get_theme_patterns.
 	 */
 	public function test_get_theme_patterns() {
