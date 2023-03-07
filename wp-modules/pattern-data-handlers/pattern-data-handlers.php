@@ -118,7 +118,7 @@ function format_pattern_data( $pattern_data, $file ) {
 
 	// The actual pattern content is the output of the file.
 	ob_start();
-	include $file;
+	include $wp_filesystem->find_folder( dirname( $file ) ) . '/' . basename( $file );
 	$pattern_data['content'] = ob_get_clean();
 
 	if ( ! $pattern_data['content'] ) {
