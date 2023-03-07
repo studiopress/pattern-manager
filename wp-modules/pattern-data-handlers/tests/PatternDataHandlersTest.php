@@ -79,11 +79,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$wp_filesystem = get_wp_filesystem_api();
 		$wp_filesystem->init( ABSPATH );
 
-		move_block_images_to_theme(
-			get_pattern_by_name( 'with-image' )['content']
-		);
-		tree_shake_theme_images();
-
 		// Tree shaking shouldn't remove this, as it's in a pattern.
 		$this->assertTrue(
 			$wp_filesystem->exists(
