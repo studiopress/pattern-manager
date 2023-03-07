@@ -382,7 +382,8 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * @param array $patterns_in_theme The patterns in the theme.
  */
 function tree_shake_theme_images() {
-	global $wp_filesystem;
+	// Spin up the filesystem api.
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
@@ -450,7 +451,12 @@ function tree_shake_theme_images() {
  * @return $string The modified block HTML with absolute URLs changed to be localized to the theme.
  */
 function move_block_images_to_theme( $pattern_html ) {
-	global $wp_filesystem;
+
+	// Spin up the filesystem api.
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+	if ( ! $wp_filesystem ) {
+		return $pattern_html;
+	}
 
 	$wp_theme_dir = get_stylesheet_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';
