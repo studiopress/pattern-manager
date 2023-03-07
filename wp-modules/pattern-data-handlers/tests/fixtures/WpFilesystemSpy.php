@@ -27,7 +27,7 @@ class WpFilesystemSpy {
 		return __DIR__;
 	}
 
-	public function dirlist() {
+	public function dirlist(): array {
 		return [];
 	}
 
