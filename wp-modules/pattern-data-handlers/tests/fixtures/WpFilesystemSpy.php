@@ -1,11 +1,9 @@
 <?php
 /**
- * Class PatternDataHandlersTest
+ * Class WpFilesystemSpy
  *
  * @package pattern-manager
  */
-
-// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
 namespace PatternManager\PatternDataHandlers;
 

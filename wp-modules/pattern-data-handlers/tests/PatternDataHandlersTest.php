@@ -10,7 +10,7 @@
 namespace PatternManager\PatternDataHandlers;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
-require_once __DIR__  . '/fixtures/WpFilesystemSpy.php';
+require_once __DIR__ . '/fixtures/WpFilesystemSpy.php';
 
 use WP_UnitTestCase;
 use function WP_Filesystem;
@@ -85,7 +85,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		// Tree shaking should only remove the unused image.
 		$this->assertSame(
 			[
-				'patterns/images/WPE-ShareImage-A-1200x630-1.png'
+				'patterns/images/WPE-ShareImage-A-1200x630-1.png',
 			],
 			$wp_filesystem->get_copied()
 		);
