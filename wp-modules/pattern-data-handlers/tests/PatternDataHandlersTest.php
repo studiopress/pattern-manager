@@ -12,6 +12,7 @@ namespace PatternManager\PatternDataHandlers;
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 use WP_UnitTestCase;
+use function WP_Filesystem;
 use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
 
 /**
@@ -28,6 +29,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		add_filter( 'filesystem_method_file', array( $this, 'filter_abstraction_file' ) );
 		add_filter( 'filesystem_method', array( $this, 'filter_fs_method' ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		WP_Filesystem();
 	}
 
 	/**
@@ -76,10 +78,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		$wp_filesystem = get_wp_filesystem_api();
+		global $wp_filesystem;
 		$wp_filesystem->init( $this->get_fixtures_directory() );
 
-		tree_shake_theme_images();
+		tree_shake_theme_images( $wp_filesystem );
 
 		// Tree shaking shouldn't remove this, as it's in a pattern.
 		$this->assertTrue(

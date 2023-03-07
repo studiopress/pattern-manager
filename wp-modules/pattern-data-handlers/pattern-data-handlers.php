@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternDataHandlers;
 
+use WP_Filesystem_Base;
 use WP_Query;
 use function PatternManager\Editor\get_pattern_post_type;
 
@@ -379,12 +380,9 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 /**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
- * @param array $patterns_in_theme The patterns in the theme.
+ * @param WP_Filesystem_Base $wp_filesystem The file system.
  */
-function tree_shake_theme_images() {
-	// Spin up the filesystem api.
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
+function tree_shake_theme_images( WP_Filesystem_Base $wp_filesystem ) {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
