@@ -64,7 +64,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function get_fixtures_directory() {
 		global $wp_filesystem;
-		return $wp_filesystem->abspath( 'plugins/pattern-manager/wp-modules/pattern-data-handlers/tests/fixtures' );
+		return $wp_filesystem->abspath( __DIR__ . '/fixtures' );
 	}
 
 	/**
@@ -79,21 +79,21 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		global $wp_filesystem;
-		$wp_filesystem->init( WP_CONTENT_DIR );
+		$wp_filesystem->init( '/' );
 
 		tree_shake_theme_images( $wp_filesystem );
 
 		// Tree shaking shouldn't remove this, as it's in a pattern.
 		$this->assertTrue(
 			$wp_filesystem->exists(
-				$wp_filesystem->wp_content_dir() . '/plugins/pattern-manager/wp-modules/pattern-data-handlers/tests/fixtures/patterns/images/WPE-ShareImage-A-1200x630-1.png'
+				$wp_filesystem->abspath( __DIR__ . '/fixtures/patterns/images/WPE-ShareImage-A-1200x630-1.png'
 			)
 		);
 
 		// Tree shaking should remove this, as it's not in a pattern.
 		$this->assertFalse(
 			$wp_filesystem->exists(
-				$this->$wp_filesystem->wp_content_dir() . '/plugins/pattern-manager/wp-modules/pattern-data-handlers/tests/fixtures/patterns/images/not-used.png'
+				$this->$wp_filesystem->abspath( __DIR__ . '/fixtures/patterns/images/not-used.png'
 			)
 		);
 	}
