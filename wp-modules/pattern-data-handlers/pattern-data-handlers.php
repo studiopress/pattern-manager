@@ -315,7 +315,7 @@ function update_pattern( $pattern ) {
 
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
 
-	tree_shake_theme_images( $wp_filesystem );
+	tree_shake_theme_images( $wp_filesystem, 'copy_dir' );
 
 	return $pattern_file_created;
 }
@@ -381,6 +381,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
  * @param object $wp_filesystem The file system.
+ * @param callable $copy_dir Copies a directory.
  */
 function tree_shake_theme_images( $wp_filesystem, $copy_dir ) {
 	// Get the current patterns in the theme (not including templates and templates parts).
