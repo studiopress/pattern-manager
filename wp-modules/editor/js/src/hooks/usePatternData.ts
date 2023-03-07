@@ -180,12 +180,12 @@ export default function usePatternData( postMeta: PostMeta ) {
 	 * Otherwise, the value is filtered out of a new array.
 	 */
 	function updatePostMetaMulti(
-		toggleEvent: boolean,
+		isChecked: boolean,
 		metaKey: string,
 		metaValue: string
 	) {
 		updatePostMeta( metaKey, [
-			...( toggleEvent && ! postMeta[ metaKey ]?.includes( metaValue )
+			...( isChecked && ! postMeta[ metaKey ]?.includes( metaValue )
 				? [ ...postMeta[ metaKey ], metaValue ]
 				: postMeta[ metaKey ].filter(
 						( existingValue ) => existingValue !== metaValue
