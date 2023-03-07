@@ -390,29 +390,35 @@ function tree_shake_theme_images() {
 	// Add the included Patterns for the current theme.
 	$theme_dir         = get_stylesheet_directory();
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
+	echo 'line 393';
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
 	$images_dir          = $theme_dir . '/patterns/images/';
+	echo 'line 397';
 
 	$wp_theme_url = get_stylesheet_directory_uri();
 	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
+		echo 'line 404';
 	}
 
 	// Before we take any action, back up the current images directory.
 	copy_dir( $images_dir, $backedup_images_dir );
+	echo 'line 409';
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
 
 	if ( ! $wp_filesystem->exists( $images_dir ) ) {
 		$wp_filesystem->mkdir( $images_dir );
+		echo 'line 416';
 	}
 
 	// Loop through all patterns in the theme.
 	foreach ( $patterns_in_theme as $pattern_data ) {
+		echo 'line 421';
 		// Find all URLs in the block pattern html.
 		preg_match_all( '/(?<=")(http|https):\/\/(?:(?!").)*/', $pattern_data['content'], $output_array );
 
@@ -427,6 +433,7 @@ function tree_shake_theme_images() {
 
 		// Loop through each URL found.
 		foreach ( $urls_found as $url_found ) {
+			echo 'line 436';
 
 			// If URL to image is local to theme, pull it from the backed-up theme images directory.
 			$local_path_to_image          = str_replace( $images_url, $backedup_images_dir, $url_found );
@@ -436,12 +443,14 @@ function tree_shake_theme_images() {
 			if ( strpos( $local_path_to_image, $backedup_images_dir ) === 0 ) {
 				// Move the file into the theme again.
 				$wp_filesystem->copy( $local_path_to_image, $desired_destination_in_theme );
+				echo 'line 446';
 			}
 		}
 	}
 
 	// Delete the temporary backup of the images we did.
 	$wp_filesystem->delete( $backedup_images_dir, true, 'd' );
+	echo 'line 453';
 }
 
 /**

@@ -77,7 +77,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		$wp_filesystem = get_wp_filesystem_api();
-		$wp_filesystem->init( WP_CONTENT_DIR );
+		$wp_filesystem->init( $this->get_fixtures_directory() );
 
 		tree_shake_theme_images();
 
