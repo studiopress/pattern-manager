@@ -162,6 +162,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		global $wp_filesystem;
+
+		$wp_filesystem->init();
 		tree_shake_theme_images( $wp_filesystem );
 
 		// Tree shaking shouldn't remove this, as it's in a pattern.
