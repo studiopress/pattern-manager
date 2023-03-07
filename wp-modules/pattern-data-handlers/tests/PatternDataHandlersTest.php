@@ -9,10 +9,10 @@
 
 namespace PatternManager\PatternDataHandlers;
 
+use WP_UnitTestCase;
+
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 require_once __DIR__ . '/fixtures/WpFilesystemSpy.php';
-
-use WP_UnitTestCase;
 
 /**
  * Test the pattern functions.
