@@ -23,14 +23,6 @@ class WpFilesystemSpy {
 		return true;
 	}
 
-	public function wp_content_dir(): string {
-		return __DIR__;
-	}
-
-	public function dirlist(): array {
-		return [];
-	}
-
 	public function mkdir( string $path ) {}
 	public function delete( string $path ) {}
 }
