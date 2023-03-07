@@ -28,6 +28,5 @@ class WpFilesystemSpy {
 	}
 
 	public function mkdir( string $path ) {}
-
 	public function delete( string $path ) {}
 }

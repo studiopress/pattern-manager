@@ -157,10 +157,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		copy_dir( WP_CONTENT_DIR, WP_CONTENT_DIR . '/temp-images' );
-
 		$wp_filesystem = new WpFilesystemSpy();
-
 		tree_shake_theme_images( $wp_filesystem );
 
 		// Tree shaking should only keep (copy) the used image.
