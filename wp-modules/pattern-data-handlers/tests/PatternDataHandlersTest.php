@@ -10,6 +10,7 @@
 namespace PatternManager\PatternDataHandlers;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
+require_once __DIR__  . '/fixtures/WpFilesystemSpy.php';
 
 use WP_UnitTestCase;
 use function WP_Filesystem;
@@ -63,8 +64,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Gets the fixtures directory.
 	 */
 	public function get_fixtures_directory() {
-		global $wp_filesystem;
-		return $wp_filesystem->abspath( __DIR__ . '/fixtures' );
+		return __DIR__ . '/fixtures';
 	}
 
 	/**
@@ -78,23 +78,16 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		global $wp_filesystem;
-		$wp_filesystem->init( ABSPATH );
+		$wp_filesystem = new WpFilesystemSpy();
 
 		tree_shake_theme_images( $wp_filesystem );
 
-		// Tree shaking shouldn't remove this, as it's in a pattern.
-		$this->assertTrue(
-			$wp_filesystem->exists(
-				__DIR__ . '/fixtures/patterns/images/WPE-ShareImage-A-1200x630-1.png'
-			)
-		);
-
-		// Tree shaking should remove this, as it's not in a pattern.
-		$this->assertFalse(
-			$wp_filesystem->exists(
-				__DIR__ . '/fixtures/patterns/images/not-used.png'
-			)
+		// Tree shaking should only remove the unused image.
+		$this->assertSame(
+			[
+				'patterns/images/WPE-ShareImage-A-1200x630-1.png'
+			],
+			$wp_filesystem->get_copied()
 		);
 	}
 }

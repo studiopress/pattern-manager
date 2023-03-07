@@ -381,9 +381,9 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 /**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
- * @param WP_Filesystem_Base $wp_filesystem The file system.
+ * @param object $wp_filesystem The file system.
  */
-function tree_shake_theme_images( WP_Filesystem_Base $wp_filesystem ) {
+function tree_shake_theme_images( $wp_filesystem ) {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
