@@ -166,7 +166,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$this->assertSame(
 			'PatternManager\PatternDataHandlers\WpFilesystemSpy',
 			get_class( $GLOBALS['wp_filesystem'] )
-		)
+		);
 
 		tree_shake_theme_images( $this->wp_filesystem );
 
