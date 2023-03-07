@@ -15,11 +15,11 @@ class WpFilesystemSpy {
 		$this->copied = array_merge( $this->copied, [ $desired_destination_in_theme ] );
 	}
 
-	public function get_copied() {
+	public function get_copied(): array {
 		return $this->copied;
 	}
 
-	public function exists( string $file ): boolean {
+	public function exists( string $file ): bool {
 		return true;
 	}
 
