@@ -86,15 +86,14 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		// Tree shaking shouldn't remove this, as it's in a pattern.
 		$this->assertTrue(
 			$wp_filesystem->exists(
-				$wp_filesystem->abspath( __DIR__ . '/fixtures/patterns/images/WPE-ShareImage-A-1200x630-1.png'
+				__DIR__ . '/fixtures/patterns/images/WPE-ShareImage-A-1200x630-1.png'
 			)
 		);
 
 		// Tree shaking should remove this, as it's not in a pattern.
 		$this->assertFalse(
 			$wp_filesystem->exists(
-				$this->$wp_filesystem->abspath( __DIR__ . '/fixtures/patterns/images/not-used.png'
-			)
-		);
+				__DIR__ . '/fixtures/patterns/images/not-used.png'
+			);
 	}
 }
