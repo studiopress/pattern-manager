@@ -9,7 +9,7 @@ export default function InserterToggle( {
 	postTypes,
 	handleChange,
 }: ToggleProps< 'inserter' | 'postTypes' > ) {
-	const isChecked = inserter ?? true;
+	const isChecked = inserter;
 
 	return (
 		<PanelRow className="patternmanager-inserter-toggle">
