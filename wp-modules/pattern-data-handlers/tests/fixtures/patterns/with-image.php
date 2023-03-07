@@ -13,5 +13,5 @@
 
 ?>
 <!-- wp:image -->
-<figure class="wp-block-image size-large"><img src="https://wpengine.com/wp-content/uploads/2020/11/WPE-ShareImage-A-1200x630-1.png" alt="WPE Logo"/></figure>
+<figure class="wp-block-image size-large"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/WPE-ShareImage-A-1200x630-1.png" alt="WPE Logo"/></figure>
 <!-- /wp:image -->
