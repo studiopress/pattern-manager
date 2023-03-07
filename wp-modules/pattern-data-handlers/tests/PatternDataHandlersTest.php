@@ -80,6 +80,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		global $wp_filesystem;
 		$wp_filesystem->init( $this->get_fixtures_directory() );
 
+		move_block_images_to_theme(
+			$wp_filesystem,
+			get_pattern_by_name( 'with-image' )['content']
+		);
 		tree_shake_theme_images( $wp_filesystem );
 
 		// Tree shaking shouldn't remove this, as it's in a pattern.
