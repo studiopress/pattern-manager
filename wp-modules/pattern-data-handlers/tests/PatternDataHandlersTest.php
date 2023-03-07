@@ -5,8 +5,6 @@
  * @package pattern-manager
  */
 
-// phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-
 namespace PatternManager\PatternDataHandlers;
 
 use WP_UnitTestCase;
@@ -45,7 +43,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Gets the fixtures directory.
+	 * Gets a stub for copy_dir.
 	 */
 	public function copy_dir_stub( string $source, string $destination ) {}
 
@@ -94,12 +92,12 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 
 	/**
 	 * Tests construct_pattern_php_file_contents.
-	 *
 	 */
 	public function test_construct_pattern_php_file_contents() {
 		$pattern_path = $this->get_fixtures_directory() . '/patterns/my-new-pattern.php';
 
 		$this->assertSame(
+			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( $pattern_path ),
 			construct_pattern_php_file_contents(
 				get_pattern_by_path( $pattern_path ),
