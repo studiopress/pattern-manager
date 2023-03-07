@@ -116,9 +116,11 @@ function format_pattern_data( $pattern_data, $file ) {
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
 
+	opcache_invalidate( $file );
+
 	// The actual pattern content is the output of the file.
 	ob_start();
-	include $wp_filesystem->find_folder( dirname( $file ) ) . '/' . basename( $file );
+	include $file;
 	$pattern_data['content'] = ob_get_clean();
 
 	if ( ! $pattern_data['content'] ) {
@@ -314,8 +316,6 @@ function update_pattern( $pattern ) {
 
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
 
-	tree_shake_theme_images( $wp_filesystem, 'copy_dir' );
-
 	return $pattern_file_created;
 }
 
@@ -328,10 +328,7 @@ function update_pattern( $pattern ) {
 function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
-	$result        = $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
-
-	tree_shake_theme_images( $wp_filesystem, 'copy_dir' );
-	return $result;
+	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
 /**
