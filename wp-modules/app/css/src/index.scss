@@ -138,11 +138,13 @@ html body.toplevel_page_pattern-manager {
 				}
 
 				.pattern-categories {
+
 					@media (max-width: 960px) {
 						display: flex;
 						flex-wrap: wrap;
 						gap: 5px;
 					}
+
 				}
 
 				.category {
