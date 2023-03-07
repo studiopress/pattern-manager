@@ -14,6 +14,5 @@
 *js/src/*
 *tests/*
 *postcss.config.js*
-*tailwind.config.js*
 *.DS_Store*
 *.vscode/*
