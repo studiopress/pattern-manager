@@ -26,11 +26,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-
-		$this->wp_filesystem = new WpFilesystemSpy();
-
-		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-		$GLOBALS['wp_filesystem'] = $this->wp_filesystem;
 	}
 
 	/**
@@ -39,7 +34,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function tearDown() {
 		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		unset( $GLOBALS['wp_filesystem'] );
 		parent::tearDown();
 	}
 
@@ -104,8 +98,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function get_data_construct_pattern_php_file_contents() {
 		return [
-			'my-new-pattern',
-			'with-image',
+			[ 'my-new-pattern' ],
+			[ 'with-image' ],
 		];
 	}
 
@@ -118,7 +112,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$pattern_path = $this->get_fixtures_directory() . "/patterns/{$pattern_name}.php";
 
 		$this->assertSame(
-			// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			file_get_contents( $pattern_path ),
 			construct_pattern_php_file_contents(
 				get_pattern_by_path( $pattern_path ),
@@ -181,13 +174,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		$this->assertSame(
-			'PatternManager\PatternDataHandlers\WpFilesystemSpy',
-			get_class( $GLOBALS['wp_filesystem'] )
-		);
+		$wp_filesystem = new WpFilesystemSpy();
 
 		tree_shake_theme_images(
-			$this->wp_filesystem,
+			$wp_filesystem,
 			[ $this, 'copy_dir_stub' ]
 		);
 
@@ -196,7 +186,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			[
 				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
 			],
-			$this->wp_filesystem->get_copied()
+			$wp_filesystem->get_copied()
 		);
 	}
 }
