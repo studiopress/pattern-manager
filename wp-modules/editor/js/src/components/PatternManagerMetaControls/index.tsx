@@ -1,12 +1,12 @@
 import { useState } from '@wordpress/element';
-import { ModalToggle, InserterToggle } from '../Toggles';
+import { InserterToggle, ModalToggle } from '../Toggles';
 import {
-	TitlePanel,
-	PostTypesPanel,
 	CategoriesPanel,
-	TransformsPanel,
-	KeywordsPanel,
 	DescriptionPanel,
+	KeywordsPanel,
+	PostTypesPanel,
+	TitlePanel,
+	TransformsPanel,
 	ViewportWidthPanel,
 } from '../SidebarPanels';
 
@@ -28,56 +28,64 @@ export default function PatternManagerMetaControls() {
 
 	useSave( setPatternNames );
 
-	const { postTypes, categories, blockTypes, updatePostMeta } =
-		usePatternData( postMeta );
+	const {
+		queriedBlockTypes,
+		queriedCategories,
+		queriedPostTypes,
+		updatePostMeta,
+		updatePostMetaMulti,
+	} = usePatternData( postMeta );
 
 	return (
 		<div>
 			<TitlePanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
+				currentName={ currentName }
 				errorMessage={ errorMessage }
-				setErrorMessage={ setErrorMessage }
 				patternNames={ patternNames }
 				title={ title }
-				currentName={ currentName }
+				handleChange={ updatePostMeta }
+				setErrorMessage={ setErrorMessage }
 			/>
 			<CategoriesPanel
-				postMeta={ postMeta }
-				categories={ categories }
+				categories={ postMeta.categories }
+				categoryOptions={ queriedCategories }
 				handleChange={ updatePostMeta }
 			/>
 			<KeywordsPanel
-				postMeta={ postMeta }
+				keywords={ postMeta.keywords }
 				handleChange={ updatePostMeta }
 			/>
 			<DescriptionPanel
-				postMeta={ postMeta }
+				description={ postMeta.description }
 				handleChange={ updatePostMeta }
 			/>
 			<ViewportWidthPanel
-				postMeta={ postMeta }
-				handleChange={ updatePostMeta }
-				errorMessage={ errorMessage }
 				currentName={ currentName }
+				errorMessage={ errorMessage }
+				viewportWidth={ postMeta.viewportWidth }
+				handleChange={ updatePostMeta }
 			/>
 			<PostTypesPanel
-				postMeta={ postMeta }
-				postTypes={ postTypes }
+				blockTypes={ postMeta.blockTypes }
+				postTypeOptions={ queriedPostTypes }
+				postTypes={ postMeta.postTypes }
 				handleChange={ updatePostMeta }
 			>
 				<ModalToggle
-					postMeta={ postMeta }
-					handleChange={ updatePostMeta }
+					blockTypes={ postMeta.blockTypes }
+					inserter={ postMeta.inserter }
+					postTypes={ postMeta.postTypes }
+					handleChangeMulti={ updatePostMetaMulti }
 				/>
 				<InserterToggle
-					postMeta={ postMeta }
+					inserter={ postMeta.inserter }
+					postTypes={ postMeta.postTypes }
 					handleChange={ updatePostMeta }
 				/>
 			</PostTypesPanel>
 			<TransformsPanel
-				postMeta={ postMeta }
-				blockTypes={ blockTypes }
+				blockTypeOptions={ queriedBlockTypes }
+				blockTypes={ postMeta.blockTypes }
 				handleChange={ updatePostMeta }
 			/>
 		</div>

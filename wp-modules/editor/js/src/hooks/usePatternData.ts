@@ -171,10 +171,33 @@ export default function usePatternData( postMeta: PostMeta ) {
 		} );
 	}
 
+	/**
+	 * Handler for ToggleControl component changes, targeting postMeta array values.
+	 *
+	 * If the event is truthy and the value does not currently exist in the targeted
+	 * postMeta array, the value is added to a new array.
+	 *
+	 * Otherwise, the value is filtered out of a new array.
+	 */
+	function updatePostMetaMulti(
+		isChecked: boolean,
+		metaKey: string,
+		metaValue: string
+	) {
+		updatePostMeta( metaKey, [
+			...( isChecked && ! postMeta[ metaKey ]?.includes( metaValue )
+				? [ ...postMeta[ metaKey ], metaValue ]
+				: postMeta[ metaKey ].filter(
+						( existingValue ) => existingValue !== metaValue
+				  ) ),
+		] );
+	}
+
 	return {
-		postTypes,
-		categories,
-		blockTypes,
+		queriedBlockTypes: blockTypes,
+		queriedCategories: categories,
+		queriedPostTypes: postTypes,
 		updatePostMeta,
+		updatePostMetaMulti,
 	};
 }

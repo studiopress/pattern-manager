@@ -10,9 +10,9 @@ import type { BaseSidebarProps } from './types';
  * Keywords are searchable terms in the site editor inserter.
  */
 export default function KeywordsPanel( {
-	postMeta,
+	keywords,
 	handleChange,
-}: BaseSidebarProps ) {
+}: BaseSidebarProps< 'keywords' > ) {
 	const [ keywordInputValue, setKeywordInputValue ] = useState( '' );
 
 	return (
@@ -47,9 +47,9 @@ export default function KeywordsPanel( {
 
 					if ( [ 'Enter', 'Tab', ',' ].includes( event.key ) ) {
 						handleChange( 'keywords', [
-							...postMeta.keywords,
+							...keywords,
 							// Add the new term if not a case-insensitive duplicate.
-							...( ! postMeta.keywords.some(
+							...( ! keywords.some(
 								( term ) =>
 									term.toLowerCase() ===
 									keywordInputValue.toLowerCase()
@@ -63,7 +63,7 @@ export default function KeywordsPanel( {
 					}
 				} }
 				placeholder={ __( 'Add searchable terms…', 'pattern-manager' ) }
-				value={ postMeta.keywords.map( ( keyword ) => ( {
+				value={ keywords.map( ( keyword ) => ( {
 					label: keyword,
 					value: keyword,
 				} ) ) }

@@ -301,7 +301,7 @@ function update_pattern( $pattern ) {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
 	$patterns_dir  = get_patterns_directory();
-	$file_contents = construct_pattern_php_file_contents( $pattern, 'pattern-manager' );
+	$file_contents = construct_pattern_php_file_contents( $pattern );
 	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 
 	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
@@ -348,11 +348,11 @@ function remove_theme_name_from_template_parts( $pattern_content ) {
 /**
  * Returns a string containing the code for a pattern file.
  *
- * @param array  $pattern Data about the pattern.
- * @param string $text_domain The text domain to use for any localization required.
- * @return bool
+ * @param array $pattern_data Data about the pattern.
+ * @return string
  */
-function construct_pattern_php_file_contents( $pattern, $text_domain ) {
+function construct_pattern_php_file_contents( $pattern_data ) {
+	$pattern            = wp_parse_args( $pattern_data, get_pattern_defaults() );
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
@@ -362,12 +362,12 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  * Title: " . addcslashes( $pattern['title'], '\'' ) . '
  * Slug: ' . $pattern['name'] . '
  * Description: ' . $pattern['description'] . '
- * Categories: ' . ( isset( $pattern['categories'] ) ? implode( ', ', $pattern['categories'] ) : '' ) . '
- * Keywords: ' . ( isset( $pattern['keywords'] ) ? implode( ', ', $pattern['keywords'] ) : '' ) . '
- * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
- * Block Types: ' . ( isset( $pattern['blockTypes'] ) ? implode( ', ', $pattern['blockTypes'] ) : '' ) . '
- * Post Types: ' . ( isset( $pattern['postTypes'] ) ? implode( ', ', $pattern['postTypes'] ) : '' ) . '
- * Inserter: ' . ( $pattern['inserter'] ?? true ? 'true' : 'false' ) . '
+ * Categories: ' . implode( ', ', $pattern['categories'] ) . '
+ * Keywords: ' . implode( ', ', $pattern['keywords'] ) . '
+ * Viewport Width: ' . $pattern['viewportWidth'] . '
+ * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
+ * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
+ * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . '
  */
 
 ?>

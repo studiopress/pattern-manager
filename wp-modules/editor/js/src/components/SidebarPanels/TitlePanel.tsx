@@ -20,20 +20,15 @@ function isTitleTaken(
 }
 
 export default function TitlePanel( {
-	handleChange,
+	currentName,
 	errorMessage,
-	setErrorMessage,
 	patternNames,
 	title,
-	currentName,
-}: BaseSidebarProps &
-	Pick<
-		AdditionalSidebarProps,
-		| 'errorMessage'
-		| 'patternNames'
-		| 'setErrorMessage'
-		| 'title'
-		| 'currentName'
+	handleChange,
+	setErrorMessage,
+}: BaseSidebarProps< 'title' > &
+	AdditionalSidebarProps<
+		'currentName' | 'errorMessage' | 'patternNames' | 'setErrorMessage'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( 'core/editor' );

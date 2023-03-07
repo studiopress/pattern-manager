@@ -8,9 +8,9 @@ import type { BaseSidebarProps } from './types';
  * The panel section for typing a description of the pattern.
  */
 export default function DescriptionPanel( {
-	postMeta,
+	description,
 	handleChange,
-}: BaseSidebarProps ) {
+}: BaseSidebarProps< 'description' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-description"
@@ -26,7 +26,7 @@ export default function DescriptionPanel( {
 					'Optionally describe the pattern.',
 					'pattern-manager'
 				) }
-				value={ postMeta?.description }
+				value={ description }
 				onChange={ ( newValue ) => {
 					handleChange( 'description', newValue );
 				} }
