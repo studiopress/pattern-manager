@@ -400,7 +400,7 @@ function tree_shake_theme_images( $wp_filesystem ) {
 	}
 
 	// Before we take any action, back up the current images directory.
-	copy_dir( $images_dir, $backedup_images_dir );
+	$wp_filesystem->copy( $images_dir, $backedup_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
