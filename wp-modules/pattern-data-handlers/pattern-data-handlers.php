@@ -328,6 +328,7 @@ function update_pattern( $pattern ) {
 function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
+
 	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
