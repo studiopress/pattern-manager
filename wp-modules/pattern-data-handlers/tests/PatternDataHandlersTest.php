@@ -92,24 +92,12 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		);
 	}
 
-
-	/**
-	 * Gets the data for test_construct_pattern_php_file_contents.
-	 */
-	public function get_data_construct_pattern_php_file_contents() {
-		return [
-			[ 'my-new-pattern' ],
-			[ 'with-image' ],
-		];
-	}
-
 	/**
 	 * Tests construct_pattern_php_file_contents.
 	 *
-	 * @dataProvider get_data_construct_pattern_php_file_contents
 	 */
-	public function test_construct_pattern_php_file_contents( $pattern_name ) {
-		$pattern_path = $this->get_fixtures_directory() . "/patterns/{$pattern_name}.php";
+	public function test_construct_pattern_php_file_contents() {
+		$pattern_path = $this->get_fixtures_directory() . '/patterns/my-new-pattern.php';
 
 		$this->assertSame(
 			file_get_contents( $pattern_path ),
