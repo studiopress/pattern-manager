@@ -12,12 +12,13 @@ import type { ReactNode } from 'react';
  * Custom post types and certain core types are displayed as toggles.
  */
 export default function PostTypesPanel( {
+	blockTypes,
 	children,
-	postMeta,
+	postTypeOptions,
 	postTypes,
 	handleChange,
-}: BaseSidebarProps &
-	Pick< AdditionalSidebarProps, 'postTypes' > & {
+}: BaseSidebarProps< 'postTypes' | 'blockTypes' > &
+	AdditionalSidebarProps< 'postTypeOptions' > & {
 		children: ReactNode;
 	} ) {
 	return (
@@ -32,22 +33,22 @@ export default function PostTypesPanel( {
 				) }
 				helperTitle={ __( 'Allowed post types', 'pattern-manager' ) }
 			/>
-			{ postTypes ? (
+			{ postTypeOptions ? (
 				<Select
 					isMulti
 					isClearable
 					closeMenuOnSelect={ false }
 					aria-label={ __( 'Select post types', 'pattern-manager' ) }
-					value={ postMeta?.postTypes?.map( ( postType ) => {
+					value={ postTypes?.map( ( postType ) => {
 						return {
-							...postTypes.find(
+							...postTypeOptions.find(
 								( matchedPostType ) =>
 									matchedPostType.value === postType
 							),
 							// Conditionally make wp_template post type non-removable.
 							// Add a custom label with Tooltip.
 							...( ( postType === 'wp_template' &&
-								postMeta?.blockTypes?.some( ( blockType ) =>
+								blockTypes?.some( ( blockType ) =>
 									blockType.includes( 'core/template-part' )
 								) && {
 									label: (
@@ -68,7 +69,7 @@ export default function PostTypesPanel( {
 								'' ),
 						};
 					} ) }
-					options={ postTypes }
+					options={ postTypeOptions }
 					onChange={ ( postTypeSelections ) => {
 						handleChange(
 							'postTypes',

@@ -10,16 +10,17 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
  * Selected categories will show under the matching dropdown in the site editor.
  */
 export default function CategoriesPanel( {
-	postMeta,
 	categories,
+	categoryOptions,
 	handleChange,
-}: BaseSidebarProps & Pick< AdditionalSidebarProps, 'categories' > ) {
+}: BaseSidebarProps< 'categories' > &
+	AdditionalSidebarProps< 'categoryOptions' > ) {
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"
 			title={ __( 'Pattern Categories', 'pattern-manager' ) }
 		>
-			{ categories ? (
+			{ categoryOptions ? (
 				<Select
 					isMulti
 					isClearable
@@ -28,13 +29,13 @@ export default function CategoriesPanel( {
 						'Add Pattern Categories',
 						'pattern-manager'
 					) }
-					value={ postMeta?.categories?.map( ( category ) =>
-						categories.find(
+					value={ categories?.map( ( category ) =>
+						categoryOptions.find(
 							( matchedCategory ) =>
 								matchedCategory.value === category
 						)
 					) }
-					options={ categories }
+					options={ categoryOptions }
 					onChange={ ( categorySelections ) => {
 						handleChange(
 							'categories',

@@ -3,41 +3,24 @@ import { useEffect } from '@wordpress/element';
 import { PanelRow, ToggleControl } from '@wordpress/components';
 import { ReverseTooltip } from '../Tooltips';
 
-import type { ToggleTypes } from './types';
+import type { ToggleProps } from './types';
 
-export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
+export default function ModalToggle( {
+	blockTypes,
+	inserter,
+	postTypes,
+	handleChangeMulti,
+}: ToggleProps< 'blockTypes' | 'inserter' | 'postTypes' > ) {
 	const blockTypeForModal = 'core/post-content';
-	const isDisabled = ! postMeta.postTypes?.length || ! postMeta.inserter;
-	const isChecked = postMeta.blockTypes?.includes( blockTypeForModal );
+	const isDisabled = ! postTypes?.length || ! inserter;
+	const isChecked = blockTypes?.includes( blockTypeForModal );
 
-	// Conditionally remove blockTypeForModal from postMeta.blockTypes.
+	// Conditionally remove blockTypeForModal from blockTypes.
 	useEffect( () => {
 		if ( isDisabled && isChecked ) {
-			handleToggleChangeMulti( false, 'blockTypes', blockTypeForModal );
+			handleChangeMulti( false, 'blockTypes', blockTypeForModal );
 		}
 	}, [ isDisabled, isChecked, blockTypeForModal ] );
-
-	/**
-	 * Handler for ToggleControl component changes, targeting postMeta array values.
-	 *
-	 * If the event is truthy and the value does not currently exist in the targeted
-	 * postMeta array, the value is added to a new array.
-	 *
-	 * Otherwise, the value is filtered out of a new array.
-	 */
-	function handleToggleChangeMulti(
-		toggleEvent: boolean,
-		metaKey: string,
-		metaValue: string
-	) {
-		handleChange( metaKey, [
-			...( toggleEvent && ! postMeta[ metaKey ]?.includes( metaValue )
-				? [ ...postMeta[ metaKey ], metaValue ]
-				: postMeta[ metaKey ].filter(
-						( existingValue ) => existingValue !== metaValue
-				  ) ),
-		] );
-	}
 
 	return (
 		<PanelRow className="patternmanager-post-type-modal-toggle">
@@ -68,11 +51,7 @@ export default function ModalToggle( { postMeta, handleChange }: ToggleTypes ) {
 						  )
 				}
 				onChange={ ( value: boolean ) => {
-					handleToggleChangeMulti(
-						value,
-						'blockTypes',
-						blockTypeForModal
-					);
+					handleChangeMulti( value, 'blockTypes', blockTypeForModal );
 				} }
 			/>
 		</PanelRow>

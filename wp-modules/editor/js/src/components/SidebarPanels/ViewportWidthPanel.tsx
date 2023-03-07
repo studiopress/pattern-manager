@@ -10,14 +10,14 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 import type { Pattern } from '../../types';
 
 export default function ViewportWidthPanel( {
-	postMeta,
-	handleChange,
-	errorMessage,
 	currentName,
-}: BaseSidebarProps &
-	Pick< AdditionalSidebarProps, 'errorMessage' | 'currentName' > ) {
+	errorMessage,
+	viewportWidth,
+	handleChange,
+}: BaseSidebarProps< 'viewportWidth' > &
+	AdditionalSidebarProps< 'errorMessage' | 'currentName' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
-	const viewportWidth = postMeta.viewportWidth || 1280;
+	const currentWidth = viewportWidth || 1280;
 
 	return (
 		<PluginDocumentSettingPanel
@@ -34,7 +34,7 @@ export default function ViewportWidthPanel( {
 				min={ 640 }
 				max={ 2560 }
 				step={ 80 }
-				value={ viewportWidth }
+				value={ currentWidth }
 				onChange={ ( value: Pattern[ 'viewportWidth' ] ) => {
 					handleChange( 'viewportWidth', value );
 				} }
@@ -56,7 +56,7 @@ export default function ViewportWidthPanel( {
 							'?pm_pattern_preview=' +
 							currentName
 						}
-						viewportWidth={ viewportWidth }
+						viewportWidth={ currentWidth }
 					/>
 				) ) }
 		</PluginDocumentSettingPanel>

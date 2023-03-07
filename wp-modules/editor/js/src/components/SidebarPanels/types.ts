@@ -1,25 +1,28 @@
 import usePatternData from '../../hooks/usePatternData';
 import useSavedPostData from '../../hooks/useSavedPostData';
-import { Pattern, PostMeta } from '../../types';
-
+import type { PatternPostData } from '../../types';
 import type { Dispatch, SetStateAction } from 'react';
 
-export type PatternEditorSidebarProps = {
-	postMeta: PostMeta;
-};
-
-export type BaseSidebarProps = {
-	postMeta: PostMeta;
+export type BaseSidebarProps< T extends keyof PatternPostData > = Pick<
+	PatternPostData,
+	T
+> & {
 	handleChange: ReturnType< typeof usePatternData >[ 'updatePostMeta' ];
 };
 
-export type AdditionalSidebarProps = {
-	blockTypes: ReturnType< typeof usePatternData >[ 'blockTypes' ];
-	categories: ReturnType< typeof usePatternData >[ 'categories' ];
-	postTypes: ReturnType< typeof usePatternData >[ 'postTypes' ];
-	errorMessage: string;
-	patternNames: Array< Pattern[ 'name' ] >;
-	setErrorMessage: Dispatch< SetStateAction< string > >;
-	title: string;
+type AdditionalTypes = {
+	blockTypeOptions: ReturnType<
+		typeof usePatternData
+	>[ 'queriedBlockTypes' ];
+	categoryOptions: ReturnType< typeof usePatternData >[ 'queriedCategories' ];
 	currentName: ReturnType< typeof useSavedPostData >[ 'currentName' ];
+	errorMessage: string;
+	patternNames: Array< PatternPostData[ 'name' ] >;
+	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];
+	setErrorMessage: Dispatch< SetStateAction< string > >;
 };
+
+export type AdditionalSidebarProps< T extends keyof AdditionalTypes > = Pick<
+	AdditionalTypes,
+	T
+>;
