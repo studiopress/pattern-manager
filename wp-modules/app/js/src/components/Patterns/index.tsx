@@ -60,7 +60,7 @@ export default function Patterns() {
 				) : (
 					<>
 						<div
-							className="inner-sidebar"
+							className="pattern-inner-sidebar"
 							role="region"
 							aria-label="Sort patterns by category"
 						>
