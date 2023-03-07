@@ -48,12 +48,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function normalize( string $to_normalize ): string {
 		return preg_replace( '/[\t\n]/', '', $to_normalize );
 	}
-	/**
-	 * Normalizes in order to compare in tests.
-	 */
-	public function normalize( string $to_normalize ): string {
-		return preg_replace( '/[\t\n]/', '', $to_normalize );
-	}
 
 	/**
 	 * Gets the expected pattern.
@@ -113,7 +107,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns() {
 		$patterns = get_theme_patterns();
 
-		$this->assertCount( 1, array_values( $patterns ) );
+		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertSame(
 			[
 				'my-new-pattern' => $this->get_expected_pattern(),
@@ -135,7 +129,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns_with_editor_links() {
 		$patterns = get_theme_patterns_with_editor_links();
 
-		$this->assertCount( 1, array_values( $patterns ) );
+		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertTrue(
 			array_key_exists(
 				'editorLink',
@@ -149,7 +143,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_get_pattern_names() {
 		$this->assertSame(
-			[ 'my-new-pattern' ],
+			[
+				'my-new-pattern',
+				'with-image',
+			],
 			get_pattern_names()
 		);
 	}
