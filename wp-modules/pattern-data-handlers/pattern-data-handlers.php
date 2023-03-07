@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternDataHandlers;
 
-use WP_Filesystem_Base;
 use WP_Query;
 use function PatternManager\Editor\get_pattern_post_type;
 use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
