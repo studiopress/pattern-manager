@@ -163,7 +163,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		// Tree shaking should only keep (copy) the used image.
 		$this->assertSame(
 			[
-				'patterns/images/used.jpg',
+				$this->get_fixtures_directory() . '/temp-images/',
+				$this->get_fixtures_directory() . 'patterns/images/used.jpg',
 			],
 			$wp_filesystem->get_copied()
 		);

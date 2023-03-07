@@ -389,7 +389,7 @@ function tree_shake_theme_images( $wp_filesystem ) {
 	$theme_dir         = get_stylesheet_directory();
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
-	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
+	$backedup_images_dir = $wp_filesystem->wp_content_dir() . '/temp-images/';
 	$images_dir          = $theme_dir . '/patterns/images/';
 
 	$wp_theme_url = get_stylesheet_directory_uri();
