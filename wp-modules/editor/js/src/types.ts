@@ -1,44 +1,48 @@
 /* eslint-disable camelcase */
 
 export type PostMeta = {
-	name: string;
-	description: string;
-	postTypes: string[];
 	blockTypes: string[];
 	categories: string[];
-	keywords: string[];
+	description: string;
 	inserter: boolean;
+	keywords: string[];
+	name: string;
+	postTypes: string[];
 	viewportWidth: number;
 };
 
+export type PatternPostData = PostMeta & {
+	title: string;
+};
+
 export type SelectQuery = ( dataStore: string ) => {
+	getBlockPatternCategories: () => { name: string; label: string }[];
+	getBlockTypes: () => { name: string; transforms?: unknown }[];
+	getCurrentPostAttribute: ( attributeName: 'meta' ) => PostMeta;
 	getEditedPostAttribute: ( postAttribute: string ) => unknown;
 	getEditedPostContent: () => string;
-	isEditedPostDirty: () => boolean;
+	getNotices: () => { id: string }[];
 	getPostTypes: ( {
 		per_page,
 	}: {
 		per_page?: number | string;
 	} ) => { name: string; slug: string }[];
-	getBlockPatternCategories: () => { name: string; label: string }[];
-	getBlockTypes: () => { name: string; transforms?: unknown }[];
-	getNotices: () => { id: string }[];
+	isEditedPostDirty: () => boolean;
 	isSavingPost: () => boolean;
-	getCurrentPostAttribute: ( attributeName: 'meta' ) => PostMeta;
 };
 
 export type Pattern = {
+	blockTypes: string[];
+	categories: string[];
 	content: string;
+	description: string;
+	inserter: boolean;
+	keywords: string[];
 	name: string;
-	title: string;
+	postTypes: string[];
 	slug: string;
-	description?: string;
-	categories?: string[];
-	keywords?: string[];
-	blockTypes?: string[];
-	postTypes?: string[];
-	inserter?: boolean;
-	viewportWidth?: number;
+	title: string;
+	viewportWidth: number;
 };
 
 export type Patterns = {
