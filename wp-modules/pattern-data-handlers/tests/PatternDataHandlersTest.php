@@ -34,6 +34,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function tearDown() {
 		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		unset( $GLOBALS['wp_filesystem'] );
 		parent::tearDown();
 	}
 
@@ -158,6 +159,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_tree_shake_theme_images() {
 		$wp_filesystem = new WpFilesystemSpy();
+		$GLOBALS['wp_filesystem'] = $wp_filesystem;
+
 		tree_shake_theme_images( $wp_filesystem );
 
 		// Tree shaking should only keep (copy) the used image.

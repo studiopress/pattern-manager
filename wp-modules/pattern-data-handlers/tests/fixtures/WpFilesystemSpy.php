@@ -27,6 +27,10 @@ class WpFilesystemSpy {
 		return __DIR__;
 	}
 
+	public function dirlist() {
+		return [];
+	}
+
 	public function mkdir( string $path ) {}
 	public function delete( string $path ) {}
 }

@@ -395,12 +395,12 @@ function tree_shake_theme_images( $wp_filesystem ) {
 	$wp_theme_url = get_stylesheet_directory_uri();
 	$images_url   = $wp_theme_url . '/patterns/images/';
 
-	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
+	// Before we take any action, back up the current images directory.
+	if ( ! $wp_filesystem->is_dir( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
 	}
 
-	// Before we take any action, back up the current images directory.
-	$wp_filesystem->copy( $images_dir, $backedup_images_dir );
+	copy_dir( $images_dir, $backedup_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
