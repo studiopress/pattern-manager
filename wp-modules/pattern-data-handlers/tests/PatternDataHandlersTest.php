@@ -13,7 +13,6 @@ require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
 
 use WP_UnitTestCase;
 use function WP_Filesystem;
-use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
 
 /**
  * Test the pattern functions.

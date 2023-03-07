@@ -315,7 +315,7 @@ function update_pattern( $pattern ) {
 
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
 
-	tree_shake_theme_images();
+	tree_shake_theme_images( $wp_filesystem );
 
 	return $pattern_file_created;
 }
