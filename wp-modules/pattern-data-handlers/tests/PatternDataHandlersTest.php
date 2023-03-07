@@ -51,6 +51,11 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Gets the fixtures directory.
+	 */
+	public function copy_dir_stub( string $source, string $destination ) {}
+
+	/**
 	 * Normalizes in order to compare in tests.
 	 */
 	public function normalize( string $to_normalize ): string {
@@ -168,12 +173,14 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			get_class( $GLOBALS['wp_filesystem'] )
 		);
 
-		tree_shake_theme_images( $this->wp_filesystem );
+		tree_shake_theme_images(
+			$this->wp_filesystem,
+			[ $this, 'copy_dir_stub' ]
+		);
 
 		// Tree shaking should only keep (copy) the used image.
 		$this->assertSame(
 			[
-				$this->get_fixtures_directory() . '/temp-images/',
 				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
 			],
 			$this->wp_filesystem->get_copied()

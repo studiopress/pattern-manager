@@ -382,7 +382,7 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
  *
  * @param object $wp_filesystem The file system.
  */
-function tree_shake_theme_images( $wp_filesystem ) {
+function tree_shake_theme_images( $wp_filesystem, $copy_dir ) {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
@@ -400,7 +400,7 @@ function tree_shake_theme_images( $wp_filesystem ) {
 	}
 
 	// Before we take any action, back up the current images directory.
-	copy_dir( $images_dir, $backedup_images_dir );
+	call_user_func( $copy_dir, $images_dir, $backedup_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
