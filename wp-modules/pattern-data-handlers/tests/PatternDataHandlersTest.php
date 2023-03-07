@@ -23,9 +23,16 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function setUp() {
+		global $wp_filesystem;
+
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+
+		$this->wp_filesystem = new WpFilesystemSpy();
+
+		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$wp_filesystem = $this->wp_filesystem;
 	}
 
 	/**
@@ -158,12 +165,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		global $wp_filesystem;
-
-		// phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited.
-		$wp_filesystem = new WpFilesystemSpy();
-
-		tree_shake_theme_images( $wp_filesystem );
+		tree_shake_theme_images( $this->wp_filesystem );
 
 		// Tree shaking should only keep (copy) the used image.
 		$this->assertSame(
@@ -171,7 +173,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 				$this->get_fixtures_directory() . '/temp-images/',
 				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
 			],
-			$wp_filesystem->get_copied()
+			$this->wp_filesystem->get_copied()
 		);
 	}
 }
