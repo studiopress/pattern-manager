@@ -164,7 +164,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$this->assertSame(
 			[
 				$this->get_fixtures_directory() . '/temp-images/',
-				$this->get_fixtures_directory() . 'patterns/images/used.jpg',
+				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
 			],
 			$wp_filesystem->get_copied()
 		);
