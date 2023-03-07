@@ -162,10 +162,10 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 
 		tree_shake_theme_images( $wp_filesystem );
 
-		// Tree shaking should keep (copy) the used image.
+		// Tree shaking should only keep (copy) the used image.
 		$this->assertSame(
 			[
-				'patterns/images/WPE-ShareImage-A-1200x630-1.png',
+				'patterns/images/used.jpg',
 			],
 			$wp_filesystem->get_copied()
 		);
