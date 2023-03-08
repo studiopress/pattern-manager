@@ -1,4 +1,4 @@
-import { useState, useRef } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
