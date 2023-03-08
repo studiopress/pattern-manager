@@ -312,6 +312,23 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
+	$patterns_backup_dir       = trailingslashit( WP_CONTENT_DIR ) . 'pattern-backups/';
+	$theme_specific_backup_dir = $patterns_backup_dir . trailingslashit( get_stylesheet() );
+
+	if ( ! $wp_filesystem->exists( $patterns_backup_dir ) ) {
+		$wp_filesystem->mkdir( $patterns_backup_dir );
+	}
+
+	if ( ! $wp_filesystem->exists( $theme_specific_backup_dir ) ) {
+		$wp_filesystem->mkdir( $theme_specific_backup_dir );
+	}
+
+	$result = $wp_filesystem->put_contents(
+		$theme_specific_backup_dir . $file_name,
+		$file_contents,
+		FS_CHMOD_FILE
+	);
+
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
 	// NOT WORKING tree_shake_theme_images();.
 
@@ -328,7 +345,15 @@ function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
 
-	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
+	// Delete the pattern from the theme.
+	$deleting_result = $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
+
+	// Also delete the back up of this pattern.
+	$theme_specific_backup_dir = trailingslashit( WP_CONTENT_DIR ) . 'pattern-backups/' . trailingslashit( get_stylesheet() );
+
+	$wp_filesystem->delete( $theme_specific_backup_dir . $pattern_name . '.php' );
+
+	return $deleting_result;
 }
 
 /**
