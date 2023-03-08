@@ -89,6 +89,18 @@ function get_pattern_names() {
 }
 
 /**
+ * Gets pattern categories registered for the current theme.
+ *
+ * @return Array
+ */
+function get_registered_pattern_categories() {
+	$request  = new WP_REST_Request( 'GET', '/wp/v2/block-patterns/categories' );
+	$response = rest_do_request( $request );
+
+	return rest_get_server()->response_to_data( $response, false );
+}
+
+/**
  * Deletes a single pattern.
  *
  * @param WP_REST_Request $request Full data about the request.
