@@ -61,7 +61,7 @@ describe( 'getUniquePatternCategories', () => {
 				{
 					label: 'Some Category',
 					name: 'some-category',
-				}
+				},
 			],
 			[
 				{
@@ -102,7 +102,7 @@ describe( 'getUniquePatternCategories', () => {
 				{
 					label: 'Some Category',
 					name: 'some-category',
-				}
+				},
 			],
 			[
 				{
@@ -288,10 +288,14 @@ describe( 'getUniquePatternCategories', () => {
 		],
 	] )(
 		'should return unique pattern categories',
-		( patterns: Patterns, queriedCategories, expected: { label: string; name: string }[] ) => {
-			expect( getUniquePatternCategories( patterns, queriedCategories ) ).toEqual(
-				expected
-			);
+		(
+			patterns: Patterns,
+			queriedCategories,
+			expected: { label: string; name: string }[]
+		) => {
+			expect(
+				getUniquePatternCategories( patterns, queriedCategories )
+			).toEqual( expected );
 		}
 	);
 } );
