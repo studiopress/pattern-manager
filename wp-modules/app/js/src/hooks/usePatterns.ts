@@ -20,5 +20,6 @@ export default function usePatterns( initialPatterns: Patterns ) {
 	return {
 		data: patternsData,
 		deletePattern,
+		patternCategories: patternManager.patternCategories,
 	};
 }
