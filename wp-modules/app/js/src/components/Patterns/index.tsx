@@ -32,7 +32,8 @@ export default function Patterns() {
 	);
 
 	const uniqueCategories = getUniquePatternCategories(
-		patternsWithUncategorized
+		patternsWithUncategorized,
+		patterns.patternCategories
 	);
 
 	return (
