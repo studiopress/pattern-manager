@@ -4,6 +4,7 @@ export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
+	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	patterns: ReturnType< typeof usePatterns >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 };
@@ -15,6 +16,7 @@ export type InitialPatternManager = {
 	apiNonce: string;
 	siteUrl: string;
 	adminUrl: string;
+	patternCategories: QueriedCategories;
 	patterns: Patterns;
 };
 
@@ -36,3 +38,8 @@ export type Pattern = {
 export type Patterns = {
 	[ key: string ]: Pattern;
 };
+
+export type QueriedCategories = {
+	label: string;
+	name: string;
+}[];
