@@ -25,6 +25,7 @@ export default function App() {
 
 	const providerValue: InitialContext = {
 		apiEndpoints: patternManager.apiEndpoints,
+		patternCategories: patternManager.patternCategories,
 		patterns,
 		siteUrl: patternManager.siteUrl,
 	};

@@ -4,35 +4,42 @@ export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
 	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
+	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	patterns: ReturnType< typeof usePatterns >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
 };
 
 export type InitialPatternManager = {
+	adminUrl: string;
 	apiEndpoints: {
 		deletePatternEndpoint: string;
 	};
 	apiNonce: string;
-	siteUrl: string;
-	adminUrl: string;
+	patternCategories: QueriedCategories;
 	patterns: Patterns;
+	siteUrl: string;
 };
 
 export type Pattern = {
 	content: string;
 	editorLink: string;
 	name: string;
-	title: string;
 	slug: string;
-	description?: string;
-	categories?: string[];
-	keywords?: string[];
+	title: string;
 	blockTypes?: string[];
-	postTypes?: string[];
+	categories?: string[];
+	description?: string;
 	inserter?: boolean;
+	keywords?: string[];
+	postTypes?: string[];
 	viewportWidth?: number;
 };
 
 export type Patterns = {
 	[ key: string ]: Pattern;
 };
+
+export type QueriedCategories = {
+	label: string;
+	name: string;
+}[];

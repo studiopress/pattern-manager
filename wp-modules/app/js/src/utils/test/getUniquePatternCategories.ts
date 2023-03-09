@@ -2,12 +2,15 @@
  * Internal dependencies
  */
 import getUniquePatternCategories from '../getUniquePatternCategories';
-import type { Patterns } from '../../types';
+import type { Patterns, QueriedCategories } from '../../types';
+
+type UniqueCategories = QueriedCategories;
 
 describe( 'getUniquePatternCategories', () => {
-	it.each< [ Patterns, { label: string; name: string }[] ] >( [
+	it.each< [ Patterns, QueriedCategories, UniqueCategories ] >( [
 		[
 			{},
+			[],
 			[
 				{
 					label: 'All Patterns',
@@ -30,6 +33,7 @@ describe( 'getUniquePatternCategories', () => {
 					content: 'Here is some content',
 				},
 			},
+			[],
 			[
 				{
 					label: 'All Patterns',
@@ -55,11 +59,17 @@ describe( 'getUniquePatternCategories', () => {
 			},
 			[
 				{
+					label: 'Some Category',
+					name: 'some-category',
+				},
+			],
+			[
+				{
 					label: 'All Patterns',
 					name: 'all-patterns',
 				},
 				{
-					label: 'Some category',
+					label: 'Some Category',
 					name: 'some-category',
 				},
 			],
@@ -90,11 +100,17 @@ describe( 'getUniquePatternCategories', () => {
 			},
 			[
 				{
+					label: 'Some Category',
+					name: 'some-category',
+				},
+			],
+			[
+				{
 					label: 'All Patterns',
 					name: 'all-patterns',
 				},
 				{
-					label: 'Some category',
+					label: 'Some Category',
 					name: 'some-category',
 				},
 			],
@@ -125,15 +141,25 @@ describe( 'getUniquePatternCategories', () => {
 			},
 			[
 				{
+					label: 'Another Category',
+					name: 'another-category',
+				},
+				{
+					label: 'Some Category',
+					name: 'some-category',
+				},
+			],
+			[
+				{
 					label: 'All Patterns',
 					name: 'all-patterns',
 				},
 				{
-					label: 'Another category',
+					label: 'Another Category',
 					name: 'another-category',
 				},
 				{
-					label: 'Some category',
+					label: 'Some Category',
 					name: 'some-category',
 				},
 			],
@@ -163,11 +189,21 @@ describe( 'getUniquePatternCategories', () => {
 			},
 			[
 				{
+					label: 'Category to Skip',
+					name: 'category-to-skip',
+				},
+				{
+					label: 'Some Category',
+					name: 'some-category',
+				},
+			],
+			[
+				{
 					label: 'All Patterns',
 					name: 'all-patterns',
 				},
 				{
-					label: 'Some category',
+					label: 'Some Category',
 					name: 'some-category',
 				},
 				{
@@ -215,15 +251,33 @@ describe( 'getUniquePatternCategories', () => {
 			},
 			[
 				{
+					label: 'Another Category',
+					name: 'another-category',
+				},
+				{
+					label: 'Some Category',
+					name: 'some-category',
+				},
+				{
+					label: 'Third Category',
+					name: 'third-category',
+				},
+				{
+					label: 'Fourth Category',
+					name: 'fourth-category',
+				},
+			],
+			[
+				{
 					label: 'All Patterns',
 					name: 'all-patterns',
 				},
 				{
-					label: 'Some category',
+					label: 'Some Category',
 					name: 'some-category',
 				},
 				{
-					label: 'Third category',
+					label: 'Third Category',
 					name: 'third-category',
 				},
 				{
@@ -234,10 +288,14 @@ describe( 'getUniquePatternCategories', () => {
 		],
 	] )(
 		'should return unique pattern categories',
-		( patterns: Patterns, expected: { label: string; name: string }[] ) => {
-			expect( getUniquePatternCategories( patterns ) ).toEqual(
-				expected
-			);
+		(
+			patterns: Patterns,
+			queriedCategories,
+			expected: { label: string; name: string }[]
+		) => {
+			expect(
+				getUniquePatternCategories( patterns, queriedCategories )
+			).toEqual( expected );
 		}
 	);
 } );
