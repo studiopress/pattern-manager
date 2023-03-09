@@ -13,17 +13,15 @@ Manage your theme's pattern PHP files the easy way, with Pattern Manager by WP E
 
 == Description ==
 
-You design beautiful block patterns for your theme. Leave the rest up to Pattern Manager by WP Engine.
-
-With a dedicated place to design and build block patterns you can 10x your ability to work effectively with patterns. 
+When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns. 
 
 ### Key Features of Pattern Manager by WP Engine
 * A dedicated place to build and design Block Patterns
-* Save directly to disk in your theme (no exporting needed)
+* Save (and generate) pattern files directly to disk in your theme (no exporting needed)
 * No more copying and pasting code to files.
 * Browse all your patterns by their preview thumbnails.
 * Create patterns, and edit them later.
-* Easy discovery and use of WordPress core pattern features.
+* Easy discovery and use of hidden WordPress core pattern features.
 
 ### Things you can do with Pattern Manager:
 * Create a pattern with a click
@@ -64,6 +62,10 @@ It can also be installed manually.
 4. Locate Pattern Manager in the list and click the *Activate* link.
 
 == Frequently Asked Questions ==
+
+= Can I choose where my pattern files get saved? =
+
+No. WordPress core naturally imports patterns located in any theme's "patterns" directory. In keeping with that WordPress standard, Pattern Manager only saves pattern files to that location at this time.
 
 = Will I lose my patterns if I update my theme? =
 
