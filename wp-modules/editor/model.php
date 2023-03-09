@@ -297,7 +297,7 @@ add_filter( 'default_title', __NAMESPACE__ . '\get_default_title', 10, 2 );
  * @param int    $post_ID       Post ID.
  * @param string $post_status   The post status.
  * @param string $post_type     Post type.
- * @param int    $post_parent   Post parent ID
+ * @param int    $post_parent   Post parent ID.
  * @param string $original_slug The original post slug.
  * @return string The slug.
  */
