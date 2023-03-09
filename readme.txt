@@ -18,7 +18,9 @@ When you design beautiful block patterns for your theme, Pattern Manager by WP E
 ### Key Features of Pattern Manager by WP Engine
 * A dedicated place to build and design Block Patterns
 * Save (and generate) pattern files directly to disk in your theme (no exporting needed)
+* Images used in patterns are auto-copied into your theme and referenced in the PHP pattern file
 * No more copying and pasting code to files.
+* No more copying and pasting images to your theme.
 * Browse all your patterns by their preview thumbnails.
 * Create patterns, and edit them later.
 * Easy discovery and use of hidden WordPress core pattern features.
