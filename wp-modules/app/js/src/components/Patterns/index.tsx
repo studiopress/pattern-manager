@@ -49,7 +49,7 @@ export default function Patterns() {
 								span: (
 									<strong>
 										{ __(
-											'Click New Pattern',
+											'Create New Pattern',
 											'pattern-manager'
 										) }
 									</strong>
