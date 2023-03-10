@@ -102,7 +102,7 @@ html body.toplevel_page_pattern-manager {
 	.patternmanager-theme-patterns {
 		width: 100%;
 		padding: 3rem;
-		border: solid 3rem #f0f0f0;
+		border: solid 3rem #f1f1f1;
 		border-radius: 2px;
 		background: #fff;
 
@@ -112,17 +112,20 @@ html body.toplevel_page_pattern-manager {
 		}
 
 		.patterns-container-inner {
-			display: grid;
 			font-size: 14px;
-			grid-template-columns: 300px 1fr;
-			grid-gap: 3rem;
 
-			@media (max-width: 1200px) {
-				grid-template-columns: 220px 1fr;
-			}
+			.pattern-columns {
+				display: grid;
+				grid-template-columns: 300px 1fr;
+				grid-gap: 3rem;
 
-			@media (max-width: 960px) {
-				grid-template-columns: 1fr;
+				@media (max-width: 1200px) {
+					grid-template-columns: 220px 1fr;
+				}
+	
+				@media (max-width: 960px) {
+					grid-template-columns: 1fr;
+				}
 			}
 
 			.pattern-inner-sidebar {
@@ -181,26 +184,18 @@ html body.toplevel_page_pattern-manager {
 			.inner-grid {
 				width: 100%;
 				display: grid;
-				grid-template-columns: repeat(3, minmax(0, 1fr));
+				grid-template-columns: repeat(3, minmax(300px, 1fr));
 				grid-gap: 2rem;
 
 				@media (max-width: 1729px) {
-					grid-template-columns: repeat(2, minmax(0, 1fr));
-				}
-
-				@media (max-width: 1200px) {
-					grid-template-columns: repeat(1, minmax(0, 1fr));
-				}
-
-				@media (max-width: 960px) {
-					grid-template-columns: repeat(2, minmax(0, 1fr));
+					grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 				}
 
 				.grid-item {
 					position: relative;
 					box-sizing: border-box;
 					margin-bottom: 50px;
-					min-height: 100px;
+					min-height: 300px;
 					border: solid 1px #ddd;
 					border-radius: 5px;
 
@@ -290,7 +285,7 @@ html body.toplevel_page_pattern-manager {
 								display: flex;
 								align-items: center;
 								border-radius: 5px;
-								min-height: 100px;
+								min-height: 300px;
 								overflow: hidden;
 							}
 
@@ -312,7 +307,7 @@ html body.toplevel_page_pattern-manager {
 						justify-content: center;
 						margin-left: auto;
 						margin-right: auto;
-						padding: 0;
+						padding: 20px;
 						opacity: 0;
 
 						.item-action-button {
@@ -367,6 +362,7 @@ html body.toplevel_page_pattern-manager {
 						display: flex;
 						flex-direction: row;
 						flex-wrap: wrap;
+						justify-content: center;
 					}
 
 					&:hover,

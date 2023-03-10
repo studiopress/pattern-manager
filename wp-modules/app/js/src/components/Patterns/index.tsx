@@ -59,7 +59,7 @@ export default function Patterns() {
 						) }
 					</div>
 				) : (
-					<>
+					<div className="pattern-columns">
 						<div
 							className="pattern-inner-sidebar"
 							role="region"
@@ -98,7 +98,7 @@ export default function Patterns() {
 						>
 							<PatternGrid themePatterns={ filteredPatterns } />
 						</div>
-					</>
+					</div>
 				) }
 			</div>
 		</div>
