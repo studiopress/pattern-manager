@@ -312,6 +312,9 @@ function update_pattern( $pattern ) {
 		FS_CHMOD_FILE
 	);
 
+	// Put a flag in the database to indicate this theme has been modified by PM.
+	update_option( 'pm_mod_' . get_stylesheet(), true );
+
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
 	// NOT WORKING tree_shake_theme_images();.
 
@@ -327,6 +330,9 @@ function update_pattern( $pattern ) {
 function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
+
+	// Put a flag in the database to indicate this theme has been modified by PM.
+	update_option( 'pm_mod_' . get_stylesheet(), true );
 
 	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
