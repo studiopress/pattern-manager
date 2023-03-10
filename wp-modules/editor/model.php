@@ -11,10 +11,12 @@ declare(strict_types=1);
 namespace PatternManager\Editor;
 
 use WP_Post;
+use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
+use function PatternManager\PatternDataHandlers\tree_shake_theme_images;
 use function PatternManager\PatternDataHandlers\update_pattern;
 
 /**
@@ -79,6 +81,8 @@ function save_pattern_to_file( WP_Post $post ) {
 	);
 
 	add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
+
+	tree_shake_theme_images( get_wp_filesystem_api(), 'copy_dir' );
 }
 add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
