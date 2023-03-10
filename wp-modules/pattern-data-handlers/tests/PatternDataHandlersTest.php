@@ -10,6 +10,7 @@ namespace PatternManager\PatternDataHandlers;
 use WP_UnitTestCase;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
+require_once __DIR__ . '/fixtures/WpFilesystemSpy.php';
 
 /**
  * Test the pattern functions.
@@ -40,6 +41,11 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function get_fixtures_directory() {
 		return __DIR__ . '/fixtures';
 	}
+
+	/**
+	 * Gets a stub for copy_dir.
+	 */
+	public function copy_dir_stub( string $source, string $destination ) {}
 
 	/**
 	 * Normalizes in order to compare in tests.
@@ -129,7 +135,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns() {
 		$patterns = get_theme_patterns();
 
-		$this->assertCount( 1, array_values( $patterns ) );
+		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertSame(
 			[
 				'my-new-pattern' => $this->get_expected_pattern(),
@@ -139,7 +145,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 					$patterns['my-new-pattern'],
 					[
 						'content' => $this->normalize( $patterns['my-new-pattern']['content'] ),
-					],
+					]
 				),
 			]
 		);
@@ -151,7 +157,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function test_get_theme_patterns_with_editor_links() {
 		$patterns = get_theme_patterns_with_editor_links();
 
-		$this->assertCount( 1, array_values( $patterns ) );
+		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertTrue(
 			array_key_exists(
 				'editorLink',
@@ -165,8 +171,31 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_get_pattern_names() {
 		$this->assertSame(
-			[ 'my-new-pattern' ],
-			get_pattern_names(),
+			[
+				'my-new-pattern',
+				'with-image',
+			],
+			get_pattern_names()
+		);
+	}
+
+	/**
+	 * Test tree_shake_theme_images.
+	 */
+	public function test_tree_shake_theme_images() {
+		$wp_filesystem = new WpFilesystemSpy();
+
+		tree_shake_theme_images(
+			$wp_filesystem,
+			[ $this, 'copy_dir_stub' ]
+		);
+
+		// Tree shaking should only keep (copy) the used image.
+		$this->assertSame(
+			[
+				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
+			],
+			$wp_filesystem->get_copied()
 		);
 	}
 }

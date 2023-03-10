@@ -116,6 +116,8 @@ function format_pattern_data( $pattern_data, $file ) {
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
 
+	opcache_invalidate( $file );
+
 	// The actual pattern content is the output of the file.
 	ob_start();
 	include $file;
@@ -313,7 +315,6 @@ function update_pattern( $pattern ) {
 	);
 
 	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
-	// NOT WORKING tree_shake_theme_images();.
 
 	return $pattern_file_created;
 }
@@ -327,8 +328,10 @@ function update_pattern( $pattern ) {
 function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
+	$result        = $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
+	tree_shake_theme_images( $wp_filesystem, 'copy_dir' );
 
-	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
+	return $result;
 }
 
 /**
@@ -378,12 +381,10 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 /**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
- * @param array $patterns_in_theme The patterns in the theme.
+ * @param object $wp_filesystem The file system.
+ * @param callable $copy_dir Copies a directory.
  */
-function tree_shake_theme_images() {
-	// Spin up the filesystem api.
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
+function tree_shake_theme_images( $wp_filesystem, $copy_dir ) {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
@@ -401,7 +402,7 @@ function tree_shake_theme_images() {
 	}
 
 	// Before we take any action, back up the current images directory.
-	copy_dir( $images_dir, $backedup_images_dir );
+	call_user_func( $copy_dir, $images_dir, $backedup_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
