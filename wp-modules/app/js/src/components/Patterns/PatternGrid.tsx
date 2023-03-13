@@ -7,6 +7,9 @@ import loadable from '@loadable/component';
 // Globals
 import { patternManager } from '../../globals';
 
+// Hooks
+import useWindowResize from '../../hooks/useWindowResize';
+
 // Components
 const PatternPreview: PatternPreviewType = loadable(
 	async () => import( '../PatternPreview' )
@@ -26,6 +29,10 @@ type Props = {
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
 export default function PatternGrid( { themePatterns }: Props ) {
+	// If the window is resized, trigger a fresh render of the grid.
+	// Helps ensure PatternPreview iFrames are the right size.
+	useWindowResize();
+
 	return (
 		<>
 			{ ! Object.entries( themePatterns ?? {} ).length ? (
