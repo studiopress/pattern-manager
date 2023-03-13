@@ -56,7 +56,7 @@ function save_pattern_to_file( WP_Post $post ) {
 
 	update_pattern(
 		array_merge(
-			get_pattern_by_name( $post->post_name ) ?? [],
+			get_pattern_by_name( $post->post_name ) ?: [],
 			[
 				'content' => $post->post_content,
 				'name'    => $post->post_name,
@@ -123,7 +123,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	return update_pattern(
 		array_merge(
 			get_pattern_defaults(),
-			$pattern ?? [],
+			$pattern ?: [],
 			[
 				'name'  => $pattern_name,
 				'title' => $post->post_title,
