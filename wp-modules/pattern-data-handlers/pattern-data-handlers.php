@@ -358,10 +358,9 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
-	// phpcs:ignore
-	$file_contents = "<?php
+	$file_contents = '<?php
 /**
- * Title: " . addcslashes( $pattern['title'], '\'' ) . '
+ * Title: ' . addcslashes( $pattern['title'], '\'' ) . '
  * Slug: ' . $pattern['name'] . '
  * Description: ' . $pattern['description'] . '
  * Categories: ' . implode( ', ', $pattern['categories'] ) . '
