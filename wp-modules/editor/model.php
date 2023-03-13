@@ -185,45 +185,12 @@ function redirect_pattern_actions() {
 		return;
 	}
 
-	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		$new_post = wp_insert_post(
-			[
-				'post_type'   => get_pattern_post_type(),
-				'post_name'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
-				'post_status' => 'publish',
-			]
-		);
-
-		wp_safe_redirect(
-			get_edit_post_link( $new_post, 'direct_link' )
-		);
+	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
+		duplicate_pattern( filter_input( INPUT_GET, 'name' ) );
 	}
 
-	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
-		$pattern_to_duplicate  = get_pattern_by_name( sanitize_text_field( filter_input( INPUT_GET, 'name' ) ) );
-		$duplicate_pattern_ids = get_duplicate_pattern_ids( $pattern_to_duplicate['name'], get_theme_patterns() );
-		if ( ! $duplicate_pattern_ids ) {
-			return;
-		}
-
-		$new_pattern = array_merge(
-			$pattern_to_duplicate,
-			$duplicate_pattern_ids
-		);
-
-		update_pattern( $new_pattern );
-
-		$new_post = wp_insert_post(
-			[
-				'post_type'   => get_pattern_post_type(),
-				'post_name'   => $new_pattern['name'],
-				'post_status' => 'publish',
-			]
-		);
-
-		wp_safe_redirect(
-			get_edit_post_link( $new_post, 'direct_link' )
-		);
+	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
+		edit_pattern( filter_input( INPUT_GET, 'name' ) );
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );
