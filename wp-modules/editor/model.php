@@ -128,21 +128,15 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	return update_pattern(
-		$pattern
-			? array_merge(
-				$pattern,
-				[
-					$meta_key => $meta_value,
-				]
-			)
-			: array_merge(
-				get_pattern_defaults(),
-				[
-					'name'  => $pattern_name,
-					'title' => $post->post_title,
-				],
-				[ $meta_key => $meta_value ]
-			)
+		array_merge(
+			[
+				'name'  => $pattern_name,
+				'title' => $post->post_title,
+			],
+			$pattern ?? [],
+			[ $meta_key => $meta_value ],
+			get_pattern_defaults()
+		)
 	);
 }
 add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
