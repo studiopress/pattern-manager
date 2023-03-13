@@ -154,10 +154,6 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 	}
 
 	$pattern = get_pattern_by_name( $post->post_name );
-	if ( ! $pattern ) {
-		return $override;
-	}
-
 	if ( isset( $pattern[ $meta_key ] ) ) {
 		return $is_single ? $pattern[ $meta_key ] : [ $pattern[ $meta_key ] ];
 	}
