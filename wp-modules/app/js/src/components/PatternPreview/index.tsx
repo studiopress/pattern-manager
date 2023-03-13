@@ -1,5 +1,5 @@
 // WP dependencies
-import { useState, useRef, useEffect } from '@wordpress/element';
+import { useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 // External dependencies
@@ -21,20 +21,13 @@ export default function PatternPreview( {
 	url,
 	viewportWidth,
 }: PatternPreviewProps ) {
-	const [ previewContainerSize, setPreviewContainerSize ] =
-		useState< BoundingClientRect >();
 	const previewContainer = useRef< HTMLDivElement | null >( null );
 	const { lazyHasIntersected } = useLazyRender( previewContainer, {
 		threshold: [ 0.3, 0.6, 1.0 ],
 	} );
 
-	useEffect( () => {
-		if ( previewContainer?.current ) {
-			setPreviewContainerSize(
-				previewContainer?.current?.getBoundingClientRect()
-			);
-		}
-	}, [ previewContainer ] );
+	const previewContainerSize: BoundingClientRect | undefined =
+		previewContainer?.current?.getBoundingClientRect();
 
 	const scale = previewContainerSize
 		? previewContainerSize?.width / viewportWidth
