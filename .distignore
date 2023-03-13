@@ -1,6 +1,5 @@
 wpps-scripts/
 .git/
-.gitignore
 .zipignore
 README.md
 */node_modules/*
