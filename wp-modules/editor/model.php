@@ -67,9 +67,6 @@ function save_pattern_to_file( WP_Post $post ) {
 		)
 	);
 
-	// Prevent an infinite loop.
-	remove_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
-
 	// Removes the post content, as it should be saved in the pattern .php file.
 	wp_update_post(
 		[
@@ -77,8 +74,6 @@ function save_pattern_to_file( WP_Post $post ) {
 			'post_content' => '',
 		]
 	);
-
-	add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 	tree_shake_theme_images( get_wp_filesystem_api(), 'copy_dir' );
 }
