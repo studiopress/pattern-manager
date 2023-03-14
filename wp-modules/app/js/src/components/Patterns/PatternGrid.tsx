@@ -8,7 +8,7 @@ import loadable from '@loadable/component';
 import { patternManager } from '../../globals';
 
 // Hooks
-import useForceUpdate from '../../hooks/useForceUpdate';
+import useForceRerend from '../../hooks/useForceRerend';
 
 // Components
 const PatternPreview: PatternPreviewType = loadable(
@@ -32,7 +32,7 @@ export default function PatternGrid( { themePatterns }: Props ) {
 	// If the window is resized, trigger a fresh render of the grid.
 	// Passing `themePatterns` also re-renders while searching or changing categories.
 	// Helps ensure PatternPreview iFrames are the right size.
-	useForceUpdate( [ themePatterns ] );
+	useForceRerend( [ themePatterns ] );
 
 	return (
 		<>

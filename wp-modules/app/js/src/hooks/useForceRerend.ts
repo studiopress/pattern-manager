@@ -7,7 +7,7 @@ type WindowDimensions = [ number, number ];
  *
  * Optionally include an array of dependencies to trigger a re-render.
  */
-export default function useForceUpdate< T extends unknown >( dependencies: T[] = [] ) {
+export default function useForceRerend< T extends unknown >( dependencies: T[] = [] ) {
 	const [ , setForceUpdate ] = useState< T[] | WindowDimensions >();
 	const initialRender = useRef( true );
 
