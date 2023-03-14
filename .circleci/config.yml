@@ -49,11 +49,12 @@ jobs:
       - php/install-composer
       - node/install-packages:
           app-dir: *PLUGIN_PATH
-      - run: npm run build
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
-          command: npm run test:phpunit
+          command: |
+            npm run build
+            npm run test:phpunit
   zip:
     docker:
       - image: cimg/php:7.3-node
