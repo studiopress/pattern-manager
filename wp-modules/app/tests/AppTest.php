@@ -36,7 +36,7 @@ class AppTest extends WP_UnitTestCase {
 	public function test_pattern_manager_app() {
 		ob_start();
 		pattern_manager_app();
-		$result = ob_get_clean():
+		$result = ob_get_clean();
 
 		$this->assertSame( '<div id="pattern-manager-app"></div>', $result );
 		$this->assertTrue( wp_script_is( 'pattern-manager' ) );
