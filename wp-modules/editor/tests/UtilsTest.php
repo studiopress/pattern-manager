@@ -17,6 +17,14 @@ require_once dirname( __DIR__ ) . '/utils.php';
 class UtilsTest extends WP_UnitTestCase {
 
 	/**
+	 * @inheritDoc
+	 */
+	public function tearDown() {
+		delete_pattern_posts():
+		parent::tearDown();
+	}
+
+	/**
 	 * Gets the data for the test of get_new_pattern_number().
 	 *
 	 * @return array[]
@@ -274,6 +282,27 @@ class UtilsTest extends WP_UnitTestCase {
 		$this->assertSame(
 			$expected,
 			get_new_pattern_title( $all_patterns )
+		);
+	}
+
+	/**
+	 * Tests edit_pattern.
+	 */
+	public function test_edit_pattern( $all_patterns, $expected ) {
+		// Override this Core function, which is pluggable.
+		function wp_safe_redirect() {}
+
+		edit_pattern( 'example-pattern-name' );
+
+		$this->assertCount(
+			1,
+			get_posts(
+				[
+					[
+						'post_name' => 'example-pattern-name',
+					],
+				]
+			)
 		);
 	}
 }
