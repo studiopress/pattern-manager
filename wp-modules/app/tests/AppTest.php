@@ -42,4 +42,14 @@ class AppTest extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'pattern-manager' ) );
 		$this->assertTrue( wp_style_is( 'pattern_manager_style' ) );
 	}
+
+	/**
+	 * Tests pattern_manager_admin_menu_page.
+	 */
+	public function pattern_manager_admin_menu_page() {
+		$this->assertSame(
+			'wrong',
+			pattern_manager_admin_menu_page()
+		);
+	}
 }
