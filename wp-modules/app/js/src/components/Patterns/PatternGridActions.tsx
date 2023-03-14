@@ -39,10 +39,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 					</span>
 				</Button>
 
-				<div className="item-action-button-separator"></div>
-
 				<Button
-					type="button"
 					className="item-action-button"
 					aria-label={ sprintf(
 						/* translators: %1$s: the pattern title */
@@ -60,8 +57,6 @@ export default function PatternGridActions( { patternData }: Props ) {
 						{ __( 'Duplicate', 'pattern-manager' ) }
 					</span>
 				</Button>
-
-				<div className="item-action-button-separator"></div>
 
 				<Button
 					type="button"
