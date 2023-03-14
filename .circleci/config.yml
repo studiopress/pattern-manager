@@ -49,6 +49,7 @@ jobs:
       - php/install-composer
       - node/install-packages:
           app-dir: *PLUGIN_PATH
+      - run: npm run build
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
