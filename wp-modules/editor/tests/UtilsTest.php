@@ -288,7 +288,7 @@ class UtilsTest extends WP_UnitTestCase {
 	/**
 	 * Tests edit_pattern.
 	 */
-	public function test_edit_pattern( $all_patterns, $expected ) {
+	public function test_edit_pattern() {
 		// Override this Core function, which is pluggable.
 		function wp_safe_redirect() {}
 
