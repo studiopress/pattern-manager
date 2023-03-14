@@ -12,7 +12,7 @@
 		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"lint:php": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p ${OLDPWD};",
+		"lint:php": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"lint:php:fix": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
 		"lint:js": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options -p \"${OLDPWD}\"",
 		"lint:js:fix": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
