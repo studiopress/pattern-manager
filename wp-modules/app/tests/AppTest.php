@@ -48,7 +48,7 @@ class AppTest extends WP_UnitTestCase {
 	 */
 	public function pattern_manager_admin_menu_page() {
 		$this->assertSame(
-			'wrong',
+			'toplevel_page_pattern-manager',
 			pattern_manager_admin_menu_page()
 		);
 	}
