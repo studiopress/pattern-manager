@@ -1,7 +1,7 @@
 # Pattern Manager
 Contributors: wpengine, ryankienstra, mikeday, dreamwhisper, johnstonphilip, mmcalister, studiopress
 Donate link: https://wpengine.com
-Tags: patterns, gutenberg
+Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.2
 Stable tag: 0.1.4
@@ -18,21 +18,22 @@ Note: Pattern Manager is currently in beta.
 When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns. 
 
 ### Key Features of Pattern Manager by WP Engine
- * A dedicated place to build and design Block Patterns
- * Save (and generate) pattern files directly to disk in your theme (no exporting needed)
- * Images used in patterns are auto-copied into your theme and referenced in the PHP pattern file
+ * A dedicated place to build and design Block Patterns.
+ * Save (and generate) pattern files directly to disk in your theme (no exporting needed).
+ * Images used in patterns are auto-copied into your theme and referenced in the PHP pattern file.
  * No more copying and pasting code to files.
  * No more copying and pasting images to your theme.
  * Browse all your patterns by their preview thumbnails.
- * Create patterns, and edit them later.
+ * Create patterns and edit them later.
  * Easy discovery and use of hidden WordPress core pattern features.
 
 ### Things you can do with Pattern Manager:
- * Create a pattern with a click
- * Duplicate a pattern
- * Delete a pattern
- * Rename a pattern
- * Utilize hidden WordPress core pattern features
+ * Create a pattern with a click.
+ * Duplicate a pattern.
+ * Delete a pattern.
+ * Rename a pattern.
+ * Utilize hidden WordPress core pattern features.
+ * Save a pattern to a php file in your theme.
 
 ### Hidden WP core pattern features you can unlock with Pattern Manager:
  * When a user makes a new page, post, auto-show a modal with your patterns, available to be used.
@@ -77,7 +78,7 @@ Yes. Pattern Manager is designed to be used by theme creators, ideally in a loca
 
 ### Can Pattern Manager be used with any theme?
 
-While Pattern Manager will add patterns to any theme, it is recommended that you own and control the code of that theme. 
+While Pattern Manager will add patterns to any theme, it is recommended that you own and control the code of that theme. If you do not control the code of your theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files. 
 
 ### Should I use Pattern Manager on a "live" website?
 Ideally, no. It is recommended that you develop your patterns on a locally hosted website. You can easily set up a local development WordPress on your computer using https://localwp.com
