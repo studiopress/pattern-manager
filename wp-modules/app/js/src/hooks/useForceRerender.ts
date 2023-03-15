@@ -2,11 +2,7 @@ import { useLayoutEffect, useState } from '@wordpress/element';
 
 type WindowDimensions = [ number, number ];
 
-/**
- * Re-render the calling component when the window is resized.
- *
- * Optionally include an array of dependencies to trigger a re-render.
- */
+/** Re-render the calling component when the window is resized or dependencies update. */
 export default function useForceRerender< T extends unknown >(
 	dependencies: T[]
 ) {
