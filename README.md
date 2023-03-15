@@ -89,9 +89,8 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 
 ## Screenshots
 
-1. Description of screenshot one here
-2. Description of screenshot two here
-3. Description of screenshot three here
+1. A dedicated inferface to browse, design, build, and save WordPress pattern files.
+2. Easily assign pattern categories, keywords, descriptions, and more.
 
 ## Changelog
 
