@@ -16,10 +16,7 @@ export default function useForceRerender< T extends unknown >(
 		setForceUpdate( dependencies );
 
 		function updateSizeAndRerender() {
-			setForceUpdate( [
-				window.innerWidth,
-				window.innerHeight,
-			] );
+			setForceUpdate( [ window.innerWidth, window.innerHeight ] );
 		}
 
 		window.addEventListener( 'resize', updateSizeAndRerender );
