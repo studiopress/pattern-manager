@@ -116,7 +116,7 @@ function format_pattern_data( $pattern_data, $file ) {
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
 
-	opcache_invalidate( $file );
+	wp_opcache_invalidate( $file );
 
 	// The actual pattern content is the output of the file.
 	ob_start();
@@ -313,8 +313,6 @@ function update_pattern( $pattern ) {
 		$file_contents,
 		FS_CHMOD_FILE
 	);
-
-	// TO DO: Fix issue with needing to "Save twice" on the frontend, because the pattern files are cached on the first save, making images on disk incorrect.
 
 	return $pattern_file_created;
 }

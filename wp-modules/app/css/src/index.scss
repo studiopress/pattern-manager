@@ -23,7 +23,6 @@ html body.toplevel_page_pattern-manager {
 	background: #f1f1f1;
 }
 
-
 /* stylelint-disable */
 // Temp hacks for Gutenberg style issues
 .editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper > *,
@@ -46,11 +45,6 @@ html body.toplevel_page_pattern-manager {
 	box-sizing: border-box;
 	background: #f1f1f1;
 	font-size: 16px;
-
-	// height: 100%;
-	// min-height: 100%;
-	display: flex;
-	flex-direction: column;
 
 	* {
 		box-sizing: border-box !important;
@@ -107,30 +101,35 @@ html body.toplevel_page_pattern-manager {
 
 	.patternmanager-theme-patterns {
 		width: 100%;
-		margin-left: auto;
-		margin-right: auto;
 		padding: 3rem;
-		border: solid 3rem #f0f0f0;
+		border: solid 3rem #f1f1f1;
 		border-radius: 2px;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
 		background: #fff;
 
-		@media (min-width: 1024px) {
-			padding: 3rem;
+		@media (max-width: 1024px) {
+			border-width: 2rem;
+			padding: 2rem;
 		}
 
 		.patterns-container-inner {
-			display: flex;
-			flex-direction: row;
 			font-size: 14px;
 
-			.inner-sidebar {
-				display: flex;
-				flex-direction: column;
-				width: 300px;
-				margin-right: 4rem;
+			.pattern-columns {
+				display: grid;
+				grid-template-columns: 300px 1fr;
+				grid-gap: 3rem;
+
+				@media (max-width: 1200px) {
+					grid-template-columns: 220px 1fr;
+				}
+
+				@media (max-width: 960px) {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.pattern-inner-sidebar {
+				display: block;
 
 				.pattern-search {
 					margin-bottom: 2.5rem;
@@ -141,12 +140,27 @@ html body.toplevel_page_pattern-manager {
 					font-weight: 600;
 				}
 
+				.pattern-categories {
+
+					@media (max-width: 960px) {
+						display: flex;
+						flex-wrap: wrap;
+						gap: 5px;
+					}
+
+				}
+
 				.category {
 					display: block;
 					height: 48px;
 					margin-bottom: 2px;
 					text-align: left;
 					width: 100%;
+
+					@media (max-width: 960px) {
+						display: inline-flex;
+						width: unset;
+					}
 
 					&:not(.category-selected):hover,
 					&:not(.category-selected):focus-visible {
@@ -168,19 +182,13 @@ html body.toplevel_page_pattern-manager {
 			}
 
 			.inner-grid {
-				margin: 0 0.5rem;
 				width: 100%;
 				display: grid;
-				grid-template-columns: repeat(3, minmax(0, 1fr));
+				grid-template-columns: repeat(3, minmax(300px, 1fr));
 				grid-gap: 2rem;
-				column-gap: 2rem;
 
 				@media (max-width: 1729px) {
-					grid-template-columns: repeat(2, minmax(0, 1fr));
-				}
-
-				@media (max-width: 1200px) {
-					grid-template-columns: repeat(1, minmax(0, 1fr));
+					grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 				}
 
 				.grid-item {
@@ -295,25 +303,24 @@ html body.toplevel_page_pattern-manager {
 						position: absolute;
 						bottom: 20px;
 						width: 100%;
-						display: flex;
-						justify-content: center;
 						margin-left: auto;
 						margin-right: auto;
-						padding: 0;
+						padding: 20px;
 						opacity: 0;
+
+						a.item-action-button {
+							border-right: 1px solid #404040;
+						}
 
 						.item-action-button {
 							z-index: 50;
 							background: transparent;
-							border: none;
 							cursor: pointer;
 							color: #c6c6c6;
 							height: 46px;
+							justify-content: center;
 							padding: 15px 20px;
 							transition: 0.1s ease;
-							display: flex;
-							flex-direction: row;
-							align-items: center;
 
 							&:hover {
 								color: #fff;
@@ -351,9 +358,9 @@ html body.toplevel_page_pattern-manager {
 					.item-actions-inside {
 						background: #1e1e1e;
 						border-radius: 6px;
-						display: flex;
-						flex-direction: row;
-						flex-wrap: wrap;
+						display: grid;
+						grid-auto-columns: minmax(0, 1fr);
+						grid-auto-flow: column;
 					}
 
 					&:hover,

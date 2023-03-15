@@ -7,6 +7,9 @@ import loadable from '@loadable/component';
 // Globals
 import { patternManager } from '../../globals';
 
+// Hooks
+import useForceRerender from '../../hooks/useForceRerender';
+
 // Components
 const PatternPreview: PatternPreviewType = loadable(
 	async () => import( '../PatternPreview' )
@@ -26,6 +29,8 @@ type Props = {
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
 export default function PatternGrid( { themePatterns }: Props ) {
+	useForceRerender( [ themePatterns ] );
+
 	return (
 		<>
 			{ ! Object.entries( themePatterns ?? {} ).length ? (
