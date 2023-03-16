@@ -1,6 +1,8 @@
 wpps-scripts/
 .git/
 .gitignore
+.svnignore
+.zipignore
 wporg/
 **/node_modules/
 **/css/src/
