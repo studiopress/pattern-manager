@@ -205,7 +205,7 @@ function display_block_pattern_preview() {
 
 	wp_head();
 
-	echo $the_content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo wp_kses_post( $the_content );
 
 	wp_footer();
 
