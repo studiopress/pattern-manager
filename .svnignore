@@ -6,9 +6,11 @@ wporg/
 **/css/src/
 **/js/src/
 **/tests/
+**/tsconfig.json
+**/package.json
+**/package-lock.json
 package.json
 package-lock.json
-tsconfig.json
 .circleci/
 .github/
 composer.json
