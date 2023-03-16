@@ -193,6 +193,7 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
  * Receive pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
+	// Nonce not required as the user is not taking any action here.
 	if ( ! isset( $_GET['pm_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
