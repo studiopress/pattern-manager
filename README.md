@@ -36,7 +36,7 @@ When you design beautiful block patterns for your theme, Pattern Manager by WP E
  * Save a pattern to a php file in your theme.
 
 ### Hidden WP core pattern features you can unlock with Pattern Manager:
- * When a user makes a new page, post, auto-show a modal with your patterns, available to be used.
+ * When a user makes a new page or post, auto-show a modal with your patterns, available to be used.
  * Make your pattern available in the block inserter, or choose to hide it from the inserter.
  * Allow users to transform any block into your pattern.
 
@@ -85,7 +85,7 @@ Ideally, no. It is recommended that you develop your patterns on a locally hoste
 
 ### Do I need the new block editor to use Pattern Manager?
 
-Yes, you will need to have WordPress 6.1 or later installed to take advantage of Pattern Manager.
+Yes, you will need to have WordPress 6.2 or later installed to take advantage of Pattern Manager.
 
 ## Screenshots
 
