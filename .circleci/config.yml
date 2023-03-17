@@ -61,11 +61,11 @@ jobs:
           path: *PLUGIN_PATH
       - node/install:
           node-version: '14'
-      - run: npm ci
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
           command: |
+            npm ci
             npm run build
             npm run zip
             mkdir /tmp/artifacts
