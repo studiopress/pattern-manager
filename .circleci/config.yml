@@ -61,8 +61,7 @@ jobs:
           path: *PLUGIN_PATH
       - node/install:
           node-version: '14'
-      - node/install-packages:
-          app-dir: *PLUGIN_PATH
+      - run: npm ci
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
