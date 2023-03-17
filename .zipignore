@@ -1,0 +1,17 @@
+*wpps-scripts/*
+*.git/*
+*.gitignore*
+*.zipignore*
+*node_modules/*
+*package.json*
+*package-lock.json*
+*.circleci/*
+*.github/*
+*composer.json*
+*composer.lock*
+*css/src/*
+*js/src/*
+*tests/*
+*postcss.config.js*
+*.DS_Store*
+*.vscode/*
