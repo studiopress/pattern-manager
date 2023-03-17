@@ -3,4 +3,3 @@ node_modules
 build
 /vendor
 *.zip
-.zipignore
