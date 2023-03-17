@@ -1,6 +1,5 @@
 wpps-scripts
 .distignore
-.zipignore
 .git
 .gitignore
 wporg
