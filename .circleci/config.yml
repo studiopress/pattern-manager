@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.0
   php: circleci/php@1.1
+  wp-svn: studiopress/wp-svn@dev:alpha
 
 references:
   PLUGIN_PATH: &PLUGIN_PATH
@@ -72,6 +73,24 @@ jobs:
             mv pattern-manager*.zip /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
+  testing-deploy:
+    docker:
+      - image: cimg/php:7.3-node
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - node/install:
+          node-version: '14'
+      - run:
+          name: Building the plugin
+          working_directory: *PLUGIN_PATH
+          command: |
+            npm ci
+            npm run build
+      - wp-svn/deploy-plugin:
+          dry-run: true
+          plugin-path: *PLUGIN_PATH
+          wporg-assets-directory: wporg
 
 workflows:
   build:
@@ -80,3 +99,4 @@ workflows:
       - test-js
       - phpunit
       - zip
+      - testing-deploy
