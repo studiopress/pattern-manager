@@ -87,6 +87,8 @@ jobs:
           command: |
             npm ci
             npm run build
+            sudo apt-get update
+            sudo apt-get install subversion
       - wp-svn/deploy-plugin:
           dry-run: true
           plugin-path: *PLUGIN_PATH
