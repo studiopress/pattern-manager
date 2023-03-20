@@ -99,8 +99,15 @@ workflows:
       - test-js
       - phpunit
       - zip
+      - wp-svn/check-versions:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
       - svn-deploy:
           requires:
+            - wp-svn/check-versions
             - lint
             - test-js
             - phpunit
