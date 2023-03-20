@@ -73,7 +73,7 @@ jobs:
             mv pattern-manager*.zip /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
-  testing-deploy:
+  svn-deploy:
     docker:
       - image: cimg/php:7.3-node
     steps:
@@ -99,4 +99,13 @@ workflows:
       - test-js
       - phpunit
       - zip
-      - testing-deploy
+      - svn-deploy:
+          requires:
+            - lint
+            - test-js
+            - phpunit
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
