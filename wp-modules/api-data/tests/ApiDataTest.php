@@ -55,6 +55,8 @@ class ApiDataTest extends WP_UnitTestCase {
 	 * Tests register_routes.
 	 */
 	public function test_register_routes_get_pattern_names() {
+		register_routes();
+
 		$this->assertEquals(
 			[
 				'my-new-pattern',
