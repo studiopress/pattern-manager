@@ -8,6 +8,7 @@
 namespace PatternManager\ApiData;
 
 use WP_UnitTestCase;
+use WP_REST_Request;
 
 require_once dirname( __DIR__ ) . '/api-data.php';
 
