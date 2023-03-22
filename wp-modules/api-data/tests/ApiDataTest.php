@@ -40,14 +40,20 @@ class ApiDataTest extends WP_UnitTestCase {
 	public function get_fixtures_directory() {
 		return dirname( dirname( __DIR__ ) ) . '/pattern-data-handlers/tests/fixtures';
 	}
-
 	/**
 	 * Tests register_routes.
 	 */
 	public function test_register_routes() {
-		$request  = new WP_REST_Request( 'GET', '/wp/v2/block-patterns/categories' );
-		$response = rest_do_request( $request );
+		$this->assertCount(
+			2,
+			rest_get_server()->get_routes( 'pattern-manager/v1' )
+		);
+	}
 
+	/**
+	 * Tests register_routes.
+	 */
+	public function test_register_routes_get_pattern_names() {
 		$this->assertEquals(
 			[
 				'my-new-pattern',
