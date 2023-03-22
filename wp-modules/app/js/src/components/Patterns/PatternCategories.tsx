@@ -17,7 +17,7 @@ export default function PatternCategories( {
 	setCurrentCategory,
 }: Props ) {
 	return (
-		<>
+		<div className="pattern-categories">
 			{ categories.map( ( category ) => {
 				const classes = [
 					'category',
@@ -41,6 +41,6 @@ export default function PatternCategories( {
 					</Button>
 				);
 			} ) }
-		</>
+		</div>
 	);
 }

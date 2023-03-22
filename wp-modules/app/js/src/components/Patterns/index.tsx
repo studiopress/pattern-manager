@@ -59,9 +59,9 @@ export default function Patterns() {
 						) }
 					</div>
 				) : (
-					<>
+					<div className="pattern-columns">
 						<div
-							className="inner-sidebar"
+							className="pattern-inner-sidebar"
 							role="region"
 							aria-label="Sort patterns by category"
 						>
@@ -98,7 +98,7 @@ export default function Patterns() {
 						>
 							<PatternGrid themePatterns={ filteredPatterns } />
 						</div>
-					</>
+					</div>
 				) }
 			</div>
 		</div>

@@ -78,7 +78,7 @@ function pattern_manager_admin_menu_page() {
 		'pattern-manager',
 		__NAMESPACE__ . '\pattern_manager_app',
 		'dashicons-text',
-		$position = 2,
+		$position = 59,
 	);
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\pattern_manager_admin_menu_page' );
