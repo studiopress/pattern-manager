@@ -298,7 +298,7 @@ class UtilsTest extends WP_UnitTestCase {
 			1,
 			get_posts(
 				[
-					'post_name__in' => [ 'example-pattern-name' ],
+					'name' => [ 'example-pattern-name' ],
 				]
 			)
 		);
