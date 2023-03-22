@@ -296,11 +296,7 @@ class UtilsTest extends WP_UnitTestCase {
 
 		$this->assertCount(
 			1,
-			get_posts(
-				[
-					'name' => [ 'example-pattern-name' ],
-				]
-			)
+			get_pm_post_ids()
 		);
 	}
 }
