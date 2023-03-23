@@ -41,20 +41,42 @@ class ApiDataTest extends WP_UnitTestCase {
 	public function get_fixtures_directory() {
 		return dirname( dirname( __DIR__ ) ) . '/pattern-data-handlers/tests/fixtures';
 	}
+
 	/**
 	 * Tests register_routes.
 	 */
-	public function test_register_routes() {
-		$this->assertCount(
-			2,
-			rest_get_server()->get_routes( 'pattern-manager/v1' )
+	public function test_register_routes_authorized() {
+		register_routes();
+
+		$this->assertSame(
+			[
+				'/pattern-manager/v1',
+				'/pattern-manager/v1/get-pattern-names',
+				'/pattern-manager/v1/delete-pattern',
+			],
+			array_keys( rest_get_server()->get_routes( 'pattern-manager/v1' ) )
 		);
 	}
 
 	/**
 	 * Tests register_routes.
 	 */
-	public function test_register_routes_get_pattern_names() {
+	public function test_register_routes_get_pattern_names_unauthorized() {
+		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'author' ] ) );
+		register_routes();
+		$response_data = ( rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) ) )->get_data();
+
+		$this->assertEquals(
+			'rest_forbidden',
+			$response_data['code']
+		);
+	}
+
+	/**
+	 * Tests register_routes.
+	 */
+	public function test_register_routes_get_pattern_names_authorized() {
+		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		register_routes();
 
 		$this->assertEquals(
