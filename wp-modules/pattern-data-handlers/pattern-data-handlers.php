@@ -358,13 +358,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
-	$custom_category_registrations = array_map(
-		function ( $category_label ) {
-			$category_name = strtolower( str_replace( ' ', '-', $category_label ) );
-			return "register_block_pattern_category( '$category_name', array( 'label' => '$category_label', 'pm_meta' => 'pm_custom_category' ) );";
-		},
-		$pattern['customCategories'],
-	);
+	$custom_category_registrations = create_formatted_category_registrations( $pattern['customCategories'] );
 
 	// phpcs:ignore
 	$file_contents = "<?php
@@ -380,11 +374,53 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . '
  * Custom Categories: ' . implode( ', ', $pattern['customCategories'] ) . '
  */
-' . implode( "\n", $custom_category_registrations ) . '
+' . maybe_display_formatted_category_registrations( $custom_category_registrations ) . '
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
 	return $file_contents;
+}
+
+/**
+ * Returns an array of block registration calls formatted as strings.
+ *
+ * @param array $custom_categories The custom category titles/labels to be parsed.
+ * @return array
+ */
+function create_formatted_category_registrations( $custom_categories ) {
+	$custom_category_registrations = array_map(
+		function ( $category_label ) {
+			$category_name = strtolower( str_replace( ' ', '-', $category_label ) );
+			return "register_block_pattern_category(
+		'$category_name',
+		array(
+			'label'   => '$category_label',
+			'pm_meta' => 'pm_custom_category'
+		),
+	);";
+		},
+		$custom_categories,
+	);
+
+	return $custom_category_registrations;
+}
+
+/**
+ * Returns a string of category registration calls wrapped in a conditional.
+ *
+ * @param array $custom_category_registrations Category registration calls, formatted as strings.
+ * @return string
+ */
+function maybe_display_formatted_category_registrations( $custom_category_registrations ) {
+	$formatted_registration_string = '';
+
+	if ( ! empty( $custom_category_registrations ) ) {
+		$formatted_registration_string = "if ( function_exists( 'register_block_pattern_category' ) ) {
+    " . implode( "\n    ", $custom_category_registrations ) . '
+}';
+	}
+
+	return $formatted_registration_string;
 }
 
 /**
