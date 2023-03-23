@@ -49,6 +49,7 @@ export default function PatternManagerMetaControls() {
 			<CategoriesPanel
 				categories={ postMeta.categories }
 				categoryOptions={ queriedCategories }
+				customCategories={ postMeta.customCategories }
 				handleChange={ updatePostMeta }
 			/>
 			<KeywordsPanel

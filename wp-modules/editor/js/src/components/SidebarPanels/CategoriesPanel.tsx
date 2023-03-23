@@ -1,7 +1,8 @@
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
-import Select from 'react-select';
+import Creatable from 'react-select/creatable';
+import convertToSlug from '../../utils/convertToSlug';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
@@ -12,16 +13,24 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 export default function CategoriesPanel( {
 	categories,
 	categoryOptions,
+	customCategories,
 	handleChange,
-}: BaseSidebarProps< 'categories' > &
+}: BaseSidebarProps< 'categories' | 'customCategories' > &
 	AdditionalSidebarProps< 'categoryOptions' > ) {
+	const combinedSelectedCategories = [
+		...customCategories.filter( ( categoryTitle ) =>
+			categories.includes( convertToSlug( categoryTitle ) )
+		),
+		...categories,
+	];
+
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"
 			title={ __( 'Pattern Categories', 'pattern-manager' ) }
 		>
 			{ categoryOptions ? (
-				<Select
+				<Creatable
 					isMulti
 					isClearable
 					closeMenuOnSelect={ false }
@@ -29,19 +38,54 @@ export default function CategoriesPanel( {
 						'Add Pattern Categories',
 						'pattern-manager'
 					) }
-					value={ categories?.map( ( category ) =>
-						categoryOptions.find(
-							( matchedCategory ) =>
-								matchedCategory.value === category
-						)
+					value={ combinedSelectedCategories.reduce(
+						( acc, categoryName ) =>
+							! acc.includes( categoryName )
+								? [
+										...acc,
+										categoryOptions.find(
+											( matchedCategory ) =>
+												matchedCategory.value ===
+												categoryName
+										),
+								  ]
+								: acc,
+						[]
 					) }
 					options={ categoryOptions }
 					onChange={ ( categorySelections ) => {
+						const selections = categorySelections.map(
+							( category ) => category.value
+						);
+
+						const customCategorySelections = categoryOptions.reduce(
+							( acc, category ) => {
+								const customCategoryFound =
+									selections.includes( category.value ) &&
+									category.pm_meta &&
+									category.pm_meta === 'pm_custom_category';
+
+								return customCategoryFound
+									? [ ...acc, category.label ]
+									: acc;
+							},
+							[]
+						);
+
+						handleChange( 'categories', selections, {
+							customCategories: customCategorySelections,
+						} );
+					} }
+					onCreateOption={ ( newCategoryTitle ) => {
 						handleChange(
-							'categories',
-							categorySelections.map(
-								( category ) => category.value
-							)
+							'customCategories',
+							[ ...customCategories, newCategoryTitle ],
+							{
+								categories: [
+									...categories,
+									convertToSlug( newCategoryTitle ),
+								],
+							}
 						);
 					} }
 					menuPlacement="auto"
