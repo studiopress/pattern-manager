@@ -79,11 +79,12 @@ class ApiDataTest extends WP_UnitTestCase {
 		register_routes();
 
 		$this->assertSame(
-			[ 'patternNames' =>
-				[
-					'my-new-pattern',
-					'with-image',
-				],
+			[
+				'patternNames' =>
+												[
+													'my-new-pattern',
+													'with-image',
+												],
 			],
 			rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )->get_data()
 		);
