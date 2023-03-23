@@ -380,6 +380,12 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	return $file_contents;
 }
 
+/**
+ * Returns a string that conditionally contains the custom category header.
+ *
+ * @param array $custom_categories The custom category titles/labels.
+ * @return string
+ */
 function maybe_add_custom_category_header( $custom_categories ) {
 	$custom_category_header = '';
 
