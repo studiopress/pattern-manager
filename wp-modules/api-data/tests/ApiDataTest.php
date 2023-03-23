@@ -53,7 +53,7 @@ class ApiDataTest extends WP_UnitTestCase {
 		do_action( 'rest_api_init' );
 		register_routes();
 
-		$this->expectExceptionCode(
+		$this->assertSame(
 			'rest_forbidden',
 			rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )->get_data()['code']
 		);
