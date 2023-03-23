@@ -27,7 +27,7 @@ class AppTest extends WP_UnitTestCase {
 				'apiNonce',
 				'apiEndpoints',
 				'siteUrl',
-				'adminUrl'
+				'adminUrl',
 			],
 			array_keys( get_app_state() )
 		);
