@@ -3,6 +3,7 @@
 export type PostMeta = {
 	blockTypes: string[];
 	categories: string[];
+	customCategories: string[];
 	description: string;
 	inserter: boolean;
 	keywords: string[];
@@ -16,7 +17,11 @@ export type PatternPostData = PostMeta & {
 };
 
 export type SelectQuery = ( dataStore: string ) => {
-	getBlockPatternCategories: () => { name: string; label: string }[];
+	getBlockPatternCategories: () => {
+		name: string;
+		label: string;
+		pm_meta?: string;
+	}[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 	getCurrentPostAttribute: ( attributeName: 'meta' ) => PostMeta;
 	getEditedPostAttribute: ( postAttribute: string ) => unknown;
@@ -34,6 +39,7 @@ export type SelectQuery = ( dataStore: string ) => {
 export type Pattern = {
 	blockTypes: string[];
 	categories: string[];
+	customCategories: string[];
 	content: string;
 	description: string;
 	inserter: boolean;
@@ -55,6 +61,12 @@ export type InitialPatternManager = {
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
 	};
+	patternCategories: {
+		name: string;
+		label: string;
+		description?: string;
+		pm_meta?: string;
+	}[];
 	patternNames: Array< Pattern[ 'slug' ] >;
 	siteUrl: string;
 };
