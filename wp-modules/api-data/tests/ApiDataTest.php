@@ -46,6 +46,18 @@ class ApiDataTest extends WP_UnitTestCase {
 	/**
 	 * Tests register_routes.
 	 */
+	public function test_register_routes_get_pattern_names_unauthorized() {
+		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'author' ] ) );
+		register_routes();
+
+		$this->expectException(
+			rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )
+		);
+	}
+
+	/**
+	 * Tests register_routes.
+	 */
 	public function test_register_routes_authorized() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		register_routes();
@@ -63,18 +75,6 @@ class ApiDataTest extends WP_UnitTestCase {
 	/**
 	 * Tests register_routes.
 	 */
-	public function test_register_routes_get_pattern_names_unauthorized() {
-		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'author' ] ) );
-		register_routes();
-
-		$this->expectException(
-			rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )
-		);
-	}
-
-	/**
-	 * Tests register_routes.
-	 */
 	public function test_register_routes_get_pattern_names_authorized() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		register_routes();
@@ -82,10 +82,10 @@ class ApiDataTest extends WP_UnitTestCase {
 		$this->assertSame(
 			[
 				'patternNames' =>
-												[
-													'my-new-pattern',
-													'with-image',
-												],
+					[
+						'my-new-pattern',
+						'with-image',
+					],
 			],
 			rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )->get_data()
 		);
