@@ -374,7 +374,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . '
  * Custom Categories: ' . implode( ', ', $pattern['customCategories'] ) . '
  */
-' . maybe_display_formatted_category_registrations( $custom_category_registrations ) . '
+' . $custom_category_registrations . '
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
@@ -382,25 +382,41 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 }
 
 /**
- * Returns an array of block registration calls formatted as strings.
+ * Returns a formatted string that will conditionally register custom categories when saved to the pattern file.
+ * Categories are checked against the pattern category registry before being registered.
  *
  * @param array $custom_categories The custom category titles/labels to be parsed.
- * @return array
+ * @return string
  */
 function create_formatted_category_registrations( $custom_categories ) {
-	$custom_category_registrations = array_map(
-		function ( $category_label ) {
-			$category_name = strtolower( str_replace( ' ', '-', $category_label ) );
-			return "register_block_pattern_category(
-		'$category_name',
-		array(
-			'label'   => '$category_label',
-			'pm_meta' => 'pm_custom_category'
-		),
-	);";
-		},
-		$custom_categories,
-	);
+	$custom_category_registrations = '';
+
+	if ( ! empty( $custom_categories ) ) {
+		$custom_categories = array_map(
+			fn ( $category_label ) => "'$category_label'",
+			$custom_categories,
+		);
+
+		$registry_check_prepend = '$registered_categories = \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered();';
+		$registry_check_prepend = "$registry_check_prepend\n" . '$registered_categories = array_map( fn ( $category ) => $category[\'label\'], $registered_categories );';
+
+		$custom_category_registrations = $registry_check_prepend
+			. "\n"
+			. '
+foreach( [ ' . implode( ', ', $custom_categories ) . ' ] as $category_label ) {
+	if ( ! in_array( $category_label, $registered_categories ) ) {
+		$category_name = strtolower( str_replace( " ", "-", $category_label ) );
+
+		register_block_pattern_category(
+			$category_name,
+			array(
+				"label"   => $category_label,
+				"pm_meta" => "pm_custom_category",
+			),
+		);
+	}
+}';
+	}
 
 	return $custom_category_registrations;
 }
