@@ -20,14 +20,17 @@ class AppTest extends WP_UnitTestCase {
 	 * Tests get_app_state.
 	 */
 	public function test_get_app_state() {
-		$app_state = get_app_state();
-
-		$this->assertTrue( array_key_exists( 'patterns', $app_state ) );
-		$this->assertTrue( array_key_exists( 'patternCategories', $app_state ) );
-		$this->assertTrue( array_key_exists( 'apiNonce', $app_state ) );
-		$this->assertTrue( array_key_exists( 'apiEndpoints', $app_state ) );
-		$this->assertTrue( array_key_exists( 'siteUrl', $app_state ) );
-		$this->assertTrue( array_key_exists( 'adminUrl', $app_state ) );
+		$this->assertSame(
+			[
+				'patterns',
+				'patternCategories',
+				'apiNonce',
+				'apiEndpoints',
+				'siteUrl',
+				'adminUrl'
+			],
+			array_keys( get_app_state() )
+		);
 	}
 
 	/**
