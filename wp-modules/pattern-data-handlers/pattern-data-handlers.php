@@ -371,14 +371,23 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Viewport Width: ' . $pattern['viewportWidth'] . '
  * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
  * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
- * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . '
- * Custom Categories: ' . implode( ', ', $pattern['customCategories'] ) . '
+ * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . maybe_add_custom_category_header( $pattern['customCategories'] ) . '
  */
 ' . $custom_category_registrations . '
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
 	return $file_contents;
+}
+
+function maybe_add_custom_category_header( $custom_categories ) {
+	$custom_category_header = '';
+
+	if ( ! empty( $custom_categories ) ) {
+		$custom_category_header = "\n * Custom Categories: " . implode( ', ', $custom_categories );
+	}
+
+	return $custom_category_header;
 }
 
 /**
