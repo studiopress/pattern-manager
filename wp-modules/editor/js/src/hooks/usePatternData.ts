@@ -3,6 +3,8 @@ import sortAlphabetically from '../utils/sortAlphabetically';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
+import { patternManager } from '../globals';
+import convertToSlug from '../utils/convertToSlug';
 
 export default function usePatternData( postMeta: PostMeta ) {
 	const { editPost } = useDispatch( 'core/editor' );
@@ -57,18 +59,44 @@ export default function usePatternData( postMeta: PostMeta ) {
 
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
+	 *
+	 * Using categories from app hydration instead of select( 'core' ).getBlockPatternCategories().
+	 * Otherwise, custom fields (such as `pm_meta`) are not included in the result.
 	 */
-	const categories = useSelect( ( select: SelectQuery ) => {
-		return sortAlphabetically(
-			select( 'core' )
-				.getBlockPatternCategories()
-				.map( ( category ) => ( {
-					label: category.label,
-					value: category.name,
-				} ) ),
-			'label'
-		);
-	}, [] );
+	const categories = sortAlphabetically(
+		patternManager.patternCategories.map( ( category ) => ( {
+			label: category.label,
+			value: category.name,
+			...( category.pm_meta && {
+				pm_meta: category.pm_meta,
+			} ),
+		} ) ),
+		'label'
+	);
+
+	/**
+	 * Registered and newly added custom categories, combined.
+	 * Needed for including new categories before the post is saved.
+	 */
+	const combinedCategories: typeof categories = [
+		...postMeta.customCategories.reduce( ( acc, categoryLabel ) => {
+			const missingCategory = ! categories.some(
+				( queriedCategory ) => queriedCategory.label === categoryLabel
+			);
+
+			return missingCategory
+				? [
+						...acc,
+						{
+							label: categoryLabel,
+							value: convertToSlug( categoryLabel ),
+							pm_meta: 'pm_custom_category',
+						},
+				  ]
+				: acc;
+		}, [] ),
+		...categories,
+	];
 
 	/**
 	 * The alphabetized list of transformable block types, mapped for react-select.
@@ -195,7 +223,7 @@ export default function usePatternData( postMeta: PostMeta ) {
 
 	return {
 		queriedBlockTypes: blockTypes,
-		queriedCategories: categories,
+		queriedCategories: combinedCategories,
 		queriedPostTypes: postTypes,
 		updatePostMeta,
 		updatePostMetaMulti,
