@@ -66,7 +66,7 @@ class ApiDataTest extends WP_UnitTestCase {
 		register_routes();
 		$response_data = rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )->get_data();
 
-		$this->assertEquals(
+		$this->assertSame(
 			'rest_forbidden',
 			$response_data['code']
 		);
@@ -79,10 +79,12 @@ class ApiDataTest extends WP_UnitTestCase {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		register_routes();
 
-		$this->assertEquals(
-			[
-				'my-new-pattern',
-				'with-image',
+		$this->assertSame(
+			[ 'patternNames' =>
+				[
+					'my-new-pattern',
+					'with-image',
+				],
 			],
 			rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) )->get_data()
 		);
