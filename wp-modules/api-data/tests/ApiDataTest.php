@@ -30,6 +30,7 @@ class ApiDataTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function tearDown() {
+		unset( $GLOBALS['wp_rest_server'] );
 		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		parent::tearDown();
