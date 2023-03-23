@@ -174,6 +174,24 @@ function register_pattern_post_type() {
 			'default'      => get_pattern_defaults()['keywords'],
 		)
 	);
+
+	register_post_meta(
+		$post_type_key,
+		'customCategories',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+			'default'      => [],
+		)
+	);
 }
 add_action( 'init', __NAMESPACE__ . '\register_pattern_post_type' );
 
@@ -263,13 +281,14 @@ function enqueue_meta_fields_in_editor() {
 		'pattern_manager_post_meta',
 		'patternManager',
 		[
-			'activeTheme'  => basename( get_stylesheet_directory() ),
-			'apiEndpoints' => array(
+			'activeTheme'       => basename( get_stylesheet_directory() ),
+			'apiEndpoints'      => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
-			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
-			'siteUrl'      => get_bloginfo( 'url' ),
+			'apiNonce'          => wp_create_nonce( 'wp_rest' ),
+			'patternNames'      => \PatternManager\PatternDataHandlers\get_pattern_names(),
+			'siteUrl'           => get_bloginfo( 'url' ),
+			'patternCategories' => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
 		]
 	);
 
