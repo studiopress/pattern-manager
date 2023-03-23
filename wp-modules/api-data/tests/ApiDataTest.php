@@ -63,7 +63,7 @@ class ApiDataTest extends WP_UnitTestCase {
 				'with-image',
 			],
 			rest_get_server()->response_to_data(
-				rest_do_request( new WP_REST_Request( 'GET', 'pattern-manager/v1/get-pattern-names' ) ),
+				rest_do_request( new WP_REST_Request( 'GET', '/pattern-manager/v1/get-pattern-names' ) ),
 				false
 			)
 		);
