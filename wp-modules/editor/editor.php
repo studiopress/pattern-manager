@@ -288,7 +288,6 @@ function enqueue_meta_fields_in_editor() {
 			'apiNonce'          => wp_create_nonce( 'wp_rest' ),
 			'patternNames'      => \PatternManager\PatternDataHandlers\get_pattern_names(),
 			'siteUrl'           => get_bloginfo( 'url' ),
-			'patternCategories' => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
 		]
 	);
 

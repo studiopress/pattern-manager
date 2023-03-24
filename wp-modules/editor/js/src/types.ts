@@ -20,7 +20,6 @@ export type SelectQuery = ( dataStore: string ) => {
 	getBlockPatternCategories: () => {
 		name: string;
 		label: string;
-		pm_meta?: string;
 	}[];
 	getBlockTypes: () => { name: string; transforms?: unknown }[];
 	getCurrentPostAttribute: ( attributeName: 'meta' ) => PostMeta;
@@ -61,12 +60,6 @@ export type InitialPatternManager = {
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
 	};
-	patternCategories: {
-		name: string;
-		label: string;
-		description?: string;
-		pm_meta?: string;
-	}[];
 	patternNames: Array< Pattern[ 'slug' ] >;
 	siteUrl: string;
 };

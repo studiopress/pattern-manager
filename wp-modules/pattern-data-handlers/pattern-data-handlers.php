@@ -486,7 +486,7 @@ function register_custom_categories( $custom_category_labels ) {
 			$category_name = strtolower( str_replace( \' \', \'-\', $category_label ) );
 
 			register_block_pattern_category(
-				$category_name,
+				"pm_custom_category_$category_name",
 				array(
 					\'label\'   => $category_label,
 					\'pm_meta\' => \'pm_custom_category\',
