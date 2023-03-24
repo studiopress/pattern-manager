@@ -358,8 +358,6 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
-	$custom_category_registrations = create_formatted_category_registrations( $pattern['customCategories'] );
-
 	// phpcs:ignore
 	$file_contents = "<?php
 /**
@@ -372,8 +370,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
  * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
  * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . maybe_add_custom_category_header( $pattern['customCategories'] ) . '
- */
-' . $custom_category_registrations . '
+ */' . create_formatted_category_registrations( $pattern['customCategories'] ) . '
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
@@ -412,20 +409,14 @@ function create_formatted_category_registrations( $custom_categories ) {
 			$custom_categories,
 		);
 
-		$registry_check_prepend = '$registered_categories = \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered();';
-		$registry_check_prepend = "$registry_check_prepend\n" . '$registered_categories = array_map( fn ( $category ) => $category[\'label\'], $registered_categories );';
+		$custom_category_registrations = '
+$registered_categories = \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered();
+$registered_categories = array_map( fn ( $category ) => $category[\'label\'], $registered_categories );
 
-		$custom_category_registrations = $registry_check_prepend
-			. "\n"
-			. '
-foreach( [ ' . implode( ', ', $custom_categories ) . ' ] as $category_label ) {
-	if ( ! in_array( $category_label, $registered_categories ) ) {
-		$category_name = strtolower( str_replace( " ", "-", $category_label ) );
-
-		register_block_pattern_category(
-			"pm_custom_category_$category_name",
-			array( "label" => $category_label ),
-		);
+foreach ( [ ' . implode( ', ', $custom_categories ) . ' ] as $category_label ) {
+	if ( ! in_array( $category_label, $registered_categories, true ) ) {
+		$category_name = strtolower( str_replace( \' \', \'-\', $category_label ) );
+		register_block_pattern_category( "pm_custom_category_$category_name", array( \'label\' => $category_label ) );
 	}
 }';
 	}
