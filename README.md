@@ -13,9 +13,9 @@ Manage your theme's pattern PHP files the easy way, with Pattern Manager by WP E
 
 ## Description
 
-*Note: Pattern Manager is currently in beta.* 
+*Note: Pattern Manager is currently in beta.*
 
-When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns. 
+When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns.
 
 ### Key Features of Pattern Manager by WP Engine
  * A dedicated place to build and design Block Patterns.
@@ -74,11 +74,11 @@ No. WordPress core naturally imports patterns located in any theme's "patterns" 
 
 ### Will I lose my patterns if I update my theme?
 
-Yes. Pattern Manager is designed to be used by theme creators, ideally in a local environment like https://localwp.com. If you are not building a theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files. 
+Yes. Pattern Manager is designed to be used by theme creators, ideally in a local environment like https://localwp.com. If you are not building a theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files.
 
 ### Can Pattern Manager be used with any theme?
 
-While Pattern Manager will add patterns to any theme, it is recommended that you own and control the code of that theme. If you do not control the code of your theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files. 
+While Pattern Manager will add patterns to any theme, it is recommended that you own and control the code of that theme. If you do not control the code of your theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files.
 
 ### Should I use Pattern Manager on a "live" website?
 Ideally, no. It is recommended that you develop your patterns on a locally hosted website. You can easily set up a local development WordPress on your computer using https://localwp.com
