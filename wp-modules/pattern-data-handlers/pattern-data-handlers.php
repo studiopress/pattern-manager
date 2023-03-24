@@ -197,6 +197,15 @@ function get_patterns_directory() {
 }
 
 /**
+ * Gets the directory the pattern utilities are in.
+ *
+ * @return string
+ */
+function get_utilities_directory() {
+	return get_stylesheet_directory() . '/patterns/utilities/';
+}
+
+/**
  * Gets the file paths for patterns.
  *
  * @return array|false
@@ -320,6 +329,32 @@ function update_pattern( $pattern ) {
 }
 
 /**
+ * Create a utility file for handling custom category registration.
+ *
+ * @return bool
+ */
+function create_category_registration_file() {
+	// Spin up the filesystem api.
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+
+	$utils_dir     = get_utilities_directory();
+	$file_contents = construct_category_registration_php_file_contents();
+	$file_name     = 'category-registration.php';
+
+	if ( ! $wp_filesystem->exists( $utils_dir ) ) {
+		$wp_filesystem->mkdir( $utils_dir );
+	}
+
+	$utils_file_created = $wp_filesystem->put_contents(
+		$utils_dir . $file_name,
+		$file_contents,
+		FS_CHMOD_FILE
+	);
+
+	return $utils_file_created;
+}
+
+/**
  * Deletes a pattern.
  *
  * @param string $pattern_name The pattern name to delete.
@@ -358,8 +393,6 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
-	$custom_category_registrations = create_formatted_category_registrations( $pattern['customCategories'] );
-
 	// phpcs:ignore
 	$file_contents = "<?php
 /**
@@ -372,8 +405,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
  * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
  * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . maybe_add_custom_category_header( $pattern['customCategories'] ) . '
- */
-' . $custom_category_registrations . '
+ */' . create_formatted_custom_category_registration( $pattern['customCategories'] ) . '
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
@@ -403,8 +435,8 @@ function maybe_add_custom_category_header( $custom_categories ) {
  * @param array $custom_categories The custom category titles/labels to be parsed.
  * @return string
  */
-function create_formatted_category_registrations( $custom_categories ) {
-	$custom_category_registrations = '';
+function create_formatted_custom_category_registration( $custom_categories ) {
+	$custom_category_registration = '';
 
 	if ( ! empty( $custom_categories ) ) {
 		$custom_categories = array_map(
@@ -412,46 +444,73 @@ function create_formatted_category_registrations( $custom_categories ) {
 			$custom_categories,
 		);
 
-		$registry_check_prepend = '$registered_categories = \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered();';
-		$registry_check_prepend = "$registry_check_prepend\n" . '$registered_categories = array_map( fn ( $category ) => $category[\'label\'], $registered_categories );';
-
-		$custom_category_registrations = $registry_check_prepend
-			. "\n"
-			. '
-foreach( [ ' . implode( ', ', $custom_categories ) . ' ] as $category_label ) {
-	if ( ! in_array( $category_label, $registered_categories ) ) {
-		$category_name = strtolower( str_replace( " ", "-", $category_label ) );
-
-		register_block_pattern_category(
-			$category_name,
-			array(
-				"label"   => $category_label,
-				"pm_meta" => "pm_custom_category",
-			),
-		);
-	}
+		$custom_category_registration = '
+if ( file_exists( __DIR__ . "/utilities/category-registration.php" ) ) {
+	require_once( __DIR__ . "/utilities/category-registration.php" );
+	PmPatternCategoryUtilities\register_custom_categories( [ ' . implode( ', ', $custom_categories ) . ' ] );
 }';
 	}
 
-	return $custom_category_registrations;
+	return $custom_category_registration;
 }
 
 /**
- * Returns a string of category registration calls wrapped in a conditional.
+ * Returns a string containing the code for the category-registration file.
  *
- * @param array $custom_category_registrations Category registration calls, formatted as strings.
  * @return string
  */
-function maybe_display_formatted_category_registrations( $custom_category_registrations ) {
-	$formatted_registration_string = '';
+function construct_category_registration_php_file_contents() {
+	$file_contents = '<?php
+/**
+ * Module Name: Pattern Category Utilities
+ * Description: This module contains functions for registering custom pattern categories.
+ * Namespace: PmPatternCategoryUtilities
+ *
+ * @package pattern-manager
+ */
 
-	if ( ! empty( $custom_category_registrations ) ) {
-		$formatted_registration_string = "if ( function_exists( 'register_block_pattern_category' ) ) {
-    " . implode( "\n    ", $custom_category_registrations ) . '
-}';
+declare(strict_types=1);
+
+namespace PmPatternCategoryUtilities;
+
+/**
+ * Register an array of custom pattern categories.
+ *
+ * @param array $custom_category_labels The list of new category labels.
+ */
+function register_custom_categories( $custom_category_labels ) {
+	$registered_categories = get_registered_categories();
+
+	foreach ( $custom_category_labels as $category_label ) {
+		if ( ! in_array( $category_label, $registered_categories, true ) ) {
+			$category_name = strtolower( str_replace( \' \', \'-\', $category_label ) );
+
+			register_block_pattern_category(
+				$category_name,
+				array(
+					\'label\'   => $category_label,
+					\'pm_meta\' => \'pm_custom_category\',
+				),
+			);
+		}
 	}
+}
 
-	return $formatted_registration_string;
+/**
+ * Get the currently registered pattern categories.
+ *
+ * @return array
+ */
+function get_registered_categories() {
+	$registered_categories = \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered();
+
+	return array_map(
+		fn ( $category ) => $category[\'label\'],
+		$registered_categories
+	);
+}';
+
+	return $file_contents;
 }
 
 /**
