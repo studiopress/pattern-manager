@@ -85,7 +85,7 @@ Ideally, no. It is recommended that you develop your patterns on a locally hoste
 
 ### Do I need the new block editor to use Pattern Manager?
 
-Yes, you will need to have WordPress 6.2 or later installed to take advantage of Pattern Manager.
+Yes, you will need to have WordPress 6.1 or later installed to take advantage of Pattern Manager.
 
 ## Screenshots
 
