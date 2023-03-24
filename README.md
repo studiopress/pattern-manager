@@ -94,5 +94,5 @@ Yes, you will need to have WordPress 6.2 or later installed to take advantage of
 
 ## Changelog
 
-= 1.0 =
+### 0.1.4
  * Initial release.
