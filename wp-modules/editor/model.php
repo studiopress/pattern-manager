@@ -18,6 +18,7 @@ use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
 use function PatternManager\PatternDataHandlers\tree_shake_theme_images;
 use function PatternManager\PatternDataHandlers\update_pattern;
+use function PatternManager\PatternDataHandlers\create_category_registration_file;
 
 /**
  * Gets the pattern content and title from the PHP file.
@@ -53,6 +54,9 @@ function save_pattern_to_file( WP_Post $post ) {
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
+
+	// Add the utility file for custom category registration.
+	create_category_registration_file();
 
 	$pattern = get_pattern_by_name( $post->post_name );
 
