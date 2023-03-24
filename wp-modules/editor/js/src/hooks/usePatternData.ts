@@ -3,7 +3,6 @@ import sortAlphabetically from '../utils/sortAlphabetically';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
-import { patternManager } from '../globals';
 import convertToSlug from '../utils/convertToSlug';
 
 export default function usePatternData( postMeta: PostMeta ) {
@@ -59,26 +58,24 @@ export default function usePatternData( postMeta: PostMeta ) {
 
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
-	 *
-	 * Using categories from app hydration instead of select( 'core' ).getBlockPatternCategories().
-	 * Otherwise, custom fields (such as `pm_meta`) are not included in the result.
 	 */
-	const categories = sortAlphabetically(
-		patternManager.patternCategories.map( ( category ) => ( {
-			label: category.label,
-			value: category.name,
-			...( category.pm_meta && {
-				pm_meta: category.pm_meta,
-			} ),
-		} ) ),
-		'label'
-	);
+	const categories = useSelect( ( select: SelectQuery ) => {
+		return sortAlphabetically(
+			select( 'core' )
+				.getBlockPatternCategories()
+				.map( ( category ) => ( {
+					label: category.label,
+					value: category.name,
+				} ) ),
+			'label'
+		);
+	}, [] );
 
 	/**
 	 * Registered and newly added custom categories, combined.
 	 * Needed for including new categories before the post is saved.
 	 */
-	const combinedCategories: typeof categories = [
+	const combinedCategories = [
 		...postMeta.customCategories.reduce( ( acc, categoryLabel ) => {
 			const missingCategory = ! categories.some(
 				( queriedCategory ) => queriedCategory.label === categoryLabel
@@ -89,13 +86,13 @@ export default function usePatternData( postMeta: PostMeta ) {
 						...acc,
 						{
 							label: categoryLabel,
-							value: convertToSlug( categoryLabel ),
-							pm_meta: 'pm_custom_category',
+							value: `pm_custom_category_${ convertToSlug(
+								categoryLabel
+							) }`,
 						},
 				  ]
 				: acc;
-		}, [] ),
-		...categories,
+		}, categories ),
 	];
 
 	/**

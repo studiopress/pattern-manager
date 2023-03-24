@@ -17,12 +17,20 @@ export default function CategoriesPanel( {
 	handleChange,
 }: BaseSidebarProps< 'categories' | 'customCategories' > &
 	AdditionalSidebarProps< 'categoryOptions' > ) {
-	const combinedSelectedCategories = [
-		...customCategories.filter( ( categoryTitle ) =>
-			categories.includes( convertToSlug( categoryTitle ) )
-		),
-		...categories,
-	];
+	// The list of currently selected categories, formatted for react-select.
+	const selectedCategories: typeof categoryOptions = categories.reduce(
+		( acc, categoryName ) =>
+			! acc.includes( categoryName )
+				? [
+						...acc,
+						categoryOptions.find(
+							( matchedCategory ) =>
+								matchedCategory.value === categoryName
+						),
+				  ]
+				: acc,
+		[]
+	);
 
 	return (
 		<PluginDocumentSettingPanel
@@ -38,20 +46,7 @@ export default function CategoriesPanel( {
 						'Add Pattern Categories',
 						'pattern-manager'
 					) }
-					value={ combinedSelectedCategories.reduce(
-						( acc, categoryName ) =>
-							! acc.includes( categoryName )
-								? [
-										...acc,
-										categoryOptions.find(
-											( matchedCategory ) =>
-												matchedCategory.value ===
-												categoryName
-										),
-								  ]
-								: acc,
-						[]
-					) }
+					value={ selectedCategories }
 					options={ categoryOptions }
 					onChange={ ( categorySelections ) => {
 						const selections = categorySelections.map(
@@ -62,8 +57,9 @@ export default function CategoriesPanel( {
 							( acc, category ) => {
 								const customCategoryFound =
 									selections.includes( category.value ) &&
-									category.pm_meta &&
-									category.pm_meta === 'pm_custom_category';
+									/^pm_custom_category_/.test(
+										category.value
+									);
 
 								return customCategoryFound
 									? [ ...acc, category.label ]
@@ -83,7 +79,9 @@ export default function CategoriesPanel( {
 							{
 								categories: [
 									...categories,
-									convertToSlug( newCategoryTitle ),
+									`pm_custom_category_${ convertToSlug(
+										newCategoryTitle
+									) }`,
 								],
 							}
 						);
