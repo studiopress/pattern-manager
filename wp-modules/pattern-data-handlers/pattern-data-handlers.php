@@ -405,7 +405,9 @@ function create_formatted_category_registrations( $custom_categories ) {
 
 	if ( ! empty( $custom_categories ) ) {
 		$custom_categories = array_map(
-			fn ( $category_label ) => "'$category_label'",
+			function ( $category_label ) {
+				return "'$category_label'";
+			},
 			$custom_categories,
 		);
 
