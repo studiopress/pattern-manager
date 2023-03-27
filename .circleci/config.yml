@@ -51,14 +51,14 @@ jobs:
           path: *PLUGIN_PATH
       - php/install-php:
           version: << parameters.php-version >>
-      - php/install-composer
       - run: sudo apt-get update && sudo apt-get install php-xml php-mbstring
-      - node/install-packages:
-          app-dir: *PLUGIN_PATH
+      - php/install-composer
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: |
+            npm ci
+            composer install
             npm run build
             npm run test:phpunit
   zip:
