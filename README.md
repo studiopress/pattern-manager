@@ -95,5 +95,8 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 
 ## Changelog
 
+### 0.1.6
+ * Readme file changes.
+ 
 ### 0.1.5
  * Initial release.
