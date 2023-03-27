@@ -49,10 +49,14 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run: sudo apt-get update && sudo apt-get install php<< parameters.php-version >> php<< parameters.php-version >>-xml php<< parameters.php-version >>-mbstring
+      - run: sudo apt-get update && sudo apt-get install php<< parameters.php-version >> php-xml php-mbstring
       - php/install-composer
       - node/install-packages:
           app-dir: *PLUGIN_PATH
+      - run:
+          name: Update Composer packages
+          working_directory: wpps-scripts
+          command: composer update
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
