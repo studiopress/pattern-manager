@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Update Composer packages
           working_directory: wpps-scripts
-          command: composer update -W
+          command: composer update --ignore-platform-req=ext-dom --ignore-platform-req=ext-simplexml
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
