@@ -53,12 +53,12 @@ jobs:
           version: << parameters.php-version >>
       - run: sudo apt-get update && sudo apt-get install php-xml php-mbstring
       - php/install-composer
+      - node/install-packages:
+          app-dir: *PLUGIN_PATH
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: |
-            npm ci
-            composer install
             npm run build
             npm run test:phpunit
   zip:
