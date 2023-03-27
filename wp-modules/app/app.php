@@ -67,9 +67,11 @@ function pattern_manager_app() {
 
 /**
  * Set the URL for the link in the menu.
+ *
+ * @return string The page's hook suffix.
  */
-function patternmanager_adminmenu_page() {
-	add_menu_page(
+function pattern_manager_admin_menu_page() {
+	return add_menu_page(
 		__( 'Patterns', 'pattern-manager' ),
 		__( 'Patterns', 'pattern-manager' ),
 		'administrator',
@@ -79,7 +81,7 @@ function patternmanager_adminmenu_page() {
 		$position = 59,
 	);
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\patternmanager_adminmenu_page' );
+add_action( 'admin_menu', __NAMESPACE__ . '\pattern_manager_admin_menu_page' );
 
 /**
  * Unhook all the admin_notices.

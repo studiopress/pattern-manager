@@ -112,6 +112,6 @@ function delete_pattern( $request ) {
  *
  * @return bool
  */
-function permission_check() {
+function permission_check(): bool {
 	return current_user_can( 'manage_options' );
 }
