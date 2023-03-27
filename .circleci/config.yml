@@ -105,4 +105,14 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
-      - svn-deploy
+      - svn-deploy:
+          requires:
+            - wp-svn/check-versions
+            - lint
+            - test-js
+            - phpunit
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
