@@ -105,6 +105,7 @@ workflows:
             branches:
               ignore: /.*/
       - svn-deploy:
+          context: genesis-svn
           requires:
             - wp-svn/check-versions
             - lint
