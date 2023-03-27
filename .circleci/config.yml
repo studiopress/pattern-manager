@@ -46,8 +46,10 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run: sudo apt-get update && sudo apt-get install php php-xml php-mbstring
+      - php/install-php:
+          version: '7.4'
       - php/install-composer
+      - run: sudo apt-get update && sudo apt-get install php-xml php-mbstring
       - node/install-packages:
           app-dir: *PLUGIN_PATH
       - run:
