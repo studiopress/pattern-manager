@@ -106,7 +106,7 @@ workflows:
       - phpunit:
           matrix:
             parameters:
-              php-version: [ '7.4', '8.0', '8.1' ]
+              php-version: [ '7.4', '8.0', '8.1', '8.2' ]
       - zip
       - wp-svn/check-versions:
           filters:
