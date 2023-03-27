@@ -23,7 +23,10 @@ export default function CategoriesPanel( {
 			! acc.includes( categoryName )
 				? [
 						...acc,
-						[ ...categoryOptions, ...getMissingPmCategories() ].find(
+						[
+							...categoryOptions,
+							...getMissingPmCategories(),
+						].find(
 							( matchedCategory ) =>
 								matchedCategory.value === categoryName
 						),
@@ -47,7 +50,7 @@ export default function CategoriesPanel( {
 			label: missingLabel,
 			value: convertToSlug( missingLabel ),
 		} ) );
-	};
+	}
 
 	return (
 		<PluginDocumentSettingPanel
@@ -111,7 +114,7 @@ export default function CategoriesPanel( {
 					{ getMissingPmCategories().length
 						? getMissingPmCategories().map( ( missingCategory ) => {
 								return (
-									<div>
+									<div key={ missingCategory.value }>
 										Missing: { missingCategory.label }
 									</div>
 								);
