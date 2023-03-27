@@ -174,6 +174,24 @@ function register_pattern_post_type() {
 			'default'      => get_pattern_defaults()['keywords'],
 		)
 	);
+
+	register_post_meta(
+		$post_type_key,
+		'customCategories',
+		array(
+			'show_in_rest' => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array(
+						'type' => 'string',
+					),
+				),
+			),
+			'single'       => true,
+			'type'         => 'array',
+			'default'      => get_pattern_defaults()['customCategories'],
+		)
+	);
 }
 add_action( 'init', __NAMESPACE__ . '\register_pattern_post_type' );
 

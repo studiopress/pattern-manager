@@ -69,7 +69,7 @@ function format_pattern_data( $pattern_data, $file ) {
 	}
 
 	// For properties of type array, parse data as comma-separated.
-	foreach ( array( 'categories', 'keywords', 'blockTypes', 'postTypes' ) as $property ) {
+	foreach ( array( 'categories', 'keywords', 'blockTypes', 'postTypes', 'customCategories' ) as $property ) {
 		if ( ! empty( $pattern_data[ $property ] ) ) {
 			$pattern_data[ $property ] = array_map(
 				// Trim whitespace at start and end of each element.
@@ -213,15 +213,16 @@ function get_pattern_file_paths() {
  */
 function get_pattern_by_path( $path ) {
 	$default_headers = array(
-		'title'         => 'Title',
-		'slug'          => 'Slug',
-		'description'   => 'Description',
-		'viewportWidth' => 'Viewport Width',
-		'categories'    => 'Categories',
-		'keywords'      => 'Keywords',
-		'blockTypes'    => 'Block Types',
-		'postTypes'     => 'Post Types',
-		'inserter'      => 'Inserter',
+		'title'            => 'Title',
+		'slug'             => 'Slug',
+		'description'      => 'Description',
+		'viewportWidth'    => 'Viewport Width',
+		'categories'       => 'Categories',
+		'keywords'         => 'Keywords',
+		'blockTypes'       => 'Block Types',
+		'postTypes'        => 'Post Types',
+		'inserter'         => 'Inserter',
+		'customCategories' => 'Custom Categories',
 	);
 
 	$pattern_data = format_pattern_data( get_file_data( $path, $default_headers ), $path );
@@ -239,16 +240,17 @@ function get_pattern_by_path( $path ) {
  */
 function get_pattern_defaults() {
 	return [
-		'name'          => '',
-		'title'         => '',
-		'description'   => '',
-		'content'       => '',
-		'viewportWidth' => 1280,
-		'categories'    => [],
-		'keywords'      => [],
-		'blockTypes'    => [],
-		'postTypes'     => [],
-		'inserter'      => true,
+		'name'             => '',
+		'title'            => '',
+		'description'      => '',
+		'content'          => '',
+		'viewportWidth'    => 1280,
+		'categories'       => [],
+		'keywords'         => [],
+		'blockTypes'       => [],
+		'postTypes'        => [],
+		'inserter'         => true,
+		'customCategories' => [],
 	];
 }
 
@@ -367,13 +369,29 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Viewport Width: ' . $pattern['viewportWidth'] . '
  * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
  * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
- * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . '
+ * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . maybe_add_custom_category_header( $pattern['customCategories'] ) . '
  */
 
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
 	return $file_contents;
+}
+
+/**
+ * Returns a string that conditionally contains the custom category header.
+ *
+ * @param array $custom_categories The custom category titles/labels.
+ * @return string
+ */
+function maybe_add_custom_category_header( $custom_categories ) {
+	$custom_category_header = '';
+
+	if ( ! empty( $custom_categories ) ) {
+		$custom_category_header = "\n * Custom Categories: " . implode( ', ', $custom_categories );
+	}
+
+	return $custom_category_header;
 }
 
 /**
