@@ -3,6 +3,7 @@
 export type PostMeta = {
 	blockTypes: string[];
 	categories: string[];
+	customCategories: string[];
 	description: string;
 	inserter: boolean;
 	keywords: string[];
@@ -34,6 +35,7 @@ export type SelectQuery = ( dataStore: string ) => {
 export type Pattern = {
 	blockTypes: string[];
 	categories: string[];
+	customCategories: string[];
 	content: string;
 	description: string;
 	inserter: boolean;
