@@ -1,10 +1,10 @@
 # Pattern Manager
-Contributors: wpengine, ryankienstra, mikeday, dreamwhisper, mmcalister, johnstonphilip, studiopress
+Contributors: wpengine, ryankienstra, mikeday, dreamwhisper, mmcalister, johnstonphilip
 Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: 0.1.5
+Stable tag: 0.1.6
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,7 @@ When you design beautiful block patterns for your theme, Pattern Manager by WP E
 ### Key Features of Pattern Manager by WP Engine
  * A dedicated place to build and design Block Patterns.
  * Save (and generate) pattern files directly to disk in your theme (no exporting needed).
+ * Patterns available come from your theme on the disk, allowing for easy collaboration with git.
  * Images used in patterns are auto-copied into your theme and referenced in the PHP pattern file.
  * No more copying and pasting code to files.
  * No more copying and pasting images to your theme.
