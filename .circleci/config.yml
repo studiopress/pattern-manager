@@ -88,7 +88,6 @@ jobs:
             npm ci
             npm run build
       - wp-svn/deploy-plugin:
-          dry-run: true
           plugin-path: *PLUGIN_PATH
           wporg-assets-directory: wporg
 
