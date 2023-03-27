@@ -79,6 +79,8 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - node/install:
+          node-version: '14'
       - run:
           name: Building the plugin
           working_directory: *PLUGIN_PATH
