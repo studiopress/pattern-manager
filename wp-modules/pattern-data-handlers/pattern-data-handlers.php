@@ -371,7 +371,6 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
  * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . maybe_add_custom_category_header( $pattern['customCategories'] ) . '
  */
-
 ?>
 ' . trim( $pattern['content'] ) . '
 ';
