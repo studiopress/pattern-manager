@@ -51,7 +51,7 @@ jobs:
           path: *PLUGIN_PATH
       - php/install-php:
           version: << parameters.php-version >>
-      - run: sudo apt-get update && sudo apt-get install php-xml php-mbstring
+      - run: sudo apt-get update && sudo apt-get install php-xml php-mbstring ext-dom ext-simplexml
       - php/install-composer
       - node/install-packages:
           app-dir: *PLUGIN_PATH
