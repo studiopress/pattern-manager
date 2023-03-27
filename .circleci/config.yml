@@ -41,13 +41,16 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: npm run test:js
   phpunit:
+    parameters:
+      php-version:
+        type: string
     machine:
       image: ubuntu-2004:202111-02
     steps:
       - checkout:
           path: *PLUGIN_PATH
       - php/install-php:
-          version: '7.4'
+          version: << parameters.php-version >>
       - php/install-composer
       - run: sudo apt-get update && sudo apt-get install php-xml php-mbstring
       - node/install-packages:
@@ -100,7 +103,10 @@ workflows:
     jobs:
       - lint
       - test-js
-      - phpunit
+      - phpunit:
+          matrix:
+            parameters:
+              php-version: [ '7.4', '8.0', '8.1' ]
       - zip
       - wp-svn/check-versions:
           filters:
