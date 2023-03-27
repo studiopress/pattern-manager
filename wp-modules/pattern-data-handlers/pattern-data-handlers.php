@@ -428,24 +428,6 @@ foreach ( [ ' . implode( ', ', $custom_categories ) . ' ] as $category_label ) {
 }
 
 /**
- * Returns a string of category registration calls wrapped in a conditional.
- *
- * @param array $custom_category_registrations Category registration calls, formatted as strings.
- * @return string
- */
-function maybe_display_formatted_category_registrations( $custom_category_registrations ) {
-	$formatted_registration_string = '';
-
-	if ( ! empty( $custom_category_registrations ) ) {
-		$formatted_registration_string = "if ( function_exists( 'register_block_pattern_category' ) ) {
-    " . implode( "\n    ", $custom_category_registrations ) . '
-}';
-	}
-
-	return $formatted_registration_string;
-}
-
-/**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
  * @param object $wp_filesystem The file system.
