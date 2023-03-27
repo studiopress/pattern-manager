@@ -56,10 +56,6 @@ jobs:
       - node/install-packages:
           app-dir: *PLUGIN_PATH
       - run:
-          name: Update Composer packages
-          working_directory: wpps-scripts
-          command: composer update
-      - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: |
