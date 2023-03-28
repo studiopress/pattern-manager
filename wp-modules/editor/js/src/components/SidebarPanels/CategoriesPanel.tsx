@@ -2,6 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 import Creatable from 'react-select/creatable';
+import CategoryRegistration from './Tertiary/CategoryRegistration';
 import convertToSlug from '../../utils/convertToSlug';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
@@ -111,15 +112,11 @@ export default function CategoriesPanel( {
 						} }
 					/>
 
-					{ getMissingPmCategories().length
-						? getMissingPmCategories().map( ( missingCategory ) => {
-								return (
-									<div key={ missingCategory.value }>
-										Missing: { missingCategory.label }
-									</div>
-								);
-						  } )
-						: null }
+					{ getMissingPmCategories().length ? (
+						<CategoryRegistration
+							categoryOptions={ getMissingPmCategories() }
+						/>
+					) : null }
 				</>
 			) : (
 				<Spinner />
