@@ -394,8 +394,7 @@ function maybe_add_custom_category_header( $custom_categories ) {
 }
 
 /**
- * Returns a formatted string that will conditionally register custom categories when saved to the pattern file.
- * Categories are checked against the pattern category registry before being registered.
+ * Returns a formatted string that will register custom categories from the pattern file.
  *
  * @param array $custom_categories The custom category titles/labels to be parsed.
  * @return string
@@ -404,24 +403,15 @@ function create_formatted_category_registrations( $custom_categories ) {
 	$custom_category_registrations = '';
 
 	if ( ! empty( $custom_categories ) ) {
-		$custom_categories = array_map(
+		$custom_category_registrations = array_map(
 			function ( $category_label ) {
-				return "'$category_label'";
+				$category_name = 'pm_custom_category_' . strtolower( str_replace( ' ', '-', $category_label ) );
+				return "register_block_pattern_category( '$category_name', [ 'label' => '$category_label' ] );";
 			},
 			$custom_categories,
 		);
 
-		$custom_category_registrations = '
-
-/** Conditionally register custom categories included in this pattern. */
-foreach ( [ ' . implode( ', ', $custom_categories ) . ' ] as $category_label ) {
-	$category_name = \'pm_custom_category_\' . strtolower( str_replace( \' \', \'-\', $category_label ) );
-
-	if ( ! \WP_Block_Pattern_Categories_Registry::get_instance()->is_registered( $category_name ) ) {
-		register_block_pattern_category( $category_name, array( \'label\' => $category_label ) );
-	}
-}
-';
+		$custom_category_registrations = "\n" . implode( "\n", $custom_category_registrations );
 	}
 
 	return $custom_category_registrations;
