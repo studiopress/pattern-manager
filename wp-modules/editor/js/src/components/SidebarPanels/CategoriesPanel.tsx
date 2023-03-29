@@ -6,6 +6,7 @@ import Creatable from 'react-select/creatable';
 
 import { patternManager } from '../../globals';
 import convertToSlug from '../../utils/convertToSlug';
+import getSelectedOptions from '../../utils/getSelectedOptions';
 import parseCustomCategories from '../../utils/parseCustomCategories';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
@@ -20,21 +21,6 @@ export default function CategoriesPanel( {
 	handleChange,
 }: BaseSidebarProps< 'categories' | 'customCategories' > &
 	AdditionalSidebarProps< 'categoryOptions' > ) {
-	// The list of currently selected categories, formatted for react-select.
-	const selectedCategories: typeof categoryOptions = categories.reduce(
-		( acc, categoryName ) =>
-			! acc.includes( categoryName )
-				? [
-						...acc,
-						categoryOptions.find(
-							( matchedCategory ) =>
-								matchedCategory.value === categoryName
-						),
-				  ]
-				: acc,
-		[]
-	);
-
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"
@@ -49,7 +35,11 @@ export default function CategoriesPanel( {
 						'Add Pattern Categories',
 						'pattern-manager'
 					) }
-					value={ selectedCategories }
+					value={ getSelectedOptions(
+						categories,
+						categoryOptions,
+						'value'
+					) }
 					options={ categoryOptions }
 					onChange={ ( categorySelections ) => {
 						const selections = categorySelections.map(
