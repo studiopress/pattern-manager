@@ -293,6 +293,15 @@ function get_pattern_names() {
 }
 
 /**
+ * Gets the prefix for prepending custom category names.
+ *
+ * @return string
+ */
+function get_custom_category_prefix() {
+	return 'pm_custom_category_';
+}
+
+/**
  * Update or create a single pattern.
  *
  * @param array $pattern Data about the pattern.
@@ -405,7 +414,7 @@ function create_formatted_category_registrations( $custom_categories ) {
 	if ( ! empty( $custom_categories ) ) {
 		$custom_category_registrations = array_map(
 			function ( $category_label ) {
-				$category_name = 'pm_custom_category_' . strtolower( str_replace( ' ', '-', $category_label ) );
+				$category_name = get_custom_category_prefix() . strtolower( str_replace( ' ', '-', $category_label ) );
 				return "register_block_pattern_category( '$category_name', [ 'label' => '$category_label' ] );";
 			},
 			$custom_categories,

@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PatternManager\Editor;
 
 use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
+use function PatternManager\PatternDataHandlers\get_custom_category_prefix;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 
@@ -281,13 +282,14 @@ function enqueue_meta_fields_in_editor() {
 		'pattern_manager_post_meta',
 		'patternManager',
 		[
-			'activeTheme'  => basename( get_stylesheet_directory() ),
-			'apiEndpoints' => array(
+			'activeTheme'          => basename( get_stylesheet_directory() ),
+			'apiEndpoints'         => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
-			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
-			'siteUrl'      => get_bloginfo( 'url' ),
+			'apiNonce'             => wp_create_nonce( 'wp_rest' ),
+			'customCategoryPrefix' => get_custom_category_prefix(),
+			'patternNames'         => \PatternManager\PatternDataHandlers\get_pattern_names(),
+			'siteUrl'              => get_bloginfo( 'url' ),
 		]
 	);
 

@@ -60,6 +60,7 @@ export type InitialPatternManager = {
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
 	};
+	customCategoryPrefix: string;
 	patternNames: Array< Pattern[ 'slug' ] >;
 	siteUrl: string;
 };
