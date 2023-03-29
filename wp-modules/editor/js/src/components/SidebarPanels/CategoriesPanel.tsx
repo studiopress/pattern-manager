@@ -1,9 +1,12 @@
 import { __ } from '@wordpress/i18n';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
-import Creatable from 'react-select/creatable';
-import convertToSlug from '../../utils/convertToSlug';
 
+import Creatable from 'react-select/creatable';
+
+import { patternManager } from '../../globals';
+import convertToSlug from '../../utils/convertToSlug';
+import parseCustomCategories from '../../utils/parseCustomCategories';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
@@ -53,23 +56,11 @@ export default function CategoriesPanel( {
 							( category ) => category.value
 						);
 
-						const customCategorySelections = categoryOptions.reduce(
-							( acc, category ) => {
-								const customCategoryFound =
-									selections.includes( category.value ) &&
-									/^pm_custom_category_/.test(
-										category.value
-									);
-
-								return customCategoryFound
-									? [ ...acc, category.label ]
-									: acc;
-							},
-							[]
-						);
-
 						handleChange( 'categories', selections, {
-							customCategories: customCategorySelections,
+							customCategories: parseCustomCategories(
+								selections,
+								categoryOptions
+							),
 						} );
 					} }
 					onCreateOption={ ( newCategoryTitle ) => {
@@ -79,9 +70,9 @@ export default function CategoriesPanel( {
 							{
 								categories: [
 									...categories,
-									`pm_custom_category_${ convertToSlug(
-										newCategoryTitle
-									) }`,
+									`${
+										patternManager.customCategoryPrefix
+									}${ convertToSlug( newCategoryTitle ) }`,
 								],
 							}
 						);
