@@ -11,10 +11,10 @@ declare(strict_types=1);
 
 namespace PatternManager\Editor;
 
-use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
 use function PatternManager\PatternDataHandlers\get_custom_category_prefix;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
+use function PatternManager\PatternDataHandlers\get_pattern_names;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -288,7 +288,7 @@ function enqueue_meta_fields_in_editor() {
 			),
 			'apiNonce'             => wp_create_nonce( 'wp_rest' ),
 			'customCategoryPrefix' => get_custom_category_prefix(),
-			'patternNames'         => \PatternManager\PatternDataHandlers\get_pattern_names(),
+			'patternNames'         => get_pattern_names(),
 			'siteUrl'              => get_bloginfo( 'url' ),
 		]
 	);
