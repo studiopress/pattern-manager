@@ -1,4 +1,4 @@
-import parseCustomCategories from '../parseCustomCategories';
+import getCustomCategories from '../getCustomCategories';
 import usePatternData from '../../hooks/usePatternData';
 import type { PostMeta } from '../../types';
 
@@ -12,7 +12,7 @@ jest.mock( '../../globals', () => {
 	};
 } );
 
-describe( 'parseCustomCategories', () => {
+describe( 'getCustomCategories', () => {
 	it.each<
 		PostMeta[ 'categories' ],
 		ReturnType< typeof usePatternData >[ 'queriedCategories' ],
@@ -128,7 +128,7 @@ describe( 'parseCustomCategories', () => {
 		'should get the custom categories created by Pattern Manager',
 		( selections, categoryOptions, expected ) => {
 			expect(
-				parseCustomCategories( selections, categoryOptions )
+				getCustomCategories( selections, categoryOptions )
 			).toEqual( expected );
 		}
 	);

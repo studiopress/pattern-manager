@@ -7,7 +7,7 @@ import type { PostMeta } from '../types';
  *
  * Human readable labels are used for the return array.
  */
-export default function parseCustomCategories(
+export default function getCustomCategories(
 	selections: PostMeta[ 'categories' ],
 	categoryOptions: ReturnType< typeof usePatternData >[ 'queriedCategories' ]
 ) {

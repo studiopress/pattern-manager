@@ -7,7 +7,7 @@ import Creatable from 'react-select/creatable';
 import { patternManager } from '../../globals';
 import convertToSlug from '../../utils/convertToSlug';
 import getSelectedOptions from '../../utils/getSelectedOptions';
-import parseCustomCategories from '../../utils/parseCustomCategories';
+import getCustomCategories from '../../utils/getCustomCategories';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
@@ -47,7 +47,7 @@ export default function CategoriesPanel( {
 						);
 
 						handleChange( 'categories', selections, {
-							customCategories: parseCustomCategories(
+							customCategories: getCustomCategories(
 								selections,
 								categoryOptions
 							),
