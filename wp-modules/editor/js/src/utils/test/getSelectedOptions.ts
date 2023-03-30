@@ -76,6 +76,26 @@ describe( 'getSelectedOptions', () => {
 			],
 		],
 		[
+			[ 'duplicate-option', 'duplicate-option' ],
+			[
+				{
+					label: 'Duplicate Option',
+					value: 'duplicate-option',
+				},
+				{
+					label: 'Another Option',
+					value: 'another-option',
+				},
+			],
+			'value',
+			[
+				{
+					label: 'Duplicate Option',
+					value: 'duplicate-option',
+				},
+			],
+		],
+		[
 			[ 'Another Option' ],
 			[
 				{

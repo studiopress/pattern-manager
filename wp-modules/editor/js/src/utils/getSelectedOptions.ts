@@ -7,6 +7,7 @@ export default function getSelectedOptions<
 >( selections: string[], availableOptions: T[], optionKey: keyof T ) {
 	return selections.reduce(
 		( acc: T[], selection ) =>
+			// Add only if value is not found in the accumulator.
 			! acc.find(
 				( option ) => option && option[ optionKey ] === selection
 			)
