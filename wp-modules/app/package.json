@@ -9,6 +9,7 @@
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@types/jest": "^29.5.0",
     "@wordpress/scripts": "^24.4.0",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
