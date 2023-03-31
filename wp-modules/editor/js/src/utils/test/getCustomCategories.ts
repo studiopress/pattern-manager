@@ -1,6 +1,4 @@
 import getCustomCategories from '../getCustomCategories';
-import usePatternData from '../../hooks/usePatternData';
-import type { PostMeta } from '../../types';
 
 const customCategoryPrefix = 'pm_custom_category_';
 
@@ -13,11 +11,7 @@ jest.mock( '../../globals', () => {
 } );
 
 describe( 'getCustomCategories', () => {
-	it.each<
-		PostMeta[ 'categories' ],
-		ReturnType< typeof usePatternData >[ 'queriedCategories' ],
-		PostMeta[ 'customCategories' ]
-	>( [
+	it.each( [
 		[
 			[],
 			[

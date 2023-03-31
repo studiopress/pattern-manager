@@ -1,10 +1,10 @@
 import getSelectedOptions from '../getSelectedOptions';
 
-type Option = { [ key: string ]: string };
+type Option = { label: string; value: string };
 
 describe( 'getSelectedOptions', () => {
-	it.each< string[], Option[], string, Option[] >( [
-		[ [], , '', [] ],
+	it.each< [ string[], Option[], keyof Option, Option[] ] >( [
+		[ [], [], 'value', [] ],
 		[
 			[],
 			[
