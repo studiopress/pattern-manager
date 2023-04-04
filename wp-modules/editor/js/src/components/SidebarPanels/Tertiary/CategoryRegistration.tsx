@@ -7,27 +7,13 @@ import {
 	ClipboardButton,
 } from '@wordpress/components';
 
+import getCategoryRegistrationText from '../../../utils/getCategoryRegistrationText';
 import { AdditionalSidebarProps } from '../types';
 
 export default function CategoryRegistration( {
 	categoryOptions,
 }: AdditionalSidebarProps< 'categoryOptions' > ) {
 	const [ hasCopied, setHasCopied ] = useState( false );
-
-	/** This text formatting madness is all super ugly. Don't judge it too much for this proof-of-concept! */
-	const formattedCategoriesToCopy = categoryOptions.reduce(
-		( acc, category ) =>
-			`register_block_pattern_category( '${
-				category.value
-			}', array( 'label' => '${ category.label }' ) );${
-				acc.length ? '\n\t' + acc : ''
-			}`,
-		''
-	);
-
-	const textToCopy = `add_action( 'init', function () {
-	${ formattedCategoriesToCopy }
-} );`;
 
 	return (
 		<>
@@ -45,7 +31,7 @@ export default function CategoryRegistration( {
 					<span>Add to functions.php</span>
 					<ClipboardButton
 						isTertiary
-						text={ textToCopy }
+						text={ getCategoryRegistrationText( categoryOptions ) }
 						onCopy={ () => setHasCopied( true ) }
 						onFinishCopy={ () => setHasCopied( false ) }
 					>
