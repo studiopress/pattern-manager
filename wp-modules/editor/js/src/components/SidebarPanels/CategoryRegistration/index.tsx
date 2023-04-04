@@ -6,14 +6,16 @@ import {
 	CardHeader,
 	ClipboardButton,
 } from '@wordpress/components';
-
+import RegistrationTextPreview from './RegistrationTextPreview';
 import getCategoryRegistrationText from '../../../utils/getCategoryRegistrationText';
+
 import { AdditionalSidebarProps } from '../types';
 
 export default function CategoryRegistration( {
 	categoryOptions,
 }: AdditionalSidebarProps< 'categoryOptions' > ) {
 	const [ hasCopied, setHasCopied ] = useState( false );
+	const textToCopy = getCategoryRegistrationText( categoryOptions );
 
 	return (
 		<>
@@ -31,7 +33,7 @@ export default function CategoryRegistration( {
 					<span>Add to functions.php</span>
 					<ClipboardButton
 						isTertiary
-						text={ getCategoryRegistrationText( categoryOptions ) }
+						text={ textToCopy }
 						onCopy={ () => setHasCopied( true ) }
 						onFinishCopy={ () => setHasCopied( false ) }
 					>
@@ -53,30 +55,13 @@ export default function CategoryRegistration( {
 						} }
 					>
 						{
-							<FormattedTextPreview
+							<RegistrationTextPreview
 								categoryOptions={ categoryOptions }
 							/>
 						}
 					</div>
 				</CardBody>
 			</Card>
-		</>
-	);
-}
-
-function FormattedTextPreview( {
-	categoryOptions,
-}: AdditionalSidebarProps< 'categoryOptions' > ) {
-	return (
-		<>
-			{ `add_action( 'init', function () {` } <br />
-			{ categoryOptions.map( ( category ) => (
-				<>
-					{ `register_block_pattern_category( '${ category.value }', array( 'label' => '${ category.label }' ) );` }
-					<br />
-				</>
-			) ) }
-			{ `} );` }
 		</>
 	);
 }
