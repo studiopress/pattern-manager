@@ -61,6 +61,7 @@ export type InitialPatternManager = {
 		getPatternNamesEndpoint: string;
 	};
 	customCategoryPrefix: string;
+	patternCategories: { label: string; name: string; pm_custom?: boolean }[];
 	patternNames: Array< Pattern[ 'slug' ] >;
 	siteUrl: string;
 };

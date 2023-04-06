@@ -4,7 +4,6 @@ import { Spinner } from '@wordpress/components';
 
 import Creatable from 'react-select/creatable';
 
-import { patternManager } from '../../globals';
 import convertToSlug from '../../utils/convertToSlug';
 import getSelectedOptions from '../../utils/getSelectedOptions';
 import getCustomCategories from '../../utils/getCustomCategories';
@@ -60,9 +59,7 @@ export default function CategoriesPanel( {
 							{
 								categories: [
 									...categories,
-									`${
-										patternManager.customCategoryPrefix
-									}${ convertToSlug( newCategoryTitle ) }`,
+									convertToSlug( newCategoryTitle ),
 								],
 							}
 						);

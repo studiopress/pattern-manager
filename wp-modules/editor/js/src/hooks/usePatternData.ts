@@ -4,6 +4,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
 import convertToSlug from '../utils/convertToSlug';
+import { patternManager } from '../globals';
 
 export default function usePatternData( postMeta: PostMeta ) {
 	const { editPost } = useDispatch( 'core/editor' );
@@ -58,42 +59,39 @@ export default function usePatternData( postMeta: PostMeta ) {
 
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
-	 */
-	const categories = useSelect( ( select: SelectQuery ) => {
-		return sortAlphabetically(
-			select( 'core' )
-				.getBlockPatternCategories()
-				.map( ( category ) => ( {
-					label: category.label,
-					value: category.name,
-				} ) ),
-			'label'
-		);
-	}, [] );
-
-	/**
-	 * Registered and newly added custom categories, combined.
+	 * Registered and newly added custom categories are included.
 	 * Needed for including new categories before the post is saved.
 	 */
-	const combinedCategories = [
-		...postMeta.customCategories.reduce( ( acc, categoryLabel ) => {
-			const missingCategory = ! categories.some(
-				( queriedCategory ) => queriedCategory.label === categoryLabel
-			);
+	const combinedCategories = sortAlphabetically(
+		[
+			...postMeta.customCategories.reduce(
+				( acc, categoryLabel ) => {
+					const missingCategory =
+						! patternManager.patternCategories.some(
+							( queriedCategory ) =>
+								queriedCategory.label === categoryLabel
+						);
 
-			return missingCategory
-				? [
-						...acc,
-						{
-							label: categoryLabel,
-							value: `pm_custom_category_${ convertToSlug(
-								categoryLabel
-							) }`,
-						},
-				  ]
-				: acc;
-		}, categories ),
-	];
+					return missingCategory
+						? [
+								...acc,
+								{
+									label: categoryLabel,
+									value: convertToSlug( categoryLabel ),
+									pm_custom: true,
+								},
+						  ]
+						: acc;
+				},
+				patternManager.patternCategories.map( ( category ) => ( {
+					label: category.label,
+					value: category.name,
+					...category,
+				} ) )
+			),
+		],
+		'label'
+	);
 
 	/**
 	 * The alphabetized list of transformable block types, mapped for react-select.
