@@ -376,26 +376,6 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 }
 
 /**
- * Replace PM pattern blocks with core pattern blocks.
- *
- * @param string $block_code The code that represents the blocks in the pattern.
- * @return string
- */
-function swap_pm_pattern_blocks_for_core( $block_code ) {
-	return str_replace( '<!-- wp:pattern-manager/pattern', '<!-- wp:pattern', $block_code );
-}
-
-/**
- * Replace PM pattern blocks with core pattern blocks.
- *
- * @param string $block_code The code that represents the blocks in the pattern.
- * @return string
- */
-function swap_core_pattern_blocks_for_pm( $block_code ) {
-	return str_replace( '<!-- wp:pattern', '<!-- wp:pattern-manager/pattern', $block_code );
-}
-
-/**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
  * @param object $wp_filesystem The file system.
