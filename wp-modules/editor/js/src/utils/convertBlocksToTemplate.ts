@@ -4,15 +4,13 @@ type Block = {
 	innerBlocks?: Block[];
 };
 
-export default function convertParsedBlocksToBlockTemplate(
-	parsedBlocks: Block[]
-) {
+export default function convertBlocksToTemplate( parsedBlocks: Block[] ) {
 	return parsedBlocks.map( ( block ) => {
 		return [
 			block.name,
 			block.attributes,
 			block?.innerBlocks
-				? convertParsedBlocksToBlockTemplate( block?.innerBlocks )
+				? convertBlocksToTemplate( block?.innerBlocks )
 				: undefined,
 		];
 	} );

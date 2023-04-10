@@ -3,7 +3,7 @@ import { parse } from '@wordpress/blocks';
 import { Panel, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
-import convertParsedBlocksToBlockTemplate from '../../utils/convertParsedBlocksToBlockTemplate';
+import convertBlocksToTemplate from '../../utils/convertBlocksToTemplate';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import useSavedPostData from '../../hooks/useSavedPostData';
 
@@ -107,7 +107,7 @@ export default function PatternEdit( {
 				className="pm-pattern-background"
 			>
 				<InnerBlocks
-					template={ convertParsedBlocksToBlockTemplate(
+					template={ convertBlocksToTemplate(
 						parse( pattern.content )
 					) }
 					templateLock="all"

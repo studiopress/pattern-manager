@@ -8,7 +8,6 @@ export default function registerPatternBlock(
 	return name === 'core/pattern'
 		? {
 				...settings,
-				apiVersion: 1,
 				title: __( 'PM Pattern Block', 'pattern-manager' ),
 				icon: '',
 				category: 'common',
