@@ -11,13 +11,15 @@ type Attributes = {
 	slug: string;
 }
 
+type SetAttributes = ( attributes: Attributes ) => void;
+
 type PatternPickerProps = {
-	setAttributes: ( attributes: Attributes ) => void;
+	setAttributes: SetAttributes;
 }
 
 type PatternEditProps = {
 	attributes: Attributes;
-	setAttributes: ( attributes: Attributes ) => void;
+	setAttributes: SetAttributes;
 }
 
 function PatternPicker( { setAttributes }: PatternPickerProps ) {
