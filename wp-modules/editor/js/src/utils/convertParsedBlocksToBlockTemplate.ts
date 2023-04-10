@@ -2,23 +2,27 @@ export default function convertParsedBlocksToBlockTemplate(
 	parsedBlocks,
 	blockTemplate
 ) {
-	for ( const blockNum in parsedBlocks ) {
-		const blockNamespace = parsedBlocks[ blockNum ]?.name;
-		const blockAttributes = parsedBlocks[ blockNum ]?.attributes;
-		let blockInnerBlocks = parsedBlocks[ blockNum ]?.innerBlocks;
+	return [
+		...blockTemplate,
+		...parsedBlocks.map( ( block ) => {
+			const blockNamespace = block?.name;
+			const blockAttributes = block?.attributes;
+			let blockInnerBlocks = block?.innerBlocks;
 
-		if ( blockInnerBlocks ) {
-			blockInnerBlocks = convertParsedBlocksToBlockTemplate(
-				blockInnerBlocks,
-				[]
-			);
-		}
-		blockTemplate.push( [
-			blockNamespace,
-			blockAttributes,
-			blockInnerBlocks,
-		] );
-	}
+			if ( blockInnerBlocks ) {
+				blockInnerBlocks = convertParsedBlocksToBlockTemplate(
+					blockInnerBlocks,
+					[]
+				);
+			}
 
-	return blockTemplate;
+			return [
+				blockNamespace,
+				blockAttributes,
+				block?.innerBlocks
+					? convertParsedBlocksToBlockTemplate( blockInnerBlocks, [] )
+					: undefined,
+			];
+		} )
+	];
 }
