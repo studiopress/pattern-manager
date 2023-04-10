@@ -64,7 +64,7 @@ export default function PatternEdit( {
 }: PatternEditProps ) {
 	const pattern =
 		patternManager.patterns[
-			attributes?.slug.split( '/' )?.findLast( Boolean )
+			attributes?.slug?.split( '/' )?.findLast( Boolean )
 		];
 
 	return pattern ? (
