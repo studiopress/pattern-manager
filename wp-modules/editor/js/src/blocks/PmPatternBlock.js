@@ -8,7 +8,8 @@ import { Panel, PanelBody, PanelRow } from '@wordpress/components';
 import useSavedPostData from '../hooks/useSavedPostData';
 
 // This block takes the place of the core pattern block. <!-- wp:pattern {"slug":"frost/query"} /-->
-registerBlockType( 'pattern-manager/pattern', {
+unregisterBlockType( 'core/pattern' );
+registerBlockType( 'core/pattern', {
 	title: __( 'PM Pattern Block', 'pattern-manager' ),
 	icon: '',
 	category: 'common',
@@ -20,19 +21,19 @@ registerBlockType( 'pattern-manager/pattern', {
 			default: '',
 		},
 	},
-	
+
 	edit( { attributes, setAttributes } ) {
-		
+
 		const patternSlugParts = attributes?.slug.split('/');
 		const patternSlug = patternSlugParts[patternSlugParts.length-1];
 		const pattern = patternManager?.patterns[patternSlug];
 		const parentPatternBeingEditedData = useSavedPostData();
-	
+
 		function renderPatternPicker() {
 			const renderedPatternList = [];
 
 			for( const patternName in patternManager?.patterns ) {
-				
+
 				if ( patternName === parentPatternBeingEditedData.currentName ) {
 					// Don't allow a pattern to be inserted into itself;
 					continue;
@@ -59,7 +60,7 @@ registerBlockType( 'pattern-manager/pattern', {
 					</button>
 				)
 			}
-			
+
 			return <div>{renderedPatternList}</div>
 		}
 
@@ -68,9 +69,9 @@ registerBlockType( 'pattern-manager/pattern', {
 				<InspectorControls>
 					<Panel header="PM Pattern Settings">
 						<PanelBody title="Pattern To Use" initialOpen={ true }>
-							
+
 								{renderPatternPicker() }
-							
+
 						</PanelBody>
 					</Panel>
 				</InspectorControls>
@@ -80,7 +81,7 @@ registerBlockType( 'pattern-manager/pattern', {
 
 		const parsedBlocks = parse(pattern?.content);
 		const blockTemplate = convertParsedBlocksToBlockTemplate( parsedBlocks, [] );
-		
+
 		return (
 			<div
 				style={ {
@@ -90,9 +91,9 @@ registerBlockType( 'pattern-manager/pattern', {
 				<InspectorControls>
 					<Panel header="PM Pattern Settings">
 						<PanelBody title="Pattern To Use" initialOpen={ true }>
-							
+
 								{renderPatternPicker() }
-							
+
 						</PanelBody>
 					</Panel>
 				</InspectorControls>
@@ -122,7 +123,7 @@ registerBlockType( 'pattern-manager/pattern', {
 					</div>
 				</div>
 				<div style={{position:'relative', top: '0', left: '0'}} className="pm-pattern-background">
-					
+
 					<InnerBlocks
 						template={ blockTemplate }
 						templateLock='all'
