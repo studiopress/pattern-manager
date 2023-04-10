@@ -1,20 +1,21 @@
+type Block = {
+	name: string;
+	attributes: Record<string, unknown>;
+	innerBlocks?: Block[];
+}
+
 export default function convertParsedBlocksToBlockTemplate(
-	parsedBlocks,
-	blockTemplate
+	parsedBlocks: Block[]
 ) {
-	return [
-		...blockTemplate,
-		...parsedBlocks.map( ( block ) => {
-			return [
-				block?.name,
-				block?.attributes,
-				block?.innerBlocks
-					? convertParsedBlocksToBlockTemplate(
-							block?.innerBlocks,
-							[]
-					  )
-					: undefined,
-			];
-		} ),
-	];
+	return parsedBlocks.map( ( block ) => {
+		return [
+			block?.name,
+			block?.attributes,
+			block?.innerBlocks
+				? convertParsedBlocksToBlockTemplate(
+						block?.innerBlocks
+					)
+				: undefined,
+		];
+	} );
 }

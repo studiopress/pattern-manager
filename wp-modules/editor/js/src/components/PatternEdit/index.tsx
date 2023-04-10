@@ -7,7 +7,20 @@ import convertParsedBlocksToBlockTemplate from '../../utils/convertParsedBlocksT
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import useSavedPostData from '../../hooks/useSavedPostData';
 
-function PatternPicker( { setAttributes } ) {
+type Attributes = {
+	slug: string;
+}
+
+type PatternPickerProps = {
+	setAttributes: ( attributes: Attributes ) => void;
+}
+
+type PatternEditProps = {
+	attributes: Attributes;
+	setAttributes: ( attributes: Attributes ) => void;
+}
+
+function PatternPicker( { setAttributes }: PatternPickerProps ) {
 	const parentPatternBeingEditedData = useSavedPostData();
 
 	return (
@@ -43,7 +56,7 @@ function PatternPicker( { setAttributes } ) {
 	);
 }
 
-export function PatternEdit( { attributes, setAttributes } ) {
+export function PatternEdit( { attributes, setAttributes }: PatternEditProps ) {
 	const patternSlugParts = attributes?.slug.split( '/' );
 	const patternSlug = patternSlugParts[ patternSlugParts.length - 1 ];
 	const pattern = patternManager?.patterns[ patternSlug ];
@@ -69,7 +82,6 @@ export function PatternEdit( { attributes, setAttributes } ) {
 	const parsedBlocks = parse( pattern?.content );
 	const blockTemplate = convertParsedBlocksToBlockTemplate(
 		parsedBlocks,
-		[]
 	);
 
 	return (
