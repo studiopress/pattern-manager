@@ -8,7 +8,7 @@ describe( 'convertBlocksToTemplate', () => {
 		[ [], [] ],
 		[
 			[ { name: 'Foo', attributes: { bar: '' } } ],
-			[ [ 'Foo', { bar: '' }, undefined ] ],
+			[ [ 'Foo', { bar: '' }, [] ] ],
 		],
 		[
 			[ { name: 'Foo', attributes: { bar: '' }, innerBlocks: [] } ],
@@ -24,13 +24,7 @@ describe( 'convertBlocksToTemplate', () => {
 					],
 				},
 			],
-			[
-				[
-					'Foo',
-					{ bar: '' },
-					[ [ 'Bar', { example: '' }, undefined ] ],
-				],
-			],
+			[ [ 'Foo', { bar: '' }, [ [ 'Bar', { example: '' }, [] ] ] ] ],
 		],
 	] )( 'should convert blocks', ( blocks, expected ) => {
 		expect( convertBlocksToTemplate( blocks ) ).toEqual( expected );

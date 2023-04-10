@@ -11,7 +11,7 @@ export default function convertBlocksToTemplate( parsedBlocks: Block[] ) {
 			block.attributes,
 			block?.innerBlocks
 				? convertBlocksToTemplate( block?.innerBlocks )
-				: undefined,
+				: [],
 		];
 	} );
 }
