@@ -1,56 +1,52 @@
 import { parse } from '@wordpress/blocks';
 import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
+import { Panel, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
 import convertParsedBlocksToBlockTemplate from '../../utils/convertParsedBlocksToBlockTemplate';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
-import { Panel, PanelBody } from '@wordpress/components';
 import useSavedPostData from '../../hooks/useSavedPostData';
+
+function PatternPicker( { setAttributes } ) {
+	const parentPatternBeingEditedData = useSavedPostData();
+
+	return (
+		<div>
+			{ Object.entries( patternManager.patterns ).map(
+				( [ patternName, pattern ] ) => {
+					return patternName ===
+						parentPatternBeingEditedData.currentName ? null : (
+						<button
+							style={ { width: '100%', marginBottom: '10px' } }
+							className="button"
+							key={ pattern.name }
+							onClick={ () => {
+								setAttributes( {
+									slug: pattern.name,
+								} );
+							} }
+						>
+							{ patternName }
+							<PatternPreview
+								url={
+									patternManager.siteUrl +
+									'?pm_pattern_preview=' +
+									pattern.name
+								}
+								viewportWidth={ pattern.viewportWidth }
+							/>
+						</button>
+					);
+				}
+			) }
+		</div>
+	);
+}
 
 export function PatternEdit( { attributes, setAttributes } ) {
 	const patternSlugParts = attributes?.slug.split( '/' );
 	const patternSlug = patternSlugParts[ patternSlugParts.length - 1 ];
 	const pattern = patternManager?.patterns[ patternSlug ];
-	const parentPatternBeingEditedData = useSavedPostData();
-
-	function renderPatternPicker() {
-		const renderedPatternList = [];
-
-		for ( const patternName in patternManager?.patterns ) {
-			if ( patternName === parentPatternBeingEditedData.currentName ) {
-				// Don't allow a pattern to be inserted into itself;
-				continue;
-			}
-
-			renderedPatternList.push(
-				<button
-					style={ { width: '100%', marginBottom: '10px' } }
-					className="button"
-					key={ patternManager?.patterns[ patternName ].name }
-					onClick={ () => {
-						setAttributes( {
-							slug: patternManager?.patterns[ patternName ].name,
-						} );
-					} }
-				>
-					{ patternName }
-					<PatternPreview
-						url={
-							patternManager.siteUrl +
-							'?pm_pattern_preview=' +
-							patternManager?.patterns[ patternName ].name
-						}
-						viewportWidth={
-							patternManager?.patterns[ patternName ]
-								.viewportWidth
-						}
-					/>
-				</button>
-			);
-		}
-
-		return <div>{ renderedPatternList }</div>;
-	}
 
 	if ( ! pattern ) {
 		return (
@@ -58,7 +54,7 @@ export function PatternEdit( { attributes, setAttributes } ) {
 				<InspectorControls>
 					<Panel header="PM Pattern Settings">
 						<PanelBody title="Pattern To Use" initialOpen={ true }>
-							{ renderPatternPicker() }
+							<PatternPicker setAttributes={ setAttributes } />
 						</PanelBody>
 					</Panel>
 				</InspectorControls>
@@ -85,7 +81,7 @@ export function PatternEdit( { attributes, setAttributes } ) {
 			<InspectorControls>
 				<Panel header="PM Pattern Settings">
 					<PanelBody title="Pattern To Use" initialOpen={ true }>
-						{ renderPatternPicker() }
+						<PatternPicker setAttributes={ setAttributes } />
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
