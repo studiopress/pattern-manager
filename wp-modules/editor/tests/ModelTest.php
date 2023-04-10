@@ -7,7 +7,6 @@
 
 namespace PatternManager\Editor;
 
-use stdClass;
 use WP_UnitTestCase;
 
 require_once dirname( __DIR__ ) . '/model.php';

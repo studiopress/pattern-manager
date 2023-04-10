@@ -282,34 +282,6 @@ function enqueue_meta_fields_in_editor() {
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
 
 /**
- * If we are on the pattern-manager app page, register the patterns with WP.
- *
- * @return void
- */
-function register_block_patterns() {
-	$current_screen = get_current_screen();
-
-	if ( get_pattern_post_type() !== $current_screen->post_type ) {
-		return;
-	}
-
-	$patterns = \PatternManager\PatternDataHandlers\get_theme_patterns();
-
-	foreach ( $patterns as $pattern ) {
-		if ( isset( $pattern['categories'] ) ) {
-			foreach ( $pattern['categories'] as $category ) {
-				register_block_pattern_category( $category, array( 'label' => ucwords( str_replace( '-', ' ', $category ) ) ) );
-			}
-		}
-		register_block_pattern(
-			$pattern['name'],
-			$pattern,
-		);
-	}
-}
-add_action( 'current_screen', __NAMESPACE__ . '\register_block_patterns', 9 );
-
-/**
  * Enables the Core Comments block to render by adding a 'postId'.
  *
  * TODO: Remove if fixed in Core.
