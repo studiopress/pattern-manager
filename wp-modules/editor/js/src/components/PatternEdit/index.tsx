@@ -1,5 +1,5 @@
-import { parse } from '@wordpress/blocks';
 import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
+import { parse } from '@wordpress/blocks';
 import { Panel, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
@@ -23,14 +23,14 @@ type PatternEditProps = {
 };
 
 function PatternPicker( { setAttributes }: PatternPickerProps ) {
-	const parentPatternBeingEditedData = useSavedPostData();
+	const parentPatternBeingEdited = useSavedPostData();
 
 	return (
 		<div>
 			{ Object.entries( patternManager.patterns ).map(
 				( [ patternName, pattern ] ) => {
 					return patternName ===
-						parentPatternBeingEditedData.currentName ? null : (
+						parentPatternBeingEdited.currentName ? null : (
 						<button
 							style={ { width: '100%', marginBottom: '10px' } }
 							className="button"
@@ -58,7 +58,10 @@ function PatternPicker( { setAttributes }: PatternPickerProps ) {
 	);
 }
 
-export function PatternEdit( { attributes, setAttributes }: PatternEditProps ) {
+export default function PatternEdit( {
+	attributes,
+	setAttributes,
+}: PatternEditProps ) {
 	const pattern =
 		patternManager.patterns[
 			attributes?.slug.split( '/' )?.findLast( Boolean )
