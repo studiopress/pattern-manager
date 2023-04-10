@@ -11,6 +11,10 @@ describe( 'convertBlocksToTemplate', () => {
 			[ [ 'Foo', { bar: '' }, undefined ] ],
 		],
 		[
+			[ { name: 'Foo', attributes: { bar: '' }, innerBlocks: [] } ],
+			[ [ 'Foo', { bar: '' }, [] ] ],
+		],
+		[
 			[
 				{
 					name: 'Foo',
