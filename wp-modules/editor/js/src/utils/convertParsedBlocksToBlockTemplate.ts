@@ -1,8 +1,8 @@
 type Block = {
 	name: string;
-	attributes: Record<string, unknown>;
+	attributes: Record< string, unknown >;
 	innerBlocks?: Block[];
-}
+};
 
 export default function convertParsedBlocksToBlockTemplate(
 	parsedBlocks: Block[]
@@ -12,9 +12,7 @@ export default function convertParsedBlocksToBlockTemplate(
 			block?.name,
 			block?.attributes,
 			block?.innerBlocks
-				? convertParsedBlocksToBlockTemplate(
-						block?.innerBlocks
-					)
+				? convertParsedBlocksToBlockTemplate( block?.innerBlocks )
 				: undefined,
 		];
 	} );

@@ -8,19 +8,19 @@ import PatternPreview from '../../../../../app/js/src/components/PatternPreview'
 import useSavedPostData from '../../hooks/useSavedPostData';
 
 type Attributes = {
-	slug: string;
-}
+	slug?: string;
+};
 
 type SetAttributes = ( attributes: Attributes ) => void;
 
 type PatternPickerProps = {
 	setAttributes: SetAttributes;
-}
+};
 
 type PatternEditProps = {
 	attributes: Attributes;
 	setAttributes: SetAttributes;
-}
+};
 
 function PatternPicker( { setAttributes }: PatternPickerProps ) {
 	const parentPatternBeingEditedData = useSavedPostData();
@@ -59,34 +59,12 @@ function PatternPicker( { setAttributes }: PatternPickerProps ) {
 }
 
 export function PatternEdit( { attributes, setAttributes }: PatternEditProps ) {
-	const patternSlugParts = attributes?.slug.split( '/' );
-	const patternSlug = patternSlugParts[ patternSlugParts.length - 1 ];
-	const pattern = patternManager?.patterns[ patternSlug ];
+	const pattern =
+		patternManager.patterns[
+			attributes?.slug.split( '/' )?.findLast( Boolean )
+		];
 
-	if ( ! pattern ) {
-		return (
-			<div>
-				<InspectorControls>
-					<Panel header="PM Pattern Settings">
-						<PanelBody title="Pattern To Use" initialOpen={ true }>
-							<PatternPicker setAttributes={ setAttributes } />
-						</PanelBody>
-					</Panel>
-				</InspectorControls>
-				{ __(
-					'Selected pattern Not found in the theme',
-					'pattern-manager'
-				) }
-			</div>
-		);
-	}
-
-	const parsedBlocks = parse( pattern?.content );
-	const blockTemplate = convertParsedBlocksToBlockTemplate(
-		parsedBlocks,
-	);
-
-	return (
+	return pattern ? (
 		<div
 			style={ {
 				position: 'relative',
@@ -116,7 +94,7 @@ export function PatternEdit( { attributes, setAttributes }: PatternEditProps ) {
 				<div>
 					<div>{ __( 'Pattern name:', 'pattern-manager' ) }</div>
 					<div>{ attributes?.slug }</div>
-					<a className="button" href={ pattern?.editorLink }>
+					<a className="button" href={ pattern.editorLink }>
 						{ __( 'Edit this pattern', 'pattern-manager' ) }
 					</a>
 				</div>
@@ -125,8 +103,27 @@ export function PatternEdit( { attributes, setAttributes }: PatternEditProps ) {
 				style={ { position: 'relative', top: '0', left: '0' } }
 				className="pm-pattern-background"
 			>
-				<InnerBlocks template={ blockTemplate } templateLock="all" />
+				<InnerBlocks
+					template={ convertParsedBlocksToBlockTemplate(
+						parse( pattern.content )
+					) }
+					templateLock="all"
+				/>
 			</div>
+		</div>
+	) : (
+		<div>
+			<InspectorControls>
+				<Panel header="PM Pattern Settings">
+					<PanelBody title="Pattern To Use" initialOpen={ true }>
+						<PatternPicker setAttributes={ setAttributes } />
+					</PanelBody>
+				</Panel>
+			</InspectorControls>
+			{ __(
+				'Selected pattern Not found in the theme',
+				'pattern-manager'
+			) }
 		</div>
 	);
 }
