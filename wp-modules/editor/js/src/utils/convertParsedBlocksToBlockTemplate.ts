@@ -9,8 +9,8 @@ export default function convertParsedBlocksToBlockTemplate(
 ) {
 	return parsedBlocks.map( ( block ) => {
 		return [
-			block?.name,
-			block?.attributes,
+			block.name,
+			block.attributes,
 			block?.innerBlocks
 				? convertParsedBlocksToBlockTemplate( block?.innerBlocks )
 				: undefined,
