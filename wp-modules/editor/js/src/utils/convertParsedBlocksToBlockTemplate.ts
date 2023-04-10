@@ -5,24 +5,16 @@ export default function convertParsedBlocksToBlockTemplate(
 	return [
 		...blockTemplate,
 		...parsedBlocks.map( ( block ) => {
-			const blockNamespace = block?.name;
-			const blockAttributes = block?.attributes;
-			let blockInnerBlocks = block?.innerBlocks;
-
-			if ( blockInnerBlocks ) {
-				blockInnerBlocks = convertParsedBlocksToBlockTemplate(
-					blockInnerBlocks,
-					[]
-				);
-			}
-
 			return [
-				blockNamespace,
-				blockAttributes,
+				block?.name,
+				block?.attributes,
 				block?.innerBlocks
-					? convertParsedBlocksToBlockTemplate( blockInnerBlocks, [] )
+					? convertParsedBlocksToBlockTemplate(
+							block?.innerBlocks,
+							[]
+					  )
 					: undefined,
 			];
-		} )
+		} ),
 	];
 }
