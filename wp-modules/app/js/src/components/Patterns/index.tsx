@@ -9,7 +9,7 @@ import usePmContext from '../../hooks/usePmContext';
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
-import SearchCount from './SearchCount';
+import { SearchCount } from 'patternmanager-common/components';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
