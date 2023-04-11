@@ -1,0 +1,11 @@
+{
+  "name": "patternmanager-common",
+  "description": "Common components and utils to be accessed from other wp-modules.",
+  "author": "",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@loadable/component": "^5.15.3",
+    "@wordpress/element": "^4.0.4",
+    "@wordpress/i18n": "^4.3.1"
+  }
+}
