@@ -2,6 +2,9 @@
   "name": "patternmanager-common",
   "version": "0.1.0",
   "description": "Common components and utils to be accessed from other wp-modules.",
+  "scripts": {
+    "dev": ""
+  },
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
