@@ -8,7 +8,7 @@ import {
 	PanelBody,
 	Placeholder,
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import { createInterpolateElement, useState } from '@wordpress/element';
 import { Icon, image, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
@@ -90,9 +90,8 @@ export default function PatternEdit( {
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
-			<Disabled>
+			<Disabled className="pm-pattern-preview">
 				<div
-					className="your-class"
 					style={ {
 						width: '100%',
 						height: '100%',
@@ -114,6 +113,36 @@ export default function PatternEdit( {
 					templateLock="all"
 				/>
 			</Disabled>
+			<div
+				className="pm-pattern-placeholder"
+				style={ {
+					position: 'absolute',
+					width: '100%',
+					height: '100%',
+					alignItems: 'center',
+					justifyItems: 'center',
+					color: '#FFF',
+					backgroundColor: '#808080',
+				} }
+			>
+				<Placeholder
+					icon={ image }
+					label={ pattern.title }
+					instructions={ createInterpolateElement(
+						__(
+							'This is a placeholder for the <span></span> pattern. Click the button to edit this pattern directly.',
+							'pattern-manager'
+						),
+						{
+							span: <strong>{ pattern.title }</strong>,
+						}
+					) }
+				>
+					<Button variant="primary" href={ pattern.editorLink }>
+						{ __( 'Edit Pattern', 'pattern-manager' ) }
+					</Button>
+				</Placeholder>
+			</div>
 		</div>
 	) : (
 		<>

@@ -95,3 +95,11 @@ button.components-button.editor-post-switch-to-draft.is-tertiary {
 		box-shadow: 0 0 0 1px #2684ff;
 	}
 }
+
+.pm-pattern-placeholder {
+	display: none;
+}
+
+.pm-pattern-preview:hover + .pm-pattern-placeholder {
+	display: grid;
+}
