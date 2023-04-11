@@ -9,7 +9,7 @@ import {
 	Placeholder,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { image as icon } from '@wordpress/icons';
+import { Icon, image, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
 import convertBlocksToTemplate from '../../utils/convertBlocksToTemplate';
@@ -92,17 +92,21 @@ export default function PatternEdit( {
 			</InspectorControls>
 			<Disabled>
 				<div
-					className="pm-pattern-overlay"
+					className="your-class"
 					style={ {
-						display: 'grid',
 						width: '100%',
 						height: '100%',
-						alignItems: 'center',
-						justifyItems: 'center',
-						zIndex: '2',
 						position: 'absolute',
 					} }
-				></div>
+				>
+					<Icon
+						icon={ lock }
+						style={ {
+							position: 'relative',
+							left: '100%',
+						} }
+					/>
+				</div>
 				<InnerBlocks
 					template={ convertBlocksToTemplate(
 						parse( pattern.content )
@@ -121,7 +125,7 @@ export default function PatternEdit( {
 				</Panel>
 			</InspectorControls>
 			<Placeholder
-				icon={ icon }
+				icon={ image }
 				label={ __( 'Pattern Manager Block', 'pattern-manager' ) }
 				instructions={ __(
 					'Build a multi-pattern layout with available patterns',
