@@ -1,6 +1,6 @@
 import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
-import getHeaders from '../utils/getHeaders';
+import { getHeaders } from 'patternmanager-common/utils';
 import { patternManager } from '../globals';
 import type { Pattern, SelectQuery } from '../types';
 
@@ -22,7 +22,7 @@ export default function useSave(
 			patternManager.apiEndpoints.getPatternNamesEndpoint,
 			{
 				method: 'GET',
-				headers: getHeaders(),
+				headers: getHeaders( patternManager.apiNonce ),
 			}
 		);
 

@@ -4,7 +4,7 @@ import { addAction, addFilter } from '@wordpress/hooks';
 import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';
-import changeWords from './utils/changeWords';
+import { changeWords } from 'patternmanager-common/utils';
 import receiveActiveTheme from './utils/receiveActiveTheme';
 
 registerPlugin( 'pattern-manager-postmeta-for-patterns', {

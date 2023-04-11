@@ -5,7 +5,7 @@ import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
-import convertToSlug from '../../utils/convertToSlug';
+import { convertToSlug } from 'patternmanager-common/utils';
 
 import type { AdditionalSidebarProps, BaseSidebarProps } from './types';
 import type { Pattern } from '../../types';

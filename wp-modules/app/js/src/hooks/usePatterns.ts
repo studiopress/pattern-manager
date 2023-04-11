@@ -1,7 +1,7 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
-import getHeaders from '../utils/getHeaders';
+import { getHeaders } from 'patternmanager-common/utils';
 import removePattern from '../utils/removePattern';
 import type { Pattern, Patterns } from '../types';
 
@@ -12,7 +12,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 		setPatternsData( removePattern( patternName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
 			method: 'DELETE',
-			headers: getHeaders(),
+			headers: getHeaders( patternManager.apiNonce ),
 			body: JSON.stringify( { patternName } ),
 		} );
 	}
