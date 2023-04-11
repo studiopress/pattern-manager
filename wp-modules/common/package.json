@@ -5,6 +5,7 @@
   "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@loadable/component": "^5.15.3",
+    "@types/jest": "^29.5.0",
     "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.3.1"
   }
