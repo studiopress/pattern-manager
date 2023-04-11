@@ -52,5 +52,3 @@ export default function PatternPreview( {
 		</div>
 	);
 }
-
-export type PatternPreviewType = typeof PatternPreview;
