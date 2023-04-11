@@ -4,7 +4,8 @@
   "main": "js/build/index.js",
   "scripts": {
     "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+    "dev": "wp-scripts start js/src/index.js --output-path=js/build/",
+    "preinstall": "npm install file:../common --save-dev"
   },
   "author": "",
   "license": "GPL-2.0-or-later",
@@ -16,7 +17,8 @@
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^9.16.0",
     "@wordpress/plugins": "^5.4.0",
-    "@wordpress/scripts": "^24.4.0"
+    "@wordpress/scripts": "^24.4.0",
+    "patternmanager-common": "file:../common"
   },
   "dependencies": {
     "react-select": "^5.7.0"
