@@ -3,10 +3,12 @@ import { parse } from '@wordpress/blocks';
 import {
 	Button,
 	Disabled,
+	Modal,
 	Panel,
 	PanelBody,
 	Placeholder,
 } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 import { image as icon } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
@@ -73,6 +75,7 @@ export default function PatternEdit( {
 		patternManager.patterns[
 			attributes?.slug?.split( '/' )?.findLast( Boolean )
 		];
+	const [ isModalOpen, setModalOpen ] = useState( false );
 
 	return pattern ? (
 		<div
@@ -125,9 +128,22 @@ export default function PatternEdit( {
 					'pattern-manager'
 				) }
 			>
-				<Button variant="primary">
+				<Button
+					onClick={ () => {
+						setModalOpen( ! isModalOpen );
+					} }
+					variant="primary"
+				>
 					{ __( 'Select a Pattern', 'pattern-manager' ) }
 				</Button>
+				{ isModalOpen && (
+					<Modal onRequestClose={ () => setModalOpen( false ) }>
+						{ __(
+							'The PatternPreview will be here',
+							'pattern-preview'
+						) }
+					</Modal>
+				) }
 			</Placeholder>
 		</>
 	);
