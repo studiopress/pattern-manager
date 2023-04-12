@@ -34,6 +34,7 @@ export type SelectQuery = ( dataStore: string ) => {
 export type Pattern = {
 	blockTypes: string[];
 	categories: string[];
+	editorLink: string;
 	content: string;
 	description: string;
 	inserter: boolean;
@@ -56,5 +57,6 @@ export type InitialPatternManager = {
 		getPatternNamesEndpoint: string;
 	};
 	patternNames: Array< Pattern[ 'slug' ] >;
+	patterns: Array< Pattern >;
 	siteUrl: string;
 };

@@ -123,6 +123,9 @@ function format_pattern_data( $pattern_data, $file ) {
 	include $file;
 	$pattern_data['content'] = ob_get_clean();
 
+	// Replace pattern blocks with the pm pattern block. Note: this gets reversed when saving in update_pattern.
+	$pattern_data['content'] = swap_core_pattern_blocks_for_pm( $pattern_data['content'] );
+
 	if ( ! $pattern_data['content'] ) {
 		return false;
 	}
@@ -355,6 +358,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$pattern            = wp_parse_args( $pattern_data, get_pattern_defaults() );
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
+	$pattern['content'] = swap_pm_pattern_blocks_for_core( $pattern['content'] );
 
 	$file_contents = '<?php
 /**
@@ -373,6 +377,26 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 ' . trim( $pattern['content'] ) . '
 ';
 	return $file_contents;
+}
+
+/**
+ * Replace PM pattern blocks with core pattern blocks.
+ *
+ * @param string $block_code The code that represents the blocks in the pattern.
+ * @return string
+ */
+function swap_pm_pattern_blocks_for_core( $block_code ) {
+	return str_replace( '<!-- wp:pattern-manager/pattern', '<!-- wp:pattern', $block_code );
+}
+
+/**
+ * Replace PM pattern blocks with core pattern blocks.
+ *
+ * @param string $block_code The code that represents the blocks in the pattern.
+ * @return string
+ */
+function swap_core_pattern_blocks_for_pm( $block_code ) {
+	return str_replace( '<!-- wp:pattern', '<!-- wp:pattern-manager/pattern', $block_code );
 }
 
 /**

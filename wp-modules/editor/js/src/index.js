@@ -6,6 +6,7 @@ import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';
 import changeWords from './utils/changeWords';
 import receiveActiveTheme from './utils/receiveActiveTheme';
+import './blocks/PmPatternBlock';
 
 registerPlugin( 'pattern-manager-postmeta-for-patterns', {
 	icon: null,
