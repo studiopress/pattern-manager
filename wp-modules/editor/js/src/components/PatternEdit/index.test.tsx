@@ -18,11 +18,10 @@ jest.mock( '../../globals', () => {
 } );
 
 jest.mock( '@wordpress/block-editor/build/components/inner-blocks', () =>
-	jest.fn( () => null )
+	jest.fn()
 );
-
 jest.mock( '@wordpress/block-editor/build/components/inspector-controls', () =>
-	jest.fn( () => null )
+	jest.fn()
 );
 
 describe( 'PatternEdit', () => {
