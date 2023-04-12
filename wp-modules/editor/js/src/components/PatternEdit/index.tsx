@@ -71,10 +71,9 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
+	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
-		patternManager.patterns[
-			attributes?.slug?.split( '/' )?.findLast( Boolean )
-		];
+		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
 	const [ isModalOpen, setModalOpen ] = useState( false );
 
 	return pattern ? (
@@ -172,7 +171,7 @@ export default function PatternEdit( {
 				{ isModalOpen && (
 					<Modal onRequestClose={ () => setModalOpen( false ) }>
 						{ __(
-							'The PatternPreview will be here',
+							'The PatternPreview will be here. For now, select a pattern in the Inspector.',
 							'pattern-preview'
 						) }
 					</Modal>

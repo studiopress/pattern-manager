@@ -9,6 +9,7 @@
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "@wordpress/components": "^23.7.0",
     "@wordpress/data": "^8.0.0",
     "@wordpress/edit-post": "^7.0.0",
