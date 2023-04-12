@@ -171,7 +171,7 @@ export default function PatternEdit( {
 				{ isModalOpen && (
 					<Modal onRequestClose={ () => setModalOpen( false ) }>
 						{ __(
-							'The PatternPreview will be here. For now, select a pattern in the Inspector.',
+							'The Patterns component will be here. For now, select a pattern in the Inspector.',
 							'pattern-preview'
 						) }
 					</Modal>
