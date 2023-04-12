@@ -25,13 +25,13 @@ jest.mock( '@wordpress/block-editor/build/components/inspector-controls', () =>
 	jest.fn( () => null )
 );
 
-class ResizeObserver {
-	observe() {}
-	unobserve() {}
-}
-
 describe( 'PatternEdit', () => {
-	window.ResizeObserver = ResizeObserver;
+	beforeAll( () => {
+		window.ResizeObserver = class {
+			observe() {}
+			unobserve() {}
+		};
+	} );
 
 	afterAll( () => {
 		jest.restoreAllMocks();
