@@ -6,7 +6,10 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import { convertToUpperCase, sortAlphabetically } from 'patternmanager-common/utils';
+import {
+	convertToUpperCase,
+	sortAlphabetically,
+} from 'patternmanager-common/utils';
 import type { Patterns, QueriedCategories } from '../types';
 
 /** Create a mapping of unique categories for a dropdown or other list. */
