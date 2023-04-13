@@ -43,15 +43,4 @@ describe( 'PatternEdit', () => {
 
 		getByText( 'Select a Pattern' );
 	} );
-
-	it( 'displays the pattern when selected', () => {
-		const { getAllByText } = render(
-			<PatternEdit
-				attributes={ { slug: 'foo-pattern' } }
-				setAttributes={ () => {} }
-			/>
-		);
-
-		getAllByText( 'Foo Pattern' );
-	} );
 } );

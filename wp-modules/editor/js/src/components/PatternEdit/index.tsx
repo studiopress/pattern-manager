@@ -2,7 +2,6 @@ import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
 import { parse } from '@wordpress/blocks';
 import {
 	Button,
-	Disabled,
 	Modal,
 	Panel,
 	PanelBody,
@@ -15,6 +14,7 @@ import { patternManager } from '../../globals';
 import convertBlocksToTemplate from '../../utils/convertBlocksToTemplate';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import useSavedPostData from '../../hooks/useSavedPostData';
+import type { Pattern } from '../../types';
 
 type Attributes = {
 	slug?: string;
@@ -23,6 +23,11 @@ type Attributes = {
 type SetAttributes = ( attributes: Attributes ) => void;
 
 type PatternPickerProps = {
+	setAttributes: SetAttributes;
+};
+
+type PatternInspectorProps = {
+	pattern?: Pattern;
 	setAttributes: SetAttributes;
 };
 
@@ -67,6 +72,41 @@ function PatternPicker( { setAttributes }: PatternPickerProps ) {
 	);
 }
 
+function PatternInspector( { pattern, setAttributes }: PatternInspectorProps ) {
+	return (
+		<InspectorControls>
+			<Panel header={ __( 'PM Pattern Settings', 'pattern-manager' ) }>
+				<PanelBody
+					title={ __( 'Pattern To Use', 'pattern-manager' ) }
+					initialOpen={ true }
+				>
+					{ __(
+						'This pattern is a placeholder.',
+						'pattern-manager'
+					) }
+					&nbsp;
+					{ pattern
+						? createInterpolateElement(
+								__(
+									'You can edit it <span></span>.',
+									'pattern-manager'
+								),
+								{
+									span: (
+										<a href={ pattern.editorLink }>
+											{ __( 'here', 'pattern-manager' ) }
+										</a>
+									),
+								}
+						  )
+						: null }
+				</PanelBody>
+				<PatternPicker setAttributes={ setAttributes } />
+			</Panel>
+		</InspectorControls>
+	);
+}
+
 export default function PatternEdit( {
 	attributes,
 	setAttributes,
@@ -82,74 +122,33 @@ export default function PatternEdit( {
 				position: 'relative',
 			} }
 		>
-			<InspectorControls>
-				<Panel header="PM Pattern Settings">
-					<PanelBody title="Pattern To Use" initialOpen={ true }>
-						<PatternPicker setAttributes={ setAttributes } />
-					</PanelBody>
-				</Panel>
-			</InspectorControls>
-				<div
-					style={ {
-						width: '100%',
-						height: '100%',
-						position: 'absolute',
-					} }
-				>
-					<Icon
-						icon={ lock }
-						style={ {
-							position: 'relative',
-							left: '100%',
-						} }
-					/>
-				</div>
-				<InnerBlocks
-					template={ convertBlocksToTemplate(
-						parse( pattern.content )
-					) }
-					templateLock="all"
-				/>
+			<PatternInspector
+				pattern={ pattern }
+				setAttributes={ setAttributes }
+			/>
 			<div
-				className="pm-pattern-placeholder"
 				style={ {
-					position: 'absolute',
 					width: '100%',
 					height: '100%',
-					alignItems: 'center',
-					justifyItems: 'center',
-					color: '#FFF',
-					backgroundColor: '#808080',
+					position: 'absolute',
 				} }
 			>
-				<Placeholder
-					icon={ image }
-					label={ pattern.title }
-					instructions={ createInterpolateElement(
-						__(
-							'This is a placeholder for the <span></span> pattern. Click the button to edit this pattern directly.',
-							'pattern-manager'
-						),
-						{
-							span: <strong>{ pattern.title }</strong>,
-						}
-					) }
-				>
-					<Button variant="primary" href={ pattern.editorLink }>
-						{ __( 'Edit Pattern', 'pattern-manager' ) }
-					</Button>
-				</Placeholder>
+				<Icon
+					icon={ lock }
+					style={ {
+						position: 'relative',
+						left: '100%',
+					} }
+				/>
 			</div>
+			<InnerBlocks
+				template={ convertBlocksToTemplate( parse( pattern.content ) ) }
+				templateLock="all"
+			/>
 		</div>
 	) : (
 		<>
-			<InspectorControls>
-				<Panel header="PM Pattern Settings">
-					<PanelBody title="Pattern To Use" initialOpen={ true }>
-						<PatternPicker setAttributes={ setAttributes } />
-					</PanelBody>
-				</Panel>
-			</InspectorControls>
+			<PatternInspector setAttributes={ setAttributes } />
 			<Placeholder
 				icon={ image }
 				label={ __( 'Pattern Manager Block', 'pattern-manager' ) }
