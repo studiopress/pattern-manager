@@ -63,7 +63,7 @@ export default function CategoriesPanel( {
 					<Creatable
 						isMulti
 						isClearable
-						closeMenuOnSelect={ false }
+						closeMenuOnSelect
 						aria-label={ __(
 							'Add Pattern Categories',
 							'pattern-manager'

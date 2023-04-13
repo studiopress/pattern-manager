@@ -37,7 +37,7 @@ export default function PostTypesPanel( {
 				<Select
 					isMulti
 					isClearable
-					closeMenuOnSelect={ false }
+					closeMenuOnSelect
 					aria-label={ __( 'Select post types', 'pattern-manager' ) }
 					value={ postTypes?.map( ( postType ) => {
 						return {
