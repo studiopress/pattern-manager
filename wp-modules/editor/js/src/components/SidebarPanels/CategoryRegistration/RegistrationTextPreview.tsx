@@ -9,7 +9,7 @@ export default function RegistrationTextPreview( {
 			{ categoryOptions.map( ( category ) => (
 				<span
 					key={ category.value }
-					style={ { display: 'relative', marginLeft: '20px' } }
+					className="custom-category-registration-card-body-inner-code"
 				>
 					{ `register_block_pattern_category( '${ category.value }', array( 'label' => '${ category.label }' ) );` }
 					<br />

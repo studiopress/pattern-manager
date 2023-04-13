@@ -95,3 +95,38 @@ button.components-button.editor-post-switch-to-draft.is-tertiary {
 		box-shadow: 0 0 0 1px #2684ff;
 	}
 }
+
+.custom-category-warning-card {
+	margin-top: 15px;
+	border-radius: 3px;
+
+	&-body {
+		background: #ffffdf;
+	}
+}
+
+.custom-category-registration-card {
+	margin-top: 15px;
+	border-radius: 3px;
+
+	&-header {
+		background: #e6e5e5;
+	}
+
+	&-body {
+		background: #f3f3f3;
+
+		&-inner {
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			padding-top: 15px;
+			padding-bottom: 15px;
+
+			&-code {
+				display: relative;
+				margin-left: 20px;
+			}
+		}
+	}
+}

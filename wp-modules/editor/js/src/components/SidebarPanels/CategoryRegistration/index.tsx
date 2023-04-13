@@ -19,17 +19,14 @@ export default function CategoryRegistration( {
 
 	return (
 		<>
-			<Card
-				status="warning"
-				style={ { marginTop: '15px', borderRadius: '3px' } }
-			>
-				<CardBody style={ { background: '#ffffdf' } }>
+			<Card status="warning" className="custom-category-warning-card">
+				<CardBody className="custom-category-warning-card-body">
 					Heads up, you need to register these categories in your
 					theme. Add them to your theme with the following code.
 				</CardBody>
 			</Card>
-			<Card style={ { marginTop: '15px', borderRadius: '3px' } }>
-				<CardHeader style={ { background: '#e6e5e5' } }>
+			<Card className="custom-category-registration-card">
+				<CardHeader className="custom-category-registration-card-header">
 					<span>Add to functions.php</span>
 					<ClipboardButton
 						isTertiary
@@ -44,16 +41,8 @@ export default function CategoryRegistration( {
 						) }
 					</ClipboardButton>
 				</CardHeader>
-				<CardBody style={ { background: '#f3f3f3' } }>
-					<div
-						style={ {
-							textOverflow: 'ellipsis',
-							whiteSpace: 'nowrap',
-							overflow: 'hidden',
-							paddingTop: '15px',
-							paddingBottom: '15px',
-						} }
-					>
+				<CardBody className="custom-category-registration-card-body">
+					<div className="custom-category-registration-card-body-inner">
 						{
 							<RegistrationTextPreview
 								categoryOptions={ categoryOptions }
