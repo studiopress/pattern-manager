@@ -6,7 +6,8 @@ jest.mock( '../../globals', () => {
 		patternManager: {
 			patterns: {
 				'foo-pattern': {
-					content: 'Here is content',
+					content:
+						'<!-- wp:paragraph --><p>Here is content!</p><!-- /wp:paragraph -->',
 					editorLink: 'https://example.com',
 					name: 'foo-pattern',
 					slug: 'foo-pattern',
@@ -17,12 +18,13 @@ jest.mock( '../../globals', () => {
 	};
 } );
 
-jest.mock( '@wordpress/block-editor/build/components/inner-blocks', () =>
-	jest.fn()
-);
-jest.mock( '@wordpress/block-editor/build/components/inspector-controls', () =>
-	jest.fn()
-);
+jest.mock( '@wordpress/block-editor', () => {
+	return {
+		...jest.requireActual( '@wordpress/block-editor' ),
+		InspectorControls: () => null,
+		useBlockProps: () => ( {} ),
+	};
+} );
 
 describe( 'PatternEdit', () => {
 	beforeAll( () => {
@@ -42,5 +44,16 @@ describe( 'PatternEdit', () => {
 		);
 
 		getByText( 'Select a Pattern' );
+	} );
+
+	it( 'should not prompt to select a pattern when one is selected', () => {
+		const { queryByText } = render(
+			<PatternEdit
+				attributes={ { slug: 'foo-pattern' } }
+				setAttributes={ () => {} }
+			/>
+		);
+
+		expect( queryByText( 'Select a Pattern' ) ).toBeFalsy();
 	} );
 } );
