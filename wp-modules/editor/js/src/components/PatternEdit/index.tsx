@@ -1,5 +1,4 @@
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { parse, serialize } from '@wordpress/blocks';
 import {
 	Button,
 	Modal,
@@ -11,7 +10,6 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 import { Icon, image, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
-import convertBlocksToTemplate from '../../utils/convertBlocksToTemplate';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import useSavedPostData from '../../hooks/useSavedPostData';
 import type { Pattern } from '../../types';
@@ -143,11 +141,14 @@ export default function PatternEdit( {
 					} }
 				/>
 			</div>
-			<div
-				dangerouslySetInnerHTML={ {
-					__html: serialize( parse( pattern.content ) ),
-				} }
-			></div>
+			<PatternPreview
+				url={
+					patternManager.siteUrl +
+					'?pm_pattern_preview=' +
+					pattern.name
+				}
+				viewportWidth={ pattern.viewportWidth }
+			/>
 		</div>
 	) : (
 		<div { ...blockProps }>

@@ -19,7 +19,7 @@ import type { PreviewIframeType } from './PreviewIframe';
 
 export default function PatternPreview( {
 	url,
-	viewportWidth,
+	viewportWidth = 1280,
 }: PatternPreviewProps ) {
 	const previewContainer = useRef< HTMLDivElement | null >( null );
 	const { lazyHasIntersected } = useLazyRender( previewContainer, {
