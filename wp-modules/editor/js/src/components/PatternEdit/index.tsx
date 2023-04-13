@@ -1,7 +1,12 @@
-import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	InnerBlocks,
+	useBlockProps,
+} from '@wordpress/block-editor';
 import { parse } from '@wordpress/blocks';
 import {
 	Button,
+	Disabled,
 	Modal,
 	Panel,
 	PanelBody,
@@ -111,6 +116,7 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
+	const blockProps = useBlockProps();
 	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
 		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
@@ -118,6 +124,7 @@ export default function PatternEdit( {
 
 	return pattern ? (
 		<div
+			{ ...blockProps }
 			style={ {
 				position: 'relative',
 			} }
@@ -141,13 +148,17 @@ export default function PatternEdit( {
 					} }
 				/>
 			</div>
-			<InnerBlocks
-				template={ convertBlocksToTemplate( parse( pattern.content ) ) }
-				templateLock="all"
-			/>
+			<Disabled>
+				<InnerBlocks
+					template={ convertBlocksToTemplate(
+						parse( pattern.content )
+					) }
+					templateLock="all"
+				/>
+			</Disabled>
 		</div>
 	) : (
-		<>
+		<div { ...blockProps }>
 			<PatternInspector setAttributes={ setAttributes } />
 			<Placeholder
 				icon={ image }
@@ -174,6 +185,6 @@ export default function PatternEdit( {
 					</Modal>
 				) }
 			</Placeholder>
-		</>
+		</div>
 	);
 }
