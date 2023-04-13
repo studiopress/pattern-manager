@@ -1,12 +1,7 @@
-import {
-	InspectorControls,
-	InnerBlocks,
-	useBlockProps,
-} from '@wordpress/block-editor';
-import { parse } from '@wordpress/blocks';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { parse, serialize } from '@wordpress/blocks';
 import {
 	Button,
-	Disabled,
 	Modal,
 	Panel,
 	PanelBody,
@@ -148,14 +143,11 @@ export default function PatternEdit( {
 					} }
 				/>
 			</div>
-			<Disabled>
-				<InnerBlocks
-					template={ convertBlocksToTemplate(
-						parse( pattern.content )
-					) }
-					templateLock="all"
-				/>
-			</Disabled>
+			<div
+				dangerouslySetInnerHTML={ {
+					__html: serialize( parse( pattern.content ) ),
+				} }
+			></div>
 		</div>
 	) : (
 		<div { ...blockProps }>
