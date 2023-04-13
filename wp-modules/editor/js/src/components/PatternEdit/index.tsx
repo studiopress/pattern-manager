@@ -89,7 +89,6 @@ export default function PatternEdit( {
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
-			<Disabled className="pm-pattern-preview">
 				<div
 					style={ {
 						width: '100%',
@@ -111,7 +110,6 @@ export default function PatternEdit( {
 					) }
 					templateLock="all"
 				/>
-			</Disabled>
 			<div
 				className="pm-pattern-placeholder"
 				style={ {
