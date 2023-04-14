@@ -109,7 +109,7 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps( { className: 'alignfull' } );
 	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
 		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
