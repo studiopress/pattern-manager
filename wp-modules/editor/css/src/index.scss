@@ -1,7 +1,14 @@
 /* stylelint-disable */
-.edit-post-post-status,
-.edit-post-visual-editor__post-title-wrapper {
+.edit-post-post-status {
 	display: none !important;
+}
+
+.edit-post-visual-editor__post-title-wrapper {
+	margin: 2rem 0 0 0 !important;
+
+	h1 {
+		display: none !important;
+	}
 }
 
 /* Hide tags for templates */
