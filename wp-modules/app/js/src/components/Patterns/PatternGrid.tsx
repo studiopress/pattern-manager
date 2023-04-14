@@ -56,8 +56,7 @@ export default function PatternGrid( { themePatterns }: Props ) {
 												patternData.name
 											}
 											viewportWidth={
-												patternData.viewportWidth ||
-												1280
+												patternData.viewportWidth
 											}
 										/>
 									</div>

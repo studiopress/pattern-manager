@@ -18,6 +18,10 @@ jest.mock( '../../globals', () => {
 	};
 } );
 
+jest.mock( '../../../../../app/js/src/components/PatternPreview', () => {
+	return () => null;
+} );
+
 jest.mock( '@wordpress/block-editor', () => {
 	return {
 		...jest.requireActual( '@wordpress/block-editor' ),
