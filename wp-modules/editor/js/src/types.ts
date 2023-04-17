@@ -57,6 +57,6 @@ export type InitialPatternManager = {
 		getPatternNamesEndpoint: string;
 	};
 	patternNames: Array< Pattern[ 'slug' ] >;
-	patterns: Array< Pattern >;
+	patterns: Record< Pattern[ 'slug' ], Pattern >;
 	siteUrl: string;
 };
