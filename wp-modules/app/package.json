@@ -1,5 +1,5 @@
 {
-  "name": "patternmanager-app",
+  "name": "@pattern-manager/app",
   "description": "The frontend react app for Pattern Manager",
   "main": "js/build/index.js",
   "scripts": {
