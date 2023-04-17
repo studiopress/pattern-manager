@@ -1,6 +1,6 @@
 import { useSelect } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
-import { getHeaders } from '@pattern-manager/common';
+import { getHeaders } from 'common';
 import { patternManager } from '../globals';
 import type { Pattern, SelectQuery } from '../types';
 
