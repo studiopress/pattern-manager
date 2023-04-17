@@ -88,16 +88,12 @@ function PatternInspector( { pattern, setAttributes }: PatternInspectorProps ) {
 						'This is a pattern placeholder, used for building layouts with pattern tags. To edit the pattern, click the button below.',
 						'pattern-manager'
 					) }
-					{ pattern ? (
-						<a
-							target="_blank"
-							className="components-button is-secondary"
-							style={ { marginTop: '10px' } }
-							href={ pattern.editorLink }
-						>
+					{ pattern
+						?
+						<a target="_blank" className="components-button is-secondary" style={ { marginTop: '10px' } } href={ pattern.editorLink }>
 							{ __( 'Edit This Pattern', 'pattern-manager' ) }
 						</a>
-					) : null }
+						: null }
 				</PanelBody>
 				<PatternPicker setAttributes={ setAttributes } />
 			</Panel>
