@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "description": "Common components, hooks, and utils to be accessed from other wp-modules.",
   "main": "build/index.js",
-  "module": "build-module/index.js",
   "scripts": {
-    "build": "wp-scripts build src/index.ts --output-path=build/",
-    "dev": "wp-scripts start src/index.ts --output-path=build/"
+    "build": "wp-scripts build src/index.js --output-path=build/",
+    "dev": "wp-scripts start src/index.js --output-path=build/"
   },
   "author": "",
   "license": "GPL-2.0-or-later",

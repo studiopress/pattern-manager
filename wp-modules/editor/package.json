@@ -10,6 +10,7 @@
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@pattern-manager/common": "file:../common",
     "@wordpress/components": "^23.0.0",
     "@wordpress/data": "^8.0.0",
     "@wordpress/edit-post": "^7.0.0",
@@ -20,7 +21,6 @@
     "@wordpress/scripts": "^26.2.0"
   },
   "dependencies": {
-    "@pattern-manager/common": "file:../common",
     "react-select": "^5.7.0"
   }
 }

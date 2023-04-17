@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace PatternManager\App;
 
+use function PatternManager\Common\get_slug;
+use function PatternManager\Common\enqueue_js;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -46,10 +49,12 @@ function pattern_manager_app() {
 		return;
 	}
 
+	enqueue_js();
+
 	// Include the app.
 	$js_url = $module_dir_url . 'js/build/index.js';
 	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'pattern-manager', $js_url, $dependencies, $js_ver, true );
+	wp_enqueue_script( 'pattern-manager', $js_url, array_merge( $dependencies, [ get_slug() ] ), $js_ver, true );
 
 	// Enqueue sass and Tailwind styles, combined automatically using PostCSS in wp-scripts.
 	$css_url = $module_dir_url . 'js/build/index.css';

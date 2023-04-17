@@ -1,6 +1,8 @@
 {
 	"references": [
-		{ "path": "wp-modules/common" }
+		{ "path": "wp-modules/app" },
+    { "path": "wp-modules/common" },
+    { "path": "wp-modules/editor" }
 	],
 	"files": []
 }
