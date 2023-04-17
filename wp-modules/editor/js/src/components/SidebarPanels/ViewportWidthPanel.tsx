@@ -3,7 +3,7 @@ import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { RangeControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
-import { PatternPreview } from 'patternmanager-common/components';
+import { PatternPreview } from '@pattern-manager/common';
 import { patternManager } from '../../globals';
 
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';

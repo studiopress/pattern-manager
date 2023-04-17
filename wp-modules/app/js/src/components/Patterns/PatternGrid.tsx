@@ -5,11 +5,11 @@ import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
 
 // Hooks
-import { useForceRerender } from 'patternmanager-common/hooks';
+import { useForceRerender } from '@pattern-manager/common';
 
 // Components
 import PatternGridActions from './PatternGridActions';
-import { PatternPreview } from 'patternmanager-common/components';
+import { PatternPreview } from '@pattern-manager/common';
 
 // Types
 import type { Patterns } from '../../types';

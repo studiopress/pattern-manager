@@ -1,7 +1,7 @@
 import {
 	flatUnorderedEquals,
 	sortAlphabetically,
-} from 'patternmanager-common/utils';
+} from '@pattern-manager/common';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';

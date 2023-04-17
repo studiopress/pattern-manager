@@ -1,5 +1,5 @@
 {
-  "name": "patternmanager-common",
+  "name": "@pattern-manager/common",
   "version": "0.1.0",
   "description": "Common components, hooks, and utils to be accessed from other wp-modules.",
   "scripts": {
