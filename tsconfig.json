@@ -1,0 +1,6 @@
+{
+	"references": [
+		{ "path": "wp-modules/common" }
+	],
+	"files": []
+}
