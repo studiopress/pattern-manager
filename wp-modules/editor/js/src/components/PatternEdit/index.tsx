@@ -79,24 +79,14 @@ function PatternInspector( { pattern, setAttributes }: PatternInspectorProps ) {
 					initialOpen={ true }
 				>
 					{ __(
-						'This pattern is a placeholder.',
+						'This is a pattern placeholder, used for building layouts with pattern tags. To edit the pattern, click the button below.',
 						'pattern-manager'
 					) }
-					&nbsp;
 					{ pattern
-						? createInterpolateElement(
-								__(
-									'You can edit it <span></span>.',
-									'pattern-manager'
-								),
-								{
-									span: (
-										<a href={ pattern.editorLink }>
-											{ __( 'here', 'pattern-manager' ) }
-										</a>
-									),
-								}
-						  )
+						? 
+						<a target="_blank" className="components-button is-secondary" style={ { marginTop: '10px' } } href={ pattern.editorLink }>
+							{ __( 'Edit This Pattern', 'pattern-manager' ) }
+						</a>
 						: null }
 				</PanelBody>
 				<PatternPicker setAttributes={ setAttributes } />
@@ -109,7 +99,7 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
-	const blockProps = useBlockProps( { className: 'alignfull' } );
+	const blockProps = useBlockProps();
 	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
 		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
@@ -128,16 +118,27 @@ export default function PatternEdit( {
 			/>
 			<div
 				style={ {
-					width: '100%',
-					height: '100%',
+					right: '10px',
+					top: '10px',
 					position: 'absolute',
+					height: '25px',
+					width: '25px',
+					background: '#fff',
+					zIndex: '20',
+					borderRadius: '500px',
+					display: 'flex',
+					gap: '10px',
+					alignItems: 'center',
+					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+					fontSize: '16px',
+					padding: '5px',
+					border: 'solid 1px rgba(0,0,0,.1)'
 				} }
 			>
 				<Icon
 					icon={ lock }
 					style={ {
-						position: 'relative',
-						left: '100%',
+						width: '15px'
 					} }
 				/>
 			</div>
