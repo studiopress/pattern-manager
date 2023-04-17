@@ -6,11 +6,6 @@
 		"type": "git",
 		"url": "https://github.com/studiopress/pattern-manager"
 	},
-	"workspaces": [
-    "app",
-    "common",
-    "editor"
-  ],
 	"wpps_options": "-n PatternManager -t pattern-manager",
 	"scripts": {
 		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; else cd ../../wpps-scripts && git reset --hard && git checkout main && git pull origin main;fi;",

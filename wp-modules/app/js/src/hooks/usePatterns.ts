@@ -1,7 +1,7 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { patternManager } from '../globals';
-import { getHeaders } from 'common';
+import { getHeaders } from '@pattern-manager/common';
 import removePattern from '../utils/removePattern';
 import type { Pattern, Patterns } from '../types';
 

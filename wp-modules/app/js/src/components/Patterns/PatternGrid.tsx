@@ -5,7 +5,7 @@ import { __ } from '@wordpress/i18n';
 import { patternManager } from '../../globals';
 
 // Hooks and Components
-import { PatternPreview, useForceRerender } from 'common';
+import { PatternPreview, useForceRerender } from '@pattern-manager/common';
 import PatternGridActions from './PatternGridActions';
 
 // Types
