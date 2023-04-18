@@ -248,16 +248,16 @@ function enqueue_meta_fields_in_editor() {
 	$module_dir_path = module_dir_path( __FILE__ );
 	$module_dir_url  = module_dir_url( __FILE__ );
 
-	if ( file_exists( $module_dir_path . 'js/build/index.asset.php' ) ) {
-		$dependencies = require $module_dir_path . 'js/build/index.asset.php';
+	if ( file_exists( $module_dir_path . 'js/build/main.asset.php' ) ) {
+		$dependencies = require $module_dir_path . 'js/build/main.asset.php';
 		$dependencies = $dependencies['dependencies'];
 	} else {
 		return;
 	}
 
 	// Include the js on the block editor page for the pm_pattern post type.
-	$js_url = $module_dir_url . 'js/build/index.js';
-	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
+	$js_url = $module_dir_url . 'js/build/main.js';
+	$js_ver = filemtime( $module_dir_path . 'js/build/main.js' );
 	wp_enqueue_script( 'pattern_manager_post_meta', $js_url, $dependencies, $js_ver, true );
 	wp_localize_script(
 		'pattern_manager_post_meta',
@@ -274,8 +274,8 @@ function enqueue_meta_fields_in_editor() {
 	);
 
 	// Enqueue styles, combined automatically using PostCSS in wp-scripts.
-	$css_url = $module_dir_url . 'js/build/index.css';
-	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
+	$css_url = $module_dir_url . 'js/build/main.css';
+	$css_ver = filemtime( $module_dir_path . 'js/build/main.css' );
 	wp_enqueue_style( 'pattern_manager_post_meta_style', $css_url, array(), $css_ver );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
