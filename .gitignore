@@ -1,5 +1,4 @@
 node_modules
-build-types
 .DS_Store
 build
 /vendor
