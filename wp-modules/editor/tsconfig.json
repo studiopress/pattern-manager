@@ -11,8 +11,5 @@
 		"noEmit": true
 	},
 	"skipLibCheck": true,
-	"include": [ "src/**/*" ],
-	"references": [
-		{ "path": "../common" }
-	]
+	"include": [ "js/src/**/*" ]
 }

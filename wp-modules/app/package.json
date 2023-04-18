@@ -1,10 +1,10 @@
 {
   "name": "@pattern-manager/app",
   "description": "The frontend react app for Pattern Manager",
-  "main": "js/build/index.js",
+  "main": "./js/build/index.js",
   "scripts": {
-    "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+    "build": "wp-scripts build --webpack-ignore-externals ./js/src/index.js --output-path=js/build/",
+    "dev": "wp-scripts start --webpack-ignore-externals ./js/src/index.js --output-path=js/build/"
   },
   "author": "",
   "license": "GPL-2.0-or-later",
@@ -16,11 +16,11 @@
   },
   "dependencies": {
     "@loadable/component": "^5.15.3",
-    "@pattern-manager/common": "file:../common",
     "@wordpress/components": "^19.4.0",
     "@wordpress/element": "^4.0.4",
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^9.13.0",
+    "@pattern-manager/common": "file:../common",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-select": "^5.2.2"

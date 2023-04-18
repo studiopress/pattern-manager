@@ -8,11 +8,9 @@
 		"module": "esnext",
 		"lib": [ "dom", "esnext" ],
 		"moduleResolution": "node",
+		"esModuleInterop": true,
 		"noEmit": true
 	},
 	"skipLibCheck": true,
-	"include": [ "src/**/*" ],
-	"references": [
-		{ "path": "../common" }
-	]
+	"include": [ "js/src/**/*" ]
 }

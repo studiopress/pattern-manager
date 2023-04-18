@@ -9,9 +9,8 @@
 	"wpps_options": "-n PatternManager -t pattern-manager",
 	"scripts": {
 		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; else cd ../../wpps-scripts && git reset --hard && git checkout main && git pull origin main;fi;",
-		"build:module-types": "tsc --build",
-		"dev": "npm run build:module-types; cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"build": "npm run build:module-types; cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
+		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
+		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"lint:php": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"lint:php:fix": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
@@ -21,9 +20,6 @@
 		"lint:css:fix": "cd ../../wpps-scripts; sh lint-css.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
 		"test:js": "cd ../../wpps-scripts; sh test-js.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
 		"zip": "cd ../../wpps-scripts; sh zip.sh $npm_package_wpps_options -p \"${OLDPWD}\";"
-	},
-	"devDependencies": {
-		"typescript": "^4.9.5"
 	},
 	"dependencies": {
 		"@pattern-manager/common": "file:wp-modules/common"

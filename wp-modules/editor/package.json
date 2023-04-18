@@ -3,9 +3,8 @@
   "description": "Javascript that gets loaded when editing a pattern.",
   "main": "js/build/index.js",
   "scripts": {
-    "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/",
-    "preinstall": "npm install file:../common --save-dev"
+    "build": "wp-scripts build --webpack-ignore-externals ./js/src/index.js --output-path=js/build/",
+    "dev": "wp-scripts start --webpack-ignore-externals ./js/src/index.js --output-path=js/build/"
   },
   "author": "",
   "license": "GPL-2.0-or-later",

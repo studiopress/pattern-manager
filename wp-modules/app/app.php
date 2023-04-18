@@ -11,9 +11,6 @@ declare(strict_types=1);
 
 namespace PatternManager\App;
 
-use function PatternManager\Common\get_slug;
-use function PatternManager\Common\enqueue_js;
-
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -42,23 +39,21 @@ function pattern_manager_app() {
 	$module_dir_path = module_dir_path( __FILE__ );
 	$module_dir_url  = module_dir_url( __FILE__ );
 
-	if ( file_exists( $module_dir_path . 'js/build/index.asset.php' ) ) {
-		$dependencies = require $module_dir_path . 'js/build/index.asset.php';
+	if ( file_exists( $module_dir_path . 'js/build/main.asset.php' ) ) {
+		$dependencies = require $module_dir_path . 'js/build/main.asset.php';
 		$dependencies = $dependencies['dependencies'];
 	} else {
 		return;
 	}
 
-	enqueue_js();
-
 	// Include the app.
-	$js_url = $module_dir_url . 'js/build/index.js';
-	$js_ver = filemtime( $module_dir_path . 'js/build/index.js' );
-	wp_enqueue_script( 'pattern-manager', $js_url, array_merge( $dependencies, [ get_slug() ] ), $js_ver, true );
+	$js_url = $module_dir_url . 'js/build/main.js';
+	$js_ver = filemtime( $module_dir_path . 'js/build/main.js' );
+	wp_enqueue_script( 'pattern-manager', $js_url, $dependencies, $js_ver, true );
 
 	// Enqueue sass and Tailwind styles, combined automatically using PostCSS in wp-scripts.
-	$css_url = $module_dir_url . 'js/build/index.css';
-	$css_ver = filemtime( $module_dir_path . 'js/build/index.css' );
+	$css_url = $module_dir_url . 'js/build/main.css';
+	$css_ver = filemtime( $module_dir_path . 'js/build/main.css' );
 	wp_enqueue_style( 'pattern_manager_style', $css_url, array( 'wp-edit-blocks' ), $css_ver );
 
 	wp_localize_script(
