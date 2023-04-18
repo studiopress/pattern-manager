@@ -3,13 +3,13 @@
   "description": "Javascript that gets loaded when editing a pattern.",
   "main": "js/build/index.js",
   "scripts": {
-    "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/",
-    "preinstall": "npm install file:../common --save-dev"
+    "build": "wp-scripts build --webpack-ignore-externals ./js/src/index.js --output-path=js/build/",
+    "dev": "wp-scripts start --webpack-ignore-externals ./js/src/index.js --output-path=js/build/"
   },
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@pattern-manager/common": "file:../common",
     "@wordpress/components": "^23.0.0",
     "@wordpress/data": "^8.0.0",
     "@wordpress/edit-post": "^7.0.0",
@@ -17,8 +17,7 @@
     "@wordpress/i18n": "^4.3.1",
     "@wordpress/icons": "^9.16.0",
     "@wordpress/plugins": "^5.4.0",
-    "@wordpress/scripts": "^24.4.0",
-    "patternmanager-common": "file:../common"
+    "@wordpress/scripts": "^26.2.0"
   },
   "dependencies": {
     "react-select": "^5.7.0"
