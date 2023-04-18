@@ -1,18 +1,13 @@
 {
 	"compilerOptions": {
-		"rootDir": "src",
-		"composite": true,
 		"allowJs": true,
 		"checkJs": true,
-		"noEmit": true,
 		"allowSyntheticDefaultImports": true,
-		"declaration": true,
 		"jsx": "preserve",
 		"target": "esnext",
 		"module": "esnext",
 		"lib": [ "dom", "esnext" ],
-		"moduleResolution": "node"
-	},
-	"skipLibCheck": true,
-	"include": [ "src/**/*" ]
+		"moduleResolution": "node",
+		"noEmit": true
+	}
 }

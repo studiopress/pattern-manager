@@ -2,11 +2,11 @@
   "name": "@pattern-manager/common",
   "version": "0.1.0",
   "description": "Common components, hooks, and utils to be accessed from other wp-modules.",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
-    "build": "",
-    "dev": ""
+    "dev": "",
+    "build": ""
   },
   "author": "",
   "license": "GPL-2.0-or-later",
