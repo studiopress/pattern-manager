@@ -1,5 +1,5 @@
 {
-  "name": "patternmanager-editor",
+  "name": "@pattern-manager/editor",
   "description": "Javascript that gets loaded when editing a pattern.",
   "main": "js/build/index.js",
   "scripts": {
