@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function render_pm_pattern_block( $block_content, $block ) {
 	return isset( $block['blockName'], $block['attrs']['slug'] ) &&
-		$block['blockName'] === 'core/pattern' && filter_input( INPUT_GET, 'is_pm_pattern' )
+		'core/pattern' === $block['blockName'] && filter_input( INPUT_GET, 'is_pm_pattern' )
 			? do_the_content_things( get_pattern_by_name( $block['attrs']['slug'] )['content'] ?? '' )
 			: $block_content;
 }
