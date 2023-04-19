@@ -96,14 +96,6 @@ button.components-button.editor-post-switch-to-draft.is-tertiary {
 	}
 }
 
-.pm-pattern-placeholder {
-	display: none;
-}
-
-.pm-pattern-preview:hover + .pm-pattern-placeholder {
-	display: grid;
-}
-
 .pm-pattern-container > * {
 	max-width: none;
 
