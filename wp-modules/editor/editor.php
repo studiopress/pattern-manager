@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once trailingslashit( __DIR__ ) . 'utils.php';
 require_once trailingslashit( __DIR__ ) . 'model.php';
+require_once trailingslashit( __DIR__ ) . 'block.php';
 
 /**
  * Create a custom post type to be used for our default post.

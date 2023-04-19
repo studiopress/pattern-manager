@@ -6,9 +6,10 @@ import {
 	PanelBody,
 	Placeholder,
 } from '@wordpress/components';
-import { createInterpolateElement, useState } from '@wordpress/element';
+import { useState } from '@wordpress/element';
 import { Icon, image, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
+import ServerSideRender from '@wordpress/server-side-render';
 import { patternManager } from '../../globals';
 import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
 import useSavedPostData from '../../hooks/useSavedPostData';
@@ -82,12 +83,16 @@ function PatternInspector( { pattern, setAttributes }: PatternInspectorProps ) {
 						'This is a pattern placeholder, used for building layouts with pattern tags. To edit the pattern, click the button below.',
 						'pattern-manager'
 					) }
-					{ pattern
-						? 
-						<a target="_blank" className="components-button is-secondary" style={ { marginTop: '10px' } } href={ pattern.editorLink }>
+					{ pattern ? (
+						<a
+							target="_blank"
+							className="components-button is-secondary"
+							style={ { marginTop: '10px' } }
+							href={ pattern.editorLink }
+						>
 							{ __( 'Edit This Pattern', 'pattern-manager' ) }
 						</a>
-						: null }
+					) : null }
 				</PanelBody>
 				<PatternPicker setAttributes={ setAttributes } />
 			</Panel>
@@ -129,26 +134,25 @@ export default function PatternEdit( {
 					display: 'flex',
 					gap: '10px',
 					alignItems: 'center',
-					fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+					fontFamily:
+						'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
 					fontSize: '16px',
 					padding: '5px',
-					border: 'solid 1px rgba(0,0,0,.1)'
+					border: 'solid 1px rgba(0,0,0,.1)',
 				} }
 			>
 				<Icon
 					icon={ lock }
 					style={ {
-						width: '15px'
+						width: '15px',
 					} }
 				/>
 			</div>
-			<PatternPreview
-				url={
-					patternManager.siteUrl +
-					'?pm_pattern_preview=' +
-					pattern.name
-				}
-				viewportWidth={ pattern.viewportWidth }
+			<ServerSideRender
+				block="core/pattern"
+				attributes={ attributes }
+				httpMethod="POST"
+				urlQueryArgs={ { is_pm_pattern: true } }
 			/>
 		</div>
 	) : (
