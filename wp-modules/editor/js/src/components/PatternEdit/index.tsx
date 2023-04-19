@@ -126,8 +126,8 @@ export default function PatternEdit( {
 					right: '10px',
 					top: '10px',
 					position: 'absolute',
-					height: '25px',
-					width: '25px',
+					height: '35px',
+					width: '35px',
 					background: '#fff',
 					zIndex: '20',
 					borderRadius: '500px',
@@ -144,7 +144,7 @@ export default function PatternEdit( {
 				<Icon
 					icon={ lock }
 					style={ {
-						width: '15px',
+						width: '25px',
 					} }
 				/>
 			</div>
