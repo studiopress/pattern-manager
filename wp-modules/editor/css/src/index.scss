@@ -99,7 +99,11 @@ button.components-button.editor-post-switch-to-draft.is-tertiary {
 .pm-pattern-container > * {
 	max-width: none;
 
-	&:where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+	&.alignwide {
+		max-width: var(--wp--style--global--wide-size)
+	}
+
+	&:where(:not(.alignwide):not(.alignleft):not(.alignright):not(.alignfull)) {
 		max-width: 640px;
 		margin-left: auto !important;
 		margin-right: auto !important;
