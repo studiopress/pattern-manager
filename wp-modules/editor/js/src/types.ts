@@ -56,6 +56,10 @@ export type InitialPatternManager = {
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
 	};
+	patternCategories: {
+		label: string;
+		name: string;
+	}[];
 	patternNames: Array< Pattern[ 'slug' ] >;
 	patterns: Record< Pattern[ 'slug' ], Pattern >;
 	siteUrl: string;

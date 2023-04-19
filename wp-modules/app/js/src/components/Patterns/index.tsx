@@ -22,14 +22,14 @@ import { PatternsProps } from '../../types';
 export default function Patterns( {
 	onSelectPattern,
 	PatternActions,
+	patternCategories,
+	patterns,
 }: PatternsProps ) {
-	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	const patternsWithUncategorized = createPatternsWithUncategorized(
-		patterns.data
-	);
+	const patternsWithUncategorized =
+		createPatternsWithUncategorized( patterns );
 
 	const filteredPatterns = getFilteredPatterns(
 		patternsWithUncategorized,
@@ -39,13 +39,13 @@ export default function Patterns( {
 
 	const uniqueCategories = getUniquePatternCategories(
 		patternsWithUncategorized,
-		patterns.patternCategories
+		patternCategories
 	);
 
 	return (
 		<div className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ ! Object.entries( patterns.data ?? {} ).length ? (
+				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(
@@ -105,7 +105,7 @@ export default function Patterns( {
 							<PatternGrid
 								onSelectPattern={ onSelectPattern }
 								PatternActions={ PatternActions }
-								themePatterns={ filteredPatterns }
+								patterns={ filteredPatterns }
 							/>
 						</div>
 					</div>

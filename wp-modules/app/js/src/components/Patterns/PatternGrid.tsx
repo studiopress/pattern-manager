@@ -19,33 +19,37 @@ const PatternPreview: PatternPreviewType = loadable(
 import type { Patterns, PatternsProps } from '../../types';
 import type { PatternPreviewType } from '../PatternPreview';
 
-type Props = PatternsProps & {
-	themePatterns: Patterns;
+type Props = Pick< PatternsProps, 'onSelectPattern' | 'PatternActions' > & {
+	patterns: Patterns;
 };
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
 export default function PatternGrid( {
 	onSelectPattern,
 	PatternActions,
-	themePatterns,
+	patterns,
 }: Props ) {
-	useForceRerender( [ themePatterns ] );
+	useForceRerender( [ patterns ] );
 
 	return (
 		<>
-			{ ! Object.entries( themePatterns ?? {} ).length ? (
+			{ ! Object.entries( patterns ?? {} ).length ? (
 				<div className="grid-no-patterns-found">
 					{ __( 'No patterns found.', 'pattern-manager' ) }
 				</div>
 			) : (
-				Object.entries( themePatterns ?? {} ).map(
+				Object.entries( patterns ?? {} ).map(
 					( [ patternName, patternData ] ) => {
 						return (
 							<div
 								role={ onSelectPattern ? 'button' : undefined }
 								key={ patternName }
-								onClick={ () => onSelectPattern?.( patternName ) }
-								onKeyDown={ () => onSelectPattern?.( patternName ) }
+								onClick={ () =>
+									onSelectPattern?.( patternName )
+								}
+								onKeyDown={ () =>
+									onSelectPattern?.( patternName )
+								}
 								className="grid-item"
 								aria-label={ patternData.title }
 							>

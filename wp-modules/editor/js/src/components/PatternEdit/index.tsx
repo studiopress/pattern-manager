@@ -11,8 +11,7 @@ import { Icon, image, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { patternManager } from '../../globals';
-import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
-import useSavedPostData from '../../hooks/useSavedPostData';
+import Patterns from '../../../../../app/js/src/components/Patterns';
 import type { Pattern } from '../../types';
 
 type Attributes = {
@@ -21,13 +20,8 @@ type Attributes = {
 
 type SetAttributes = ( attributes: Attributes ) => void;
 
-type PatternPickerProps = {
-	setAttributes: SetAttributes;
-};
-
 type PatternInspectorProps = {
 	pattern?: Pattern;
-	setAttributes: SetAttributes;
 };
 
 type PatternEditProps = {
@@ -35,43 +29,7 @@ type PatternEditProps = {
 	setAttributes: SetAttributes;
 };
 
-function PatternPicker( { setAttributes }: PatternPickerProps ) {
-	const parentPatternBeingEdited = useSavedPostData();
-
-	return (
-		<div>
-			{ Object.entries( patternManager.patterns ).map(
-				( [ patternName, pattern ] ) => {
-					return patternName ===
-						parentPatternBeingEdited.currentName ? null : (
-						<button
-							style={ { width: '100%', marginBottom: '10px' } }
-							className="button"
-							key={ pattern.name }
-							onClick={ () => {
-								setAttributes( {
-									slug: pattern.name,
-								} );
-							} }
-						>
-							{ patternName }
-							<PatternPreview
-								url={
-									patternManager.siteUrl +
-									'?pm_pattern_preview=' +
-									pattern.name
-								}
-								viewportWidth={ pattern.viewportWidth }
-							/>
-						</button>
-					);
-				}
-			) }
-		</div>
-	);
-}
-
-function PatternInspector( { pattern, setAttributes }: PatternInspectorProps ) {
+function PatternInspector( { pattern }: PatternInspectorProps ) {
 	return (
 		<InspectorControls>
 			<Panel header={ __( 'PM Pattern Settings', 'pattern-manager' ) }>
@@ -94,7 +52,6 @@ function PatternInspector( { pattern, setAttributes }: PatternInspectorProps ) {
 						</a>
 					) : null }
 				</PanelBody>
-				<PatternPicker setAttributes={ setAttributes } />
 			</Panel>
 		</InspectorControls>
 	);
@@ -117,10 +74,7 @@ export default function PatternEdit( {
 				position: 'relative',
 			} }
 		>
-			<PatternInspector
-				pattern={ pattern }
-				setAttributes={ setAttributes }
-			/>
+			<PatternInspector pattern={ pattern } />
 			<div
 				style={ {
 					right: '10px',
@@ -158,7 +112,7 @@ export default function PatternEdit( {
 		</div>
 	) : (
 		<div { ...blockProps }>
-			<PatternInspector setAttributes={ setAttributes } />
+			<PatternInspector />
 			<Placeholder
 				icon={ image }
 				label={ __( 'Pattern Manager Block', 'pattern-manager' ) }
@@ -177,10 +131,20 @@ export default function PatternEdit( {
 				</Button>
 				{ isModalOpen && (
 					<Modal onRequestClose={ () => setModalOpen( false ) }>
-						{ __(
-							'The Patterns component will be here. For now, select a pattern in the Inspector.',
-							'pattern-preview'
-						) }
+						<Patterns
+							patterns={ patternManager.patterns }
+							patternCategories={
+								patternManager.patternCategories
+							}
+							onSelectPattern={ (
+								patternName: Pattern[ 'name' ]
+							) => {
+								setAttributes( {
+									slug: patternName,
+								} );
+								setModalOpen( false );
+							} }
+						/>
 					</Modal>
 				) }
 			</Placeholder>

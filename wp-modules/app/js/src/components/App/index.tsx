@@ -40,7 +40,11 @@ export default function App() {
 	return (
 		<PatternManagerContext.Provider value={ providerValue }>
 			<Header />
-			<Patterns PatternActions={ PatternGridActions } />
+			<Patterns
+				PatternActions={ PatternGridActions }
+				patternCategories={ patternManager.patternCategories }
+				patterns={ patterns.data }
+			/>
 		</PatternManagerContext.Provider>
 	);
 }
