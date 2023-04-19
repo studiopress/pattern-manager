@@ -5,7 +5,7 @@ export type BoundingClientRect = {
 
 export type PatternPreviewProps = {
 	url: string;
-	viewportWidth?: number;
+	viewportWidth: number;
 };
 
 export type PreviewIframeProps = {
