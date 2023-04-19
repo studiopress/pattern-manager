@@ -39,6 +39,11 @@ export type Patterns = {
 	[ key: string ]: Pattern;
 };
 
+export type PatternsProps = {
+	onSelectPattern?: ( patternName: Pattern[ 'name' ] ) => void;
+	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
+};
+
 export type QueriedCategories = {
 	label: string;
 	name: string;

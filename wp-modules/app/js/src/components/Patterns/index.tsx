@@ -1,6 +1,3 @@
-// External dependencies
-import loadable from '@loadable/component';
-
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -13,17 +10,19 @@ import usePmContext from '../../hooks/usePmContext';
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 import SearchCount from './SearchCount';
-const PatternGridActions: PatternGridActionsType = loadable(
-	async () => import( './PatternGridActions' )
-);
-import type { PatternGridActionsType } from './PatternGridActions';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
-export default function Patterns() {
+// Types
+import { PatternsProps } from '../../types';
+
+export default function Patterns( {
+	onSelectPattern,
+	PatternActions,
+}: PatternsProps ) {
 	const { patterns } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
@@ -104,7 +103,8 @@ export default function Patterns() {
 							aria-label="Block Patterns"
 						>
 							<PatternGrid
-								PatternActions={ PatternGridActions }
+								onSelectPattern={ onSelectPattern }
+								PatternActions={ PatternActions }
 								themePatterns={ filteredPatterns }
 							/>
 						</div>

@@ -16,12 +16,10 @@ const PatternPreview: PatternPreviewType = loadable(
 );
 
 // Types
-import type { Pattern, Patterns } from '../../types';
+import type { Patterns, PatternsProps } from '../../types';
 import type { PatternPreviewType } from '../PatternPreview';
 
-type Props = {
-	onSelectPattern?: ( patternName: Pattern[ 'name' ] ) => void;
-	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
+type Props = PatternsProps & {
 	themePatterns: Patterns;
 };
 
@@ -44,9 +42,10 @@ export default function PatternGrid( {
 					( [ patternName, patternData ] ) => {
 						return (
 							<div
+								role={ onSelectPattern ? 'button' : undefined }
 								key={ patternName }
-								onClick={ () => onSelectPattern( patternName ) }
-								onKeyDown={ () => onSelectPattern( patternName ) }
+								onClick={ () => onSelectPattern?.( patternName ) }
+								onKeyDown={ () => onSelectPattern?.( patternName ) }
 								className="grid-item"
 								aria-label={ patternData.title }
 							>

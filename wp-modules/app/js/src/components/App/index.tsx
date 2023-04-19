@@ -1,6 +1,9 @@
 //  Assets
 import '../../../../css/src/index.scss';
 
+// External dependencies
+import loadable from '@loadable/component';
+
 // WP dependencies
 import { __ } from '@wordpress/i18n';
 
@@ -16,9 +19,13 @@ import usePatterns from '../../hooks/usePatterns';
 // Components
 import Header from '../Header';
 import Patterns from '../Patterns';
+const PatternGridActions: PatternGridActionsType = loadable(
+	async () => import( '../Patterns/PatternGridActions' )
+);
 
 // Types
 import type { InitialContext } from '../../types';
+import { PatternGridActionsType } from '../Patterns/PatternGridActions';
 
 export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
@@ -33,7 +40,7 @@ export default function App() {
 	return (
 		<PatternManagerContext.Provider value={ providerValue }>
 			<Header />
-			<Patterns />
+			<Patterns PatternActions={ PatternGridActions } />
 		</PatternManagerContext.Provider>
 	);
 }
