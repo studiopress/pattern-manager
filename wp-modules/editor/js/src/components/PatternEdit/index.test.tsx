@@ -30,6 +30,10 @@ jest.mock( '@wordpress/block-editor', () => {
 	};
 } );
 
+jest.mock( '@wordpress/server-side-render', () => {
+	return () => null;
+} );
+
 describe( 'PatternEdit', () => {
 	beforeAll( () => {
 		window.ResizeObserver = class {
