@@ -104,11 +104,13 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
-	const blockProps = useBlockProps( { className: 'alignfull' } );
 	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
 		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
 	const [ isModalOpen, setModalOpen ] = useState( false );
+	const blockProps = useBlockProps( {
+		className: pattern ? 'alignfull' : 'is-layout-constrained',
+	} );
 
 	return pattern ? (
 		<div
