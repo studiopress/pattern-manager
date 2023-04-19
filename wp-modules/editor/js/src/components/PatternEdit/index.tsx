@@ -1,4 +1,8 @@
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+	BlockControls,
+	InspectorControls,
+	useBlockProps,
+} from '@wordpress/block-editor';
 import {
 	Button,
 	Modal,
@@ -12,6 +16,7 @@ import { __ } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { patternManager } from '../../globals';
 import Patterns from '../../../../../app/js/src/components/Patterns';
+import type { Dispatch, SetStateAction } from 'react';
 import type { Pattern } from '../../types';
 
 type Attributes = {
@@ -57,6 +62,27 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 	);
 }
 
+type PatternsModalProps = {
+	setAttributes: SetAttributes;
+	setModalOpen: Dispatch< SetStateAction< boolean > >;
+};
+function PatternsModal( { setAttributes, setModalOpen }: PatternsModalProps ) {
+	return (
+		<Modal onRequestClose={ () => setModalOpen( false ) }>
+			<Patterns
+				patterns={ patternManager.patterns }
+				patternCategories={ patternManager.patternCategories }
+				onSelectPattern={ ( patternName: Pattern[ 'name' ] ) => {
+					setAttributes( {
+						slug: patternName,
+					} );
+					setModalOpen( false );
+				} }
+			/>
+		</Modal>
+	);
+}
+
 export default function PatternEdit( {
 	attributes,
 	setAttributes,
@@ -67,87 +93,87 @@ export default function PatternEdit( {
 		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
 	const [ isModalOpen, setModalOpen ] = useState( false );
 
-	return pattern ? (
-		<div
-			{ ...blockProps }
-			style={ {
-				position: 'relative',
-			} }
-		>
-			<PatternInspector pattern={ pattern } />
-			<div
-				style={ {
-					right: '10px',
-					top: '10px',
-					position: 'absolute',
-					height: '25px',
-					width: '25px',
-					background: '#fff',
-					zIndex: '20',
-					borderRadius: '500px',
-					display: 'flex',
-					gap: '10px',
-					alignItems: 'center',
-					fontFamily:
-						'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-					fontSize: '16px',
-					padding: '5px',
-					border: 'solid 1px rgba(0,0,0,.1)',
-				} }
-			>
-				<Icon
-					icon={ lock }
-					style={ {
-						width: '15px',
-					} }
+	return (
+		<>
+			{ isModalOpen && (
+				<PatternsModal
+					setAttributes={ setAttributes }
+					setModalOpen={ setModalOpen }
 				/>
-			</div>
-			<ServerSideRender
-				block="core/pattern"
-				className="pm-pattern-container"
-				attributes={ attributes }
-				httpMethod="POST"
-				urlQueryArgs={ { is_pm_pattern: true } }
-			/>
-		</div>
-	) : (
-		<div { ...blockProps }>
-			<PatternInspector />
-			<Placeholder
-				icon={ image }
-				label={ __( 'Pattern Manager Block', 'pattern-manager' ) }
-				instructions={ __(
-					'Build a multi-pattern layout with available patterns',
-					'pattern-manager'
-				) }
-			>
-				<Button
-					onClick={ () => {
-						setModalOpen( ! isModalOpen );
+			) }
+			{ pattern ? (
+				<div
+					{ ...blockProps }
+					style={ {
+						position: 'relative',
 					} }
-					variant="primary"
 				>
-					{ __( 'Select a Pattern', 'pattern-manager' ) }
-				</Button>
-				{ isModalOpen && (
-					<Modal onRequestClose={ () => setModalOpen( false ) }>
-						<Patterns
-							patterns={ patternManager.patterns }
-							patternCategories={
-								patternManager.patternCategories
-							}
-							onSelectPattern={ (
-								patternName: Pattern[ 'name' ]
-							) => {
-								setAttributes( {
-									slug: patternName,
-								} );
-								setModalOpen( false );
+					<PatternInspector pattern={ pattern } />
+					<BlockControls group="block">
+						<Button onClick={ () => setModalOpen( true ) }>
+							{ __( 'Replace', 'pattern-manager' ) }
+						</Button>
+					</BlockControls>
+					<div
+						style={ {
+							right: '10px',
+							top: '10px',
+							position: 'absolute',
+							height: '25px',
+							width: '25px',
+							background: '#fff',
+							zIndex: '20',
+							borderRadius: '500px',
+							display: 'flex',
+							gap: '10px',
+							alignItems: 'center',
+							fontFamily:
+								'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+							fontSize: '16px',
+							padding: '5px',
+							border: 'solid 1px rgba(0,0,0,.1)',
+						} }
+					>
+						<Icon
+							icon={ lock }
+							style={ {
+								width: '15px',
 							} }
 						/>
-					</Modal>
-				) }
-			</Placeholder>
-		</div>
+					</div>
+					<ServerSideRender
+						block="core/pattern"
+						className="pm-pattern-container"
+						attributes={ attributes }
+						httpMethod="POST"
+						urlQueryArgs={ { is_pm_pattern: true } }
+					/>
+				</div>
+			) : (
+				<div { ...blockProps }>
+					<PatternInspector />
+					<Placeholder
+						icon={ image }
+						label={ __(
+							'Pattern Manager Block',
+							'pattern-manager'
+						) }
+						instructions={ __(
+							'Build a multi-pattern layout with available patterns',
+							'pattern-manager'
+						) }
+					>
+						<Button
+							onClick={ () => {
+								setModalOpen( ! isModalOpen );
+							} }
+							variant="primary"
+						>
+							{ __( 'Select a Pattern', 'pattern-manager' ) }
+						</Button>
+					</Placeholder>
+				</div>
+			) }
+		</>
 	);
 }

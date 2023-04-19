@@ -25,6 +25,7 @@ jest.mock( '../../../../../app/js/src/components/PatternPreview', () => {
 jest.mock( '@wordpress/block-editor', () => {
 	return {
 		...jest.requireActual( '@wordpress/block-editor' ),
+		BlockControls: () => null,
 		InspectorControls: () => null,
 		useBlockProps: () => ( {} ),
 	};
