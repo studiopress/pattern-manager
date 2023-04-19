@@ -1,10 +1,9 @@
+import './index.scss';
+
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
-
-// Hooks
-import usePmContext from '../../hooks/usePmContext';
 
 // Components
 import PatternCategories from './PatternCategories';
@@ -43,7 +42,7 @@ export default function Patterns( {
 	);
 
 	return (
-		<div className="patternmanager-theme-patterns">
+		<div className="pattern-manager-theme-patterns">
 			<div className="patterns-container-inner">
 				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
