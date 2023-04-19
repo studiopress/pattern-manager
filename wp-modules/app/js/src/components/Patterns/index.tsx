@@ -1,3 +1,6 @@
+// External dependencies
+import loadable from '@loadable/component';
+
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -10,6 +13,10 @@ import usePmContext from '../../hooks/usePmContext';
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 import SearchCount from './SearchCount';
+const PatternGridActions: PatternGridActionsType = loadable(
+	async () => import( './PatternGridActions' )
+);
+import type { PatternGridActionsType } from './PatternGridActions';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
@@ -96,7 +103,10 @@ export default function Patterns() {
 							role="region"
 							aria-label="Block Patterns"
 						>
-							<PatternGrid themePatterns={ filteredPatterns } />
+							<PatternGrid
+								PatternActions={ PatternGridActions }
+								themePatterns={ filteredPatterns }
+							/>
 						</div>
 					</div>
 				) }

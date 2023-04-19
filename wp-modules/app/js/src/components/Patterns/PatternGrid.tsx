@@ -14,21 +14,23 @@ import useForceRerender from '../../hooks/useForceRerender';
 const PatternPreview: PatternPreviewType = loadable(
 	async () => import( '../PatternPreview' )
 );
-const PatternGridActions: PatternGridActionsType = loadable(
-	async () => import( './PatternGridActions' )
-);
 
 // Types
-import type { Patterns } from '../../types';
+import type { Pattern, Patterns } from '../../types';
 import type { PatternPreviewType } from '../PatternPreview';
-import type { PatternGridActionsType } from './PatternGridActions';
 
 type Props = {
+	onSelectPattern?: ( patternName: Pattern[ 'name' ] ) => void;
+	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	themePatterns: Patterns;
 };
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
-export default function PatternGrid( { themePatterns }: Props ) {
+export default function PatternGrid( {
+	onSelectPattern,
+	PatternActions,
+	themePatterns,
+}: Props ) {
 	useForceRerender( [ themePatterns ] );
 
 	return (
@@ -43,6 +45,8 @@ export default function PatternGrid( { themePatterns }: Props ) {
 						return (
 							<div
 								key={ patternName }
+								onClick={ () => onSelectPattern( patternName ) }
+								onKeyDown={ () => onSelectPattern( patternName ) }
 								className="grid-item"
 								aria-label={ patternData.title }
 							>
@@ -62,11 +66,11 @@ export default function PatternGrid( { themePatterns }: Props ) {
 										/>
 									</div>
 								</div>
-
-								<PatternGridActions
-									patternData={ patternData }
-								/>
-
+								{ PatternActions ? (
+									<PatternActions
+										patternData={ patternData }
+									/>
+								) : null }
 								<div className="item-pattern-preview-heading">
 									<span>{ patternData.title }</span>
 								</div>
