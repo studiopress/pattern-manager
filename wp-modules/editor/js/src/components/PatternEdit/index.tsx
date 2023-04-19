@@ -115,6 +115,7 @@ export default function PatternEdit( {
 			{ ...blockProps }
 			style={ {
 				position: 'relative',
+				maxWidth: 'none',
 			} }
 		>
 			<PatternInspector
