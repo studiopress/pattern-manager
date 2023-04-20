@@ -3,10 +3,7 @@ import usePatterns from './hooks/usePatterns';
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
-	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
-	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	patterns: ReturnType< typeof usePatterns >;
-	siteUrl: InitialPatternManager[ 'siteUrl' ];
 };
 
 export type InitialPatternManager = {

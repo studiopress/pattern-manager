@@ -1,4 +1,4 @@
-import '../../css/src/index.scss';
+import './index.scss';
 import { dispatch } from '@wordpress/data';
 import { addAction, addFilter } from '@wordpress/hooks';
 import { registerPlugin } from '@wordpress/plugins';

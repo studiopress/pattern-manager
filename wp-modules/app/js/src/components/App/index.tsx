@@ -1,5 +1,5 @@
-//  Assets
-import '../../../../css/src/index.scss';
+// Assets
+import './index.scss';
 
 // External dependencies
 import loadable from '@loadable/component';
@@ -31,10 +31,7 @@ export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
 
 	const providerValue: InitialContext = {
-		apiEndpoints: patternManager.apiEndpoints,
-		patternCategories: patternManager.patternCategories,
 		patterns,
-		siteUrl: patternManager.siteUrl,
 	};
 
 	return (
