@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PatternManager\App;
 
+use function PatternManager\GetVersionControl\check_for_git_in_theme;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -29,6 +31,8 @@ function get_app_state() {
 		),
 		'siteUrl'           => get_bloginfo( 'url' ),
 		'adminUrl'          => admin_url(),
+		'themeName'         => wp_get_theme()->get( 'Name' ),
+		'versionControl'    => check_for_git_in_theme(),
 	);
 }
 
