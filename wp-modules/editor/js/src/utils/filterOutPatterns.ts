@@ -2,7 +2,10 @@ import { parse } from '@wordpress/blocks';
 import hasPmPatternBlock from './hasPmPatternBlock';
 import type { Pattern, Patterns } from '../types';
 
-/** Removes patterns that have a PM Pattern Block, as they can cause an infinite loop. */
+/**
+ * Removes patterns that have a PM Pattern Block that references the current pattern.
+ * They cause an infinite loop.
+ */
 export default function filterOutPatterns(
 	patterns: Patterns,
 	patternName: Pattern[ 'name' ]

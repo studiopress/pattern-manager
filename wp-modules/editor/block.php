@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 function render_pm_pattern_block( $block_content, $block, $instance ) {
 	return empty( $instance->parent ) &&
 		isset( $block['blockName'], $block['attrs']['slug'] ) &&
-		'core/pattern' === $block['blockName'] && filter_input( INPUT_GET, 'is_pm_pattern' )
+		'core/pattern' === $block['blockName'] && ! empty( $_REQUEST['is_pm_pattern'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			? do_the_content_things( get_pattern_by_name( $block['attrs']['slug'] )['content'] ?? '' )
 			: $block_content;
 }
