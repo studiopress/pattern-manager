@@ -1,10 +1,9 @@
+import './index.scss';
+
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
-
-// Hooks
-import usePmContext from '../../hooks/usePmContext';
 
 // Components
 import PatternCategories from './PatternCategories';
@@ -16,14 +15,20 @@ import createPatternsWithUncategorized from '../../utils/createPatternsWithUncat
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
-export default function Patterns() {
-	const { patterns } = usePmContext();
+// Types
+import { PatternsProps } from '../../types';
+
+export default function Patterns( {
+	onSelectPattern,
+	PatternActions,
+	patternCategories,
+	patterns,
+}: PatternsProps ) {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	const patternsWithUncategorized = createPatternsWithUncategorized(
-		patterns.data
-	);
+	const patternsWithUncategorized =
+		createPatternsWithUncategorized( patterns );
 
 	const filteredPatterns = getFilteredPatterns(
 		patternsWithUncategorized,
@@ -33,13 +38,13 @@ export default function Patterns() {
 
 	const uniqueCategories = getUniquePatternCategories(
 		patternsWithUncategorized,
-		patterns.patternCategories
+		patternCategories
 	);
 
 	return (
-		<div className="patternmanager-theme-patterns">
+		<div className="pattern-manager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ ! Object.entries( patterns.data ?? {} ).length ? (
+				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(
@@ -96,7 +101,11 @@ export default function Patterns() {
 							role="region"
 							aria-label="Block Patterns"
 						>
-							<PatternGrid themePatterns={ filteredPatterns } />
+							<PatternGrid
+								onSelectPattern={ onSelectPattern }
+								PatternActions={ PatternActions }
+								patterns={ filteredPatterns }
+							/>
 						</div>
 					</div>
 				) }
