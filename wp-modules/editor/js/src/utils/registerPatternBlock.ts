@@ -19,6 +19,7 @@ export default function registerPatternBlock(
 				supports: {
 					inserter: true,
 				},
+				parent: [ 'core/post-content' ], // Don't allow this block as a child of another.
 				edit: PatternEdit,
 				save: () => null,
 		  }
