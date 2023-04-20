@@ -100,7 +100,9 @@ button.components-button.editor-post-switch-to-draft.is-tertiary {
 	max-width: none;
 
 	&.alignwide {
-		max-width: var(--wp--style--global--wide-size, 1280px)
+		max-width: var(--wp--style--global--wide-size, 1280px);
+		margin-left: auto !important;
+		margin-right: auto !important;
 	}
 
 	&:where(:not(.alignwide):not(.alignleft):not(.alignright):not(.alignfull)) {
