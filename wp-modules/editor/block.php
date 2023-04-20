@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PatternManager\Block;
 
+use WP_Block;
 use function PatternManager\Editor\do_the_content_things;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 
@@ -24,12 +25,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $block_content The rendered block.
  * @param array $block The block.
+ * @param WP_Block $instance The block instance.
  * @return string Rendered block content.
  */
-function render_pm_pattern_block( $block_content, $block ) {
-	return isset( $block['blockName'], $block['attrs']['slug'] ) &&
+function render_pm_pattern_block( $block_content, $block, $instance ) {
+	return empty( $instance->parent ) &&
+		isset( $block['blockName'], $block['attrs']['slug'] ) &&
 		'core/pattern' === $block['blockName'] && filter_input( INPUT_GET, 'is_pm_pattern' )
 			? do_the_content_things( get_pattern_by_name( $block['attrs']['slug'] )['content'] ?? '' )
 			: $block_content;
 }
-add_filter( 'render_block', __NAMESPACE__ . '\render_pm_pattern_block', 10, 2 );
+add_filter( 'render_block', __NAMESPACE__ . '\render_pm_pattern_block', 10, 3 );

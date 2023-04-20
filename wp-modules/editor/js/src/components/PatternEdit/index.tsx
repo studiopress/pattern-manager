@@ -37,9 +37,9 @@ type PatternEditProps = {
 function PatternInspector( { pattern }: PatternInspectorProps ) {
 	return (
 		<InspectorControls>
-			<Panel header={ __( 'PM Pattern Settings', 'pattern-manager' ) }>
+			<Panel>
 				<PanelBody
-					title={ __( 'Pattern To Use', 'pattern-manager' ) }
+					title={ __( 'Pattern', 'pattern-manager' ) }
 					initialOpen={ true }
 				>
 					{ __(

@@ -96,6 +96,10 @@
 				border: solid 1px #ddd;
 				border-radius: 5px;
 
+				&[role="button"] {
+					cursor: pointer;
+				}
+
 				&::before {
 					content: "";
 					display: block;
