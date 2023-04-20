@@ -20,6 +20,17 @@ export default function registerPatternBlock(
 					inserter: true,
 				},
 				parent: [ 'core/post-content' ], // Don't allow this block as a child of another.
+				transforms: {
+					to: [
+						{
+							type: 'block',
+							blocks: [ 'core/columns', 'core/group' ],
+							isMatch: () => false,
+							transform: () => '',
+							priority: 1,
+						},
+					],
+				},
 				edit: PatternEdit,
 				save: () => null,
 		  }
