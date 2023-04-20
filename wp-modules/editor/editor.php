@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PatternManager\Editor;
 
+use WP_Block_Pattern_Categories_Registry;
 use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
@@ -22,6 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once trailingslashit( __DIR__ ) . 'utils.php';
 require_once trailingslashit( __DIR__ ) . 'model.php';
+require_once trailingslashit( __DIR__ ) . 'block.php';
 
 /**
  * Create a custom post type to be used for our default post.
@@ -263,14 +265,15 @@ function enqueue_meta_fields_in_editor() {
 		'pattern_manager_post_meta',
 		'patternManager',
 		[
-			'activeTheme'  => basename( get_stylesheet_directory() ),
-			'apiEndpoints' => array(
+			'activeTheme'       => basename( get_stylesheet_directory() ),
+			'apiEndpoints'      => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
-			'apiNonce'     => wp_create_nonce( 'wp_rest' ),
-			'patternNames' => \PatternManager\PatternDataHandlers\get_pattern_names(),
-			'patterns'     => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
-			'siteUrl'      => get_bloginfo( 'url' ),
+			'apiNonce'          => wp_create_nonce( 'wp_rest' ),
+			'patternCategories' => WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+			'patternNames'      => \PatternManager\PatternDataHandlers\get_pattern_names(),
+			'patterns'          => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
+			'siteUrl'           => get_bloginfo( 'url' ),
 		]
 	);
 
