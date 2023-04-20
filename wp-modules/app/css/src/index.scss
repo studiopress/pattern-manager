@@ -419,12 +419,15 @@ html body.toplevel_page_pattern-manager {
 	}
 
 	.patternmanager-version-control-notice {
+		margin-left: auto;
+		margin-right: auto;
 		margin-bottom: 3rem;
 		padding-right: 12px;
+		padding-left: 12px;
 		text-align: center;
+		max-width: auto;
 
 		.components-notice__content {
-			line-height: 2.5;
 			margin-right: 0;
 
 			span {
