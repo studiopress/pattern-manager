@@ -81,7 +81,9 @@ export default function PatternEdit( {
 					<Patterns
 						patterns={ patternManager.patterns }
 						patternCategories={ patternManager.patternCategories }
-						onSelectPattern={ ( patternName: Pattern[ 'name' ] ) => {
+						onSelectPattern={ (
+							patternName: Pattern[ 'name' ]
+						) => {
 							setAttributes( {
 								slug: patternName,
 							} );
