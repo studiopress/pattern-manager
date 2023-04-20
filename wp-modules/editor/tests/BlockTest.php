@@ -22,6 +22,7 @@ class BlockTest extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
+		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 	}
 
@@ -30,6 +31,7 @@ class BlockTest extends WP_UnitTestCase {
 	 */
 	public function tearDown() {
 		unset( $_REQUEST['is_pm_pattern'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		parent::tearDown();
 	}
