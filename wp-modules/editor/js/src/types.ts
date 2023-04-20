@@ -67,5 +67,6 @@ export type InitialPatternManager = {
 
 export type Block = {
 	attributes: Record< string, unknown >;
+	innerBlocks?: Block[];
 	name: string;
 };

@@ -10,7 +10,13 @@ describe( 'hasPmPatternBlock', () => {
 			false,
 		],
 		[
-			[ { name: 'example', attributes: { slug: 'example-pattern' } } ],
+			[
+				{
+					name: 'example',
+					attributes: { slug: 'example-pattern' },
+					innerBlocks: [],
+				},
+			],
 			'example-pattern',
 			false,
 		],
@@ -22,6 +28,48 @@ describe( 'hasPmPatternBlock', () => {
 				},
 			],
 			'example-pattern',
+			true,
+		],
+		[
+			[
+				{
+					name: 'core/group',
+					attributes: { align: 'full' },
+					innerBlocks: [
+						{
+							name: 'core/pattern',
+							attributes: { slug: 'inside-inner-blocks' },
+							innerBlocks: [],
+						},
+					],
+				},
+			],
+			'inside-inner-blocks',
+			true,
+		],
+		[
+			[
+				{
+					name: 'core/group',
+					attributes: { align: 'full' },
+					innerBlocks: [
+						{
+							name: 'core/group',
+							attributes: { align: 'wide' },
+							innerBlocks: [
+								{
+									name: 'core/pattern',
+									attributes: {
+										slug: 'inside-doubly-nested-inner-blocks',
+									},
+									innerBlocks: [],
+								},
+							],
+						},
+					],
+				},
+			],
+			'inside-doubly-nested-inner-blocks',
 			true,
 		],
 	] )(

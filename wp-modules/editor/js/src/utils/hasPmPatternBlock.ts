@@ -6,8 +6,9 @@ export default function hasPmPatternBlock(
 ) {
 	return blocks.some( ( block ) => {
 		return (
-			block.name === 'core/pattern' &&
-			block.attributes?.slug === patternName
+			( block.name === 'core/pattern' &&
+				block.attributes?.slug === patternName ) ||
+			hasPmPatternBlock( block?.innerBlocks ?? [], patternName )
 		);
 	} );
 }
