@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Renders the PM Pattern Block.
+ * Renders the PM Pattern Block in the block editor.
  *
  * @param string $block_content The rendered block.
  * @param array $block The block.
