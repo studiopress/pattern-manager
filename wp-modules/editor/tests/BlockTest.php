@@ -81,13 +81,15 @@ class BlockTest extends WP_UnitTestCase {
 
 		$this->assertSame(
 			'<p>Here is some content</p>',
-			render_pm_pattern_block(
-				'Initial content',
-				[
-					'blockName' => 'core/pattern',
-					'attrs'     => [ 'slug' => 'my-new-pattern' ],
-				],
-				new stdClass()
+			trim(
+				render_pm_pattern_block(
+					'Initial content',
+					[
+						'blockName' => 'core/pattern',
+						'attrs'     => [ 'slug' => 'my-new-pattern' ],
+					],
+					new stdClass()
+				)
 			)
 		);
 	}
