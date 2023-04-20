@@ -16,7 +16,7 @@ import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
 // Types
-import { PatternsProps } from '../../types';
+import type { PatternsProps } from '../../types';
 
 export default function Patterns( {
 	onSelectPattern,
