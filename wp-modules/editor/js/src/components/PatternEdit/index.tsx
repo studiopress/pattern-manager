@@ -79,8 +79,6 @@ export default function PatternEdit( {
 			{ isModalOpen && (
 				<Modal onRequestClose={ () => setModalOpen( false ) }>
 					<Patterns
-						patterns={ patternManager.patterns }
-						patternCategories={ patternManager.patternCategories }
 						onSelectPattern={ (
 							patternName: Pattern[ 'name' ]
 						) => {
@@ -89,6 +87,9 @@ export default function PatternEdit( {
 							} );
 							setModalOpen( false );
 						} }
+						patternCategories={ patternManager.patternCategories }
+						patterns={ patternManager.patterns }
+						siteUrl={ patternManager.siteUrl }
 					/>
 				</Modal>
 			) }

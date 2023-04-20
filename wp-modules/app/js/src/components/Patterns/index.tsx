@@ -23,6 +23,7 @@ export default function Patterns( {
 	PatternActions,
 	patternCategories,
 	patterns,
+	siteUrl,
 }: PatternsProps ) {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
@@ -105,6 +106,7 @@ export default function Patterns( {
 								onSelectPattern={ onSelectPattern }
 								PatternActions={ PatternActions }
 								patterns={ filteredPatterns }
+								siteUrl={ siteUrl }
 							/>
 						</div>
 					</div>

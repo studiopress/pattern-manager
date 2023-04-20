@@ -44,6 +44,7 @@ export default function App() {
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.patternCategories }
 				patterns={ patterns.data }
+				siteUrl={ patternManager.siteUrl }
 			/>
 		</PatternManagerContext.Provider>
 	);

@@ -44,6 +44,7 @@ export type PatternsProps = {
 	onSelectPattern?: ( patternName: Pattern[ 'name' ] ) => void;
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
+	siteUrl: string;
 };
 
 export type QueriedCategories = {

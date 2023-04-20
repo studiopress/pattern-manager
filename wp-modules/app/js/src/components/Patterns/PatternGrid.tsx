@@ -21,6 +21,7 @@ import type { PatternPreviewType } from '../PatternPreview';
 
 type Props = Pick< PatternsProps, 'onSelectPattern' | 'PatternActions' > & {
 	patterns: Patterns;
+	siteUrl: string;
 };
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
@@ -28,6 +29,7 @@ export default function PatternGrid( {
 	onSelectPattern,
 	PatternActions,
 	patterns,
+	siteUrl,
 }: Props ) {
 	useForceRerender( [ patterns ] );
 
@@ -58,7 +60,7 @@ export default function PatternGrid( {
 										<PatternPreview
 											key={ patternName }
 											url={
-												patternManager.siteUrl +
+												siteUrl +
 												'?pm_pattern_preview=' +
 												patternData.name
 											}
