@@ -16,8 +16,9 @@ import { __ } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { patternManager } from '../../globals';
 import Patterns from '../../../../../app/js/src/components/Patterns';
-import type { Dispatch, SetStateAction } from 'react';
+import filterOutPatterns from '../../utils/filterOutPatterns';
 import type { Pattern } from '../../types';
+import useSavedPostData from '../../hooks/useSavedPostData';
 
 type Attributes = {
 	slug?: string;
@@ -73,6 +74,7 @@ export default function PatternEdit( {
 	const blockProps = useBlockProps( {
 		className: pattern ? 'alignfull' : 'is-layout-constrained',
 	} );
+	const { currentName } = useSavedPostData();
 
 	return (
 		<>
@@ -88,7 +90,10 @@ export default function PatternEdit( {
 							setModalOpen( false );
 						} }
 						patternCategories={ patternManager.patternCategories }
-						patterns={ patternManager.patterns }
+						patterns={ filterOutPatterns(
+							patternManager.patterns,
+							currentName
+						) }
 						siteUrl={ patternManager.siteUrl }
 					/>
 				</Modal>

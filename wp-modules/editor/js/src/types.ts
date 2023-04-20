@@ -64,3 +64,8 @@ export type InitialPatternManager = {
 	patterns: Record< Pattern[ 'slug' ], Pattern >;
 	siteUrl: string;
 };
+
+export type Block = {
+	attributes: Record< string, unknown >;
+	name: string;
+};
