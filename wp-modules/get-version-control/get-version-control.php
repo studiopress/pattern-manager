@@ -12,11 +12,12 @@ declare(strict_types=1);
 namespace PatternManager\GetVersionControl;
 
 /**
- * Checks for a .git folder in the current theme.
+ * Checks for a version control folder in the current theme.
  *
+ * @param string $version_control The version control directory to check.
  * @return boolean
  */
-function check_for_git_in_theme() {
-	$theme_git_dir = get_template_directory() . '/.git';
+function check_for_version_control_in_theme( $version_control = '/.git' ) {
+	$theme_git_dir = get_template_directory() . $version_control;
 	return file_exists( $theme_git_dir );
 }

@@ -48,14 +48,14 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	/**
 	 * Tests that the `test-theme` fixture was properly setup.
 	 */
-	public function test_test_theme_contains_git_folder() {
-		$this->assertDirectoryExists( $this->get_mock_theme_directory() . '/.git', 'Git directory is missing from test-theme fixture.' );
+	public function test_test_theme_contains_version_control_folder() {
+		$this->assertDirectoryExists( $this->get_mock_theme_directory() . '/version-control-dir', 'Version control directory is missing from test-theme fixture.' );
 	}
 
 	/**
-	 * Tests `check_for_git_in_theme()` from the `get-version-control` module.
+	 * Tests `check_for_version_control_in_theme()` from the `get-version-control` module.
 	 */
-	public function test_check_for_git_in_theme() {
-		$this->assertTrue( (bool) check_for_git_in_theme() );
+	public function test_check_for_version_control_in_theme() {
+		$this->assertTrue( (bool) check_for_version_control_in_theme( '/version-control-dir' ) );
 	}
 }
