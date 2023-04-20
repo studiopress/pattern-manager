@@ -21,11 +21,26 @@ describe( 'preventTransform', () => {
 				transforms: [ { from: {} } ],
 			},
 		],
-	] )( 'returns any other block as passed', ( settings, name, expected ) => {
+	] )( 'returns other blocks as passed', ( settings, name, expected ) => {
 		expect( preventTransform( settings, name ) ).toEqual( expected );
 	} );
 
-	it( 'does not override a normal transform', () => {
+	it( 'handles a correct block with no transform', () => {
+		const actual = preventTransform(
+			{
+				name: 'core/columns',
+				transforms: {},
+			},
+			'core/columns'
+		);
+
+		expect( actual ).toEqual( {
+			name: 'core/columns',
+			transforms: {},
+		} );
+	} );
+
+	it( 'does not override a typical transform', () => {
 		const actual = preventTransform(
 			{
 				name: 'core/columns',
