@@ -29,7 +29,7 @@ class BlockTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function tearDown() {
-		unset( $_REQUEST['is_pm_pattern'] );
+		unset( $_REQUEST['is_pm_pattern'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		parent::tearDown();
 	}
