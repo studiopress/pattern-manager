@@ -9,7 +9,7 @@ export default function registerPatternBlock(
 		? {
 				...settings,
 				title: __( 'PM Pattern Block', 'pattern-manager' ),
-				icon: '',
+				icon: 'text',
 				category: 'common',
 				attributes: {
 					slug: {
