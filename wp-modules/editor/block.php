@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace PatternManager\Block;
+namespace PatternManager\Editor;
 
 use WP_Block;
 use function PatternManager\Editor\do_the_content_things;
