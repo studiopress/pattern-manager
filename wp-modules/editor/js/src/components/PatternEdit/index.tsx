@@ -62,27 +62,6 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 	);
 }
 
-type PatternsModalProps = {
-	setAttributes: SetAttributes;
-	setModalOpen: Dispatch< SetStateAction< boolean > >;
-};
-function PatternsModal( { setAttributes, setModalOpen }: PatternsModalProps ) {
-	return (
-		<Modal onRequestClose={ () => setModalOpen( false ) }>
-			<Patterns
-				patterns={ patternManager.patterns }
-				patternCategories={ patternManager.patternCategories }
-				onSelectPattern={ ( patternName: Pattern[ 'name' ] ) => {
-					setAttributes( {
-						slug: patternName,
-					} );
-					setModalOpen( false );
-				} }
-			/>
-		</Modal>
-	);
-}
-
 export default function PatternEdit( {
 	attributes,
 	setAttributes,
@@ -98,10 +77,18 @@ export default function PatternEdit( {
 	return (
 		<>
 			{ isModalOpen && (
-				<PatternsModal
-					setAttributes={ setAttributes }
-					setModalOpen={ setModalOpen }
-				/>
+				<Modal onRequestClose={ () => setModalOpen( false ) }>
+					<Patterns
+						patterns={ patternManager.patterns }
+						patternCategories={ patternManager.patternCategories }
+						onSelectPattern={ ( patternName: Pattern[ 'name' ] ) => {
+							setAttributes( {
+								slug: patternName,
+							} );
+							setModalOpen( false );
+						} }
+					/>
+				</Modal>
 			) }
 			{ pattern ? (
 				<div
