@@ -18,6 +18,10 @@ jest.mock( '../../globals', () => {
 	};
 } );
 
+jest.mock( '../../hooks/useSavedPostData', () => {
+	return () => ( {} );
+} );
+
 jest.mock( '../../../../../app/js/src/components/PatternPreview', () => {
 	return () => null;
 } );
