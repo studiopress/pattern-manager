@@ -87,11 +87,13 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
-	const blockProps = useBlockProps( { className: 'alignfull' } );
 	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
 		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
 	const [ isModalOpen, setModalOpen ] = useState( false );
+	const blockProps = useBlockProps( {
+		className: pattern ? 'alignfull' : 'is-layout-constrained',
+	} );
 
 	return (
 		<>
@@ -119,8 +121,8 @@ export default function PatternEdit( {
 							right: '10px',
 							top: '10px',
 							position: 'absolute',
-							height: '25px',
-							width: '25px',
+							height: '35px',
+							width: '35px',
 							background: '#fff',
 							zIndex: '20',
 							borderRadius: '500px',
@@ -137,7 +139,7 @@ export default function PatternEdit( {
 						<Icon
 							icon={ lock }
 							style={ {
-								width: '15px',
+								width: '25px',
 							} }
 						/>
 					</div>
