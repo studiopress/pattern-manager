@@ -10,6 +10,7 @@ import usePmContext from '../../hooks/usePmContext';
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 import SearchCount from './SearchCount';
+import VersionControlNotice from '../VersionControlNotice';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
@@ -39,6 +40,7 @@ export default function Patterns() {
 	return (
 		<div className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
+				<VersionControlNotice />
 				{ ! Object.entries( patterns.data ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
