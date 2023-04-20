@@ -418,6 +418,20 @@ html body.toplevel_page_pattern-manager {
 		}
 	}
 
+	.patternmanager-version-control-notice {
+		margin-bottom: 3rem;
+		padding-right: 12px;
+		text-align: center;
+
+		.components-notice__content {
+			line-height: 2.5;
+
+			span {
+				font-weight: 600;
+			}
+		}
+	}
+
 	.patternmanager-pattern-editor-columns {
 		width: 100%;
 		height: calc(100vh - 64px - 32px);
