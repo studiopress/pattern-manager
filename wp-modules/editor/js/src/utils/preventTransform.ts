@@ -29,7 +29,8 @@ function removeWildcard( from: Transform[] ) {
 			transform?.blocks?.length === 1 &&
 			transform.blocks[ 0 ] === '*'
 			? {
-					...transform,
+					// Returning false disallows the transform.
+					// So this returns false when attempting to transfrom a 'core/pattern'.
 					isMatch: ( ...args: Parameters< IsMatch > ) => {
 						const [ , blocks ] = args;
 						return blocks?.length === 1 &&
