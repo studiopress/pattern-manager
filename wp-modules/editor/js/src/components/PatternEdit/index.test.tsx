@@ -52,7 +52,7 @@ describe( 'PatternEdit', () => {
 			<PatternEdit attributes={ {} } setAttributes={ () => {} } />
 		);
 
-		getByText( 'Select a Pattern' );
+		getByText( /select a pattern/i );
 	} );
 
 	it( 'should not prompt to select a pattern when one is selected', () => {
@@ -63,6 +63,6 @@ describe( 'PatternEdit', () => {
 			/>
 		);
 
-		expect( queryByText( 'Select a Pattern' ) ).toBeFalsy();
+		expect( queryByText( /select a pattern/i ) ).toBeFalsy();
 	} );
 } );
