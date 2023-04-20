@@ -52,7 +52,7 @@ describe( 'preventTransform', () => {
 		).toBe( true );
 	} );
 
-	it( 'overrides a wildcard transform', () => {
+	it( 'overrides a wildcard transform for a pattern block', () => {
 		const actual = preventTransform(
 			{
 				name: 'core/columns',
@@ -72,6 +72,11 @@ describe( 'preventTransform', () => {
 		const { isMatch } = actual.transforms.from[ 0 ];
 
 		expect( isMatch( {}, [] ) ).toBe( true );
+		expect(
+			isMatch( {}, [
+				{ name: 'core/paragraph', attributes: { align: 'center' } },
+			] )
+		).toBe( true );
 		expect(
 			isMatch( {}, [
 				{ name: 'core/pattern', attributes: { slug: 'example' } },

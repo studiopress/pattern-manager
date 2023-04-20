@@ -42,6 +42,7 @@ function removeWildcard( from: Transform[] ) {
 	} );
 }
 
+/** Disallows transforming the PM Pattern Block to 'core/columns' or 'core/group'. */
 export default function preventTransform(
 	settings: { transforms: Transforms } & Record< string, unknown >,
 	name: string
