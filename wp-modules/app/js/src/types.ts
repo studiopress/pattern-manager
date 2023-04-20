@@ -18,6 +18,8 @@ export type InitialPatternManager = {
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
 	siteUrl: string;
+	themeName: string;
+	versionControl: '' | 1;
 };
 
 export type Pattern = {
