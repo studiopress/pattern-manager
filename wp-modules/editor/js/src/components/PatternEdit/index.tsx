@@ -79,7 +79,10 @@ export default function PatternEdit( {
 	return (
 		<>
 			{ isModalOpen && (
-				<Modal onRequestClose={ () => setModalOpen( false ) }>
+				<Modal
+					className="pm-pattern-block-modal"
+					onRequestClose={ () => setModalOpen( false ) }
+				>
 					<Patterns
 						onSelectPattern={ (
 							patternName: Pattern[ 'name' ]
