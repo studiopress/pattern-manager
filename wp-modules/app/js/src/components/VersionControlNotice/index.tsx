@@ -13,7 +13,7 @@ export default function VersionControlNotice() {
 		<Notice
 			className="patternmanager-version-control-notice"
 			isDismissible
-			status="info"
+			status="warning"
 			onRemove={ () => setIsVisible( false ) }
 		>
 			No version control detected for this theme.{ ' ' }
