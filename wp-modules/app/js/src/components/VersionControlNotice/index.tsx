@@ -13,12 +13,12 @@ export default function VersionControlNotice() {
 		<Notice
 			className="patternmanager-version-control-notice"
 			isDismissible
-			status="error"
+			status="info"
 			onRemove={ () => setIsVisible( false ) }
 		>
-			No version control detected for this theme. Please{ ' ' }
-			<a href="https://github.com/git-guides">initialize git</a> in the{ ' ' }
-			<span>{ patternManager.themeName }</span> theme folder.
+			No version control detected for this theme.{ ' ' }
+			<a href="https://github.com/git-guides">Learn about git</a> and set
+			it up in the <span>{ patternManager.themeName }</span> theme folder.
 		</Notice>
 	) : null;
 }
