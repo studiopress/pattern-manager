@@ -11,10 +11,6 @@ export default function registerPatternBlock(
 				title: __( 'PM Pattern Block', 'pattern-manager' ),
 				icon: 'text',
 				category: 'common',
-				supports: {
-					html: false,
-					inserter: true,
-				},
 				parent: [ 'core/post-content' ], // Don't allow this block as a child of another.
 				edit: PatternEdit,
 				save: () => null,
