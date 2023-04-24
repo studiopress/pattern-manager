@@ -267,6 +267,25 @@ function get_pattern_by_name( $name ) {
 }
 
 /**
+ * Gets a pattern by its slug.
+ *
+ * The slug won't always be the same as the file name.
+ * So this looks at the slug in the PHP file, not the file name.
+ *
+ * @param string $slug The pattern slug.
+ */
+function get_pattern_by_slug( string $slug ) {
+	$patterns = get_theme_patterns();
+	foreach ( $patterns as $pattern_name => $pattern ) {
+		if ( $slug === $pattern['slug'] ) {
+			return get_pattern_by_name( $pattern_name );
+		}
+	}
+
+	return null;
+}
+
+/**
  * Gets the path to a pattern.
  *
  * @param string $name The pattern name.

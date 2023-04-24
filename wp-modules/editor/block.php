@@ -13,7 +13,7 @@ namespace PatternManager\Editor;
 
 use WP_Block;
 use function PatternManager\Editor\do_the_content_things;
-use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_pattern_by_slug;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,7 +32,7 @@ function render_pm_pattern_block( $block_content, $block, $instance ) {
 	return empty( $instance->parent ) &&
 		isset( $block['blockName'], $block['attrs']['slug'] ) &&
 		'core/pattern' === $block['blockName'] && ! empty( $_REQUEST['is_pm_pattern'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			? do_the_content_things( get_pattern_by_name( $block['attrs']['slug'] )['content'] ?? '' )
+			? do_the_content_things( get_pattern_by_slug( $block['attrs']['slug'] )['content'] ?? '' )
 			: $block_content;
 }
 add_filter( 'render_block', __NAMESPACE__ . '\render_pm_pattern_block', 10, 3 );

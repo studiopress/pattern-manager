@@ -38,7 +38,7 @@ export type Patterns = {
 
 export type PatternsProps = {
 	patterns: Patterns;
-	onSelectPattern?: ( patternName: Pattern[ 'name' ] ) => void;
+	onSelectPattern?: ( pattern: Pattern ) => void;
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	siteUrl: string;

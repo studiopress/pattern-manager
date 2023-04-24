@@ -84,12 +84,8 @@ export default function PatternEdit( {
 					onRequestClose={ () => setModalOpen( false ) }
 				>
 					<Patterns
-						onSelectPattern={ (
-							patternName: Pattern[ 'name' ]
-						) => {
-							setAttributes( {
-								slug: patternName,
-							} );
+						onSelectPattern={ ( { slug } ) => {
+							setAttributes( { slug } );
 							setModalOpen( false );
 						} }
 						patternCategories={ patternManager.patternCategories }
