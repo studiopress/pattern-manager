@@ -142,7 +142,6 @@ export default function PatternEdit( {
 						className="pm-pattern-container"
 						attributes={ attributes }
 						httpMethod="POST"
-						urlQueryArgs={ { is_pm_pattern: true } }
 					/>
 				</div>
 			) : (
