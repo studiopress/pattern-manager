@@ -46,10 +46,10 @@ When you design beautiful block patterns for your theme, Pattern Manager by WP E
  * Find and replace all local image urls with the correct PHP tag.
  * Find and copy all image files used into your theme.
 
+## Docs & Repo
 
-## Help & Docs
-
-User and developer docs for Pattern Manager [can be found here](https://developer.wpengine.com/pattern-manager/).
+* [User and developer docs](https://developer.wpengine.com/pattern-manager/)
+* [GitHub repo](https://github.com/studiopress/pattern-manager/)
 
 ## Installation
 
