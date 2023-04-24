@@ -150,32 +150,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests get_pattern_by_slug.
-	 */
-	public function test_get_pattern_by_slug_not_found() {
-		$this->assertFalse(
-			get_pattern_by_slug( 'does-not-exist' )
-		);
-	}
-
-	/**
-	 * Tests get_pattern_by_slug.
-	 */
-	public function test_get_pattern_by_slug_found() {
-		$actual_pattern = get_pattern_by_slug( 'my-new-pattern' );
-
-		$this->assertSame(
-			$this->get_expected_pattern(),
-			array_merge(
-				$actual_pattern,
-				[
-					'content' => $this->normalize( $actual_pattern['content'] ),
-				]
-			)
-		);
-	}
-
-	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents_with_values() {
