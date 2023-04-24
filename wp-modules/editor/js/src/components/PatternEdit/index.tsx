@@ -68,9 +68,7 @@ export default function PatternEdit( {
 	setAttributes,
 }: PatternEditProps ) {
 	const pattern = Object.values( patternManager.patterns ).find(
-		( ownPattern ) => {
-			return ownPattern.slug === attributes.slug;
-		}
+		( ownPattern ) => ownPattern.slug === attributes.slug
 	);
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const blockProps = useBlockProps( {
