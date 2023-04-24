@@ -273,7 +273,7 @@ function get_pattern_by_name( $name ) {
  * So this looks at the slug in the PHP file, not the file name.
  *
  * @param string $slug The pattern slug.
- * @return array|false The pattern or nunll.
+ * @return array|false The pattern or null.
  */
 function get_pattern_by_slug( string $slug ) {
 	$patterns = get_theme_patterns();
