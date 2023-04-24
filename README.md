@@ -95,4 +95,11 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 
 ## Changelog
 
-The [Releases page](https://github.com/studiopress/pattern-manager/releases) on GitHub has the changelog.
+### 0.1.7
+* Add a link to the GitHub repo.
+
+### 0.1.6
+ * Readme file changes.
+
+### 0.1.5
+ * Initial release.
