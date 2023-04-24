@@ -5,6 +5,7 @@ import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';
 import changeWords from './utils/changeWords';
+import preventTransform from './utils/preventTransform';
 import registerPatternBlock from './utils/registerPatternBlock';
 import receiveActiveTheme from './utils/receiveActiveTheme';
 
@@ -19,6 +20,11 @@ registerPlugin( 'pattern-manager-back-button', {
 } );
 
 addFilter( 'i18n.gettext', 'pattern-manager/changeWords', changeWords );
+addFilter(
+	'blocks.registerBlockType',
+	'pattern-manager/preventTransform',
+	preventTransform
+);
 addFilter(
 	'blocks.registerBlockType',
 	'pattern-manager/registerPatternBlock',
