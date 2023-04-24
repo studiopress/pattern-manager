@@ -20,16 +20,6 @@ registerPlugin( 'pattern-manager-back-button', {
 } );
 
 addFilter( 'i18n.gettext', 'pattern-manager/changeWords', changeWords );
-addFilter(
-	'blocks.registerBlockType',
-	'pattern-manager/preventTransform',
-	preventTransform
-);
-addFilter(
-	'blocks.registerBlockType',
-	'pattern-manager/registerPatternBlock',
-	registerPatternBlock
-);
 addAction(
 	'heartbeat.tick',
 	'pattern-manager/checkActiveTheme',
