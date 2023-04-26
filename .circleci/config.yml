@@ -113,7 +113,7 @@ workflows:
             tags:
               only: /^\d+\.\d+\.\d+$/
             branches:
-              ignore: /.*/
+              only: /^bump\/.*/
       - svn-deploy:
           context: genesis-svn
           requires:
