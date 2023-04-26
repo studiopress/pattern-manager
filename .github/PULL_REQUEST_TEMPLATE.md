@@ -13,9 +13,5 @@
 <!-- Detailed steps to test this PR. -->
 1. 
 
-### Suggested changelog entry
-<!-- A short description for the changelog. -->
-- 
-
 ### Notes & Screenshots
 <!-- Additional information for reviewers. -->
