@@ -1,4 +1,6 @@
 // WP dependencies
+import { __ } from '@wordpress/i18n';
+import { createInterpolateElement } from '@wordpress/element';
 import { Notice } from '@wordpress/components';
 
 type Props = {
@@ -18,8 +20,19 @@ export default function VersionControlNotice( {
 			status="warning"
 			onRemove={ handleDismiss }
 		>
-			No version control detected for this theme. Learn how to set up git
-			for your theme <a href="https://wpengine.com/support/git/">here</a>.
+			{ createInterpolateElement(
+				__(
+					'No version control detected for this theme. Learn how to set up git for your theme here: <a></a>.',
+					'pattern-manager'
+				),
+				{
+					a: (
+						<a href={ 'https://wpengine.com/support/git/' }>
+							{ __( 'Git Guide', 'pattern-manager' ) }
+						</a>
+					),
+				}
+			) }
 		</Notice>
 	) : null;
 }
