@@ -16,9 +16,8 @@ export default function VersionControlNotice() {
 			status="warning"
 			onRemove={ () => setIsVisible( false ) }
 		>
-			No version control detected for this theme.{ ' ' }
-			<a href="https://github.com/git-guides">Learn about git</a> and set
-			it up in the <span>{ patternManager.themeName }</span> theme folder.
+			No version control detected for this theme. Learn how to set up git
+			for your theme <a href="https://wpengine.com/support/git/">here</a>.
 		</Notice>
 	) : null;
 }
