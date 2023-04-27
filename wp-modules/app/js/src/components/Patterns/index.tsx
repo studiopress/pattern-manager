@@ -3,6 +3,9 @@ import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
 
+// Globals
+import { patternManager } from '../../globals';
+
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
 
@@ -18,7 +21,7 @@ import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
 export default function Patterns() {
-	const { patterns } = usePmContext();
+	const { patterns, versionControl } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
@@ -40,7 +43,14 @@ export default function Patterns() {
 	return (
 		<div className="patternmanager-theme-patterns">
 			<div className="patterns-container-inner">
-				<VersionControlNotice />
+				<VersionControlNotice
+					isVisible={ versionControl.warningShouldShow }
+					handleDismiss={ () => {
+						versionControl.updateDismissedThemes(
+							patternManager.themeName
+						);
+					} }
+				/>
 				{ ! Object.entries( patterns.data ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(

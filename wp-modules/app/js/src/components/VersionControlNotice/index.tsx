@@ -1,20 +1,22 @@
 // WP dependencies
 import { Notice } from '@wordpress/components';
-import { useState } from '@wordpress/element';
 
-// Globals
-import { patternManager } from '../../globals';
+type Props = {
+	isVisible: boolean;
+	handleDismiss: () => void;
+};
 
-/** Display a non-dismissible notice if no version control is detected in the theme. */
-export default function VersionControlNotice() {
-	const [ isVisible, setIsVisible ] = useState( true );
-
-	return ! patternManager.versionControl && isVisible ? (
+/** Display a notice if no version control is detected in the theme. */
+export default function VersionControlNotice( {
+	isVisible,
+	handleDismiss,
+}: Props ) {
+	return isVisible ? (
 		<Notice
 			className="patternmanager-version-control-notice"
 			isDismissible
 			status="warning"
-			onRemove={ () => setIsVisible( false ) }
+			onRemove={ handleDismiss }
 		>
 			No version control detected for this theme. Learn how to set up git
 			for your theme <a href="https://wpengine.com/support/git/">here</a>.
