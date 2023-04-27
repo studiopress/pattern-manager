@@ -5,7 +5,6 @@ export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
 	patterns: ReturnType< typeof usePatterns >;
-	versionControl: ReturnType< typeof versionControl >;
 };
 
 export type InitialPatternManager = {
@@ -48,7 +47,8 @@ export type PatternsProps = {
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	siteUrl: string;
-	themeName: string;
+	noticeIsVisible: boolean;
+	onNoticeDismissed?: () => void;
 };
 
 export type QueriedCategories = {

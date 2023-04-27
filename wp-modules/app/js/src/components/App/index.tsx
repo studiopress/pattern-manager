@@ -34,18 +34,22 @@ export default function App() {
 
 	const providerValue: InitialContext = {
 		patterns,
-		versionControl,
 	};
 
 	return (
 		<PatternManagerContext.Provider value={ providerValue }>
 			<Header />
 			<Patterns
+				noticeIsVisible={ versionControl.warningShouldShow }
+				onNoticeDismissed={ () => {
+					versionControl.updateDismissedThemes(
+						patternManager.themeName
+					);
+				} }
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.patternCategories }
 				patterns={ patterns.data }
 				siteUrl={ patternManager.siteUrl }
-				themeName={ patternManager.themeName }
 			/>
 		</PatternManagerContext.Provider>
 	);

@@ -5,9 +5,6 @@ import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
 
-// Hooks
-import usePmContext from '../../hooks/usePmContext';
-
 // Components
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
@@ -23,14 +20,14 @@ import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 import type { PatternsProps } from '../../types';
 
 export default function Patterns( {
+	onNoticeDismissed,
 	onSelectPattern,
 	PatternActions,
+	noticeIsVisible,
 	patternCategories,
 	patterns,
 	siteUrl,
-	themeName,
 }: PatternsProps ) {
-	const { versionControl } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
@@ -52,10 +49,8 @@ export default function Patterns( {
 		<div className="pattern-manager-theme-patterns">
 			<div className="patterns-container-inner">
 				<VersionControlNotice
-					isVisible={ versionControl.warningShouldShow }
-					handleDismiss={ () => {
-						versionControl.updateDismissedThemes( themeName );
-					} }
+					isVisible={ noticeIsVisible }
+					handleDismiss={ onNoticeDismissed }
 				/>
 				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
