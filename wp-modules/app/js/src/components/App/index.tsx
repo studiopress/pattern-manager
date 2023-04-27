@@ -45,6 +45,7 @@ export default function App() {
 				patternCategories={ patternManager.patternCategories }
 				patterns={ patterns.data }
 				siteUrl={ patternManager.siteUrl }
+				themeName={ patternManager.themeName }
 			/>
 		</PatternManagerContext.Provider>
 	);

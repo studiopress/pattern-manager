@@ -48,6 +48,7 @@ export type PatternsProps = {
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	siteUrl: string;
+	themeName: string;
 };
 
 export type QueriedCategories = {

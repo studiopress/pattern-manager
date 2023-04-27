@@ -5,9 +5,6 @@ import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
 
-// Globals
-import { patternManager } from '../../globals';
-
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
 
@@ -31,6 +28,7 @@ export default function Patterns( {
 	patternCategories,
 	patterns,
 	siteUrl,
+	themeName,
 }: PatternsProps ) {
 	const { versionControl } = usePmContext();
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
@@ -56,9 +54,7 @@ export default function Patterns( {
 				<VersionControlNotice
 					isVisible={ versionControl.warningShouldShow }
 					handleDismiss={ () => {
-						versionControl.updateDismissedThemes(
-							patternManager.themeName
-						);
+						versionControl.updateDismissedThemes( themeName );
 					} }
 				/>
 				{ ! Object.entries( patterns ?? {} ).length ? (
