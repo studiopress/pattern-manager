@@ -10,14 +10,13 @@ export default function useVersionControl(
 		initialVersionControlNotice
 	);
 
-	function updateDismissedThemes( themeName: Theme[ 'name' ] ) {
+	function updateDismissedThemes() {
 		setDisplayNotice( false );
 		return fetch(
 			patternManager.apiEndpoints.updateDismissedThemesEndpoint,
 			{
 				method: 'POST',
 				headers: getHeaders(),
-				body: JSON.stringify( { themeName } ),
 			}
 		);
 	}

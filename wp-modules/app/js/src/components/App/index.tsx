@@ -46,11 +46,7 @@ export default function App() {
 				Notice={
 					<VersionControlNotice
 						isVisible={ versionControl.displayNotice }
-						handleDismiss={ () => {
-							versionControl.updateDismissedThemes(
-								patternManager.themeName
-							);
-						} }
+						handleDismiss={ versionControl.updateDismissedThemes }
 					/>
 				}
 				PatternActions={ PatternGridActions }

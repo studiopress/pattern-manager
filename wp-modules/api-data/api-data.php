@@ -77,16 +77,6 @@ function register_routes() {
 			'methods'             => 'POST',
 			'callback'            => __NAMESPACE__ . '\update_dismissed_themes',
 			'permission_callback' => __NAMESPACE__ . '\permission_check',
-			'args'                => array(
-				'themeName' => array(
-					'required'          => true,
-					'type'              => 'string',
-					'description'       => __( 'The theme name to dismiss for version control notifications', 'pattern-manager' ),
-					'validate_callback' => function( $to_validate ) {
-						return is_string( $to_validate );
-					},
-				),
-			),
 		)
 	);
 }
@@ -136,12 +126,8 @@ function delete_pattern( $request ) {
  * @return WP_REST_Response
  */
 function update_dismissed_themes( $request ) {
-	$dismissed_themes = [
-		...get_dismissed_themes(),
-		$request->get_params()['themeName'],
-	];
-
-	$is_success = update_user_meta( get_current_user_id(), get_version_control_meta_key(), $dismissed_themes );
+	$dismissed_themes = array_merge( get_dismissed_themes(), (array) wp_get_theme()->get( 'Name' ) );
+	$is_success       = update_user_meta( get_current_user_id(), get_version_control_meta_key(), $dismissed_themes );
 
 	return $is_success
 		? new WP_REST_Response(
