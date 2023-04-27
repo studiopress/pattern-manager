@@ -21,3 +21,13 @@ function check_for_version_control_in_theme( $version_control = '/.git' ) {
 	$theme_git_dir = get_template_directory() . $version_control;
 	return file_exists( $theme_git_dir );
 }
+
+/**
+ * Gets the list of themes that have had version control notices dismissed by the user.
+ *
+ * @return array
+ */
+function get_dismissed_themes() {
+	$dismissed_themes = get_user_meta( get_current_user_id(), 'patternmanager_version_control_notice_dismissed_themes', true );
+	return ! empty( $dismissed_themes ) ? $dismissed_themes : [];
+}

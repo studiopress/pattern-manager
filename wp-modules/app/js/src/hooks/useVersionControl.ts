@@ -8,7 +8,7 @@ export default function useVersionControl(
 ) {
 	const [ dismissedThemes, setDismissedThemes ] = useState<
 		Array< Theme[ 'name' ] >
-	>( initialDismissedThemes || [] );
+	>( initialDismissedThemes );
 
 	const warningShouldShow =
 		! Boolean( patternManager.versionControl ) &&

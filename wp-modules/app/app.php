@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace PatternManager\App;
 
 use function PatternManager\GetVersionControl\check_for_version_control_in_theme;
+use function PatternManager\GetVersionControl\get_dismissed_themes;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -34,7 +35,7 @@ function get_app_state() {
 		'adminUrl'          => admin_url(),
 		'themeName'         => wp_get_theme()->get( 'Name' ),
 		'versionControl'    => check_for_version_control_in_theme(),
-		'dismissedThemes'   => get_user_meta( get_current_user_id(), 'patternmanager_version_control_notice_dismissed_themes', true ),
+		'dismissedThemes'   => get_dismissed_themes(),
 	);
 }
 
