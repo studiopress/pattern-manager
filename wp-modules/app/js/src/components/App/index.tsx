@@ -31,7 +31,9 @@ import { PatternGridActionsType } from '../Patterns/PatternGridActions';
 
 export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
-	const versionControl = useVersionControl( patternManager.dismissedThemes );
+	const versionControl = useVersionControl(
+		Boolean( patternManager.showVersionControlNotice )
+	);
 
 	const providerValue: InitialContext = {
 		patterns,
@@ -43,7 +45,7 @@ export default function App() {
 			<Patterns
 				Notice={
 					<VersionControlNotice
-						isVisible={ versionControl.warningShouldShow }
+						isVisible={ versionControl.displayNotice }
 						handleDismiss={ () => {
 							versionControl.updateDismissedThemes(
 								patternManager.themeName

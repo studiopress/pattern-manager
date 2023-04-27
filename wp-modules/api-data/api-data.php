@@ -13,6 +13,8 @@ namespace PatternManager\ApiData;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use function \PatternManager\GetVersionControl\get_dismissed_themes;
+use function \PatternManager\GetVersionControl\get_version_control_meta_key;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -76,12 +78,12 @@ function register_routes() {
 			'callback'            => __NAMESPACE__ . '\update_dismissed_themes',
 			'permission_callback' => __NAMESPACE__ . '\permission_check',
 			'args'                => array(
-				'themeNames' => array(
+				'themeName' => array(
 					'required'          => true,
-					'type'              => 'array',
-					'description'       => __( 'The themes to dismiss for version control notifications', 'pattern-manager' ),
+					'type'              => 'string',
+					'description'       => __( 'The theme name to dismiss for version control notifications', 'pattern-manager' ),
 					'validate_callback' => function( $to_validate ) {
-						return is_array( $to_validate );
+						return is_string( $to_validate );
 					},
 				),
 			),
@@ -134,15 +136,17 @@ function delete_pattern( $request ) {
  * @return WP_REST_Response
  */
 function update_dismissed_themes( $request ) {
-	$user_id    = get_current_user_id();
-	$meta_key   = 'patternmanager_version_control_notice_dismissed_themes';
-	$is_success = update_user_meta( $user_id, $meta_key, $request->get_params()['themeNames'] );
+	$dismissed_themes = [
+		...get_dismissed_themes(),
+		$request->get_params()['themeName'],
+	];
+
+	$is_success = update_user_meta( get_current_user_id(), get_version_control_meta_key(), $dismissed_themes );
 
 	return $is_success
 		? new WP_REST_Response(
 			array(
-				'message'         => __( 'Version control notifications dismissed for this theme.', 'pattern-manager' ),
-				'dismissedThemes' => get_user_meta( $user_id, $meta_key, true ),
+				'message' => __( 'Version control notifications dismissed for this theme.', 'pattern-manager' ),
 			),
 			200
 		)

@@ -18,8 +18,7 @@ export type InitialPatternManager = {
 	patterns: Patterns;
 	siteUrl: string;
 	themeName: string;
-	versionControl: '' | 1;
-	dismissedThemes: Theme[ 'name' ][];
+	showVersionControlNotice: boolean;
 };
 
 export type Pattern = {
