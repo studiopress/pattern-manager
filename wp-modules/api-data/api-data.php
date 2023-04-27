@@ -67,6 +67,26 @@ function register_routes() {
 			),
 		)
 	);
+
+	register_rest_route(
+		$namespace,
+		'/update-dismissed-themes',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\update_dismissed_themes',
+			'permission_callback' => __NAMESPACE__ . '\permission_check',
+			'args'                => array(
+				'themeNames' => array(
+					'required'          => true,
+					'type'              => 'array',
+					'description'       => __( 'The themes to dismiss for version control notifications', 'pattern-manager' ),
+					'validate_callback' => function( $to_validate ) {
+						return is_array( $to_validate );
+					},
+				),
+			),
+		)
+	);
 }
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
 
@@ -101,6 +121,28 @@ function delete_pattern( $request ) {
 		? new WP_REST_Response(
 			array(
 				'message' => __( 'Pattern successfully deleted', 'pattern-manager' ),
+			),
+			200
+		)
+		: new WP_REST_Response( $is_success, 400 );
+}
+
+/**
+ * Updates the list of theme names that should not show version control notifications.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_REST_Response
+ */
+function update_dismissed_themes( $request ) {
+	$user_id    = get_current_user_id();
+	$meta_key   = 'patternmanager_version_control_notice_dismissed_themes';
+	$is_success = update_user_meta( $user_id, $meta_key, $request->get_params()['themeNames'] );
+
+	return $is_success
+		? new WP_REST_Response(
+			array(
+				'message'         => __( 'Version control notifications dismissed for this theme.', 'pattern-manager' ),
+				'dismissedThemes' => get_user_meta( $user_id, $meta_key, true ),
 			),
 			200
 		)
