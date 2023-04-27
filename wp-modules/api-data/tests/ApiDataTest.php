@@ -70,6 +70,7 @@ class ApiDataTest extends WP_UnitTestCase {
 				'/pattern-manager/v1',
 				'/pattern-manager/v1/get-pattern-names',
 				'/pattern-manager/v1/delete-pattern',
+				'/pattern-manager/v1/update-dismissed-themes',
 			],
 			array_keys( rest_get_server()->get_routes( 'pattern-manager/v1' ) )
 		);
