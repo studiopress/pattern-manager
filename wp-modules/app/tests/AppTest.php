@@ -30,6 +30,7 @@ class AppTest extends WP_UnitTestCase {
 				'adminUrl',
 				'themeName',
 				'versionControl',
+				'dismissedThemes',
 			],
 			array_keys( get_app_state() )
 		);
