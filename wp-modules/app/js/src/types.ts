@@ -4,10 +4,7 @@ import versionControl from './hooks/useVersionControl';
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
 export type InitialContext = {
-	apiEndpoints: InitialPatternManager[ 'apiEndpoints' ];
-	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	patterns: ReturnType< typeof usePatterns >;
-	siteUrl: InitialPatternManager[ 'siteUrl' ];
 	versionControl: ReturnType< typeof versionControl >;
 };
 
@@ -43,6 +40,14 @@ export type Pattern = {
 
 export type Patterns = {
 	[ key: string ]: Pattern;
+};
+
+export type PatternsProps = {
+	patterns: Patterns;
+	onSelectPattern?: ( patternName: Pattern[ 'name' ] ) => void;
+	patternCategories: InitialPatternManager[ 'patternCategories' ];
+	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
+	siteUrl: string;
 };
 
 export type QueriedCategories = {

@@ -1,10 +1,23 @@
-import { InspectorControls, InnerBlocks } from '@wordpress/block-editor';
-import { parse } from '@wordpress/blocks';
-import { Panel, PanelBody } from '@wordpress/components';
+import {
+	BlockControls,
+	InspectorControls,
+	useBlockProps,
+} from '@wordpress/block-editor';
+import {
+	Button,
+	Modal,
+	Panel,
+	PanelBody,
+	Placeholder,
+} from '@wordpress/components';
+import { useState } from '@wordpress/element';
+import { Icon, image, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
+import ServerSideRender from '@wordpress/server-side-render';
 import { patternManager } from '../../globals';
-import convertBlocksToTemplate from '../../utils/convertBlocksToTemplate';
-import PatternPreview from '../../../../../app/js/src/components/PatternPreview';
+import Patterns from '../../../../../app/js/src/components/Patterns';
+import filterOutPatterns from '../../utils/filterOutPatterns';
+import type { Pattern } from '../../types';
 import useSavedPostData from '../../hooks/useSavedPostData';
 
 type Attributes = {
@@ -13,8 +26,8 @@ type Attributes = {
 
 type SetAttributes = ( attributes: Attributes ) => void;
 
-type PatternPickerProps = {
-	setAttributes: SetAttributes;
+type PatternInspectorProps = {
+	pattern?: Pattern;
 };
 
 type PatternEditProps = {
@@ -22,39 +35,31 @@ type PatternEditProps = {
 	setAttributes: SetAttributes;
 };
 
-function PatternPicker( { setAttributes }: PatternPickerProps ) {
-	const parentPatternBeingEdited = useSavedPostData();
-
+function PatternInspector( { pattern }: PatternInspectorProps ) {
 	return (
-		<div>
-			{ Object.entries( patternManager.patterns ).map(
-				( [ patternName, pattern ] ) => {
-					return patternName ===
-						parentPatternBeingEdited.currentName ? null : (
-						<button
-							style={ { width: '100%', marginBottom: '10px' } }
-							className="button"
-							key={ pattern.name }
-							onClick={ () => {
-								setAttributes( {
-									slug: pattern.name,
-								} );
-							} }
+		<InspectorControls>
+			<Panel>
+				<PanelBody
+					title={ __( 'Pattern', 'pattern-manager' ) }
+					initialOpen={ true }
+				>
+					{ __(
+						'This is a pattern placeholder, used for building layouts with pattern tags. To edit the pattern, click the button below.',
+						'pattern-manager'
+					) }
+					{ pattern ? (
+						<a
+							target="_blank"
+							className="components-button is-secondary"
+							style={ { marginTop: '10px' } }
+							href={ pattern.editorLink }
 						>
-							{ patternName }
-							<PatternPreview
-								url={
-									patternManager.siteUrl +
-									'?pm_pattern_preview=' +
-									pattern.name
-								}
-								viewportWidth={ pattern.viewportWidth }
-							/>
-						</button>
-					);
-				}
-			) }
-		</div>
+							{ __( 'Edit This Pattern', 'pattern-manager' ) }
+						</a>
+					) : null }
+				</PanelBody>
+			</Panel>
+		</InspectorControls>
 	);
 }
 
@@ -62,71 +67,113 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
+	const splitSlug = attributes?.slug?.split( '/' );
 	const pattern =
-		patternManager.patterns[
-			attributes?.slug?.split( '/' )?.findLast( Boolean )
-		];
+		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
+	const [ isModalOpen, setModalOpen ] = useState( false );
+	const blockProps = useBlockProps( {
+		className: pattern ? 'alignfull' : 'is-layout-constrained',
+	} );
+	const { currentName } = useSavedPostData();
 
-	return pattern ? (
-		<div
-			style={ {
-				position: 'relative',
-			} }
-		>
-			<InspectorControls>
-				<Panel header="PM Pattern Settings">
-					<PanelBody title="Pattern To Use" initialOpen={ true }>
-						<PatternPicker setAttributes={ setAttributes } />
-					</PanelBody>
-				</Panel>
-			</InspectorControls>
-			<div
-				className="pm-pattern-overlay"
-				style={ {
-					display: 'grid',
-					width: '100%',
-					height: '100%',
-					alignItems: 'center',
-					justifyItems: 'center',
-					zIndex: '2',
-					position: 'absolute',
-					color: '#FFF',
-					backgroundColor: 'rgb(255 0 0 / 89%)',
-				} }
-			>
-				<div>
-					<div>{ __( 'Pattern name:', 'pattern-manager' ) }</div>
-					<div>{ attributes?.slug }</div>
-					<a className="button" href={ pattern.editorLink }>
-						{ __( 'Edit this pattern', 'pattern-manager' ) }
-					</a>
-				</div>
-			</div>
-			<div
-				style={ { position: 'relative', top: '0', left: '0' } }
-				className="pm-pattern-background"
-			>
-				<InnerBlocks
-					template={ convertBlocksToTemplate(
-						parse( pattern.content )
-					) }
-					templateLock="all"
-				/>
-			</div>
-		</div>
-	) : (
-		<div>
-			<InspectorControls>
-				<Panel header="PM Pattern Settings">
-					<PanelBody title="Pattern To Use" initialOpen={ true }>
-						<PatternPicker setAttributes={ setAttributes } />
-					</PanelBody>
-				</Panel>
-			</InspectorControls>
-			{ __(
-				'Selected pattern Not found in the theme',
-				'pattern-manager'
+	return (
+		<>
+			{ isModalOpen && (
+				<Modal
+					className="pm-pattern-block-modal"
+					onRequestClose={ () => setModalOpen( false ) }
+				>
+					<Patterns
+						onSelectPattern={ (
+							patternName: Pattern[ 'name' ]
+						) => {
+							setAttributes( {
+								slug: patternName,
+							} );
+							setModalOpen( false );
+						} }
+						patternCategories={ patternManager.patternCategories }
+						patterns={ filterOutPatterns(
+							patternManager.patterns,
+							currentName
+						) }
+						siteUrl={ patternManager.siteUrl }
+					/>
+				</Modal>
 			) }
-		</div>
+			{ pattern ? (
+				<div
+					{ ...blockProps }
+					style={ {
+						position: 'relative',
+					} }
+				>
+					<PatternInspector pattern={ pattern } />
+					<BlockControls group="block">
+						<Button onClick={ () => setModalOpen( true ) }>
+							{ __( 'Replace', 'pattern-manager' ) }
+						</Button>
+					</BlockControls>
+					<div
+						style={ {
+							right: '10px',
+							top: '10px',
+							position: 'absolute',
+							height: '35px',
+							width: '35px',
+							background: '#fff',
+							zIndex: '20',
+							borderRadius: '500px',
+							display: 'flex',
+							gap: '10px',
+							alignItems: 'center',
+							fontFamily:
+								'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+							fontSize: '16px',
+							padding: '5px',
+							border: 'solid 1px rgba(0,0,0,.1)',
+						} }
+					>
+						<Icon
+							icon={ lock }
+							style={ {
+								width: '25px',
+							} }
+						/>
+					</div>
+					<ServerSideRender
+						block="core/pattern"
+						className="pm-pattern-container"
+						attributes={ attributes }
+						httpMethod="POST"
+						urlQueryArgs={ { is_pm_pattern: true } }
+					/>
+				</div>
+			) : (
+				<div { ...blockProps }>
+					<PatternInspector />
+					<Placeholder
+						icon={ image }
+						label={ __(
+							'Pattern Manager Block',
+							'pattern-manager'
+						) }
+						instructions={ __(
+							'Build a multi-pattern layout with available patterns',
+							'pattern-manager'
+						) }
+					>
+						<Button
+							onClick={ () => {
+								setModalOpen( ! isModalOpen );
+							} }
+							variant="primary"
+						>
+							{ __( 'Select a Pattern', 'pattern-manager' ) }
+						</Button>
+					</Placeholder>
+				</div>
+			) }
+		</>
 	);
 }

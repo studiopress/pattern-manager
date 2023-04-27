@@ -5,7 +5,6 @@ import { registerPlugin } from '@wordpress/plugins';
 import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';
 import changeWords from './utils/changeWords';
-import registerPatternBlock from './utils/registerPatternBlock';
 import receiveActiveTheme from './utils/receiveActiveTheme';
 
 registerPlugin( 'pattern-manager-postmeta-for-patterns', {
@@ -19,11 +18,6 @@ registerPlugin( 'pattern-manager-back-button', {
 } );
 
 addFilter( 'i18n.gettext', 'pattern-manager/changeWords', changeWords );
-addFilter(
-	'blocks.registerBlockType',
-	'pattern-manager/registerPatternBlock',
-	registerPatternBlock
-);
 addAction(
 	'heartbeat.tick',
 	'pattern-manager/checkActiveTheme',
