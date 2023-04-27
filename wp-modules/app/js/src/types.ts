@@ -1,4 +1,5 @@
 import usePatterns from './hooks/usePatterns';
+import versionControl from './hooks/useVersionControl';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
@@ -7,12 +8,14 @@ export type InitialContext = {
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	patterns: ReturnType< typeof usePatterns >;
 	siteUrl: InitialPatternManager[ 'siteUrl' ];
+	versionControl: ReturnType< typeof versionControl >;
 };
 
 export type InitialPatternManager = {
 	adminUrl: string;
 	apiEndpoints: {
 		deletePatternEndpoint: string;
+		updateDismissedThemesEndpoint: string;
 	};
 	apiNonce: string;
 	patternCategories: QueriedCategories;
@@ -20,6 +23,7 @@ export type InitialPatternManager = {
 	siteUrl: string;
 	themeName: string;
 	versionControl: '' | 1;
+	dismissedThemes: Theme[ 'name' ][];
 };
 
 export type Pattern = {
@@ -45,3 +49,7 @@ export type QueriedCategories = {
 	label: string;
 	name: string;
 }[];
+
+export type Theme = {
+	name: string;
+};
