@@ -12,6 +12,7 @@ import PatternManagerContext from '../../contexts/PatternManagerContext';
 
 // Hooks
 import usePatterns from '../../hooks/usePatterns';
+import useVersionControl from '../../hooks/useVersionControl';
 
 // Components
 import Header from '../Header';
@@ -22,12 +23,14 @@ import type { InitialContext } from '../../types';
 
 export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
+	const versionControl = useVersionControl( patternManager.dismissedThemes );
 
 	const providerValue: InitialContext = {
 		apiEndpoints: patternManager.apiEndpoints,
 		patternCategories: patternManager.patternCategories,
 		patterns,
 		siteUrl: patternManager.siteUrl,
+		versionControl,
 	};
 
 	return (
