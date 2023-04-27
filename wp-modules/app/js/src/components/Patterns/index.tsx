@@ -9,7 +9,6 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 import SearchCount from './SearchCount';
-import VersionControlNotice from '../VersionControlNotice';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
@@ -20,10 +19,9 @@ import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 import type { PatternsProps } from '../../types';
 
 export default function Patterns( {
-	onNoticeDismissed,
 	onSelectPattern,
+	Notice,
 	PatternActions,
-	noticeIsVisible,
 	patternCategories,
 	patterns,
 	siteUrl,
@@ -48,10 +46,7 @@ export default function Patterns( {
 	return (
 		<div className="pattern-manager-theme-patterns">
 			<div className="patterns-container-inner">
-				<VersionControlNotice
-					isVisible={ noticeIsVisible }
-					handleDismiss={ onNoticeDismissed }
-				/>
+				{ Notice }
 				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(

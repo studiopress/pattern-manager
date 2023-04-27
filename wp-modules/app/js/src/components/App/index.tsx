@@ -23,6 +23,7 @@ import Patterns from '../Patterns';
 const PatternGridActions: PatternGridActionsType = loadable(
 	async () => import( '../Patterns/PatternGridActions' )
 );
+import VersionControlNotice from '../VersionControlNotice';
 
 // Types
 import type { InitialContext } from '../../types';
@@ -40,12 +41,16 @@ export default function App() {
 		<PatternManagerContext.Provider value={ providerValue }>
 			<Header />
 			<Patterns
-				noticeIsVisible={ versionControl.warningShouldShow }
-				onNoticeDismissed={ () => {
-					versionControl.updateDismissedThemes(
-						patternManager.themeName
-					);
-				} }
+				Notice={
+					<VersionControlNotice
+						isVisible={ versionControl.warningShouldShow }
+						handleDismiss={ () => {
+							versionControl.updateDismissedThemes(
+								patternManager.themeName
+							);
+						} }
+					/>
+				}
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.patternCategories }
 				patterns={ patterns.data }

@@ -47,8 +47,7 @@ export type PatternsProps = {
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	siteUrl: string;
-	noticeIsVisible: boolean;
-	onNoticeDismissed?: () => void;
+	Notice?: JSX.Element;
 };
 
 export type QueriedCategories = {
