@@ -21,6 +21,7 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		add_filter( 'template_directory', [ $this, 'get_template_directory' ] );
+		add_filter( 'user_id', [ $this, 'get_current_user_id' ] );
 	}
 
 	/**
@@ -28,6 +29,7 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	 */
 	public function tearDown() {
 		remove_filter( 'template_directory', [ $this, 'get_template_directory' ] );
+		remove_filter( 'user_id', [ $this, 'get_current_user_id' ] );
 		parent::tearDown();
 	}
 
