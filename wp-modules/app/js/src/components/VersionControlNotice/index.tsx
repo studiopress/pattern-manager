@@ -22,13 +22,14 @@ export default function VersionControlNotice( {
 		>
 			{ createInterpolateElement(
 				__(
-					'No version control detected for this theme. Learn how to set up git for your theme here: <a></a>.',
+					'No version control detected for this theme. We recommend adding version control so you do not lose your patterns during theme updates. <div></div>Learn how to set up git for your theme in <a></a>.',
 					'pattern-manager'
 				),
 				{
+					div: <div style={ { marginTop: '1rem' } }></div>,
 					a: (
 						<a href={ 'https://wpengine.com/support/git/' }>
-							{ __( 'Git Guide', 'pattern-manager' ) }
+							{ __( 'our Git Guide', 'pattern-manager' ) }
 						</a>
 					),
 				}
