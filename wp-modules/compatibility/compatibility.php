@@ -20,26 +20,29 @@ if ( ! defined( 'ABSPATH' ) ) {
  * For pattern previews, handle Genesis themes, who enqueue their stylesheets using genesis_meta.
  */
 function before_pattern_preview_wp_head() {
-	do_action( 'genesis_meta' );
+	do_action( 'genesis_meta' ); //phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 }
-add_action( 'pm_before_pattern_preview_wp_head', __NAMESPACE__ . '\before_pattern_preview_wp_head' );
+add_action( 'patternmanager_before_pattern_preview_wp_head', __NAMESPACE__ . '\before_pattern_preview_wp_head' );
 
 /**
  * For pattern previews, render the site-container div normally rendered by Genesis Framework
  */
 function before_pattern_preview() {
 	if ( function_exists( 'genesis' ) ) {
-		?><div class="<?php echo esc_attr('site-container'); ?>"><?php
+		?><div class="<?php echo esc_attr( 'site-container' ); ?>">
+		<?php
 	}
 }
-add_action( 'pm_before_pattern_preview', __NAMESPACE__ . '\before_pattern_preview' );
+add_action( 'patternmanager_before_pattern_preview', __NAMESPACE__ . '\before_pattern_preview' );
 
 /**
  * For pattern previews, close the site-container div normally rendered by Genesis Framework
  */
 function after_pattern_preview() {
 	if ( function_exists( 'genesis' ) ) {
-		?></div><?php
+		?>
+		</div>
+		<?php
 	}
 }
-add_action( 'pm_after_pattern_preview', __NAMESPACE__ . '\after_pattern_preview' );
+add_action( 'patternmanager_after_pattern_preview', __NAMESPACE__ . '\after_pattern_preview' );

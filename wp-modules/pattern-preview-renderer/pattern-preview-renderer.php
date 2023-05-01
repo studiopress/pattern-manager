@@ -28,19 +28,19 @@ function display_block_pattern_preview() {
 	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
-	
+
 	// Handle Genesis themes, who enqueue their stylesheets using genesis_meta.
-	do_action( 'pm_before_pattern_preview_wp_head' );
+	do_action( 'patternmanager_before_pattern_preview_wp_head' );
 
 	$the_content = do_the_content_things( $pattern['content'] ?? '' );
 
 	wp_head();
 
-	do_action( 'pm_before_pattern_preview' );
+	do_action( 'patternmanager_before_pattern_preview' );
 
 	echo wp_kses_post( $the_content );
-	
-	do_action( 'pm_after_pattern_preview' );
+
+	do_action( 'patternmanager_after_pattern_preview' );
 
 	wp_footer();
 
