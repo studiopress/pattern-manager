@@ -34,10 +34,10 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function tearDown() {
-		remove_filter( 'template_directory', [ $this, 'get_template_directory' ] );
-
 		delete_user_meta( $this->user_id, get_version_control_meta_key() );
 		wp_delete_user( $this->user_id );
+
+		remove_filter( 'template_directory', [ $this, 'get_template_directory' ] );
 
 		parent::tearDown();
 	}
@@ -76,24 +76,15 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	 * Tests `get_dismissed_themes()` from the `get-version-control` module.
 	 */
 	public function test_get_dismissed_themes() {
-		$this->assertSame(
-			$this->get_mock_dismissed_themes(),
-			get_dismissed_themes(),
-		);
+		$this->assertSame( $this->get_mock_dismissed_themes(), get_dismissed_themes() );
 	}
 
 	/**
 	 * Tests `check_version_control_notice_should_show()` from the `get-version-control` module.
 	 */
 	public function test_check_version_control_notice_should_show() {
-		$this->assertFalse(
-			(bool) check_version_control_notice_should_show( $this->get_mock_dismissed_themes()[0] )
-		);
-
-		$this->assertTrue(
-			(bool) check_version_control_notice_should_show( $this->get_mock_non_dismissed_theme() )
-		);
-
+		$this->assertFalse( (bool) check_version_control_notice_should_show( $this->get_mock_dismissed_themes()[0] ) );
+		$this->assertTrue( (bool) check_version_control_notice_should_show( $this->get_mock_non_dismissed_theme() ) );
 		// Theme name not found in user meta, but user has a version control folder in the path.
 		$this->assertFalse(
 			(bool) check_version_control_notice_should_show( $this->get_mock_non_dismissed_theme(), $this->get_mock_version_control_folder() )
@@ -105,7 +96,6 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	 */
 	public function test_check_for_version_control_in_theme() {
 		$this->assertTrue( (bool) check_for_version_control_in_theme( $this->get_mock_version_control_folder() ) );
-
 		// Git not used in fixture.
 		$this->assertFalse( (bool) check_for_version_control_in_theme( '/.git' ) );
 	}
@@ -115,8 +105,6 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	 */
 	public function test_check_theme_name_dismissed() {
 		$this->assertTrue( (bool) check_theme_name_dismissed( $this->get_mock_dismissed_themes()[0] ) );
-
-		// Git not used in fixture.
 		$this->assertFalse( (bool) check_theme_name_dismissed( $this->get_mock_non_dismissed_theme() ) );
 	}
 }

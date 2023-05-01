@@ -17,7 +17,6 @@ export type InitialPatternManager = {
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
 	siteUrl: string;
-	themeName: string;
 	showVersionControlNotice: boolean;
 };
 
