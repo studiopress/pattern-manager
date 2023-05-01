@@ -1,8 +1,10 @@
-//  Assets
-import '../../../../css/src/index.scss';
+// Assets
+import './index.scss';
+
+// External dependencies
+import loadable from '@loadable/component';
 
 // WP dependencies
-import { Snackbar } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 // Globals
@@ -12,40 +14,46 @@ import { patternManager } from '../../globals';
 import PatternManagerContext from '../../contexts/PatternManagerContext';
 
 // Hooks
-import useNotice from '../../hooks/useNotice';
 import usePatterns from '../../hooks/usePatterns';
+import useVersionControl from '../../hooks/useVersionControl';
 
 // Components
 import Header from '../Header';
 import Patterns from '../Patterns';
+const PatternGridActions: PatternGridActionsType = loadable(
+	async () => import( '../Patterns/PatternGridActions' )
+);
+import VersionControlNotice from '../VersionControlNotice';
 
 // Types
 import type { InitialContext } from '../../types';
+import { PatternGridActionsType } from '../Patterns/PatternGridActions';
 
 export default function App() {
-	const notice = useNotice();
 	const patterns = usePatterns( patternManager.patterns );
+	const versionControl = useVersionControl(
+		Boolean( patternManager.showVersionControlNotice )
+	);
 
 	const providerValue: InitialContext = {
-		apiEndpoints: patternManager.apiEndpoints,
-		notice,
 		patterns,
-		siteUrl: patternManager.siteUrl,
 	};
 
 	return (
 		<PatternManagerContext.Provider value={ providerValue }>
-			{ notice.value ? (
-				<Snackbar
-					onRemove={ () => {
-						notice.set( null );
-					} }
-				>
-					{ notice.value }
-				</Snackbar>
-			) : null }
 			<Header />
-			<Patterns />
+			<Patterns
+				Notice={
+					<VersionControlNotice
+						isVisible={ versionControl.displayNotice }
+						handleDismiss={ versionControl.updateDismissedThemes }
+					/>
+				}
+				PatternActions={ PatternGridActions }
+				patternCategories={ patternManager.patternCategories }
+				patterns={ patterns.data }
+				siteUrl={ patternManager.siteUrl }
+			/>
 		</PatternManagerContext.Provider>
 	);
 }

@@ -7,15 +7,10 @@ import { Button } from '@wordpress/components';
 /**
  * Internal dependencies
  */
-import getNextPatternIds from '../../utils/getNextPatternIds';
-import usePmContext from '../../hooks/usePmContext';
+import { patternManager } from '../../globals';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
-import getNewPattern from '../../utils/getNewPattern';
-import getEditorUrl from '../../utils/getEditorUrl';
 
 export default function Header() {
-	const { notice, patterns } = usePmContext();
-
 	return (
 		<div className="pattern-manager-header-container">
 			<div className="header-container-logo">
@@ -32,28 +27,7 @@ export default function Header() {
 			<div className="header-container-inner">
 				<Button
 					variant="primary"
-					onClick={ async () => {
-						notice.set(
-							__(
-								'Creating your new pattern and opening it in the editor.',
-								'pattern-manager'
-							)
-						);
-						// Get the new pattern title and slug.
-						const { patternTitle, patternSlug } = getNextPatternIds(
-							patterns.data
-						);
-
-						await patterns.savePattern(
-							getNewPattern( {
-								title: patternTitle,
-								name: patternSlug,
-								slug: patternSlug,
-								content: '',
-							} )
-						);
-						document.location.href = getEditorUrl( patternSlug );
-					} }
+					href={ `${ patternManager.siteUrl }/wp-admin/post-new.php?post_type=pm_pattern` }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }
 				</Button>

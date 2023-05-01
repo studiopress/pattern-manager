@@ -1,0 +1,117 @@
+/* stylelint-disable */
+.edit-post-post-status,
+.edit-post-visual-editor__post-title-wrapper {
+	display: none !important;
+}
+
+/* Hide tags for templates */
+.patternmanager-template-details~* {
+	display: none !important;
+}
+
+/* Hide the 'Save Draft' button in the pattern editor (appears after pattern is published), as the 'Update' button handles it. */
+button.components-button.editor-post-save-draft.is-tertiary {
+	display: none;
+}
+
+/* Hide the 'Switch to draft' button in the pattern editor, as draft doesn't mean anything for a pattern saved to a .php file. */
+button.components-button.editor-post-switch-to-draft.is-tertiary {
+	display: none;
+}
+
+/* Toggle components */
+.patternmanager-post-type-modal-toggle,
+.patternmanager-inserter-toggle {
+	margin-top: 16px;
+	margin-bottom: -12px;
+
+	/* Keep label from shifting for conditional ReverseTooltip */
+	label.components-toggle-control__label {
+		height: 20px;
+	}
+}
+
+/* Name input component */
+#patternmanager-pattern-post-name-input-component {
+	background-color: hsl(0, 0%, 100%);
+	border-color: hsl(0, 0%, 80%);
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	box-sizing: border-box;
+	height: 50px;
+
+	@media only screen and (min-width: 781.25px) {
+		height: 40px;
+	}
+
+	&:focus {
+		border-color: #2684ff;
+		transition: all 100ms;
+		box-shadow: 0 0 0 1px #2684ff;
+	}
+}
+
+/* Pattern name input error section */
+.components-panel__row-patternmanager-pattern-name-error {
+	min-height: auto;
+
+	&-inner {
+		color: red;
+		font-weight: 600;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}
+
+/* Tooltip components */
+.patternmanager-pattern-sidebar-tooltip {
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+
+.patternmanager-pattern-sidebar-tooltip #tooltip-icon-helper-text {
+	padding-left: 8px;
+	cursor: default;
+}
+
+.patternmanager-pattern-sidebar-reverse-tooltip #tooltip-icon-helper-text {
+	padding-right: 8px;
+	cursor: pointer;
+}
+
+/* Description component */
+#patternmanager-pattern-editor-description-textarea {
+	background-color: hsl(0, 0%, 100%);
+	border-color: hsl(0, 0%, 80%);
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	box-sizing: border-box;
+
+	&:focus {
+		border-color: #2684ff;
+		transition: all 100ms;
+		box-shadow: 0 0 0 1px #2684ff;
+	}
+}
+
+.pm-pattern-container > * {
+	max-width: none;
+
+	&.alignwide {
+		max-width: var(--wp--style--global--wide-size, 1280px);
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+
+	&:where(:not(.alignwide):not(.alignleft):not(.alignright):not(.alignfull)) {
+		max-width: var(--wp--style--global--content-size, 640px);
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
+}
+
+.pm-pattern-block-modal {
+	min-width: 80%;
+}

@@ -48,6 +48,7 @@ export default function PreviewIframe( {
 					title={ __( 'Pattern Preview', 'pattern-manager' ) }
 					role="img"
 					tabIndex={ -1 }
+					aria-hidden="true"
 					style={ {
 						width: viewportWidth,
 						height: iframeBodyHeight,

@@ -1,10 +1,9 @@
+import './index.scss';
+
 // WP dependencies
 import { SearchControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, useState } from '@wordpress/element';
-
-// Hooks
-import usePmContext from '../../hooks/usePmContext';
 
 // Components
 import PatternCategories from './PatternCategories';
@@ -16,14 +15,22 @@ import createPatternsWithUncategorized from '../../utils/createPatternsWithUncat
 import getFilteredPatterns from '../../utils/getFilteredPatterns';
 import getUniquePatternCategories from '../../utils/getUniquePatternCategories';
 
-export default function Patterns() {
-	const { patterns } = usePmContext();
+// Types
+import type { PatternsProps } from '../../types';
+
+export default function Patterns( {
+	onSelectPattern,
+	Notice,
+	PatternActions,
+	patternCategories,
+	patterns,
+	siteUrl,
+}: PatternsProps ) {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
 	const [ searchTerm, setSearchTerm ] = useState( '' );
 
-	const patternsWithUncategorized = createPatternsWithUncategorized(
-		patterns.data
-	);
+	const patternsWithUncategorized =
+		createPatternsWithUncategorized( patterns );
 
 	const filteredPatterns = getFilteredPatterns(
 		patternsWithUncategorized,
@@ -32,13 +39,15 @@ export default function Patterns() {
 	);
 
 	const uniqueCategories = getUniquePatternCategories(
-		patternsWithUncategorized
+		patternsWithUncategorized,
+		patternCategories
 	);
 
 	return (
-		<div className="patternmanager-theme-patterns">
+		<div className="pattern-manager-theme-patterns">
 			<div className="patterns-container-inner">
-				{ ! Object.entries( patterns.data ?? {} ).length ? (
+				{ Notice }
+				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
 							__(
@@ -49,7 +58,7 @@ export default function Patterns() {
 								span: (
 									<strong>
 										{ __(
-											'Add New Pattern',
+											'Create New Pattern',
 											'pattern-manager'
 										) }
 									</strong>
@@ -58,8 +67,12 @@ export default function Patterns() {
 						) }
 					</div>
 				) : (
-					<>
-						<div className="inner-sidebar">
+					<div className="pattern-columns">
+						<div
+							className="pattern-inner-sidebar"
+							role="region"
+							aria-label="Sort patterns by category"
+						>
 							<SearchControl
 								className="pattern-search"
 								label={ __(
@@ -86,10 +99,19 @@ export default function Patterns() {
 								/>
 							) }
 						</div>
-						<div className="inner-grid">
-							<PatternGrid themePatterns={ filteredPatterns } />
+						<div
+							className="inner-grid"
+							role="region"
+							aria-label="Block Patterns"
+						>
+							<PatternGrid
+								onSelectPattern={ onSelectPattern }
+								PatternActions={ PatternActions }
+								patterns={ filteredPatterns }
+								siteUrl={ siteUrl }
+							/>
 						</div>
-					</>
+					</div>
 				) }
 			</div>
 		</div>

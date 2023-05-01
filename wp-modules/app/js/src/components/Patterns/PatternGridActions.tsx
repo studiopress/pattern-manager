@@ -1,36 +1,33 @@
 // WP dependencies
-import { __ } from '@wordpress/i18n';
+import { sprintf, __ } from '@wordpress/i18n';
 import { Icon, trash, copy, settings } from '@wordpress/icons';
+import { Button } from '@wordpress/components';
 
 // Hooks
 import usePmContext from '../../hooks/usePmContext';
 
-// Utils
-import deletePattern from '../../utils/deletePattern';
-import getDuplicatePattern from '../../utils/getDuplicatePattern';
-import getEditorUrl from '../../utils/getEditorUrl';
-
 // Types
-import type { Pattern, Patterns } from '../../types';
+import type { Pattern } from '../../types';
+import { patternManager } from '../../globals';
 
 type Props = {
-	themePatterns: Patterns;
 	patternData: Pattern;
 };
 
 /** Render the pattern action buttons. */
-export default function PatternGridActions( {
-	themePatterns,
-	patternData,
-}: Props ) {
-	const { notice, patterns } = usePmContext();
+export default function PatternGridActions( { patternData }: Props ) {
+	const { patterns } = usePmContext();
 	return (
 		<div className="item-actions">
 			<div className="item-actions-inside">
-				<a
+				<Button
 					className="item-action-button"
-					aria-label={ __( 'Edit Pattern', 'pattern-manager' ) }
-					href={ getEditorUrl( patternData.name ) }
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Edit %1$s', 'pattern-manager' ),
+						patternData.title
+					) }
+					href={ patternData.editorLink }
 				>
 					<Icon
 						className="item-action-icon"
@@ -40,45 +37,35 @@ export default function PatternGridActions( {
 					<span className="item-action-button-text">
 						{ __( 'Edit', 'pattern-manager' ) }
 					</span>
-				</a>
+				</Button>
 
-				<div className="item-action-button-separator"></div>
-
-				<button
-					type="button"
+				<Button
 					className="item-action-button"
-					aria-label={ __( 'Duplicate Pattern', 'pattern-manager' ) }
-					onClick={ async () => {
-						notice.set(
-							__(
-								'Duplicating your pattern and opening it in the editor…',
-								'pattern-manager'
-							)
-						);
-						const newPattern = getDuplicatePattern(
-							patternData,
-							Object.values( themePatterns ?? {} )
-						);
-						await patterns.savePattern( newPattern );
-						document.location.href = getEditorUrl(
-							newPattern.name
-						);
-					} }
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Duplicate %1$s', 'pattern-manager' ),
+						patternData.title
+					) }
+					href={ `${ patternManager.siteUrl }/wp-admin/admin.php?post_type=pm_pattern&action=duplicate&name=${ patternData.name }` }
 				>
 					<Icon
 						className="item-action-icon"
 						icon={ copy }
 						size={ 30 }
 					/>
-					<span className="item-action-button-text">Duplicate</span>
-				</button>
+					<span className="item-action-button-text">
+						{ __( 'Duplicate', 'pattern-manager' ) }
+					</span>
+				</Button>
 
-				<div className="item-action-button-separator"></div>
-
-				<button
+				<Button
 					type="button"
 					className="item-action-button"
-					aria-label={ __( 'Delete pattern', 'pattern-manager' ) }
+					aria-label={ sprintf(
+						/* translators: %1$s: the pattern title */
+						__( 'Delete %1$s', 'pattern-manager' ),
+						patternData.title
+					) }
 					onClick={ () => {
 						if (
 							/* eslint-disable no-alert */
@@ -89,12 +76,7 @@ export default function PatternGridActions( {
 								)
 							)
 						) {
-							const newPatterns = deletePattern(
-								patternData.name,
-								patterns.data
-							);
-							patterns.set( newPatterns );
-							patterns.savePatterns( newPatterns );
+							patterns.deletePattern( patternData.name );
 						}
 					} }
 				>
@@ -104,7 +86,7 @@ export default function PatternGridActions( {
 						size={ 30 }
 					/>
 					<span className="item-action-button-text">Delete</span>
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

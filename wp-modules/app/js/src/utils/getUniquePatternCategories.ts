@@ -8,10 +8,13 @@ import { __ } from '@wordpress/i18n';
  */
 import convertToUpperCase from './convertToUpperCase';
 import sortAlphabetically from './sortAlphabetically';
-import type { Patterns } from '../types';
+import type { Patterns, QueriedCategories } from '../types';
 
 /** Create a mapping of unique categories for a dropdown or other list. */
-export default function getUniquePatternCategories( patterns: Patterns ) {
+export default function getUniquePatternCategories(
+	patterns: Patterns,
+	queriedCategories: QueriedCategories
+) {
 	return [
 		// Keep all-patterns at top of list.
 		{
@@ -34,12 +37,18 @@ export default function getUniquePatternCategories( patterns: Patterns ) {
 						];
 					}, [] )
 					// Map the array to expected object shape.
-					.map( ( category: string ) => ( {
-						label: convertToUpperCase(
-							category.replace( /[-_]/g, ' ' )
-						),
-						name: category,
-					} ) ),
+					.map( ( categoryName: string ) => {
+						return {
+							label:
+								queriedCategories.find(
+									( { name } ) => name === categoryName
+								)?.label ||
+								convertToUpperCase(
+									categoryName.replace( /[-_]/g, ' ' )
+								),
+							name: categoryName,
+						};
+					} ),
 			],
 			// Sort by name property.
 			'name'

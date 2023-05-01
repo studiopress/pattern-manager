@@ -13,6 +13,8 @@ namespace PatternManager\ApiData;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use function \PatternManager\GetVersionControl\get_dismissed_themes;
+use function \PatternManager\GetVersionControl\get_version_control_meta_key;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -50,18 +52,18 @@ function register_routes() {
 
 	register_rest_route(
 		$namespace,
-		'/save-pattern',
+		'/delete-pattern',
 		array(
-			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\save_pattern',
+			'methods'             => 'DELETE',
+			'callback'            => __NAMESPACE__ . '\delete_pattern',
 			'permission_callback' => __NAMESPACE__ . '\permission_check',
 			'args'                => array(
-				'pattern' => array(
+				'patternName' => array(
 					'required'          => true,
-					'type'              => 'object',
-					'description'       => __( 'The pattern', 'pattern-manager' ),
+					'type'              => 'string',
+					'description'       => __( 'The pattern to delete', 'pattern-manager' ),
 					'validate_callback' => function( $to_validate ) {
-						return is_array( $to_validate );
+						return is_string( $to_validate );
 					},
 				),
 			),
@@ -70,21 +72,11 @@ function register_routes() {
 
 	register_rest_route(
 		$namespace,
-		'/save-patterns',
+		'/update-dismissed-themes',
 		array(
 			'methods'             => 'POST',
-			'callback'            => __NAMESPACE__ . '\save_patterns',
+			'callback'            => __NAMESPACE__ . '\update_dismissed_themes',
 			'permission_callback' => __NAMESPACE__ . '\permission_check',
-			'args'                => array(
-				'patterns' => array(
-					'required'          => true,
-					'type'              => 'object',
-					'description'       => __( 'The patterns', 'pattern-manager' ),
-					'validate_callback' => function( $to_validate ) {
-						return is_array( $to_validate );
-					},
-				),
-			),
 		)
 	);
 }
@@ -109,18 +101,18 @@ function get_pattern_names() {
 }
 
 /**
- * Saves a single pattern.
+ * Deletes a single pattern.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
  */
-function save_pattern( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\update_pattern( $request->get_params()['pattern'] );
+function delete_pattern( $request ) {
+	$is_success = \PatternManager\PatternDataHandlers\delete_pattern( $request->get_params()['patternName'] );
 
 	return $is_success
 		? new WP_REST_Response(
 			array(
-				'message' => __( 'Pattern saved to disk', 'pattern-manager' ),
+				'message' => __( 'Pattern successfully deleted', 'pattern-manager' ),
 			),
 			200
 		)
@@ -128,18 +120,19 @@ function save_pattern( $request ) {
 }
 
 /**
- * Saves multiple patterns.
+ * Updates the list of theme names that should not show version control notifications.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
  */
-function save_patterns( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\update_patterns( $request->get_params()['patterns'] );
+function update_dismissed_themes( $request ) {
+	$dismissed_themes = array_merge( get_dismissed_themes(), (array) wp_get_theme()->get( 'Name' ) );
+	$is_success       = update_user_meta( get_current_user_id(), get_version_control_meta_key(), $dismissed_themes );
 
 	return $is_success
 		? new WP_REST_Response(
 			array(
-				'message' => __( 'Patterns successfully saved to disk', 'pattern-manager' ),
+				'message' => __( 'Version control notifications dismissed for this theme.', 'pattern-manager' ),
 			),
 			200
 		)
@@ -151,6 +144,6 @@ function save_patterns( $request ) {
  *
  * @return bool
  */
-function permission_check() {
+function permission_check(): bool {
 	return current_user_can( 'manage_options' );
 }

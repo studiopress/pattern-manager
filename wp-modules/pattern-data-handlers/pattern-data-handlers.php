@@ -11,6 +11,9 @@ declare(strict_types=1);
 
 namespace PatternManager\PatternDataHandlers;
 
+use WP_Query;
+use function PatternManager\Editor\get_pattern_post_type;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -113,6 +116,8 @@ function format_pattern_data( $pattern_data, $file ) {
 		$pattern_data['description'] = translate_with_gettext_context( $pattern_data['description'], 'Pattern description', $text_domain );
 	}
 
+	wp_opcache_invalidate( $file );
+
 	// The actual pattern content is the output of the file.
 	ob_start();
 	include $file;
@@ -129,7 +134,7 @@ function format_pattern_data( $pattern_data, $file ) {
  *
  * @return array
  */
-function get_theme_patterns() {
+function get_theme_patterns(): array {
 	$patterns = array();
 
 	// Grab all the patterns in this theme.
@@ -146,12 +151,49 @@ function get_theme_patterns() {
 }
 
 /**
+ * Get the pattern data with links to the editor.
+ *
+ * @return array
+ */
+function get_theme_patterns_with_editor_links() {
+	$all_patterns = get_theme_patterns();
+	foreach ( $all_patterns as $pattern_name => $pattern ) {
+		if ( $pattern ) {
+			$query = new WP_Query(
+				[
+					'post_type'      => get_pattern_post_type(),
+					'post_name'      => $pattern['name'],
+					'post_status'    => 'publish',
+					'posts_per_page' => 1,
+				]
+			);
+			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
+
+			$pattern['editorLink'] = $post && $post->name === $pattern['name']
+				? get_edit_post_link( $post, 'localized_data' )
+				: add_query_arg(
+					[
+						'post_type' => get_pattern_post_type(),
+						'action'    => 'edit-pattern',
+						'name'      => $pattern['name'],
+					],
+					admin_url()
+				);
+
+			$all_patterns[ $pattern_name ] = $pattern;
+		}
+	}
+
+	return $all_patterns;
+}
+
+/**
  * Gets the directory the patterns are in.
  *
  * @return string
  */
 function get_patterns_directory() {
-	return get_template_directory() . '/patterns/';
+	return get_stylesheet_directory() . '/patterns/';
 }
 
 /**
@@ -186,19 +228,28 @@ function get_pattern_by_path( $path ) {
 	if ( ! $pattern_data ) {
 		return false;
 	}
-	$pattern_data['name'] = basename( $path, '.php' );
 
-	return $pattern_data;
+	return array_merge( $pattern_data, array( 'name' => basename( $path, '.php' ) ) );
 }
 
 /**
- * Gets a pattern by the name in the query param.
+ * Gets the default values for a pattern.
  *
- * @return array|null The pattern for the editor.
+ * @return array
  */
-function get_pattern_from_query_param() {
-	$pattern_name = filter_input( INPUT_GET, 'name' );
-	return get_pattern_by_name( urldecode( sanitize_text_field( $pattern_name ) ) );
+function get_pattern_defaults() {
+	return [
+		'name'          => '',
+		'title'         => '',
+		'description'   => '',
+		'content'       => '',
+		'viewportWidth' => 1280,
+		'categories'    => [],
+		'keywords'      => [],
+		'blockTypes'    => [],
+		'postTypes'     => [],
+		'inserter'      => true,
+	];
 }
 
 /**
@@ -208,11 +259,21 @@ function get_pattern_from_query_param() {
  * @return array|false
  */
 function get_pattern_by_name( $name ) {
-	$pattern_path = get_patterns_directory() . $name . '.php';
+	$pattern_path = get_pattern_path( $name );
 
 	return file_exists( $pattern_path )
 		? get_pattern_by_path( $pattern_path )
 		: false;
+}
+
+/**
+ * Gets the path to a pattern.
+ *
+ * @param string $name The pattern name.
+ * @return string The absolute pattern path.
+ */
+function get_pattern_path( string $name ): string {
+	return get_patterns_directory() . $name . '.php';
 }
 
 /**
@@ -230,7 +291,7 @@ function get_pattern_names() {
 }
 
 /**
- * Update a single pattern.
+ * Update or create a single pattern.
  *
  * @param array $pattern Data about the pattern.
  * @return bool
@@ -239,14 +300,8 @@ function update_pattern( $pattern ) {
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
 
-	$patterns_dir     = get_patterns_directory();
-	$name_was_changed = ! empty( $pattern['previousName'] ) && $pattern['previousName'] !== $pattern['name'];
-	if ( $name_was_changed ) {
-		// Delete the previous pattern file, as the file name should change on changing the name.
-		$wp_filesystem->delete( $patterns_dir . sanitize_title( $pattern['previousName'] ) . '.php' );
-	}
-
-	$file_contents = construct_pattern_php_file_contents( $pattern, 'pattern-manager' );
+	$patterns_dir  = get_patterns_directory();
+	$file_contents = construct_pattern_php_file_contents( $pattern );
 	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
 
 	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
@@ -263,49 +318,18 @@ function update_pattern( $pattern ) {
 }
 
 /**
- * Update the patterns.
+ * Deletes a pattern.
  *
- * @param array $patterns The new patterns.
- * @return bool Whether all patterns updated.
+ * @param string $pattern_name The pattern name to delete.
+ * @return bool Whether the deletion succeeded.
  */
-function update_patterns( $patterns ) {
-	delete_patterns_not_present( $patterns );
-
-	$results = array_map(
-		function( $pattern ) {
-			return update_pattern( $pattern );
-		},
-		$patterns
-	);
-
-	// Now that all patterns have been saved, remove any images no longer needed in the theme.
-	tree_shake_theme_images();
-
-	return ! in_array( false, $results, true );
-}
-
-/**
- * Deletes any pattern file whose name isn't present in the passed patterns.
- *
- * @param string[] $patterns The patterns to not delete.
- */
-function delete_patterns_not_present( array $patterns ) {
-	$pattern_names = wp_list_pluck( array_values( $patterns ), 'name' );
+function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-	if ( ! $wp_filesystem ) {
-		return;
-	}
+	$pattern_path  = get_pattern_path( $pattern_name );
+	$result        = $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
+	tree_shake_theme_images( $wp_filesystem, 'copy_dir' );
 
-	$pattern_file_paths = get_pattern_file_paths();
-	if ( ! $pattern_file_paths ) {
-		return;
-	}
-
-	foreach ( $pattern_file_paths as $pattern_file ) {
-		if ( ! in_array( basename( $pattern_file, '.php' ), $pattern_names, true ) ) {
-			$wp_filesystem->delete( $pattern_file );
-		}
-	}
+	return $result;
 }
 
 /**
@@ -318,32 +342,31 @@ function delete_patterns_not_present( array $patterns ) {
 function remove_theme_name_from_template_parts( $pattern_content ) {
 
 	// Find all references to "theme":"anything" and remove them, as we want blocks to work with any theme they are inside of.
-	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_template_directory() ) . '"', $pattern_content );
+	return preg_replace( '/,"theme":"[A-Za-z-]*"/', ',"theme":"' . basename( get_stylesheet_directory() ) . '"', $pattern_content );
 }
 
 /**
  * Returns a string containing the code for a pattern file.
  *
- * @param array  $pattern Data about the pattern.
- * @param string $text_domain The text domain to use for any localization required.
- * @return bool
+ * @param array $pattern_data Data about the pattern.
+ * @return string
  */
-function construct_pattern_php_file_contents( $pattern, $text_domain ) {
+function construct_pattern_php_file_contents( $pattern_data ) {
+	$pattern            = wp_parse_args( $pattern_data, get_pattern_defaults() );
 	$pattern['content'] = remove_theme_name_from_template_parts( $pattern['content'] );
 	$pattern['content'] = move_block_images_to_theme( $pattern['content'] );
 
-	// phpcs:ignore
-	$file_contents = "<?php
+	$file_contents = '<?php
 /**
- * Title: " . addcslashes( $pattern['title'], '\'' ) . '
+ * Title: ' . addcslashes( $pattern['title'], '\'' ) . '
  * Slug: ' . $pattern['name'] . '
  * Description: ' . $pattern['description'] . '
- * Categories: ' . ( isset( $pattern['categories'] ) ? implode( ', ', $pattern['categories'] ) : '' ) . '
- * Keywords: ' . ( isset( $pattern['keywords'] ) ? implode( ', ', $pattern['keywords'] ) : '' ) . '
- * Viewport Width: ' . ( $pattern['viewportWidth'] ? $pattern['viewportWidth'] : '1280' ) . '
- * Block Types: ' . ( isset( $pattern['blockTypes'] ) ? implode( ', ', $pattern['blockTypes'] ) : '' ) . '
- * Post Types: ' . ( isset( $pattern['postTypes'] ) ? implode( ', ', $pattern['postTypes'] ) : '' ) . '
- * Inserter: ' . ( $pattern['inserter'] ?? true ? 'true' : 'false' ) . '
+ * Categories: ' . implode( ', ', $pattern['categories'] ) . '
+ * Keywords: ' . implode( ', ', $pattern['keywords'] ) . '
+ * Viewport Width: ' . $pattern['viewportWidth'] . '
+ * Block Types: ' . implode( ', ', $pattern['blockTypes'] ) . '
+ * Post Types: ' . implode( ', ', $pattern['postTypes'] ) . '
+ * Inserter: ' . ( $pattern['inserter'] ? 'true' : 'false' ) . '
  */
 
 ?>
@@ -355,30 +378,28 @@ function construct_pattern_php_file_contents( $pattern, $text_domain ) {
 /**
  * Scan all patterns in theme for images and other files, keep only ones actually being used.
  *
- * @param array $patterns_in_theme The patterns in the theme.
+ * @param object $wp_filesystem The file system.
+ * @param callable $copy_dir Copies a directory.
  */
-function tree_shake_theme_images() {
-	// Spin up the filesystem api.
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
+function tree_shake_theme_images( $wp_filesystem, $copy_dir ) {
 	// Get the current patterns in the theme (not including templates and templates parts).
 	// Important note: we are not pulling in images from templates and parts because they are html files, and thus cannot reference a local image.
 	// Add the included Patterns for the current theme.
-	$theme_dir         = get_template_directory();
+	$theme_dir         = get_stylesheet_directory();
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir          = $theme_dir . '/assets/images/';
+	$images_dir          = $theme_dir . '/patterns/images/';
 
-	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
+	$wp_theme_url = get_stylesheet_directory_uri();
+	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
 	}
 
 	// Before we take any action, back up the current images directory.
-	copy_dir( $images_dir, $backedup_images_dir );
+	call_user_func( $copy_dir, $images_dir, $backedup_images_dir );
 
 	// Delete the images directory so we know it only contains what is needed.
 	$wp_filesystem->delete( $images_dir, true, 'd' );
@@ -399,7 +420,7 @@ function tree_shake_theme_images() {
 
 		$urls_found = $output_array[0];
 
-		$img_urls_found = $output_array['url'];
+		$img_urls_found = $output_array['url'] ?? [];
 
 		// Loop through each URL found.
 		foreach ( $urls_found as $url_found ) {
@@ -430,13 +451,16 @@ function move_block_images_to_theme( $pattern_html ) {
 
 	// Spin up the filesystem api.
 	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+	if ( ! $wp_filesystem ) {
+		return $pattern_html;
+	}
 
-	$wp_theme_dir = get_template_directory();
+	$wp_theme_dir = get_stylesheet_directory();
 	$assets_dir   = $wp_theme_dir . '/assets/';
-	$images_dir   = $wp_theme_dir . '/assets/images/';
+	$images_dir   = $wp_theme_dir . '/patterns/images/';
 
-	$wp_theme_url = get_template_directory_uri();
-	$images_url   = $wp_theme_url . '/assets/images/';
+	$wp_theme_url = get_stylesheet_directory_uri();
+	$images_url   = $wp_theme_url . '/patterns/images/';
 
 	if ( ! $wp_filesystem->exists( $assets_dir ) ) {
 		$wp_filesystem->mkdir( $assets_dir );
@@ -481,13 +505,13 @@ function move_block_images_to_theme( $pattern_html ) {
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(
-			$wp_theme_dir . '/assets/images/' . $filename,
+			$wp_theme_dir . '/patterns/images/' . $filename,
 			$file_contents,
 			FS_CHMOD_FILE
 		);
 
 		// Replace the URL with the one we just added to the theme.
-		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/$filename", $pattern_html );
+		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/$filename", $pattern_html );
 	}
 
 	return $pattern_html;

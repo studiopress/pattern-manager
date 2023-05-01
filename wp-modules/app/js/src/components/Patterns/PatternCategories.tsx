@@ -17,12 +17,12 @@ export default function PatternCategories( {
 	setCurrentCategory,
 }: Props ) {
 	return (
-		<>
+		<div className="pattern-categories">
 			{ categories.map( ( category ) => {
 				const classes = [
 					'category',
 					...( currentCategory === category.name
-						? [ 'category-selected' ]
+						? [ 'category-selected is-pressed' ]
 						: [] ),
 				].join( ' ' );
 
@@ -41,6 +41,6 @@ export default function PatternCategories( {
 					</Button>
 				);
 			} ) }
-		</>
+		</div>
 	);
 }
