@@ -35,6 +35,10 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	 */
 	public function tearDown() {
 		remove_filter( 'template_directory', [ $this, 'get_template_directory' ] );
+
+		delete_user_meta( $this->user_id, get_version_control_meta_key() );
+		wp_delete_user( $this->user_id );
+
 		parent::tearDown();
 	}
 
