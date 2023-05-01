@@ -1,4 +1,5 @@
 import usePatterns from './hooks/usePatterns';
+import versionControl from './hooks/useVersionControl';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
@@ -10,11 +11,14 @@ export type InitialPatternManager = {
 	adminUrl: string;
 	apiEndpoints: {
 		deletePatternEndpoint: string;
+		updateDismissedThemesEndpoint: string;
 	};
 	apiNonce: string;
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
 	siteUrl: string;
+	themeName: string;
+	showVersionControlNotice: boolean;
 };
 
 export type Pattern = {
@@ -42,9 +46,14 @@ export type PatternsProps = {
 	patternCategories: InitialPatternManager[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	siteUrl: string;
+	Notice?: JSX.Element;
 };
 
 export type QueriedCategories = {
 	label: string;
 	name: string;
 }[];
+
+export type Theme = {
+	name: string;
+};

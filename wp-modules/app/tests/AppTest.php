@@ -28,6 +28,7 @@ class AppTest extends WP_UnitTestCase {
 				'apiEndpoints',
 				'siteUrl',
 				'adminUrl',
+				'showVersionControlNotice',
 			],
 			array_keys( get_app_state() )
 		);

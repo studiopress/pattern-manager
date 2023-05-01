@@ -15,6 +15,7 @@ import PatternManagerContext from '../../contexts/PatternManagerContext';
 
 // Hooks
 import usePatterns from '../../hooks/usePatterns';
+import useVersionControl from '../../hooks/useVersionControl';
 
 // Components
 import Header from '../Header';
@@ -22,6 +23,7 @@ import Patterns from '../Patterns';
 const PatternGridActions: PatternGridActionsType = loadable(
 	async () => import( '../Patterns/PatternGridActions' )
 );
+import VersionControlNotice from '../VersionControlNotice';
 
 // Types
 import type { InitialContext } from '../../types';
@@ -29,6 +31,9 @@ import { PatternGridActionsType } from '../Patterns/PatternGridActions';
 
 export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
+	const versionControl = useVersionControl(
+		Boolean( patternManager.showVersionControlNotice )
+	);
 
 	const providerValue: InitialContext = {
 		patterns,
@@ -38,6 +43,12 @@ export default function App() {
 		<PatternManagerContext.Provider value={ providerValue }>
 			<Header />
 			<Patterns
+				Notice={
+					<VersionControlNotice
+						isVisible={ versionControl.displayNotice }
+						handleDismiss={ versionControl.updateDismissedThemes }
+					/>
+				}
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.patternCategories }
 				patterns={ patterns.data }

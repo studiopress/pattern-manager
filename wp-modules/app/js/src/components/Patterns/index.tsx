@@ -20,6 +20,7 @@ import type { PatternsProps } from '../../types';
 
 export default function Patterns( {
 	onSelectPattern,
+	Notice,
 	PatternActions,
 	patternCategories,
 	patterns,
@@ -45,6 +46,7 @@ export default function Patterns( {
 	return (
 		<div className="pattern-manager-theme-patterns">
 			<div className="patterns-container-inner">
+				{ Notice }
 				{ ! Object.entries( patterns ?? {} ).length ? (
 					<div className="grid-empty">
 						{ createInterpolateElement(
