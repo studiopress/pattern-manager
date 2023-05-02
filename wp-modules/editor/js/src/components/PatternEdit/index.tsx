@@ -67,9 +67,9 @@ export default function PatternEdit( {
 	attributes,
 	setAttributes,
 }: PatternEditProps ) {
-	const splitSlug = attributes?.slug?.split( '/' );
-	const pattern =
-		patternManager.patterns[ splitSlug?.[ splitSlug?.length - 1 ] ];
+	const pattern = Object.values( patternManager.patterns ).find(
+		( ownPattern ) => ownPattern.slug === attributes.slug
+	);
 	const [ isModalOpen, setModalOpen ] = useState( false );
 	const blockProps = useBlockProps( {
 		className: pattern ? 'alignfull' : 'is-layout-constrained',
@@ -84,12 +84,8 @@ export default function PatternEdit( {
 					onRequestClose={ () => setModalOpen( false ) }
 				>
 					<Patterns
-						onSelectPattern={ (
-							patternName: Pattern[ 'name' ]
-						) => {
-							setAttributes( {
-								slug: patternName,
-							} );
+						onSelectPattern={ ( { slug } ) => {
+							setAttributes( { slug } );
 							setModalOpen( false );
 						} }
 						patternCategories={ patternManager.patternCategories }
@@ -146,7 +142,6 @@ export default function PatternEdit( {
 						className="pm-pattern-container"
 						attributes={ attributes }
 						httpMethod="POST"
-						urlQueryArgs={ { is_pm_pattern: true } }
 					/>
 				</div>
 			) : (

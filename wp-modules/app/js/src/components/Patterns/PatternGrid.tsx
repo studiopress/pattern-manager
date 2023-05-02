@@ -47,10 +47,10 @@ export default function PatternGrid( {
 								role={ onSelectPattern ? 'button' : undefined }
 								key={ patternName }
 								onClick={ () =>
-									onSelectPattern?.( patternName )
+									onSelectPattern?.( patternData )
 								}
 								onKeyDown={ () =>
-									onSelectPattern?.( patternName )
+									onSelectPattern?.( patternData )
 								}
 								className="grid-item"
 								aria-label={ patternData.title }
