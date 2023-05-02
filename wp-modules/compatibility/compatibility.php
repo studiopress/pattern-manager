@@ -29,8 +29,12 @@ add_action( 'patternmanager_before_pattern_preview_wp_head', __NAMESPACE__ . '\b
  */
 function before_pattern_preview() {
 	if ( function_exists( 'genesis' ) ) {
-		?><div class="<?php echo esc_attr( 'site-container' ); ?>">
-		<?php
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'context' => 'site-container',
+			]
+		);
 	}
 }
 add_action( 'patternmanager_before_pattern_preview', __NAMESPACE__ . '\before_pattern_preview' );
@@ -40,9 +44,12 @@ add_action( 'patternmanager_before_pattern_preview', __NAMESPACE__ . '\before_pa
  */
 function after_pattern_preview() {
 	if ( function_exists( 'genesis' ) ) {
-		?>
-		</div>
-		<?php
+		genesis_markup(
+			[
+				'close'   => '</div>',
+				'context' => 'site-container',
+			]
+		);
 	}
 }
 add_action( 'patternmanager_after_pattern_preview', __NAMESPACE__ . '\after_pattern_preview' );
