@@ -35,8 +35,9 @@ function display_block_pattern_preview() {
 	$the_content = \PatternManager\HelperFunctions\do_the_content_things( $pattern['content'] ?? '' );
 
 	wp_head();
-	
-	?><body <?php body_class(); ?>><?php
+
+	?><body <?php body_class(); ?>>
+	<?php
 
 	do_action( 'patternmanager_before_pattern_preview' );
 
@@ -45,8 +46,10 @@ function display_block_pattern_preview() {
 	do_action( 'patternmanager_after_pattern_preview' );
 
 	wp_footer();
-	
-	?></body><?php
+
+	?>
+	</body>
+	<?php
 
 	exit;
 }
