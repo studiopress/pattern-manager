@@ -53,4 +53,4 @@ function display_block_pattern_preview() {
 
 	exit;
 }
-add_action( 'init', __NAMESPACE__ . '\display_block_pattern_preview', PHP_INT_MAX );
+add_action( 'wp', __NAMESPACE__ . '\display_block_pattern_preview', PHP_INT_MAX );
