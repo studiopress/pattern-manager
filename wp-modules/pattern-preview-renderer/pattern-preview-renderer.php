@@ -33,7 +33,7 @@ function display_block_pattern_preview() {
 	// Mock a post object with the pattern content as the body.
 	mock_pattern_preview_post_object( $pattern['content'] );
 
-	// Handle Genesis themes, who enqueue their stylesheets using genesis_meta.
+	// Helps to handle cases like Genesis themes, who enqueue their stylesheets using genesis_meta.
 	do_action( 'patternmanager_before_pattern_preview_wp_head' );
 
 	wp_head();
