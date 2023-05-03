@@ -35,6 +35,18 @@ function before_pattern_preview() {
 				'context' => 'site-container',
 			]
 		);
+		genesis_markup(
+			[
+				'open'    => '<main %s>',
+				'context' => 'content',
+			]
+		);
+		genesis_markup(
+			[
+				'open'    => '<div %s>',
+				'context' => 'entry-content',
+			]
+		);
 	}
 }
 add_action( 'patternmanager_before_pattern_preview', __NAMESPACE__ . '\before_pattern_preview' );
@@ -48,6 +60,18 @@ function after_pattern_preview() {
 			[
 				'close'   => '</div>',
 				'context' => 'site-container',
+			]
+		);
+		genesis_markup(
+			[
+				'open'    => '</main>',
+				'context' => 'content',
+			]
+		);
+		genesis_markup(
+			[
+				'open'    => '</div>',
+				'context' => 'entry-content',
 			]
 		);
 	}
