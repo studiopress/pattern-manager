@@ -175,9 +175,19 @@ function edit_pattern( string $pattern_name ) {
 /**
  * Gets whether a block should have post context.
  *
- * @param string $block_name The name of the block.
+ * @param string $context The context.
  */
-function should_block_have_post_context( string $block_name ): bool {
+function has_post_context( string $context ): bool {
+	return ! empty( $context['postId'] );
+}
+
+/**
+ * Gets whether a block should have post context.
+ *
+ * @param array $block The parsed block block.
+ */
+function should_have_post_context( array $block ): bool {
+	$block_name = $block['blockName'] ?? '';
 	return 0 === strpos( $block_name, 'core/comment' ) ||
 		'core/avatar' === $block_name;
 }

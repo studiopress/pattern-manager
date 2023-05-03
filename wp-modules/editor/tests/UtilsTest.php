@@ -301,33 +301,32 @@ class UtilsTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Gets the data for the test of should_block_have_post_context().
+	 * Gets the data for the test of should_have_post_context().
 	 *
 	 * @return array[]
 	 */
-	public function data_should_block_have_post_context() {
+	public function data_should_have_post_context() {
 		return [
 			[
-				'core/comment',
+				[ 'blockName' => 'core/comment' ],
 				true,
 			],
 			[
-				'core/avatar',
+				[ 'blockName' => 'core/avatar' ],
 				true,
 			],
 		];
 	}
 
 	/**
-	 * Tests should_block_have_post_context.
+	 * Tests should_have_post_context.
 	 *
-	 * @dataProvider data_should_block_have_post_context
+	 * @dataProvider data_should_have_post_context
 	 */
-	public function test_should_block_have_post_context( $block_name, $expected ) {
+	public function test_should_have_post_context( $block_name, $expected ) {
 		$this->assertSame(
 			$expected,
-			should_block_have_post_context( $block_name )
+			should_have_post_context( $block_name )
 		);
 	}
-
 }

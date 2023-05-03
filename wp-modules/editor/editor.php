@@ -296,16 +296,16 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
  * @param array $parsed_block The block to render.
  * @return array The filtered context.
  */
-function add_post_id_to_block_context( $context, $parsed_block ) {
+function add_post_to_block_context( $context, $parsed_block ) {
 	if ( ! filter_input( INPUT_GET, 'pm_pattern_preview' ) ) {
 		return $context;
 	}
 
-	return empty( $context['postId'] ) && should_block_have_post_context( $parsed_block['blockName'] ?? '' )
+	return should_have_post_context( $parsed_block ) && ! has_post_context( $context )
 		? array_merge(
 			$context,
 			[ 'postId' => get_post_id_with_comment() ?? intval( get_option( 'page_on_front' ) ) ]
 		)
 		: $context;
 }
-add_filter( 'render_block_context', __NAMESPACE__ . '\add_post_id_to_block_context', 10, 2 );
+add_filter( 'render_block_context', __NAMESPACE__ . '\add_post_to_block_context', 10, 2 );
