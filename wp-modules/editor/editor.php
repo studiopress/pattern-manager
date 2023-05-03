@@ -289,8 +289,8 @@ add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields
  * Some blocks have a `postId` in their context
  * so they can render.
  * Like comment blocks, so they can show comments from the post.
- * The PM pattern preview doesn't have a global post,
- * so this adds one to the block's context.
+ * Sometimes, the PM pattern preview doesn't have a global post.
+ * So this adds one to the block's context.
  *
  * @param array $context The rendered block context.
  * @param array $parsed_block The block to render.
