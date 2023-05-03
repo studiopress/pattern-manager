@@ -284,9 +284,13 @@ function enqueue_meta_fields_in_editor() {
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
 
 /**
- * Enables the Core Comments block to render by adding a 'postId'.
+ * Enables rendering blocks that depend on a post.
  *
- * TODO: Remove if fixed in Core.
+ * Some blocks have a `postId` in their context
+ * so they can render.
+ * Like comment blocks, so they can show comments from the post.
+ * The PM pattern preview doesn't have a global post,
+ * so this adds one to the block's context.
  *
  * @param array $context The rendered block context.
  * @param array $parsed_block The block to render.
@@ -297,7 +301,7 @@ function add_post_id_to_block_context( $context, $parsed_block ) {
 		return $context;
 	}
 
-	return isset( $parsed_block['blockName'] ) && 0 === strpos( $parsed_block['blockName'], 'core/comment' )
+	return empty( $context['postId'] ) && block_should_have_post_context( $parsed_block['blockName'] ?? '' )
 		? array_merge(
 			$context,
 			[ 'postId' => get_post_id_with_comment() ?? intval( get_option( 'page_on_front' ) ) ]

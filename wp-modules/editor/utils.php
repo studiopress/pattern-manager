@@ -171,3 +171,12 @@ function edit_pattern( string $pattern_name ) {
 		)
 	);
 }
+
+/**
+ * Gets whether a block should have post context.
+ *
+ * @param string $block_name The name of the block.
+ */
+function should_block_have_post_context( string $block_name ): bool {
+	return 0 === strpos( $parsed_block['blockName'], 'core/comment' );
+}

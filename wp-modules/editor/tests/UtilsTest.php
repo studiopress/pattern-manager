@@ -299,4 +299,31 @@ class UtilsTest extends WP_UnitTestCase {
 			get_pm_post_ids()
 		);
 	}
+
+	/**
+	 * Gets the data for the test of should_pattern_have_post_context().
+	 *
+	 * @return array[]
+	 */
+	public function data_should_pattern_have_post_context() {
+		return [
+			[
+				'core/comment',
+				true,
+			],
+		];
+	}
+
+	/**
+	 * Tests should_pattern_have_post_context.
+	 *
+	 * @dataProvider data_should_pattern_have_post_context
+	 */
+	public function test_should_pattern_have_post_context( $block_name, $expected ) {
+		$this->assertSame(
+			$expected,
+			should_pattern_have_post_context( $block_name )
+		);
+	}
+
 }
