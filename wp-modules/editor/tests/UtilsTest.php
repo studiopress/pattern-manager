@@ -308,6 +308,14 @@ class UtilsTest extends WP_UnitTestCase {
 	public function data_should_have_post_context() {
 		return [
 			[
+				[],
+				false,
+			],
+			[
+				[ 'blockName' => 'core/paragraph' ],
+				false,
+			],
+			[
 				[ 'blockName' => 'core/comment' ],
 				true,
 			],
