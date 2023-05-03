@@ -19,6 +19,7 @@ export default function PreviewIframe( {
 	return (
 		<>
 			<div
+				data-testid="pattern-preview-iframe-inner"
 				className="pattern-preview-iframe-inner"
 				style={ {
 					height: iframeBodyHeight * scale,
@@ -59,7 +60,11 @@ export default function PreviewIframe( {
 					} }
 				/>
 			</div>
-			<div hidden={ iframeLoaded } className="pattern-loader"></div>
+			<div
+				hidden={ iframeLoaded }
+				data-testid="pattern-preview-pattern-loader"
+				className="pattern-loader"
+			></div>
 		</>
 	);
 }
