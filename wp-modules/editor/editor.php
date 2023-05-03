@@ -301,7 +301,7 @@ function add_post_id_to_block_context( $context, $parsed_block ) {
 		return $context;
 	}
 
-	return empty( $context['postId'] ) && block_should_have_post_context( $parsed_block['blockName'] ?? '' )
+	return empty( $context['postId'] ) && should_block_have_post_context( $parsed_block['blockName'] ?? '' )
 		? array_merge(
 			$context,
 			[ 'postId' => get_post_id_with_comment() ?? intval( get_option( 'page_on_front' ) ) ]

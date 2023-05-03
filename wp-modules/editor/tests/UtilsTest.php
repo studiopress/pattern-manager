@@ -311,6 +311,9 @@ class UtilsTest extends WP_UnitTestCase {
 				'core/comment',
 				true,
 			],
+			[ 'core/avatar',
+				true,
+			],
 		];
 	}
 
