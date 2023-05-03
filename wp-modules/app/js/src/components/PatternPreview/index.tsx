@@ -2,20 +2,14 @@
 import { useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
-// External dependencies
-import loadable from '@loadable/component';
-
 // Hooks
 import useLazyRender from '../../hooks/useLazyRender';
 
 // Components
-const PreviewIframe: PreviewIframeType = loadable(
-	async () => import( './PreviewIframe' )
-);
+import PreviewIframe from '../PatternPreview/PreviewIframe';
 
 // Types
 import type { PatternPreviewProps, BoundingClientRect } from './types';
-import type { PreviewIframeType } from './PreviewIframe';
 
 export default function PatternPreview( {
 	url,
