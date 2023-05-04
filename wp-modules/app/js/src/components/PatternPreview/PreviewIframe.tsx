@@ -59,10 +59,7 @@ export default function PreviewIframe( {
 					} }
 				/>
 			</div>
-			<div
-				hidden={ iframeLoaded }
-				className="pattern-loader"
-			></div>
+			<div hidden={ iframeLoaded } className="pattern-loader"></div>
 		</>
 	);
 }
