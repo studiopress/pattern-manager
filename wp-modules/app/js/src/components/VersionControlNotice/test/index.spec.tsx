@@ -1,21 +1,10 @@
-import { useState } from 'react';
 import { create, act } from 'react-test-renderer';
 import VersionControlNotice from '..';
 
-/** VersionControlNotice container allows dismissing notice via state. */
-const VersionControlNoticeWrapper = ( { initialIsVisible = false } ) => {
-	const [ isVisible, setIsVisible ] = useState( initialIsVisible );
-
-	return (
-		<VersionControlNotice
-			isVisible={ isVisible }
-			handleDismiss={ () => setIsVisible( false ) }
-		/>
-	);
-};
-
 it( 'VersionControlNotice is not visible when passed falsy isVisible', () => {
-	const testRenderer = create( <VersionControlNoticeWrapper /> );
+	const testRenderer = create(
+		<VersionControlNotice isVisible={ false } handleDismiss={ () => {} } />
+	);
 
 	expect( testRenderer.toJSON() ).toBeNull();
 
@@ -24,7 +13,7 @@ it( 'VersionControlNotice is not visible when passed falsy isVisible', () => {
 
 it( 'VersionControlNotice is visible when passed truthy isVisible', () => {
 	const testRenderer = create(
-		<VersionControlNoticeWrapper initialIsVisible />
+		<VersionControlNotice isVisible={ true } handleDismiss={ () => {} } />
 	);
 
 	expect( testRenderer.toJSON() ).toMatchObject( {
@@ -39,24 +28,20 @@ it( 'VersionControlNotice is visible when passed truthy isVisible', () => {
 } );
 
 it( 'VersionControlNotice is dismissible', () => {
+	const handleDismissSpy = jest.fn();
 	const testRenderer = create(
-		<VersionControlNoticeWrapper initialIsVisible />
+		<VersionControlNotice
+			isVisible={ true }
+			handleDismiss={ handleDismissSpy }
+		/>
 	);
-
-	expect( testRenderer.toJSON() ).toMatchObject( {
-		props: {
-			className:
-				'patternmanager-version-control-notice components-notice is-warning is-dismissible',
-		},
-		type: 'div',
-	} );
 
 	// Dismiss the notice.
 	act( () => {
 		testRenderer.root.findByProps( { type: 'button' } ).props.onClick();
 	} );
 
-	expect( testRenderer.toJSON() ).toBeNull();
+	expect( handleDismissSpy ).toHaveBeenCalled();
 
 	testRenderer.unmount();
 } );
