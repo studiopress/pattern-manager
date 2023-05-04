@@ -126,10 +126,9 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			get_pattern_defaults(),
 			$pattern ? $pattern : [],
 			[
-				'name'  => $pattern_name,
-				'title' => $post->post_title,
-			],
-			[ $meta_key => $meta_value ]
+				'name'    => $pattern_name,
+				$meta_key => $meta_value,
+			]
 		)
 	);
 }
