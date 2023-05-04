@@ -58,7 +58,7 @@ describe( 'PreviewIframe', () => {
 
 		expect(
 			testRenderer.root.findByProps( {
-				'data-testid': 'pattern-preview-iframe-inner',
+				className: 'pattern-preview-iframe-inner',
 			} ).props
 		).toMatchObject( {
 			style: {
@@ -103,7 +103,7 @@ describe( 'PreviewIframe', () => {
 
 		expect(
 			testRenderer.root.findByProps( {
-				'data-testid': 'pattern-preview-pattern-loader',
+				className: 'pattern-loader',
 			} ).props
 		).toMatchObject( {
 			hidden: true,
