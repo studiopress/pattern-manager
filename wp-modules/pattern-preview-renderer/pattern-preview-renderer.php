@@ -42,7 +42,8 @@ function display_block_pattern_preview() {
 
 	wp_head();
 
-	?><body <?php body_class(); ?>>
+	?>
+	<body style="overflow: hidden;" <?php body_class(); ?>>
 	<?php
 
 	do_action( 'patternmanager_before_pattern_preview' );
