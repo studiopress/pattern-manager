@@ -30,6 +30,10 @@ function display_block_pattern_preview() {
 
 	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
 
+	if ( ! isset( $pattern['content'] ) ) {
+		$pattern['content'] = '';
+	}
+
 	// Mock a post object with the pattern content as the body.
 	mock_pattern_preview_post_object( $pattern['content'] );
 
