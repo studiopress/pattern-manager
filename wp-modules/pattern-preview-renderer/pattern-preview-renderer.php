@@ -36,7 +36,7 @@ function display_block_pattern_preview() {
 
 	// Mock a post object with the pattern content as the body.
 	mock_pattern_preview_post_object( $pattern['content'] );
-	
+
 	// This will process block supports using the Style Engine in WP core. See wp-includes/template-canvas.php.
 	$template_html = get_the_block_template_html();
 
@@ -133,6 +133,7 @@ function mock_pattern_preview_post_object( $pattern_content ) {
 	// Update globals.
 	$GLOBALS['wp_query'] = $wp_query; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	$wp->register_globals();
-	
-	$_wp_current_template_content = $pattern_content;
+
+	// Back-fill the variable core uses to render post content. See the core function called get_the_block_template_html.
+	$_wp_current_template_content = $pattern_content; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 }
