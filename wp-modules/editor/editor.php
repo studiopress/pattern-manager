@@ -12,8 +12,6 @@ declare(strict_types=1);
 namespace PatternManager\Editor;
 
 use WP_Block_Pattern_Categories_Registry;
-use function PatternManager\PatternDataHandlers\delete_patterns_not_present;
-use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 
 // Exit if accessed directly.
@@ -189,54 +187,6 @@ function disable_autosave() {
 	}
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\disable_autosave' );
-
-/**
- * Receive pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
- */
-function display_block_pattern_preview() {
-	// Nonce not required as the user is not taking any action here.
-	if ( ! isset( $_GET['pm_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		return;
-	}
-
-	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-
-	$pattern = get_pattern_by_name( $pattern_name );
-
-	$the_content = do_the_content_things( $pattern['content'] ?? '' );
-
-	wp_head();
-
-	echo wp_kses_post( $the_content );
-
-	wp_footer();
-
-	exit;
-}
-add_action( 'init', __NAMESPACE__ . '\display_block_pattern_preview' );
-
-/**
- * Run a string of HTML through the_content filters. This makes it so everything needed will be rendered in wp_footer.
- *
- * @param string $content The html content to run through the filters.
- * @return bool
- */
-function do_the_content_things( $content ) {
-
-	// Run through the actions that are typically taken on the_content.
-	$content = do_blocks( $content );
-	$content = wptexturize( $content );
-	$content = convert_smilies( $content );
-	$content = shortcode_unautop( $content );
-	$content = wp_filter_content_tags( $content );
-	$content = do_shortcode( $content );
-
-	// Handle embeds for block template parts.
-	global $wp_embed;
-	$content = $wp_embed->autoembed( $content );
-
-	return $content;
-}
 
 /**
  * Add style and metaboxes to pm_pattern posts when editing.
