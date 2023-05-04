@@ -36,6 +36,9 @@ function display_block_pattern_preview() {
 
 	// Mock a post object with the pattern content as the body.
 	mock_pattern_preview_post_object( $pattern['content'] );
+	
+	// This will process block supports using the Style Engine in WP core. See wp-includes/template-canvas.php.
+	$template_html = get_the_block_template_html();
 
 	// Helps to handle cases like Genesis themes, who enqueue their stylesheets using genesis_meta.
 	do_action( 'patternmanager_before_pattern_preview_wp_head' );
@@ -48,7 +51,7 @@ function display_block_pattern_preview() {
 
 	do_action( 'patternmanager_before_pattern_preview' );
 
-	the_content();
+	echo $template_html; // phpcs:ignore WordPress.Security.EscapeOutput
 
 	do_action( 'patternmanager_after_pattern_preview' );
 
@@ -68,7 +71,7 @@ add_action( 'wp', __NAMESPACE__ . '\display_block_pattern_preview', PHP_INT_MAX 
  * @param string $pattern_content The block pattern raw html.
  */
 function mock_pattern_preview_post_object( $pattern_content ) {
-	global $wp, $wp_query;
+	global $wp, $wp_query, $_wp_current_template_content;
 
 	$post_id              = -998; // negative ID, to avoid clash with a valid post.
 	$post                 = new \stdClass();
@@ -130,4 +133,6 @@ function mock_pattern_preview_post_object( $pattern_content ) {
 	// Update globals.
 	$GLOBALS['wp_query'] = $wp_query; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	$wp->register_globals();
+	
+	$_wp_current_template_content = $pattern_content;
 }
