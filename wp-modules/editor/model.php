@@ -11,7 +11,6 @@ declare(strict_types=1);
 namespace PatternManager\Editor;
 
 use WP_Post;
-use WP_REST_Request;
 use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
 use function PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
@@ -48,10 +47,9 @@ add_action( 'the_post', __NAMESPACE__ . '\populate_pattern_from_file' );
  * Saves the pattern to the .php file.
  *
  * @param int $post_id The post ID.
- * @param WP_REST_Request $request The full request.
  * @param WP_Post $post The post.
  */
-function save_pattern_to_file( WP_Post $post, WP_REST_Request $request ) {
+function save_pattern_to_file( WP_Post $post ) {
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
@@ -61,12 +59,12 @@ function save_pattern_to_file( WP_Post $post, WP_REST_Request $request ) {
 		array_merge(
 			$pattern ? $pattern : [],
 			[
-				'name'    => $post->post_name,
 				'content' => $post->post_content,
+				'name'    => $post->post_name,
 			],
-			isset( $request['title'] )
-				? [ 'title' => sanitize_text_field( $request['title'] ) ]
-				: [],
+			$post->post_title
+				? [ 'title' => $post->post_title ]
+				: []
 		)
 	);
 
@@ -81,7 +79,7 @@ function save_pattern_to_file( WP_Post $post, WP_REST_Request $request ) {
 
 	tree_shake_theme_images( get_wp_filesystem_api(), 'copy_dir' );
 }
-add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file', 10, 2 );
+add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 /**
  * Saves a meta value to the pattern file, instead of the DB.
