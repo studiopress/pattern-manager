@@ -68,10 +68,11 @@ function save_pattern_to_file( WP_Post $post ) {
 		)
 	);
 
-	// Removes the post content, as it should be saved in the pattern .php file.
+	// Remove pattern data from the post, as it was written to the pattern .php file.
 	wp_update_post(
 		[
 			'ID'           => $post->ID,
+			'post_title'   => '',
 			'post_content' => '',
 		]
 	);
@@ -126,10 +127,9 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			get_pattern_defaults(),
 			$pattern ? $pattern : [],
 			[
-				'name'  => $pattern_name,
-				'title' => $post->post_title,
-			],
-			[ $meta_key => $meta_value ]
+				'name'    => $pattern_name,
+				$meta_key => $meta_value,
+			]
 		)
 	);
 }
