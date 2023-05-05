@@ -74,6 +74,7 @@ function save_pattern_to_file( WP_Post $post, WP_REST_Request $request ) {
 	wp_update_post(
 		[
 			'ID'           => $post->ID,
+			'post_title'   => '',
 			'post_content' => '',
 		]
 	);
