@@ -6,8 +6,8 @@ import BackButton from './components/BackButton';
 import PatternManagerMetaControls from './components/PatternManagerMetaControls';
 import changeWords from './utils/changeWords';
 import preventTransform from './utils/preventTransform';
-import registerPatternBlock from './utils/registerPatternBlock';
 import receiveActiveTheme from './utils/receiveActiveTheme';
+import registerPatternBlock from "./utils/registerPatternBlock";
 
 registerPlugin( 'pattern-manager-postmeta-for-patterns', {
 	icon: null,
