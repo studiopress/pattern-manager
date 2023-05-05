@@ -68,7 +68,7 @@ function save_pattern_to_file( WP_Post $post ) {
 		)
 	);
 
-	// Removes the post content, as it should be saved in the pattern .php file.
+	// Remove pattern data from the post, as it was written to the pattern .php file.
 	wp_update_post(
 		[
 			'ID'           => $post->ID,
