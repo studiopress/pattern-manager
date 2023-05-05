@@ -95,6 +95,10 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 
 ## Changelog
 
+### 0.1.8
+* Fix some issues with block pattern previews.
+* Fix a bug with editing pre-existing patterns.
+
 ### 0.1.7
 * Add a link to the GitHub repo.
 
