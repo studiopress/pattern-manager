@@ -232,26 +232,3 @@ function enqueue_meta_fields_in_editor() {
 	wp_enqueue_style( 'pattern_manager_post_meta_style', $css_url, array(), $css_ver );
 }
 add_action( 'enqueue_block_editor_assets', __NAMESPACE__ . '\enqueue_meta_fields_in_editor' );
-
-/**
- * Enables the Core Comments block to render by adding a 'postId'.
- *
- * TODO: Remove if fixed in Core.
- *
- * @param array $context The rendered block context.
- * @param array $parsed_block The block to render.
- * @return array The filtered context.
- */
-function add_post_id_to_block_context( $context, $parsed_block ) {
-	if ( ! filter_input( INPUT_GET, 'pm_pattern_preview' ) ) {
-		return $context;
-	}
-
-	return isset( $parsed_block['blockName'] ) && 0 === strpos( $parsed_block['blockName'], 'core/comment' )
-		? array_merge(
-			$context,
-			[ 'postId' => get_post_id_with_comment() ?? intval( get_option( 'page_on_front' ) ) ]
-		)
-		: $context;
-}
-add_filter( 'render_block_context', __NAMESPACE__ . '\add_post_id_to_block_context', 10, 2 );
