@@ -235,17 +235,17 @@ function enqueue_meta_fields_in_editor() {
 		'pattern_manager_post_meta',
 		'patternManager',
 		[
-			'activeTheme'               => basename( get_stylesheet_directory() ),
-			'apiEndpoints'              => array(
+			'activeTheme'          => basename( get_stylesheet_directory() ),
+			'apiEndpoints'         => array(
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
-			'apiNonce'                  => wp_create_nonce( 'wp_rest' ),
+			'apiNonce'             => wp_create_nonce( 'wp_rest' ),
 			'customCategoryPrefix' => get_custom_category_prefix(),
 			'patternCategories'    => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
-			'patternCategories' => WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
-			'patternNames'              => get_pattern_names(),
-			'patterns'          => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
-			'siteUrl'                   => get_bloginfo( 'url' ),
+			'patternCategories'    => WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+			'patternNames'         => get_pattern_names(),
+			'patterns'             => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
+			'siteUrl'              => get_bloginfo( 'url' ),
 		]
 	);
 
