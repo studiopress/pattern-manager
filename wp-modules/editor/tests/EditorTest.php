@@ -21,6 +21,20 @@ class EditorTest extends WP_UnitTestCase {
 	/**
 	 * Tests register_pattern_post_type.
 	 */
+	public function test_register_pattern_post_type() {
+		register_pattern_post_type();
+		$cpt_object = get_post_type_object( 'pm_pattern' );
+
+		$this->assertSame( false, $cpt_object->public );
+		$this->assertTrue( $cpt_object->show_in_rest );
+		$this->assertTrue( post_type_supports( 'pm_pattern', 'editor' ) );
+		$this->assertTrue( post_type_supports( 'pm_pattern', 'custom-fields' ) );
+		$this->assertTrue( post_type_supports( 'pm_pattern', 'title' ) );
+	}
+
+	/**
+	 * Tests register_pattern_post_type.
+	 */
 	public function test_register_pattern_post_type_meta_types() {
 		register_pattern_post_type();
 

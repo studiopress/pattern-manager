@@ -55,7 +55,6 @@ function save_pattern_to_file( WP_Post $post ) {
 	}
 
 	$pattern = get_pattern_by_name( $post->post_name );
-
 	update_pattern(
 		array_merge(
 			$pattern ? $pattern : [],
@@ -69,18 +68,14 @@ function save_pattern_to_file( WP_Post $post ) {
 		)
 	);
 
-	// Prevent an infinite loop.
-	remove_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
-
-	// Removes the post content, as it should be saved in the pattern .php file.
+	// Remove pattern data from the post, as it was written to the pattern .php file.
 	wp_update_post(
 		[
 			'ID'           => $post->ID,
+			'post_title'   => '',
 			'post_content' => '',
 		]
 	);
-
-	add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 
 	tree_shake_theme_images( get_wp_filesystem_api(), 'copy_dir' );
 }
@@ -128,21 +123,14 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	return update_pattern(
-		$pattern
-			? array_merge(
-				$pattern,
-				[
-					$meta_key => $meta_value,
-				]
-			)
-			: array_merge(
-				get_pattern_defaults(),
-				[
-					'name'  => $pattern_name,
-					'title' => $post->post_title,
-				],
-				[ $meta_key => $meta_value ]
-			)
+		array_merge(
+			get_pattern_defaults(),
+			$pattern ? $pattern : [],
+			[
+				'name'    => $pattern_name,
+				$meta_key => $meta_value,
+			]
+		)
 	);
 }
 add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
@@ -158,19 +146,11 @@ add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_f
  */
 function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_single ) {
 	$post = get_post( $post_id );
-	if ( ! $post ) {
-		return $override;
-	}
-
-	if ( get_pattern_post_type() !== $post->post_type ) {
+	if ( ! $post || get_pattern_post_type() !== $post->post_type ) {
 		return $override;
 	}
 
 	$pattern = get_pattern_by_name( $post->post_name );
-	if ( ! $pattern ) {
-		return $override;
-	}
-
 	if ( isset( $pattern[ $meta_key ] ) ) {
 		return $is_single ? $pattern[ $meta_key ] : [ $pattern[ $meta_key ] ];
 	}
@@ -191,45 +171,12 @@ function redirect_pattern_actions() {
 		return;
 	}
 
-	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		$new_post = wp_insert_post(
-			[
-				'post_type'   => get_pattern_post_type(),
-				'post_name'   => sanitize_text_field( filter_input( INPUT_GET, 'name' ) ),
-				'post_status' => 'publish',
-			]
-		);
-
-		wp_safe_redirect(
-			get_edit_post_link( $new_post, 'direct_link' )
-		);
+	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
+		duplicate_pattern( filter_input( INPUT_GET, 'name' ) );
 	}
 
-	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
-		$pattern_to_duplicate  = get_pattern_by_name( sanitize_text_field( filter_input( INPUT_GET, 'name' ) ) );
-		$duplicate_pattern_ids = get_duplicate_pattern_ids( $pattern_to_duplicate['name'], get_theme_patterns() );
-		if ( ! $duplicate_pattern_ids ) {
-			return;
-		}
-
-		$new_pattern = array_merge(
-			$pattern_to_duplicate,
-			$duplicate_pattern_ids
-		);
-
-		update_pattern( $new_pattern );
-
-		$new_post = wp_insert_post(
-			[
-				'post_type'   => get_pattern_post_type(),
-				'post_name'   => $new_pattern['name'],
-				'post_status' => 'publish',
-			]
-		);
-
-		wp_safe_redirect(
-			get_edit_post_link( $new_post, 'direct_link' )
-		);
+	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
+		edit_pattern( filter_input( INPUT_GET, 'name' ) );
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );

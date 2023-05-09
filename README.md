@@ -1,10 +1,10 @@
 # Pattern Manager
-Contributors: wpengine, ryankienstra, mikeday, dreamwhisper, mmcalister, johnstonphilip, studiopress
+Contributors: wpengine, ryankienstra, mikeday, dreamwhisper, mmcalister, johnstonphilip
 Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: 0.1.4
+Stable tag: 0.1.8
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -13,13 +13,14 @@ Manage your theme's pattern PHP files the easy way, with Pattern Manager by WP E
 
 ## Description
 
-*Note: Pattern Manager is currently in beta.* 
+*Note: Pattern Manager is currently in beta.*
 
-When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns. 
+When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns.
 
 ### Key Features of Pattern Manager by WP Engine
  * A dedicated place to build and design Block Patterns.
  * Save (and generate) pattern files directly to disk in your theme (no exporting needed).
+ * Patterns available come from your theme on the disk, allowing for easy collaboration with git.
  * Images used in patterns are auto-copied into your theme and referenced in the PHP pattern file.
  * No more copying and pasting code to files.
  * No more copying and pasting images to your theme.
@@ -45,10 +46,10 @@ When you design beautiful block patterns for your theme, Pattern Manager by WP E
  * Find and replace all local image urls with the correct PHP tag.
  * Find and copy all image files used into your theme.
 
+## Docs & Repo
 
-## Help & Docs
-
-User and developer docs for Pattern Manager [can be found here](https://developer.wpengine.com/pattern-manager/).
+* [User and developer docs](https://developer.wpengine.com/pattern-manager/)
+* [GitHub repo](https://github.com/studiopress/pattern-manager/)
 
 ## Installation
 
@@ -74,25 +75,35 @@ No. WordPress core naturally imports patterns located in any theme's "patterns" 
 
 ### Will I lose my patterns if I update my theme?
 
-Yes. Pattern Manager is designed to be used by theme creators, ideally in a local environment like https://localwp.com. If you are not building a theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files. 
+Yes. Pattern Manager is designed to be used by theme creators, ideally in a local environment like https://localwp.com. If you are not building a theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files.
 
 ### Can Pattern Manager be used with any theme?
 
-While Pattern Manager will add patterns to any theme, it is recommended that you own and control the code of that theme. If you do not control the code of your theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files. 
+While Pattern Manager will add patterns to any theme, it is recommended that you own and control the code of that theme. If you do not control the code of your theme, it is recommended that you create a child theme and install it so that updates do not wipe out your pattern files.
 
 ### Should I use Pattern Manager on a "live" website?
 Ideally, no. It is recommended that you develop your patterns on a locally hosted website. You can easily set up a local development WordPress on your computer using https://localwp.com
 
 ### Do I need the new block editor to use Pattern Manager?
 
-Yes, you will need to have WordPress 6.2 or later installed to take advantage of Pattern Manager.
+Yes, you will need to have WordPress 6.1 or later installed to take advantage of Pattern Manager.
 
 ## Screenshots
 
-1. A dedicated inferface to browse, design, build, and save WordPress pattern files.
+1. A dedicated interface to browse, design, build, and save WordPress pattern files.
 2. Easily assign pattern categories, keywords, descriptions, and more.
 
 ## Changelog
 
-= 1.0 =
+### 0.1.8
+* Fix some issues with block pattern previews.
+* Fix a bug with editing pre-existing patterns.
+
+### 0.1.7
+* Add a link to the GitHub repo.
+
+### 0.1.6
+ * Readme file changes.
+
+### 0.1.5
  * Initial release.

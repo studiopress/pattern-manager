@@ -11,6 +11,9 @@ declare(strict_types=1);
 namespace PatternManager\Editor;
 
 use WP_Query;
+use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_theme_patterns;
+use function PatternManager\PatternDataHandlers\update_pattern;
 
 /**
  * Gets the pattern post type.
@@ -99,19 +102,54 @@ function get_pm_post_ids() {
 }
 
 /**
- * Gets an ID of a post that has a comment.
+ * Duplicates a pattern.
  *
- * @return int|null
+ * @param string $pattern_name The pattern name to duplicate.
  */
-function get_post_id_with_comment() {
-	return ( new WP_Query(
-		[
-			'comment_count'  => [
-				'value'   => 0,
-				'compare' => '>',
-			],
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-		]
-	) )->posts[0] ?? null;
+function duplicate_pattern( string $pattern_name ) {
+	$pattern_to_duplicate  = get_pattern_by_name( sanitize_text_field( $pattern_name ) );
+	$duplicate_pattern_ids = get_duplicate_pattern_ids( $pattern_to_duplicate['name'], get_theme_patterns() );
+	if ( ! $duplicate_pattern_ids ) {
+		return;
+	}
+
+	$new_pattern = array_merge(
+		$pattern_to_duplicate,
+		$duplicate_pattern_ids
+	);
+
+	update_pattern( $new_pattern );
+
+	wp_safe_redirect(
+		get_edit_post_link(
+			wp_insert_post(
+				[
+					'post_type'   => get_pattern_post_type(),
+					'post_name'   => $new_pattern['name'],
+					'post_status' => 'publish',
+				]
+			),
+			'direct_link'
+		)
+	);
+}
+
+/**
+ * Goes to the editor for a pattern.
+ *
+ * @param string $pattern_name The pattern name.
+ */
+function edit_pattern( string $pattern_name ) {
+	wp_safe_redirect(
+		get_edit_post_link(
+			wp_insert_post(
+				[
+					'post_type'   => get_pattern_post_type(),
+					'post_name'   => sanitize_text_field( $pattern_name ),
+					'post_status' => 'publish',
+				]
+			),
+			'direct_link'
+		)
+	);
 }

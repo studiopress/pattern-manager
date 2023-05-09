@@ -41,6 +41,7 @@ export type Pattern = {
 	customCategories: string[];
 	content: string;
 	description: string;
+	editorLink: string;
 	inserter: boolean;
 	keywords: string[];
 	name: string;
@@ -63,5 +64,12 @@ export type InitialPatternManager = {
 	customCategoryPrefix: string;
 	patternCategories: { label: string; name: string; pm_custom?: boolean }[];
 	patternNames: Array< Pattern[ 'slug' ] >;
+	patterns: Record< Pattern[ 'slug' ], Pattern >;
 	siteUrl: string;
+};
+
+export type Block = {
+	attributes: Record< string, unknown >;
+	innerBlocks?: Block[];
+	name: string;
 };

@@ -12,5 +12,5 @@ export type PreviewIframeProps = {
 	url: string;
 	scale: number;
 	viewportWidth: number;
-	previewContainerSize: BoundingClientRect;
+	previewContainerSize?: BoundingClientRect;
 };

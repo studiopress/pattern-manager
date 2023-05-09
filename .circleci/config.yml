@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.0
   php: circleci/php@1.1
+  wp-svn: studiopress/wp-svn@0.2
 
 references:
   PLUGIN_PATH: &PLUGIN_PATH
@@ -40,19 +41,26 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: npm run test:js
   phpunit:
+    parameters:
+      php-version:
+        type: string
     machine:
       image: ubuntu-2004:202111-02
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run: sudo apt-get update && sudo apt-get install php php-xml php-mbstring
+      - php/install-php:
+          version: << parameters.php-version >>
+      - run: sudo apt-get update && sudo apt-get install php<< parameters.php-version >>-xml php<< parameters.php-version >>-mbstring
       - php/install-composer
       - node/install-packages:
           app-dir: *PLUGIN_PATH
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
-          command: npm run test:phpunit
+          command: |
+            npm run build
+            npm run test:phpunit
   zip:
     docker:
       - image: cimg/php:7.3-node
@@ -61,23 +69,60 @@ jobs:
           path: *PLUGIN_PATH
       - node/install:
           node-version: '14'
-      - node/install-packages:
-          app-dir: *PLUGIN_PATH
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
           command: |
+            npm ci
             npm run build
             npm run zip
             mkdir /tmp/artifacts
             mv pattern-manager*.zip /tmp/artifacts
       - store_artifacts:
           path: /tmp/artifacts
+  svn-deploy:
+    docker:
+      - image: cimg/php:7.3-node
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - node/install:
+          node-version: '14'
+      - run:
+          name: Building the plugin
+          working_directory: *PLUGIN_PATH
+          command: |
+            npm ci
+            npm run build
+      - wp-svn/deploy-plugin:
+          plugin-path: *PLUGIN_PATH
+          wporg-assets-directory: wporg
 
 workflows:
   build:
     jobs:
       - lint
       - test-js
-      - phpunit
+      - phpunit:
+          matrix:
+            parameters:
+              php-version: [ '7.4', '8.0', '8.1', '8.2' ]
       - zip
+      - wp-svn/check-versions:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              only: /^bump\/.*/
+      - svn-deploy:
+          context: genesis-svn
+          requires:
+            - wp-svn/check-versions
+            - lint
+            - test-js
+            - phpunit
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/

@@ -33,7 +33,7 @@ export default function ViewportWidthPanel( {
 				) }
 				min={ 640 }
 				max={ 2560 }
-				step={ 80 }
+				step={ 10 }
 				value={ currentWidth }
 				onChange={ ( value: Pattern[ 'viewportWidth' ] ) => {
 					handleChange( 'viewportWidth', value );

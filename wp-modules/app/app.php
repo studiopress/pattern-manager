@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PatternManager\App;
 
+use function PatternManager\GetVersionControl\check_version_control_notice_should_show;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -21,14 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function get_app_state() {
 	return array(
-		'patterns'          => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
-		'patternCategories' => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
-		'apiNonce'          => wp_create_nonce( 'wp_rest' ),
-		'apiEndpoints'      => array(
-			'deletePatternEndpoint' => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
+		'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
+		'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+		'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
+		'apiEndpoints'             => array(
+			'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
+			'updateDismissedThemesEndpoint' => get_rest_url( false, 'pattern-manager/v1/update-dismissed-themes/' ),
 		),
-		'siteUrl'           => get_bloginfo( 'url' ),
-		'adminUrl'          => admin_url(),
+		'siteUrl'                  => get_bloginfo( 'url' ),
+		'adminUrl'                 => admin_url(),
+		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
 	);
 }
 
@@ -67,9 +71,11 @@ function pattern_manager_app() {
 
 /**
  * Set the URL for the link in the menu.
+ *
+ * @return string The page's hook suffix.
  */
-function patternmanager_adminmenu_page() {
-	add_menu_page(
+function pattern_manager_admin_menu_page() {
+	return add_menu_page(
 		__( 'Patterns', 'pattern-manager' ),
 		__( 'Patterns', 'pattern-manager' ),
 		'administrator',
@@ -79,7 +85,7 @@ function patternmanager_adminmenu_page() {
 		$position = 59,
 	);
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\patternmanager_adminmenu_page' );
+add_action( 'admin_menu', __NAMESPACE__ . '\pattern_manager_admin_menu_page' );
 
 /**
  * Unhook all the admin_notices.

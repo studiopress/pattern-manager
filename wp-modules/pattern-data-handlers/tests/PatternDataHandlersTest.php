@@ -24,6 +24,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		add_filter( 'stylesheet_directory_uri', [ $this, 'get_stylesheet_directory_uri' ] );
 	}
 
 	/**
@@ -32,6 +33,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function tearDown() {
 		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		remove_filter( 'stylesheet_directory_uri', [ $this, 'get_stylesheet_directory_uri' ] );
 		parent::tearDown();
 	}
 
@@ -40,6 +42,13 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function get_fixtures_directory() {
 		return __DIR__ . '/fixtures';
+	}
+
+	/**
+	 * Gets the stylesheet directory URI.
+	 */
+	public function get_stylesheet_directory_uri() {
+		return 'https://example.com/wp-content/themes/foo';
 	}
 
 	/**
@@ -102,6 +111,32 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function test_get_pattern_by_path() {
 		$actual_pattern = get_pattern_by_path( $this->get_fixtures_directory() . '/patterns/my-new-pattern.php' );
+
+		$this->assertSame(
+			$this->get_expected_pattern(),
+			array_merge(
+				$actual_pattern,
+				[
+					'content' => $this->normalize( $actual_pattern['content'] ),
+				]
+			)
+		);
+	}
+
+	/**
+	 * Tests get_pattern_by_name.
+	 */
+	public function test_get_pattern_by_name_not_found() {
+		$this->assertFalse(
+			get_pattern_by_name( 'does-not-exist' )
+		);
+	}
+
+	/**
+	 * Tests get_pattern_by_name.
+	 */
+	public function test_get_pattern_by_name() {
+		$actual_pattern = get_pattern_by_name( 'my-new-pattern' );
 
 		$this->assertSame(
 			$this->get_expected_pattern(),
