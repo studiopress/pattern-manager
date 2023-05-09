@@ -10,7 +10,6 @@
  * Post Types: wp_block, wp_template
  * Inserter: true
  */
-
 ?>
 <!-- wp:paragraph -->
 <p>Here is some content</p>
