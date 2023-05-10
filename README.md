@@ -95,6 +95,9 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 
 ## Changelog
 
+### 0.2.0
+* Add 'PM Pattern Block' to render a pattern in a pattern.
+
 ### 0.1.8
 * Fix some issues with block pattern previews.
 * Fix a bug with editing pre-existing patterns.
