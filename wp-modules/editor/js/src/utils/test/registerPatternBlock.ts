@@ -10,12 +10,12 @@ describe( 'registerPatternBlock', () => {
 		).toEqual( { name: 'core/paragraph' } );
 	} );
 
-	it( 'returns the PM Pattern Block instead of the core one', () => {
+	it( 'returns the Pattern Block instead of the core one', () => {
 		const actual = registerPatternBlock(
 			{ name: 'core/pattern' },
 			'core/pattern'
 		);
-		expect( actual.title ).toBe( 'PM Pattern Block' );
+		expect( actual.title ).toBe( 'Pattern Block' );
 		expect( actual.supports.inserter ).toBe( true );
 	} );
 } );

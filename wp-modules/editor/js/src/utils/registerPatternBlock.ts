@@ -8,9 +8,10 @@ export default function registerPatternBlock(
 	return name === 'core/pattern'
 		? {
 				...settings,
-				title: __( 'PM Pattern Block', 'pattern-manager' ),
+				title: __( 'Pattern Block', 'pattern-manager' ),
 				icon: 'text',
 				category: 'common',
+				description: 'Show a block pattern.',
 				supports: {
 					html: false,
 					inserter: true,

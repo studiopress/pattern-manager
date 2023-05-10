@@ -150,7 +150,7 @@ export default function PatternEdit( {
 					<Placeholder
 						icon={ image }
 						label={ __(
-							'Pattern Manager Block',
+							'Pattern Block',
 							'pattern-manager'
 						) }
 						instructions={ __(

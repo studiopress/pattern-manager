@@ -3,7 +3,7 @@ import hasPmPatternBlock from './hasPmPatternBlock';
 import type { Pattern, Patterns } from '../types';
 
 /**
- * Removes patterns that have a PM Pattern Block that references the current pattern.
+ * Removes patterns that have a Pattern Block that references the current pattern.
  * They cause an infinite loop.
  */
 export default function filterOutPatterns(
