@@ -11,7 +11,10 @@ export default function registerPatternBlock(
 				title: __( 'Pattern Block', 'pattern-manager' ),
 				icon: 'text',
 				category: 'common',
-				description: 'Show a block pattern.',
+				description: __(
+					'Build a multi-pattern layout with more than one Pattern Block.',
+					'pattern-manager'
+				),
 				supports: {
 					html: false,
 					inserter: true,

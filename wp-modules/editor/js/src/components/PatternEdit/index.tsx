@@ -154,7 +154,7 @@ export default function PatternEdit( {
 							'pattern-manager'
 						) }
 						instructions={ __(
-							'Build a multi-pattern layout with available patterns',
+							'Build a multi-pattern layout with more than one Pattern Block.',
 							'pattern-manager'
 						) }
 					>
