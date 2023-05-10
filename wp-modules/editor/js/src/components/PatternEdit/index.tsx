@@ -49,7 +49,6 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 					) }
 					{ pattern ? (
 						<a
-							target="_blank"
 							className="components-button is-secondary"
 							style={ { marginTop: '10px' } }
 							href={ pattern.editorLink }
