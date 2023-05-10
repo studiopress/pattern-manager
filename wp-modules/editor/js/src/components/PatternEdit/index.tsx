@@ -149,10 +149,7 @@ export default function PatternEdit( {
 					<PatternInspector />
 					<Placeholder
 						icon={ image }
-						label={ __(
-							'Pattern Block',
-							'pattern-manager'
-						) }
+						label={ __( 'Pattern Block', 'pattern-manager' ) }
 						instructions={ __(
 							'Build a multi-pattern layout with more than one Pattern Block.',
 							'pattern-manager'
