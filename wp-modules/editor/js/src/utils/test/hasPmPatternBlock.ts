@@ -73,7 +73,7 @@ describe( 'hasPmPatternBlock', () => {
 			true,
 		],
 	] )(
-		'should get whether there is a PM Pattern Block',
+		'should get whether there is a Pattern Block',
 		( blocks, patternSlug, expected ) => {
 			expect( hasPmPatternBlock( blocks, patternSlug ) ).toEqual(
 				expected
