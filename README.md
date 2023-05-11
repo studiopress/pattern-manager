@@ -4,7 +4,7 @@ Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: 0.1.8
+Stable tag: 0.2.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -94,6 +94,9 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 2. Easily assign pattern categories, keywords, descriptions, and more.
 
 ## Changelog
+
+### 0.2.0
+* Add 'Pattern Block' to render a pattern in a pattern.
 
 ### 0.1.8
 * Fix some issues with block pattern previews.
