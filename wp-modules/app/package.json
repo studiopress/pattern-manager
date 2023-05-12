@@ -12,7 +12,6 @@
     "@wordpress/scripts": "^24.4.0",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
-    "prettier": "^2.5.1",
     "prettier": "^2.5.1"
   },
   "dependencies": {
