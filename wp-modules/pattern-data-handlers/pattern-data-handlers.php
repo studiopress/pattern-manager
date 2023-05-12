@@ -123,9 +123,6 @@ function format_pattern_data( $pattern_data, $file ) {
 	include $file;
 	$pattern_data['content'] = ob_get_clean();
 
-	if ( ! $pattern_data['content'] ) {
-		return false;
-	}
 	return $pattern_data;
 }
 
