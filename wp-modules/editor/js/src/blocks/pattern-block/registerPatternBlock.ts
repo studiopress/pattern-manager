@@ -1,12 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { addFilter } from '@wordpress/hooks';
 import PatternEdit from './PatternEdit';
-
-addFilter(
-	'blocks.registerBlockType',
-	'pattern-manager/registerPatternBlock',
-	registerPatternBlock
-);
 
 export default function registerPatternBlock(
 	settings: Record< string, unknown >,
