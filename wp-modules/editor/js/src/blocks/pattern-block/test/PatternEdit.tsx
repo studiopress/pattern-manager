@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
-import PatternEdit from './';
+import PatternEdit from '../PatternEdit';
 
-jest.mock( '../../globals', () => {
+jest.mock( '../../../globals', () => {
 	return {
 		patternManager: {
 			patterns: {
@@ -18,11 +18,11 @@ jest.mock( '../../globals', () => {
 	};
 } );
 
-jest.mock( '../../hooks/useSavedPostData', () => {
+jest.mock( '../../../hooks/useSavedPostData', () => {
 	return () => ( {} );
 } );
 
-jest.mock( '../../../../../app/js/src/components/PatternPreview', () => {
+jest.mock( '../../../../../../app/js/src/components/PatternPreview', () => {
 	return () => null;
 } );
 
