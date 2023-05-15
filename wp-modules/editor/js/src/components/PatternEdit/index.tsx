@@ -127,6 +127,7 @@ export default function PatternEdit( {
 							fontSize: '16px',
 							padding: '5px',
 							border: 'solid 1px rgba(0,0,0,.1)',
+							boxSizing: 'border-box',
 						} }
 					>
 						<Icon
