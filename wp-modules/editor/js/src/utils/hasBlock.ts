@@ -1,14 +1,15 @@
 import type { Block, Pattern } from '../types';
 
-export default function hasPmPatternBlock(
+export default function hasBlock(
+	blockName: String,
 	blocks: Block[],
 	patternName: Pattern[ 'name' ]
 ) {
 	return blocks.some( ( block ) => {
 		return (
-			( block.name === 'core/pattern' &&
+			( block.name === blockName &&
 				block.attributes?.slug === patternName ) ||
-			hasPmPatternBlock( block?.innerBlocks ?? [], patternName )
+			hasBlock( blockName, block?.innerBlocks ?? [], patternName )
 		);
 	} );
 }

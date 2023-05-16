@@ -1,5 +1,5 @@
 import { parse } from '@wordpress/blocks';
-import hasPmPatternBlock from './hasPmPatternBlock';
+import hasBlock from './hasBlock';
 import type { Pattern, Patterns } from '../types';
 
 /**
@@ -14,7 +14,8 @@ export default function filterOutPatterns(
 		( accumulator, [ key, pattern ] ) => {
 			return {
 				...accumulator,
-				...( ! hasPmPatternBlock(
+				...( ! hasBlock(
+					'core/pattern',
 					parse( pattern.content ),
 					patternName
 				) && pattern.name !== patternName

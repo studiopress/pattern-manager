@@ -1,6 +1,6 @@
-import hasPmPatternBlock from '../hasPmPatternBlock';
+import hasBlock from '../hasBlock';
 
-describe( 'hasPmPatternBlock', () => {
+describe( 'hasBlock', () => {
 	it.each( [
 		[ [ { name: '', attributes: {} } ], '', false ],
 		[ [ { name: '', attributes: {} } ], 'example-slug', false ],
@@ -75,7 +75,7 @@ describe( 'hasPmPatternBlock', () => {
 	] )(
 		'should get whether there is a Pattern Block',
 		( blocks, patternSlug, expected ) => {
-			expect( hasPmPatternBlock( blocks, patternSlug ) ).toEqual(
+			expect( hasBlock( 'core/pattern', blocks, patternSlug ) ).toEqual(
 				expected
 			);
 		}

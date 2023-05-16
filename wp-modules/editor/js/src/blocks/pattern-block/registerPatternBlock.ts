@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import PatternEdit from '../components/PatternEdit';
+import PatternEdit from './PatternEdit';
 
 export default function registerPatternBlock(
 	settings: Record< string, unknown >,

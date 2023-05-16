@@ -7,7 +7,7 @@ import PatternManagerMetaControls from './components/PatternManagerMetaControls'
 import changeWords from './utils/changeWords';
 import preventTransform from './utils/preventTransform';
 import receiveActiveTheme from './utils/receiveActiveTheme';
-import registerPatternBlock from './utils/registerPatternBlock';
+import registerPatternBlock from './blocks/pattern-block/registerPatternBlock';
 
 registerPlugin( 'pattern-manager-postmeta-for-patterns', {
 	icon: null,
