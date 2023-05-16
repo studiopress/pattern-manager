@@ -28,7 +28,7 @@ function display_block_pattern_preview() {
 
 	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
+	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_slug( $pattern_name );
 
 	if ( ! isset( $pattern['content'] ) ) {
 		$pattern['content'] = '';

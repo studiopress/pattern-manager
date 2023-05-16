@@ -17,7 +17,7 @@ type AdditionalTypes = {
 	categoryOptions: ReturnType< typeof usePatternData >[ 'queriedCategories' ];
 	currentName: ReturnType< typeof useSavedPostData >[ 'currentName' ];
 	errorMessage: string;
-	patternNames: Array< PatternPostData[ 'name' ] >;
+	patternNames: Array< PatternPostData[ 'slug' ] >;
 	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];
 	setErrorMessage: Dispatch< SetStateAction< string > >;
 };

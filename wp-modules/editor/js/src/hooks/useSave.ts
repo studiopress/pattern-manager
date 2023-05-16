@@ -5,7 +5,7 @@ import { patternManager } from '../globals';
 import type { Pattern, SelectQuery } from '../types';
 
 export default function useSave(
-	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
+	setPatternNames: ( patternNames: Array< Pattern[ 'slug' ] > ) => void
 ) {
 	const isSavingPost = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).isSavingPost();

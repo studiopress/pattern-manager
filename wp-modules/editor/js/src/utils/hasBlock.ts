@@ -3,7 +3,7 @@ import type { Block, Pattern } from '../types';
 export default function hasBlock(
 	blockName: String,
 	blocks: Block[],
-	patternName: Pattern[ 'name' ]
+	patternName: Pattern[ 'slug' ]
 ) {
 	return blocks.some( ( block ) => {
 		return (

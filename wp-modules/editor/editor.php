@@ -54,12 +54,12 @@ function register_pattern_post_type() {
 
 	register_post_meta(
 		$post_type_key,
-		'name',
+		'slug',
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
-			'default'      => get_pattern_defaults()['name'],
+			'default'      => get_pattern_defaults()['slug'],
 		)
 	);
 

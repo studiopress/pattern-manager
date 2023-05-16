@@ -82,7 +82,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			'postTypes'     => [ 'wp_block', 'wp_template' ],
 			'inserter'      => true,
 			'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
-			'name'          => 'my-new-pattern',
+			'slug'          => 'my-new-pattern',
 		];
 	}
 
@@ -98,7 +98,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			$this->normalize(
 				construct_pattern_php_file_contents(
 					[
-						'name'  => 'empty',
+						'slug'  => 'empty',
 						'title' => 'Empty',
 					]
 				)
@@ -124,19 +124,19 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests get_pattern_by_name.
+	 * Tests get_pattern_by_slug.
 	 */
-	public function test_get_pattern_by_name_not_found() {
+	public function test_get_pattern_by_slug_not_found() {
 		$this->assertFalse(
-			get_pattern_by_name( 'does-not-exist' )
+			get_pattern_by_slug( 'does-not-exist' )
 		);
 	}
 
 	/**
-	 * Tests get_pattern_by_name.
+	 * Tests get_pattern_by_slug.
 	 */
-	public function test_get_pattern_by_name() {
-		$actual_pattern = get_pattern_by_name( 'my-new-pattern' );
+	public function test_get_pattern_by_slug() {
+		$actual_pattern = get_pattern_by_slug( 'my-new-pattern' );
 
 		$this->assertSame(
 			$this->get_expected_pattern(),

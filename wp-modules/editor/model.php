@@ -12,7 +12,7 @@ namespace PatternManager\Editor;
 
 use WP_Post;
 use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
-use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_pattern_by_slug;
 use function PatternManager\PatternDataHandlers\get_pattern_defaults;
 use function PatternManager\PatternDataHandlers\get_theme_patterns;
 use function PatternManager\PatternDataHandlers\delete_pattern;
@@ -33,7 +33,7 @@ function populate_pattern_from_file( $post ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( $post->post_name );
+	$pattern = get_pattern_by_slug( $post->post_name );
 	if ( ! $pattern ) {
 		return;
 	}
@@ -54,13 +54,13 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( $post->post_name );
+	$pattern = get_pattern_by_slug( $post->post_name );
 	update_pattern(
 		array_merge(
 			$pattern ? $pattern : [],
 			[
 				'content' => $post->post_content,
-				'name'    => $post->post_name,
+				'slug'    => $post->post_name,
 			],
 			$post->post_title
 				? [ 'title' => $post->post_title ]
@@ -102,14 +102,14 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	if ( 'name' === $meta_key && ! $meta_value ) {
+	if ( 'slug' === $meta_key && ! $meta_value ) {
 		return $override;
 	}
 
 	$pattern_name = $post->post_name;
-	$pattern      = get_pattern_by_name( $pattern_name );
+	$pattern      = get_pattern_by_slug( $pattern_name );
 
-	if ( 'name' === $meta_key ) {
+	if ( 'slug' === $meta_key ) {
 		wp_update_post(
 			[
 				'ID'        => $post_id,
@@ -127,7 +127,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			get_pattern_defaults(),
 			$pattern ? $pattern : [ 'title' => $post->post_title ],
 			[
-				'name'    => $pattern_name,
+				'slug'    => $pattern_name,
 				$meta_key => $meta_value,
 			]
 		)
@@ -150,7 +150,7 @@ function get_metadata_from_pattern_file( $override, $post_id, $meta_key, $is_sin
 		return $override;
 	}
 
-	$pattern = get_pattern_by_name( $post->post_name );
+	$pattern = get_pattern_by_slug( $post->post_name );
 	if ( isset( $pattern[ $meta_key ] ) ) {
 		return $is_single ? $pattern[ $meta_key ] : [ $pattern[ $meta_key ] ];
 	}
@@ -172,11 +172,11 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
-		duplicate_pattern( filter_input( INPUT_GET, 'name' ) );
+		duplicate_pattern( filter_input( INPUT_GET, 'slug' ) );
 	}
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		edit_pattern( filter_input( INPUT_GET, 'name' ) );
+		edit_pattern( filter_input( INPUT_GET, 'slug' ) );
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );

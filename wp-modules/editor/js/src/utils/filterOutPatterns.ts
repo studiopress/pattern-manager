@@ -8,7 +8,7 @@ import type { Pattern, Patterns } from '../types';
  */
 export default function filterOutPatterns(
 	patterns: Patterns,
-	patternName: Pattern[ 'name' ]
+	patternName: Pattern[ 'slug' ]
 ) {
 	return Object.entries( patterns ).reduce(
 		( accumulator, [ key, pattern ] ) => {
@@ -18,7 +18,7 @@ export default function filterOutPatterns(
 					'core/pattern',
 					parse( pattern.content ),
 					patternName
-				) && pattern.name !== patternName
+				) && pattern.slug !== patternName
 					? { [ key ]: pattern }
 					: {} ),
 			};

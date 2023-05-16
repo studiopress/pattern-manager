@@ -8,7 +8,7 @@ import type { Pattern, Patterns } from '../types';
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
-	function deletePattern( patternName: Pattern[ 'name' ] ) {
+	function deletePattern( patternName: Pattern[ 'slug' ] ) {
 		setPatternsData( removePattern( patternName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
 			method: 'DELETE',

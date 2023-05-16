@@ -98,13 +98,13 @@ class UtilsTest extends WP_UnitTestCase {
 				'my-new-pattern',
 				array(
 					'my-new-pattern' => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 				),
 				array(
-					'name'  => 'my-new-pattern-copied',
+					'slug'  => 'my-new-pattern-copied',
 					'slug'  => 'my-new-pattern-copied',
 					'title' => 'My New Pattern (copied)',
 				),
@@ -113,18 +113,18 @@ class UtilsTest extends WP_UnitTestCase {
 				'my-new-pattern',
 				array(
 					'my-new-pattern'        => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 					'my-new-pattern-copied' => array(
-						'name'  => 'my-new-pattern-copied',
+						'slug'  => 'my-new-pattern-copied',
 						'slug'  => 'my-new-pattern-copied',
 						'title' => 'My New Pattern (copied)',
 					),
 				),
 				array(
-					'name'  => 'my-new-pattern-copied-1',
+					'slug'  => 'my-new-pattern-copied-1',
 					'slug'  => 'my-new-pattern-copied-1',
 					'title' => 'My New Pattern (copied) 1',
 				),
@@ -133,23 +133,23 @@ class UtilsTest extends WP_UnitTestCase {
 				'my-new-pattern',
 				array(
 					'my-new-pattern'          => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 					'my-new-pattern-copied'   => array(
-						'name'  => 'my-new-pattern-copied',
+						'slug'  => 'my-new-pattern-copied',
 						'slug'  => 'my-new-pattern-copied',
 						'title' => 'My New Pattern (copied)',
 					),
 					'my-new-pattern-copied-1' => array(
-						'name'  => 'my-new-pattern-copied-1',
+						'slug'  => 'my-new-pattern-copied-1',
 						'slug'  => 'my-new-pattern-copied-1',
 						'title' => 'My New Pattern (copied) 1',
 					),
 				),
 				array(
-					'name'  => 'my-new-pattern-copied-2',
+					'slug'  => 'my-new-pattern-copied-2',
 					'slug'  => 'my-new-pattern-copied-2',
 					'title' => 'My New Pattern (copied) 2',
 				),
@@ -158,23 +158,23 @@ class UtilsTest extends WP_UnitTestCase {
 				'my-new-pattern',
 				array(
 					'my-new-pattern'          => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 					'my-new-pattern-copied'   => array(
-						'name'  => 'my-new-pattern-copied',
+						'slug'  => 'my-new-pattern-copied',
 						'slug'  => 'my-new-pattern-copied',
 						'title' => 'My New Pattern (copied)',
 					),
 					'my-new-pattern-copied-9' => array(
-						'name'  => 'my-new-pattern-copied-9',
+						'slug'  => 'my-new-pattern-copied-9',
 						'slug'  => 'my-new-pattern-copied-9',
 						'title' => 'My New Pattern (copied) 9',
 					),
 				),
 				array(
-					'name'  => 'my-new-pattern-copied-1',
+					'slug'  => 'my-new-pattern-copied-1',
 					'slug'  => 'my-new-pattern-copied-1',
 					'title' => 'My New Pattern (copied) 1',
 				),
@@ -208,7 +208,7 @@ class UtilsTest extends WP_UnitTestCase {
 			array(
 				array(
 					'my-new-pattern' => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
@@ -218,12 +218,12 @@ class UtilsTest extends WP_UnitTestCase {
 			array(
 				array(
 					'my-new-pattern'   => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 					'my-new-pattern-1' => array(
-						'name'  => 'my-new-pattern-1',
+						'slug'  => 'my-new-pattern-1',
 						'slug'  => 'my-new-pattern-1',
 						'title' => 'My New Pattern 1',
 					),
@@ -233,17 +233,17 @@ class UtilsTest extends WP_UnitTestCase {
 			array(
 				array(
 					'my-new-pattern'   => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 					'my-new-pattern-1' => array(
-						'name'  => 'my-new-pattern-1',
+						'slug'  => 'my-new-pattern-1',
 						'slug'  => 'my-new-pattern-1',
 						'title' => 'My New Pattern 1',
 					),
 					'my-new-pattern-2' => array(
-						'name'  => 'my-new-pattern-2',
+						'slug'  => 'my-new-pattern-2',
 						'slug'  => 'my-new-pattern-2',
 						'title' => 'My New Pattern 2',
 					),
@@ -253,17 +253,17 @@ class UtilsTest extends WP_UnitTestCase {
 			array(
 				array(
 					'my-new-pattern'   => array(
-						'name'  => 'my-new-pattern',
+						'slug'  => 'my-new-pattern',
 						'slug'  => 'my-new-pattern',
 						'title' => 'My New Pattern',
 					),
 					'my-new-pattern-1' => array(
-						'name'  => 'my-new-pattern-1',
+						'slug'  => 'my-new-pattern-1',
 						'slug'  => 'my-new-pattern-1',
 						'title' => 'My New Pattern 1',
 					),
 					'my-new-pattern-9' => array(
-						'name'  => 'my-new-pattern-9',
+						'slug'  => 'my-new-pattern-9',
 						'slug'  => 'my-new-pattern-9',
 						'title' => 'My New Pattern 9',
 					),

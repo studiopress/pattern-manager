@@ -13,7 +13,7 @@ import type { Pattern } from '../../types';
 function isTitleTaken(
 	patternTitle: string,
 	currentName: string,
-	patternNames: Array< Pattern[ 'name' ] >
+	patternNames: Array< Pattern[ 'slug' ] >
 ) {
 	const newSlug = convertToSlug( patternTitle );
 	return patternNames.includes( newSlug ) && newSlug !== currentName;
@@ -47,22 +47,12 @@ export default function TitlePanel( {
 				value={ title }
 				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
-					handleChange( 'name', convertToSlug( newTitle ) );
+					handleChange( 'slug', convertToSlug( newTitle ) );
 
 					if ( ! newTitle ) {
 						lockPostSaving();
 						const newErrorMessage = __(
 							'Please enter a title.',
-							'pattern-manager'
-						);
-						speak( newErrorMessage, 'assertive' );
-						setErrorMessage( newErrorMessage );
-					} else if (
-						isTitleTaken( newTitle, currentName, patternNames )
-					) {
-						lockPostSaving();
-						const newErrorMessage = __(
-							'Please enter a unique title.',
 							'pattern-manager'
 						);
 						speak( newErrorMessage, 'assertive' );
