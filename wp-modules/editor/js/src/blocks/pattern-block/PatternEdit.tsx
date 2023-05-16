@@ -49,7 +49,6 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 					) }
 					{ pattern ? (
 						<a
-							target="_blank"
 							className="components-button is-secondary"
 							style={ { marginTop: '10px' } }
 							href={ pattern.editorLink }
@@ -128,6 +127,7 @@ export default function PatternEdit( {
 							fontSize: '16px',
 							padding: '5px',
 							border: 'solid 1px rgba(0,0,0,.1)',
+							boxSizing: 'border-box',
 						} }
 					>
 						<Icon
@@ -149,12 +149,9 @@ export default function PatternEdit( {
 					<PatternInspector />
 					<Placeholder
 						icon={ image }
-						label={ __(
-							'Pattern Manager Block',
-							'pattern-manager'
-						) }
+						label={ __( 'Pattern Block', 'pattern-manager' ) }
 						instructions={ __(
-							'Build a multi-pattern layout with available patterns',
+							'Build a multi-pattern layout with more than one Pattern Block.',
 							'pattern-manager'
 						) }
 					>

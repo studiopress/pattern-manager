@@ -1,9 +1,9 @@
 import { parse } from '@wordpress/blocks';
-import hasPmPatternBlock from './hasPmPatternBlock';
+import hasBlock from './hasBlock';
 import type { Pattern, Patterns } from '../types';
 
 /**
- * Removes patterns that have a PM Pattern Block that references the current pattern.
+ * Removes patterns that have a Pattern Block that references the current pattern.
  * They cause an infinite loop.
  */
 export default function filterOutPatterns(
@@ -14,7 +14,8 @@ export default function filterOutPatterns(
 		( accumulator, [ key, pattern ] ) => {
 			return {
 				...accumulator,
-				...( ! hasPmPatternBlock(
+				...( ! hasBlock(
+					'core/pattern',
 					parse( pattern.content ),
 					patternName
 				) && pattern.name !== patternName

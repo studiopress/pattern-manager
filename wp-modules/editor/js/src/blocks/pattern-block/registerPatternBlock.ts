@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import PatternEdit from '../components/PatternEdit';
+import PatternEdit from './PatternEdit';
 
 export default function registerPatternBlock(
 	settings: Record< string, unknown >,
@@ -8,9 +8,13 @@ export default function registerPatternBlock(
 	return name === 'core/pattern'
 		? {
 				...settings,
-				title: __( 'PM Pattern Block', 'pattern-manager' ),
+				title: __( 'Pattern Block', 'pattern-manager' ),
 				icon: 'text',
 				category: 'common',
+				description: __(
+					'Build a multi-pattern layout with more than one Pattern Block.',
+					'pattern-manager'
+				),
 				supports: {
 					html: false,
 					inserter: true,
