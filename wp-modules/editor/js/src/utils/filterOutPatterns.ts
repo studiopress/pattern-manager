@@ -18,7 +18,7 @@ export default function filterOutPatterns(
 					'core/pattern',
 					parse( pattern.content ),
 					patternFileName
-				) && pattern.name !== patternFileName
+				) && pattern.filename !== patternFileName
 					? { [ key ]: pattern }
 					: {} ),
 			};

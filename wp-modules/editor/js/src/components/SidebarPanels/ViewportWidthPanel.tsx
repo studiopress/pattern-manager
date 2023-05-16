@@ -10,12 +10,12 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 import type { Pattern } from '../../types';
 
 export default function ViewportWidthPanel( {
-	currentName,
+	currentFileName,
 	errorMessage,
 	viewportWidth,
 	handleChange,
 }: BaseSidebarProps< 'viewportWidth' > &
-	AdditionalSidebarProps< 'errorMessage' | 'currentName' > ) {
+	AdditionalSidebarProps< 'errorMessage' | 'currentFileName' > ) {
 	const [ previewIsVisible, setPreviewIsVisible ] = useState( false );
 	const currentWidth = viewportWidth || 1280;
 
@@ -54,7 +54,7 @@ export default function ViewportWidthPanel( {
 						url={
 							patternManager.siteUrl +
 							'?pm_pattern_preview=' +
-							currentName
+							currentFileName
 						}
 						viewportWidth={ currentWidth }
 					/>

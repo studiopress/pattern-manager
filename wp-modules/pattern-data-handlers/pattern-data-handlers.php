@@ -236,7 +236,7 @@ function get_pattern_by_path( $path ) {
  */
 function get_pattern_defaults() {
 	return [
-		'filename'          => '',
+		'filename'      => '',
 		'slug'          => '',
 		'title'         => '',
 		'description'   => '',

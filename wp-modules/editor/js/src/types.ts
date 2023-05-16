@@ -6,7 +6,7 @@ export type PostMeta = {
 	description: string;
 	inserter: boolean;
 	keywords: string[];
-	name: string;
+	filename: string;
 	postTypes: string[];
 	viewportWidth: number;
 };
@@ -39,7 +39,7 @@ export type Pattern = {
 	description: string;
 	inserter: boolean;
 	keywords: string[];
-	name: string;
+	filename: string;
 	postTypes: string[];
 	slug: string;
 	title: string;

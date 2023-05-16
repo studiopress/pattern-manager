@@ -12,15 +12,15 @@ import type { Pattern } from '../../types';
 
 function isTitleTaken(
 	patternTitle: string,
-	currentName: string,
+	currentFileName: string,
 	patternFileNames: Array< Pattern[ 'filename' ] >
 ) {
 	const newSlug = convertToSlug( patternTitle );
-	return patternFileNames.includes( newSlug ) && newSlug !== currentName;
+	return patternFileNames.includes( newSlug ) && newSlug !== currentFileName;
 }
 
 export default function TitlePanel( {
-	currentName,
+	currentFileName,
 	errorMessage,
 	patternFileNames,
 	title,
@@ -28,7 +28,7 @@ export default function TitlePanel( {
 	setErrorMessage,
 }: BaseSidebarProps< 'title' > &
 	AdditionalSidebarProps<
-		'currentName' | 'errorMessage' | 'patternFileNames' | 'setErrorMessage'
+		'currentFileName' | 'errorMessage' | 'patternFileNames' | 'setErrorMessage'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( 'core/editor' );
@@ -58,7 +58,7 @@ export default function TitlePanel( {
 						speak( newErrorMessage, 'assertive' );
 						setErrorMessage( newErrorMessage );
 					} else if (
-						isTitleTaken( newTitle, currentName, patternFileNames )
+						isTitleTaken( newTitle, currentFileName, patternFileNames )
 					) {
 						lockPostSaving();
 						const newErrorMessage = __(

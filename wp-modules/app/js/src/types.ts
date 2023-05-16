@@ -23,7 +23,7 @@ export type InitialPatternManager = {
 export type Pattern = {
 	content: string;
 	editorLink: string;
-	name: string;
+	filename: string;
 	slug: string;
 	title: string;
 	blockTypes?: string[];
@@ -50,9 +50,9 @@ export type PatternsProps = {
 
 export type QueriedCategories = {
 	label: string;
-	name: string;
+	filename: string;
 }[];
 
 export type Theme = {
-	name: string;
+	filename: string;
 };

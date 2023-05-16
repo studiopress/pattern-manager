@@ -15,7 +15,7 @@ type AdditionalTypes = {
 		typeof usePatternData
 	>[ 'queriedBlockTypes' ];
 	categoryOptions: ReturnType< typeof usePatternData >[ 'queriedCategories' ];
-	currentName: ReturnType< typeof useSavedPostData >[ 'currentName' ];
+	currentFileName: ReturnType< typeof useSavedPostData >[ 'currentFileName' ];
 	errorMessage: string;
 	patternFileNames: Array< PatternPostData[ 'filename' ] >;
 	postTypeOptions: ReturnType< typeof usePatternData >[ 'queriedPostTypes' ];

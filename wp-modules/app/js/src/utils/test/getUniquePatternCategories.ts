@@ -14,7 +14,7 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 			],
 		],
@@ -22,13 +22,13 @@ describe( 'getUniquePatternCategories', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 				},
@@ -37,7 +37,7 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 			],
 		],
@@ -45,14 +45,14 @@ describe( 'getUniquePatternCategories', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'some-category' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 				},
@@ -60,17 +60,17 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 		],
@@ -78,21 +78,21 @@ describe( 'getUniquePatternCategories', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'some-category' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'some-category' ],
 				},
 				'third-pattern': {
 					title: 'Third Pattern',
-					name: 'third-pattern',
+					filename: 'third-pattern',
 					slug: 'third-pattern',
 					content: 'Here is more content',
 					categories: [ 'some-category' ],
@@ -101,17 +101,17 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 		],
@@ -119,21 +119,21 @@ describe( 'getUniquePatternCategories', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'some-category' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'another-category' ],
 				},
 				'third-pattern': {
 					title: 'Third Pattern',
-					name: 'third-pattern',
+					filename: 'third-pattern',
 					slug: 'third-pattern',
 					content: 'Here is more content',
 					categories: [ 'some-category' ],
@@ -142,25 +142,25 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'Another Category',
-					name: 'another-category',
+					filename: 'another-category',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 				{
 					label: 'Another Category',
-					name: 'another-category',
+					filename: 'another-category',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 		],
@@ -168,21 +168,21 @@ describe( 'getUniquePatternCategories', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'uncategorized' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'some-category' ],
 				},
 				'third-pattern': {
 					title: 'Third Pattern',
-					name: 'third-pattern',
+					filename: 'third-pattern',
 					slug: 'third-pattern',
 					content: 'Here is more content',
 				},
@@ -190,25 +190,25 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'Category to Skip',
-					name: 'category-to-skip',
+					filename: 'category-to-skip',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 			],
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 				{
 					label: 'Uncategorized',
-					name: 'uncategorized',
+					filename: 'uncategorized',
 				},
 			],
 		],
@@ -216,35 +216,35 @@ describe( 'getUniquePatternCategories', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'uncategorized' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'some-category' ],
 				},
 				'third-pattern': {
 					title: 'Third Pattern',
-					name: 'third-pattern',
+					filename: 'third-pattern',
 					slug: 'third-pattern',
 					content: 'Here is more content',
 					categories: [ 'third-category' ],
 				},
 				'fourth-pattern': {
 					title: 'Fourth Pattern',
-					name: 'fourth-pattern',
+					filename: 'fourth-pattern',
 					slug: 'fourth-pattern',
 					content: 'This is even more content',
 					categories: [ 'uncategorized' ],
 				},
 				'fifth-pattern': {
 					title: 'Fifth Pattern',
-					name: 'fifth-pattern',
+					filename: 'fifth-pattern',
 					slug: 'fifth-pattern',
 					content: "Wow. That's a lot of content!",
 				},
@@ -252,37 +252,37 @@ describe( 'getUniquePatternCategories', () => {
 			[
 				{
 					label: 'Another Category',
-					name: 'another-category',
+					filename: 'another-category',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 				{
 					label: 'Third Category',
-					name: 'third-category',
+					filename: 'third-category',
 				},
 				{
 					label: 'Fourth Category',
-					name: 'fourth-category',
+					filename: 'fourth-category',
 				},
 			],
 			[
 				{
 					label: 'All Patterns',
-					name: 'all-patterns',
+					filename: 'all-patterns',
 				},
 				{
 					label: 'Some Category',
-					name: 'some-category',
+					filename: 'some-category',
 				},
 				{
 					label: 'Third Category',
-					name: 'third-category',
+					filename: 'third-category',
 				},
 				{
 					label: 'Uncategorized',
-					name: 'uncategorized',
+					filename: 'uncategorized',
 				},
 			],
 		],
@@ -291,7 +291,7 @@ describe( 'getUniquePatternCategories', () => {
 		(
 			patterns: Patterns,
 			queriedCategories,
-			expected: { label: string; name: string }[]
+			expected: { label: string; filename: string }[]
 		) => {
 			expect(
 				getUniquePatternCategories( patterns, queriedCategories )

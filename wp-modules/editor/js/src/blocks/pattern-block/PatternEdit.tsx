@@ -73,7 +73,7 @@ export default function PatternEdit( {
 	const blockProps = useBlockProps( {
 		className: pattern ? 'alignfull' : 'is-layout-constrained',
 	} );
-	const { currentName } = useSavedPostData();
+	const { currentFileName } = useSavedPostData();
 
 	return (
 		<>
@@ -90,7 +90,7 @@ export default function PatternEdit( {
 						patternCategories={ patternManager.patternCategories }
 						patterns={ filterOutPatterns(
 							patternManager.patterns,
-							currentName
+							currentFileName
 						) }
 						siteUrl={ patternManager.siteUrl }
 					/>

@@ -18,7 +18,7 @@ import useSavedPostData from '../../hooks/useSavedPostData';
 
 export default function PatternManagerMetaControls() {
 	const { postMeta, title } = useEditedPostData();
-	const { currentName } = useSavedPostData();
+	const { currentFileName } = useSavedPostData();
 	const [ errorMessage, setErrorMessage ] = useState( '' );
 	const [ patternFileNames, setPatternFileNames ] = useState(
 		patternManager.patternFileNames.filter( ( name ) => {
@@ -39,7 +39,7 @@ export default function PatternManagerMetaControls() {
 	return (
 		<div>
 			<TitlePanel
-				currentName={ currentName }
+				currentFileName={ currentFileName }
 				errorMessage={ errorMessage }
 				patternFileNames={ patternFileNames }
 				title={ title }
@@ -60,7 +60,7 @@ export default function PatternManagerMetaControls() {
 				handleChange={ updatePostMeta }
 			/>
 			<ViewportWidthPanel
-				currentName={ currentName }
+				currentFileName={ currentFileName }
 				errorMessage={ errorMessage }
 				viewportWidth={ postMeta.viewportWidth }
 				handleChange={ updatePostMeta }

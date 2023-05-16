@@ -9,7 +9,7 @@ jest.mock( '../../../globals', () => {
 					content:
 						'<!-- wp:paragraph --><p>Here is content!</p><!-- /wp:paragraph -->',
 					editorLink: 'https://example.com',
-					name: 'foo-pattern',
+					filename: 'foo-pattern',
 					slug: 'foo-pattern',
 					title: 'Foo Pattern',
 				},

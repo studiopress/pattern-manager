@@ -46,7 +46,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 						__( 'Duplicate %1$s', 'pattern-manager' ),
 						patternData.title
 					) }
-					href={ `${ patternManager.siteUrl }/wp-admin/admin.php?post_type=pm_pattern&action=duplicate&name=${ patternData.name }` }
+					href={ `${ patternManager.siteUrl }/wp-admin/admin.php?post_type=pm_pattern&action=duplicate&name=${ patternData.filename }` }
 				>
 					<Icon
 						className="item-action-icon"
@@ -76,7 +76,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 								)
 							)
 						) {
-							patterns.deletePattern( patternData.name );
+							patterns.deletePattern( patternData.filename );
 						}
 					} }
 				>

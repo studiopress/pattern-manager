@@ -10,13 +10,13 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 				},
@@ -26,13 +26,13 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 				},
@@ -42,14 +42,14 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'sports' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'theatre' ],
@@ -60,7 +60,7 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'sports' ],
@@ -71,14 +71,14 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'something-random' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 				},
@@ -88,14 +88,14 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'something-random' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 				},
@@ -105,21 +105,21 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'uncategorized' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'category-that-is-ignored' ],
 				},
 				'third-pattern': {
 					title: 'Third Pattern',
-					name: 'third-pattern',
+					filename: 'third-pattern',
 					slug: 'third-pattern',
 					content: 'Here is even more content',
 					categories: [ 'category-that-is-ignored' ],
@@ -130,7 +130,7 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'uncategorized' ],
@@ -141,14 +141,14 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'sports' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is example content',
 					categories: [ 'theatre' ],
@@ -159,7 +159,7 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'sports' ],
@@ -170,21 +170,21 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'sports' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'theatre' ],
 				},
 				'yet-another-pattern': {
 					title: 'Yet Another Pattern',
-					name: 'yet-another-pattern',
+					filename: 'yet-another-pattern',
 					slug: 'yet-another-pattern',
 					content: 'And here is some content',
 					categories: [ 'theatre' ],
@@ -195,14 +195,14 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'theatre' ],
 				},
 				'yet-another-pattern': {
 					title: 'Yet Another Pattern',
-					name: 'yet-another-pattern',
+					filename: 'yet-another-pattern',
 					slug: 'yet-another-pattern',
 					content: 'And here is some content',
 					categories: [ 'theatre' ],
@@ -213,21 +213,21 @@ describe( 'getFilteredPatterns', () => {
 			{
 				'example-pattern': {
 					title: 'Example Pattern',
-					name: 'example-pattern',
+					filename: 'example-pattern',
 					slug: 'example-pattern',
 					content: 'This is example content',
 					categories: [ 'sports' ],
 				},
 				'another-pattern': {
 					title: 'Another Pattern',
-					name: 'another-pattern',
+					filename: 'another-pattern',
 					slug: 'another-pattern',
 					content: 'Here is some content',
 					categories: [ 'theatre' ],
 				},
 				'yet-another-pattern': {
 					title: 'Yet Another Pattern',
-					name: 'yet-another-pattern',
+					filename: 'yet-another-pattern',
 					slug: 'yet-another-pattern',
 					content: 'And here is some content',
 					categories: [ 'theatre' ],

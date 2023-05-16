@@ -62,7 +62,7 @@ export default function PatternGrid( {
 											url={
 												siteUrl +
 												'?pm_pattern_preview=' +
-												patternData.name
+												patternData.filename
 											}
 											viewportWidth={
 												patternData.viewportWidth ||

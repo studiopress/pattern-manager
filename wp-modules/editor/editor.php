@@ -28,7 +28,7 @@ require_once trailingslashit( __DIR__ ) . 'model.php';
 function register_pattern_post_type() {
 	$post_type_key = get_pattern_post_type();
 	$labels        = array(
-		'filename'           => __( 'Patterns', 'pattern-manager' ),
+		'name'           => __( 'Patterns', 'pattern-manager' ),
 		'singular_name'  => __( 'Pattern', 'pattern-manager' ),
 		'add_new_item'   => __( 'Pattern Editor', 'pattern-manager' ),
 		'item_published' => __( 'Pattern created', 'pattern-manager' ),
