@@ -290,15 +290,6 @@ function get_pattern_names() {
 }
 
 /**
- * Gets the prefix for prepending custom category names.
- *
- * @return string
- */
-function get_custom_category_prefix() {
-	return 'pm_custom_category_';
-}
-
-/**
  * Update or create a single pattern.
  *
  * @param array $pattern Data about the pattern.

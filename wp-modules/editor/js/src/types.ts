@@ -61,7 +61,6 @@ export type InitialPatternManager = {
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
 	};
-	customCategoryPrefix: string;
 	patternCategories: { label: string; name: string; pm_custom?: boolean }[];
 	patternNames: Array< Pattern[ 'slug' ] >;
 	patterns: Record< Pattern[ 'slug' ], Pattern >;

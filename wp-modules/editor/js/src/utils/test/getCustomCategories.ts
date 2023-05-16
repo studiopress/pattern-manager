@@ -1,15 +1,5 @@
 import getCustomCategories from '../getCustomCategories';
 
-const customCategoryPrefix = 'pm_custom_category_';
-
-jest.mock( '../../globals', () => {
-	return {
-		patternManager: {
-			customCategoryPrefix,
-		},
-	};
-} );
-
 describe( 'getCustomCategories', () => {
 	it.each( [
 		[
