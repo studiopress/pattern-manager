@@ -47,7 +47,6 @@ export default function TitlePanel( {
 				value={ title }
 				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
-					handleChange( 'filename', convertToSlug( newTitle ) );
 
 					if ( ! newTitle ) {
 						lockPostSaving();
