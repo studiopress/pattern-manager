@@ -57,6 +57,16 @@ export default function TitlePanel( {
 						);
 						speak( newErrorMessage, 'assertive' );
 						setErrorMessage( newErrorMessage );
+					} else if (
+						isTitleTaken( newTitle, currentName, patternNames )
+					) {
+						lockPostSaving();
+						const newErrorMessage = __(
+							'Please enter a unique title.',
+							'pattern-manager'
+						);
+						speak( newErrorMessage, 'assertive' );
+						setErrorMessage( newErrorMessage );
 					} else {
 						unlockPostSaving();
 						setErrorMessage( '' );
