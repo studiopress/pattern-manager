@@ -1,7 +1,7 @@
 import type { Pattern, Patterns } from '../types';
 
 export default function removePattern(
-	nameToDelete: Pattern[ 'name' ],
+	nameToDelete: Pattern[ 'filename' ],
 	existingPatterns: Patterns
 ) {
 	const {

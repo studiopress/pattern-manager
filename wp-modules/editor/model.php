@@ -101,14 +101,14 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	if ( 'name' === $meta_key && ! $meta_value ) {
+	if ( 'filename' === $meta_key && ! $meta_value ) {
 		return $override;
 	}
 
 	$pattern_name = $post->post_name;
 	$pattern      = get_pattern_by_name( $pattern_name );
 
-	if ( 'name' === $meta_key ) {
+	if ( 'filename' === $meta_key ) {
 		wp_update_post(
 			[
 				'ID'        => $post_id,
@@ -126,7 +126,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			get_pattern_defaults(),
 			$pattern ? $pattern : [ 'title' => $post->post_title ],
 			[
-				'name'    => $pattern_name,
+				'filename'    => $pattern_name,
 				$meta_key => $meta_value,
 			]
 		)
@@ -171,11 +171,11 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
-		duplicate_pattern( filter_input( INPUT_GET, 'name' ) );
+		duplicate_pattern( filter_input( INPUT_GET, 'filename' ) );
 	}
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
-		edit_pattern( filter_input( INPUT_GET, 'name' ) );
+		edit_pattern( filter_input( INPUT_GET, 'filename' ) );
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\redirect_pattern_actions' );

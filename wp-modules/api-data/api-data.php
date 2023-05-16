@@ -40,7 +40,7 @@ function register_routes() {
 				'type'       => 'object',
 				// These define the items which will actually be returned by the endpoint.
 				'properties' => array(
-					'patternNames' => array(
+					'patternFileNames' => array(
 						'description' => esc_html__( 'All pattern names', 'pattern-manager' ),
 						'type'        => 'array',
 						'readonly'    => true,
@@ -58,7 +58,7 @@ function register_routes() {
 			'callback'            => __NAMESPACE__ . '\delete_pattern',
 			'permission_callback' => __NAMESPACE__ . '\permission_check',
 			'args'                => array(
-				'patternName' => array(
+				'patternFileName' => array(
 					'required'          => true,
 					'type'              => 'string',
 					'description'       => __( 'The pattern to delete', 'pattern-manager' ),
@@ -93,7 +93,7 @@ function get_pattern_names() {
 	return $is_success
 		? new WP_REST_Response(
 			array(
-				'patternNames' => $is_success,
+				'patternFileNames' => $is_success,
 			),
 			200
 		)
@@ -107,7 +107,7 @@ function get_pattern_names() {
  * @return WP_REST_Response
  */
 function delete_pattern( $request ) {
-	$is_success = \PatternManager\PatternDataHandlers\delete_pattern( $request->get_params()['patternName'] );
+	$is_success = \PatternManager\PatternDataHandlers\delete_pattern( $request->get_params()['patternFileName'] );
 
 	return $is_success
 		? new WP_REST_Response(

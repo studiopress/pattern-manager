@@ -85,7 +85,7 @@ class ApiDataTest extends WP_UnitTestCase {
 
 		$this->assertSame(
 			[
-				'patternNames' =>
+				'patternFileNames' =>
 					[
 						'my-new-pattern',
 						'with-image',

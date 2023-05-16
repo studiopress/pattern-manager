@@ -28,7 +28,7 @@ require_once trailingslashit( __DIR__ ) . 'model.php';
 function register_pattern_post_type() {
 	$post_type_key = get_pattern_post_type();
 	$labels        = array(
-		'name'           => __( 'Patterns', 'pattern-manager' ),
+		'filename'           => __( 'Patterns', 'pattern-manager' ),
 		'singular_name'  => __( 'Pattern', 'pattern-manager' ),
 		'add_new_item'   => __( 'Pattern Editor', 'pattern-manager' ),
 		'item_published' => __( 'Pattern created', 'pattern-manager' ),
@@ -54,12 +54,12 @@ function register_pattern_post_type() {
 
 	register_post_meta(
 		$post_type_key,
-		'name',
+		'filename',
 		array(
 			'show_in_rest' => true,
 			'single'       => true,
 			'type'         => 'string',
-			'default'      => get_pattern_defaults()['name'],
+			'default'      => get_pattern_defaults()['filename'],
 		)
 	);
 
@@ -216,11 +216,11 @@ function enqueue_meta_fields_in_editor() {
 		[
 			'activeTheme'       => basename( get_stylesheet_directory() ),
 			'apiEndpoints'      => array(
-				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
+				'getPatternFileNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
 			'apiNonce'          => wp_create_nonce( 'wp_rest' ),
 			'patternCategories' => WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
-			'patternNames'      => \PatternManager\PatternDataHandlers\get_pattern_names(),
+			'patternFileNames'      => \PatternManager\PatternDataHandlers\get_pattern_names(),
 			'patterns'          => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
 			'siteUrl'           => get_bloginfo( 'url' ),
 		]

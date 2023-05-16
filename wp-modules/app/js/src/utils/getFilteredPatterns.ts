@@ -22,7 +22,7 @@ export default function getFilteredPatterns(
 function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 	return searchTerm
 		? Object.entries( patterns ).reduce(
-				( accumulator, [ patternName, pattern ] ) => {
+				( accumulator, [ patternFileName, pattern ] ) => {
 					// Add pattern header keys to the arr below to include in search.
 					const match = [ 'title', 'keywords', 'description' ].some(
 						( key: keyof Pattern ) => {
@@ -38,7 +38,7 @@ function getPatternsBySearchTerm( patterns: Patterns, searchTerm: string ) {
 					return match
 						? {
 								...accumulator,
-								[ patternName ]: pattern,
+								[ patternFileName ]: pattern,
 						  }
 						: accumulator;
 				},
@@ -52,12 +52,12 @@ function getPatternsByCategory( patterns: Patterns, categoryName: string ) {
 
 	return categoryName
 		? Object.entries( patterns ).reduce(
-				( accumulator, [ patternName, pattern ] ) => {
+				( accumulator, [ patternFileName, pattern ] ) => {
 					return pattern.categories?.includes( categoryName ) ||
 						categoryName === categoryToAlwaysInclude
 						? {
 								...accumulator,
-								[ patternName ]: pattern,
+								[ patternFileName ]: pattern,
 						  }
 						: accumulator;
 				},

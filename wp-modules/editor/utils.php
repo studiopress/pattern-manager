@@ -52,7 +52,7 @@ function get_new_pattern_number( string $name, array $all_patterns ): int {
  * @param string $name The pattern name
  * @param array $all_patterns All the patterns.
  * @return array {
- *   'name'  => string,
+ *   'filename'  => string,
  *   'slug'  => string,
  *   'title' => string,
  * } | null
@@ -63,12 +63,12 @@ function get_duplicate_pattern_ids( string $name, array $all_patterns ) {
 		return null;
 	}
 
-	$base_name      = "{$pattern_to_duplicate['name']}-copied";
+	$base_name      = "{$pattern_to_duplicate['filename']}-copied";
 	$base_title     = "{$pattern_to_duplicate['title']} (copied)";
 	$pattern_number = get_new_pattern_number( $base_name, $all_patterns );
 
 	return array(
-		'name'  => $pattern_number ? "{$base_name}-{$pattern_number}" : $base_name,
+		'filename'  => $pattern_number ? "{$base_name}-{$pattern_number}" : $base_name,
 		'slug'  => $pattern_number ? "{$base_name}-{$pattern_number}" : $base_name,
 		'title' => $pattern_number ? "{$base_title} {$pattern_number}" : $base_title,
 	);
@@ -108,7 +108,7 @@ function get_pm_post_ids() {
  */
 function duplicate_pattern( string $pattern_name ) {
 	$pattern_to_duplicate  = get_pattern_by_name( sanitize_text_field( $pattern_name ) );
-	$duplicate_pattern_ids = get_duplicate_pattern_ids( $pattern_to_duplicate['name'], get_theme_patterns() );
+	$duplicate_pattern_ids = get_duplicate_pattern_ids( $pattern_to_duplicate['filename'], get_theme_patterns() );
 	if ( ! $duplicate_pattern_ids ) {
 		return;
 	}
@@ -125,7 +125,7 @@ function duplicate_pattern( string $pattern_name ) {
 			wp_insert_post(
 				[
 					'post_type'   => get_pattern_post_type(),
-					'post_name'   => $new_pattern['name'],
+					'post_name'   => $new_pattern['filename'],
 					'post_status' => 'publish',
 				]
 			),

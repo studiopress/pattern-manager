@@ -13,22 +13,22 @@ import type { Pattern } from '../../types';
 function isTitleTaken(
 	patternTitle: string,
 	currentName: string,
-	patternNames: Array< Pattern[ 'name' ] >
+	patternFileNames: Array< Pattern[ 'filename' ] >
 ) {
 	const newSlug = convertToSlug( patternTitle );
-	return patternNames.includes( newSlug ) && newSlug !== currentName;
+	return patternFileNames.includes( newSlug ) && newSlug !== currentName;
 }
 
 export default function TitlePanel( {
 	currentName,
 	errorMessage,
-	patternNames,
+	patternFileNames,
 	title,
 	handleChange,
 	setErrorMessage,
 }: BaseSidebarProps< 'title' > &
 	AdditionalSidebarProps<
-		'currentName' | 'errorMessage' | 'patternNames' | 'setErrorMessage'
+		'currentName' | 'errorMessage' | 'patternFileNames' | 'setErrorMessage'
 	> ) {
 	const { editPost, lockPostSaving, unlockPostSaving } =
 		useDispatch( 'core/editor' );
@@ -47,7 +47,7 @@ export default function TitlePanel( {
 				value={ title }
 				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
-					handleChange( 'name', convertToSlug( newTitle ) );
+					handleChange( 'filename', convertToSlug( newTitle ) );
 
 					if ( ! newTitle ) {
 						lockPostSaving();
@@ -58,7 +58,7 @@ export default function TitlePanel( {
 						speak( newErrorMessage, 'assertive' );
 						setErrorMessage( newErrorMessage );
 					} else if (
-						isTitleTaken( newTitle, currentName, patternNames )
+						isTitleTaken( newTitle, currentName, patternFileNames )
 					) {
 						lockPostSaving();
 						const newErrorMessage = __(

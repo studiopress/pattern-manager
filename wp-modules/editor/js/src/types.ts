@@ -54,13 +54,13 @@ export type InitialPatternManager = {
 	activeTheme: string;
 	apiNonce: string;
 	apiEndpoints: {
-		getPatternNamesEndpoint: string;
+		getPatternFileNamesEndpoint: string;
 	};
 	patternCategories: {
 		label: string;
 		name: string;
 	}[];
-	patternNames: Array< Pattern[ 'slug' ] >;
+	patternFileNames: Array< Pattern[ 'slug' ] >;
 	patterns: Record< Pattern[ 'slug' ], Pattern >;
 	siteUrl: string;
 };

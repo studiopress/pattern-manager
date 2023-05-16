@@ -20,13 +20,13 @@ export default function PatternManagerMetaControls() {
 	const { postMeta, title } = useEditedPostData();
 	const { currentName } = useSavedPostData();
 	const [ errorMessage, setErrorMessage ] = useState( '' );
-	const [ patternNames, setPatternNames ] = useState(
-		patternManager.patternNames.filter( ( name ) => {
+	const [ patternFileNames, setPatternFileNames ] = useState(
+		patternManager.patternFileNames.filter( ( name ) => {
 			return name !== postMeta.name;
 		} )
 	);
 
-	useSave( setPatternNames );
+	useSave( setPatternFileNames );
 
 	const {
 		queriedBlockTypes,
@@ -41,7 +41,7 @@ export default function PatternManagerMetaControls() {
 			<TitlePanel
 				currentName={ currentName }
 				errorMessage={ errorMessage }
-				patternNames={ patternNames }
+				patternFileNames={ patternFileNames }
 				title={ title }
 				handleChange={ updatePostMeta }
 				setErrorMessage={ setErrorMessage }

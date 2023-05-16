@@ -140,7 +140,7 @@ function get_theme_patterns(): array {
 	foreach ( $pattern_file_paths as $path ) {
 		$pattern = get_pattern_by_path( $path );
 		if ( $pattern ) {
-			$patterns[ $pattern['name'] ] = $pattern;
+			$patterns[ $pattern['filename'] ] = $pattern;
 		}
 	}
 
@@ -159,20 +159,20 @@ function get_theme_patterns_with_editor_links() {
 			$query = new WP_Query(
 				[
 					'post_type'      => get_pattern_post_type(),
-					'post_name'      => $pattern['name'],
+					'post_name'      => $pattern['filename'],
 					'post_status'    => 'publish',
 					'posts_per_page' => 1,
 				]
 			);
 			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
 
-			$pattern['editorLink'] = $post && $post->name === $pattern['name']
+			$pattern['editorLink'] = $post && $post->name === $pattern['filename']
 				? get_edit_post_link( $post, 'localized_data' )
 				: add_query_arg(
 					[
 						'post_type' => get_pattern_post_type(),
 						'action'    => 'edit-pattern',
-						'name'      => $pattern['name'],
+						'filename'      => $pattern['filename'],
 					],
 					admin_url()
 				);
@@ -226,7 +226,7 @@ function get_pattern_by_path( $path ) {
 		return false;
 	}
 
-	return array_merge( $pattern_data, array( 'name' => basename( $path, '.php' ) ) );
+	return array_merge( $pattern_data, array( 'filename' => basename( $path, '.php' ) ) );
 }
 
 /**
@@ -236,7 +236,8 @@ function get_pattern_by_path( $path ) {
  */
 function get_pattern_defaults() {
 	return [
-		'name'          => '',
+		'filename'          => '',
+		'slug'          => '',
 		'title'         => '',
 		'description'   => '',
 		'content'       => '',
@@ -299,7 +300,7 @@ function update_pattern( $pattern ) {
 
 	$patterns_dir  = get_patterns_directory();
 	$file_contents = construct_pattern_php_file_contents( $pattern );
-	$file_name     = sanitize_title( $pattern['name'] ) . '.php';
+	$file_name     = sanitize_title( $pattern['filename'] ) . '.php';
 
 	if ( ! $wp_filesystem->exists( $patterns_dir ) ) {
 		$wp_filesystem->mkdir( $patterns_dir );
@@ -356,7 +357,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$file_contents = '<?php
 /**
  * Title: ' . addcslashes( $pattern['title'], '\'' ) . '
- * Slug: ' . $pattern['name'] . '
+ * Slug: ' . $pattern['filename'] . '
  * Description: ' . $pattern['description'] . '
  * Categories: ' . implode( ', ', $pattern['categories'] ) . '
  * Keywords: ' . implode( ', ', $pattern['keywords'] ) . '

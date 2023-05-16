@@ -51,7 +51,7 @@ export default function getUniquePatternCategories(
 					} ),
 			],
 			// Sort by name property.
-			'name'
+			'filename'
 		),
 	];
 }

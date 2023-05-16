@@ -8,12 +8,12 @@ import type { Pattern, Patterns } from '../types';
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
 
-	function deletePattern( patternName: Pattern[ 'name' ] ) {
-		setPatternsData( removePattern( patternName, patternsData ) );
+	function deletePattern( patternFileName: Pattern[ 'filename' ] ) {
+		setPatternsData( removePattern( patternFileName, patternsData ) );
 		return fetch( patternManager.apiEndpoints.deletePatternEndpoint, {
 			method: 'DELETE',
 			headers: getHeaders(),
-			body: JSON.stringify( { patternName } ),
+			body: JSON.stringify( { patternFileName } ),
 		} );
 	}
 

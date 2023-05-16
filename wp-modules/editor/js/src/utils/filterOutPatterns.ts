@@ -8,7 +8,7 @@ import type { Pattern, Patterns } from '../types';
  */
 export default function filterOutPatterns(
 	patterns: Patterns,
-	patternName: Pattern[ 'name' ]
+	patternFileName: Pattern[ 'filename' ]
 ) {
 	return Object.entries( patterns ).reduce(
 		( accumulator, [ key, pattern ] ) => {
@@ -17,8 +17,8 @@ export default function filterOutPatterns(
 				...( ! hasBlock(
 					'core/pattern',
 					parse( pattern.content ),
-					patternName
-				) && pattern.name !== patternName
+					patternFileName
+				) && pattern.name !== patternFileName
 					? { [ key ]: pattern }
 					: {} ),
 			};

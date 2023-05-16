@@ -41,11 +41,11 @@ export default function PatternGrid( {
 				</div>
 			) : (
 				Object.entries( patterns ?? {} ).map(
-					( [ patternName, patternData ] ) => {
+					( [ patternFileName, patternData ] ) => {
 						return (
 							<div
 								role={ onSelectPattern ? 'button' : undefined }
-								key={ patternName }
+								key={ patternFileName }
 								onClick={ () =>
 									onSelectPattern?.( patternData )
 								}
@@ -58,7 +58,7 @@ export default function PatternGrid( {
 								<div className="item-inner">
 									<div className="item-pattern-preview">
 										<PatternPreview
-											key={ patternName }
+											key={ patternFileName }
 											url={
 												siteUrl +
 												'?pm_pattern_preview=' +

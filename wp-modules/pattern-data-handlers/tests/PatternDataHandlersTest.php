@@ -82,7 +82,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			'postTypes'     => [ 'wp_block', 'wp_template' ],
 			'inserter'      => true,
 			'content'       => '<!-- wp:paragraph --><p>Here is some content</p><!-- /wp:paragraph -->',
-			'name'          => 'my-new-pattern',
+			'filename'          => 'my-new-pattern',
 		];
 	}
 
@@ -98,7 +98,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 			$this->normalize(
 				construct_pattern_php_file_contents(
 					[
-						'name'  => 'empty',
+						'filename'  => 'empty',
 						'title' => 'Empty',
 					]
 				)

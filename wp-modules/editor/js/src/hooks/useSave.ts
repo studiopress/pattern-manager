@@ -5,7 +5,7 @@ import { patternManager } from '../globals';
 import type { Pattern, SelectQuery } from '../types';
 
 export default function useSave(
-	setPatternNames: ( patternNames: Array< Pattern[ 'name' ] > ) => void
+	setPatternFileNames: ( patternFileNames: Array< Pattern[ 'filename' ] > ) => void
 ) {
 	const isSavingPost = useSelect( ( select: SelectQuery ) => {
 		return select( 'core/editor' ).isSavingPost();
@@ -13,13 +13,13 @@ export default function useSave(
 
 	useEffect( () => {
 		if ( isSavingPost ) {
-			updatePatternNames();
+			updatePatternFileNames();
 		}
 	}, [ isSavingPost ] );
 
-	async function updatePatternNames() {
+	async function updatePatternFileNames() {
 		const response = await fetch(
-			patternManager.apiEndpoints.getPatternNamesEndpoint,
+			patternManager.apiEndpoints.getPatternFileNamesEndpoint,
 			{
 				method: 'GET',
 				headers: getHeaders(),
@@ -28,7 +28,7 @@ export default function useSave(
 
 		if ( response.ok ) {
 			const data = await response.json();
-			setPatternNames( data.patternNames );
+			setPatternFileNames( data.patternFileNames );
 		}
 	}
 }
