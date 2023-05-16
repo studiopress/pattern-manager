@@ -44,7 +44,7 @@ function populate_pattern_from_file( $post ) {
 add_action( 'the_post', __NAMESPACE__ . '\populate_pattern_from_file' );
 
 /**
- * Saves the pattern to the .php file.
+ * Hooks to when a pattern post type is being saved, and saves the pattern to the .php file instead.
  *
  * @param int $post_id The post ID.
  * @param WP_Post $post The post.
@@ -53,20 +53,19 @@ function save_pattern_to_file( WP_Post $post ) {
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return;
 	}
-
+	
+	// Get the pattern data from the disk whose "slug" (which is the post_name) matches the pattern being saved.
 	$pattern = get_pattern_by_name( $post->post_name );
-	update_pattern(
-		array_merge(
-			$pattern ? $pattern : [],
-			[
-				'content' => $post->post_content,
-				'name'    => $post->post_name,
-			],
-			$post->post_title
-				? [ 'title' => $post->post_title ]
-				: []
-		)
-	);
+	
+	if ( empty( $pattern ) || ! is_array( $pattern ) ) {
+		$pattern = [];
+	}
+
+	// Update the pattern's title and content to match what is in the post_content being saved. Note that meta is handled in the update_post_metadata hook.
+	$pattern['title']   = isset( $post->post_title ) ? $post->post_title : '';
+	$pattern['content'] = $post->post_content;
+
+	update_pattern( $pattern );
 
 	// Remove pattern data from the post, as it was written to the pattern .php file.
 	wp_update_post(
