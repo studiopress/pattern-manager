@@ -58,11 +58,10 @@ function save_pattern_to_file( WP_Post $post ) {
 	$pattern = get_pattern_by_name( $post->post_name );
 	
 	if ( empty( $pattern ) || ! is_array( $pattern ) ) {
-		$pattern = [];
+		return;
 	}
 
 	// Update the pattern's title and content to match what is in the post_content being saved. Note that meta is handled in the update_post_metadata hook.
-	$pattern['title']   = isset( $post->post_title ) ? $post->post_title : '';
 	$pattern['content'] = $post->post_content;
 
 	update_pattern( $pattern );
