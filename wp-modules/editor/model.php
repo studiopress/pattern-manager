@@ -54,13 +54,14 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( $post->post_name );
+	$name    = $post->post_name;
+	$pattern = get_pattern_by_name( $name );
 	update_pattern(
 		array_merge(
-			$pattern ? $pattern : [],
+			$pattern ? $pattern : [ 'slug' => $name ],
 			[
 				'content' => $post->post_content,
-				'name'    => $post->post_name,
+				'name'    => $name,
 			],
 			$post->post_title
 				? [ 'title' => $post->post_title ]
