@@ -172,7 +172,7 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
 			update_pattern(
 				array_merge(
 					$pattern,
-					[ 'content' => update_slug( $pattern['content'] ) ],
+					[ 'content' => update_slug( $old_slug, $new_slug, $pattern['content'] ) ],
 				)
 			);
 		}
