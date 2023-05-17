@@ -155,10 +155,10 @@ function edit_pattern( string $pattern_name ) {
 }
 
 /**
- * Update pattern slugs in Pattern Blocks.
+ * Updates pattern slugs in Pattern Blocks.
  *
  * If a pattern changes slugs,
- * and its old slug is referenced in a Pattern Block,
+ * and a Pattern Block references its old slug,
  * it won't render.
  *
  * @param string $old_slug The previous slug.
@@ -180,7 +180,7 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
 }
 
 /**
- * Update a slug in a Pattern Block to a new slug.
+ * Updates a slug in a Pattern Block to a new slug.
  *
  * @param string $old_slug The previous slug.
  * @param string $new_slug The new slug.
@@ -196,7 +196,7 @@ function update_slug( $old_slug, $new_slug, $subject ) {
 }
 
 /**
- * Gets whether content has a pattern block.
+ * Gets whether content has a Pattern Block.
  *
  * @param string $content The content to examine.
  * @param bool Whether the content has a pattern block.
