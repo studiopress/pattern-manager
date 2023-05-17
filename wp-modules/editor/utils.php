@@ -180,7 +180,7 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
 }
 
 /**
- * Update a slug to a new slug.
+ * Update a slug in a Pattern Block to a new slug.
  *
  * @param string $old_slug The previous slug.
  * @param string $new_slug The new slug.

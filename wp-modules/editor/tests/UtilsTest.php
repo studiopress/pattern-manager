@@ -316,6 +316,12 @@ class UtilsTest extends WP_UnitTestCase {
 			[
 				'baz',
 				'new',
+				'    ',
+				'    ',
+			],
+			[
+				'baz',
+				'new',
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
 			],
