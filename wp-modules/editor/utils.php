@@ -164,8 +164,8 @@ function edit_pattern( string $pattern_name ) {
  */
 function update_slug( $old_slug, $new_slug, $subject ) {
 	return preg_replace(
-		'#(<!--\s+wp:pattern\s+{"slug":")(' . sanitize_key( $old_slug ) . ')(")#s',
-		'$1' . sanitize_key( $new_slug ) . '$3',
+		'#(<!--\s+wp:pattern\s+{"slug":")(' . addslashes( $old_slug ) . ')(")#s',
+		'$1' . addslashes( $new_slug ) . '$3',
 		$subject
 	);
 }

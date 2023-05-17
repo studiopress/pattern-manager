@@ -320,10 +320,10 @@ class UtilsTest extends WP_UnitTestCase {
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
 			],
 			[
-				'foo',
-				'new',
+				'foo/an-example-pattern',
+				'foo/renamed',
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
-				'<!-- wp:pattern {"slug":"new/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"foo/renamed"} /-->',
 			],
 		];
 	}
