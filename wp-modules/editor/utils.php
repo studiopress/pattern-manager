@@ -155,6 +155,31 @@ function edit_pattern( string $pattern_name ) {
 }
 
 /**
+ * Update pattern slugs in Pattern Blocks.
+ *
+ * If a pattern changes slugs,
+ * and its old slug is referenced in a Pattern Block,
+ * it won't render.
+ *
+ * @param string $old_slug The previous slug.
+ * @param string $new_slug The new slug.
+ */
+function update_pattern_slugs( $old_slug, $new_slug ) {
+	$patterns = get_theme_patterns();
+
+	foreach ( $patterns as $pattern_name => $pattern ) {
+		if ( has_pattern_block( $pattern['content'] ) ) {
+			update_pattern(
+				[
+					...$pattern
+					[ 'content' => update_slug( $pattern['content'] ) ],
+				]
+			)
+		}
+	}
+}
+
+/**
  * Update a slug to a new slug.
  *
  * @param string $old_slug The previous slug.

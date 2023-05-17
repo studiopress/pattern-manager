@@ -325,6 +325,18 @@ class UtilsTest extends WP_UnitTestCase {
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
 				'<!-- wp:pattern {"slug":"foo/renamed"} /-->',
 			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+				'<!-- wp:pattern {"slug":"foo/renamed"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed-pattern',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+				'<!-- wp:pattern {"slug":"foo/renamed-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+			],
 		];
 	}
 
