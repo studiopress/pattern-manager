@@ -339,4 +339,38 @@ class UtilsTest extends WP_UnitTestCase {
 			update_slug( $old_slug, $new_slug, $subject )
 		);
 	}
+
+	/**
+	 * Gets the data for the test of has_pattern_block().
+	 *
+	 * @return array[]
+	 */
+	public function data_has_pattern_block() {
+		return [
+			[
+				'',
+				false,
+			],
+			[
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+				false,
+			],
+			[
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				true,
+			],
+		];
+	}
+
+	/**
+	 * Tests has_pattern_block.
+	 *
+	 * @dataProvider data_has_pattern_block
+	 */
+	public function test_has_pattern_block( $content, $expected ) {
+		$this->assertSame(
+			$expected,
+			has_pattern_block( $content )
+		);
+	}
 }

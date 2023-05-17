@@ -169,3 +169,16 @@ function update_slug( $old_slug, $new_slug, $subject ) {
 		$subject
 	);
 }
+
+/**
+ * Gets whether content has a pattern block.
+ *
+ * @param string $content The content to examine.
+ * @param bool Whether the content has a pattern block.
+ */
+function has_pattern_block( $content ) {
+	return 1 === preg_match(
+		'#<!--\s+wp:pattern\s+{"slug":"#',
+		$content
+	);
+}
