@@ -153,3 +153,15 @@ function edit_pattern( string $pattern_name ) {
 		)
 	);
 }
+
+/**
+ * Update a slug to a new slug.
+ *
+ * @param string $old_slug The previous slug.
+ * @param string $new_slug The new slug.
+ * @param string $subject What to replace the slug in.
+ * @return string With the updated slug.
+ */
+function update_slug( $old_slug, $new_slug, $subject ) {
+	return preg_replace( '', '', $subject );
+}

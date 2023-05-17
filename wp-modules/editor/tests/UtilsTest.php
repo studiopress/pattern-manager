@@ -299,4 +299,32 @@ class UtilsTest extends WP_UnitTestCase {
 			get_pm_post_ids()
 		);
 	}
+
+	/**
+	 * Gets the data for the test of update_slug().
+	 *
+	 * @return array[]
+	 */
+	public function data_update_slug() {
+		return [
+			[
+				'',
+				'',
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+			],
+		];
+	}
+
+	/**
+	 * Tests update_slug.
+	 *
+	 * @dataProvider data_update_slug
+	 */
+	public function test_update_slug( $old_slug, $new_slug, $subject, $expected ) {
+		$this->assertSame(
+			$expected,
+			update_slug( $old_slug, $new_slug, $subject )
+		);
+	}
 }

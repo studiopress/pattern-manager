@@ -118,6 +118,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		);
 
 		if ( $pattern_name !== $meta_value ) {
+			// The name changed, so delete the previous pattern file.
 			delete_pattern( $pattern_name );
 		}
 	}
