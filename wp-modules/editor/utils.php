@@ -171,10 +171,10 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
 		if ( has_pattern_block( $pattern['content'] ) ) {
 			update_pattern(
 				[
-					...$pattern
+					...$pattern,
 					[ 'content' => update_slug( $pattern['content'] ) ],
 				]
-			)
+			);
 		}
 	}
 }
