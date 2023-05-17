@@ -133,7 +133,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 				'title' => $post->post_title,
 				'slug'  => $pattern_name,
 			],
-			$name_changed ? [ 'slug' => $pattern_name ] : [],
+			$name_changed ? [ 'slug' => $meta_value ] : [],
 			[
 				'name'    => $pattern_name,
 				$meta_key => $meta_value,
