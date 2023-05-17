@@ -333,6 +333,12 @@ class UtilsTest extends WP_UnitTestCase {
 			],
 			[
 				'foo/an-example-pattern',
+				'renamed',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"renamed"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
 				'foo/renamed',
 				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
 				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/renamed"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
