@@ -79,19 +79,8 @@
 		}
 
 		.inner-grid {
-			column-count: 3;
-			column-gap: 3rem;
-			max-width: 61vw;
-
-			@media (max-width: 1729px) {
-				column-count: 2;
-				max-width: 57vw;
-			}
-
-			@media (max-width: 1489px) {
-				column-count: 1;
-				max-width: 48vw;
-			}
+			columns: 6 300px;
+  			column-gap: 3rem;
 
 			.grid-item {
 				position: relative;
@@ -101,6 +90,7 @@
 				border: solid 1px #ddd;
 				border-radius: 5px;
 				display: inline-block;
+				width: 150px;
 				width: 100%;
 
 				&[role="button"] {
