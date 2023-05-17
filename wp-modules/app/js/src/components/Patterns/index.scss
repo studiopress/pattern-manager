@@ -79,22 +79,29 @@
 		}
 
 		.inner-grid {
-			width: 100%;
-			display: grid;
-			grid-template-columns: repeat(3, minmax(300px, 1fr));
-			grid-gap: 2rem;
+			column-count: 3;
+			column-gap: 3rem;
+			max-width: 61vw;
 
 			@media (max-width: 1729px) {
-				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				column-count: 2;
+				max-width: 57vw;
+			}
+
+			@media (max-width: 1489px) {
+				column-count: 1;
+				max-width: 48vw;
 			}
 
 			.grid-item {
 				position: relative;
 				box-sizing: border-box;
-				margin-bottom: 50px;
+				margin-bottom: 6rem;
 				min-height: 300px;
 				border: solid 1px #ddd;
 				border-radius: 5px;
+				display: inline-block;
+				width: 100%;
 
 				&[role="button"] {
 					cursor: pointer;
