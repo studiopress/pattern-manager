@@ -1,6 +1,6 @@
-import convertToSlug from '../convertToSlug';
+import toKebabCase from '../toKebabCase';
 
-describe( 'convertToSlug', () => {
+describe( 'toKebabCase', () => {
 	it.each( [
 		[ undefined, '' ],
 		[ '', '' ],
@@ -14,7 +14,7 @@ describe( 'convertToSlug', () => {
 		[ 'with&&&***non.,.word$$characters', 'with-non-word-characters' ],
 		[ 'EndingInApostrophe!', 'endinginapostrophe' ],
 		[ 'With 🥁Emojis🏇', 'with-emojis' ],
-	] )( 'should convert to the slug', ( toConvert, expected ) => {
-		expect( convertToSlug( toConvert ) ).toEqual( expected );
+	] )( 'should convert to kebab case', ( toConvert, expected ) => {
+		expect( toKebabCase( toConvert ) ).toEqual( expected );
 	} );
 } );

@@ -74,6 +74,9 @@ export default function PatternEdit( {
 		className: pattern ? 'alignfull' : 'is-layout-constrained',
 	} );
 	const { currentName } = useSavedPostData();
+	const patternSlug = Object.values( patternManager.patterns ).find(
+		( ownPattern ) => ownPattern.name === currentName
+	)?.slug;
 
 	return (
 		<>
@@ -90,7 +93,7 @@ export default function PatternEdit( {
 						patternCategories={ patternManager.patternCategories }
 						patterns={ filterOutPatterns(
 							patternManager.patterns,
-							currentName
+							patternSlug
 						) }
 						siteUrl={ patternManager.siteUrl }
 					/>
