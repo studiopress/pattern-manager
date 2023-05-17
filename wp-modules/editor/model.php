@@ -129,8 +129,11 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	return update_pattern(
 		array_merge(
 			get_pattern_defaults(),
-			$pattern ? $pattern : [ 'title' => $post->post_title ],
-			$name_changed ? [ 'slug' => $name ] : [],
+			$pattern ? $pattern : [
+				'title' => $post->post_title,
+				'slug'  => $pattern_name,
+			],
+			$name_changed ? [ 'slug' => $pattern_name ] : [],
 			[
 				'name'    => $pattern_name,
 				$meta_key => $meta_value,
