@@ -92,6 +92,11 @@ add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\sa
  */
 function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_value ) {
 	$post = get_post( $post_id );
+	
+	if ( ! isset( $post->post_type ) ) {
+		return $override;
+	}
+
 	if ( get_pattern_post_type() !== $post->post_type ) {
 		return $override;
 	}
