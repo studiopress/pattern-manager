@@ -334,8 +334,8 @@ class UtilsTest extends WP_UnitTestCase {
 			[
 				'foo/an-example-pattern',
 				'foo/renamed',
-				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
-				'<!-- wp:pattern {"slug":"foo/renamed"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/renamed"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
 			],
 			[
 				'foo/an-example-pattern',
@@ -375,6 +375,10 @@ class UtilsTest extends WP_UnitTestCase {
 			],
 			[
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				true,
+			],
+			[
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /-->',
 				true,
 			],
 		];

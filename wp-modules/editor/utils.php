@@ -189,7 +189,7 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
  */
 function update_slug( $old_slug, $new_slug, $subject ) {
 	return preg_replace(
-		'#(<!--\s+wp:pattern\s+{"slug":")(' . addslashes( $old_slug ) . ')(")#s',
+		'#(<!--\s+wp:pattern\s+{[^}]*"slug":")(' . addslashes( $old_slug ) . ')(")#s',
 		'$1' . addslashes( $new_slug ) . '$3',
 		$subject
 	);
@@ -203,7 +203,7 @@ function update_slug( $old_slug, $new_slug, $subject ) {
  */
 function has_pattern_block( $content ) {
 	return 1 === preg_match(
-		'#<!--\s+wp:pattern\s+{"slug":"#',
+		'#<!--\s+wp:pattern\s+{[^}]*"slug":"#',
 		$content
 	);
 }
