@@ -356,7 +356,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
 	$file_contents = '<?php
 /**
  * Title: ' . addcslashes( $pattern['title'], '\'' ) . '
- * Slug: ' . $pattern['name'] . '
+ * Slug: ' . $pattern['slug'] . '
  * Description: ' . $pattern['description'] . '
  * Categories: ' . implode( ', ', $pattern['categories'] ) . '
  * Keywords: ' . implode( ', ', $pattern['keywords'] ) . '
