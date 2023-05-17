@@ -170,10 +170,10 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
 	foreach ( $patterns as $pattern_name => $pattern ) {
 		if ( has_pattern_block( $pattern['content'] ) ) {
 			update_pattern(
-				[
-					...$pattern,
+				array_merge(
+					$pattern,
 					[ 'content' => update_slug( $pattern['content'] ) ],
-				]
+				)
 			);
 		}
 	}
