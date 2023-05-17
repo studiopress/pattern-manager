@@ -58,6 +58,8 @@ function save_pattern_to_file( WP_Post $post ) {
 	$pattern = get_pattern_by_name( $name );
 	update_pattern(
 		array_merge(
+			// Only set the slug to the name for new patterns.
+			// Patterns created without PM might have a different slug and name.
 			$pattern ? $pattern : [ 'slug' => $name ],
 			[
 				'content' => $post->post_content,
