@@ -252,7 +252,7 @@ function get_pattern_defaults() {
 /**
  * Gets a pattern by its name.
  *
- * @param string $name The pattern name.
+ * @param string $slug The pattern slug.
  * @return array|false
  */
 function get_pattern_by_slug( $slug ) {
