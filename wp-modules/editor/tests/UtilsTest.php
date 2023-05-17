@@ -340,6 +340,12 @@ class UtilsTest extends WP_UnitTestCase {
 			[
 				'foo/an-example-pattern',
 				'foo/renamed-pattern',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/renamed-pattern"} /--><!-- wp:pattern {"slug":"foo/renamed-pattern"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed-pattern',
 				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
 				'<!-- wp:pattern {"slug":"foo/renamed-pattern"} /--><!-- wp:pattern {"slug":"foo/renamed-pattern"} /-->',
 			],
