@@ -163,5 +163,9 @@ function edit_pattern( string $pattern_name ) {
  * @return string With the updated slug.
  */
 function update_slug( $old_slug, $new_slug, $subject ) {
-	return preg_replace( '', '', $subject );
+	return preg_replace(
+		'#(<!--\s+wp:pattern\s+{"slug":")(' . sanitize_key( $old_slug ) . ')(")#s',
+		'$1' . sanitize_key( $new_slug ) . '$3',
+		$subject
+	);
 }

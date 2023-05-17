@@ -313,6 +313,18 @@ class UtilsTest extends WP_UnitTestCase {
 				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
 				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
 			],
+			[
+				'baz',
+				'new',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+			],
+			[
+				'foo',
+				'new',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"new/an-example-pattern"} /-->',
+			],
 		];
 	}
 
