@@ -107,8 +107,9 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		return $override;
 	}
 
-	$pattern_name = $post->post_name;
-	$pattern      = get_pattern_by_name( $pattern_name );
+	$pattern_name     = $post->post_name;
+	$pattern          = get_pattern_by_name( $pattern_name );
+	$was_name_changed = 'name' === $meta_key && $pattern_name !== $meta_value;
 
 	if ( 'name' === $meta_key ) {
 		wp_update_post(
@@ -117,16 +118,17 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 				'post_name' => $meta_value,
 			]
 		);
+	}
 
-		if ( $pattern_name !== $meta_value ) {
-			delete_pattern( $pattern_name );
-		}
+	if ( $was_name_changed ) {
+		delete_pattern( $pattern_name );
 	}
 
 	return update_pattern(
 		array_merge(
 			get_pattern_defaults(),
 			$pattern ? $pattern : [ 'title' => $post->post_title ],
+			$was_name_changed ? [ 'slug' => $name ] : [],
 			[
 				'name'    => $pattern_name,
 				$meta_key => $meta_value,
