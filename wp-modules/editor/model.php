@@ -129,7 +129,6 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		update_pattern_slugs( $pattern['slug'], $slug );
 	}
 
-
 	return update_pattern(
 		array_merge(
 			get_pattern_defaults(),
