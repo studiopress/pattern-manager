@@ -335,7 +335,7 @@ class UtilsTest extends WP_UnitTestCase {
 				'foo/404',
 				'404-not-found',
 				'<!-- wp:pattern {"slug":"foo/404"} /-->',
-				'<!-- wp:pattern {"slug":"foo/404-not-found"} /-->',
+				'<!-- wp:pattern {"slug":"404-not-found"} /-->',
 			],
 			[
 				'foo/an-example-pattern',
