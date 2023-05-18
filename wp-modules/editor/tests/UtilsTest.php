@@ -403,6 +403,32 @@ class UtilsTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Gets the data for the test of has_pattern_block().
+	 *
+	 * @return array[]
+	 */
+	public function data_prepend_textdomain() {
+		return [
+			[
+				'',
+				false,
+			],
+			[
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+				false,
+			],
+			[
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				true,
+			],
+			[
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /-->',
+				true,
+			],
+		];
+	}
+
+	/**
 	 * Tests has_pattern_block.
 	 *
 	 * @dataProvider data_has_pattern_block
@@ -411,6 +437,26 @@ class UtilsTest extends WP_UnitTestCase {
 		$this->assertSame(
 			$expected,
 			has_pattern_block( $content )
+		);
+	}
+
+	/**
+	 * Tests prepend_textdomain.
+	 */
+	public function test_prepend_textdomain_no_name() {
+		$this->assertStringEndsWith(
+			'/my-new-pattern',
+			prepend_textdomain( 'my-new-pattern' )
+		);
+	}
+
+	/**
+	 * Tests prepend_textdomain.
+	 */
+	public function test_prepend_textdomain_with_name() {
+		$this->assertStringEndsWith(
+			'/',
+			prepend_textdomain( '' )
 		);
 	}
 }
