@@ -210,7 +210,7 @@ function has_pattern_block( $content ) {
 
 /**
  * Prepends the theme textdomain to a pattern name.
- * <theme-name>/<pattern-name>
+ * <textdomain>/<pattern-name>
  *
  * @param string $name The pattern name.
  * @return string
