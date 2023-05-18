@@ -189,7 +189,7 @@ function update_pattern_slugs( $old_slug, $new_slug ) {
  */
 function update_slug( $old_slug, $new_slug, $subject ) {
 	return preg_replace(
-		'#(<!--\s+wp:pattern\s+{"slug":")(' . $old_slug . ')(")#',
+		'#(<!--\s+wp:pattern\s+{[^}]*"slug":")(' . $old_slug . ')(")#',
 		'${1}' . $new_slug . '${3}',
 		$subject
 	);
