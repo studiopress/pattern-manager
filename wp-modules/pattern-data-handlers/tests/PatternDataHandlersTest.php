@@ -87,6 +87,17 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Gets the expected custom categories.
+	 */
+	public function get_expected_custom_categories() {
+		return [
+			'First Custom',
+			'Second Custom',
+			'Third Custom',
+		];
+	}
+
+	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents_empty() {
@@ -110,11 +121,11 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Tests maybe_add_custom_category_header.
 	 */
 	public function test_maybe_add_custom_category_header() {
-		$custom_categories = [ 'First Custom', 'Second Custom' ];
+		$custom_categories = $this->get_expected_custom_categories();
 
 		$this->assertSame(
 			maybe_add_custom_category_header( $custom_categories ),
-			"\n * Custom Categories: First Custom, Second Custom",
+			"\n * Custom Categories: " . implode( ', ', $custom_categories ),
 		);
 
 		$this->assertEmpty( maybe_add_custom_category_header( [] ) );
