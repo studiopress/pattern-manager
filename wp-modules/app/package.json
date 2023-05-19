@@ -3,16 +3,19 @@
   "description": "The frontend react app for Pattern Manager",
   "main": "js/build/index.js",
   "scripts": {
-    "build": "wp-scripts build js/src/index.js --output-path=js/build/",
-    "dev": "wp-scripts start js/src/index.js --output-path=js/build/"
+    "build": "wp-scripts build",
+    "dev": "wp-scripts start"
   },
   "author": "",
   "license": "GPL-2.0-or-later",
   "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "@types/react-test-renderer": "^17.0.2",
     "@wordpress/scripts": "^24.4.0",
     "postcss": "^8.3.5",
     "postcss-cli": "^8.3.1",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "react-test-renderer": "^17.0.2"
   },
   "dependencies": {
     "@loadable/component": "^5.15.3",

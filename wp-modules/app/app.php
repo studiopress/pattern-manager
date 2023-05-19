@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace PatternManager\App;
 
+use function PatternManager\GetVersionControl\check_version_control_notice_should_show;
+
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -21,14 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function get_app_state() {
 	return array(
-		'patterns'          => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
-		'patternCategories' => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
-		'apiNonce'          => wp_create_nonce( 'wp_rest' ),
-		'apiEndpoints'      => array(
-			'deletePatternEndpoint' => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
+		'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
+		'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+		'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
+		'apiEndpoints'             => array(
+			'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
+			'updateDismissedThemesEndpoint' => get_rest_url( false, 'pattern-manager/v1/update-dismissed-themes/' ),
 		),
-		'siteUrl'           => get_bloginfo( 'url' ),
-		'adminUrl'          => admin_url(),
+		'siteUrl'                  => get_bloginfo( 'url' ),
+		'adminUrl'                 => admin_url(),
+		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
 	);
 }
 

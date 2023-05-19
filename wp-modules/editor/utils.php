@@ -102,24 +102,6 @@ function get_pm_post_ids() {
 }
 
 /**
- * Gets an ID of a post that has a comment.
- *
- * @return int|null
- */
-function get_post_id_with_comment() {
-	return ( new WP_Query(
-		[
-			'comment_count'  => [
-				'value'   => 0,
-				'compare' => '>',
-			],
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
-		]
-	) )->posts[0] ?? null;
-}
-
-/**
  * Duplicates a pattern.
  *
  * @param string $pattern_name The pattern name to duplicate.

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pattern Manager
  * Description: Create and maintain patterns.
- * Version: 0.1.6
+ * Version: 0.2.0
  * Author: WP Engine
  * Author URI: wpengine.com
  * Text Domain: pattern-manager
@@ -39,10 +39,6 @@ function include_custom_modules() {
 		if ( is_readable( $filepath ) ) {
 			// If the module data exists, load it.
 			require $filepath;
-		} else {
-			// Translators: The name of the module, and the filename that needs to exist inside that module.
-			echo esc_html( sprintf( __( 'The module called "%1$s" has a problem. It needs a file called "%2$s" to exist in its root directory.', 'pattern-manager' ), $module_name, $filename ) );
-			exit;
 		}
 	}
 }
