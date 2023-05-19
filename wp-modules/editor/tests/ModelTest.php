@@ -81,4 +81,33 @@ class ModelTest extends WP_UnitTestCase {
 			get_posts( [ 'post_type' => 'pm_pattern ' ] )
 		);
 	}
+	
+	/**
+	 * Tests delete_pattern_posts.
+	 */
+	public function test_new_pattern_title_matches_slug() {
+		
+		// Mock a post object so we can test it.
+		$post_id              = -998; // negative ID, to avoid clash with a valid post.
+		$post                 = new \stdClass();
+		$post->ID             = $post_id;
+		$post->post_author    = 1;
+		$post->post_title     = 'New Pattern, originally created with Pattern Manager.';
+		$post->post_content   = 'test pattern content';
+		$post->post_status    = 'publish';
+		$post->post_name      = 'new-pattern-originally-created-with-pattern-manager';
+		$post->post_type      = 'page';
+		$post->filter         = 'raw';
+
+		// Convert to WP_Post object.
+		$wp_post = new \WP_Post( $post );
+		
+		// Pass that mocked post into the function we want to test.
+		save_pattern_to_file( $wp_post );
+		
+		// Get the contents of the file that was saved.
+		$pattern = get_pattern_by_name( $post->post_name );
+		
+		print_r( $pattern );
+	}
 }
