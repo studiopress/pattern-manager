@@ -98,6 +98,22 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Gets the expected custom category header.
+	 */
+	public function get_expected_custom_category_header() {
+		return "\n * Custom Categories: First Custom, Second Custom, Third Custom";
+	}
+
+	/**
+	 * Gets the expected custom category registration statements.
+	 */
+	public function get_expected_custom_category_registrations() {
+		return "\nregister_block_pattern_category( 'First Custom', [ 'label' => 'first-custom', , 'pm_custom' => true ] );
+\nregister_block_pattern_category( 'Second Custom', [ 'label' => 'second-custom', , 'pm_custom' => true ] );
+\nregister_block_pattern_category( 'Third Custom', [ 'label' => 'third-custom', , 'pm_custom' => true ] );";
+	}
+
+	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents_empty() {
@@ -124,11 +140,25 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 		$custom_categories = $this->get_expected_custom_categories();
 
 		$this->assertSame(
+			$this->get_expected_custom_category_header(),
 			maybe_add_custom_category_header( $custom_categories ),
-			"\n * Custom Categories: " . implode( ', ', $custom_categories ),
 		);
 
 		$this->assertEmpty( maybe_add_custom_category_header( [] ) );
+	}
+
+	/**
+	 * Tests create_formatted_category_registrations.
+	 */
+	public function test_create_formatted_category_registrations() {
+		$custom_categories = $this->get_expected_custom_categories();
+
+		$this->assertSame(
+			$this->get_expected_custom_category_registrations(),
+			create_formatted_category_registrations( $custom_categories ),
+		);
+
+		$this->assertEmpty( create_formatted_category_registrations( [] ) );
 	}
 
 	/**
