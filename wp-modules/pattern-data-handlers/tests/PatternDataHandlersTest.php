@@ -107,6 +107,20 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests maybe_add_custom_category_header.
+	 */
+	public function test_maybe_add_custom_category_header() {
+		$custom_categories = [ 'First Custom', 'Second Custom' ];
+
+		$this->assertSame(
+			maybe_add_custom_category_header( $custom_categories ),
+			"\n * Custom Categories: First Custom, Second Custom",
+		);
+
+		$this->assertEmpty( maybe_add_custom_category_header( [] ) );
+	}
+
+	/**
 	 * Tests get_pattern_by_path.
 	 */
 	public function test_get_pattern_by_path() {
