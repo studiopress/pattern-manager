@@ -101,7 +101,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Gets the expected custom category header.
 	 */
 	public function get_expected_custom_category_header() {
-		return " * Custom Categories: First Custom, Second Custom, Third Custom";
+		return ' * Custom Categories: First Custom, Second Custom, Third Custom';
 	}
 
 	/**
