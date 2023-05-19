@@ -20,7 +20,7 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->user_id = $this->factory->user->create();
@@ -33,7 +33,7 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		delete_user_meta( $this->user_id, get_version_control_meta_key() );
 		wp_delete_user( $this->user_id );
 

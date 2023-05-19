@@ -19,7 +19,7 @@ class UtilsTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function tearDown() {
+	public function tearDown(): void {
 		delete_pattern_posts();
 		parent::tearDown();
 	}
