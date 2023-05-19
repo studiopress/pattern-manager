@@ -37,10 +37,10 @@ class EditorTest extends WP_UnitTestCase {
 	 */
 	public function test_register_pattern_post_type_meta_types() {
 		register_pattern_post_type();
-		
+
 		$pattern_default_keys = get_pattern_defaults();
 		$registered_keys      = get_registered_meta_keys( 'post', 'pm_pattern' );
-		
+
 		// Loop through each default key to make sure its type matches what was actually registered by WP.
 		foreach ( $pattern_default_keys as $meta_key => $default_value ) {
 
@@ -50,14 +50,14 @@ class EditorTest extends WP_UnitTestCase {
 			}
 
 			$expected_type = $registered_keys[ $meta_key ]['type'];
-			
+
 			// Fix the typing for numbers.
 			if ( 'number' === $expected_type ) {
 				$expected_type = 'integer';
 			}
 
 			$actual_type = gettype( $default_value );
-			
+
 			$this->assertSame(
 				$expected_type,
 				$actual_type,
