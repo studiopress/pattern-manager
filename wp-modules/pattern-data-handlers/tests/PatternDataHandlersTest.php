@@ -108,7 +108,8 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Gets the expected custom category registration statements.
 	 */
 	public function get_expected_custom_category_registrations() {
-		return "register_block_pattern_category( 'First Custom', [ 'label' => 'first-custom', , 'pm_custom' => true ] );
+		return "
+register_block_pattern_category( 'First Custom', [ 'label' => 'first-custom', , 'pm_custom' => true ] );
 register_block_pattern_category( 'Second Custom', [ 'label' => 'second-custom', , 'pm_custom' => true ] );
 register_block_pattern_category( 'Third Custom', [ 'label' => 'third-custom', , 'pm_custom' => true ] );";
 	}
