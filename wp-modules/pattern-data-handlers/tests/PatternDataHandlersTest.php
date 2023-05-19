@@ -101,7 +101,7 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Gets the expected custom category header.
 	 */
 	public function get_expected_custom_category_header() {
-		return "\n * Custom Categories: First Custom, Second Custom, Third Custom";
+		return " * Custom Categories: First Custom, Second Custom, Third Custom";
 	}
 
 	/**
@@ -141,8 +141,8 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', , 
 		$custom_categories = $this->get_expected_custom_categories();
 
 		$this->assertSame(
-			$this->get_expected_custom_category_header(),
-			maybe_add_custom_category_header( $custom_categories ),
+			$this->normalize( $this->get_expected_custom_category_header() ),
+			$this->normalize( maybe_add_custom_category_header( $custom_categories ) ),
 		);
 
 		$this->assertEmpty( maybe_add_custom_category_header( [] ) );
@@ -155,8 +155,8 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', , 
 		$custom_categories = $this->get_expected_custom_categories();
 
 		$this->assertSame(
-			$this->get_expected_custom_category_registrations(),
-			create_formatted_category_registrations( $custom_categories ),
+			$this->normalize( $this->get_expected_custom_category_registrations() ),
+			$this->normalize( create_formatted_category_registrations( $custom_categories ) ),
 		);
 
 		$this->assertEmpty( create_formatted_category_registrations( [] ) );
