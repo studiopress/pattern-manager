@@ -1,6 +1,6 @@
 <?php
 /**
- * Class GetModuleDataTest
+ * Class PatternManagerGetModuleDataTest
  *
  * @package pattern-manager
  */
