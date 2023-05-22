@@ -92,6 +92,7 @@
 				position: relative;
 				box-sizing: border-box;
 				margin-bottom: 50px;
+				height: min-content;
 				min-height: 300px;
 				border: solid 1px #ddd;
 				border-radius: 5px;
@@ -188,6 +189,7 @@
 							border-radius: 5px;
 							min-height: 300px;
 							overflow: hidden;
+							height: min-content;
 						}
 
 						.pattern-preview-iframe-inner {
