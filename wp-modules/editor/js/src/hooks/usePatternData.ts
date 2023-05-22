@@ -110,6 +110,11 @@ export default function usePatternData( postMeta: PostMeta ) {
 					} ),
 				} ) ),
 			{
+				label: 'core/query',
+				value: 'core/query',
+				transforms: {},
+			},
+			{
 				label: 'core/template-part/header',
 				value: 'core/template-part/header',
 				transforms: {},
