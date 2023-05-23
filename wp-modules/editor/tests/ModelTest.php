@@ -83,7 +83,7 @@ class ModelTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests that a pattern newly created with Pattern Manager results in a slug that matches the name.
+	 * Tests that a pattern newly created with Pattern Manager results in a slug and filename that matches the post_name.
 	 */
 	public function test_new_pattern_title_matches_slug() {
 
@@ -108,10 +108,10 @@ class ModelTest extends WP_UnitTestCase {
 		// Get the contents of the file that was saved.
 		$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $post->post_name );
 
-		// Make sure the name of the post and the slug in the file match.
+		// Make sure the post_name (aka "slug") of the post and the slug in the file match.
 		$this->assertSame( $post->post_name, $pattern['slug'] );
 
-		// Make sure the name of the post and the filename match.
+		// Make sure the post_name (aka "slug") of the post and the filename match.
 		$this->assertSame( $post->post_name, $pattern['name'] );
 	}
 
