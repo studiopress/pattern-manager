@@ -17,6 +17,34 @@ require_once dirname( __DIR__ ) . '/model.php';
 class ModelTest extends WP_UnitTestCase {
 
 	/**
+	 * @inheritDoc
+	 */
+	public function setUp(): void {
+		parent::setUp();
+		$this->stylesheet_dir = \PatternManager\GetWpFilesystem\get_wp_filesystem_api()->wp_themes_dir() . '/pm-testing';
+		\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->mkdir( $this->stylesheet_dir );
+		add_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function tearDown(): void {
+		\PatternManager\GetWpFilesystem\get_wp_filesystem_api()->rmdir(
+			$this->stylesheet_dir,
+			true
+		);
+		parent::tearDown();
+	}
+
+	/**
+	 * Gets the stub stylesheet directory.
+	 */
+	public function get_stylesheet_dir() {
+		return $this->stylesheet_dir;
+	}
+
+	/**
 	 * Tests add_active_theme_to_heartbeat.
 	 */
 	public function test_add_active_theme_to_heartbeat_wrong_post() {
