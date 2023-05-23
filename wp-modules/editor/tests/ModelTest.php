@@ -108,8 +108,8 @@ class ModelTest extends WP_UnitTestCase {
 		// Get the contents of the file that was saved.
 		$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $post->post_name );
 
-		// Make sure the post_name (aka "slug") of the post and the slug in the file match.
-		$this->assertSame( $post->post_name, $pattern['slug'] );
+		// Make sure the ->post_name is the same as the slug, other than the prefixed textdomain.
+		$this->assertStringEndsWith( $post->post_name, $pattern['slug'] );
 
 		// Make sure the post_name (aka "slug") of the post and the filename match.
 		$this->assertSame( $post->post_name, $pattern['name'] );
@@ -128,7 +128,7 @@ class ModelTest extends WP_UnitTestCase {
 		$post->post_title   = 'This title remains the same after content changes.';
 		$post->post_content = 'test pattern content';
 		$post->post_status  = 'publish';
-		$post->post_name    = 'this-slug-remains-the-same-after-content-changes';
+		$post->post_name    = 'remains-the-same-after-content-changes';
 		$post->post_type    = get_pattern_post_type();
 		$post->filter       = 'raw';
 
@@ -172,7 +172,7 @@ class ModelTest extends WP_UnitTestCase {
 		$content_modified_pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( 'mismatched-name' );
 
 		// Make sure the slug does not get changed when only the content is modified.
-		$this->assertSame( 'this-slug-remains-the-same-after-content-changes', $content_modified_pattern['slug'] );
+		$this->assertStringEndsWith( 'remains-the-same-after-content-changes', $content_modified_pattern['slug'] );
 
 		// Make sure the title does not get changed when only the content is modified.
 		$this->assertSame( 'This title remains the same after content changes.', $content_modified_pattern['title'] );
