@@ -111,7 +111,7 @@ class ModelTest extends WP_UnitTestCase {
 		// Make sure the name of the post and the slug in the file match.
 		$this->assertSame( $post->post_name, $pattern['slug'] );
 
-		// Make sure the slug of the post and the filename match.
+		// Make sure the name of the post and the filename match.
 		$this->assertSame( $post->post_name, $pattern['name'] );
 	}
 
