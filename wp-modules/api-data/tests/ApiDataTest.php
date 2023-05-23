@@ -22,7 +22,7 @@ class ApiDataTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
@@ -31,7 +31,7 @@ class ApiDataTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function tearDown() {
+	public function tearDown() : void {
 		unset( $GLOBALS['wp_rest_server'] );
 		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );

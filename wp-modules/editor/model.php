@@ -44,7 +44,7 @@ function populate_pattern_from_file( $post ) {
 add_action( 'the_post', __NAMESPACE__ . '\populate_pattern_from_file' );
 
 /**
- * Saves the pattern to the .php file.
+ * Saves the pattern to the .php file, and also removes the mocked post required for the WP editing UI.
  *
  * @param int $post_id The post ID.
  * @param WP_Post $post The post.
