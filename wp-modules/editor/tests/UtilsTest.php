@@ -417,20 +417,10 @@ class UtilsTest extends WP_UnitTestCase {
 	/**
 	 * Tests prepend_textdomain.
 	 */
-	public function test_prepend_textdomain_no_name() {
+	public function test_prepend_textdomain() {
 		$this->assertStringEndsWith(
-			'/my-new-pattern',
+			'my-new-pattern',
 			prepend_textdomain( 'my-new-pattern' )
-		);
-	}
-
-	/**
-	 * Tests prepend_textdomain.
-	 */
-	public function test_prepend_textdomain_with_name() {
-		$this->assertStringEndsWith(
-			'/',
-			prepend_textdomain( '' )
 		);
 	}
 }

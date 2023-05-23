@@ -217,5 +217,5 @@ function has_pattern_block( $content ) {
  */
 function prepend_textdomain( $name ) {
 	$textdomain = wp_get_theme()->get( 'TextDomain' );
-	return "{$textdomain}/{$name}";
+	return $textdomain ? "{$textdomain}/{$name}" : $name;
 }
