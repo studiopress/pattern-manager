@@ -108,7 +108,7 @@ class ModelTest extends WP_UnitTestCase {
 		// Get the contents of the file that was saved.
 		$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $post->post_name );
 
-		// Make sure the slug of the post and the slug in the file match.
+		// Make sure the name of the post and the slug in the file match.
 		$this->assertSame( $post->post_name, $pattern['slug'] );
 
 		// Make sure the slug of the post and the filename match.
