@@ -83,7 +83,7 @@ class ModelTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests that a pattern newly created with Pattern Manager results in a slug that matches the title.
+	 * Tests that a pattern newly created with Pattern Manager results in a slug that matches the name.
 	 */
 	public function test_new_pattern_title_matches_slug() {
 
