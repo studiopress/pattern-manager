@@ -3,7 +3,7 @@ import sortAlphabetically from '../utils/sortAlphabetically';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
-import convertToSlug from '../utils/convertToSlug';
+import addNewCategory from '../utils/addNewCategory';
 import { patternManager } from '../globals';
 
 export default function usePatternData( postMeta: PostMeta ) {
@@ -63,33 +63,10 @@ export default function usePatternData( postMeta: PostMeta ) {
 	 * Needed for including new categories before the post is saved.
 	 */
 	const combinedCategories = sortAlphabetically(
-		[
-			...postMeta.customCategories.reduce(
-				( acc, categoryLabel ) => {
-					const missingCategory =
-						! patternManager.patternCategories.some(
-							( queriedCategory ) =>
-								queriedCategory.label === categoryLabel
-						);
-
-					return missingCategory
-						? [
-								...acc,
-								{
-									label: categoryLabel,
-									value: convertToSlug( categoryLabel ),
-									pm_custom: true,
-								},
-						  ]
-						: acc;
-				},
-				patternManager.patternCategories.map( ( category ) => ( {
-					label: category.label,
-					value: category.name,
-					...category,
-				} ) )
-			),
-		],
+		addNewCategory(
+			patternManager.patternCategories,
+			postMeta.customCategories
+		),
 		'label'
 	);
 
