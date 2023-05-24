@@ -45,6 +45,21 @@ When you design beautiful block patterns for your theme, Pattern Manager by WP E
  * Create/update the pattern PHP file on your disk, in your theme.
  * Find and replace all local image urls with the correct PHP tag.
  * Find and copy all image files used into your theme.
+ 
+## Additional Features
+
+### The Pattern Block: Put patterns inside patterns.
+Once you've built a lot of patterns, it makes sense to quickly combine them in various ways to make full-page patterns. An example of this might be a "Home Page" or "Landing Page" pattern that includes a call-to-action area, features area, testimonials, links, and more. Instead of re-creating each of those patterns inside your "Home Page" pattern, you can simply re-use them with the "Pattern Block".
+
+Here's an example of how you'd make that "Full Page" pattern:
+ * Step 1: In Pattern Manager, click "Create New Pattern".
+ * Step 2: Add the "Pattern Block" (note: this block is exclusively available in Pattern Manager editor).
+ * Step 3: Choose a pattern you've already made (like testimonials, features, call-to-actions, etc).
+ * Step 4. Once inserted, repeat steps 2-3 until you have a "Full Page" pattern you like. 
+
+The best part about using the "Pattern Block" is maintaining your patterns. If you ever need to make a change to a pattern, you can update it in one place and it will be updated anywhere you used the Pattern Block, dynamically.
+
+When one of your theme's users inserts that "Full Page" pattern, WordPress will automatically pull the separate patterns together into the Block Editor, ready for them to modify, just like any other pattern.
 
 ## Docs & Repo
 
