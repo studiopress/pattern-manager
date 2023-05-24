@@ -153,3 +153,71 @@ function edit_pattern( string $pattern_name ) {
 		)
 	);
 }
+
+/**
+ * Updates pattern slugs in Pattern Blocks.
+ *
+ * If a pattern changes slugs,
+ * and a Pattern Block references its old slug,
+ * it won't render.
+ *
+ * @param string $old_slug The previous slug.
+ * @param string $new_slug The new slug.
+ */
+function update_pattern_slugs( $old_slug, $new_slug ) {
+	$patterns = get_theme_patterns();
+
+	foreach ( $patterns as $pattern_name => $pattern ) {
+		if ( has_pattern_block( $pattern['content'] ) ) {
+			update_pattern(
+				array_merge(
+					$pattern,
+					[ 'content' => update_slug( $old_slug, $new_slug, $pattern['content'] ) ],
+				)
+			);
+		}
+	}
+}
+
+/**
+ * Updates a slug in a Pattern Block to a new slug.
+ *
+ * @param string $old_slug The previous slug.
+ * @param string $new_slug The new slug.
+ * @param string $subject What to replace the slug in.
+ * @return string With the updated slug.
+ */
+function update_slug( $old_slug, $new_slug, $subject ) {
+	return preg_replace(
+		'#(<!--\s+wp:pattern\s+{[^}]*"slug":")(' . $old_slug . ')(")#',
+		'${1}' . $new_slug . '${3}',
+		$subject
+	);
+}
+
+/**
+ * Gets whether content has a Pattern Block.
+ *
+ * @param string $content The content to examine.
+ * @return bool Whether the content has a pattern block.
+ */
+function has_pattern_block( $content ) {
+	return 1 === preg_match(
+		'#<!--\s+wp:pattern\s+{[^}]*"slug":"#',
+		$content
+	);
+}
+
+/**
+ * Prepends the theme textdomain to a pattern name.
+ * <textdomain>/<pattern-name>
+ *
+ * @param string $name The pattern name.
+ * @return string
+ */
+function prepend_textdomain( $name ) {
+	return implode(
+		'/',
+		array_filter( [ wp_get_theme()->get( 'TextDomain' ), $name ] )
+	);
+}

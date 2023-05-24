@@ -299,4 +299,128 @@ class UtilsTest extends WP_UnitTestCase {
 			get_pm_post_ids()
 		);
 	}
+
+	/**
+	 * Gets the data for the test of update_slug().
+	 *
+	 * @return array[]
+	 */
+	public function data_update_slug() {
+		return [
+			[
+				'',
+				'',
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+			],
+			[
+				'baz',
+				'new',
+				'    ',
+				'    ',
+			],
+			[
+				'baz',
+				'new',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"foo/renamed"} /-->',
+			],
+			[
+				'foo/404',
+				'404-not-found',
+				'<!-- wp:pattern {"slug":"foo/404"} /-->',
+				'<!-- wp:pattern {"slug":"404-not-found"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'renamed',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"renamed"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/renamed"} /--><!-- wp:pattern {"slug":"foo/another"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed-pattern',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/renamed-pattern"} /--><!-- wp:pattern {"slug":"foo/renamed-pattern"} /-->',
+			],
+			[
+				'foo/an-example-pattern',
+				'foo/renamed-pattern',
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /--><!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				'<!-- wp:pattern {"slug":"foo/renamed-pattern"} /--><!-- wp:pattern {"slug":"foo/renamed-pattern"} /-->',
+			],
+		];
+	}
+
+	/**
+	 * Tests update_slug.
+	 *
+	 * @dataProvider data_update_slug
+	 */
+	public function test_update_slug( $old_slug, $new_slug, $subject, $expected ) {
+		$this->assertSame(
+			$expected,
+			update_slug( $old_slug, $new_slug, $subject )
+		);
+	}
+
+	/**
+	 * Gets the data for the test of has_pattern_block().
+	 *
+	 * @return array[]
+	 */
+	public function data_has_pattern_block() {
+		return [
+			[
+				'',
+				false,
+			],
+			[
+				'<!-- wp:paragraph --><p>This is a paragraph block</p><!-- /wp:paragraph -->',
+				false,
+			],
+			[
+				'<!-- wp:pattern {"slug":"foo/an-example-pattern"} /-->',
+				true,
+			],
+			[
+				'<!-- wp:pattern {"syncStatus":"full","slug":"foo/an-example-pattern"} /-->',
+				true,
+			],
+		];
+	}
+
+	/**
+	 * Tests has_pattern_block.
+	 *
+	 * @dataProvider data_has_pattern_block
+	 */
+	public function test_has_pattern_block( $content, $expected ) {
+		$this->assertSame(
+			$expected,
+			has_pattern_block( $content )
+		);
+	}
+
+	/**
+	 * Tests prepend_textdomain.
+	 */
+	public function test_prepend_textdomain() {
+		$this->assertStringEndsWith(
+			'my-new-pattern',
+			prepend_textdomain( 'my-new-pattern' )
+		);
+	}
 }

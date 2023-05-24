@@ -44,7 +44,7 @@ function populate_pattern_from_file( $post ) {
 add_action( 'the_post', __NAMESPACE__ . '\populate_pattern_from_file' );
 
 /**
- * Saves the pattern to the .php file.
+ * Saves the pattern to the .php file, and also removes the mocked post required for the WP editing UI.
  *
  * @param int $post_id The post ID.
  * @param WP_Post $post The post.
@@ -54,13 +54,16 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	$pattern = get_pattern_by_name( $post->post_name );
+	$name    = $post->post_name;
+	$pattern = get_pattern_by_name( $name );
 	update_pattern(
 		array_merge(
-			$pattern ? $pattern : [],
+			// Only set the slug to the name for new patterns.
+			// Patterns created without PM might have a different slug and name.
+			$pattern ? $pattern : [ 'slug' => prepend_textdomain( $name ) ],
 			[
 				'content' => $post->post_content,
-				'name'    => $post->post_name,
+				'name'    => $name,
 			],
 			$post->post_title
 				? [ 'title' => $post->post_title ]
@@ -108,6 +111,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 
 	$pattern_name = $post->post_name;
 	$pattern      = get_pattern_by_name( $pattern_name );
+	$name_changed = 'name' === $meta_key && $pattern_name !== $meta_value;
 
 	if ( 'name' === $meta_key ) {
 		wp_update_post(
@@ -116,16 +120,23 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 				'post_name' => $meta_value,
 			]
 		);
+	}
 
-		if ( $pattern_name !== $meta_value ) {
-			delete_pattern( $pattern_name );
-		}
+	$slug = prepend_textdomain( $name_changed ? $meta_value : $pattern_name );
+
+	if ( $name_changed ) {
+		delete_pattern( $pattern_name );
+		update_pattern_slugs( $pattern['slug'], $slug );
 	}
 
 	return update_pattern(
 		array_merge(
 			get_pattern_defaults(),
-			$pattern ? $pattern : [ 'title' => $post->post_title ],
+			$pattern ? $pattern : [
+				'title' => $post->post_title,
+				'slug'  => $slug,
+			],
+			$name_changed ? [ 'slug' => $slug ] : [],
 			[
 				'name'    => $pattern_name,
 				$meta_key => $meta_value,
