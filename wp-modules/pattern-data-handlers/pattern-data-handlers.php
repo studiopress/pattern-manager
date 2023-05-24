@@ -380,13 +380,7 @@ function construct_pattern_php_file_contents( $pattern_data ) {
  * @return string
  */
 function maybe_add_custom_category_header( $custom_categories ) {
-	$custom_category_header = '';
-
-	if ( ! empty( $custom_categories ) ) {
-		$custom_category_header = "\n * Custom Categories: " . implode( ', ', $custom_categories );
-	}
-
-	return $custom_category_header;
+	return ! empty( $custom_categories ) ? "\n * Custom Categories: " . implode( ', ', $custom_categories ) : '';
 }
 
 /**
@@ -396,10 +390,13 @@ function maybe_add_custom_category_header( $custom_categories ) {
  * @return string
  */
 function create_formatted_category_registrations( $custom_categories ) {
-	$custom_category_registrations = '';
+	if ( empty( $custom_categories ) ) {
+		return '';
+	}
 
-	if ( ! empty( $custom_categories ) ) {
-		$custom_category_registrations = array_map(
+	return "\n" . implode(
+		"\n",
+		array_map(
 			function ( $category_label ) {
 				$category_name = strtolower( str_replace( ' ', '-', $category_label ) );
 				$text_domain   = wp_get_theme()->get( 'TextDomain' );
@@ -407,12 +404,8 @@ function create_formatted_category_registrations( $custom_categories ) {
 				return "register_block_pattern_category( '$category_name', $label_arr );";
 			},
 			$custom_categories,
-		);
-
-		$custom_category_registrations = "\n" . implode( "\n", $custom_category_registrations );
-	}
-
-	return $custom_category_registrations;
+		)
+	);
 }
 
 /**
