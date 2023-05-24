@@ -60,7 +60,7 @@ function save_pattern_to_file( WP_Post $post ) {
 		array_merge(
 			// Only set the slug to the name for new patterns.
 			// Patterns created without PM might have a different slug and name.
-			$pattern ? $pattern : [ 'slug' => $name ],
+			$pattern ? $pattern : [ 'slug' => prepend_textdomain( $name ) ],
 			[
 				'content' => $post->post_content,
 				'name'    => $name,
@@ -122,9 +122,11 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 		);
 	}
 
+	$slug = prepend_textdomain( $name_changed ? $meta_value : $pattern_name );
+
 	if ( $name_changed ) {
 		delete_pattern( $pattern_name );
-		update_pattern_slugs( $pattern['slug'], $meta_value );
+		update_pattern_slugs( $pattern['slug'], $slug );
 	}
 
 	return update_pattern(
@@ -132,9 +134,9 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			get_pattern_defaults(),
 			$pattern ? $pattern : [
 				'title' => $post->post_title,
-				'slug'  => $pattern_name,
+				'slug'  => $slug,
 			],
-			$name_changed ? [ 'slug' => $meta_value ] : [],
+			$name_changed ? [ 'slug' => $slug ] : [],
 			[
 				'name'    => $pattern_name,
 				$meta_key => $meta_value,

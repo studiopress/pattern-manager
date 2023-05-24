@@ -413,4 +413,14 @@ class UtilsTest extends WP_UnitTestCase {
 			has_pattern_block( $content )
 		);
 	}
+
+	/**
+	 * Tests prepend_textdomain.
+	 */
+	public function test_prepend_textdomain() {
+		$this->assertStringEndsWith(
+			'my-new-pattern',
+			prepend_textdomain( 'my-new-pattern' )
+		);
+	}
 }

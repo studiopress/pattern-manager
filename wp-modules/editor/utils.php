@@ -199,11 +199,25 @@ function update_slug( $old_slug, $new_slug, $subject ) {
  * Gets whether content has a Pattern Block.
  *
  * @param string $content The content to examine.
- * @param bool Whether the content has a pattern block.
+ * @return bool Whether the content has a pattern block.
  */
 function has_pattern_block( $content ) {
 	return 1 === preg_match(
 		'#<!--\s+wp:pattern\s+{[^}]*"slug":"#',
 		$content
+	);
+}
+
+/**
+ * Prepends the theme textdomain to a pattern name.
+ * <textdomain>/<pattern-name>
+ *
+ * @param string $name The pattern name.
+ * @return string
+ */
+function prepend_textdomain( $name ) {
+	return implode(
+		'/',
+		array_filter( [ wp_get_theme()->get( 'TextDomain' ), $name ] )
 	);
 }
