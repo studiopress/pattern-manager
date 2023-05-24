@@ -173,6 +173,7 @@ class ModelTest extends WP_UnitTestCase {
 		// Get the contents of the file.
 		$pattern = get_pattern_by_name( 'mismatched-name' );
 
+		// Mock a post object so we can test modifying only the content.
 		$wp_post = $this->factory()->post->create_and_get(
 			[
 				'post_title'   => $pattern['title'],
