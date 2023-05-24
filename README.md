@@ -53,7 +53,7 @@ Once you've built a lot of patterns, it makes sense to quickly combine them in v
 
 Here's an example of how you'd make that "Full Page" pattern:
  * Step 1: In Pattern Manager, click "Create New Pattern".
- * Step 2: Add the "Pattern Block" (note: this block is exclusively available in Pattern Manager editor).
+ * Step 2: Add the "Pattern Block" (note: this block is exclusively available in the Pattern Manager editor).
  * Step 3: Choose a pattern you've already made (like testimonials, features, call-to-actions, etc).
  * Step 4. Once inserted, repeat steps 2-3 until you have a "Full Page" pattern you like. 
 
