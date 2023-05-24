@@ -34,6 +34,7 @@ class ModelTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function tearDown(): void {
+		remove_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
 		get_wp_filesystem_api()->rmdir(
 			$this->stylesheet_dir,
 			true
