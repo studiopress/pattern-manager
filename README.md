@@ -59,7 +59,7 @@ Here's an example of how you'd make that "Full Page" pattern:
 
 The best part about using the "Pattern Block" is maintaining your patterns. If you ever need to make a change to a pattern, you can update it in one place and it will be updated anywhere you used the Pattern Block, dynamically.
 
-When one of your theme's users inserts that "Full Page" pattern, WordPress will automatically pull the separate patterns together into the Block Editor, ready for them to modify, just like any other pattern.
+When one of your theme's users inserts that "Full Page" pattern, because it's using WordPress core's pattern block, WordPress will automatically pull the separate patterns together into the Block Editor, ready for them to modify, just like any other pattern.
 
 ## Docs & Repo
 
