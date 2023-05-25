@@ -109,7 +109,7 @@ export default function PatternEdit( {
 					<PatternInspector pattern={ pattern } />
 					<BlockControls group="block">
 						<Button onClick={ () => setModalOpen( true ) }>
-							{ __( 'Replace', 'pattern-manager' ) }
+							{ __( 'Replace Pattern', 'pattern-manager' ) }
 						</Button>
 					</BlockControls>
 					<div
