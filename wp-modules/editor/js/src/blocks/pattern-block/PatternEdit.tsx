@@ -45,13 +45,13 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 				>
 					<p>
 						{ __(
-							'This pattern is being used within the PM Pattern Block in order to create a multi-pattern layout.',
+							'This pattern is being used within the Pattern Manager Pattern Block in order to create a multi-pattern layout.',
 							'pattern-manager'
 						) }
 					</p>
 					<p>
 						{ __(
-							'Editing this pattern will change it across all instances of this pattern being used in PM Pattern Blocks.',
+							'Editing this pattern will update it within all Pattern Manager Pattern Blocks that use it.',
 							'pattern-manager'
 						) }
 					</p>
