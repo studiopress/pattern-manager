@@ -43,10 +43,18 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 					title={ __( 'Pattern', 'pattern-manager' ) }
 					initialOpen={ true }
 				>
-					{ __(
-						'This is a pattern placeholder, used for building layouts with pattern tags. To edit the pattern, click the button below.',
-						'pattern-manager'
-					) }
+					<p>
+						{ __(
+							'This pattern is being used within the Pattern Manager Pattern Block in order to create a multi-pattern layout.',
+							'pattern-manager'
+						) }
+					</p>
+					<p>
+						{ __(
+							'Editing this pattern will update it within all Pattern Manager Pattern Blocks that use it.',
+							'pattern-manager'
+						) }
+					</p>
 					{ pattern ? (
 						<a
 							className="components-button is-secondary"
