@@ -43,10 +43,18 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 					title={ __( 'Pattern', 'pattern-manager' ) }
 					initialOpen={ true }
 				>
-					{ __(
-						'This is a pattern placeholder, used for building layouts with pattern tags. To edit the pattern, click the button below.',
-						'pattern-manager'
-					) }
+					<p>
+						{ __(
+							'This pattern is being used within the Pattern Manager Pattern Block in order to create a multi-pattern layout.',
+							'pattern-manager'
+						) }
+					</p>
+					<p>
+						{ __(
+							'Editing this pattern will update it within all Pattern Manager Pattern Blocks that use it.',
+							'pattern-manager'
+						) }
+					</p>
 					{ pattern ? (
 						<a
 							className="components-button is-secondary"
@@ -74,6 +82,9 @@ export default function PatternEdit( {
 		className: pattern ? 'alignfull' : 'is-layout-constrained',
 	} );
 	const { currentName } = useSavedPostData();
+	const patternSlug = Object.values( patternManager.patterns ).find(
+		( ownPattern ) => ownPattern.name === currentName
+	)?.slug;
 
 	return (
 		<>
@@ -90,7 +101,7 @@ export default function PatternEdit( {
 						patternCategories={ patternManager.patternCategories }
 						patterns={ filterOutPatterns(
 							patternManager.patterns,
-							currentName
+							patternSlug
 						) }
 						siteUrl={ patternManager.siteUrl }
 					/>
@@ -106,7 +117,7 @@ export default function PatternEdit( {
 					<PatternInspector pattern={ pattern } />
 					<BlockControls group="block">
 						<Button onClick={ () => setModalOpen( true ) }>
-							{ __( 'Replace', 'pattern-manager' ) }
+							{ __( 'Replace Pattern', 'pattern-manager' ) }
 						</Button>
 					</BlockControls>
 					<div

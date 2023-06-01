@@ -127,6 +127,7 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', , 
 				construct_pattern_php_file_contents(
 					[
 						'name'  => 'empty',
+						'slug'  => 'empty',
 						'title' => 'Empty',
 					]
 				)
