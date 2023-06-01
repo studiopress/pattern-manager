@@ -8,6 +8,10 @@
 namespace PatternManager\Editor;
 
 use WP_UnitTestCase;
+use function \PatternManager\Editor\save_pattern_to_file;
+use function \PatternManager\GetWpFilesystem\get_wp_filesystem_api;
+use function \PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function \PatternManager\PatternDataHandlers\get_patterns_directory;
 
 require_once dirname( __DIR__ ) . '/model.php';
 
@@ -15,6 +19,35 @@ require_once dirname( __DIR__ ) . '/model.php';
  * Test the model.
  */
 class ModelTest extends WP_UnitTestCase {
+
+	/**
+	 * @inheritDoc
+	 */
+	public function setUp(): void {
+		parent::setUp();
+		$this->stylesheet_dir = get_wp_filesystem_api()->wp_themes_dir() . '/pm-testing';
+		get_wp_filesystem_api()->mkdir( $this->stylesheet_dir );
+		add_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function tearDown(): void {
+		remove_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
+		get_wp_filesystem_api()->rmdir(
+			$this->stylesheet_dir,
+			true
+		);
+		parent::tearDown();
+	}
+
+	/**
+	 * Gets the stub stylesheet directory.
+	 */
+	public function get_stylesheet_dir() {
+		return $this->stylesheet_dir;
+	}
 
 	/**
 	 * Tests add_active_theme_to_heartbeat.
@@ -88,31 +121,26 @@ class ModelTest extends WP_UnitTestCase {
 	public function test_new_pattern_title_matches_slug() {
 
 		// Mock a post object so we can test it.
-		$post_id            = -998; // negative ID, to avoid clash with a valid post.
-		$post               = new \stdClass();
-		$post->ID           = $post_id;
-		$post->post_author  = 1;
-		$post->post_title   = 'New Pattern, originally created with Pattern Manager.';
-		$post->post_content = 'test pattern content';
-		$post->post_status  = 'publish';
-		$post->post_name    = 'new-pattern-originally-created-with-pattern-manager';
-		$post->post_type    = get_pattern_post_type();
-		$post->filter       = 'raw';
-
-		// Convert to WP_Post object.
-		$wp_post = new \WP_Post( $post );
+		$wp_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'New Pattern, originally created with Pattern Manager.',
+				'post_content' => 'test pattern content',
+				'post_name'    => 'new-pattern-originally-created-with-pattern-manager',
+				'post_type'    => get_pattern_post_type(),
+			]
+		);
 
 		// Save the mocked pattern to the disk.
-		\PatternManager\Editor\save_pattern_to_file( $wp_post );
+		save_pattern_to_file( $wp_post );
 
 		// Get the contents of the file that was saved.
-		$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $post->post_name );
+		$pattern = get_pattern_by_name( $wp_post->post_name );
 
 		// Make sure the ->post_name is the same as the slug, other than the prefixed textdomain.
-		$this->assertStringEndsWith( $post->post_name, $pattern['slug'] );
+		$this->assertStringEndsWith( $wp_post->post_name, $pattern['slug'] );
 
 		// Make sure the post_name (aka "slug") of the post and the filename match.
-		$this->assertSame( $post->post_name, $pattern['name'] );
+		$this->assertSame( $wp_post->post_name, $pattern['name'] );
 	}
 
 	/**
@@ -121,55 +149,45 @@ class ModelTest extends WP_UnitTestCase {
 	public function test_slug_and_filename_stay_the_same_after_content_update() {
 
 		// Mock a post object so we can test it.
-		$post_id            = -997; // negative ID, to avoid clash with a valid post.
-		$post               = new \stdClass();
-		$post->ID           = $post_id;
-		$post->post_author  = 1;
-		$post->post_title   = 'This title remains the same after content changes.';
-		$post->post_content = 'test pattern content';
-		$post->post_status  = 'publish';
-		$post->post_name    = 'remains-the-same-after-content-changes';
-		$post->post_type    = get_pattern_post_type();
-		$post->filter       = 'raw';
-
-		// Convert to WP_Post object.
-		$wp_post = new \WP_Post( $post );
+		$wp_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => 'This title remains the same after content changes.',
+				'post_content' => 'test pattern content',
+				'post_name'    => 'remains-the-same-after-content-changes',
+				'post_type'    => get_pattern_post_type(),
+			]
+		);
 
 		// Save the pattern to the disk.
-		\PatternManager\Editor\save_pattern_to_file( $wp_post );
+		save_pattern_to_file( $wp_post );
 
 		// Rename the pattern's filename to something different than the slug.
 		// This is to mock how it might be for for a non-pm-made pattern, with mismatching filenames and slugs.
-		$wp_filesystem           = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-		$patterns_dir            = \PatternManager\PatternDataHandlers\get_patterns_directory();
-		$original_name           = $post->post_name . '.php';
+		$wp_filesystem           = get_wp_filesystem_api();
+		$patterns_dir            = get_patterns_directory();
+		$original_name           = $wp_post->post_name . '.php';
 		$mocked_mismatching_name = 'mismatched-name.php';
 		$wp_filesystem->move( $patterns_dir . $original_name, $patterns_dir . $mocked_mismatching_name );
 		$wp_filesystem->delete( $patterns_dir . $original_name );
 
 		// Get the contents of the file.
-		$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( 'mismatched-name' );
+		$pattern = get_pattern_by_name( 'mismatched-name' );
 
 		// Mock a post object so we can test modifying only the content.
-		$post_id            = -997; // negative ID, to avoid clash with a valid post.
-		$post               = new \stdClass();
-		$post->ID           = $post_id;
-		$post->post_author  = 1;
-		$post->post_title   = $pattern['title'];
-		$post->post_content = 'This is modified pattern content, but nothing else is changed!';
-		$post->post_status  = 'publish';
-		$post->post_name    = $pattern['slug'];
-		$post->post_type    = get_pattern_post_type();
-		$post->filter       = 'raw';
-
-		// Convert to WP_Post object.
-		$wp_post = new \WP_Post( $post );
+		$wp_post = $this->factory()->post->create_and_get(
+			[
+				'post_title'   => $pattern['title'],
+				'post_content' => 'This is modified pattern content, but nothing else is changed!',
+				'post_name'    => $pattern['name'],
+				'post_type'    => get_pattern_post_type(),
+			]
+		);
 
 		// Save the pattern to the disk.
-		\PatternManager\Editor\save_pattern_to_file( $wp_post );
+		save_pattern_to_file( $wp_post );
 
 		// Get the contents of the file.
-		$content_modified_pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( 'mismatched-name' );
+		$content_modified_pattern = get_pattern_by_name( 'mismatched-name' );
 
 		// Make sure the slug does not get changed when only the content is modified.
 		$this->assertStringEndsWith( 'remains-the-same-after-content-changes', $content_modified_pattern['slug'] );
