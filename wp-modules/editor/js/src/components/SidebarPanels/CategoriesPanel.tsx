@@ -4,7 +4,7 @@ import { Spinner } from '@wordpress/components';
 
 import Creatable from 'react-select/creatable';
 
-import convertToSlug from '../../utils/convertToSlug';
+import toKebabCase from '../../utils/toKebabCase';
 import getSelectedOptions from '../../utils/getSelectedOptions';
 import getCustomCategories from '../../utils/getCustomCategories';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
@@ -59,7 +59,7 @@ export default function CategoriesPanel( {
 							{
 								categories: [
 									...categories,
-									convertToSlug( newCategoryTitle ),
+									toKebabCase( newCategoryTitle ),
 								],
 							}
 						);

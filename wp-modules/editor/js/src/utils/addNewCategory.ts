@@ -1,4 +1,4 @@
-import convertToSlug from './convertToSlug';
+import toKebabCase from './toKebabCase';
 import type { Pattern, InitialPatternManager } from '../types';
 
 /** Add new categories to the array of patternCategories, mapped for react-select. */
@@ -19,7 +19,7 @@ export default function addNewCategory(
 						// Add the new category with a slug and pm_custom value.
 						{
 							label: categoryLabel,
-							value: convertToSlug( categoryLabel ),
+							value: toKebabCase( categoryLabel ),
 							pm_custom: true,
 						},
 				  ]
