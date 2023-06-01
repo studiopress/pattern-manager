@@ -9,6 +9,8 @@ js/src
 tests
 package.json
 package-lock.json
+.nvmrc
+webpack.config.js
 tsconfig.json
 .circleci
 .github
