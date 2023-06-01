@@ -10,6 +10,7 @@ export type InitialContext = {
 export type InitialPatternManager = {
 	adminUrl: string;
 	apiEndpoints: {
+		getPatterns: string;
 		deletePatternEndpoint: string;
 		updateDismissedThemesEndpoint: string;
 	};

@@ -27,6 +27,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 function register_routes() {
 	$version   = '1';
 	$namespace = 'pattern-manager/v' . $version;
+
+	register_rest_route(
+		$namespace,
+		'/get-patterns',
+		array(
+			'methods'             => 'GET',
+			'callback'            => __NAMESPACE__ . '\get_patterns',
+			'permission_callback' => __NAMESPACE__ . '\permission_check',
+			'schema'              => array(
+				// This tells the spec of JSON Schema we are using which is draft 4.
+				'$schema'    => 'https://json-schema.org/draft-04/schema#',
+				'type'       => 'object',
+				// These define the items which will actually be returned by the endpoint.
+				'properties' => array(
+					'patterns' => array(
+						'description' => esc_html__( 'All of the patterns in the theme and their data', 'pattern-manager' ),
+						'type'        => 'array',
+						'readonly'    => true,
+					),
+				),
+			),
+		)
+	);
+
 	register_rest_route(
 		$namespace,
 		'/get-pattern-names',
@@ -81,6 +105,25 @@ function register_routes() {
 	);
 }
 add_action( 'rest_api_init', __NAMESPACE__ . '\register_routes', 11 );
+
+
+/**
+ * Gets all patterns.
+ *
+ * @return WP_REST_Response
+ */
+function get_patterns() {
+	$is_success = \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links();
+
+	return $is_success
+		? new WP_REST_Response(
+			array(
+				'patterns' => $is_success,
+			),
+			200
+		)
+		: new WP_REST_Response( $is_success, 400 );
+}
 
 /**
  * Gets all pattern names.

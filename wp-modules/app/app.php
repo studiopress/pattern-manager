@@ -18,6 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+// Include the ai functions.
+require_once 'ai.php';
+
 /**
  * Get the values needed to render/hydrate the app.
  */
@@ -27,13 +30,21 @@ function get_app_state() {
 		'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
 		'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints'             => array(
+			'getPatterns'                   => get_rest_url( false, 'pattern-manager/v1/get-patterns/' ),
 			'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
 			'updateDismissedThemesEndpoint' => get_rest_url( false, 'pattern-manager/v1/update-dismissed-themes/' ),
 		),
 		'siteUrl'                  => get_bloginfo( 'url' ),
 		'adminUrl'                 => admin_url(),
 		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
+		'themeJson'                => get_themejson_file(),
 	);
+}
+
+function get_themejson_file() {
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+	$theme_json = json_decode( $wp_filesystem->get_contents( trailingslashit( get_template_directory() ) . 'theme.json' ), true );
+	return $theme_json;
 }
 
 /**
@@ -67,6 +78,7 @@ function pattern_manager_app() {
 	);
 
 	echo '<div id="pattern-manager-app"></div>';
+	echo '<div id="pattern-manager-aiapp"></div>';
 }
 
 /**

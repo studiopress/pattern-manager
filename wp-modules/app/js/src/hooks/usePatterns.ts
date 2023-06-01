@@ -7,6 +7,29 @@ import type { Pattern, Patterns } from '../types';
 
 export default function usePatterns( initialPatterns: Patterns ) {
 	const [ patternsData, setPatternsData ] = useState( initialPatterns );
+	
+	async function refreshPatterns() {
+		try {
+			const response = await fetch(patternManager.apiEndpoints.getPatterns, {
+				method: 'GET',
+				headers: getHeaders(),
+			} );
+			if (!response.ok) {
+			  throw new Error('Failed to fetch JSON');
+			}
+			const json = await response.json();
+			if ( json?.patterns ) {
+				setPatternsData({});
+				setPatternsData(json?.patterns);
+				return json?.patterns;
+			} else {
+				throw new Error('Invalid structure returned for patterns.');
+			}
+		   } catch (error) {
+			console.log('An error occurred while fetching patterns:', error);
+			return false;
+		}
+	}
 
 	function deletePattern( patternName: Pattern[ 'name' ] ) {
 		setPatternsData( removePattern( patternName, patternsData ) );
@@ -19,6 +42,7 @@ export default function usePatterns( initialPatterns: Patterns ) {
 
 	return {
 		data: patternsData,
+		refreshPatterns,
 		deletePattern,
 	};
 }
