@@ -34,6 +34,7 @@ export default function VersionControlNotice( {
 							}
 							target="_blank"
 							rel="noopener noreferrer"
+							aria-label="Link to our Git Guide (opens in new tab)"
 						>
 							{ __( 'our Git Guide', 'pattern-manager' ) }
 						</a>
