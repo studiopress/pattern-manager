@@ -32,6 +32,8 @@ export default function VersionControlNotice( {
 							href={
 								'https://developer.wpengine.com/knowledge-base/using-git-with-a-wordpress-theme/'
 							}
+							target="_blank"
+							rel="noopener noreferrer"
 						>
 							{ __( 'our Git Guide', 'pattern-manager' ) }
 						</a>
