@@ -33,6 +33,7 @@ function get_app_state() {
 		'siteUrl'                  => get_bloginfo( 'url' ),
 		'adminUrl'                 => admin_url(),
 		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
+		'localWpTrackingEnabled'   => \PatternManager\LocalWpDataHandlers\user_tracking_enabled(),
 	);
 }
 
