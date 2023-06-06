@@ -128,7 +128,7 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	}
 
 	$slug = prepend_textdomain( $name_changed ? $meta_value : $pattern_name );
-	
+
 	$pattern_updated = update_pattern(
 		array_merge(
 			get_pattern_defaults(),
