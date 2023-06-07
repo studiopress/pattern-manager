@@ -1,5 +1,6 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
+import { createInterpolateElement } from '@wordpress/element';
 import { Notice } from '@wordpress/components';
 
 type Props = {
@@ -19,9 +20,26 @@ export default function VersionControlNotice( {
 			status="warning"
 			onRemove={ handleDismiss }
 		>
-			{ __(
-				'No version control detected for this theme. We recommend adding version control so you do not lose your patterns during theme updates.',
-				'pattern-manager'
+			{ createInterpolateElement(
+				__(
+					'No version control detected for this theme. We recommend adding version control so you do not lose your patterns during theme updates. <div></div>Learn how to set up git for your theme in <a></a>.',
+					'pattern-manager'
+				),
+				{
+					div: <div style={ { marginTop: '1rem' } }></div>,
+					a: (
+						<a
+							href={
+								'https://developer.wpengine.com/knowledge-base/using-git-with-a-wordpress-theme/'
+							}
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Link to our Git Guide (opens in new tab)"
+						>
+							{ __( 'our Git Guide', 'pattern-manager' ) }
+						</a>
+					),
+				}
 			) }
 		</Notice>
 	) : null;
