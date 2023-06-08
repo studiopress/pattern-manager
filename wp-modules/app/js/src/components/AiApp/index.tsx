@@ -41,7 +41,7 @@ function FontTool() {
 	</PanelBody>
 }
 function ColorPaletteTool() {
-	const [url, setUrl] = useState('https://');
+	const [transcript, setTranscript] = useState('');
 	const [themejson, setThemeJson] = useState(patternManager.themeJson);
 	const { patterns } = usePmContext();
 	const [fetchState, setFetchState] = useState('none');
@@ -94,7 +94,7 @@ function ColorPaletteTool() {
 							setErrorMessage( '' );
 	
 							try {
-								const response = await fetch('http://localhost:10203/?get_site_html=' + url);
+								const response = await fetch('http://localhost:10203/?get_site_html=' + transcript);
 								if (!response.ok) {
 								  throw new Error('Failed to fetch JSON');
 								}
@@ -115,15 +115,15 @@ function ColorPaletteTool() {
 							}
 				
 						}}>
-							<label htmlFor="color-palette-tool-url-field">
+							<label htmlFor="color-palette-tool-transcript-field">
 								<span>Enter a URL</span>
 								<p>This will find all the colors and build a color palette from them</p>
 							</label>
 							<TextControl
-								id={'color-palette-tool-url-field'}
-								value={url}
+								id={'color-palette-tool-transcript-field'}
+								value={transcript}
 								onChange={(newValue) => {
-									setUrl(newValue);
+									setTranscript(newValue);
 								}}
 								aria-label={ __(
 									'The URL to the website from which you wish to grab colors.',
