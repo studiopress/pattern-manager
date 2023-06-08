@@ -170,11 +170,11 @@ function convert_transcript_to_colors() {
 		'neutral' => __( 'Neutral', 'pattern-manager' ),
 	];
 	
-	
+	$starting_point = count( $new_theme_json_color_palette );
 	
 	// Loop through each setting in the color palette and set the value to the colors found on the site.
 	foreach ( $found_hex_codes as $iteration => $hex_code ) {
-		$current_iteration = count( $new_theme_json_color_palette ) + $iteration + 1;
+		$current_iteration = $starting_point + $iteration;
 		// Use the pre-existing slug/name if it exists, and only update the color value.
 		if ( isset( $theme_json['settings']['color']['palette'][$current_iteration] ) ) {
 			$palette_item = $theme_json['settings']['color']['palette'][$current_iteration];
