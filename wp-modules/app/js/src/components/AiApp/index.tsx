@@ -1,6 +1,6 @@
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { Button, TextControl, __experimentalPaletteEdit as PaletteEdit, } from '@wordpress/components';
+import { Button, TextControl, TextareaControl, __experimentalPaletteEdit as PaletteEdit, } from '@wordpress/components';
 import { Panel, PanelBody, PanelRow } from '@wordpress/components';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import {
@@ -116,10 +116,15 @@ function ColorPaletteTool() {
 				
 						}}>
 							<label htmlFor="color-palette-tool-transcript-field">
-								<span>Enter a URL</span>
-								<p>This will find all the colors and build a color palette from them</p>
+								<span>Tell me what you want, what you really, really want.</span>
 							</label>
-							<TextControl
+							<TextareaControl
+								label=""
+								help="Enter some text"
+								value={ transcript }
+								onChange={ ( value ) => setTranscript(value) }
+							/>
+							{/* <TextControl
 								id={'color-palette-tool-transcript-field'}
 								value={transcript}
 								onChange={(newValue) => {
@@ -129,7 +134,7 @@ function ColorPaletteTool() {
 									'The URL to the website from which you wish to grab colors.',
 									'pattern-manager'
 								) }
-							/>
+							/> */}
 							<button type="submit" className="button">
 							{ fetchState === 'fetching' ? (
 								__( 'Analying page...', 'pattern-manager' )
