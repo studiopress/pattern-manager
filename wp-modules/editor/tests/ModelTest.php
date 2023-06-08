@@ -198,4 +198,89 @@ class ModelTest extends WP_UnitTestCase {
 		// Make sure the filename does not get changed when only the content is modified.
 		$this->assertSame( 'mismatched-name', $content_modified_pattern['name'] );
 	}
+	
+	/**
+	 * Tests that images remain after a pattern is renamed.
+	 */
+	public function test_images_remain_after_a_pattern_is_renamed() {
+		
+		$wp_filesystem = get_wp_filesystem_api();
+		
+		// Save the post using the REST api, which triggers saving the file.
+		wp_set_current_user(1);
+			
+		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
+			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
+	
+		$request = new \WP_REST_Request( 'POST', '/wp/v2/posts' );
+		$request->set_param( 'title', 'A' );
+		$request->set_param( 'content', $content );
+		$request->set_param( 'slug', 'a' );
+		$request->set_param( 'type', get_pattern_post_type() );
+		$post_type = get_post_type_object( 'post' );
+		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
+		$response = $posts_controller->create_item($request);
+		$pattern_post = get_post( $response->data['id'] );
+
+		// Get the raw contents of the file.
+		$pattern_a_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/a.php' );
+
+		$expected_contents = '<?php
+/**
+ * Title: A
+ * Slug: a
+ * Description: 
+ * Categories: 
+ * Keywords: 
+ * Viewport Width: 1280
+ * Block Types: 
+ * Post Types: 
+ * Inserter: true
+ */
+
+?>
+<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
+			<figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->
+';
+
+		$this->assertSame( $expected_contents, $pattern_a_contents );
+
+		// Rename the pattern.
+		$request = new \WP_REST_Request( 'POST', '/wp/v2/pm_pattern/' . $pattern_post->ID );
+		$request->set_param( 'id', $pattern_post->ID );
+		$request->set_param( 'title', 'B' );
+		$request->set_param( 'slug', 'a' );
+		$request->set_param( 'content', $pattern_post->post_content );
+		$request->set_param( 'meta', ['name' => 'b'] );
+		$request->set_param( 'type', get_pattern_post_type() );
+
+		$post_type = get_post_type_object( 'post' );
+		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
+		$response = $posts_controller->create_item($request);
+
+		// Get the raw contents of the file.
+		$pattern_b_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/b.php' );
+		
+		$expected_contents = '<?php
+/**
+ * Title: B
+ * Slug: b
+ * Description: 
+ * Categories: 
+ * Keywords: 
+ * Viewport Width: 1280
+ * Block Types: 
+ * Post Types: 
+ * Inserter: true
+ */
+
+?>
+<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
+			<figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->
+';
+
+		// Make sure the title does not get changed when only the content is modified (notice the php tag around the img src).
+		$this->assertSame( $expected_contents, $pattern_b_contents );
+	}
+
 }
