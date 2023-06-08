@@ -1,7 +1,7 @@
 // WP dependencies
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement } from '@wordpress/element';
-import { Notice } from '@wordpress/components';
+import { Notice, Dashicon } from '@wordpress/components';
 
 type Props = {
 	isVisible: boolean;
@@ -29,11 +29,20 @@ export default function VersionControlNotice( {
 					div: <div style={ { marginTop: '1rem' } }></div>,
 					a: (
 						<a
+							target="_blank"
+							rel="noreferrer"
 							href={
 								'https://developer.wpengine.com/knowledge-base/using-git-with-a-wordpress-theme/'
 							}
 						>
 							{ __( 'our Git Guide', 'pattern-manager' ) }
+							<span className="screen-reader-text">
+								{ __(
+									'(opens in a new tab)',
+									'pattern-manager'
+								) }
+							</span>
+							<Dashicon icon={ 'external' } />
 						</a>
 					),
 				}
