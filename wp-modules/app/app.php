@@ -67,6 +67,33 @@ function pattern_manager_app() {
 		get_app_state()
 	);
 
+	if ( \PatternManager\LocalWpDataHandlers\user_tracking_enabled() ) {
+		$user_data = \PatternManager\LocalWpDataHandlers\get_user_data();
+		$current_request_uri = isset( $_SERVER['REQUEST_URI']  ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : 'notFound';
+
+		wp_add_inline_script(
+			'pattern-manager',
+			'
+// Load the segment analytics library.
+!function(){var analytics=window.analytics=window.analytics||[];if(!analytics.initialize)if(analytics.invoked)window.console&&console.error&&console.error("Segment snippet included twice.");else{analytics.invoked=!0;analytics.methods=["trackSubmit","trackClick","trackLink","trackForm","pageview","identify","reset","group","track","ready","alias","debug","page","once","off","on","addSourceMiddleware","addIntegrationMiddleware","setAnonymousId","addDestinationMiddleware"];analytics.factory=function(e){return function(){var t=Array.prototype.slice.call(arguments);t.unshift(e);analytics.push(t);return analytics}};for(var e=0;e<analytics.methods.length;e++){var key=analytics.methods[e];analytics[key]=analytics.factory(key)}analytics.load=function(key,e){var t=document.createElement("script");t.type="text/javascript";t.async=!0;t.src="https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n);analytics._loadOptions=e};analytics._writeKey="YOUR_WRITE_KEY";analytics.SNIPPET_VERSION="4.15.2";
+	analytics.load("YOUR_WRITE_KEY");
+	analytics.page();
+	}}();
+
+// Identify who this user is.
+analytics.identify(\'' . esc_attr( $user_data['id'] ) . '\', {
+	name: \'' . esc_attr( $user_data['name'] ) . '\',
+	email: \'' . esc_attr( $user_data['email'] ) . '\'
+});
+
+// Track that the user has loaded the App page of Pattern Manager.
+analytics.track(\'Loaded Pattern Manager Pattern(S) Page\', {
+	url: \'' . esc_attr( $current_request_uri ) . '\'
+});
+			'
+		);
+	}
+
 	echo '<div id="pattern-manager-app"></div>';
 }
 
