@@ -231,8 +231,8 @@ class ModelTest extends WP_UnitTestCase {
 
 		$pattern_post_id = $this->factory()->post->create(
 			[
-				'post_name'    => 'a',
-				'post_type'    => get_pattern_post_type(),
+				'post_name' => 'a',
+				'post_type' => get_pattern_post_type(),
 			]
 		);
 
