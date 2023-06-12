@@ -38,7 +38,12 @@ class ApiDataTest extends WP_UnitTestCase {
 		parent::tearDown();
 	}
 
-
+	/**
+	 * Gets the fixtures directory.
+	 */
+	public function get_fixtures_directory() {
+		return dirname( dirname( __DIR__ ) ) . '/pattern-data-handlers/tests/fixtures';
+	}
 
 	/**
 	 * Tests register_routes.
