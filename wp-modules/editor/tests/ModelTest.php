@@ -207,13 +207,13 @@ class ModelTest extends WP_UnitTestCase {
 	public function test_images_remain_after_a_pattern_is_renamed() {
 		$wp_filesystem = get_wp_filesystem_api();
 
-		// Save the post using the REST api, which triggers saving the file.
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		do_action( 'init' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
 
+		// Save the post using the REST api, which triggers saving the file.
 		$response     = ( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
 			new WP_REST_Request(
 				'POST',
@@ -231,8 +231,9 @@ class ModelTest extends WP_UnitTestCase {
 		);
 		$pattern_post = get_post( $response->data['id'] );
 
-		// Get the raw contents of the file.
-		$pattern_a_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/a.php' );
+		$pattern_a_path = $this->stylesheet_dir . '/patterns/a.php';
+		wp_opcache_invalidate( $pattern_a_path );
+		$pattern_a_raw_contents = $wp_filesystem->get_contents( $pattern_a_path );
 
 		$expected_contents = '<?php
 /**
@@ -252,7 +253,7 @@ class ModelTest extends WP_UnitTestCase {
 			<figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->
 ';
 
-		$this->assertSame( $expected_contents, $pattern_a_contents );
+		$this->assertSame( $expected_contents, $pattern_a_raw_contents );
 
 		// Rename the pattern.
 		( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
@@ -272,11 +273,11 @@ class ModelTest extends WP_UnitTestCase {
 			)
 		);
 
-		$new_pattern_path = $this->stylesheet_dir . '/patterns/b.php';
-		wp_opcache_invalidate( $new_pattern_path );
+		$pattern_b_path = $this->stylesheet_dir . '/patterns/b.php';
+		wp_opcache_invalidate( $pattern_b_path );
 
 		// Get the raw contents of the file.
-		$pattern_b_contents = $wp_filesystem->get_contents( $new_pattern_path );
+		$pattern_b_contents = $wp_filesystem->get_contents( $pattern_b_path );
 
 		$expected_contents = '<?php
 /**
