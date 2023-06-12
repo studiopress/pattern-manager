@@ -203,11 +203,11 @@ class ModelTest extends WP_UnitTestCase {
 	 * Tests that images remain after a pattern is renamed.
 	 */
 	public function test_images_remain_after_a_pattern_is_renamed() {
-
 		$wp_filesystem = get_wp_filesystem_api();
 
 		// Save the post using the REST api, which triggers saving the file.
-		wp_set_current_user(1);
+		wp_set_current_user( 1 );
+		do_action( 'init' ); // Ensure meta is registered.
 
 		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
