@@ -7,10 +7,7 @@
 
 namespace PatternManager\Editor;
 
-use WP_REST_Request;
-use WP_REST_Posts_Controller;
 use WP_UnitTestCase;
-use function \PatternManager\Editor\save_pattern_to_file;
 use function \PatternManager\GetWpFilesystem\get_wp_filesystem_api;
 use function \PatternManager\PatternDataHandlers\get_pattern_by_name;
 use function \PatternManager\PatternDataHandlers\get_patterns_directory;
@@ -41,6 +38,10 @@ class ModelTest extends WP_UnitTestCase {
 			$this->stylesheet_dir,
 			true
 		);
+		get_wp_filesystem_api()->delete(
+			$this->get_fixtures_directory() . '/patterns/b.php'
+		);
+
 		parent::tearDown();
 	}
 
@@ -223,48 +224,37 @@ class ModelTest extends WP_UnitTestCase {
 	 * Tests that images remain after a pattern is renamed.
 	 */
 	public function test_images_remain_after_a_pattern_is_renamed() {
-		$wp_filesystem = get_wp_filesystem_api();
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
-
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		do_action( 'init' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
-		$pattern_post_id = $this->factory()->post->create(
-			[
-				'post_name' => 'a',
-				'post_type' => get_pattern_post_type(),
-			]
+		apply_filters(
+			'get_post_metadata',
+			null,
+			$this->factory()->post->create_and_get(
+				[
+					'post_name' => 'a',
+					'post_type' => get_pattern_post_type(),
+				]
+			),
+			'name',
+			'b'
 		);
-
-		$pattern_a = get_pattern_by_name( 'a' );
-
-		// Rename the pattern.
-		$this->assertTrue(
-			( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
-				new WP_REST_Request(
-					'POST',
-					'/wp/v2/pm_pattern/' . $pattern_post_id,
-					[
-						'args' => [
-							'id'      => $pattern_post_id,
-							'title'   => 'B',
-							'meta'    => [ 'name' => 'b' ],
-							'content' => $pattern_a['content'],
-							'slug'    => 'b',
-							'type'    => get_pattern_post_type(),
-						],
-					]
-				)
+		do_action(
+			'rest_after_insert_' . get_pattern_post_type(),
+			$this->factory()->post->create_and_get(
+				[
+					'post_name'    => 'b',
+					'post_title'   => 'B',
+					'post_type'    => get_pattern_post_type(),
+					'post_content' => '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->',
+				]
 			)
 		);
 
-		$pattern_b_path = get_patterns_directory() . '/b.php';
-		wp_opcache_invalidate( $pattern_b_path );
-
 		// Make sure the image wasn't deleted (the php tag remains around the img src).
 		$this->assertSame(
-			$this->normalize( $wp_filesystem->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
-			$this->normalize( $wp_filesystem->get_contents( $pattern_b_path ) )
+			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
+			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/patterns/b.php' ) )
 		);
 	}
 }
