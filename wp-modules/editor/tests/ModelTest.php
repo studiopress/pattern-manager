@@ -36,12 +36,30 @@ class ModelTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function tearDown(): void {
-		remove_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
+		remove_all_filters( 'stylesheet_directory' );
 		get_wp_filesystem_api()->rmdir(
 			$this->stylesheet_dir,
 			true
 		);
 		parent::tearDown();
+	}
+
+	/**
+	 * Gets the fixtures directory.
+	 */
+	public function get_fixtures_directory() {
+		return dirname( __DIR__ ) . '/tests/fixtures';
+	}
+
+	/**
+	 * Normalizes in order to compare in tests.
+	 */
+	public function normalize( string $to_normalize ): string {
+		return preg_replace(
+			'/\s?[\t\n]/',
+			'',
+			$to_normalize
+		);
 	}
 
 	/**
@@ -206,95 +224,47 @@ class ModelTest extends WP_UnitTestCase {
 	 */
 	public function test_images_remain_after_a_pattern_is_renamed() {
 		$wp_filesystem = get_wp_filesystem_api();
-
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
+
+		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		do_action( 'init' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
-		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
-			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
-
-		// Save the post using the REST api, which triggers saving the file.
-		$response     = ( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
-			new WP_REST_Request(
-				'POST',
-				'/wp/v2/posts',
-				[
-					'args' => [
-						'title'   => 'A',
-						'content' => $content,
-						'slug'    => 'a',
-						'type'    => get_pattern_post_type(),
-						'meta'    => [ 'name' => 'a' ],
-					],
-				]
-			)
+		$pattern_post_id = $this->factory()->post->create(
+			[
+				'post_name'    => 'a',
+				'post_type'    => get_pattern_post_type(),
+			]
 		);
-		$pattern_post = get_post( $response->data['id'] );
 
-		$pattern_a_path = $this->stylesheet_dir . '/patterns/a.php';
-		wp_opcache_invalidate( $pattern_a_path );
-		$pattern_a_raw_contents = $wp_filesystem->get_contents( $pattern_a_path );
-
-		$expected_contents = '<?php
-/**
- * Title: A
- * Slug: a
- * Description: 
- * Categories: 
- * Keywords: 
- * Viewport Width: 1280
- * Block Types: 
- * Post Types: 
- * Inserter: true
- */
-
-?>
-<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
-			<figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->
-';
-
-		$this->assertSame( $expected_contents, $pattern_a_raw_contents );
+		$pattern_a = get_pattern_by_name( 'a' );
 
 		// Rename the pattern.
-		( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
-			new WP_REST_Request(
-				'POST',
-				'/wp/v2/pm_pattern/' . $pattern_post->ID,
-				[
-					'args' => [
-						'id'      => $pattern_post->ID,
-						'title'   => 'B',
-						'content' => $pattern_post->post_content,
-						'meta'    => [ 'name' => 'b' ],
-					],
-				]
+		$this->assertTrue(
+			( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
+				new WP_REST_Request(
+					'POST',
+					'/wp/v2/pm_pattern/' . $pattern_post_id,
+					[
+						'args' => [
+							'id'      => $pattern_post_id,
+							'title'   => 'B',
+							'meta'    => [ 'name' => 'b' ],
+							'content' => $pattern_a['content'],
+							'slug'    => 'b',
+							'type'    => get_pattern_post_type(),
+						],
+					]
+				)
 			)
 		);
 
-		$pattern_b_path = $this->stylesheet_dir . '/patterns/b.php';
+		$pattern_b_path = get_patterns_directory() . '/b.php';
 		wp_opcache_invalidate( $pattern_b_path );
 
-		$pattern_b_raw_contents = $wp_filesystem->get_contents( $pattern_a_path );
-		$expected_contents      = '<?php
-/**
- * Title: B
- * Slug: b
- * Description: 
- * Categories: 
- * Keywords: 
- * Viewport Width: 1280
- * Block Types: 
- * Post Types: 
- * Inserter: true
- */
-
-?>
-<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
-			<figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->
-';
-
 		// Make sure the image wasn't deleted (the php tag remains around the img src).
-		$this->assertSame( $expected_contents, $pattern_b_raw_contents );
+		$this->assertSame(
+			$this->normalize( $wp_filesystem->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
+			$this->normalize( $wp_filesystem->get_contents( $pattern_b_path ) )
+		);
 	}
-
 }

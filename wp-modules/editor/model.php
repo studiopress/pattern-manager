@@ -54,8 +54,6 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	echo 'Pattern is being saved';
-
 	$name    = $post->post_name;
 	$pattern = get_pattern_by_name( $name );
 
