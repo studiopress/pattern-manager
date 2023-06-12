@@ -264,10 +264,8 @@ class ModelTest extends WP_UnitTestCase {
 					'args' => [
 						'id'      => $pattern_post->ID,
 						'title'   => 'B',
-						'slug'    => 'a',
 						'content' => $pattern_post->post_content,
 						'meta'    => [ 'name' => 'b' ],
-						'type'    => get_pattern_post_type(),
 					],
 				]
 			)
@@ -276,10 +274,8 @@ class ModelTest extends WP_UnitTestCase {
 		$pattern_b_path = $this->stylesheet_dir . '/patterns/b.php';
 		wp_opcache_invalidate( $pattern_b_path );
 
-		// Get the raw contents of the file.
-		$pattern_b_contents = $wp_filesystem->get_contents( $pattern_b_path );
-
-		$expected_contents = '<?php
+		$pattern_b_raw_contents = $wp_filesystem->get_contents( $pattern_b_path );
+		$expected_contents      = '<?php
 /**
  * Title: B
  * Slug: b
@@ -298,7 +294,7 @@ class ModelTest extends WP_UnitTestCase {
 ';
 
 		// Make sure the title does not get changed when only the content is modified (notice the php tag around the img src).
-		$this->assertSame( $expected_contents, $pattern_b_contents );
+		$this->assertSame( $expected_contents, $pattern_b_raw_contents );
 	}
 
 }
