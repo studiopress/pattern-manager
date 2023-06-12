@@ -7,6 +7,8 @@
 
 namespace PatternManager\Editor;
 
+use WP_REST_Request;
+use WP_REST_Posts_Controller;
 use WP_UnitTestCase;
 use function \PatternManager\Editor\save_pattern_to_file;
 use function \PatternManager\GetWpFilesystem\get_wp_filesystem_api;
@@ -206,22 +208,28 @@ class ModelTest extends WP_UnitTestCase {
 		$wp_filesystem = get_wp_filesystem_api();
 
 		// Save the post using the REST api, which triggers saving the file.
-		wp_set_current_user( 1 );
+		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		do_action( 'init' ); // Ensure meta is registered.
 
 		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
 
-		$request = new \WP_REST_Request( 'POST', '/wp/v2/posts' );
-		$request->set_param( 'title', 'A' );
-		$request->set_param( 'content', $content );
-		$request->set_param( 'slug', 'a' );
-		$request->set_param( 'type', get_pattern_post_type() );
-		$request->set_param( 'meta', [ 'name' => 'a' ] );
-		$post_type        = get_post_type_object( 'post' );
-		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
-		$response         = $posts_controller->create_item( $request );
-		$pattern_post     = get_post( $response->data['id'] );
+		$response     = ( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
+			new WP_REST_Request(
+				'POST',
+				'/wp/v2/posts',
+				[
+					'args' => [
+						'title'   => 'A',
+						'content' => $content,
+						'slug'    => 'a',
+						'type'    => get_pattern_post_type(),
+						'meta'    => [ 'name' => 'a' ],
+					],
+				]
+			)
+		);
+		$pattern_post = get_post( $response->data['id'] );
 
 		// Get the raw contents of the file.
 		$pattern_a_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/a.php' );
@@ -247,17 +255,22 @@ class ModelTest extends WP_UnitTestCase {
 		$this->assertSame( $expected_contents, $pattern_a_contents );
 
 		// Rename the pattern.
-		$request = new \WP_REST_Request( 'POST', '/wp/v2/pm_pattern/' . $pattern_post->ID );
-		$request->set_param( 'id', $pattern_post->ID );
-		$request->set_param( 'title', 'B' );
-		$request->set_param( 'slug', 'a' );
-		$request->set_param( 'content', $pattern_post->post_content );
-		$request->set_param( 'meta', [ 'name' => 'b' ] );
-		$request->set_param( 'type', get_pattern_post_type() );
-
-		$post_type        = get_post_type_object( 'post' );
-		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
-		$response         = $posts_controller->create_item( $request );
+		( new WP_REST_Posts_Controller( get_pattern_post_type() ) )->create_item(
+			new WP_REST_Request(
+				'POST',
+				'/wp/v2/pm_pattern/' . $pattern_post->ID,
+				[
+					'args' => [
+						'id'      => $pattern_post->ID,
+						'title'   => 'B',
+						'slug'    => 'a',
+						'content' => $pattern_post->post_content,
+						'meta'    => [ 'name' => 'b' ],
+						'type'    => get_pattern_post_type(),
+					],
+				]
+			)
+		);
 
 		// Get the raw contents of the file.
 		$pattern_b_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/b.php' );

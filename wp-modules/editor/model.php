@@ -54,9 +54,7 @@ function save_pattern_to_file( WP_Post $post ) {
 		return;
 	}
 
-	// if ( 'a' ===  $post->post_name ) {
-		echo 'Pattern is at least being saved....but maybe not meta?';
-	// };
+	echo 'Pattern is being saved';
 
 	$name    = $post->post_name;
 	$pattern = get_pattern_by_name( $name );
@@ -134,8 +132,6 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 
 	$slug = prepend_textdomain( $name_changed ? $meta_value : $pattern_name );
 
-	echo 'updating meta..' . $meta_key;
-
 	$pattern_updated = update_pattern(
 		array_merge(
 			get_pattern_defaults(),
@@ -152,9 +148,6 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 	);
 
 	if ( $name_changed ) {
-		print_r( $post );
-		echo 'name was changed';
-		// die();
 		// Note that the order of this is important.
 		// The delete_pattern call must come after the update_pattern call above,
 		// or the assets won't be found when calling update_pattern, because they were deleted.
