@@ -248,7 +248,7 @@ class ModelTest extends WP_UnitTestCase {
 					'post_name'    => 'b',
 					'post_title'   => 'B',
 					'post_type'    => get_pattern_post_type(),
-					'post_content' => '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->',
+					'post_content' => get_pattern_by_name( 'a' )['content'],
 				]
 			)
 		);
