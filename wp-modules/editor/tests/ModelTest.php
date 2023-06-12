@@ -228,7 +228,7 @@ class ModelTest extends WP_UnitTestCase {
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 
 		apply_filters(
-			'get_post_metadata',
+			'get_post_metadata', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			null,
 			$this->factory()->post->create_and_get(
 				[
@@ -240,7 +240,7 @@ class ModelTest extends WP_UnitTestCase {
 			'b'
 		);
 		do_action(
-			'rest_after_insert_' . get_pattern_post_type(),
+			'rest_after_insert_' . get_pattern_post_type(), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			$this->factory()->post->create_and_get(
 				[
 					'post_name'    => 'b',
