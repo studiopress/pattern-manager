@@ -209,7 +209,7 @@ class ModelTest extends WP_UnitTestCase {
 
 		// Save the post using the REST api, which triggers saving the file.
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
-		do_action( 'init' ); // Ensure meta is registered.
+		do_action( 'init' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
 		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
@@ -272,8 +272,11 @@ class ModelTest extends WP_UnitTestCase {
 			)
 		);
 
+		$new_pattern_path = $this->stylesheet_dir . '/patterns/b.php';
+		wp_opcache_invalidate( $new_pattern_path );
+
 		// Get the raw contents of the file.
-		$pattern_b_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/b.php' );
+		$pattern_b_contents = $wp_filesystem->get_contents( $new_pattern_path );
 
 		$expected_contents = '<?php
 /**
