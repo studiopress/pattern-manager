@@ -198,25 +198,26 @@ class ModelTest extends WP_UnitTestCase {
 		// Make sure the filename does not get changed when only the content is modified.
 		$this->assertSame( 'mismatched-name', $content_modified_pattern['name'] );
 	}
-	
+
 	/**
 	 * Tests that images remain after a pattern is renamed.
 	 */
 	public function test_images_remain_after_a_pattern_is_renamed() {
-		
+
 		$wp_filesystem = get_wp_filesystem_api();
-		
+
 		// Save the post using the REST api, which triggers saving the file.
 		wp_set_current_user(1);
-			
+
 		$content = '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} -->
 			<figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->';
-	
+
 		$request = new \WP_REST_Request( 'POST', '/wp/v2/posts' );
 		$request->set_param( 'title', 'A' );
 		$request->set_param( 'content', $content );
 		$request->set_param( 'slug', 'a' );
 		$request->set_param( 'type', get_pattern_post_type() );
+		$request->set_param( 'meta', [ 'name' => 'a' ] );
 		$post_type = get_post_type_object( 'post' );
 		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
 		$response = $posts_controller->create_item($request);
