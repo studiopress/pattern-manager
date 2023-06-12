@@ -218,10 +218,10 @@ class ModelTest extends WP_UnitTestCase {
 		$request->set_param( 'slug', 'a' );
 		$request->set_param( 'type', get_pattern_post_type() );
 		$request->set_param( 'meta', [ 'name' => 'a' ] );
-		$post_type = get_post_type_object( 'post' );
+		$post_type        = get_post_type_object( 'post' );
 		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
-		$response = $posts_controller->create_item($request);
-		$pattern_post = get_post( $response->data['id'] );
+		$response         = $posts_controller->create_item( $request );
+		$pattern_post     = get_post( $response->data['id'] );
 
 		// Get the raw contents of the file.
 		$pattern_a_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/a.php' );
@@ -252,16 +252,16 @@ class ModelTest extends WP_UnitTestCase {
 		$request->set_param( 'title', 'B' );
 		$request->set_param( 'slug', 'a' );
 		$request->set_param( 'content', $pattern_post->post_content );
-		$request->set_param( 'meta', ['name' => 'b'] );
+		$request->set_param( 'meta', [ 'name' => 'b' ] );
 		$request->set_param( 'type', get_pattern_post_type() );
 
-		$post_type = get_post_type_object( 'post' );
+		$post_type        = get_post_type_object( 'post' );
 		$posts_controller = new \WP_REST_Posts_Controller( get_pattern_post_type() );
-		$response = $posts_controller->create_item($request);
+		$response         = $posts_controller->create_item( $request );
 
 		// Get the raw contents of the file.
 		$pattern_b_contents = $wp_filesystem->get_contents( $this->stylesheet_dir . '/patterns/b.php' );
-		
+
 		$expected_contents = '<?php
 /**
  * Title: B
