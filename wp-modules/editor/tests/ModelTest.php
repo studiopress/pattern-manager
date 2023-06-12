@@ -38,18 +38,7 @@ class ModelTest extends WP_UnitTestCase {
 			$this->stylesheet_dir,
 			true
 		);
-		get_wp_filesystem_api()->delete(
-			$this->get_fixtures_directory() . '/patterns/b.php'
-		);
-
 		parent::tearDown();
-	}
-
-	/**
-	 * Gets the fixtures directory.
-	 */
-	public function get_fixtures_directory() {
-		return dirname( __DIR__ ) . '/tests/fixtures';
 	}
 
 	/**
@@ -225,8 +214,21 @@ class ModelTest extends WP_UnitTestCase {
 	 */
 	public function test_images_remain_after_a_pattern_is_renamed() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
-		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 
+		// Simulate creating a pattern in the editor.
+		do_action(
+			'rest_after_insert_' . get_pattern_post_type(), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+			$this->factory()->post->create_and_get(
+				[
+					'post_name'    => 'a',
+					'post_title'   => 'A',
+					'post_type'    => get_pattern_post_type(),
+					'post_content' => '<!-- wp:image {"id":610,"sizeSlug":"full","linkDestination":"none"} --><figure class="wp-block-image size-full"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Golde33443.jpg/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->',
+				]
+			)
+		);
+
+		// Simulate changing the name of a pattern in the editor.
 		apply_filters(
 			'get_post_metadata', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			null,
@@ -253,8 +255,8 @@ class ModelTest extends WP_UnitTestCase {
 
 		// Make sure the image wasn't deleted (the php tag remains around the img src).
 		$this->assertSame(
-			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
-			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/patterns/b.php' ) )
+			$this->normalize( get_wp_filesystem_api()->get_contents( __DIR__ . '/expected/b.php' ) ),
+			$this->normalize( get_wp_filesystem_api()->get_contents( get_patterns_directory() . '/b.php' ) )
 		);
 	}
 }
