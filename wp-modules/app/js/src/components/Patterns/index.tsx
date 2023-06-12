@@ -9,6 +9,7 @@ import { createInterpolateElement, useState } from '@wordpress/element';
 import PatternCategories from './PatternCategories';
 import PatternGrid from './PatternGrid';
 import SearchCount from './SearchCount';
+import SiteNavigation from './../SiteNavigation';
 
 // Utils
 import createPatternsWithUncategorized from '../../utils/createPatternsWithUncategorized';
@@ -44,75 +45,78 @@ export default function Patterns( {
 	);
 
 	return (
-		<div className="pattern-manager-theme-patterns">
-			<div className="patterns-container-inner">
-				{ Notice }
-				{ ! Object.entries( patterns ?? {} ).length ? (
-					<div className="grid-empty">
-						{ createInterpolateElement(
-							__(
-								'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
-								'pattern-manager'
-							),
-							{
-								span: (
-									<strong>
-										{ __(
-											'Create New Pattern',
-											'pattern-manager'
-										) }
-									</strong>
-								),
-							}
-						) }
-					</div>
-				) : (
-					<div className="pattern-columns">
-						<div
-							className="pattern-inner-sidebar"
-							role="region"
-							aria-label="Sort patterns by category"
-						>
-							<SearchControl
-								className="pattern-search"
-								label={ __(
-									'Search Patterns',
+		<div className="pattern-manager-body">
+			<SiteNavigation />
+			<div className="pattern-manager-theme-patterns">
+				<div className="patterns-container-inner">
+					{ Notice }
+					{ ! Object.entries( patterns ?? {} ).length ? (
+						<div className="grid-empty">
+							{ createInterpolateElement(
+								__(
+									'No patterns added yet. Click the <span></span> button to start creating and adding patterns.',
 									'pattern-manager'
-								) }
-								value={ searchTerm }
-								onChange={ ( newSearchTerm: string ) => {
-									setSearchTerm( newSearchTerm );
-								} }
-							/>
-							{ searchTerm ? (
-								<SearchCount
-									resultsLength={
-										Object.keys( filteredPatterns ).length
-									}
-									searchTerm={ searchTerm }
-								/>
-							) : (
-								<PatternCategories
-									categories={ uniqueCategories }
-									currentCategory={ currentCategory }
-									setCurrentCategory={ setCurrentCategory }
-								/>
+								),
+								{
+									span: (
+										<strong>
+											{ __(
+												'Create New Pattern',
+												'pattern-manager'
+											) }
+										</strong>
+									),
+								}
 							) }
 						</div>
-						<div
-							className="inner-grid"
-							role="region"
-							aria-label="Block Patterns"
-						>
-							<PatternGrid
-								onSelectPattern={ onSelectPattern }
-								PatternActions={ PatternActions }
-								patterns={ filteredPatterns }
-								siteUrl={ siteUrl }
-							/>
+					) : (
+						<div className="pattern-columns">
+							<div
+								className="pattern-inner-sidebar"
+								role="region"
+								aria-label="Sort patterns by category"
+							>
+								<SearchControl
+									className="pattern-search"
+									label={ __(
+										'Search Patterns',
+										'pattern-manager'
+									) }
+									value={ searchTerm }
+									onChange={ ( newSearchTerm: string ) => {
+										setSearchTerm( newSearchTerm );
+									} }
+								/>
+								{ searchTerm ? (
+									<SearchCount
+										resultsLength={
+											Object.keys( filteredPatterns ).length
+										}
+										searchTerm={ searchTerm }
+									/>
+								) : (
+									<PatternCategories
+										categories={ uniqueCategories }
+										currentCategory={ currentCategory }
+										setCurrentCategory={ setCurrentCategory }
+									/>
+								) }
+							</div>
+							<div
+								className="inner-grid"
+								role="region"
+								aria-label="Block Patterns"
+							>
+								<PatternGrid
+									onSelectPattern={ onSelectPattern }
+									PatternActions={ PatternActions }
+									patterns={ filteredPatterns }
+									siteUrl={ siteUrl }
+								/>
+							</div>
 						</div>
-					</div>
-				) }
+					) }
+				</div>
 			</div>
 		</div>
 	);

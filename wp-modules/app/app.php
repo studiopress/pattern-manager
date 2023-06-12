@@ -22,18 +22,46 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Get the values needed to render/hydrate the app.
  */
 function get_app_state() {
-	return array(
-		'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
-		'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+	$local_sites = \PatternManager\LocalWpDataHandlers\get_localwp_sites();
+	
+	$local_sites_initial_state = [];
+
+	if ( ! $local_sites ) {
+
+		return array(
+			'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
+			'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+			'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
+			'apiEndpoints'             => array(
+				'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
+				'updateDismissedThemesEndpoint' => get_rest_url( false, 'pattern-manager/v1/update-dismissed-themes/' ),
+			),
+			'siteUrl'                  => get_bloginfo( 'url' ),
+			'adminUrl'                 => admin_url(),
+			'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
+			'localSites'               => \PatternManager\LocalWpDataHandlers\get_localwp_sites(),
+		);
+	}
+	
+	foreach( $local_sites as $local_site_key => $local_site_data ) {
+		$local_sites_initial_state[$local_site_key] = [
+			'localWpData' => $local_site_data,
+			'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
+			'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
+			'siteUrl'                  => get_bloginfo( 'url' ),
+			'adminUrl'                 => admin_url(),
+		];
+	}
+	
+	return [
 		'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints'             => array(
 			'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
 			'updateDismissedThemesEndpoint' => get_rest_url( false, 'pattern-manager/v1/update-dismissed-themes/' ),
 		),
-		'siteUrl'                  => get_bloginfo( 'url' ),
-		'adminUrl'                 => admin_url(),
 		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
-	);
+		'localSites' => $local_sites_initial_state,
+	]
 }
 
 /**

@@ -4,7 +4,7 @@
  * Description: This module contains functions for getting data from LocalWP, the electron App.
  * Namespace: LocalWpDataHandlers
  *
- * @package design-hub
+ * @package pattern-manager
  */
 
 declare(strict_types=1);

@@ -12,7 +12,7 @@ import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.sv
 
 export default function Header() {
 	return (
-		<div className="pattern-manager-header-container">
+		<header className="pattern-manager-header-container">
 			<div className="header-container-logo">
 				<img
 					alt={ __( 'WP Engine logo', 'pattern-manager' ) }
@@ -32,6 +32,6 @@ export default function Header() {
 					{ __( 'Create New Pattern', 'pattern-manager' ) }
 				</Button>
 			</div>
-		</div>
+		</header>
 	);
 }

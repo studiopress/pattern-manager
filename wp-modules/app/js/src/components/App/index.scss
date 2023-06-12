@@ -98,11 +98,19 @@ html body.toplevel_page_pattern-manager {
 			gap: 0.5rem;
 		}
 	}
+	
+	.pattern-manager-body{
+		width: 100%;
+		border: solid 3rem #f1f1f1;
+		background: #fff;
+
+		nav{
+			
+		}
+	}
 
 	.pattern-manager-theme-patterns {
-		width: 100%;
 		padding: 3rem;
-		border: solid 3rem #f1f1f1;
 	}
 
 	.patternmanager-pattern-editor-loading-outer {
