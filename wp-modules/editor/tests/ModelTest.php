@@ -274,7 +274,7 @@ class ModelTest extends WP_UnitTestCase {
 		$pattern_b_path = $this->stylesheet_dir . '/patterns/b.php';
 		wp_opcache_invalidate( $pattern_b_path );
 
-		$pattern_b_raw_contents = $wp_filesystem->get_contents( $pattern_b_path );
+		$pattern_b_raw_contents = $wp_filesystem->get_contents( $pattern_a_path );
 		$expected_contents      = '<?php
 /**
  * Title: B
@@ -293,7 +293,7 @@ class ModelTest extends WP_UnitTestCase {
 			<figure class="wp-block-image size-full"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/220px-Golde33443.jpg" alt="" class="wp-image-610"/></figure><!-- /wp:image -->
 ';
 
-		// Make sure the title does not get changed when only the content is modified (notice the php tag around the img src).
+		// Make sure the image wasn't deleted (the php tag remains around the img src).
 		$this->assertSame( $expected_contents, $pattern_b_raw_contents );
 	}
 
