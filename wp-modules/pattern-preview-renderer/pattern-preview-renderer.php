@@ -16,23 +16,50 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+function kjhsdgkhsg() {
+	global $wp_theme_directories;
+	register_theme_directory( WP_CONTENT_DIR . '/pm-theme-previews/' );
+}
+add_action( 'init', __NAMESPACE__ . '\kjhsdgkhsg' );
+
 /**
  * Receive pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
 
 	// Nonce not required as the user is not taking any action here.
-	if ( ! isset( $_GET['pm_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! isset( $_GET['pattern_path'] ) || ! isset( $_GET['theme_path'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
-	$path = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$theme_path = sanitize_text_field( wp_unslash( $_GET['theme_path'] ) );
+	$pattern_path = sanitize_text_field( wp_unslash( $_GET['pattern_path'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_path( $path );
+	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_path( $pattern_path );
 
 	if ( ! isset( $pattern['content'] ) ) {
 		$pattern['content'] = '';
 	}
+
+	// Pull in the theme from the site and activate it.
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+
+	// Make a temporary directory for this theme in wp-content.
+	if ( ! $wp_filesystem->exists( WP_CONTENT_DIR . '/pm-theme-previews' ) ) {
+		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/pm-theme-previews' );
+	}
+	
+	if ( ! $wp_filesystem->exists( WP_CONTENT_DIR . '/pm-theme-previews/' . basename( $theme_path ) ) ) {
+		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/pm-theme-previews/' . basename( $theme_path ) );
+	}
+	
+	// Temporarily rename the themes directory on this site so no duplicate themes get confused.
+	$wp_filesystem->move( WP_CONTENT_DIR . '/themes/', WP_CONTENT_DIR . '/themesX/' );
+	$wp_filesystem->mkdir( WP_CONTENT_DIR . '/themes' );
+
+	copy_dir( $theme_path, WP_CONTENT_DIR . '/pm-theme-previews/' . basename( $theme_path ) );
+
+	switch_theme( basename( $theme_path ) );
 
 	// Mock a post object with the pattern content as the body.
 	mock_pattern_preview_post_object( $pattern['content'] );

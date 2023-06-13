@@ -7,7 +7,7 @@ export type SiteContext = {
 	adminUrl: string;
 	patternCategories: QueriedCategories;
 	patterns: ReturnType< typeof usePatterns >;
-	siteUrl: string;
+	themePath: string;
 	localWpData: {
 		name: string;
 		path: string;
@@ -20,7 +20,7 @@ export type Site = {
 	adminUrl: string;
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
-	siteUrl: string;
+	themePath: string;
 	localWpData: {
 		name: string;
 		path: string;
@@ -66,7 +66,8 @@ export type PatternsProps = {
 	onSelectPattern?: ( pattern: Pattern ) => void;
 	patternCategories: Site[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
-	siteUrl: string;
+	themePath: string;
+	appUrl: string;
 	Notice?: JSX.Element;
 	visible: boolean;
 };

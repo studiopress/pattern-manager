@@ -16,12 +16,13 @@ const PatternPreview: PatternPreviewType = loadable(
 );
 
 // Types
-import type { Patterns, PatternsProps } from '../../types';
+import type { Patterns, Site, PatternsProps } from '../../types';
 import type { PatternPreviewType } from '../PatternPreview';
 
 type Props = Pick< PatternsProps, 'onSelectPattern' | 'PatternActions' > & {
 	patterns: Patterns;
-	siteUrl: string;
+	themePath: string;
+	appUrl:string;
 };
 
 /** Render the patterns in a grid, or a message if no patterns are found. */
@@ -29,7 +30,8 @@ export default function PatternGrid( {
 	onSelectPattern,
 	PatternActions,
 	patterns,
-	siteUrl,
+	themePath,
+	appUrl,
 }: Props ) {
 	useForceRerender( [ patterns ] );
 
@@ -60,9 +62,10 @@ export default function PatternGrid( {
 										<PatternPreview
 											key={ patternName }
 											url={
-												siteUrl +
-												'?pm_pattern_preview=' +
-												patternData.path
+												appUrl +
+												'?pattern_path=' +
+												patternData.path + 
+												'&theme_path=' + themePath
 											}
 											viewportWidth={
 												patternData.viewportWidth ||

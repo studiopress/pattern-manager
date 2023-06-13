@@ -36,17 +36,17 @@ function get_app_state() {
 		];
 	} else {
 		foreach( $local_sites as $local_site_key => $local_site_data ) {
-			$theme_directories = \PatternManager\PatternDataHandlers\get_sites_theme_paths($local_site_data['path']);
-			if( ! isset( $theme_directories[0] ) ) {
+			$theme_paths = \PatternManager\PatternDataHandlers\get_sites_theme_paths($local_site_data['path']);
+			if( ! isset( $theme_paths[0] ) ) {
 				continue;
 			}
 			
 			
 			$local_sites_initial_state[$local_site_key] = [
 				'localWpData'              => $local_site_data,
-				'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links( $theme_directories[0] . '/patterns/' ),
+				'themePath'                => $theme_paths[0],
+				'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links( $theme_paths[0] . '/patterns/' ),
 				'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
-				'siteUrl'                  => 'http://localhost:' . $local_site_data['services']['php']['ports']['cgi'][0], //$local_site_data['domain'],
 				'adminUrl'                 => admin_url(),
 			];
 		}

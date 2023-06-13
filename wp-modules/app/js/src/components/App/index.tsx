@@ -57,7 +57,7 @@ function SiteApp({siteKey, visible}) {
 
 	const providerValue: SiteContext = {
 		adminUrl:patternManager.sites[siteKey].localWpData.domain + '/wp-admin/',
-		siteUrl:patternManager.sites[siteKey].localWpData.domain,
+		themePath:patternManager.sites[siteKey].themePath,
 		patterns:patterns,
 		patternCategories: patternManager.sites[siteKey].patternCategories,
 		localWpData: patternManager.sites[siteKey].localWpData
@@ -76,7 +76,8 @@ function SiteApp({siteKey, visible}) {
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.sites[siteKey].patternCategories }
 				patterns={ patterns.data }
-				siteUrl={ patternManager.appUrl }
+				themePath={ patternManager.sites[siteKey].themePath }
+				appUrl={patternManager.appUrl}
 			/>
 		</PatternManagerContext.Provider>
 	);

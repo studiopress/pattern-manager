@@ -24,7 +24,8 @@ export default function Patterns( {
 	PatternActions,
 	patternCategories,
 	patterns,
-	siteUrl,
+	themePath,
+	appUrl,
 	visible,
 }: PatternsProps ) {
 	const [ currentCategory, setCurrentCategory ] = useState( 'all-patterns' );
@@ -112,7 +113,8 @@ export default function Patterns( {
 								onSelectPattern={ onSelectPattern }
 								PatternActions={ PatternActions }
 								patterns={ filteredPatterns }
-								siteUrl={ siteUrl }
+								themePath={ themePath }
+								appUrl={appUrl}
 							/>
 						</div>
 					</div>
