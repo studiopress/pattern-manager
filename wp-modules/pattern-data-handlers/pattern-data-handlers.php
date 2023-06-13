@@ -397,9 +397,9 @@ function tree_shake_theme_images() {
 
 		foreach ( $urls[0] as $url_found ) {
 			if ( strpos( $url_found, $images_url ) === 0 ) {
-				$images_to_keep = array_merge(
+				array_push(
 					$images_to_keep,
-					[ str_replace( $images_url, $images_dir, $url_found ) ]
+					str_replace( $images_url, $images_dir, $url_found )
 				);
 			}
 		}
