@@ -236,13 +236,14 @@ class ModelTest extends WP_UnitTestCase {
 	public function test_images_remain_after_a_pattern_is_renamed() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		do_action( 'init' );
 		$content = get_pattern_by_name( 'a' )['content'];
+		$wp_filesystem = get_wp_filesystem_api();
 
 		// Simulate changing the name of a pattern in the editor.
-		apply_filters(
-			'get_post_metadata', // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		save_metadata_to_pattern_file(
 			null,
-			$this->factory()->post->create_and_get(
+			$this->factory()->post->create(
 				[
 					'post_name' => 'a',
 					'post_type' => get_pattern_post_type(),
@@ -251,8 +252,7 @@ class ModelTest extends WP_UnitTestCase {
 			'name',
 			'b'
 		);
-		do_action(
-			'rest_after_insert_' . get_pattern_post_type(), // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		save_pattern_to_file(
 			$this->factory()->post->create_and_get(
 				[
 					'post_name'    => 'b',
@@ -263,14 +263,22 @@ class ModelTest extends WP_UnitTestCase {
 			)
 		);
 
-		// Make sure the image wasn't deleted.
+		// The image shouldn't have been deleted, as only the pattern name changed.
 		$this->assertTrue(
-			get_wp_filesystem_api()->exists( $this->get_fixtures_directory() . '/patterns/images/cup.jpg' )
+			$wp_filesystem->exists( $this->get_fixtures_directory() . '/patterns/images/cup.jpg' )
 		);
 
+		$previous_pattern_file = get_patterns_directory() . '/a.php';
+
+		// The previous pattern file should have been deleted.
+		$this->assertFalse(
+			$wp_filesystem->exists( $previous_pattern_file )
+		);
+
+		// The pattern should have a new file, as its name is
 		$this->assertSame(
-			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
-			$this->normalize( get_wp_filesystem_api()->get_contents( get_patterns_directory() . '/b.php' ) )
+			$this->normalize( $wp_filesystem->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
+			$this->normalize( $wp_filesystem->get_contents( get_patterns_directory() . '/b.php' ) )
 		);
 	}
 }

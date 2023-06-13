@@ -56,7 +56,6 @@ function save_pattern_to_file( WP_Post $post ) {
 
 	$name    = $post->post_name;
 	$pattern = get_pattern_by_name( $name );
-
 	update_pattern(
 		array_merge(
 			// Only set the slug to the name for new patterns.
