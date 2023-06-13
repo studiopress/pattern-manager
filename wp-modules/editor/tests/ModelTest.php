@@ -269,14 +269,12 @@ class ModelTest extends WP_UnitTestCase {
 			$wp_filesystem->exists( $this->get_fixtures_directory() . '/patterns/images/cup.jpg' )
 		);
 
-		$previous_pattern_file = get_patterns_directory() . '/a.php';
-
 		// The previous pattern file should have been deleted.
 		$this->assertFalse(
-			$wp_filesystem->exists( $previous_pattern_file )
+			$wp_filesystem->exists( get_patterns_directory() . '/a.php' )
 		);
 
-		// The pattern should have a new file, as its name is
+		// The pattern should have a new file, as its name changed.
 		$this->assertSame(
 			$this->normalize( $wp_filesystem->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
 			$this->normalize( $wp_filesystem->get_contents( get_patterns_directory() . '/b.php' ) )
