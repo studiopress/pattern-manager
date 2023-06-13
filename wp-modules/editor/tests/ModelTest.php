@@ -41,7 +41,7 @@ class ModelTest extends WP_UnitTestCase {
 			true
 		);
 		get_wp_filesystem_api()->delete(
-			$this->get_fixtures_directory . '/patterns/b.php'
+			$this->get_fixtures_directory() . '/patterns/b.php'
 		);
 		parent::tearDown();
 	}
@@ -264,7 +264,7 @@ class ModelTest extends WP_UnitTestCase {
 
 		// Make sure the image wasn't deleted (the php tag remains around the img src).
 		$this->assertSame(
-			$this->normalize( get_wp_filesystem_api()->get_contents( get_fixtures_directory() . '/expected/b.php' ) ),
+			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
 			$this->normalize( get_wp_filesystem_api()->get_contents( get_patterns_directory() . '/b.php' ) )
 		);
 	}
