@@ -10,7 +10,6 @@ namespace PatternManager\PatternDataHandlers;
 use WP_UnitTestCase;
 
 require_once dirname( __DIR__ ) . '/pattern-data-handlers.php';
-require_once __DIR__ . '/fixtures/WpFilesystemSpy.php';
 
 /**
  * Test the pattern functions.
@@ -50,11 +49,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	public function get_stylesheet_directory_uri() {
 		return 'https://example.com/wp-content/themes/foo';
 	}
-
-	/**
-	 * Gets a stub for copy_dir.
-	 */
-	public function copy_dir_stub( string $source, string $destination ) {}
 
 	/**
 	 * Normalizes in order to compare in tests.
@@ -219,19 +213,16 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * Test tree_shake_theme_images.
 	 */
 	public function test_tree_shake_theme_images() {
-		$wp_filesystem = new WpFilesystemSpy();
+		tree_shake_theme_images();
 
-		tree_shake_theme_images(
-			$wp_filesystem,
-			[ $this, 'copy_dir_stub' ]
-		);
-
-		// Tree shaking should only keep (copy) the used image.
+		// Tree shaking should only keep the used image.
 		$this->assertSame(
 			[
 				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
 			],
-			$wp_filesystem->get_copied()
+			glob(
+				$this->get_fixtures_directory() . '/patterns/images/*.jpg',
+			)
 		);
 	}
 }

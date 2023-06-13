@@ -81,7 +81,7 @@ function save_pattern_to_file( WP_Post $post ) {
 		]
 	);
 
-	tree_shake_theme_images( get_wp_filesystem_api(), 'copy_dir' );
+	tree_shake_theme_images();
 }
 add_action( 'rest_after_insert_' . get_pattern_post_type(), __NAMESPACE__ . '\save_pattern_to_file' );
 

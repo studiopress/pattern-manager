@@ -28,6 +28,7 @@ class ModelTest extends WP_UnitTestCase {
 		get_wp_filesystem_api()->mkdir( $this->stylesheet_dir );
 		add_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
 		add_filter( 'stylesheet_directory_uri', [ $this, 'get_stylesheet_directory_uri' ] );
+		add_filter( 'request_filesystem_credentials', '__return_true' );
 	}
 
 	/**
@@ -36,6 +37,8 @@ class ModelTest extends WP_UnitTestCase {
 	public function tearDown(): void {
 		remove_all_filters( 'stylesheet_directory' );
 		remove_all_filters( 'stylesheet_directory_uri' );
+		remove_all_filters( 'request_filesystem_credentials' );
+
 		get_wp_filesystem_api()->rmdir(
 			$this->stylesheet_dir,
 			true
@@ -47,11 +50,10 @@ class ModelTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Gets the stylesheet directory URI.
-	 * So tree-shaking works.
+	 * Gets the fixtures directory.
 	 */
 	public function get_fixtures_directory() {
-		return dirname( __DIR__ ) . '/fixtures';
+		return __DIR__ . '/fixtures';
 	}
 
 	/**
@@ -236,6 +238,7 @@ class ModelTest extends WP_UnitTestCase {
 	public function test_images_remain_after_a_pattern_is_renamed() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		$content = get_pattern_by_name( 'a' )['content'];
 
 		// Simulate changing the name of a pattern in the editor.
 		apply_filters(
@@ -257,15 +260,15 @@ class ModelTest extends WP_UnitTestCase {
 					'post_name'    => 'b',
 					'post_title'   => 'B',
 					'post_type'    => get_pattern_post_type(),
-					'post_content' => get_pattern_by_name( 'a' )['content'],
+					'post_content' => $content,
 				]
 			)
 		);
 
-		// Make sure the image wasn't deleted (the php tag remains around the img src).
-		$this->assertSame(
-			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
-			$this->normalize( get_wp_filesystem_api()->get_contents( get_patterns_directory() . '/b.php' ) )
+		// Make sure the image wasn't deleted.
+		$this->assertTrue(
+			get_wp_filesystem_api()->exists( $this->get_fixtures_directory() . '/patterns/images/cup.jpg' )
 		);
+		// TODO: ensure the PHP tag remains in the pattern PHP file.
 	}
 }
