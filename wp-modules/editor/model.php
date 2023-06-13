@@ -130,7 +130,12 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 
 	$slug = prepend_textdomain( $name_changed ? $meta_value : $pattern_name );
 
-	$pattern_updated = update_pattern(
+	if ( $name_changed ) {
+		delete_pattern( $pattern_name );
+		update_pattern_slugs( $pattern['slug'], $slug );
+	}
+
+	return update_pattern(
 		array_merge(
 			get_pattern_defaults(),
 			$pattern ? $pattern : [
@@ -144,16 +149,6 @@ function save_metadata_to_pattern_file( $override, $post_id, $meta_key, $meta_va
 			]
 		)
 	);
-
-	if ( $name_changed ) {
-		// Note that the order of this is important.
-		// The delete_pattern call must come after the update_pattern call above,
-		// or the assets won't be found when calling update_pattern, because they were deleted.
-		delete_pattern( $pattern_name );
-		update_pattern_slugs( $pattern['slug'], $slug );
-	}
-
-	return $pattern_updated;
 }
 add_filter( 'update_post_metadata', __NAMESPACE__ . '\save_metadata_to_pattern_file', 10, 4 );
 

@@ -108,6 +108,7 @@ function get_pattern_names() {
  */
 function delete_pattern( $request ) {
 	$is_success = \PatternManager\PatternDataHandlers\delete_pattern( $request->get_params()['patternName'] );
+	tree_shake_theme_images();
 
 	return $is_success
 		? new WP_REST_Response(

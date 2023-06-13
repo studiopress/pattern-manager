@@ -324,10 +324,7 @@ function update_pattern( $pattern ) {
 function delete_pattern( string $pattern_name ): bool {
 	$wp_filesystem = get_wp_filesystem_api();
 	$pattern_path  = get_pattern_path( $pattern_name );
-	$result        = $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
-	tree_shake_theme_images();
-
-	return $result;
+	return $wp_filesystem && $wp_filesystem->exists( $pattern_path ) && $wp_filesystem->delete( $pattern_path );
 }
 
 /**
