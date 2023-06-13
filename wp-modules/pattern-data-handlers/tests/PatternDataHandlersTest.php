@@ -21,7 +21,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function setUp() : void {
 		parent::setUp();
-		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		add_filter( 'stylesheet_directory_uri', [ $this, 'get_stylesheet_directory_uri' ] );
 	}
@@ -30,7 +29,6 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 * @inheritDoc
 	 */
 	public function tearDown() : void {
-		remove_filter( 'request_filesystem_credentials', '__return_true' );
 		remove_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		remove_filter( 'stylesheet_directory_uri', [ $this, 'get_stylesheet_directory_uri' ] );
 		parent::tearDown();

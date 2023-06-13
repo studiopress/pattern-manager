@@ -28,7 +28,6 @@ class ModelTest extends WP_UnitTestCase {
 		get_wp_filesystem_api()->mkdir( $this->stylesheet_dir );
 		add_filter( 'stylesheet_directory', [ $this, 'get_stylesheet_dir' ] );
 		add_filter( 'stylesheet_directory_uri', [ $this, 'get_stylesheet_directory_uri' ] );
-		add_filter( 'request_filesystem_credentials', '__return_true' );
 	}
 
 	/**
@@ -37,7 +36,6 @@ class ModelTest extends WP_UnitTestCase {
 	public function tearDown(): void {
 		remove_all_filters( 'stylesheet_directory' );
 		remove_all_filters( 'stylesheet_directory_uri' );
-		remove_all_filters( 'request_filesystem_credentials' );
 
 		get_wp_filesystem_api()->rmdir(
 			$this->stylesheet_dir,
