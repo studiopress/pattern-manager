@@ -3,21 +3,42 @@ import versionControl from './hooks/useVersionControl';
 
 export type PatternManagerViews = 'theme_patterns' | 'pattern_editor';
 
-export type InitialContext = {
+export type SiteContext = {
+	adminUrl: string;
+	patternCategories: QueriedCategories;
 	patterns: ReturnType< typeof usePatterns >;
+	siteUrl: string;
+	localWpData: {
+		name: string;
+		path: string;
+		domain: string;
+		id: string;
+		localVersion: string;
+	};
+};
+export type Site = {
+	adminUrl: string;
+	patternCategories: QueriedCategories;
+	patterns: Patterns;
+	siteUrl: string;
+	localWpData: {
+		name: string;
+		path: string;
+		domain: string;
+		id: string;
+		localVersion: string;
+	};
 };
 
 export type InitialPatternManager = {
-	adminUrl: string;
+	appUrl: string;
 	apiEndpoints: {
 		deletePatternEndpoint: string;
 		updateDismissedThemesEndpoint: string;
 	};
 	apiNonce: string;
-	patternCategories: QueriedCategories;
-	patterns: Patterns;
-	siteUrl: string;
 	showVersionControlNotice: boolean;
+	sites: { [ key: string ]: Site };
 };
 
 export type Pattern = {
@@ -26,6 +47,7 @@ export type Pattern = {
 	name: string;
 	slug: string;
 	title: string;
+	path: string;
 	blockTypes?: string[];
 	categories?: string[];
 	description?: string;
@@ -42,10 +64,11 @@ export type Patterns = {
 export type PatternsProps = {
 	patterns: Patterns;
 	onSelectPattern?: ( pattern: Pattern ) => void;
-	patternCategories: InitialPatternManager[ 'patternCategories' ];
+	patternCategories: Site[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
 	siteUrl: string;
 	Notice?: JSX.Element;
+	visible: boolean;
 };
 
 export type QueriedCategories = {

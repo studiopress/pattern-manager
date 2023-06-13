@@ -4,10 +4,12 @@
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
 
+// Hooks
+import usePmContext from '../../hooks/usePmContext';
+
 /**
  * Internal dependencies
  */
-import { patternManager } from '../../globals';
 import wpeLogoDefaultCropped from '../../../../img/WPE-LOGO-S-Default-Cropped.svg';
 
 export default function Header() {
@@ -27,7 +29,7 @@ export default function Header() {
 			<div className="header-container-inner">
 				<Button
 					variant="primary"
-					href={ `${ patternManager.siteUrl }/wp-admin/post-new.php?post_type=pm_pattern` }
+					href={ `/wp-admin/post-new.php?post_type=pm_pattern` }
 				>
 					{ __( 'Create New Pattern', 'pattern-manager' ) }
 				</Button>

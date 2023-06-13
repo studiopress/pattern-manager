@@ -26,9 +26,9 @@ function display_block_pattern_preview() {
 		return;
 	}
 
-	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$path = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
+	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_path( $path );
 
 	if ( ! isset( $pattern['content'] ) ) {
 		$pattern['content'] = '';

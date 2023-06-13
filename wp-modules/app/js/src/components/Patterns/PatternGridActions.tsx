@@ -16,7 +16,7 @@ type Props = {
 
 /** Render the pattern action buttons. */
 export default function PatternGridActions( { patternData }: Props ) {
-	const { patterns } = usePmContext();
+	const { patterns, siteUrl } = usePmContext();
 	return (
 		<div className="item-actions">
 			<div className="item-actions-inside">
@@ -46,7 +46,7 @@ export default function PatternGridActions( { patternData }: Props ) {
 						__( 'Duplicate %1$s', 'pattern-manager' ),
 						patternData.title
 					) }
-					href={ `${ patternManager.siteUrl }/wp-admin/admin.php?post_type=pm_pattern&action=duplicate&name=${ patternData.name }` }
+					href={ `${ siteUrl }/wp-admin/admin.php?post_type=pm_pattern&action=duplicate&name=${ patternData.name }` }
 				>
 					<Icon
 						className="item-action-icon"

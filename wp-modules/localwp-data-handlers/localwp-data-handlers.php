@@ -37,6 +37,13 @@ function get_localwp_sites() {
 	}
 
 	$sites = json_decode( $wp_filesystem->get_contents( $path_to_sites_json ), true );
+	
+	// Replace any paths that start with a ~ to use the path to home.
+	foreach( $sites as $key => $site_data ) {
+		if ( str_starts_with( $site_data['path'], '~' ) ) {
+			$sites[$key]['path'] = str_replace( '~', get_path_to_home_on_mac(), $site_data['path'] );
+		}
+	}
 
 	return $sites;
 }
@@ -152,4 +159,17 @@ function get_user_data() {
 	}
 
 	return $user_profiles[0];
+}
+
+
+function get_path_to_home_on_mac() {
+	$path_to_home_parts = explode( '/', getcwd() );
+	
+	if ( ! isset( $path_to_home_parts[1] ) || ! isset( $path_to_home_parts[2] ) ) {
+		return false;
+	}
+
+	$path_to_home = '/' . $path_to_home_parts[1] . '/' . $path_to_home_parts[2];
+	
+	return $path_to_home;
 }

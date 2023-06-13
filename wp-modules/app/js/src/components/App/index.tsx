@@ -6,6 +6,7 @@ import loadable from '@loadable/component';
 
 // WP dependencies
 import { __ } from '@wordpress/i18n';
+import {useState} from '@wordpress/element';
 
 // Globals
 import { patternManager } from '../../globals';
@@ -19,6 +20,7 @@ import useVersionControl from '../../hooks/useVersionControl';
 
 // Components
 import Header from '../Header';
+import SiteNavigation from '../SiteNavigation';
 import Patterns from '../Patterns';
 const PatternGridActions: PatternGridActionsType = loadable(
 	async () => import( '../Patterns/PatternGridActions' )
@@ -26,23 +28,45 @@ const PatternGridActions: PatternGridActionsType = loadable(
 import VersionControlNotice from '../VersionControlNotice';
 
 // Types
-import type { InitialContext } from '../../types';
+import type { SiteContext } from '../../types';
 import { PatternGridActionsType } from '../Patterns/PatternGridActions';
 
 export default function App() {
-	const patterns = usePatterns( patternManager.patterns );
+	const [currentTab, setCurrentTab] = useState(Object.keys( patternManager.sites )[0]);
+	return <div>
+		<Header />
+		<div className="pattern-manager-body">
+			<SiteNavigation currentTab={currentTab} setCurrentTab={setCurrentTab} />
+			{ Object.keys( patternManager.sites ).map( ( value, index ) => {
+				return <SiteApp
+					key={value}
+					visible={currentTab === value }
+					siteKey={value}
+				/>
+			})}
+		</div>
+	</div>
+}
+
+function SiteApp({siteKey, visible}) {
+
+	const patterns = usePatterns( patternManager.sites[siteKey].patterns );
 	const versionControl = useVersionControl(
 		Boolean( patternManager.showVersionControlNotice )
 	);
 
-	const providerValue: InitialContext = {
-		patterns,
+	const providerValue: SiteContext = {
+		adminUrl:patternManager.sites[siteKey].localWpData.domain + '/wp-admin/',
+		siteUrl:patternManager.sites[siteKey].localWpData.domain,
+		patterns:patterns,
+		patternCategories: patternManager.sites[siteKey].patternCategories,
+		localWpData: patternManager.sites[siteKey].localWpData
 	};
 
 	return (
 		<PatternManagerContext.Provider value={ providerValue }>
-			<Header />
 			<Patterns
+				visible={visible}
 				Notice={
 					<VersionControlNotice
 						isVisible={ versionControl.displayNotice }
@@ -50,9 +74,9 @@ export default function App() {
 					/>
 				}
 				PatternActions={ PatternGridActions }
-				patternCategories={ patternManager.patternCategories }
+				patternCategories={ patternManager.sites[siteKey].patternCategories }
 				patterns={ patterns.data }
-				siteUrl={ patternManager.siteUrl }
+				siteUrl={ patternManager.appUrl }
 			/>
 		</PatternManagerContext.Provider>
 	);
