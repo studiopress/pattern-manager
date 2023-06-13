@@ -236,8 +236,9 @@ class ModelTest extends WP_UnitTestCase {
 	public function test_images_remain_after_a_pattern_is_renamed() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
-		do_action( 'init' );
-		$content = get_pattern_by_name( 'a' )['content'];
+		do_action( 'init' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		$content       = get_pattern_by_name( 'a' )['content'];
 		$wp_filesystem = get_wp_filesystem_api();
 
 		// Simulate changing the name of a pattern in the editor.
