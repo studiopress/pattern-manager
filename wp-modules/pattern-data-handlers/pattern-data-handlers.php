@@ -458,6 +458,16 @@ function move_block_images_to_theme( $pattern_html ) {
 			)
 		);
 
+		// Remove any URL query vars from the filename.
+		$url_parts = explode( '?', $url_found );
+		$filename  = basename( $url_parts[0] );
+
+		if ( 0 === strpos( $url_found, get_stylesheet_directory_uri() . '/patterns/images' ) ) {
+			// The image is already in the theme.
+			$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/$filename", $pattern_html );
+			continue;
+		}
+
 		$response = wp_remote_retrieve_response_code( $url_details );
 
 		// Skip images that could not be found by their URL.
@@ -473,10 +483,6 @@ function move_block_images_to_theme( $pattern_html ) {
 		}
 
 		$file_contents = wp_remote_retrieve_body( $url_details );
-
-		// Remove any URL query vars from the filename.
-		$url_parts = explode( '?', $url_found );
-		$filename  = basename( $url_parts[0] );
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(

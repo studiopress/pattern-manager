@@ -269,6 +269,10 @@ class ModelTest extends WP_UnitTestCase {
 		$this->assertTrue(
 			get_wp_filesystem_api()->exists( $this->get_fixtures_directory() . '/patterns/images/cup.jpg' )
 		);
-		// TODO: ensure the PHP tag remains in the pattern PHP file.
+
+		$this->assertSame(
+			$this->normalize( get_wp_filesystem_api()->get_contents( $this->get_fixtures_directory() . '/expected/b.php' ) ),
+			$this->normalize( get_wp_filesystem_api()->get_contents( get_patterns_directory() . '/b.php' ) )
+		);
 	}
 }
