@@ -15,6 +15,8 @@ use WP_REST_Request;
 use WP_REST_Response;
 use function \PatternManager\GetVersionControl\get_dismissed_themes;
 use function \PatternManager\GetVersionControl\get_version_control_meta_key;
+use function \PatternManager\GetWpFilesystem\get_wp_filesystem_api;
+use function PatternManager\PatternDataHandlers\tree_shake_theme_images;
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -108,6 +110,7 @@ function get_pattern_names() {
  */
 function delete_pattern( $request ) {
 	$is_success = \PatternManager\PatternDataHandlers\delete_pattern( $request->get_params()['patternName'] );
+	tree_shake_theme_images( get_wp_filesystem_api(), 'copy_dir' );
 
 	return $is_success
 		? new WP_REST_Response(

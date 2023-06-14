@@ -9,6 +9,7 @@ import {
 	Panel,
 	PanelBody,
 	Placeholder,
+	Tooltip,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { Icon, image, lock } from '@wordpress/icons';
@@ -120,34 +121,36 @@ export default function PatternEdit( {
 							{ __( 'Replace Pattern', 'pattern-manager' ) }
 						</Button>
 					</BlockControls>
-					<div
-						style={ {
-							right: '10px',
-							top: '10px',
-							position: 'absolute',
-							height: '35px',
-							width: '35px',
-							background: '#fff',
-							zIndex: '20',
-							borderRadius: '500px',
-							display: 'flex',
-							gap: '10px',
-							alignItems: 'center',
-							fontFamily:
-								'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
-							fontSize: '16px',
-							padding: '5px',
-							border: 'solid 1px rgba(0,0,0,.1)',
-							boxSizing: 'border-box',
-						} }
-					>
-						<Icon
-							icon={ lock }
+					<Tooltip text="Patterns shown within the Pattern Block are locked.">
+						<div
 							style={ {
-								width: '25px',
+								right: '10px',
+								top: '10px',
+								position: 'absolute',
+								height: '35px',
+								width: '35px',
+								background: '#fff',
+								zIndex: '20',
+								borderRadius: '500px',
+								display: 'flex',
+								gap: '10px',
+								alignItems: 'center',
+								fontFamily:
+									'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+								fontSize: '16px',
+								padding: '5px',
+								border: 'solid 1px rgba(0,0,0,.1)',
+								boxSizing: 'border-box',
 							} }
-						/>
-					</div>
+						>
+							<Icon
+								icon={ lock }
+								style={ {
+									width: '25px',
+								} }
+							/>
+						</div>
+					</Tooltip>
 					<ServerSideRender
 						block="core/pattern"
 						className="pm-pattern-container"
