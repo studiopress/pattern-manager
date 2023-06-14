@@ -18,6 +18,43 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+function install_pm_body_on_localwp_site( $site_path ) {
+	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
+
+	$site_wp_content_path = trailingslashit( $site_path . '/wp-content/' );
+
+	// Copy Pattern Manager plugin into the site's plugins directory, and activate it.
+	if ( ! $wp_filesystem->exists( $site_wp_content_path . '/mu-plugins/pattern-manager-body/' ) ) {
+		// Make sure the mu-plugins directory exists on this site.
+		if ( ! $wp_filesystem->exists( $site_wp_content_path . '/mu-plugins/' ) ) {
+			$wp_filesystem->mkdir( $site_wp_content_path . '/mu-plugins/' );
+			
+		}
+		// Create a plugin called pattern-manager-body in the mu plugins directory on this site.
+		if ( ! $wp_filesystem->exists( $site_wp_content_path . '/mu-plugins/pattern-manager-body/' ) ) {
+			
+			
+			$wp_filesystem->mkdir( $site_wp_content_path . 'mu-plugins/pattern-manager-body/' );
+			
+			// Copy the main pattern-manager.php file into our new plugin.
+			$wp_filesystem->copy( dirname( dirname( dirname( __FILE__ ) ) ) . '/pattern-manager-body.php', $site_wp_content_path . 'mu-plugins/pattern-manager-body.php' );
+			
+			// Make a wp-modules directory in this plugin.
+			$wp_filesystem->mkdir( $site_wp_content_path . 'mu-plugins/pattern-manager-body/wp-modules/' );
+		}
+
+		// Copy the modules we want into this plugin on this site.
+		$wp_modules_dir = dirname( dirname( __FILE__ ) );
+
+		$wp_filesystem->mkdir( $site_wp_content_path . '/mu-plugins/pattern-manager-body/wp-modules/pattern-data-handlers' );
+		copy_dir( $wp_modules_dir . '/pattern-data-handlers', $site_wp_content_path . 'mu-plugins/pattern-manager-body/wp-modules/pattern-data-handlers' );
+		$wp_filesystem->mkdir( $site_wp_content_path . '/mu-plugins/pattern-manager-body/wp-modules/pattern-preview-renderer' );
+		copy_dir( $wp_modules_dir . '/pattern-preview-renderer', $site_wp_content_path . 'mu-plugins/pattern-manager-body/wp-modules/pattern-preview-renderer' );
+		$wp_filesystem->mkdir( $site_wp_content_path . '/mu-plugins/pattern-manager-body/wp-modules/get-wp-filesystem' );
+		copy_dir( $wp_modules_dir . '/get-wp-filesystem', $site_wp_content_path . 'mu-plugins/pattern-manager-body/wp-modules/get-wp-filesystem' );
+	}
+}
+
 /**
  * Get the values needed to render/hydrate the app.
  */
@@ -41,6 +78,15 @@ function get_app_state() {
 				continue;
 			}
 			
+			if(
+				! str_contains( $theme_paths[0], 'timothy' ) &&
+				! str_contains( $theme_paths[0], 'mechanic' )
+			) {
+				continue;
+			}
+			
+			// Install a minified version of PM on this site.
+			install_pm_body_on_localwp_site( $local_site_data['path'] . '/app/public/' );
 			
 			$local_sites_initial_state[$local_site_key] = [
 				'localWpData'              => $local_site_data,
@@ -126,3 +172,21 @@ function hide_admin_notices() {
 	}
 }
 add_action( 'admin_head', __NAMESPACE__ . '\hide_admin_notices', 1 );
+
+function takeover() {
+	if ( ! isset( $_GET['pm_takeover'] ) ) {
+		return;
+	}
+
+	\wp_head();
+	?>
+	<style>
+		.pattern-manager-header-container{top:0!important;}
+	</style>
+	<?php
+	pattern_manager_app();
+	\wp_footer();
+	die();
+	
+}
+add_action('init', __NAMESPACE__ . '\takeover' );

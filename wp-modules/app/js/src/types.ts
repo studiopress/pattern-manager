@@ -66,7 +66,7 @@ export type PatternsProps = {
 	onSelectPattern?: ( pattern: Pattern ) => void;
 	patternCategories: Site[ 'patternCategories' ];
 	PatternActions?: ( props: { patternData: Pattern } ) => JSX.Element;
-	themePath: string;
+	site: Site;
 	appUrl: string;
 	Notice?: JSX.Element;
 	visible: boolean;

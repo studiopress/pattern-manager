@@ -16,11 +16,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function kjhsdgkhsg() {
-	global $wp_theme_directories;
-	register_theme_directory( WP_CONTENT_DIR . '/pm-theme-previews/' );
+/**
+ * Receive pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
+ */
+function display_block_pattern_preview_from_site() {
+	
+	// Nonce not required as the user is not taking any action here.
+	if ( ! isset( $_GET['pattern_name'] ) || ! isset( $_GET['site_key'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return;
+	}
+
+	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pattern_name'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$site_key  = sanitize_text_field( wp_unslash( $_GET['site_key'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	
+	$local_sites = \PatternManager\LocalWpDataHandlers\get_localwp_sites();
+	
+	$site_port = $local_sites[ $site_key ]['services']['nginx']['ports']['HTTP'][0];
+	$localhost_url = 'http://localhost:' . $site_port . '/';
+	
+	$response = wp_remote_retrieve_body(wp_remote_post( add_query_arg( ['pm_pattern_preview' => $pattern_name], $localhost_url ) ) );
+	
+	echo $response;
+	die();
 }
-add_action( 'init', __NAMESPACE__ . '\kjhsdgkhsg' );
+add_action( 'init', __NAMESPACE__ . '\display_block_pattern_preview_from_site' );
 
 /**
  * Receive pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
@@ -28,38 +47,17 @@ add_action( 'init', __NAMESPACE__ . '\kjhsdgkhsg' );
 function display_block_pattern_preview() {
 
 	// Nonce not required as the user is not taking any action here.
-	if ( ! isset( $_GET['pattern_path'] ) || ! isset( $_GET['theme_path'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! isset( $_GET['pm_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		return;
 	}
 
-	$theme_path = sanitize_text_field( wp_unslash( $_GET['theme_path'] ) );
-	$pattern_path = sanitize_text_field( wp_unslash( $_GET['pattern_path'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
-	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_path( $pattern_path );
+	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
 
 	if ( ! isset( $pattern['content'] ) ) {
 		$pattern['content'] = '';
 	}
-
-	// Pull in the theme from the site and activate it.
-	$wp_filesystem = \PatternManager\GetWpFilesystem\get_wp_filesystem_api();
-
-	// Make a temporary directory for this theme in wp-content.
-	if ( ! $wp_filesystem->exists( WP_CONTENT_DIR . '/pm-theme-previews' ) ) {
-		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/pm-theme-previews' );
-	}
-	
-	if ( ! $wp_filesystem->exists( WP_CONTENT_DIR . '/pm-theme-previews/' . basename( $theme_path ) ) ) {
-		$wp_filesystem->mkdir( WP_CONTENT_DIR . '/pm-theme-previews/' . basename( $theme_path ) );
-	}
-	
-	// Temporarily rename the themes directory on this site so no duplicate themes get confused.
-	$wp_filesystem->move( WP_CONTENT_DIR . '/themes/', WP_CONTENT_DIR . '/themesX/' );
-	$wp_filesystem->mkdir( WP_CONTENT_DIR . '/themes' );
-
-	copy_dir( $theme_path, WP_CONTENT_DIR . '/pm-theme-previews/' . basename( $theme_path ) );
-
-	switch_theme( basename( $theme_path ) );
 
 	// Mock a post object with the pattern content as the body.
 	mock_pattern_preview_post_object( $pattern['content'] );

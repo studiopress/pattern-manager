@@ -21,7 +21,7 @@ import type { PatternPreviewType } from '../PatternPreview';
 
 type Props = Pick< PatternsProps, 'onSelectPattern' | 'PatternActions' > & {
 	patterns: Patterns;
-	themePath: string;
+	site: Site;
 	appUrl:string;
 };
 
@@ -30,7 +30,7 @@ export default function PatternGrid( {
 	onSelectPattern,
 	PatternActions,
 	patterns,
-	themePath,
+	site,
 	appUrl,
 }: Props ) {
 	useForceRerender( [ patterns ] );
@@ -63,9 +63,9 @@ export default function PatternGrid( {
 											key={ patternName }
 											url={
 												appUrl +
-												'?pattern_path=' +
-												patternData.path + 
-												'&theme_path=' + themePath
+												'?pattern_name=' +
+												patternData.name + 
+												'&site_key=' + site.localWpData.id
 											}
 											viewportWidth={
 												patternData.viewportWidth ||

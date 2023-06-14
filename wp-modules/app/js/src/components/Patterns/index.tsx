@@ -24,7 +24,7 @@ export default function Patterns( {
 	PatternActions,
 	patternCategories,
 	patterns,
-	themePath,
+	site,
 	appUrl,
 	visible,
 }: PatternsProps ) {
@@ -113,7 +113,7 @@ export default function Patterns( {
 								onSelectPattern={ onSelectPattern }
 								PatternActions={ PatternActions }
 								patterns={ filteredPatterns }
-								themePath={ themePath }
+								site={ site }
 								appUrl={appUrl}
 							/>
 						</div>

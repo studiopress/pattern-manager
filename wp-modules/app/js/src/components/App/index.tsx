@@ -76,7 +76,7 @@ function SiteApp({siteKey, visible}) {
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.sites[siteKey].patternCategories }
 				patterns={ patterns.data }
-				themePath={ patternManager.sites[siteKey].themePath }
+				site={patternManager.sites[siteKey]}
 				appUrl={patternManager.appUrl}
 			/>
 		</PatternManagerContext.Provider>
