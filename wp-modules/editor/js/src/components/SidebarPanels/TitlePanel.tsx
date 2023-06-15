@@ -48,10 +48,7 @@ export default function TitlePanel( {
 				value={ title }
 				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
-					handleChange(
-						'name',
-						toKebabCase( stripIllegalChars( newTitle ) )
-					);
+					handleChange( 'name', toKebabCase( stripIllegalChars( newTitle ) ) );
 
 					if ( ! newTitle ) {
 						lockPostSaving();
