@@ -80,6 +80,9 @@ export default function CategoriesPanel( {
 							!! checkIllegalChars( event )
 						);
 					} }
+					formatCreateLabel={ ( userInput ) =>
+						`Create "${ stripIllegalChars( userInput ) }"`
+					}
 					menuPlacement="auto"
 					styles={ {
 						menu: ( base ) => ( {
