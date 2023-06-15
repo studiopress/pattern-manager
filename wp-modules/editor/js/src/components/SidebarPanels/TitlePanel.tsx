@@ -6,7 +6,6 @@ import { PanelRow, TextControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 
 import toKebabCase from '../../utils/toKebabCase';
-import stripIllegalChars from '../../utils/stripIllegalChars';
 
 import type { AdditionalSidebarProps, BaseSidebarProps } from './types';
 import type { Pattern } from '../../types';
@@ -16,7 +15,7 @@ function isTitleTaken(
 	currentName: string,
 	patternNames: Array< Pattern[ 'name' ] >
 ) {
-	const newName = toKebabCase( stripIllegalChars( patternTitle ) );
+	const newName = toKebabCase( patternTitle );
 	return patternNames.includes( newName ) && newName !== currentName;
 }
 
@@ -48,7 +47,7 @@ export default function TitlePanel( {
 				value={ title }
 				onChange={ ( newTitle: typeof title ) => {
 					editPost( { title: newTitle } );
-					handleChange( 'name', toKebabCase( stripIllegalChars( newTitle ) ) );
+					handleChange( 'name', toKebabCase( newTitle ) );
 
 					if ( ! newTitle ) {
 						lockPostSaving();
