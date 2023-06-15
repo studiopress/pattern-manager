@@ -41,7 +41,11 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 		<InspectorControls>
 			<Panel>
 				<PanelBody
-					title={ __( 'Pattern', 'pattern-manager' ) }
+					title={
+						pattern
+							? pattern.title
+							: __( 'Pattern', 'pattern-manager' )
+					}
 					initialOpen={ true }
 				>
 					<p>
