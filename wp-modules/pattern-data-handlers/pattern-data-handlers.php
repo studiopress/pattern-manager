@@ -395,10 +395,11 @@ function create_formatted_category_registrations( $custom_categories ) {
 		"\n",
 		array_map(
 			function ( $category_label ) {
-				$category_name = strtolower( str_replace( ' ', '-', $category_label ) );
+				$slashed_category_label = addslashes( $category_label );
+				$category_name = strtolower( str_replace( ' ', '-', addslashes( $category_label ) ) );
 				$text_domain   = wp_get_theme()->get( 'TextDomain' );
-				$label_arr     = $text_domain ? sprintf( "[ 'label' => __( '%s', '$text_domain' ), 'pm_custom' => true ]", addslashes( $category_label ) ) : sprintf( "[ 'label' => '%s', , 'pm_custom' => true ]", addslashes( $category_label ) );
-				return sprintf( "register_block_pattern_category( '%s', $label_arr );", addslashes( $category_name ) );
+				$label_arr     = $text_domain ? "[ 'label' => __( '$slashed_category_label', '$text_domain' ), 'pm_custom' => true ]" : "[ 'label' => '$slashed_category_label', , 'pm_custom' => true ]";
+				return "register_block_pattern_category( '$category_name', $label_arr );";
 			},
 			$custom_categories,
 		)
