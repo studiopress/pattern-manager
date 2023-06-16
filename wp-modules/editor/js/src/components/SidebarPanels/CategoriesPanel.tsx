@@ -58,16 +58,16 @@ export default function CategoriesPanel( {
 						} );
 					} }
 					onCreateOption={ ( newCategoryTitle ) => {
+						const validatedTitle =
+							stripIllegalChars( newCategoryTitle );
+
 						handleChange(
 							'customCategories',
-							[
-								...customCategories,
-								stripIllegalChars( newCategoryTitle ),
-							],
+							[ ...customCategories, validatedTitle ],
 							{
 								categories: [
 									...categories,
-									toKebabCase( newCategoryTitle ),
+									toKebabCase( validatedTitle ),
 								],
 							}
 						);
