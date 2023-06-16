@@ -3,7 +3,7 @@ import { hasIllegalChars, stripIllegalChars } from '../validateInput';
 const regexPattern = new RegExp( /([^a-z0-9 -]+)/gi );
 
 describe( 'validateInput', () => {
-	describe( 'checkIllegalChars', () => {
+	describe( 'hasIllegalChars', () => {
 		it.each( [
 			[ '', false ],
 			[ 'Nothing to strip', false ],
