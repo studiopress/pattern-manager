@@ -8,10 +8,7 @@ import Creatable from 'react-select/creatable';
 import toKebabCase from '../../utils/toKebabCase';
 import getSelectedOptions from '../../utils/getSelectedOptions';
 import getCustomCategories from '../../utils/getCustomCategories';
-import {
-	checkIllegalChars,
-	stripIllegalChars,
-} from '../../utils/validateInput';
+import { hasIllegalChars, stripIllegalChars } from '../../utils/validateInput';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
@@ -76,9 +73,7 @@ export default function CategoriesPanel( {
 						);
 					} }
 					onInputChange={ ( event ) => {
-						setCategoryTitleIsInvalid(
-							!! checkIllegalChars( event )
-						);
+						setCategoryTitleIsInvalid( hasIllegalChars( event ) );
 					} }
 					formatCreateLabel={ ( userInput ) =>
 						`Create "${ stripIllegalChars( userInput ) }"`

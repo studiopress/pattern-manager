@@ -1,21 +1,16 @@
-import { checkIllegalChars, stripIllegalChars } from '../validateInput';
+import { hasIllegalChars, stripIllegalChars } from '../validateInput';
 
 const regexPattern = new RegExp( /([^a-z0-9 -]+)/gi );
 
 describe( 'validateInput', () => {
 	describe( 'checkIllegalChars', () => {
 		it.each( [
-			[ '', null ],
-			[ 'Nothing to strip', null ],
-			[ 'String with !#@$%^&*() illegal chars', [ '!#@$%^&*()' ] ],
-			[
-				'String !#@$% with ^&*() separated \'"? illegal []{}|/ chars',
-				[ '!#@$%', '^&*()', '\'"?', '[]{}|/' ],
-			],
+			[ '', false ],
+			[ 'Nothing to strip', false ],
+			[ "String that might've been a problem", true ],
+			[ 'String with !#@$% illegal ^&*() chars', true ],
 		] )( 'matches the illegal characters', ( input, expected ) => {
-			expect( checkIllegalChars( input, regexPattern ) ).toEqual(
-				expected
-			);
+			expect( hasIllegalChars( input, regexPattern ) ).toBe( expected );
 		} );
 	} );
 	describe( 'stripIllegalChars', () => {
