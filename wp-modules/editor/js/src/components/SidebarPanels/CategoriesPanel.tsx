@@ -1,4 +1,5 @@
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
 
@@ -7,6 +8,7 @@ import Creatable from 'react-select/creatable';
 import toKebabCase from '../../utils/toKebabCase';
 import getSelectedOptions from '../../utils/getSelectedOptions';
 import getCustomCategories from '../../utils/getCustomCategories';
+import { hasIllegalChars, stripIllegalChars } from '../../utils/validateInput';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
@@ -20,6 +22,9 @@ export default function CategoriesPanel( {
 	handleChange,
 }: BaseSidebarProps< 'categories' | 'customCategories' > &
 	AdditionalSidebarProps< 'categoryOptions' > ) {
+	const [ categoryTitleIsInvalid, setCategoryTitleIsInvalid ] =
+		useState( false );
+
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"
@@ -53,22 +58,40 @@ export default function CategoriesPanel( {
 						} );
 					} }
 					onCreateOption={ ( newCategoryTitle ) => {
+						const validatedTitle =
+							stripIllegalChars( newCategoryTitle );
+
 						handleChange(
 							'customCategories',
-							[ ...customCategories, newCategoryTitle ],
+							[ ...customCategories, validatedTitle ],
 							{
 								categories: [
 									...categories,
-									toKebabCase( newCategoryTitle ),
+									toKebabCase( validatedTitle ),
 								],
 							}
 						);
 					} }
+					onInputChange={ ( event ) => {
+						setCategoryTitleIsInvalid( hasIllegalChars( event ) );
+					} }
+					formatCreateLabel={ ( userInput ) =>
+						`Create "${ stripIllegalChars( userInput ) }"`
+					}
 					menuPlacement="auto"
 					styles={ {
 						menu: ( base ) => ( {
 							...base,
 							zIndex: 100,
+						} ),
+						control: ( baseStyles ) => ( {
+							...baseStyles,
+							borderColor: categoryTitleIsInvalid
+								? 'red !important'
+								: baseStyles.borderColor,
+							boxShadow: categoryTitleIsInvalid
+								? '0 0 0 1px red'
+								: baseStyles.boxShadow,
 						} ),
 					} }
 				/>
