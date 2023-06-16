@@ -3,6 +3,8 @@ import sortAlphabetically from '../utils/sortAlphabetically';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect } from '@wordpress/element';
 import { PostMeta, SelectQuery } from '../types';
+import addNewCategory from '../utils/addNewCategory';
+import { patternManager } from '../globals';
 
 export default function usePatternData( postMeta: PostMeta ) {
 	const { editPost } = useDispatch( 'core/editor' );
@@ -57,18 +59,16 @@ export default function usePatternData( postMeta: PostMeta ) {
 
 	/**
 	 * Alphabetized block pattern categories for the site editor, mapped for react-select.
+	 * Registered and newly added custom categories are included.
+	 * Needed for including new categories before the post is saved.
 	 */
-	const categories = useSelect( ( select: SelectQuery ) => {
-		return sortAlphabetically(
-			select( 'core' )
-				.getBlockPatternCategories()
-				.map( ( category ) => ( {
-					label: category.label,
-					value: category.name,
-				} ) ),
-			'label'
-		);
-	}, [] );
+	const combinedCategories = sortAlphabetically(
+		addNewCategory(
+			patternManager.patternCategories,
+			postMeta.customCategories
+		),
+		'label'
+	);
 
 	/**
 	 * The alphabetized list of transformable block types, mapped for react-select.
@@ -200,7 +200,7 @@ export default function usePatternData( postMeta: PostMeta ) {
 
 	return {
 		queriedBlockTypes: blockTypes,
-		queriedCategories: categories,
+		queriedCategories: combinedCategories,
 		queriedPostTypes: postTypes,
 		updatePostMeta,
 		updatePostMetaMulti,

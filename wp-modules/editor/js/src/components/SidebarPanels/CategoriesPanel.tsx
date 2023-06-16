@@ -1,8 +1,14 @@
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { Spinner } from '@wordpress/components';
-import Select from 'react-select';
 
+import Creatable from 'react-select/creatable';
+
+import toKebabCase from '../../utils/toKebabCase';
+import getSelectedOptions from '../../utils/getSelectedOptions';
+import getCustomCategories from '../../utils/getCustomCategories';
+import { hasIllegalChars, stripIllegalChars } from '../../utils/validateInput';
 import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 
 /**
@@ -12,16 +18,20 @@ import type { BaseSidebarProps, AdditionalSidebarProps } from './types';
 export default function CategoriesPanel( {
 	categories,
 	categoryOptions,
+	customCategories,
 	handleChange,
-}: BaseSidebarProps< 'categories' > &
+}: BaseSidebarProps< 'categories' | 'customCategories' > &
 	AdditionalSidebarProps< 'categoryOptions' > ) {
+	const [ categoryTitleIsInvalid, setCategoryTitleIsInvalid ] =
+		useState( false );
+
 	return (
 		<PluginDocumentSettingPanel
 			name="patternmanager-pattern-editor-pattern-categories"
 			title={ __( 'Pattern Categories', 'pattern-manager' ) }
 		>
 			{ categoryOptions ? (
-				<Select
+				<Creatable
 					isMulti
 					isClearable
 					closeMenuOnSelect={ false }
@@ -29,26 +39,62 @@ export default function CategoriesPanel( {
 						'Add Pattern Categories',
 						'pattern-manager'
 					) }
-					value={ categories?.map( ( category ) =>
-						categoryOptions.find(
-							( matchedCategory ) =>
-								matchedCategory.value === category
-						)
+					value={ getSelectedOptions(
+						categories,
+						categoryOptions,
+						'value'
 					) }
 					options={ categoryOptions }
 					onChange={ ( categorySelections ) => {
-						handleChange(
-							'categories',
-							categorySelections.map(
-								( category ) => category.value
-							)
+						const selections = categorySelections.map(
+							( category ) => category.value
 						);
+
+						handleChange( 'categories', selections, {
+							customCategories: getCustomCategories(
+								selections,
+								categoryOptions
+							),
+						} );
 					} }
+					onCreateOption={ ( newCategoryTitle ) => {
+						const validatedTitle =
+							stripIllegalChars( newCategoryTitle );
+
+						// Prevent empty categories from being temporarily added in the UI list.
+						if ( validatedTitle.length ) {
+							handleChange(
+								'customCategories',
+								[ ...customCategories, validatedTitle ],
+								{
+									categories: [
+										...categories,
+										toKebabCase( validatedTitle ),
+									],
+								}
+							);
+						}
+					} }
+					onInputChange={ ( event ) => {
+						setCategoryTitleIsInvalid( hasIllegalChars( event ) );
+					} }
+					formatCreateLabel={ ( userInput ) =>
+						`Create "${ stripIllegalChars( userInput ) }"`
+					}
 					menuPlacement="auto"
 					styles={ {
 						menu: ( base ) => ( {
 							...base,
 							zIndex: 100,
+						} ),
+						control: ( baseStyles ) => ( {
+							...baseStyles,
+							borderColor: categoryTitleIsInvalid
+								? 'red !important'
+								: baseStyles.borderColor,
+							boxShadow: categoryTitleIsInvalid
+								? '0 0 0 1px red'
+								: baseStyles.boxShadow,
 						} ),
 					} }
 				/>

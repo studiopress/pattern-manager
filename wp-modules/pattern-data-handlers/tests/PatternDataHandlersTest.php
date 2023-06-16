@@ -87,6 +87,34 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Gets the expected custom categories.
+	 */
+	public function get_expected_custom_categories() {
+		return [
+			'First Custom',
+			'Second Custom',
+			'Third Custom',
+		];
+	}
+
+	/**
+	 * Gets the expected custom category header.
+	 */
+	public function get_expected_custom_category_header() {
+		return ' * Custom Categories: First Custom, Second Custom, Third Custom';
+	}
+
+	/**
+	 * Gets the expected custom category registration statements.
+	 */
+	public function get_expected_custom_category_registrations() {
+		return "
+register_block_pattern_category( 'first-custom', [ 'label' => 'First Custom', , 'pm_custom' => true ] );
+register_block_pattern_category( 'second-custom', [ 'label' => 'Second Custom', , 'pm_custom' => true ] );
+register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', , 'pm_custom' => true ] );";
+	}
+
+	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents_empty() {
@@ -105,6 +133,34 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 				)
 			)
 		);
+	}
+
+	/**
+	 * Tests maybe_add_custom_category_header.
+	 */
+	public function test_maybe_add_custom_category_header() {
+		$custom_categories = $this->get_expected_custom_categories();
+
+		$this->assertSame(
+			$this->normalize( $this->get_expected_custom_category_header() ),
+			$this->normalize( maybe_add_custom_category_header( $custom_categories ) ),
+		);
+
+		$this->assertEmpty( maybe_add_custom_category_header( [] ) );
+	}
+
+	/**
+	 * Tests create_formatted_category_registrations.
+	 */
+	public function test_create_formatted_category_registrations() {
+		$custom_categories = $this->get_expected_custom_categories();
+
+		$this->assertSame(
+			$this->normalize( $this->get_expected_custom_category_registrations() ),
+			$this->normalize( create_formatted_category_registrations( $custom_categories ) ),
+		);
+
+		$this->assertEmpty( create_formatted_category_registrations( [] ) );
 	}
 
 	/**
