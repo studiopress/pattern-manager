@@ -61,16 +61,19 @@ export default function CategoriesPanel( {
 						const validatedTitle =
 							stripIllegalChars( newCategoryTitle );
 
-						handleChange(
-							'customCategories',
-							[ ...customCategories, validatedTitle ],
-							{
-								categories: [
-									...categories,
-									toKebabCase( validatedTitle ),
-								],
-							}
-						);
+						// Prevent empty categories from being temporarily added in the UI list.
+						if ( validatedTitle.length ) {
+							handleChange(
+								'customCategories',
+								[ ...customCategories, validatedTitle ],
+								{
+									categories: [
+										...categories,
+										toKebabCase( validatedTitle ),
+									],
+								}
+							);
+						}
 					} }
 					onInputChange={ ( event ) => {
 						setCategoryTitleIsInvalid( hasIllegalChars( event ) );
