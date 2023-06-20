@@ -4,7 +4,7 @@ Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.2
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -55,7 +55,7 @@ Here's an example of how you'd make that "Full Page" pattern:
  * Step 1: In Pattern Manager, click "Create New Pattern".
  * Step 2: Add the "Pattern Block" (note: this block is exclusively available in the Pattern Manager editor).
  * Step 3: Choose a pattern you've already made (like testimonials, features, call-to-actions, etc).
- * Step 4. Once inserted, repeat steps 2-3 until you have a "Full Page" pattern you like. 
+ * Step 4. Once inserted, repeat steps 2-3 until you have a "Full Page" pattern you like.
 
 The best part about using the "Pattern Block" is maintaining your patterns. If you ever need to make a change to a pattern, you can update it in one place and it will be updated anywhere you used the Pattern Block, dynamically.
 
@@ -109,6 +109,9 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 2. Easily assign pattern categories, keywords, descriptions, and more.
 
 ## Changelog
+
+### 0.3.0
+* Allow adding new categories in Editor UI.
 
 ### 0.2.0
 * Add 'Pattern Block' to render a pattern in a pattern.
