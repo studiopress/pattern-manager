@@ -12,7 +12,7 @@ import {
 	Tooltip,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { Icon, image, lock } from '@wordpress/icons';
+import { Icon, layout, lock } from '@wordpress/icons';
 import { __ } from '@wordpress/i18n';
 import ServerSideRender from '@wordpress/server-side-render';
 import { patternManager } from '../../globals';
@@ -48,25 +48,36 @@ function PatternInspector( { pattern }: PatternInspectorProps ) {
 					}
 					initialOpen={ true }
 				>
-					<p>
-						{ __(
-							'This pattern is being used within the Pattern Manager Pattern Block in order to create a multi-pattern layout.',
-							'pattern-manager'
-						) }
-					</p>
-					<p>
-						{ __(
-							'Editing this pattern will update it within all Pattern Manager Pattern Blocks that use it.',
-							'pattern-manager'
-						) }
-					</p>
+					{ pattern ? (
+						<>
+							<p>
+								{ __(
+									'This pattern is being used within the Pattern Manager Pattern Block to create a multi-pattern layout.',
+									'pattern-manager'
+								) }
+							</p>
+							<p>
+								{ __(
+									'Editing this pattern will update it within all Pattern Manager Pattern Blocks that use it.',
+									'pattern-manager'
+								) }
+							</p>
+						</>
+					) : (
+						<p>
+							{ __(
+								'Select a pattern to display in the Pattern Block.',
+								'pattern-manager'
+							) }
+						</p>
+					) }
 					{ pattern ? (
 						<a
 							className="components-button is-secondary"
 							style={ { marginTop: '10px' } }
 							href={ pattern.editorLink }
 						>
-							{ __( 'Edit This Pattern', 'pattern-manager' ) }
+							{ __( 'Edit this Pattern', 'pattern-manager' ) }
 						</a>
 					) : null }
 				</PanelBody>
@@ -166,7 +177,7 @@ export default function PatternEdit( {
 				<div { ...blockProps }>
 					<PatternInspector />
 					<Placeholder
-						icon={ image }
+						icon={ layout }
 						label={ __( 'Pattern Block', 'pattern-manager' ) }
 						instructions={ __(
 							'Build a multi-pattern layout with more than one Pattern Block.',
