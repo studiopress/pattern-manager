@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import PatternEdit from './PatternEdit';
+import { layout } from '@wordpress/icons';
 
 export default function registerPatternBlock(
 	settings: Record< string, unknown >,
@@ -9,7 +10,7 @@ export default function registerPatternBlock(
 		? {
 				...settings,
 				title: __( 'Pattern Block', 'pattern-manager' ),
-				icon: 'text',
+				icon: layout,
 				category: 'common',
 				description: __(
 					'Build a multi-pattern layout with more than one Pattern Block.',
