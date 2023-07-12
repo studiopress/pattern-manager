@@ -9,7 +9,7 @@ type Props = {
 };
 
 /** Display a notice if no version control is detected in the theme. */
-export default function VersionControlNotice( {
+export default function EnvironmentNotice( {
 	isVisible,
 	handleDismiss,
 }: Props ) {
@@ -17,24 +17,24 @@ export default function VersionControlNotice( {
 		<Notice
 			className="patternmanager-notice"
 			isDismissible
-			status="warning"
+			status="info"
 			onRemove={ handleDismiss }
 		>
 			{ createInterpolateElement(
 				__(
-					'No version control detected for this theme. We recommend adding version control so you do not lose your patterns during theme updates. <div></div>Learn how to set up git for your theme in <a></a>.',
+					'A local development environment was not detected. Pattern Manager is not intended for use on a live site. <div></div>Download <a></a>.',
 					'pattern-manager'
 				),
 				{
 					div: <div style={ { marginTop: '1rem' } }></div>,
 					a: (
 						<a
-							href="https://developer.wpengine.com/knowledge-base/using-git-with-a-wordpress-theme/"
+							href="https://localwp.com/?modal=download"
 							target="_blank"
 							rel="noopener noreferrer"
-							aria-label="Link to our Git Guide (opens in new tab)"
+							aria-label="Download Local by WP Engine (opens in new tab)"
 						>
-							{ __( 'our Git Guide', 'pattern-manager' ) }
+							{ __( 'Local by WP Engine', 'pattern-manager' ) }
 							<span className="screen-reader-text">
 								{ __(
 									'(opens in a new tab)',
