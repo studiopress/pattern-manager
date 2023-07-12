@@ -19,7 +19,7 @@ it( 'VersionControlNotice is visible when passed truthy isVisible', () => {
 	expect( testRenderer.toJSON() ).toMatchObject( {
 		props: {
 			className:
-				'patternmanager-version-control-notice components-notice is-warning is-dismissible',
+				'patternmanager-notice components-notice is-warning is-dismissible',
 		},
 		type: 'div',
 	} );

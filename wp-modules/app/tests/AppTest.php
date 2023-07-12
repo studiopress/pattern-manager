@@ -29,6 +29,7 @@ class AppTest extends WP_UnitTestCase {
 				'siteUrl',
 				'adminUrl',
 				'showVersionControlNotice',
+				'showEnvironmentNotice',
 			],
 			array_keys( get_app_state() )
 		);
