@@ -129,20 +129,31 @@ html body.toplevel_page_pattern-manager {
 		}
 	}
 
-	.patternmanager-version-control-notice {
-		margin-left: auto;
-		margin-right: auto;
+	.patternmanager-notice-container {
 		margin-bottom: 3rem;
-		padding-right: 12px;
-		padding-left: 12px;
 
-		.components-notice__content {
-			margin-right: 0;
+		.patternmanager-notice {
+			margin-left: auto;
+			margin-right: auto;
+			padding-right: 12px;
+			padding-left: 12px;
 
-			span {
-				margin-left: 2px;
-				text-decoration: none;
+			.components-notice__content {
+				margin-right: 0;
+	
+				span {
+					margin-left: 2px;
+					text-decoration: none;
+				}
 			}
+		}
+
+		.is-info {
+			background-color: aliceblue;
+		}
+
+		.patternmanager-notice:not(:last-child) {
+			margin-bottom: 2rem;
 		}
 	}
 
