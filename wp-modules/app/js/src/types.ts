@@ -54,7 +54,3 @@ export type QueriedCategories = {
 	label: string;
 	name: string;
 }[];
-
-export type Theme = {
-	name: string;
-};

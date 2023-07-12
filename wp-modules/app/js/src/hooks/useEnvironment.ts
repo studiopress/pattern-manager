@@ -2,17 +2,15 @@ import { useState } from '@wordpress/element';
 import { patternManager } from '../globals';
 import getHeaders from '../utils/getHeaders';
 
-export default function useVersionControl(
-	initialVersionControlNotice: boolean
-) {
+export default function useEnvironment( initialEnvironmentNotice: boolean ) {
 	const [ displayNotice, setDisplayNotice ] = useState(
-		initialVersionControlNotice
+		initialEnvironmentNotice
 	);
 
-	function updateDismissedThemes() {
+	function updateDismissedSites() {
 		setDisplayNotice( false );
 		return fetch(
-			patternManager.apiEndpoints.updateDismissedThemesEndpoint,
+			patternManager.apiEndpoints.updateDismissedSitesEndpoint,
 			{
 				method: 'POST',
 				headers: getHeaders(),
@@ -22,6 +20,6 @@ export default function useVersionControl(
 
 	return {
 		displayNotice,
-		updateDismissedThemes,
+		updateDismissedSites,
 	};
 }
