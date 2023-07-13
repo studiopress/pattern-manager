@@ -19,7 +19,7 @@ it( 'EnvironmentNotice is visible when passed truthy isVisible', () => {
 	expect( testRenderer.toJSON() ).toMatchObject( {
 		props: {
 			className:
-				'patternmanager-notice components-notice is-info is-dismissible',
+				'patternmanager-notice components-notice is-error is-dismissible',
 		},
 		type: 'div',
 	} );
