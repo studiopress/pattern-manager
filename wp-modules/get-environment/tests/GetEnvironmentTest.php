@@ -27,7 +27,7 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 		wp_set_current_user( $this->user_id );
 		update_user_meta( $this->user_id, get_environment_meta_key(), $this->get_mock_dismissed_sites() );
 
-		add_filter( 'wp_get_environment_type', [ $this, 'get_mock_environment_type' ] );
+		add_filter( 'wp_get_environment_type', [ $this, 'wp_get_environment_type' ] );
 	}
 
 	/**
@@ -37,7 +37,7 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 		delete_user_meta( $this->user_id, get_environment_meta_key() );
 		wp_delete_user( $this->user_id );
 
-		remove_filter( 'wp_get_environment_type', [ $this, 'get_mock_environment_type' ] );
+		remove_filter( 'wp_get_environment_type', [ $this, 'wp_get_environment_type' ] );
 
 		parent::tearDown();
 	}
@@ -52,6 +52,13 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 
 	private function get_mock_environment_type() {
 		return 'production';
+	}
+
+	/**
+	 * Override `wp_get_environment_type()` while running tests in this class.
+	 */
+	public function wp_get_environment_type() {
+		return $this->get_mock_environment_type();
 	}
 
 	/**
