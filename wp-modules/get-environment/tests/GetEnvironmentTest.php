@@ -26,8 +26,6 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 		$this->user_id = $this->factory->user->create();
 		wp_set_current_user( $this->user_id );
 		update_user_meta( $this->user_id, get_environment_meta_key(), $this->get_mock_dismissed_sites() );
-
-		add_filter( 'wp_get_environment_type', [ $this, 'wp_get_environment_type' ] );
 	}
 
 	/**
@@ -36,8 +34,6 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 	public function tearDown() : void {
 		delete_user_meta( $this->user_id, get_environment_meta_key() );
 		wp_delete_user( $this->user_id );
-
-		remove_filter( 'wp_get_environment_type', [ $this, 'wp_get_environment_type' ] );
 
 		parent::tearDown();
 	}
@@ -50,15 +46,12 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 		return 4;
 	}
 
-	private function get_mock_environment_type() {
-		return 'production';
+	private function get_mock_environment_type_local() {
+		return 'local';
 	}
 
-	/**
-	 * Override `wp_get_environment_type()` while running tests in this class.
-	 */
-	public function wp_get_environment_type() {
-		return $this->get_mock_environment_type();
+	private function get_mock_environment_type_hosted() {
+		return 'production';
 	}
 
 	/**
@@ -73,15 +66,16 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 	 */
 	public function test_check_environment_notice_should_show() {
 		$this->assertFalse( (bool) check_environment_notice_should_show( $this->get_mock_dismissed_sites()[0] ) );
-		$this->assertTrue( (bool) check_environment_notice_should_show( $this->get_mock_non_dismissed_site() ) );
+		$this->assertFalse( (bool) check_environment_notice_should_show( $this->get_mock_non_dismissed_site() ) );
+		$this->assertTrue( (bool) check_environment_notice_should_show( $this->get_mock_non_dismissed_site(), $this->get_mock_environment_type_hosted() ) );
 	}
 
 	/**
 	 * Tests `check_environment_is_local()` from the `get-environment` module.
 	 */
 	public function test_check_environment_is_local() {
-		// Should return `false` since the mock environment is `production`.
-		$this->assertFalse( check_environment_is_local() );
+		$this->assertTrue( check_environment( $this->get_mock_environment_type_local() ) );
+		$this->assertFalse( check_environment( $this->get_mock_environment_type_hosted() ) );
 	}
 
 	/**
