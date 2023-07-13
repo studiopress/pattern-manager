@@ -15,7 +15,11 @@ Manage your theme's pattern PHP files the easy way, with Pattern Manager by WP E
 
 *Note: Pattern Manager is currently in beta.*
 
-When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with patterns.
+When you design beautiful block patterns for your theme, Pattern Manager by WP Engine will automatically push them into PHP files for you, every time you save. With a dedicated studio to design and build block patterns you can 10x your ability to work effectively with theme patterns.
+
+### Who should use Pattern Manager by WP Engine
+
+Pattern Manager is designed to be used by theme developers and is not intended to create patterns on production sites. Please review our [FAQ](#faq-header) below.
 
 ### Key Features of Pattern Manager by WP Engine
  * A dedicated place to build and design Block Patterns.
