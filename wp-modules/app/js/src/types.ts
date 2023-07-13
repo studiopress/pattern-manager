@@ -11,12 +11,14 @@ export type InitialPatternManager = {
 	adminUrl: string;
 	apiEndpoints: {
 		deletePatternEndpoint: string;
+		updateDismissedSitesEndpoint: string;
 		updateDismissedThemesEndpoint: string;
 	};
 	apiNonce: string;
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
 	siteUrl: string;
+	showEnvironmentNotice: boolean;
 	showVersionControlNotice: boolean;
 };
 
@@ -52,7 +54,3 @@ export type QueriedCategories = {
 	label: string;
 	name: string;
 }[];
-
-export type Theme = {
-	name: string;
-};

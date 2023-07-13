@@ -14,6 +14,7 @@ import { patternManager } from '../../globals';
 import PatternManagerContext from '../../contexts/PatternManagerContext';
 
 // Hooks
+import useEnvironment from '../../hooks/useEnvironment';
 import usePatterns from '../../hooks/usePatterns';
 import useVersionControl from '../../hooks/useVersionControl';
 
@@ -23,7 +24,7 @@ import Patterns from '../Patterns';
 const PatternGridActions: PatternGridActionsType = loadable(
 	async () => import( '../Patterns/PatternGridActions' )
 );
-import VersionControlNotice from '../VersionControlNotice';
+import { EnvironmentNotice, VersionControlNotice } from '../Notices';
 
 // Types
 import type { InitialContext } from '../../types';
@@ -33,6 +34,9 @@ export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
 	const versionControl = useVersionControl(
 		Boolean( patternManager.showVersionControlNotice )
+	);
+	const environment = useEnvironment(
+		Boolean( patternManager.showEnvironmentNotice )
 	);
 
 	const providerValue: InitialContext = {
@@ -44,10 +48,18 @@ export default function App() {
 			<Header />
 			<Patterns
 				Notice={
-					<VersionControlNotice
-						isVisible={ versionControl.displayNotice }
-						handleDismiss={ versionControl.updateDismissedThemes }
-					/>
+					<div className="patternmanager-notice-container">
+						<EnvironmentNotice
+							isVisible={ environment.displayNotice }
+							handleDismiss={ environment.updateDismissedSites }
+						/>
+						<VersionControlNotice
+							isVisible={ versionControl.displayNotice }
+							handleDismiss={
+								versionControl.updateDismissedThemes
+							}
+						/>
+					</div>
 				}
 				PatternActions={ PatternGridActions }
 				patternCategories={ patternManager.patternCategories }

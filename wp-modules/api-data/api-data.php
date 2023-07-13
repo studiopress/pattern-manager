@@ -13,6 +13,8 @@ namespace PatternManager\ApiData;
 
 use WP_REST_Request;
 use WP_REST_Response;
+use function \PatternManager\GetEnviroment\get_dismissed_sites;
+use function \PatternManager\GetEnviroment\get_environment_meta_key;
 use function \PatternManager\GetVersionControl\get_dismissed_themes;
 use function \PatternManager\GetVersionControl\get_version_control_meta_key;
 use function \PatternManager\GetWpFilesystem\get_wp_filesystem_api;
@@ -74,6 +76,16 @@ function register_routes() {
 
 	register_rest_route(
 		$namespace,
+		'/update-dismissed-sites',
+		array(
+			'methods'             => 'POST',
+			'callback'            => __NAMESPACE__ . '\update_dismissed_sites',
+			'permission_callback' => __NAMESPACE__ . '\permission_check',
+		)
+	);
+
+	register_rest_route(
+		$namespace,
 		'/update-dismissed-themes',
 		array(
 			'methods'             => 'POST',
@@ -116,6 +128,26 @@ function delete_pattern( $request ) {
 		? new WP_REST_Response(
 			array(
 				'message' => __( 'Pattern successfully deleted', 'pattern-manager' ),
+			),
+			200
+		)
+		: new WP_REST_Response( $is_success, 400 );
+}
+
+/**
+ * Updates the list of sites that should not show environment notifications.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_REST_Response
+ */
+function update_dismissed_sites( $request ) {
+	$dismissed_sites = array_merge( get_dismissed_sites(), (array) get_current_blog_id() );
+	$is_success      = update_user_meta( get_current_user_id(), get_environment_meta_key(), $dismissed_sites );
+
+	return $is_success
+		? new WP_REST_Response(
+			array(
+				'message' => __( 'Environment notifications dismissed for this site.', 'pattern-manager' ),
 			),
 			200
 		)

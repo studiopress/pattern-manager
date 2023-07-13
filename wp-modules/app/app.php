@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace PatternManager\App;
 
+use function PatternManager\GetEnviroment\check_environment_notice_should_show;
 use function PatternManager\GetVersionControl\check_version_control_notice_should_show;
 
 // Exit if accessed directly.
@@ -28,11 +29,13 @@ function get_app_state() {
 		'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
 		'apiEndpoints'             => array(
 			'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
+			'updateDismissedSitesEndpoint'  => get_rest_url( false, 'pattern-manager/v1/update-dismissed-sites/' ),
 			'updateDismissedThemesEndpoint' => get_rest_url( false, 'pattern-manager/v1/update-dismissed-themes/' ),
 		),
 		'siteUrl'                  => get_bloginfo( 'url' ),
 		'adminUrl'                 => admin_url(),
 		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
+		'showEnvironmentNotice'    => check_environment_notice_should_show( get_current_blog_id() ),
 	);
 }
 

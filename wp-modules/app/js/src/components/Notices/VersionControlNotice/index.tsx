@@ -15,7 +15,7 @@ export default function VersionControlNotice( {
 }: Props ) {
 	return isVisible ? (
 		<Notice
-			className="patternmanager-version-control-notice"
+			className="patternmanager-notice"
 			isDismissible
 			status="warning"
 			onRemove={ handleDismiss }
@@ -29,9 +29,7 @@ export default function VersionControlNotice( {
 					div: <div style={ { marginTop: '1rem' } }></div>,
 					a: (
 						<a
-							href={
-								'https://developer.wpengine.com/knowledge-base/using-git-with-a-wordpress-theme/'
-							}
+							href="https://developer.wpengine.com/knowledge-base/using-git-with-a-wordpress-theme/"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Link to our Git Guide (opens in new tab)"
