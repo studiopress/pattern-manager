@@ -17,7 +17,7 @@ export default function EnvironmentNotice( {
 		<Notice
 			className="patternmanager-notice"
 			isDismissible
-			status="info"
+			status="error"
 			onRemove={ handleDismiss }
 		>
 			{ createInterpolateElement(

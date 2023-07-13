@@ -49,15 +49,15 @@ export default function App() {
 			<Patterns
 				Notice={
 					<div className="patternmanager-notice-container">
+						<EnvironmentNotice
+							isVisible={ environment.displayNotice }
+							handleDismiss={ environment.updateDismissedSites }
+						/>
 						<VersionControlNotice
 							isVisible={ versionControl.displayNotice }
 							handleDismiss={
 								versionControl.updateDismissedThemes
 							}
-						/>
-						<EnvironmentNotice
-							isVisible={ environment.displayNotice }
-							handleDismiss={ environment.updateDismissedSites }
 						/>
 					</div>
 				}
