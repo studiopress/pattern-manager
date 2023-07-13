@@ -24,8 +24,7 @@ import Patterns from '../Patterns';
 const PatternGridActions: PatternGridActionsType = loadable(
 	async () => import( '../Patterns/PatternGridActions' )
 );
-import EnvironmentNotice from '../EnvironmentNotice';
-import VersionControlNotice from '../VersionControlNotice';
+import { EnvironmentNotice, VersionControlNotice } from '../Notices';
 
 // Types
 import type { InitialContext } from '../../types';
@@ -33,11 +32,11 @@ import { PatternGridActionsType } from '../Patterns/PatternGridActions';
 
 export default function App() {
 	const patterns = usePatterns( patternManager.patterns );
-	const environment = useEnvironment(
-		Boolean( patternManager.showEnvironmentNotice )
-	);
 	const versionControl = useVersionControl(
 		Boolean( patternManager.showVersionControlNotice )
+	);
+	const environment = useEnvironment(
+		Boolean( patternManager.showEnvironmentNotice )
 	);
 
 	const providerValue: InitialContext = {
