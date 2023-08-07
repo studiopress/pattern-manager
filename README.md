@@ -3,7 +3,7 @@ Contributors: wpengine, ryankienstra, mikeday, dreamwhisper, mmcalister, johnsto
 Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
-Tested up to: 6.2
+Tested up to: 6.3
 Stable tag: 0.3.0
 Requires PHP: 7.4
 License: GPLv2 or later
