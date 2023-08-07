@@ -126,3 +126,18 @@ workflows:
               only: /^\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
+      - approval-for-deploy-tested-up-to-bump:
+          type: approval
+          requires:
+            - lint
+            - test-js
+            - phpunit
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              only: /^bump-tested-up-to.*/
+      - wp-svn/deploy-tested-up-to-bump:
+          context: genesis-svn
+          requires:
+            - approval-for-deploy-tested-up-to-bump
