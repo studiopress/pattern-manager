@@ -397,7 +397,7 @@ function create_formatted_category_registrations( $custom_categories ) {
 			function ( $category_label ) {
 				$category_name = strtolower( str_replace( ' ', '-', $category_label ) );
 				$text_domain   = wp_get_theme()->get( 'TextDomain' );
-				$label_arr     = $text_domain ? "[ 'label' => __( '$category_label', '$text_domain' ), 'pm_custom' => true ]" : "[ 'label' => '$category_label', , 'pm_custom' => true ]";
+				$label_arr     = $text_domain ? "[ 'label' => __( '$category_label', '$text_domain' ), 'pm_custom' => true ]" : "[ 'label' => '$category_label', 'pm_custom' => true ]";
 				return "register_block_pattern_category( '$category_name', $label_arr );";
 			},
 			$custom_categories,
