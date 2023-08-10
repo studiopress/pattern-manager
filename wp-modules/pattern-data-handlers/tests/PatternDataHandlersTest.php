@@ -109,9 +109,9 @@ class PatternDataHandlersTest extends WP_UnitTestCase {
 	 */
 	public function get_expected_custom_category_registrations() {
 		return "
-register_block_pattern_category( 'first-custom', [ 'label' => 'First Custom', , 'pm_custom' => true ] );
-register_block_pattern_category( 'second-custom', [ 'label' => 'Second Custom', , 'pm_custom' => true ] );
-register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', , 'pm_custom' => true ] );";
+register_block_pattern_category( 'first-custom', [ 'label' => 'First Custom', 'pm_custom' => true ] );
+register_block_pattern_category( 'second-custom', [ 'label' => 'Second Custom', 'pm_custom' => true ] );
+register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', 'pm_custom' => true ] );";
 	}
 
 	/**
