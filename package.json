@@ -6,19 +6,21 @@
 		"type": "git",
 		"url": "https://github.com/studiopress/pattern-manager"
 	},
-	"wpps_options": "-n PatternManager -t pattern-manager",
+	"pluginade_options": "-n YourPluginNamespace -t your-plugin-textdomain",
 	"scripts": {
-		"preinstall": "if [ ! -d ../../wpps-scripts ]; then git clone https://github.com/wp-plugin-sidekick/wpps-scripts ../../wpps-scripts; else cd ../../wpps-scripts && git reset --hard && git checkout main && git pull origin main;fi;",
-		"dev": "cd ../../wpps-scripts; sh dev.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"build": "cd ../../wpps-scripts; sh build.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"test:phpunit": "cd ../../wpps-scripts; sh phpunit.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"lint:php": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"lint:php:fix": "cd ../../wpps-scripts; sh phpcs.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
-		"lint:js": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options -p \"${OLDPWD}\"",
-		"lint:js:fix": "cd ../../wpps-scripts; sh lint-js.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
-		"lint:css": "cd ../../wpps-scripts; sh lint-css.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"lint:css:fix": "cd ../../wpps-scripts; sh lint-css.sh $npm_package_wpps_options -p \"${OLDPWD}\" -f 1;",
-		"test:js": "cd ../../wpps-scripts; sh test-js.sh $npm_package_wpps_options -p \"${OLDPWD}\";",
-		"zip": "cd ../../wpps-scripts; sh zip.sh $npm_package_wpps_options -p \"${OLDPWD}\";"
+		"preinstall": "if [ ! -d ../../pluginade ]; then git clone https://github.com/pluginade/pluginade ../../pluginade; else cd ../../pluginade && git reset --hard && git checkout main && git pull origin main;fi;",
+		"postinstall": "cd ../../pluginade; sh install.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"reinstall": "cd ../../pluginade; sh install-clean.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"dev": "cd ../../pluginade; sh dev.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"build": "cd ../../pluginade; sh build.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"test:phpunit": "cd ../../pluginade; sh phpunit.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"lint:php": "cd ../../pluginade; sh phpcs.sh $npm_package_pluginade_options -p ${OLDPWD};",
+		"lint:php:fix": "cd ../../pluginade; sh phpcs.sh $npm_package_pluginade_options -p \"${OLDPWD}\" -f 1;",
+		"lint:js": "cd ../../pluginade; sh lint-js.sh $npm_package_pluginade_options -p \"${OLDPWD}\"",
+		"lint:js:fix": "cd ../../pluginade; sh lint-js.sh $npm_package_pluginade_options -p \"${OLDPWD}\" -f 1;",
+		"lint:css": "cd ../../pluginade; sh lint-css.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"lint:css:fix": "cd ../../pluginade; sh lint-css.sh $npm_package_pluginade_options -p \"${OLDPWD}\" -f 1;",
+		"test:js": "cd ../../pluginade; sh test-js.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
+		"zip": "cd ../../pluginade; sh zip.sh $npm_package_pluginade_options -p \"${OLDPWD}\";"
 	}
 }
