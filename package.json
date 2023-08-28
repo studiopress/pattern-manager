@@ -6,7 +6,7 @@
 		"type": "git",
 		"url": "https://github.com/studiopress/pattern-manager"
 	},
-	"pluginade_options": "-n YourPluginNamespace -t your-plugin-textdomain",
+	"pluginade_options": "-n PatternManager -t pattern-manager",
 	"scripts": {
 		"preinstall": "if [ ! -d ../../pluginade ]; then git clone https://github.com/pluginade/pluginade ../../pluginade; else cd ../../pluginade && git reset --hard && git checkout main && git pull origin main;fi;",
 		"postinstall": "cd ../../pluginade; sh install.sh $npm_package_pluginade_options -p \"${OLDPWD}\";",
