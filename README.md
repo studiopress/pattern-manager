@@ -4,7 +4,7 @@ Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.3
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -49,7 +49,7 @@ Pattern Manager is designed to be used by theme developers and is not intended t
  * Create/update the pattern PHP file on your disk, in your theme.
  * Find and replace all local image urls with the correct PHP tag.
  * Find and copy all image files used into your theme.
- 
+
 ## Additional Features
 
 ### The Pattern Block: Put patterns inside patterns.
@@ -113,6 +113,9 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 2. Easily assign pattern categories, keywords, descriptions, and more.
 
 ## Changelog
+
+### 0.3.1
+* Fix a minor security issue.
 
 ### 0.3.0
 * Allow adding new categories in Editor UI.
