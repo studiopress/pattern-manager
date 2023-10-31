@@ -27,6 +27,7 @@ function get_app_state() {
 		'patterns'                 => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),
 		'patternCategories'        => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
 		'apiNonce'                 => wp_create_nonce( 'wp_rest' ),
+		'previewNonce'             => wp_create_nonce( 'pm_action_pattern_preview' ),
 		'apiEndpoints'             => array(
 			'deletePatternEndpoint'         => get_rest_url( false, 'pattern-manager/v1/delete-pattern/' ),
 			'updateDismissedSitesEndpoint'  => get_rest_url( false, 'pattern-manager/v1/update-dismissed-sites/' ),

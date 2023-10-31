@@ -51,11 +51,7 @@ export default function ViewportWidthPanel( {
 					/>
 				) : (
 					<PatternPreview
-						url={
-							patternManager.siteUrl +
-							'?pm_pattern_preview=' +
-							currentName
-						}
+						url={ `${ patternManager.siteUrl }?pm_pattern_preview=${ currentName }&_wpnonce=${ patternManager.previewNonce }` }
 						viewportWidth={ currentWidth }
 					/>
 				) ) }

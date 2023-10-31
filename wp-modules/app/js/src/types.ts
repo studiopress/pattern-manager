@@ -15,6 +15,7 @@ export type InitialPatternManager = {
 		updateDismissedThemesEndpoint: string;
 	};
 	apiNonce: string;
+	previewNonce: string;
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
 	siteUrl: string;
