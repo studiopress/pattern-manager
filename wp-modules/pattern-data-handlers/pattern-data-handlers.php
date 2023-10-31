@@ -168,7 +168,6 @@ function get_theme_patterns_with_editor_links() {
 
 			$duplicate_nonce_action = 'pm-pattern-duplicate';
 			$edit_nonce_action      = 'pm-pattern-edit';
-			$preview_nonce_action   = 'pm-pattern-preview';
 			$new_pattern            = array_merge(
 				$pattern,
 				[
@@ -193,13 +192,6 @@ function get_theme_patterns_with_editor_links() {
 							'_wpnonce'  => wp_create_nonce( $duplicate_nonce_action ),
 						],
 						admin_url()
-					),
-					'previewLink'   => add_query_arg(
-						[
-							'pm_preview_pattern_name' => $pattern['name'],
-							'_wpnonce'                => wp_create_nonce( $preview_nonce_action ),
-						],
-						get_bloginfo( 'url' )
 					),
 				]
 			);
