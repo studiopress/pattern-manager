@@ -262,6 +262,12 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', 'p
 				$patterns['my-new-pattern']
 			)
 		);
+		$this->assertTrue(
+			array_key_exists(
+				'previewLink',
+				$patterns['my-new-pattern']
+			)
+		);
 	}
 
 	/**
