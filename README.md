@@ -114,6 +114,9 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 
 ## Changelog
 
+### 0.3.1
+* Fix a minor security issue.
+
 ### 0.3.0
 * Allow adding new categories in Editor UI.
 
