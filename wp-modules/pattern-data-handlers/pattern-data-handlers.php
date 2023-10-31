@@ -166,18 +166,37 @@ function get_theme_patterns_with_editor_links() {
 			);
 			$post  = empty( $query->posts[0] ) ? false : $query->posts[0];
 
-			$pattern['editorLink'] = $post && $post->name === $pattern['name']
-				? get_edit_post_link( $post, 'localized_data' )
-				: add_query_arg(
-					[
-						'post_type' => get_pattern_post_type(),
-						'action'    => 'edit-pattern',
-						'name'      => $pattern['name'],
-					],
-					admin_url()
-				);
+			$duplicate_nonce_action = 'pm-pattern-duplicate';
+			$edit_nonce_action      = 'pm-pattern-edit';
+			$new_pattern            = array_merge(
+				$pattern,
+				[
+					'editorLink'    => $post && $post->name === $pattern['name']
+						? add_query_arg(
+							[ '_wpnonce' => wp_create_nonce( $edit_nonce_action ) ],
+							get_edit_post_link( $post, 'localized_data' ),
+						)
+						: add_query_arg(
+							[
+								'post_type' => get_pattern_post_type(),
+								'action'    => 'edit-pattern',
+								'name'      => $pattern['name'],
+								'_wpnonce'  => wp_create_nonce( $edit_nonce_action ),
+							]
+						),
+					'duplicateLink' => add_query_arg(
+						[
+							'post_type' => get_pattern_post_type(),
+							'action'    => 'duplicate',
+							'name'      => $pattern['name'],
+							'_wpnonce'  => wp_create_nonce( $duplicate_nonce_action ),
+						],
+						admin_url()
+					),
+				]
+			);
 
-			$all_patterns[ $pattern_name ] = $pattern;
+			$all_patterns[ $pattern_name ] = $new_pattern;
 		}
 	}
 

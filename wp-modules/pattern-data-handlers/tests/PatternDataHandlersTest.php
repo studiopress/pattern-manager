@@ -252,6 +252,12 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', 'p
 		$this->assertCount( 2, array_values( $patterns ) );
 		$this->assertTrue(
 			array_key_exists(
+				'duplicateLink',
+				$patterns['my-new-pattern']
+			)
+		);
+		$this->assertTrue(
+			array_key_exists(
 				'editorLink',
 				$patterns['my-new-pattern']
 			)

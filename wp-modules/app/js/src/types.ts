@@ -24,6 +24,7 @@ export type InitialPatternManager = {
 
 export type Pattern = {
 	content: string;
+	duplicateLink: string;
 	editorLink: string;
 	name: string;
 	slug: string;

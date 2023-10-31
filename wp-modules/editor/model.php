@@ -188,10 +188,12 @@ function redirect_pattern_actions() {
 	}
 
 	if ( 'duplicate' === filter_input( INPUT_GET, 'action' ) ) {
+		check_admin_referer( 'pm-pattern-duplicate' );
 		duplicate_pattern( filter_input( INPUT_GET, 'name' ) );
 	}
 
 	if ( 'edit-pattern' === filter_input( INPUT_GET, 'action' ) ) {
+		check_admin_referer( 'pm-pattern-edit' );
 		edit_pattern( filter_input( INPUT_GET, 'name' ) );
 	}
 }
