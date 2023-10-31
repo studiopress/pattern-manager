@@ -26,6 +26,7 @@ export type Pattern = {
 	content: string;
 	duplicateLink: string;
 	editorLink: string;
+	previewLink: string;
 	name: string;
 	slug: string;
 	title: string;

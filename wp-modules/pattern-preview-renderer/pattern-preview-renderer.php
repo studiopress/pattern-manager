@@ -20,13 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Receive pattern id in the URL and display its content. Useful for pattern previews and thumbnails.
  */
 function display_block_pattern_preview() {
-
-	// Nonce not required as the user is not taking any action here.
-	if ( ! isset( $_GET['pm_pattern_preview'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( ! isset( $_GET['pm_preview_pattern_name'] ) ) {
 		return;
 	}
 
-	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_pattern_preview'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	check_admin_referer( 'pm-pattern-preview' );
+
+	$pattern_name = sanitize_text_field( wp_unslash( $_GET['pm_preview_pattern_name'] ) );
 
 	$pattern = \PatternManager\PatternDataHandlers\get_pattern_by_name( $pattern_name );
 

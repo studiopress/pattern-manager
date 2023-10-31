@@ -59,11 +59,7 @@ export default function PatternGrid( {
 									<div className="item-pattern-preview">
 										<PatternPreview
 											key={ patternName }
-											url={
-												siteUrl +
-												'?pm_pattern_preview=' +
-												patternData.name
-											}
+											url={ patternData.previewLink }
 											viewportWidth={
 												patternData.viewportWidth ||
 												1280
