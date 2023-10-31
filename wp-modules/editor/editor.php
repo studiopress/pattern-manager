@@ -239,6 +239,7 @@ function enqueue_meta_fields_in_editor() {
 				'getPatternNamesEndpoint' => get_rest_url( false, 'pattern-manager/v1/get-pattern-names/' ),
 			),
 			'apiNonce'          => wp_create_nonce( 'wp_rest' ),
+			'previewNonce'      => wp_create_nonce( 'pm_action_pattern_preview' ),
 			'patternCategories' => \WP_Block_Pattern_Categories_Registry::get_instance()->get_all_registered(),
 			'patternNames'      => get_pattern_names(),
 			'patterns'          => \PatternManager\PatternDataHandlers\get_theme_patterns_with_editor_links(),

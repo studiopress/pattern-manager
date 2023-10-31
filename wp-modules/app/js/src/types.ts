@@ -15,6 +15,7 @@ export type InitialPatternManager = {
 		updateDismissedThemesEndpoint: string;
 	};
 	apiNonce: string;
+	previewNonce: string;
 	patternCategories: QueriedCategories;
 	patterns: Patterns;
 	siteUrl: string;
@@ -24,6 +25,7 @@ export type InitialPatternManager = {
 
 export type Pattern = {
 	content: string;
+	duplicateLink: string;
 	editorLink: string;
 	name: string;
 	slug: string;
