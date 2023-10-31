@@ -25,6 +25,7 @@ class AppTest extends WP_UnitTestCase {
 				'patterns',
 				'patternCategories',
 				'apiNonce',
+				'previewNonce',
 				'apiEndpoints',
 				'siteUrl',
 				'adminUrl',
