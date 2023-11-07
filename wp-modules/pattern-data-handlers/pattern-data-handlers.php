@@ -437,11 +437,18 @@ function tree_shake_theme_images( $wp_filesystem, $copy_dir ) {
 	$theme_dir         = get_stylesheet_directory();
 	$patterns_in_theme = \PatternManager\PatternDataHandlers\get_theme_patterns();
 
+	$images_folder = apply_filters( 'wpe_pattern_manager_pattern_images_dir', '/patterns/images/' );
+	$images_folder_dist = apply_filters( 'wpe_pattern_manager_pattern_images_dir_dist', '' );
+
+	if( $images_folder_dist === '' ) {
+		$images_folder_dist = $images_folder;
+	}
+
 	$backedup_images_dir = $wp_filesystem->wp_content_dir() . 'temp-images/';
-	$images_dir          = $theme_dir . '/patterns/images/';
+	$images_dir          = $theme_dir . $images_folder;
 
 	$wp_theme_url = get_stylesheet_directory_uri();
-	$images_url   = $wp_theme_url . '/patterns/images/';
+	$images_url   = $wp_theme_url . $images_folder_dist;
 
 	if ( ! $wp_filesystem->exists( $backedup_images_dir ) ) {
 		$wp_filesystem->mkdir( $backedup_images_dir );
@@ -504,19 +511,23 @@ function move_block_images_to_theme( $pattern_html ) {
 		return $pattern_html;
 	}
 
-	$wp_theme_dir = get_stylesheet_directory();
-	$assets_dir   = $wp_theme_dir . '/assets/';
-	$images_dir   = $wp_theme_dir . '/patterns/images/';
+	$images_folder = apply_filters( 'wpe_pattern_manager_pattern_images_dir', '/patterns/images/' );
+	$images_folder_dist = apply_filters( 'wpe_pattern_manager_pattern_images_dir_dist', '' );
 
-	$wp_theme_url = get_stylesheet_directory_uri();
-	$images_url   = $wp_theme_url . '/patterns/images/';
-
-	if ( ! $wp_filesystem->exists( $assets_dir ) ) {
-		$wp_filesystem->mkdir( $assets_dir );
+	if( $images_folder_dist === '' ) {
+		$images_folder_dist = $images_folder;
 	}
+
+	$wp_theme_dir = get_stylesheet_directory();
+	$images_dir   = $wp_theme_dir . $images_folder;
+	$images_dir_dist = $wp_theme_dir . $images_folder_dist;
 
 	if ( ! $wp_filesystem->exists( $images_dir ) ) {
 		$wp_filesystem->mkdir( $images_dir );
+	}
+
+	if ( ! $wp_filesystem->exists( $images_dir_dist ) ) {
+		$wp_filesystem->mkdir( $images_dir_dist );
 	}
 
 	// Find all URLs in the block pattern html.
@@ -554,13 +565,19 @@ function move_block_images_to_theme( $pattern_html ) {
 
 		// Save this to the theme.
 		$file_saved = $wp_filesystem->put_contents(
-			$wp_theme_dir . '/patterns/images/' . $filename,
+			$wp_theme_dir . $images_folder . $filename,
+			$file_contents,
+			FS_CHMOD_FILE
+		);
+
+		$file_saved_dist = $wp_filesystem->put_contents(
+			$wp_theme_dir . $images_folder_dist . $filename,
 			$file_contents,
 			FS_CHMOD_FILE
 		);
 
 		// Replace the URL with the one we just added to the theme.
-		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/patterns/images/$filename", $pattern_html );
+		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>$images_folder_dist$filename", $pattern_html );
 	}
 
 	return $pattern_html;
