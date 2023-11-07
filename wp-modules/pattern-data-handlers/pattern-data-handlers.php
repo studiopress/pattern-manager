@@ -570,12 +570,6 @@ function move_block_images_to_theme( $pattern_html ) {
 			FS_CHMOD_FILE
 		);
 
-		$file_saved_dist = $wp_filesystem->put_contents(
-			$wp_theme_dir . $images_folder_dist . $filename,
-			$file_contents,
-			FS_CHMOD_FILE
-		);
-
 		// Replace the URL with the one we just added to the theme.
 		$pattern_html = str_replace( $url_found, "<?php echo esc_url( get_stylesheet_directory_uri() ); ?>$images_folder_dist$filename", $pattern_html );
 	}
