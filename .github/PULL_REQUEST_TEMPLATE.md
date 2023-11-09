@@ -1,6 +1,8 @@
 ## Tasks
 
-- [ ] I am a WP Engine employee (sorry, we're not accepting community contributions anymore).
+<!-- Sorry, we're only accepting minor bugfix PRs from the community -->
+
+- [ ] I have signed a [Contributor License Agreement (CLA)](https://github.com/studiopress/pattern-manager/wiki/For-Developers#contributor-license-agreement-cla) with WP Engine.
 
 ### Summary of changes
 <!-- A short but detailed summary of the changes. -->
@@ -11,7 +13,7 @@
 
 ### How to test
 <!-- Detailed steps to test this PR. -->
-1. 
+1.
 
 ### Notes & Screenshots
 <!-- Additional information for reviewers. -->
