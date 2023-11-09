@@ -1,6 +1,6 @@
 ## Tasks
 
-<!-- Sorry, we're only accepting minor bugfix PRs from the community, no big change or new feature -->
+<!-- Sorry, we're only reviewing minor bugfix PRs from the community, no big change or new feature -->
 
 - [ ] I have signed a [Contributor License Agreement (CLA)](https://github.com/studiopress/pattern-manager/wiki/For-Developers#contributor-license-agreement-cla) with WP Engine.
 
