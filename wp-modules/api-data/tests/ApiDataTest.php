@@ -26,6 +26,7 @@ class ApiDataTest extends WP_UnitTestCase {
 		parent::setUp();
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
+		register_routes();
 	}
 
 	/**
