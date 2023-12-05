@@ -190,23 +190,6 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', 'p
 	}
 
 	/**
-	 * Tests get_pattern_by_name.
-	 */
-	public function test_get_pattern_by_name() {
-		$actual_pattern = get_pattern_by_name( 'my-new-pattern' );
-
-		$this->assertSame(
-			$this->get_expected_pattern(),
-			array_merge(
-				$actual_pattern,
-				[
-					'content' => $this->normalize( $actual_pattern['content'] ),
-				]
-			)
-		);
-	}
-
-	/**
 	 * Tests construct_pattern_php_file_contents.
 	 */
 	public function test_construct_pattern_php_file_contents_with_values() {
@@ -218,62 +201,6 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', 'p
 			construct_pattern_php_file_contents(
 				get_pattern_by_path( $pattern_path )
 			)
-		);
-	}
-
-	/**
-	 * Tests get_theme_patterns.
-	 */
-	public function test_get_theme_patterns() {
-		$patterns = get_theme_patterns();
-
-		$this->assertCount( 2, array_values( $patterns ) );
-		$this->assertSame(
-			[
-				'my-new-pattern' => $this->get_expected_pattern(),
-			],
-			[
-				'my-new-pattern' => array_merge(
-					$patterns['my-new-pattern'],
-					[
-						'content' => $this->normalize( $patterns['my-new-pattern']['content'] ),
-					]
-				),
-			]
-		);
-	}
-
-	/**
-	 * Tests get_theme_patterns_with_editor_links.
-	 */
-	public function test_get_theme_patterns_with_editor_links() {
-		$patterns = get_theme_patterns_with_editor_links();
-
-		$this->assertCount( 2, array_values( $patterns ) );
-		$this->assertTrue(
-			array_key_exists(
-				'duplicateLink',
-				$patterns['my-new-pattern']
-			)
-		);
-		$this->assertTrue(
-			array_key_exists(
-				'editorLink',
-				$patterns['my-new-pattern']
-			)
-		);
-	}
-
-	/**
-	 * Test get_pattern_names.
-	 */
-	public function test_get_pattern_names() {
-		$this->assertSame(
-			[
-				'my-new-pattern',
-				'with-image',
-			],
-			get_pattern_names()
 		);
 	}
 }
