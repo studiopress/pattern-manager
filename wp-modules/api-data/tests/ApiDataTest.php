@@ -27,6 +27,7 @@ class ApiDataTest extends WP_UnitTestCase {
 		add_filter( 'request_filesystem_credentials', '__return_true' );
 		add_filter( 'stylesheet_directory', [ $this, 'get_fixtures_directory' ] );
 		register_routes();
+		do_action( 'rest_api_init' );
 	}
 
 	/**
@@ -51,7 +52,6 @@ class ApiDataTest extends WP_UnitTestCase {
 	 */
 	public function test_register_routes_get_pattern_names_unauthorized() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'author' ] ) );
-		do_action( 'rest_api_init' );
 
 		$this->assertSame(
 			'rest_forbidden',
@@ -64,7 +64,6 @@ class ApiDataTest extends WP_UnitTestCase {
 	 */
 	public function test_register_routes_authorized() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
-		do_action( 'rest_api_init' );
 
 		$this->assertSame(
 			[
@@ -83,7 +82,6 @@ class ApiDataTest extends WP_UnitTestCase {
 	 */
 	public function test_register_routes_get_pattern_names_authorized() {
 		wp_set_current_user( $this->factory()->user->create( [ 'role' => 'administrator' ] ) );
-		do_action( 'rest_api_init' );
 
 		$this->assertSame(
 			[
