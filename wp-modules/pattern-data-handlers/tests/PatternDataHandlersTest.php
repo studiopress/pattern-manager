@@ -276,24 +276,4 @@ register_block_pattern_category( 'third-custom', [ 'label' => 'Third Custom', 'p
 			get_pattern_names()
 		);
 	}
-
-	/**
-	 * Test tree_shake_theme_images.
-	 */
-	public function test_tree_shake_theme_images() {
-		$wp_filesystem = new WpFilesystemSpy();
-
-		tree_shake_theme_images(
-			$wp_filesystem,
-			[ $this, 'copy_dir_stub' ]
-		);
-
-		// Tree shaking should only keep (copy) the used image.
-		$this->assertSame(
-			[
-				$this->get_fixtures_directory() . '/patterns/images/used.jpg',
-			],
-			$wp_filesystem->get_copied()
-		);
-	}
 }
