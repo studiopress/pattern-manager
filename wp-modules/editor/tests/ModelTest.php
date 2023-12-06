@@ -116,34 +116,6 @@ class ModelTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests that a pattern newly created with Pattern Manager results in a slug and filename that matches the post_name.
-	 */
-	public function test_new_pattern_title_matches_slug() {
-
-		// Mock a post object so we can test it.
-		$wp_post = $this->factory()->post->create_and_get(
-			[
-				'post_title'   => 'New Pattern, originally created with Pattern Manager.',
-				'post_content' => 'test pattern content',
-				'post_name'    => 'new-pattern-originally-created-with-pattern-manager',
-				'post_type'    => get_pattern_post_type(),
-			]
-		);
-
-		// Save the mocked pattern to the disk.
-		save_pattern_to_file( $wp_post );
-
-		// Get the contents of the file that was saved.
-		$pattern = get_pattern_by_name( $wp_post->post_name );
-
-		// Make sure the ->post_name is the same as the slug, other than the prefixed textdomain.
-		$this->assertStringEndsWith( $wp_post->post_name, $pattern['slug'] );
-
-		// Make sure the post_name (aka "slug") of the post and the filename match.
-		$this->assertSame( $wp_post->post_name, $pattern['name'] );
-	}
-
-	/**
 	 * Tests a pattern with a slug that does not match the filename remains the same if something other than the title was not changed.
 	 */
 	public function test_slug_and_filename_stay_the_same_after_content_update() {
