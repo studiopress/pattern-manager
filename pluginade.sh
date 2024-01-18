@@ -34,61 +34,61 @@ plugindir=$(pwd);
 if [ ! -d ./pluginade ]; then git clone https://github.com/pluginade/pluginade-scripts ./.pluginade; cd .pluginade && git reset --hard && git checkout main && git pull origin main; fi;
 
 #  Start dev mode (npm run dev) for all wp-modules.
-if [ $1 == 'dev' ]; then
+if [ $1 = 'dev' ]; then
 	# Run PHP Code Sniffer with WordPress Coding Standards.
 	sh pluginade-run.sh -p "${plugindir}" -c "dev" -t $textdomain -n $namespace;
 fi
 
 #  Run build (npm run build) for all wp-modules.
-if [ $1 == 'build' ]; then
+if [ $1 = 'build' ]; then
 	# Run PHP Code Sniffer with WordPress Coding Standards.
 	sh pluginade-run.sh -p "${plugindir}" -c "build" -t $textdomain -n $namespace;
 fi
 
 #  PHP Linting. To run this, type: sh pluginade.sh lint:php
-if [ $1 == 'lint:php' ]; then
+if [ $1 = 'lint:php' ]; then
 	# Run PHP Code Sniffer with WordPress Coding Standards.
 	sh pluginade-run.sh -p "${plugindir}" -c "lint:php" -t $textdomain -n $namespace;
 fi
 
 # PHP Lint Fixing. To run this, type: sh pluginade.sh lint:php:fix
-if [ $1 == 'lint:php:fix' ]; then
+if [ $1 = 'lint:php:fix' ]; then
 	sh pluginade-run.sh -p "${plugindir}" -c "lint:php:fix" -t $textdomain -n $namespace;
 fi
 
 #  CSS Linting. To run this, type: sh pluginade.sh lint:css
-if [ $1 == 'lint:css' ]; then
+if [ $1 = 'lint:css' ]; then
 	# Run CSS linting.
 	sh pluginade-run.sh -p "${plugindir}" -c "lint:css" -t $textdomain -n $namespace;
 fi
 
 # CSS Lint Fixing. To run this, type: sh pluginade.sh lint:css:fix
-if [ $1 == 'lint:css:fix' ]; then
+if [ $1 = 'lint:css:fix' ]; then
 	# Run CSS linting.
 	sh pluginade-run.sh -p "${plugindir}" -c "lint:css:fix" -t $textdomain -n $namespace;
 fi
 
 #  JS Linting. To run this, type: sh pluginade.sh lint:js
-if [ $1 == 'lint:js' ]; then
+if [ $1 = 'lint:js' ]; then
 	sh pluginade-run.sh -p "${plugindir}" -c "lint:js" -t $textdomain -n $namespace;
 fi
 
 # JS Lint Fixing. To run this, type: sh pluginade.sh lint:js:fix
-if [ $1 == 'lint:js:fix' ]; then
+if [ $1 = 'lint:js:fix' ]; then
 	sh pluginade-run.sh -p "${plugindir}" -c "lint:js:fix" -t $textdomain -n $namespace;
 fi
 
 # JS Jest Testing. To run this, type: sh pluginade.sh test:js
-if [ $1 == 'test:js' ]; then
+if [ $1 = 'test:js' ]; then
 	sh pluginade-run.sh -p "${plugindir}" -c "test:js" -t $textdomain -n $namespace;
 fi
 
 # PHP Unit Testing. To run this, type: sh pluginade.sh test:phpunit
-if [ $1 == 'test:phpunit' ]; then
+if [ $1 = 'test:phpunit' ]; then
 	sh pluginade-run.sh -p "${plugindir}" -c "test:phpunit" -t $textdomain -n $namespace;
 fi
 
 # Build an installable zip. To run this, type: sh pluginade.sh zip
-if [ $1 == 'zip' ]; then
+if [ $1 = 'zip' ]; then
 	sh pluginade-run.sh -p "${plugindir}" -c "zip" -t $textdomain -n $namespace;
 fi
