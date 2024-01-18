@@ -31,6 +31,7 @@ fi
 #  Set the plugin directory to be the current directory.
 plugindir=$(pwd);
 
+
 #  Install pluginade-scripts if they are not already installed.
 install_pluginade() {
 	if [ ! -d ./pluginade ]; then
