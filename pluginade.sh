@@ -13,6 +13,7 @@ if [ -z "$1" ]; then
 	# If no argument is provided, show the help text.
 	echo "Usage: sh pluginade.sh <The pluginade command you want to run>"
 	echo "Available commands:"
+	echo "install       Install Pluginade Scripts into a hidden .pluginade directory, in the plugin root."
 	echo "lint:php      Run PHP Linting."
 	echo "lint:php:fix  Run PHP Lint Fixing."
 	echo "lint:css      Run CSS Linting."
@@ -31,7 +32,20 @@ fi
 plugindir=$(pwd);
 
 #  Install pluginade-scripts if they are not already installed.
-if [ ! -d ./pluginade ]; then git clone https://github.com/pluginade/pluginade-scripts ./.pluginade; cd .pluginade && git reset --hard && git checkout main && git pull origin main; fi;
+install_pluginade() {
+	if [ ! -d ./pluginade ]; then
+		git clone https://github.com/pluginade/pluginade-scripts ./.pluginade
+		cd .pluginade && git reset --hard && git checkout main && git pull origin main
+	fi
+}
+
+if [ $1 = 'install' ]; then
+	install_pluginade;
+	exit 0;
+fi
+
+# Prior to running any command, ensure pluginade is ready.
+install_pluginade;
 
 #  Start dev mode (npm run dev) for all wp-modules.
 if [ $1 = 'dev' ]; then

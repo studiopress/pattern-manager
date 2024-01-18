@@ -18,6 +18,10 @@ jobs:
           path: *PLUGIN_PATH
       - setup_remote_docker
       - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
           name: Linting PHP
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh lint:php
@@ -35,6 +39,10 @@ jobs:
           path: *PLUGIN_PATH
       - setup_remote_docker
       - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
           name: Testing JS
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh test:js
@@ -46,6 +54,10 @@ jobs:
           path: *PLUGIN_PATH
       - setup_remote_docker
       - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh test:phpunit
@@ -56,6 +68,10 @@ jobs:
       - checkout:
           path: *PLUGIN_PATH
       - setup_remote_docker
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
