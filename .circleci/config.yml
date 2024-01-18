@@ -12,7 +12,7 @@ references:
 jobs:
   lint:
     machine:
-      - image: cimg/base:stable
+      - image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
