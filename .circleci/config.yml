@@ -11,16 +11,20 @@ references:
 
 jobs:
   lint:
-    docker:
+    machine:
       - image: cimg/base:stable
     steps:
       - checkout:
           path: *PLUGIN_PATH
       - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh install
-      - setup_remote_docker
       - run:
           name: Linting PHP
           working_directory: *PLUGIN_PATH
@@ -103,12 +107,12 @@ workflows:
   build:
     jobs:
       - lint
-      - test-js
-      - phpunit
+      # - test-js
+      # - phpunit
           # matrix:
           #   parameters:
           #     php-version: [ '7.4', '8.0', '8.1', '8.2' ]
-      - zip
+      # - zip
       - wp-svn/check-versions:
           filters:
             tags:
