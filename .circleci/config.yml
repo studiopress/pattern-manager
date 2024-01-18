@@ -84,7 +84,7 @@ workflows:
     jobs:
       - lint
       - test-js
-      - phpunit:
+      - phpunit
           # matrix:
           #   parameters:
           #     php-version: [ '7.4', '8.0', '8.1', '8.2' ]
