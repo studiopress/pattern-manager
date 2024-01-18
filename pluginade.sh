@@ -29,8 +29,7 @@ if [ -z "$1" ]; then
 fi
 
 #  Set the plugin directory to be the current directory.
-plugindir=$(pwd);
-
+plugindir=$(PWD);
 
 #  Install pluginade-scripts if they are not already installed.
 install_pluginade() {
@@ -49,6 +48,9 @@ fi
 
 # Prior to running any command, ensure pluginade is ready.
 install_pluginade;
+
+# Go to the pluginade directory inside the plugin.
+cd "${plugindir}"/.pluginade;
 
 #  Start dev mode (npm run dev) for all wp-modules.
 if [ $1 = 'dev' ]; then
