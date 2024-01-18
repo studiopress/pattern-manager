@@ -16,8 +16,7 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - setup_remote_docker:
-          version: 20.10.7
+      - setup_remote_docker
       - run:
           name: Linting PHP
           working_directory: *PLUGIN_PATH
@@ -34,8 +33,7 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - setup_remote_docker:
-          version: 20.10.7
+      - setup_remote_docker
       - run:
           name: Testing JS
           working_directory: *PLUGIN_PATH
@@ -46,8 +44,7 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - setup_remote_docker:
-          version: 20.10.7
+      - setup_remote_docker
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
@@ -58,8 +55,7 @@ jobs:
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - setup_remote_docker:
-          version: 20.10.7
+      - setup_remote_docker
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
