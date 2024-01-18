@@ -29,13 +29,12 @@ if [ -z "$1" ]; then
 fi
 
 #  Set the plugin directory to be the current directory.
-plugindir=$(PWD);
+plugindir=$PWD;
 
 #  Install pluginade-scripts if they are not already installed.
 install_pluginade() {
 	if [ ! -d ./pluginade ]; then
-		echo $PWD;
-		ls -a .
+		echo "Installing pluginade into ${plugindir}/.pluginade";
 		git clone https://github.com/pluginade/pluginade-scripts ./.pluginade
 		cd .pluginade && git reset --hard && git checkout main && git pull origin main
 	fi
@@ -50,7 +49,8 @@ fi
 install_pluginade;
 
 # Go to the pluginade directory inside the plugin.
-cd "${plugindir}"/.pluginade;
+echo "Going to ${plugindir}/.pluginade";
+cd $plugindir/.pluginade;
 
 #  Start dev mode (npm run dev) for all wp-modules.
 if [ $1 = 'dev' ]; then
