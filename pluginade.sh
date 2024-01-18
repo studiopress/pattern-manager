@@ -35,6 +35,8 @@ plugindir=$(pwd);
 #  Install pluginade-scripts if they are not already installed.
 install_pluginade() {
 	if [ ! -d ./pluginade ]; then
+		echo PWD;
+		ls;
 		git clone https://github.com/pluginade/pluginade-scripts ./.pluginade
 		cd .pluginade && git reset --hard && git checkout main && git pull origin main
 	fi
