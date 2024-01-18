@@ -66,7 +66,7 @@ function register_routes() {
 					'required'          => true,
 					'type'              => 'string',
 					'description'       => __( 'The pattern to delete', 'pattern-manager' ),
-					'validate_callback' => function( $to_validate ) {
+					'validate_callback' => function ( $to_validate ) {
 						return is_string( $to_validate );
 					},
 				),

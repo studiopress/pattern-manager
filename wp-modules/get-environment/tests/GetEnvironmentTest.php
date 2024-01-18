@@ -20,7 +20,7 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->user_id = $this->factory->user->create();
@@ -31,7 +31,7 @@ class GetEnvironmentTest extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	public function tearDown() : void {
+	public function tearDown(): void {
 		delete_user_meta( $this->user_id, get_environment_meta_key() );
 		wp_delete_user( $this->user_id );
 

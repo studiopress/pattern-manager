@@ -1,4 +1,5 @@
 wpps-scripts
+.pluginade
 .distignore
 .git
 .gitignore
@@ -19,3 +20,4 @@ composer.lock
 postcss.config.js
 .DS_Store
 .vscode
+zips
