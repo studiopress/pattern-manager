@@ -31,9 +31,7 @@ fi
 plugindir=$(pwd);
 
 #  Install pluginade-scripts if they are not already installed.
-# if [ ! -d ./pluginade ]; then git clone https://github.com/pluginade/pluginade-scripts ./.pluginade; cd .pluginade && git reset --hard && git checkout main && git pull origin main; fi;
-
-cd .pluginade;
+if [ ! -d ./pluginade ]; then git clone https://github.com/pluginade/pluginade-scripts ./.pluginade; cd .pluginade && git reset --hard && git checkout main && git pull origin main; fi;
 
 #  Start dev mode (npm run dev) for all wp-modules.
 if [ $1 == 'dev' ]; then
