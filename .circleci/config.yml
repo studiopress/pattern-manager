@@ -36,11 +36,16 @@ jobs:
             sh pluginade.sh lint:js
             sh pluginade.sh lint:css
   test-js:
-    docker:
-      - image: cimg/base:stable
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -51,11 +56,16 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh test:js
   phpunit:
-    docker:
-      - image: cimg/base:stable
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -66,11 +76,16 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh test:phpunit
   zip:
-    docker:
-      - image: cimg/base:stable
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
