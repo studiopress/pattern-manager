@@ -19,7 +19,7 @@ class WpFilesystemSpy {
 		return $this->copied;
 	}
 
-	public function exists( string $file ): bool {
+	public function exists(): bool {
 		return true;
 	}
 
