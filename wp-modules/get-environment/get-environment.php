@@ -40,15 +40,15 @@ function get_dismissed_sites() {
 function check_environment_notice_should_show( $site_id, $environment ) {
 
 	// If this is a local environment, no notice needed.
-	if ( $environment === 'local' ) {
+	if ( 'local' === $environment ) {
 		return false;
 	}
-	
+
 	// If the notice has already been dismissed, no notice needed.
 	if ( check_site_dismissed( $site_id ) ) {
 		return false;
 	}
-	
+
 	// If this is a production site, and the notice has not been dismissed, notice needed.
 	return true;
 }
