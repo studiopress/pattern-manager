@@ -159,36 +159,40 @@ workflows:
           #   parameters:
           #     php-version: [ '7.4', '8.0', '8.1', '8.2' ]
       - zip
-      # - wp-svn/check-versions:
-      #     filters:
-      #       tags:
-      #         only: /^\d+\.\d+\.\d+$/
-      #       branches:
-      #         only: /^bump\/.*/
-      # - svn-deploy:
-      #     context: genesis-svn
-      #     requires:
-      #       - wp-svn/check-versions
-      #       - lint
-      #       - test-js
-      #       - phpunit
-      #     filters:
-      #       tags:
-      #         only: /^\d+\.\d+\.\d+$/
-      #       branches:
-      #         ignore: /.*/
-      # - approval-for-deploy-tested-up-to-bump:
-      #     type: approval
-      #     requires:
-      #       - lint
-      #       - test-js
-      #       - phpunit
-      #     filters:
-      #       tags:
-      #         ignore: /.*/
-      #       branches:
-      #         only: /^bump-tested-up-to.*/
-      # - wp-svn/deploy-tested-up-to-bump:
-      #     context: genesis-svn
-      #     requires:
-      #       - approval-for-deploy-tested-up-to-bump
+      - wp-svn/check-versions:
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              only: /^bump\/.*/
+      - svn-deploy:
+          context: genesis-svn
+          requires:
+            - wp-svn/check-versions
+            - lint-php
+            - lint-js
+            - lint-css
+            - test-js
+            - phpunit
+          filters:
+            tags:
+              only: /^\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
+      - approval-for-deploy-tested-up-to-bump:
+          type: approval
+          requires:
+            - lint-php
+            - lint-js
+            - lint-css
+            - test-js
+            - phpunit
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              only: /^bump-tested-up-to.*/
+      - wp-svn/deploy-tested-up-to-bump:
+          context: genesis-svn
+          requires:
+            - approval-for-deploy-tested-up-to-bump
