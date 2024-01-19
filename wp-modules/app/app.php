@@ -35,7 +35,7 @@ function get_app_state() {
 		'siteUrl'                  => get_bloginfo( 'url' ),
 		'adminUrl'                 => admin_url(),
 		'showVersionControlNotice' => check_version_control_notice_should_show( wp_get_theme()->get( 'Name' ) ),
-		'showEnvironmentNotice'    => check_environment_notice_should_show( get_current_blog_id() ),
+		'showEnvironmentNotice'    => check_environment_notice_should_show( get_current_blog_id(), wp_get_environment_type() ),
 	);
 }
 

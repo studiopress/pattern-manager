@@ -37,18 +37,20 @@ function get_dismissed_sites() {
  * @param string $environment The environment type to check against.
  * @return boolean
  */
-function check_environment_notice_should_show( $site_id, $environment = 'local' ) {
-	return ! check_site_dismissed( $site_id ) && ! check_environment( $environment );
-}
+function check_environment_notice_should_show( $site_id, $environment ) {
 
-/**
- * Checks that the current environment is locally hosted.
- *
- * @param string $environment The environment type to check against.
- * @return boolean
- */
-function check_environment( $environment ) {
-	return wp_get_environment_type() === $environment;
+	// If this is a local environment, no notice needed.
+	if ( $environment === 'local' ) {
+		return false;
+	}
+	
+	// If the notice has already been dismissed, no notice needed.
+	if ( check_site_dismissed( $site_id ) ) {
+		return false;
+	}
+	
+	// If this is a production site, and the notice has not been dismissed, notice needed.
+	return true;
 }
 
 /**
