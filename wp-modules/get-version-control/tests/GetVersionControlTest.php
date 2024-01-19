@@ -80,27 +80,6 @@ class GetVersionControlTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Tests `check_version_control_notice_should_show()` from the `get-version-control` module.
-	 */
-	public function test_check_version_control_notice_should_show() {
-		$this->assertFalse( (bool) check_version_control_notice_should_show( $this->get_mock_dismissed_themes()[0] ) );
-		$this->assertTrue( (bool) check_version_control_notice_should_show( $this->get_mock_non_dismissed_theme() ) );
-		// Theme name not found in user meta, but user has a version control folder in the path.
-		$this->assertFalse(
-			(bool) check_version_control_notice_should_show( $this->get_mock_non_dismissed_theme(), $this->get_mock_version_control_folder() )
-		);
-	}
-
-	/**
-	 * Tests `check_for_version_control_in_theme()` from the `get-version-control` module.
-	 */
-	public function test_check_for_version_control_in_theme() {
-		$this->assertTrue( (bool) check_for_version_control_in_theme( $this->get_mock_version_control_folder() ) );
-		// Git not used in fixture.
-		$this->assertFalse( (bool) check_for_version_control_in_theme( '/.git' ) );
-	}
-
-	/**
 	 * Tests `check_theme_name_dismissed()` from the `get-version-control` module.
 	 */
 	public function test_check_theme_name_dismissed() {

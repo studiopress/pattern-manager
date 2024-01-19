@@ -58,6 +58,7 @@ export type Patterns = {
 export type InitialPatternManager = {
 	activeTheme: string;
 	apiNonce: string;
+	previewNonce: string;
 	apiEndpoints: {
 		getPatternNamesEndpoint: string;
 	};
