@@ -128,7 +128,6 @@ jobs:
           command: |
             sh pluginade.sh build
             sh pluginade.sh zip
-            mv pattern-manager*.zip /home/circleci/Downloads
       - store_artifacts:
           path: /home/circleci/Downloads
   svn-deploy:
