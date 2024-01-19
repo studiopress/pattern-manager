@@ -26,15 +26,15 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh install
       - run:
-          name: Linting PHP
-          working_directory: *PLUGIN_PATH
-          command: sh pluginade.sh lint:php
-      - run:
           name: Linting JS and CSS
           working_directory: *PLUGIN_PATH
           command: |
             sh pluginade.sh lint:js
             sh pluginade.sh lint:css
+      - run:
+          name: Linting PHP
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh lint:php
   test-js:
     machine:
       image: ubuntu-2004:current
