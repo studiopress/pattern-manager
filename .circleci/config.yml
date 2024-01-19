@@ -104,8 +104,9 @@ jobs:
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
-          command: sh pluginade.sh build
-          command: sh pluginade.sh test:phpunit
+          command: |
+            sh pluginade.sh build
+            sh pluginade.sh test:phpunit
   zip:
     machine:
       image: ubuntu-2004:current
