@@ -1,8 +1,6 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0
-  php: circleci/php@1.1
   wp-svn: studiopress/wp-svn@0.2
 
 references:
@@ -10,7 +8,7 @@ references:
     plugins/pattern-manager
 
 jobs:
-  lint:
+  lint-php:
     machine:
       image: ubuntu-2004:current
     steps:
@@ -26,15 +24,49 @@ jobs:
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh install
       - run:
-          name: Linting JS and CSS
-          working_directory: *PLUGIN_PATH
-          command: |
-            sh pluginade.sh lint:js
-            sh pluginade.sh lint:css
-      - run:
           name: Linting PHP
           working_directory: *PLUGIN_PATH
           command: sh pluginade.sh lint:php
+  lint-js:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
+          name: Linting JS
+          working_directory: *PLUGIN_PATH
+          command: |
+            sh pluginade.sh lint:js
+  lint-css:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
+          name: Linting CSS
+          working_directory: *PLUGIN_PATH
+          command: |
+            sh pluginade.sh lint:css
   test-js:
     machine:
       image: ubuntu-2004:current
@@ -118,7 +150,9 @@ jobs:
 workflows:
   build:
     jobs:
-      - lint
+      - lint-php
+      - lint-js
+      - lint-css
       - test-js
       - phpunit
           # matrix:
