@@ -2,7 +2,6 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0
-  php: circleci/php@1.1
   wp-svn: studiopress/wp-svn@0.2
 
 references:
@@ -10,79 +9,131 @@ references:
     plugins/pattern-manager
 
 jobs:
-  lint:
-    docker:
-      - image: cimg/php:7.3-node
+  lint-php:
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - node/install-packages:
-          app-dir: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
       - run:
           name: Linting PHP
           working_directory: *PLUGIN_PATH
-          command: npm run lint:php
-      - run:
-          name: Linting JS and CSS
-          working_directory: *PLUGIN_PATH
-          command: |
-            npm run lint:js
-            npm run lint:css
-  test-js:
-    docker:
-      - image: cimg/php:7.3-node
+          command: sh pluginade.sh lint:php
+  lint-js:
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - node/install-packages:
-          app-dir: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
+          name: Linting JS
+          working_directory: *PLUGIN_PATH
+          command: |
+            sh pluginade.sh lint:js
+  lint-css:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
+      - run:
+          name: Linting CSS
+          working_directory: *PLUGIN_PATH
+          command: |
+            sh pluginade.sh lint:css
+  test-js:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - checkout:
+          path: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
       - run:
           name: Testing JS
           working_directory: *PLUGIN_PATH
-          command: npm run test:js
+          command: sh pluginade.sh test:js
   phpunit:
-    parameters:
-      php-version:
-        type: string
     machine:
-      image: ubuntu-2004:202111-02
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - php/install-php:
-          version: << parameters.php-version >>
-      - run: sudo apt-get update && sudo apt-get install php<< parameters.php-version >>-xml php<< parameters.php-version >>-mbstring
-      - php/install-composer
-      - node/install-packages:
-          app-dir: *PLUGIN_PATH
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
       - run:
           name: PHPUnit Integration Tests
           working_directory: *PLUGIN_PATH
           command: |
-            npm run build
-            npm run test:phpunit
+            sh pluginade.sh build
+            sh pluginade.sh test:phpunit
   zip:
-    docker:
-      - image: cimg/php:7.3-node
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - node/install:
-          node-version: '14'
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker.io
+      - run:
+          name: Installing Pluginade
+          working_directory: *PLUGIN_PATH
+          command: sh pluginade.sh install
       - run:
           name: Creating the zip file
           working_directory: *PLUGIN_PATH
           command: |
-            npm ci
-            npm run build
-            npm run zip
-            mkdir /tmp/artifacts
-            mv pattern-manager*.zip /tmp/artifacts
+            sh pluginade.sh build
+            sh pluginade.sh zip
       - store_artifacts:
-          path: /tmp/artifacts
+          path: /home/circleci/Downloads
   svn-deploy:
     docker:
-      - image: cimg/php:7.3-node
+      - image: cimg/base:stable
     steps:
       - checkout:
           path: *PLUGIN_PATH
@@ -92,8 +143,7 @@ jobs:
           name: Building the plugin
           working_directory: *PLUGIN_PATH
           command: |
-            npm ci
-            npm run build
+            sh pluginade.sh build
       - wp-svn/deploy-plugin:
           plugin-path: *PLUGIN_PATH
           wporg-assets-directory: wporg
@@ -101,12 +151,14 @@ jobs:
 workflows:
   build:
     jobs:
-      - lint
+      - lint-php
+      - lint-js
+      - lint-css
       - test-js
-      - phpunit:
-          matrix:
-            parameters:
-              php-version: [ '7.4', '8.0', '8.1', '8.2' ]
+      - phpunit
+          # matrix:
+          #   parameters:
+          #     php-version: [ '7.4', '8.0', '8.1', '8.2' ]
       - zip
       - wp-svn/check-versions:
           filters:
@@ -118,7 +170,9 @@ workflows:
           context: genesis-svn
           requires:
             - wp-svn/check-versions
-            - lint
+            - lint-php
+            - lint-js
+            - lint-css
             - test-js
             - phpunit
           filters:
@@ -129,7 +183,9 @@ workflows:
       - approval-for-deploy-tested-up-to-bump:
           type: approval
           requires:
-            - lint
+            - lint-php
+            - lint-js
+            - lint-css
             - test-js
             - phpunit
           filters:

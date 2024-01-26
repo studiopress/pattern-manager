@@ -301,7 +301,7 @@ function get_pattern_path( string $name ): string {
  */
 function get_pattern_names() {
 	return array_map(
-		function( $path ) {
+		function ( $path ) {
 			return basename( $path, '.php' );
 		},
 		get_pattern_file_paths()

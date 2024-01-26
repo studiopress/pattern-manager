@@ -66,7 +66,7 @@ function register_routes() {
 					'required'          => true,
 					'type'              => 'string',
 					'description'       => __( 'The pattern to delete', 'pattern-manager' ),
-					'validate_callback' => function( $to_validate ) {
+					'validate_callback' => function ( $to_validate ) {
 						return is_string( $to_validate );
 					},
 				),
@@ -137,10 +137,9 @@ function delete_pattern( $request ) {
 /**
  * Updates the list of sites that should not show environment notifications.
  *
- * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
  */
-function update_dismissed_sites( $request ) {
+function update_dismissed_sites() {
 	$dismissed_sites = array_merge( get_dismissed_sites(), (array) get_current_blog_id() );
 	$is_success      = update_user_meta( get_current_user_id(), get_environment_meta_key(), $dismissed_sites );
 
@@ -157,10 +156,9 @@ function update_dismissed_sites( $request ) {
 /**
  * Updates the list of theme names that should not show version control notifications.
  *
- * @param WP_REST_Request $request Full data about the request.
  * @return WP_REST_Response
  */
-function update_dismissed_themes( $request ) {
+function update_dismissed_themes() {
 	$dismissed_themes = array_merge( get_dismissed_themes(), (array) wp_get_theme()->get( 'Name' ) );
 	$is_success       = update_user_meta( get_current_user_id(), get_version_control_meta_key(), $dismissed_themes );
 

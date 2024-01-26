@@ -8,10 +8,10 @@
 namespace PatternManager\Editor;
 
 use WP_UnitTestCase;
-use function \PatternManager\Editor\save_pattern_to_file;
-use function \PatternManager\GetWpFilesystem\get_wp_filesystem_api;
-use function \PatternManager\PatternDataHandlers\get_pattern_by_name;
-use function \PatternManager\PatternDataHandlers\get_patterns_directory;
+use function PatternManager\Editor\save_pattern_to_file;
+use function PatternManager\GetWpFilesystem\get_wp_filesystem_api;
+use function PatternManager\PatternDataHandlers\get_pattern_by_name;
+use function PatternManager\PatternDataHandlers\get_patterns_directory;
 
 require_once dirname( __DIR__ ) . '/model.php';
 

@@ -6,7 +6,7 @@
 
 /* Hide tags for templates */
 .patternmanager-template-details~* {
-	display: none !important;
+		display: none !important;
 }
 
 /* Hide the 'Save Draft' button in the pattern editor (appears after pattern is published), as the 'Update' button handles it. */
