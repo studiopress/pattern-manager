@@ -7,7 +7,7 @@ import type { PostMeta } from '../types';
  * Human readable labels are used for the return array.
  */
 export default function getCustomCategories<
-	T extends { label: string; value: string; pm_custom?: boolean }
+	T extends { label: string; value: string; pm_custom?: boolean },
 >( selections: PostMeta[ 'categories' ], categoryOptions: T[] ) {
 	return categoryOptions.reduce(
 		( acc: PostMeta[ 'customCategories' ], category ) => {

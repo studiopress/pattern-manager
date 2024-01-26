@@ -4,7 +4,7 @@ export default function getSelectedOptions<
 		label: string;
 		name?: string;
 		value?: string;
-	}
+	},
 >( selections: string[], availableOptions: T[], optionKey: keyof T ) {
 	return selections
 		.reduce(
