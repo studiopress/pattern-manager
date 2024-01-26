@@ -4,7 +4,7 @@
 
 # Set this to the version of pluginade-scripts you want to use.
 # For a list of available versions, see https://github.com/pluginade/pluginade-scripts/tags
-pluginadeversion="0.0.3-beta-7";
+pluginadeversion="0.0.3-beta-8";
 
 # Change the following variables to your plugin's namespace and textdomain:
 textdomain="pattern-manager";
