@@ -11,7 +11,7 @@ export default function useForceRerender< T extends unknown >(
 
 	useLayoutEffect( () => {
 		setForceUpdate( [ window.innerWidth, window.innerHeight ] );
-		console.log( 'kjshgdkjhsdg' );
+
 		function updateSizeAndRerender() {
 			setForceUpdate( [ window.innerWidth, window.innerHeight ] );
 		}
