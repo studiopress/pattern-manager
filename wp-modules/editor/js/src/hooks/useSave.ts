@@ -15,7 +15,7 @@ export default function useSave(
 		if ( isSavingPost ) {
 			updatePatternNames();
 		}
-	}, [ isSavingPost ] );
+	}, [ isSavingPost, updatePatternNames ] );
 
 	async function updatePatternNames() {
 		const response = await fetch(

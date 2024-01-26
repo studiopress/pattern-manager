@@ -154,13 +154,11 @@ export default function usePatternData( postMeta: PostMeta ) {
 		) {
 			updatePostMeta( 'postTypes', filteredPostTypes );
 		}
-		// Disabiling this eslint rule because updatePostMeta is not a dependency whose value we rely on, it is a function.
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		postMeta.postTypes,
 		templatePartBlockTypeSelected,
 		filteredPostTypes,
-		,
+		updatePostMeta,
 	] );
 
 	function updatePostMeta(
