@@ -18,5 +18,5 @@ export default function useForceRerender< T extends unknown >(
 		window.addEventListener( 'resize', updateSizeAndRerender );
 		return () =>
 			window.removeEventListener( 'resize', updateSizeAndRerender );
-	}, [ ...dependencies ] );
+	}, [ dependencies ] );
 }
