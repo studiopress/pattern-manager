@@ -20,6 +20,9 @@ export default function ModalToggle( {
 		if ( isDisabled && isChecked ) {
 			handleChangeMulti( false, 'blockTypes', blockTypeForModal );
 		}
+		// Disable eslint for exhaustive-deps as handleChangeMulti
+		// is a stable function and does not need to be included in the dependency array.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ isDisabled, isChecked, blockTypeForModal ] );
 
 	return (

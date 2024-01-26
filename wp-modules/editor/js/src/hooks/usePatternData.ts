@@ -140,7 +140,7 @@ export default function usePatternData( postMeta: PostMeta ) {
 			templatePartBlockTypeSelected &&
 			! postMeta?.postTypes?.includes( 'wp_template' )
 		) {
-			// Disabiling this eslint rule because updatePostMeta is not a dependency whose value we rely on, it is a function. 
+			// Disabiling this eslint rule because updatePostMeta is not a dependency whose value we rely on, it is a function.
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 			updatePostMeta( 'postTypes', [
 				...postMeta.postTypes,
@@ -154,14 +154,15 @@ export default function usePatternData( postMeta: PostMeta ) {
 			filteredPostTypes &&
 			! flatUnorderedEquals( postMeta.postTypes, filteredPostTypes )
 		) {
-			// Disabiling this eslint rule because updatePostMeta is not a dependency whose value we rely on, it is a function. 
+			// Disabiling this eslint rule because updatePostMeta is not a dependency whose value we rely on, it is a function.
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 			updatePostMeta( 'postTypes', filteredPostTypes );
 		}
 	}, [
 		postMeta.postTypes,
 		templatePartBlockTypeSelected,
-		filteredPostTypes,,
+		filteredPostTypes,
+		,
 	] );
 
 	function updatePostMeta(
