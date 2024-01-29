@@ -1,6 +1,6 @@
 /** Check if two flat arrays are loosely equal. */
 export default function flatUnorderedEquals<
-	T extends string | number | boolean
+	T extends string | number | boolean,
 >( arrayA: T[], arrayB: T[] ) {
 	arrayA.sort();
 	arrayB.sort();

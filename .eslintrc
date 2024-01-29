@@ -1,0 +1,38 @@
+{
+  "extends": [
+    "plugin:@wordpress/eslint-plugin/recommended"
+  ],
+  "globals": {
+    "beforeEach": "readonly",
+    "describe": "readonly",
+    "expect": "readonly",
+    "it": "readonly",
+    "jest": "readonly",
+    "test": "readonly"
+  },
+  "settings": {
+    "jsdoc": {
+      "mode": "typescript"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "rules": {
+    "react/jsx-no-target-blank": "off"
+  },
+  "overrides": [
+    {
+      "files": [ "*.ts", "*.tsx" ],
+      "rules": {
+        "jsdoc/require-param": "off",
+        "jsdoc/require-param-type": "off",
+        "jsdoc/require-returns-type": "off",
+        "no-unused-vars": "off",
+        "no-undef": "off"
+      }
+    }
+  ]
+}

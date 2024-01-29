@@ -31,7 +31,7 @@ export default function PatternGrid( {
 	patterns,
 	siteUrl,
 }: Props ) {
-	useForceRerender( [ patterns ] );
+	useForceRerender( patterns );
 
 	return (
 		<>

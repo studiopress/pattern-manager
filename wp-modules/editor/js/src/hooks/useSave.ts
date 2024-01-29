@@ -15,6 +15,9 @@ export default function useSave(
 		if ( isSavingPost ) {
 			updatePatternNames();
 		}
+		// We can ignore this because updatePatternNames is always created fresh on every render.
+		// NOTE: make sure that other dependencies required are added in the future, as the linter could miss them here.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [ isSavingPost ] );
 
 	async function updatePatternNames() {

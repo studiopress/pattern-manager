@@ -79,7 +79,7 @@ export default function useLazyRender< T extends Element >(
 		return () => {
 			observer.disconnect();
 		};
-	}, [ lazyContainerRef ] );
+	}, [ lazyContainerRef, observerOptions ] );
 
 	return {
 		lazyIsIntersecting:
