@@ -56,4 +56,4 @@ function pattern_manager_check_for_upgrades() {
 	require_once __DIR__ . '/lib/class-plugin-updater.php';
 	new \PatternManager\PluginUpdater( $properties );
 }
-add_action( 'admin_init', 'pattern_manager_check_for_upgrades' );
+add_action( 'admin_init', __NAMESPACE__ . '\pattern_manager_check_for_upgrades' );
