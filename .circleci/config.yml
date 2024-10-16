@@ -11,15 +11,10 @@ references:
 jobs:
   lint-php:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -30,15 +25,10 @@ jobs:
           command: sh pluginade.sh lint:php
   lint-js:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -50,15 +40,10 @@ jobs:
             sh pluginade.sh lint:js
   lint-css:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -70,15 +55,10 @@ jobs:
             sh pluginade.sh lint:css
   test-js:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -89,15 +69,10 @@ jobs:
           command: sh pluginade.sh test:js
   phpunit:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -110,15 +85,10 @@ jobs:
             sh pluginade.sh test:phpunit
   zip:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
