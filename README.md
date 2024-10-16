@@ -4,7 +4,7 @@ Donate link: https://wpengine.com
 Tags: pattern, patterns, pattern design, pattern builder, block patterns
 Requires at least: 6.1
 Tested up to: 6.3
-Stable tag: 0.3.1
+Stable tag: 0.3.2
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -113,6 +113,9 @@ Yes, you will need to have WordPress 6.1 or later installed to take advantage of
 2. Easily assign pattern categories, keywords, descriptions, and more.
 
 ## Changelog
+
+### 0.3.2
+* Pattern Manager now uses its own update mechanism from WP Engine servers. 
 
 ### 0.3.1
 * Fix a minor security issue.

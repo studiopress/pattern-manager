@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0
-  wp-svn: studiopress/wp-svn@0.2
+  # wp-svn: studiopress/wp-svn@0.2
 
 references:
   PLUGIN_PATH: &PLUGIN_PATH
@@ -11,15 +11,10 @@ references:
 jobs:
   lint-php:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -30,15 +25,10 @@ jobs:
           command: sh pluginade.sh lint:php
   lint-js:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -50,15 +40,10 @@ jobs:
             sh pluginade.sh lint:js
   lint-css:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -70,15 +55,10 @@ jobs:
             sh pluginade.sh lint:css
   test-js:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -89,15 +69,10 @@ jobs:
           command: sh pluginade.sh test:js
   phpunit:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -110,15 +85,10 @@ jobs:
             sh pluginade.sh test:phpunit
   zip:
     machine:
-      image: ubuntu-2004:current
+      image: ubuntu-2204:current
     steps:
       - checkout:
           path: *PLUGIN_PATH
-      - run:
-          name: Install Docker
-          command: |
-            sudo apt-get update
-            sudo apt-get install -y docker.io
       - run:
           name: Installing Pluginade
           working_directory: *PLUGIN_PATH
@@ -131,22 +101,22 @@ jobs:
             sh pluginade.sh zip
       - store_artifacts:
           path: /home/circleci/Downloads
-  svn-deploy:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout:
-          path: *PLUGIN_PATH
-      - node/install:
-          node-version: '14'
-      - run:
-          name: Building the plugin
-          working_directory: *PLUGIN_PATH
-          command: |
-            sh pluginade.sh build
-      - wp-svn/deploy-plugin:
-          plugin-path: *PLUGIN_PATH
-          wporg-assets-directory: wporg
+  # svn-deploy:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - checkout:
+  #         path: *PLUGIN_PATH
+  #     - node/install:
+  #         node-version: '14'
+  #     - run:
+  #         name: Building the plugin
+  #         working_directory: *PLUGIN_PATH
+  #         command: |
+  #           sh pluginade.sh build
+  #     - wp-svn/deploy-plugin:
+  #         plugin-path: *PLUGIN_PATH
+  #         wporg-assets-directory: wporg
 
 workflows:
   build:
@@ -160,40 +130,40 @@ workflows:
           #   parameters:
           #     php-version: [ '7.4', '8.0', '8.1', '8.2' ]
       - zip
-      - wp-svn/check-versions:
-          filters:
-            tags:
-              only: /^\d+\.\d+\.\d+$/
-            branches:
-              only: /^release\/.*/
-      - svn-deploy:
-          context: genesis-svn
-          requires:
-            - wp-svn/check-versions
-            - lint-php
-            - lint-js
-            - lint-css
-            - test-js
-            - phpunit
-          filters:
-            tags:
-              only: /^\d+\.\d+\.\d+$/
-            branches:
-              ignore: /.*/
-      - approval-for-deploy-tested-up-to-bump:
-          type: approval
-          requires:
-            - lint-php
-            - lint-js
-            - lint-css
-            - test-js
-            - phpunit
-          filters:
-            tags:
-              ignore: /.*/
-            branches:
-              only: /^bump-tested-up-to.*/
-      - wp-svn/deploy-tested-up-to-bump:
-          context: genesis-svn
-          requires:
-            - approval-for-deploy-tested-up-to-bump
+      # - wp-svn/check-versions:
+      #     filters:
+      #       tags:
+      #         only: /^\d+\.\d+\.\d+$/
+      #       branches:
+      #         only: /^release\/.*/
+      # - svn-deploy:
+      #     context: genesis-svn
+      #     requires:
+      #       - wp-svn/check-versions
+      #       - lint-php
+      #       - lint-js
+      #       - lint-css
+      #       - test-js
+      #       - phpunit
+      #     filters:
+      #       tags:
+      #         only: /^\d+\.\d+\.\d+$/
+      #       branches:
+      #         ignore: /.*/
+      # - approval-for-deploy-tested-up-to-bump:
+      #     type: approval
+      #     requires:
+      #       - lint-php
+      #       - lint-js
+      #       - lint-css
+      #       - test-js
+      #       - phpunit
+      #     filters:
+      #       tags:
+      #         ignore: /.*/
+      #       branches:
+      #         only: /^bump-tested-up-to.*/
+      # - wp-svn/deploy-tested-up-to-bump:
+      #     context: genesis-svn
+      #     requires:
+      #       - approval-for-deploy-tested-up-to-bump
