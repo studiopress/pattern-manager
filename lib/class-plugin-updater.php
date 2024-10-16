@@ -53,6 +53,7 @@ class PluginUpdater {
 			empty( $properties['plugin_basename'] )
 		) {
 			// If any of the values we require were not passed, throw a fatal.
+			// phpcs:ignore
 			error_log( 'WPE Secure Plugin Updater received a malformed request.' );
 			return;
 		}
