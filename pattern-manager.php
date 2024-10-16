@@ -43,3 +43,17 @@ function include_custom_modules() {
 	}
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\include_custom_modules' );
+
+/**
+ * Initialize checking of plugin updates from WP Engine.
+ */
+function pattern_manager_check_for_upgrades() {
+	$properties = array(
+		'plugin_slug'     => 'pattern-manager',
+		'plugin_basename' => plugin_basename( __FILE__ ),
+	);
+
+	require_once __DIR__ . '/lib/class-plugin-updater.php';
+	new \PatternManager\PluginUpdater( $properties );
+}
+add_action( 'admin_init', 'pattern_manager_check_for_upgrades' );
